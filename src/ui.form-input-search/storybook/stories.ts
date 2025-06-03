@@ -1,4 +1,5 @@
 import {
+  getArgs,
   getArgTypes,
   getSlotNames,
   getSlotsFragment,
@@ -22,7 +23,7 @@ interface UInputSearchArgs extends Props {
 }
 
 export default {
-  id: "3040",
+  id: "3070",
   title: "Form Inputs & Controls / Input Search",
   component: UInputSearch,
   argTypes: {
@@ -40,11 +41,7 @@ export default {
 
 const DefaultTemplate: StoryFn<UInputSearchArgs> = (args: UInputSearchArgs) => ({
   components: { UInputSearch, UButton, UIcon },
-  setup() {
-    const slots = getSlotNames(UInputSearch.__name);
-
-    return { args, slots };
-  },
+  setup: () => ({ args, slots: getSlotNames(UInputSearch.__name) }),
   template: `
     <UInputSearch
       v-bind="args"
@@ -56,34 +53,18 @@ const DefaultTemplate: StoryFn<UInputSearchArgs> = (args: UInputSearchArgs) => (
   `,
 });
 
-const EnumVariantTemplate: StoryFn<UInputSearchArgs> = (args: UInputSearchArgs, { argTypes }) => ({
+const EnumTemplate: StoryFn<UInputSearchArgs> = (args: UInputSearchArgs, { argTypes }) => ({
   components: { UInputSearch, UCol },
-  setup() {
-    let filteredOptions = argTypes?.[args.enum]?.options;
-
-    if (args.enum === "labelAlign") {
-      filteredOptions = argTypes?.[args.enum]?.options?.filter(
-        (item) => item !== "right" && item !== "topWithDesc",
-      );
-    }
-
-    return {
-      args,
-      filteredOptions,
-    };
-  },
+  setup: () => ({ args, argTypes, getArgs }),
   template: `
     <UCol>
       <UInputSearch
-        v-for="(option, index) in filteredOptions"
-        :key="index"
-        v-bind="args"
+        v-for="option in argTypes?.[args.enum]?.options"
+        v-bind="getArgs(args, option)"
+        :key="option"
         v-model="args.modelValue"
-        :[args.enum]="option"
-        :placeholder="option"
         class="max-w-96"
-      >
-      </UInputSearch>
+      />
     </UCol>
   `,
 });
@@ -92,7 +73,7 @@ export const Default = DefaultTemplate.bind({});
 Default.args = {};
 
 export const Label = DefaultTemplate.bind({});
-Label.args = { label: "Search for product or brand" };
+Label.args = { label: "Search for product or primary" };
 
 export const Placeholder = DefaultTemplate.bind({});
 Placeholder.args = { modelValue: "", placeholder: "Type to search..." };
@@ -106,11 +87,11 @@ Error.args = { error: "This field is required. Please enter a value.", modelValu
 export const Disabled = DefaultTemplate.bind({});
 Disabled.args = { disabled: true };
 
-export const Sizes = EnumVariantTemplate.bind({});
-Sizes.args = { enum: "size", modelValue: "" };
+export const Sizes = EnumTemplate.bind({});
+Sizes.args = { enum: "size", modelValue: "", placeholder: "{enumValue}" };
 
-export const LabelPlacement = EnumVariantTemplate.bind({});
-LabelPlacement.args = { enum: "labelAlign", modelValue: "", label: "Search for product or brand" };
+export const LabelAlign = EnumTemplate.bind({});
+LabelAlign.args = { enum: "labelAlign", modelValue: "", label: "{enumValue}" };
 
 export const SearchButton = DefaultTemplate.bind({});
 SearchButton.args = { searchButtonLabel: "Search" };
@@ -160,7 +141,7 @@ export const Slots: StoryFn<UInputSearchArgs> = (args) => ({
     return { args };
   },
   template: `
-    <URow no-mobile>
+    <URow>
       <UInputSearch v-bind="args" :config="{ searchInput: { leftSlot: 'pl-0' } }">
         <template #left>
           <UAvatar size="sm" />
@@ -169,7 +150,7 @@ export const Slots: StoryFn<UInputSearchArgs> = (args) => ({
 
       <UInputSearch v-bind="args" :config="{ searchInput: { rightSlot: 'pr-0' } }">
         <template #right>
-          <UBadge label="Search" size="sm" color="green" />
+          <UBadge label="Search" size="sm" color="success" />
         </template>
       </UInputSearch>
     </URow>

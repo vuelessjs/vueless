@@ -11,7 +11,7 @@ export default /*tw*/ {
     },
   },
   emptyIconWrapper: {
-    base: "rounded-full bg-gray-700/5",
+    base: "rounded-full bg-inverted/5",
     variants: {
       size: {
         sm: "p-4",
@@ -44,9 +44,9 @@ export default /*tw*/ {
     base: "text-center",
     variants: {
       size: {
-        sm: "text-xs",
-        md: "text-sm",
-        lg: "text-base",
+        sm: "text-small",
+        md: "text-medium",
+        lg: "text-large",
       },
     },
   },

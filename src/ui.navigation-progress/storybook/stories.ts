@@ -1,4 +1,5 @@
 import {
+  getArgs,
   getArgTypes,
   getSlotNames,
   getSlotsFragment,
@@ -12,9 +13,9 @@ import UIcon from "../../ui.image-icon/UIcon.vue";
 import UBadge from "../../ui.text-badge/UBadge.vue";
 
 import type { Meta, StoryFn } from "@storybook/vue3";
-import type { UProgressProps } from "../types.ts";
+import type { Props } from "../types.ts";
 
-interface UProgressArgs extends UProgressProps {
+interface UProgressArgs extends Props {
   slotTemplate?: string;
   enum: "color" | "size";
   iterator?: number;
@@ -25,6 +26,9 @@ export default {
   id: "8040",
   title: "Navigation / Progress",
   component: UProgress,
+  args: {
+    progress: 10,
+  },
   argTypes: {
     ...getArgTypes(UProgress.__name),
   },
@@ -54,29 +58,20 @@ const DefaultTemplate: StoryFn<UProgressArgs> = (args: UProgressArgs) => ({
   template: `
     <UCol>
       <UProgress v-bind="args">${args.slotTemplate || getSlotsFragment("")}</UProgress>
-      <UButton label="Next Step" size="sm" variant="thirdary" filled @click="updateProgress" />
+      <UButton label="Next Step" size="sm" variant="soft" @click="updateProgress" />
     </UCol>
   `,
 });
 
-const EnumVariantTemplate: StoryFn<UProgressArgs> = (args: UProgressArgs, { argTypes }) => ({
+const EnumTemplate: StoryFn<UProgressArgs> = (args: UProgressArgs, { argTypes }) => ({
   components: { UCol, UButton, UProgress },
-  setup() {
-    args.progress = 10;
-
-    function updateProgress() {
-      args.progress = args.progress && args.progress < 100 ? args.progress + 10 : 0;
-    }
-
-    return { args, updateProgress, options: argTypes?.[args.enum]?.options };
-  },
+  setup: () => ({ args, argTypes, getArgs }),
   template: `
     <UCol>
       <UProgress
-        v-for="(option, index) in options"
-        :key="index"
-        v-bind="args"
-        :[args.enum]="option"
+        v-for="option in argTypes?.[args.enum]?.options"
+        v-bind="getArgs(args, option)"
+        :key="option"
         :value="args.progress"
         indicator
       >
@@ -84,7 +79,12 @@ const EnumVariantTemplate: StoryFn<UProgressArgs> = (args: UProgressArgs, { argT
           {{ option }}
         </template>
       </UProgress>
-    <UButton label="Next Step" size="sm" variant="thirdary" filled @click="updateProgress" />
+      <UButton
+        label="Next Step"
+        size="sm"
+        variant="soft"
+        @click="args.progress = args.progress < 100 ? args.progress + 10 : 0"
+      />
     </UCol>
   `,
 });
@@ -118,24 +118,24 @@ Indicator.parameters = {
   },
 };
 
-export const Sizes = EnumVariantTemplate.bind({});
+export const Sizes = EnumTemplate.bind({});
 Sizes.args = { enum: "size" };
 
-export const Colors = EnumVariantTemplate.bind({});
+export const Colors = EnumTemplate.bind({});
 Colors.args = { enum: "color" };
 
-export const SlotIndicator = DefaultTemplate.bind({});
-SlotIndicator.args = {
+export const IndicatorSlot = DefaultTemplate.bind({});
+IndicatorSlot.args = {
   indicator: true,
   slotTemplate: `
-  <template #indicator="{ percent }">
-    <UBadge :label="'Current percent is: ' + percent" />
-  </template>
-`,
+    <template #indicator="{ percent }">
+      <UBadge :label="'Current percent is: ' + percent" />
+    </template>
+  `,
 };
 
-export const SlotStep = DefaultTemplate.bind({});
-SlotStep.args = {
+export const StepSlot = DefaultTemplate.bind({});
+StepSlot.args = {
   max: ["Order Placed", "Processing", "Shipped", "Delivered"],
   slotTemplate: `
   <template #step-0="{ step, value, max }">

@@ -1,4 +1,5 @@
 import {
+  getArgs,
   getArgTypes,
   getSlotNames,
   getSlotsFragment,
@@ -36,11 +37,7 @@ export default {
 
 const DefaultTemplate: StoryFn<UInputRatingArgs> = (args: UInputRatingArgs) => ({
   components: { UInputRating, UBadge },
-  setup() {
-    const slots = getSlotNames(UInputRating.__name);
-
-    return { args, slots };
-  },
+  setup: () => ({ args, slots: getSlotNames(UInputRating.__name) }),
   template: `
     <UInputRating v-bind="args" v-model="args.modelValue">
       ${args.slotTemplate || getSlotsFragment("")}
@@ -48,24 +45,16 @@ const DefaultTemplate: StoryFn<UInputRatingArgs> = (args: UInputRatingArgs) => (
   `,
 });
 
-const EnumVariantTemplate: StoryFn<UInputRatingArgs> = (args: UInputRatingArgs, { argTypes }) => ({
+const EnumTemplate: StoryFn<UInputRatingArgs> = (args: UInputRatingArgs, { argTypes }) => ({
   components: { UInputRating, UCol },
-  setup() {
-    return {
-      args,
-      options: argTypes?.[args.enum]?.options,
-    };
-  },
+  setup: () => ({ args, argTypes, getArgs }),
   template: `
     <UCol>
       <UInputRating
-        v-for="(option, index) in options"
-        :key="index"
-        v-bind="args"
+        v-for="option in argTypes?.[args.enum]?.options"
+        v-bind="getArgs(args, option)"
+        :key="option"
         v-model="args.modelValue"
-        :[args.enum]="option"
-        :description="option"
-        modelValue="2"
       />
     </UCol>
   `,
@@ -74,10 +63,13 @@ const EnumVariantTemplate: StoryFn<UInputRatingArgs> = (args: UInputRatingArgs, 
 export const Default = DefaultTemplate.bind({});
 Default.args = {};
 
+export const Readonly = DefaultTemplate.bind({});
+Readonly.args = { readonly: true };
+
 export const Disabled = DefaultTemplate.bind({});
 Disabled.args = { disabled: true };
 
-export const Sizes = EnumVariantTemplate.bind({});
+export const Sizes = EnumTemplate.bind({});
 Sizes.args = { enum: "size" };
 
 export const StarAmount = DefaultTemplate.bind({});
@@ -90,18 +82,8 @@ StarAmount.parameters = {
   },
 };
 
-export const Selectable = DefaultTemplate.bind({});
-Selectable.args = { selectable: true };
-Selectable.parameters = {
-  docs: {
-    description: {
-      story: "If you want to allow users to select a rating, set the `selectable` prop to `true`.",
-    },
-  },
-};
-
 export const WithCounter = DefaultTemplate.bind({});
-WithCounter.args = { counter: true, selectable: true };
+WithCounter.args = { counter: true };
 WithCounter.parameters = {
   docs: {
     description: {
@@ -121,21 +103,32 @@ WithTotal.parameters = {
   },
 };
 
-export const SlotCounter = DefaultTemplate.bind({});
-SlotCounter.args = {
+export const RatingIcons = DefaultTemplate.bind({});
+RatingIcons.args = { activeIcon: "check_circle", inactiveIcon: "add_circle" };
+RatingIcons.parameters = {
+  docs: {
+    description: {
+      story:
+        "Use the `activeIcon` and `inactiveIcon` props to customize the icons for the respective rating states.",
+    },
+  },
+};
+
+export const CounterSlot = DefaultTemplate.bind({});
+CounterSlot.args = {
   slotTemplate: `
     <template #counter="{ counter }">
-      <UBadge :label="'Current rating is: ' + String(counter)" color="green" />
+      <UBadge :label="'Current rating is: ' + String(counter)" color="success" />
     </template>
   `,
 };
 
-export const SlotTotal = DefaultTemplate.bind({});
-SlotTotal.args = {
+export const TotalSlot = DefaultTemplate.bind({});
+TotalSlot.args = {
   total: 250,
   slotTemplate: `
     <template #total="{total}">
-      <UBadge :label="'Total reviews: ' + String(total)" color="green" />
+      <UBadge :label="'Total reviews: ' + String(total)" color="success" />
     </template>
   `,
 };

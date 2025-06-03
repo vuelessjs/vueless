@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, watch, ref } from "vue";
+import { computed, watch, ref, useTemplateRef } from "vue";
 
 import useUI from "../composables/useUI.ts";
 import { getDefaults } from "../utils/ui.ts";
@@ -24,6 +24,8 @@ const show = ref(false);
 const progress = ref(0);
 const opacity = ref(1);
 const status = ref<number | null>(null);
+
+const progressRef = useTemplateRef<HTMLDivElement>("progress-bar");
 
 const { requestQueue } = useLoaderProgress();
 
@@ -185,17 +187,29 @@ defineExpose({
    * @property {Boolean}
    */
   isLoading,
+
+  /**
+   * A reference to the loader progress element for direct DOM manipulation.
+   * @property {HTMLDivElement}
+   */
+  progressRef,
 });
 
 /**
  * Get element / nested component attributes for each config token ✨
  * Applies: `class`, `config`, redefined default `props` and dev `vl-...` attributes.
  */
-const { getDataTest, stripeAttrs } = useUI<Config>(defaultConfig);
+const { getDataTest, progressAttrs } = useUI<Config>(defaultConfig);
 </script>
 
 <template>
   <Transition :css="false" @before-enter="beforeEnter" @enter="enter" @after-enter="afterEnter">
-    <div v-if="show" v-bind="stripeAttrs" :data-test="getDataTest()" :style="barStyle" />
+    <div
+      v-if="show"
+      ref="progress-bar"
+      v-bind="progressAttrs"
+      :data-test="getDataTest()"
+      :style="barStyle"
+    />
   </Transition>
 </template>

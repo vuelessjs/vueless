@@ -29,27 +29,15 @@ export interface Props {
    * Confirm button color.
    */
   confirmColor?:
-    | "grayscale"
-    | "red"
-    | "orange"
-    | "amber"
-    | "yellow"
-    | "lime"
-    | "green"
-    | "emerald"
-    | "teal"
-    | "cyan"
-    | "sky"
-    | "blue"
-    | "indigo"
-    | "violet"
-    | "purple"
-    | "fuchsia"
-    | "pink"
-    | "rose"
-    | "gray"
-    | "white"
-    | "brand";
+    | "primary"
+    | "secondary"
+    | "error"
+    | "warning"
+    | "success"
+    | "info"
+    | "notice"
+    | "neutral"
+    | "grayscale";
 
   /**
    * Set the disabled accept-button.
@@ -60,6 +48,11 @@ export interface Props {
    * Hide cancel button.
    */
   cancelHidden?: boolean;
+
+  /**
+   * Modal variant.
+   */
+  variant?: "solid" | "outlined" | "subtle" | "soft";
 
   /**
    * Modal size (width).
@@ -89,12 +82,7 @@ export interface Props {
   /**
    * Show divider between content and footer.
    */
-  divider?: boolean;
-
-  /**
-   * Attach small modal to the bottom of the screen (mobile version only).
-   */
-  mobileStickBottom?: boolean;
+  divided?: boolean;
 
   /**
    * Unique element id.

@@ -11,21 +11,25 @@ import { replaceRelativeImports } from "../utils/formatUtil.js";
 import { getStorybookId, getStoryMetaKeyIndex } from "../utils/dataUtils.js";
 
 import { SRC_COMPONENTS_PATH, COMPONENTS_PATH } from "../constants.js";
-import { COMPONENTS, VUELESS_DIR, VUELESS_LOCAL_DIR } from "../../constants.js";
+import { COMPONENTS, VUELESS_PACKAGE_DIR, VUELESS_LOCAL_DIR } from "../../constants.js";
 
 function getSourcePath(componentName) {
-  return path.join(cwd(), VUELESS_DIR, COMPONENTS[componentName]);
+  return path.join(cwd(), VUELESS_PACKAGE_DIR, COMPONENTS[componentName]);
 }
 
 export async function copyVuelessComponent(options) {
   const [componentName, newComponentName] = options;
 
   if (!componentName) {
-    throw new Error("Component name is required.");
+    console.log(styleText("red", "Component name is required."));
+
+    return;
   }
 
   if (!(componentName in COMPONENTS)) {
-    throw new Error("There is no such component.");
+    console.log(styleText("red", "There is no such component."));
+
+    return;
   }
 
   const sourceComponentPath = getSourcePath(componentName);
@@ -39,7 +43,9 @@ export async function copyVuelessComponent(options) {
   const isComponentExists = newComponentName in COMPONENTS || existsSync(absoluteDestPath);
 
   if (isComponentExists) {
-    throw new Error(`Component with name ${newComponentName} already exists.`);
+    console.log(styleText("red", `Component with name ${newComponentName} already exists.`));
+
+    return;
   }
 
   await cp(sourceComponentPath, absoluteDestPath, { recursive: true });

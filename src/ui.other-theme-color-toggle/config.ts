@@ -1,8 +1,8 @@
 export default /*tw*/ {
   list: "flex flex-wrap gap-0.5",
-  brandColorPicker: "{UColorPicker}",
+  primaryColorPicker: "{UColorPicker}",
   grayColorPicker: "{UColorPicker}",
-  colorDivider: "{UDivider}",
+  colorDivider: "{UDivider} py-2",
   defaults: {
     size: "md",
   },

@@ -1,5 +1,5 @@
 import { onMounted, ref, nextTick } from "vue";
-import { COLOR_MODE_KEY, DARK_MODE_SELECTOR } from "../constants.js";
+import { COLOR_MODE_KEY, DARK_MODE_CLASS } from "../constants.js";
 import { ColorMode } from "../types.js";
 
 export function useDarkMode() {
@@ -7,7 +7,7 @@ export function useDarkMode() {
 
   onMounted(async () => {
     await nextTick(() => {
-      const isDarkModeClass = document.documentElement.classList.contains(DARK_MODE_SELECTOR);
+      const isDarkModeClass = document.documentElement.classList.contains(DARK_MODE_CLASS);
       const cashedDarkMode = localStorage.getItem(COLOR_MODE_KEY) as ColorMode | null;
       const isDarkModeCashed = cashedDarkMode !== null && cashedDarkMode === ColorMode.Dark;
 

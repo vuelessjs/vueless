@@ -2,13 +2,24 @@ export default {
   /**
    * Global settings.
    */
-  strategy: "merge",
-  brand: "grayscale",
-  gray: "cool",
-  darkMode: "auto",
+  primary: "green",
+  neutral: "gray",
+  text: 14,
   outline: 2,
   rounding: 8,
-  baseClasses: "",
+  unstyled: false,
+  colorMode: "auto",
+  disabledOpacity: 50,
+
+  /**
+   * Light theme CSS variable settings.
+   */
+  lightTheme: {},
+
+  /**
+   * Dark theme CSS variable settings.
+   */
+  darkTheme: {},
 
   /**
    * Directive settings.
@@ -21,19 +32,9 @@ export default {
   components: /*tw*/ {},
 
   /**
-   * Tailwind CSS theme config.
-   * https://tailwindcss.com/docs/theme
-   */
-  tailwindTheme: {
-    extend: {
-      colors: {},
-    },
-  },
-
-  /**
-   * Custom classes TailwindMerge settings.
+   * TailwindMerge settings for custom Tailwind CSS classes.
    * All lists of rules available here:
-   * https://github.com/dcastil/tailwind-merge/blob/v2.3.0/src/lib/default-config.ts
+   * https://github.com/dcastil/tailwind-merge/blob/main/src/lib/default-config.ts
    */
   tailwindMerge: {},
 };

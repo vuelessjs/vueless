@@ -1,8 +1,9 @@
 <script setup lang="ts" generic="TLocalValue extends RangeDate">
 import { isWrongDateFormat, isWrongMonthNumber, isWrongDayNumber } from "./utilValidation.ts";
-import { useTemplateRef } from "vue";
+import { onBeforeUnmount, useTemplateRef } from "vue";
 
 import { dateIsOutOfRange, parseDate } from "../ui.form-calendar/utilCalendar.ts";
+import { isSameDay } from "../ui.form-calendar/utilDate.ts";
 
 import UInput from "../ui.form-input/UInput.vue";
 
@@ -44,7 +45,7 @@ function isSmallerThanFrom(value: string) {
   return parsedValue && parsedFrom && parsedValue < parsedFrom;
 }
 
-function onInputRangeInput(value: string, type: `${InputRangeType}`) {
+function validateInput(value: string, type: `${InputRangeType}`) {
   const isInvalidDateFormat = isWrongDateFormat(value);
 
   let error = "";
@@ -68,8 +69,12 @@ function onInputRangeInput(value: string, type: `${InputRangeType}`) {
   if (type === InputRangeType.End) {
     inputRangeToError.value = error;
   }
+}
 
-  if (!isInvalidDateFormat) {
+function updateDateValue(value: string, type: `${InputRangeType}`) {
+  validateInput(value, type);
+
+  if (!inputRangeFromError.value && !inputRangeToError.value) {
     const parsedValue = parseDate(value || new Date(), INPUT_RANGE_FORMAT, props.locale);
     const parsedDateFrom = parseDate(localValue.value.from, props.dateFormat, props.locale);
     const parsedDateTo = parseDate(localValue.value.to, props.dateFormat, props.locale);
@@ -84,14 +89,22 @@ function onInputRangeInput(value: string, type: `${InputRangeType}`) {
       props.dateFormat,
     );
 
-    if (type === InputRangeType.Start && !error && !isOutOfRange) {
+    if (type === InputRangeType.Start && !isOutOfRange) {
+      if (parsedDateFrom && isSameDay(parsedDateFrom, parsedValue)) {
+        return;
+      }
+
       localValue.value = {
         from: value ? parsedValue : "",
         to: parsedDateTo,
       } as TLocalValue;
     }
 
-    if (type === InputRangeType.End && !error && !isOutOfRange) {
+    if (type === InputRangeType.End && !isOutOfRange) {
+      if (parsedDateTo && isSameDay(parsedDateTo, parsedValue)) {
+        return;
+      }
+
       localValue.value = {
         from: parsedDateFrom,
         to: value ? parsedValue : null,
@@ -99,6 +112,12 @@ function onInputRangeInput(value: string, type: `${InputRangeType}`) {
     }
   }
 }
+
+// Update value when calendar is closed
+onBeforeUnmount(() => {
+  updateDateValue(rangeStart.value, InputRangeType.Start);
+  updateDateValue(rangeEnd.value, InputRangeType.End);
+});
 
 defineExpose({
   rangeInputEndRef,
@@ -115,7 +134,10 @@ defineExpose({
       size="md"
       v-bind="attrs.rangeInputFirstAttrs.value"
       :name="rangeInputName"
-      @input="onInputRangeInput($event, InputRangeType.Start)"
+      no-autocomplete
+      @blur="updateDateValue(rangeStart, InputRangeType.Start)"
+      @keydown.enter="updateDateValue(rangeStart, InputRangeType.Start)"
+      @input="validateInput($event, InputRangeType.Start)"
     />
 
     <UInput
@@ -125,7 +147,10 @@ defineExpose({
       size="md"
       v-bind="attrs.rangeInputLastAttrs.value"
       :name="rangeInputName"
-      @input="onInputRangeInput($event, InputRangeType.End)"
+      no-autocomplete
+      @blur="updateDateValue(rangeEnd, InputRangeType.End)"
+      @keydown.enter="updateDateValue(rangeEnd, InputRangeType.End)"
+      @input="validateInput($event, InputRangeType.End)"
     />
   </div>
 </template>

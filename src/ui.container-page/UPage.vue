@@ -1,10 +1,9 @@
 <script setup lang="ts">
-import { computed, useSlots, onMounted } from "vue";
+import { computed, useSlots, onMounted, useTemplateRef } from "vue";
 
 import useUI from "../composables/useUI.ts";
 import { getDefaults } from "../utils/ui.ts";
 import { hasSlotContent } from "../utils/helper.ts";
-import useBreakpoint from "../composables/useBreakpoint.ts";
 
 import ULink from "../ui.button-link/ULink.vue";
 import UIcon from "../ui.image-icon/UIcon.vue";
@@ -32,7 +31,7 @@ const emit = defineEmits([
   "back",
 ]);
 
-const { isMobileBreakpoint } = useBreakpoint();
+const wrapperRef = useTemplateRef<HTMLDivElement>("wrapper");
 
 const isExistHeader = computed(() => {
   return (
@@ -54,7 +53,7 @@ const isShownArrowButton = computed(() => {
 
 onMounted(() => {
   const classes =
-    props.gray && config.value?.htmlBody
+    (props.variant === "soft" || props.variant === "subtle") && config.value?.htmlBody
       ? config.value.htmlBody.split(" ").filter((item) => Boolean(item))
       : "";
 
@@ -66,6 +65,14 @@ onMounted(() => {
 function onClickBackLink() {
   emit("back");
 }
+
+defineExpose({
+  /**
+   * A reference to the component's wrapper element for direct DOM manipulation.
+   * @property {HTMLDivElement}
+   */
+  wrapperRef,
+});
 
 /**
  * Get element / nested component attributes for each config token ✨
@@ -82,10 +89,10 @@ const {
   backLinkAttrs,
   backLinkIconAttrs,
   headerAttrs,
-  headerLeftFallbackAttrs,
+  titleFallbackAttrs,
   descriptionAttrs,
-  headerLeftAttrs,
-  headerRightAttrs,
+  beforeTitleAttrs,
+  actionsAttrs,
   bodyAttrs,
   footerAttrs,
   footerLeftAttrs,
@@ -95,28 +102,27 @@ const {
 </script>
 
 <template>
-  <div v-bind="wrapperAttrs" :data-test="getDataTest()">
+  <div ref="wrapper" v-bind="wrapperAttrs" :data-test="getDataTest()">
     <div v-bind="pageAttrs">
       <div v-if="isExistHeader" v-bind="headerAttrs">
-        <div v-bind="headerLeftAttrs">
+        <div v-bind="beforeTitleAttrs">
           <!-- @slot Use it to add something before the header title. -->
           <slot name="before-title" />
 
           <!-- @slot Use it to add something to the left side of the header. -->
           <slot name="title">
-            <div v-bind="headerLeftFallbackAttrs">
+            <div v-bind="titleFallbackAttrs">
               <div v-if="isShownArrowButton" v-bind="backLinkWrapperAttrs">
                 <UIcon
-                  internal
                   size="2xs"
-                  color="gray"
+                  color="neutral"
                   :name="config.defaults.backIcon"
                   v-bind="backLinkIconAttrs"
                 />
 
                 <ULink
                   size="sm"
-                  color="gray"
+                  color="neutral"
                   :to="backTo"
                   :label="backLabel"
                   v-bind="backLinkAttrs"
@@ -132,7 +138,7 @@ const {
           <slot name="after-title" />
         </div>
 
-        <div v-bind="headerRightAttrs">
+        <div v-bind="actionsAttrs">
           <!-- @slot Use it to add something to the right side of the header. -->
           <slot name="actions" />
         </div>
@@ -156,7 +162,7 @@ const {
       </div>
     </div>
 
-    <div v-if="!isMobileBreakpoint" v-bind="rightRoundingWrapperAttrs">
+    <div v-bind="rightRoundingWrapperAttrs">
       <div v-bind="rightRoundingAttrs" />
     </div>
   </div>

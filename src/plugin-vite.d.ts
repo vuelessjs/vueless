@@ -3,7 +3,6 @@ import { Plugin } from "vite";
 
 declare function Vueless(options?: {
   env?: string;
-  mode?: string;
   debug?: boolean;
   include?: string[];
   mirrorCacheDir?: string;
@@ -12,16 +11,18 @@ declare function Vueless(options?: {
   defaultImport?: "url" | "raw" | "component";
 }): Plugin;
 
-declare function VuelessUnpluginComponents(options?: unknown): Plugin & {
+declare function UnpluginComponents(options?: unknown): Plugin & {
   api: import("unplugin-vue-components/types.js").PublicPluginAPI;
 };
 
+declare function TailwindCSS(options?: unknown): Plugin;
+
 declare module "vueless/plugin-vite" {
-  export { Vueless, VuelessUnpluginComponents };
+  export { Vueless, UnpluginComponents, TailwindCSS };
 }
 
 declare module "vueless/plugin-vite.js" {
-  export { Vueless, VuelessUnpluginComponents };
+  export { Vueless, UnpluginComponents, TailwindCSS };
 }
 
 declare module "*.svg?component" {
@@ -44,4 +45,9 @@ declare module "*.svg?skipsvgo" {
   import type { FunctionalComponent, SVGAttributes } from "vue";
   const component: FunctionalComponent<SVGAttributes>;
   export default component;
+}
+
+declare module "virtual:vueless/icons" {
+  import type { UnknownArray } from "./types.ts";
+  export const cachedIcons: UnknownArray;
 }

@@ -1,5 +1,6 @@
 import { ref } from "vue";
 import {
+  getArgs,
   getArgTypes,
   getSlotNames,
   getSlotsFragment,
@@ -80,28 +81,16 @@ const DefaultTemplate: StoryFn<USelectArgs> = (args: USelectArgs) => ({
   `,
 });
 
-const EnumVariantTemplate: StoryFn<USelectArgs> = (args: USelectArgs, { argTypes }) => ({
+const EnumTemplate: StoryFn<USelectArgs> = (args: USelectArgs, { argTypes }) => ({
   components: { USelect, UCol },
-  setup() {
-    let filteredOptions = argTypes?.[args.enum]?.options;
-
-    if (args.enum === "labelAlign") {
-      filteredOptions = argTypes?.[args.enum]?.options?.filter(
-        (item) => item !== "right" && item !== "topWithDesc",
-      );
-    }
-
-    return { args, filteredOptions };
-  },
+  setup: () => ({ args, argTypes, getArgs }),
   template: `
     <UCol>
       <USelect
-        v-for="(option, index) in filteredOptions"
-        :key="index"
-        v-bind="args"
+        v-for="option in argTypes?.[args.enum]?.options"
+        v-bind="getArgs(args, option)"
+        :key="option"
         v-model="args.modelValue"
-        :[args.enum]="option"
-        :description="option"
         class="max-w-96"
       />
     </UCol>
@@ -133,6 +122,13 @@ const GroupValuesTemplate: StoryFn<USelectArgs> = (args: USelectArgs) => ({
 
 export const Default = DefaultTemplate.bind({});
 Default.args = {};
+Default.parameters = {
+  docs: {
+    story: {
+      height: "350px",
+    },
+  },
+};
 
 export const Placeholder = DefaultTemplate.bind({});
 Placeholder.args = { placeholder: "Start typing to search for a city..." };
@@ -146,11 +142,11 @@ Error.args = { error: "Please select a city from the list" };
 export const Disabled = DefaultTemplate.bind({});
 Disabled.args = { disabled: true };
 
-export const LabelPlacement = EnumVariantTemplate.bind({});
-LabelPlacement.args = { enum: "labelAlign" };
+export const LabelAlign = EnumTemplate.bind({});
+LabelAlign.args = { enum: "labelAlign", label: "{enumValue}" };
 
-export const Sizes = EnumVariantTemplate.bind({});
-Sizes.args = { enum: "size", multiple: true, modelValue: [] };
+export const Sizes = EnumTemplate.bind({});
+Sizes.args = { enum: "size", multiple: true, modelValue: [], label: "{enumValue}" };
 
 export const LargeItemList = DefaultTemplate.bind({});
 LargeItemList.args = {
@@ -174,8 +170,8 @@ ClearableAndSearchable.parameters = {
   },
 };
 
-export const OpenDirection = EnumVariantTemplate.bind({});
-OpenDirection.args = { enum: "openDirection" };
+export const OpenDirection = EnumTemplate.bind({});
+OpenDirection.args = { enum: "openDirection", label: "{enumValue}" };
 
 export const GroupValue = GroupValuesTemplate.bind({});
 GroupValue.args = {
@@ -282,7 +278,7 @@ export const IconProps: StoryFn<USelectArgs> = (args) => ({
     return { args, levelOptions, roleOptions };
   },
   template: `
-    <URow no-mobile>
+    <URow>
       <USelect
         left-icon="feedback"
         label="Choose the level of our services"
@@ -320,7 +316,7 @@ export const Slots: StoryFn<USelectArgs> = (args) => ({
     };
   },
   template: `
-    <UCol no-mobile>
+    <UCol>
       <USelect v-bind="args" v-model="args.clearModel" label="Slot clear">
         <template #clear>
           <ULink label="Close" />
@@ -334,11 +330,11 @@ export const Slots: StoryFn<USelectArgs> = (args) => ({
         label="Slot clear-multiple"
       >
         <template #clear-multiple>
-          <ULink label="Close" color="green" />
+          <ULink label="Close" color="success" />
         </template>
       </USelect>
 
-      <URow no-mobile>
+      <URow>
         <USelect v-bind="args" v-model="args.beforeToggleModel" label="Slot before-toggle">
           <template #before-toggle>
             <UAvatar />
@@ -357,7 +353,7 @@ export const Slots: StoryFn<USelectArgs> = (args) => ({
         </USelect>
       </URow>
 
-      <URow no-mobile>
+      <URow>
         <USelect v-bind="args" v-model="args.leftModel" label="Slot left">
           <template #left>
             <UAvatar />
@@ -381,8 +377,8 @@ Slots.parameters = {
   },
 };
 
-export const SlotToggle = DefaultTemplate.bind({});
-SlotToggle.args = {
+export const ToggleSlot = DefaultTemplate.bind({});
+ToggleSlot.args = {
   slotTemplate: `
     <template #toggle="{ opened }">
       <UIcon
@@ -393,17 +389,17 @@ SlotToggle.args = {
   `,
 };
 
-export const SlotSelectedValueLabel = DefaultTemplate.bind({});
-SlotSelectedValueLabel.args = {
+export const SelectedValueLabelSlot = DefaultTemplate.bind({});
+SelectedValueLabelSlot.args = {
   slotTemplate: `
     <template #selected-label="{ selectedLabel }">
-      <UBadge :label="selectedLabel" color="green" />
+      <UBadge :label="selectedLabel" color="success" />
     </template>
   `,
 };
 
-export const SlotSelectedValueLabelAfter = DefaultTemplate.bind({});
-SlotSelectedValueLabelAfter.args = {
+export const SelectedValueLabelAfterSlot = DefaultTemplate.bind({});
+SelectedValueLabelAfterSlot.args = {
   options: [
     { label: "Venice", id: "1", icon: "sailing", color: "green" },
     { label: "Paris", id: "2", icon: "flight", color: "orange" },
@@ -420,17 +416,17 @@ SlotSelectedValueLabelAfter.args = {
   `,
 };
 
-export const SlotBeforeOption = DefaultTemplate.bind({});
-SlotBeforeOption.args = {
+export const BeforeOptionSlot = DefaultTemplate.bind({});
+BeforeOptionSlot.args = {
   slotTemplate: `
     <template #before-option="{ option, index }">
-      <UBadge v-if="index === 3" label="Special offer!" color="blue" class="mr-1" />
+      <UBadge v-if="index === 3" label="Special offer!" color="info" class="mr-1" />
     </template>
   `,
 };
 
-export const SlotOption = DefaultTemplate.bind({});
-SlotOption.args = {
+export const OptionSlot = DefaultTemplate.bind({});
+OptionSlot.args = {
   slotTemplate: `
     <template #option="{ option, index }">
       <UBadge v-if="index === 1" :label="option.label" />
@@ -438,11 +434,11 @@ SlotOption.args = {
   `,
 };
 
-export const SlotAfterOption = DefaultTemplate.bind({});
-SlotAfterOption.args = {
+export const AfterOptionSlot = DefaultTemplate.bind({});
+AfterOptionSlot.args = {
   slotTemplate: `
     <template #after-option="{ option, index }">
-      <UBadge v-if="index === 2" label="Special offer!" color="blue" class="ml-1" />
+      <UBadge v-if="index === 2" label="Special offer!" color="info" class="ml-1" />
     </template>
   `,
 };

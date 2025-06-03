@@ -1,45 +1,35 @@
 export default /*tw*/ {
   link: {
     base: `
-      inline-block cursor-pointer !leading-none rounded transition
-      text-{color}-600 decoration-{color}-600 underline-offset-4
-      hover:text-{color}-700 hover:decoration-{color}-700
-      active:text-{color}-800 active:decoration-{color}-800
-      focus-visible:outline-dynamic focus-visible:outline-offset-4 focus-visible:outline-{color}-600
+      inline-block cursor-pointer !leading-none transition
+      text-{color} decoration-{color} underline-offset-4
+      hover:text-{color}-lifted hover:decoration-{color}-lifted
+      active:text-{color}-accented active:decoration-{color}-accented
+      focus-visible:outline-medium focus-visible:rounded-small
+      focus-visible:outline-offset-4 focus-visible:outline-{color}
     `,
     variants: {
       size: {
-        sm: "text-xs",
-        md: "text-sm",
-        lg: "text-base",
+        sm: "text-small",
+        md: "text-medium",
+        lg: "text-large",
       },
       underlined: {
         undefined: "hover:decoration-solid hover:underline",
         true: "decoration-solid underline",
         false: "no-underline",
       },
-      color: {
-        gray: `
-          text-gray-500 decoration-gray-500
-          hover:text-gray-600 hover:decoration-gray-600
-          active:text-gray-700 active:decoration-gray-700
-        `,
-        grayscale: `
-          text-gray-900 decoration-gray-900
-          hover:text-gray-800 hover:decoration-gray-800
-          active:text-gray-700 active:decoration-gray-700
-          focus-visible:outline-gray-900
-        `,
-        white: "decoration-white text-white focus-visible:outline-white",
-      },
       defaultSlot: {
         true: "flex items-center no-underline hover:no-underline",
       },
       dashed: {
-        true: "hover:decoration-dashed decoration-dashed",
+        true: "decoration-dashed hover:decoration-dashed",
+      },
+      dotted: {
+        true: "decoration-dotted hover:decoration-dotted",
       },
       disabled: {
-        true: "text-gray-400 pointer-events-none",
+        true: "!text-{color}/(--vl-disabled-opacity) !no-underline cursor-not-allowed",
       },
       block: {
         true: "w-full",
@@ -47,7 +37,7 @@ export default /*tw*/ {
     },
   },
   defaults: {
-    color: "brand",
+    color: "primary",
     type: "link",
     size: "md",
     target: "_self",

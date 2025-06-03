@@ -10,19 +10,19 @@ import { getRandomId } from "../../utils/helper.ts";
 import UTable from "../UTable.vue";
 import UButton from "../../ui.button/UButton.vue";
 import ULink from "../../ui.button-link/ULink.vue";
-import UMoney from "../../ui.text-money/UMoney.vue";
+import UNumber from "../../ui.text-number/UNumber.vue";
 import UBadge from "../../ui.text-badge/UBadge.vue";
 import URow from "../../ui.container-row/URow.vue";
 import UIcon from "../../ui.image-icon/UIcon.vue";
 import ULoader from "../../ui.loader/ULoader.vue";
 
-import type { Row, UTableProps } from "../types.ts";
+import type { Row, Props } from "../types.ts";
 
-interface UTableArgs extends UTableProps {
+interface UTableArgs extends Props {
   slotTemplate?: string;
   enum: "size";
   numberOfRows: number;
-  row: Row | typeof getRow | typeof getNestedRow | typeof getNestedContentRow;
+  row: Row | typeof getRow | typeof getNestedRow | typeof getSlotNestedRow;
 }
 
 const SHORT_STORY_PARAMETERS = {
@@ -82,7 +82,6 @@ function getDateDividerRow(rowAmount: number) {
 
       return {
         id: getRandomId(),
-        isChecked: false,
         rowDate,
         orderId: `ORD-${Math.floor(Math.random() * 10000)}`,
         customerName: ["Alice Johnson", "Michael Smith", "Emma Brown", "James Wilson"][
@@ -97,7 +96,6 @@ function getDateDividerRow(rowAmount: number) {
 function getRow() {
   return {
     id: getRandomId(),
-    isChecked: false,
     orderId: `ORD-${Math.floor(Math.random() * 10000)}`,
     customerName: ["Alice Johnson", "Michael Smith", "Emma Brown", "James Wilson"][
       Math.floor(Math.random() * 4)
@@ -110,7 +108,6 @@ function getRow() {
 function getNestedRow() {
   return {
     id: getRandomId(),
-    isChecked: false,
     orderId: `ORD-${Math.floor(Math.random() * 10000)}`,
     customerName: ["Alice Johnson", "Michael Smith", "Emma Brown", "James Wilson"][
       Math.floor(Math.random() * 4)
@@ -120,16 +117,12 @@ function getNestedRow() {
     row: [
       {
         id: getRandomId(),
-        isChecked: false,
-        isShown: false,
         orderId: "Suborder-1",
         customerName: "",
         status: "",
         totalPrice: `$${(Math.random() * 500).toFixed(2)}`,
         row: {
           id: getRandomId(),
-          isChecked: false,
-          isShown: false,
           orderId: "Extra Services",
           customerName: "",
           status: "",
@@ -138,16 +131,12 @@ function getNestedRow() {
       },
       {
         id: getRandomId(),
-        isChecked: false,
-        isShown: false,
         orderId: "Suborder-2",
         customerName: "",
         status: "",
         totalPrice: `$${(Math.random() * 500).toFixed(2)}`,
         row: {
           id: getRandomId(),
-          isChecked: false,
-          isShown: false,
           orderId: "Extra Services",
           customerName: "",
           status: "",
@@ -158,17 +147,15 @@ function getNestedRow() {
   };
 }
 
-function getNestedContentRow(index: number) {
+function getSlotNestedRow(index: number) {
   if (index === 1) {
     return {
       id: getRandomId(),
-      isChecked: false,
       orderId: `ORD-${Math.floor(Math.random() * 10000)}`,
       customerName: "John Doe",
       status: "Processing",
-      nestedData: {
-        isChecked: false,
-        isShown: false,
+      row: {
+        id: getRandomId(),
         rows: [
           {
             id: getRandomId(),
@@ -194,7 +181,6 @@ function getNestedContentRow(index: number) {
   } else {
     return {
       id: getRandomId(),
-      isChecked: false,
       orderId: `ORD-${Math.floor(Math.random() * 10000)}`,
       customerName: ["Alice Johnson", "Michael Smith", "Emma Brown", "James Wilson"][
         Math.floor(Math.random() * 4)
@@ -206,7 +192,7 @@ function getNestedContentRow(index: number) {
 }
 
 const DefaultTemplate: StoryFn<UTableArgs> = (args: UTableArgs) => ({
-  components: { UTable, UButton, ULink, UMoney, UBadge, URow, UIcon, ULoader },
+  components: { UTable, UButton, ULink, UNumber, UBadge, URow, UIcon, ULoader },
   setup() {
     const slots = getSlotNames(UTable.__name);
 
@@ -279,7 +265,6 @@ EmptyCellLabel.args = {
   rows: [
     {
       id: getRandomId(),
-      isChecked: false,
       orderId: `ORD-${Math.floor(Math.random() * 10000)}`,
       customerName: "",
       status: "",
@@ -311,16 +296,14 @@ CellClasses.args = {
   rows: [
     {
       id: getRandomId(),
-      isChecked: false,
       orderId: `ORD-${Math.floor(Math.random() * 10000)}`,
       customerName: "John Doe",
-      status: { value: "Cancelled", class: "bg-red-200" },
+      status: { value: "Cancelled", class: "bg-error/25" },
       totalPrice: "$18.92",
     },
     {
       id: getRandomId(),
-      isChecked: false,
-      class: "bg-green-100",
+      class: "!bg-success/25",
       orderId: `ORD-${Math.floor(Math.random() * 10000)}`,
       customerName: "Bob Smith",
       status: "Delivered",
@@ -328,7 +311,6 @@ CellClasses.args = {
     },
     {
       id: getRandomId(),
-      isChecked: false,
       orderId: `ORD-${Math.floor(Math.random() * 10000)}`,
       customerName: "Helen Williams",
       status: { value: "Delivered", contentClasses: "line-through" },
@@ -365,7 +347,7 @@ StickyFooter.args = {
   slotTemplate: `
     <template #footer>
       <td colspan="4">
-        <p class="font-semibold text-gray-700">
+        <p class="font-semibold text-accented">
           📊 Summary: 50 transactions processed | Total Revenue: <strong>$12,345.67</strong>
         </p>
       </td>
@@ -413,8 +395,8 @@ DateDividerCustomLabel.parameters = {
   },
 };
 
-export const SlotHeaderKey = DefaultTemplate.bind({});
-SlotHeaderKey.args = {
+export const HeaderKeySlot = DefaultTemplate.bind({});
+HeaderKeySlot.args = {
   slotTemplate: `
     <template #header-status="{ column }">
       <UBadge :label="column?.label" />
@@ -422,9 +404,9 @@ SlotHeaderKey.args = {
   `,
 };
 
-export const SlotHeaderActions = DefaultTemplate.bind({});
-SlotHeaderActions.parameters = SHORT_STORY_PARAMETERS;
-SlotHeaderActions.args = {
+export const HeaderActionsSlot = DefaultTemplate.bind({});
+HeaderActionsSlot.parameters = SHORT_STORY_PARAMETERS;
+HeaderActionsSlot.args = {
   numberOfRows: 50,
   stickyHeader: true,
   selectable: true,
@@ -433,15 +415,15 @@ SlotHeaderActions.args = {
       <URow gap="2xs">
         <UButton
           label="Edit"
-          variant="thirdary"
-          color="brand"
+          variant="ghost"
+          color="primary"
           size="sm"
         />
 
         <UButton
           label="Delete"
-          variant="thirdary"
-          color="brand"
+          variant="ghost"
+          color="primary"
           size="sm"
         />
       </URow>
@@ -449,22 +431,22 @@ SlotHeaderActions.args = {
   `,
 };
 
-export const SlotBeforeHeader = DefaultTemplate.bind({});
-SlotBeforeHeader.args = {
+export const BeforeHeaderSlot = DefaultTemplate.bind({});
+BeforeHeaderSlot.args = {
   slotTemplate: `
     <template #before-header="{ colsCount, classes }">
-      <td :colspan="colsCount" :class="classes">
+      <th :colspan="colsCount" :class="classes">
         <p class="p-2">
           📅 Latest data updated on {{ new Date().toLocaleDateString() }}.
           Please verify all entries for accuracy before proceeding.
         </p>
-      </td>
+      </th>
     </template>
   `,
 };
 
-export const SlotBeforeFirstRow = DefaultTemplate.bind({});
-SlotBeforeFirstRow.args = {
+export const BeforeFirstRowSlot = DefaultTemplate.bind({});
+BeforeFirstRowSlot.args = {
   slotTemplate: `
     <template #before-first-row>
       <p class="py-2">
@@ -479,7 +461,7 @@ export const CellSlots = DefaultTemplate.bind({});
 CellSlots.args = {
   slotTemplate: `
     <template #cell-orderId="{ value }">
-      <ULink :label="value" color="green" />
+      <ULink :label="value" color="success" />
     </template>
 
     <template #cell-customerName="{ value }">
@@ -487,58 +469,50 @@ CellSlots.args = {
     </template>
 
     <template #cell-totalPrice="{ value }">
-      <UMoney :value="value.slice(1)" symbol="€" symbolAlign="left" />
+      <UNumber :value="value.slice(1)" currency="€" currency-align="left" />
     </template>
   `,
 };
 
-export const SlotExpand = DefaultTemplate.bind({});
-SlotExpand.args = {
+export const ExpandSlot = DefaultTemplate.bind({});
+ExpandSlot.args = {
   row: getNestedRow,
   slotTemplate: `
     <template #expand="{ row, expanded }">
-      <UBadge v-if="expanded" label="Collapse" class="cursor-pointer" />
-      <UBadge v-if="!expanded" label="Expand" class="cursor-pointer" />
+      <UBadge v-if="expanded && row.row" label="Collapse" class="cursor-pointer" />
+      <UBadge v-if="!expanded && row.row" label="Expand" class="cursor-pointer" />
     </template>
   `,
 };
 
-export const SlotNestedContent = DefaultTemplate.bind({});
-SlotNestedContent.args = {
+export const NestedRowSlot = DefaultTemplate.bind({});
+NestedRowSlot.args = {
   columns: [
     { key: "orderId", label: "Order Id" },
     { key: "customerName", label: "Customer Name" },
     { key: "status", label: "Status" },
   ],
-  row: getNestedContentRow,
+  row: getSlotNestedRow,
   slotTemplate: `
-    <template #nested-content="{ row }">
-      <div class="p-4 bg-gray-100">
-        <UTable
-          :columns="[
-            { key: 'category', label: 'Category' },
-            { key: 'itemName', label: 'Product' },
-            { key: 'quantity', label: 'Quantity' },
-          ]"
-          :rows="row.nestedData.rows"
-          compact
-        />
-      </div>
+    <template #nested-row="{ row }">
+      <div class="p-4 bg-lifted">
+          <UTable
+            :columns="[
+              { key: 'category', label: 'Category' },
+              { key: 'itemName', label: 'Product' },
+              { key: 'quantity', label: 'Quantity' },
+            ]"
+            :rows="row.rows"
+            compact
+          />
+        <td>
+      </tr>
     </template>
   `,
 };
-SlotNestedContent.parameters = {
-  docs: {
-    description: {
-      story:
-        // eslint-disable-next-line vue/max-len
-        "You can also pass nested content inside the row (to render a nested table, for example). Use the `nestedData` key inside a row object.",
-    },
-  },
-};
 
-export const SlotAfterLastRow = DefaultTemplate.bind({});
-SlotAfterLastRow.args = {
+export const AfterLastRowSlot = DefaultTemplate.bind({});
+AfterLastRowSlot.args = {
   slotTemplate: `
     <template #after-last-row="{ colsCount, classes }">
       <td :colspan="colsCount" :class="classes">
@@ -550,8 +524,8 @@ SlotAfterLastRow.args = {
   `,
 };
 
-export const SlotEmptyState = DefaultTemplate.bind({});
-SlotEmptyState.args = {
+export const EmptyStateSlot = DefaultTemplate.bind({});
+EmptyStateSlot.args = {
   rows: [],
   config: {
     i18n: { noData: "Fetching data..." },
@@ -565,8 +539,8 @@ SlotEmptyState.args = {
   `,
 };
 
-export const SlotFooter = DefaultTemplate.bind({});
-SlotFooter.args = {
+export const FooterSlot = DefaultTemplate.bind({});
+FooterSlot.args = {
   slotTemplate: `
     <template #footer>
       <td colspan="100%" class="px-2">

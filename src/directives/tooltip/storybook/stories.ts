@@ -41,15 +41,15 @@ const SettingsTemplate: StoryFn<VTooltipArgs> = (args: VTooltipArgs) => ({
   },
   template: `
     <URow align="center">
-      <UAlert variant="secondary">
+      <UAlert variant="outlined">
         <p>
           See all available settings in <ULink label="Tippy.js docs" href="https://atomiks.github.io/tippyjs/v6/all-props/" underlined />
         </p>
       </UAlert>
-      <UIcon 
-        interactive 
-        name="sentiment_satisfied" 
-        v-tooltip="{ content: '<b>Tooltip</b>', placement: 'bottom', allowHTML: true, zIndex: 42 }" 
+      <UIcon
+        interactive
+        name="sentiment_satisfied"
+        v-tooltip="{ content: '<b>Tooltip</b>', placement: 'bottom', allowHTML: true, zIndex: 42 }"
       />
     </URow>
   `,

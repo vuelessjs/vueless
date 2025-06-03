@@ -12,12 +12,7 @@ export interface Props {
   /**
    * Badge variant.
    */
-  variant?: "primary" | "secondary" | "thirdary";
-
-  /**
-   * Add border to the `thirdary` variant.
-   */
-  bordered?: boolean;
+  variant?: "solid" | "outlined" | "subtle" | "soft";
 
   /**
    * Badge size.
@@ -28,27 +23,15 @@ export interface Props {
    * Badge color.
    */
   color?:
-    | "grayscale"
-    | "red"
-    | "orange"
-    | "amber"
-    | "yellow"
-    | "lime"
-    | "green"
-    | "emerald"
-    | "teal"
-    | "cyan"
-    | "sky"
-    | "blue"
-    | "indigo"
-    | "violet"
-    | "purple"
-    | "fuchsia"
-    | "pink"
-    | "rose"
-    | "gray"
-    | "white"
-    | "brand";
+    | "primary"
+    | "secondary"
+    | "error"
+    | "warning"
+    | "success"
+    | "info"
+    | "notice"
+    | "neutral"
+    | "grayscale";
 
   /**
    * Icon name (appears instead of label).

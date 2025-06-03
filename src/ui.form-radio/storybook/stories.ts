@@ -1,4 +1,5 @@
 import {
+  getArgs,
   getArgTypes,
   getSlotNames,
   getSlotsFragment,
@@ -25,7 +26,7 @@ export default {
     name: "radio1",
     label: "Payment Method",
     value: "1",
-    color: "brand",
+    color: "primary",
   },
   argTypes: {
     ...getArgTypes(URadio.__name),
@@ -39,11 +40,7 @@ export default {
 
 const DefaultTemplate: StoryFn<URadioArgs> = (args: URadioArgs) => ({
   components: { URadio, UBadge },
-  setup() {
-    const slots = getSlotNames(URadio.__name);
-
-    return { args, slots };
-  },
+  setup: () => ({ args, slots: getSlotNames(URadio.__name) }),
   template: `
     <URadio v-bind="args">
       ${args.slotTemplate || getSlotsFragment("")}
@@ -51,23 +48,15 @@ const DefaultTemplate: StoryFn<URadioArgs> = (args: URadioArgs) => ({
   `,
 });
 
-const EnumVariantTemplate: StoryFn<URadioArgs> = (args: URadioArgs, { argTypes }) => ({
+const EnumTemplate: StoryFn<URadioArgs> = (args: URadioArgs, { argTypes }) => ({
   components: { URadio, URow },
-  setup() {
-    return {
-      args,
-      options: argTypes?.[args.enum]?.options,
-    };
-  },
+  setup: () => ({ args, argTypes, getArgs }),
   template: `
-    <URow :class="{ '!flex-col': args.enum === 'labelAlign' }">
+    <URow>
       <URadio
-        v-for="(option, index) in options"
-        :key="index"
-        v-bind="args"
-        v-model="args.modelValue"
-        :[args.enum]="option"
-        :label="option"
+        v-for="option in argTypes?.[args.enum]?.options"
+        v-bind="getArgs(args, option)"
+        :key="option"
       />
     </URow>
   `,
@@ -95,31 +84,31 @@ Disabled.args = { disabled: true, name: "radio2" };
 export const Checked = DefaultTemplate.bind({});
 Checked.args = { checked: true, name: "radio4" };
 
-export const LabelPlacement = EnumVariantTemplate.bind({});
-LabelPlacement.args = { enum: "labelAlign" };
+export const LabelAlign = EnumTemplate.bind({});
+LabelAlign.args = { enum: "labelAlign", label: "{enumValue}" };
 
-export const Sizes = EnumVariantTemplate.bind({});
-Sizes.args = { enum: "size" };
+export const Sizes = EnumTemplate.bind({});
+Sizes.args = { enum: "size", label: "{enumValue}" };
 
-export const Color = EnumVariantTemplate.bind({});
-Color.args = { enum: "color" };
+export const Colors = EnumTemplate.bind({});
+Colors.args = { enum: "color", label: "{enumValue}" };
 
-export const SlotLabel = DefaultTemplate.bind({});
-SlotLabel.args = {
+export const LabelSlot = DefaultTemplate.bind({});
+LabelSlot.args = {
   slotTemplate: `
     <template #label="{ label }">
-      <UBadge :label="label" color="green" />
+      <UBadge :label="label" color="success" />
     </template>
   `,
 };
 
-export const SlotBottom = DefaultTemplate.bind({});
-SlotBottom.args = {
+export const BottomSlot = DefaultTemplate.bind({});
+BottomSlot.args = {
   name: "radio5",
   value: "radio",
   slotTemplate: `
     <template #bottom>
-      <UBadge label="Add to favorite" color="green" size="sm" />
+      <UBadge label="Add to favorite" color="success" size="sm" />
     </template>
   `,
 };

@@ -12,10 +12,10 @@ export default /*tw*/ {
       },
       split: {
         true: "flex-wrap",
-        false: "flex-nowrap gap-1 p-1 w-fit border rounded-dynamic border-gray-300",
+        false: "flex-nowrap gap-px p-1 w-fit border rounded-medium border-default",
       },
       disabled: {
-        true: "pointer-events-none bg-gray-100",
+        true: "bg-lifted cursor-not-allowed",
       },
       block: {
         true: "w-full flex-nowrap",
@@ -25,10 +25,19 @@ export default /*tw*/ {
       },
     },
   },
+  divider: {
+    base: "my-1 border-r border-muted last:hidden",
+    variants: {
+      split: {
+        true: "hidden",
+      },
+    },
+  },
+  dividerHidden: "{>divider} border-transparent",
   toggleButton: {
     base: "{UButton} font-normal focus-visible:ring-offset-0",
     defaults: {
-      variant: "thirdary",
+      variant: "ghost",
     },
   },
   toggleButtonInactive: {
@@ -37,7 +46,7 @@ export default /*tw*/ {
       split: {
         false: "border-0",
         true: `
-          border border-gray-300 hover:border-gray-400
+          border border-default hover:border-lifted
           hover:bg-transparent dark:hover:bg-transparent
           active:bg-transparent dark:active:bg-transparent
         `,
@@ -45,18 +54,15 @@ export default /*tw*/ {
     },
   },
   toggleButtonActive: {
-    base: "{>toggleButton}",
+    base: "{>toggleButton} !bg-primary/10 disabled:!bg-primary/10 disabled:text-primary",
     variants: {
       split: {
         false: "border-0",
-        true: `
-          border border-brand-600
-        `,
+        true: "border border-primary/75 outline-small outline-primary/75",
       },
     },
     defaults: {
-      color: "brand",
-      filled: true,
+      color: "primary",
     },
   },
   defaults: {

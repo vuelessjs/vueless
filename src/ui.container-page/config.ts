@@ -1,7 +1,7 @@
 export default /*tw*/ {
-  htmlBody: "bg-gray-50 group/body-gray",
+  htmlBody: "bg-muted group/body",
   wrapper: {
-    base: "min-h-screen UNotifyPage",
+    base: "relative min-h-screen UNotifyPage",
     variants: {
       size: {
         xs: "md:w-[25rem] md:max-[500px]:!w-full",
@@ -15,55 +15,63 @@ export default /*tw*/ {
         "5xl": "md:w-[75rem] md:max-[1300px]:!w-full",
         wide: "md:w-full",
       },
-      gray: {
-        false: "bg-white",
-        true: "bg-gray-50",
-      },
       rounding: {
-        relative: "md:relative md:pr-4 md:rounded-r-dynamic-lg",
-        fixed: "md:bg-transparent md:relative md:pr-4 md:rounded-r-dynamic-lg",
+        true: "md:pr-4",
       },
     },
   },
   page: {
-    base: "p-4 md:py-6 md:pl-8 md:pr-8 mx-auto min-h-screen w-full",
-    compoundVariants: [{ rounding: ["fixed", "relative"], class: "md:pr-4" }],
+    base: "p-4 md:py-6 md:pl-8 md:pr-8 mx-auto min-h-screen w-full border",
+    variants: {
+      variant: {
+        solid: "bg-default border-transparent",
+        outlined: "bg-default border-muted",
+        subtle: "bg-muted border-default/50",
+        soft: "bg-muted border-transparent",
+      },
+      rounding: {
+        true: "md:pr-4 border-r-0",
+        false: "rounded-large",
+      },
+    },
   },
-  header: "flex items-start justify-between mb-4 md:mb-6",
-  headerLeft: "flex items-center gap-4",
-  headerLeftFallback: "flex flex-col gap-0.5",
-  backLinkWrapper: "flex items-center gap-0.5",
-  backLink: "{ULink}",
-  backLinkIcon: "{UIcon}",
-  title: "{UHeader}",
-  description: "mt-1.5 text-base font-normal text-gray-500",
-  headerRight: "",
-  body: "",
-  footer: "mb-0 mt-14 justify-between pt-8 md:flex md:items-baseline space-y-4 md:space-y-0 border-t border-gray-200",
-  footerLeft: "md:flex space-y-4 md:space-x-4 md:space-y-0",
-  footerRight: "md:flex space-y-4 md:space-x-4 md:space-y-0",
   rightRoundingWrapper: {
-    base: "absolute right-4",
+    base: "hidden md:block absolute right-4",
     variants: {
       rounding: {
-        none: "hidden",
+        false: "md:hidden",
       },
     },
   },
   rightRounding: {
-    base: "fixed top-0 w-4 rounded-r-dynamic-lg h-screen",
+    base: "fixed top-0 w-4 border border-l-0 rounded-r-large h-screen",
     variants: {
-      gray: {
-        false: "bg-white",
-        true: "bg-gray-50",
+      variant: {
+        solid: "bg-default border-transparent",
+        outlined: "bg-default border-muted",
+        subtle: "bg-muted border-default/50",
+        soft: "bg-muted border-transparent",
       },
     },
   },
+  header: "flex items-start justify-between mb-4 md:mb-6",
+  beforeTitle: "flex items-center gap-4",
+  titleFallback: "flex flex-col gap-0.5",
+  backLinkWrapper: "flex items-center gap-0.5",
+  backLink: "{ULink}",
+  backLinkIcon: "{UIcon}",
+  title: "{UHeader}",
+  description: "mt-1.5 text-large font-normal text-lifted",
+  actions: "",
+  body: "",
+  footer: "mb-0 mt-14 justify-between pt-8 md:flex md:items-baseline space-y-4 md:space-y-0 border-t border-muted",
+  footerLeft: "md:flex space-y-4 md:space-x-4 md:space-y-0",
+  footerRight: "md:flex space-y-4 md:space-x-4 md:space-y-0",
   defaults: {
-    rounding: "none",
-    titleSize: "md",
+    variant: "solid",
     size: "wide",
-    gray: false,
+    titleSize: "md",
+    rounding: false,
     /* icons */
     backIcon: "arrow_back",
   },

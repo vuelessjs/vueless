@@ -1,4 +1,5 @@
 import {
+  getArgs,
   getArgTypes,
   getSlotNames,
   getSlotsFragment,
@@ -39,11 +40,7 @@ const defaultTemplate = `
 
 const DefaultTemplate: StoryFn<URowArgs> = (args: URowArgs) => ({
   components: { URow, UInput, UButton },
-  setup() {
-    const slots = getSlotNames(URow.__name);
-
-    return { args, slots };
-  },
+  setup: () => ({ args, slots: getSlotNames(URow.__name) }),
   template: `
     <URow v-bind="args" class="flex">
       ${args.slotTemplate || getSlotsFragment(defaultTemplate)}
@@ -51,35 +48,20 @@ const DefaultTemplate: StoryFn<URowArgs> = (args: URowArgs) => ({
   `,
 });
 
-const EnumVariantTemplate: StoryFn<URowArgs> = (args: URowArgs, { argTypes }) => ({
+const EnumTemplate: StoryFn<URowArgs> = (args: URowArgs, { argTypes }) => ({
   components: { UCol, URow, UInput, UButton },
-  setup() {
-    const isGapEnum = argTypes?.[args.enum]?.name === "gap";
-
-    return {
-      args,
-      options: argTypes?.[args.enum]?.options,
-      isGapEnum,
-    };
-  },
+  setup: () => ({ args, argTypes, getArgs }),
   template: `
     <UCol gap="xl">
       <URow
-        v-for="(option, index) in options"
-        v-bind="args"
-        :[args.enum]="option"
-        :key="index"
-        class="border border-brand-500 rounded p-2"
+        v-for="option in argTypes?.[args.enum]?.options"
+        v-bind="getArgs(args, option)"
+        :key="option"
+        class="border border-primary border-dashed rounded-medium p-4"
         :class="{ 'h-24': args.enum === 'align' }"
       >
-        <template v-if="isGapEnum">
-          <UInput :label="option" />
-          <UInput :label="option" />
-        </template>
-        <template v-else>
-          <UButton :label="args.enum" />
-          <UButton :label="option" />
-        </template>
+        <UButton :label="args.enum" />
+        <UButton :label="option" />
       </URow>
     </UCol>
   `,
@@ -98,7 +80,7 @@ Reverse.parameters = {
   },
 };
 
-export const Gap = EnumVariantTemplate.bind({});
+export const Gap = EnumTemplate.bind({});
 Gap.args = { enum: "gap", config: { wrapper: "border-none" } };
 Gap.parameters = {
   docs: {
@@ -108,7 +90,7 @@ Gap.parameters = {
   },
 };
 
-export const Align = EnumVariantTemplate.bind({});
+export const Align = EnumTemplate.bind({});
 Align.args = { enum: "align" };
 Align.parameters = {
   docs: {
@@ -118,8 +100,39 @@ Align.parameters = {
   },
 };
 
-export const Justify = EnumVariantTemplate.bind({});
-Justify.args = { enum: "justify" };
+export const Content: StoryFn<URowArgs> = (args: URowArgs, { argTypes }) => ({
+  components: { UCol, UButton, URow, UInput },
+  setup: () => ({ args, argTypes, getArgs }),
+  template: `
+    <UCol gap="lg">
+      <URow
+        v-for="option in argTypes?.[args.enum]?.options"
+        v-bind="getArgs(args, option)"
+        :key="option"
+        align="normal"
+        wrap
+        gap="xs"
+        class="w-full h-[300px] border border-primary border-dashed rounded-medium p-4"
+      >
+        <UButton label="content" class="w-[45%]" />
+        <UButton :label="option" class="w-[45%]" />
+        <UButton label="content" class="w-[45%]" />
+        <UButton :label="option" class="w-[45%]" />
+      </URow>
+    </UCol>
+  `,
+});
+Content.args = { enum: "content" };
+Content.parameters = {
+  docs: {
+    description: {
+      story: "Items horizontal align for multi-row flex containers (align-content).",
+    },
+  },
+};
+
+export const Justify = EnumTemplate.bind({});
+Justify.args = { enum: "justify", block: true };
 Justify.parameters = {
   docs: {
     description: {
@@ -128,24 +141,8 @@ Justify.parameters = {
   },
 };
 
-export const NoMobile = DefaultTemplate.bind({});
-NoMobile.args = {
-  noMobile: true,
-  slotTemplate: `
-    <UInput label="First Name" />
-    <UInput label="Last Name" />
-  `,
-};
-NoMobile.parameters = {
-  docs: {
-    description: {
-      story: "Disables mobile adaptivity.",
-    },
-  },
-};
-
-export const SlotDefault = DefaultTemplate.bind({});
-SlotDefault.args = {
+export const DefaultSlot = DefaultTemplate.bind({});
+DefaultSlot.args = {
   slotTemplate: `
     <template #default>
       <p>

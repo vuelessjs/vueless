@@ -1,15 +1,25 @@
 export default /*tw*/ {
-  wrapper: "relative inline-block",
+  wrapper: {
+    base: "relative inline-block",
+    variants: {
+      disabled: {
+        true: "cursor-not-allowed",
+      },
+    },
+  },
   dropdownBadge: {
     base: "{UBadge}",
     variants: {
       opened: {
         true: "group",
       },
+      disabled: {
+        true: "opacity-(--vl-disabled-opacity) pointer-events-none",
+      },
     },
   },
-  dropdownIcon: {
-    base: "{UIcon} transition duration-300 group-[]:rotate-180",
+  toggleIcon: {
+    base: "{UIcon} transition duration-300 group-[*]:rotate-180 -mr-0.5",
     defaults: {
       size: {
         sm: "2xs",
@@ -18,12 +28,12 @@ export default /*tw*/ {
       },
     },
   },
-  dropdownList: {
-    base: "{UDropdownList} w-fit",
+  listbox: {
+    base: "{UListbox} w-fit",
     variants: {
       yPosition: {
-        top: "bottom-5 mb-3",
-        bottom: "top-5 mt-3",
+        top: "bottom-full mb-1.5",
+        bottom: "top-full mt-1.5",
       },
       xPosition: {
         left: "left-0",
@@ -32,15 +42,18 @@ export default /*tw*/ {
     },
   },
   defaults: {
-    color: "brand",
+    color: "primary",
     size: "md",
-    variant: "primary",
+    variant: "solid",
     labelKey: "label",
+    valueKey: "id",
     yPosition: "bottom",
     xPosition: "left",
     round: false,
-    noIcon: false,
+    searchable: false,
+    multiple: false,
+    labelDisplayCount: 2,
     /* icons */
-    dropdownIcon: "keyboard_arrow_down",
+    toggleIcon: "keyboard_arrow_down",
   },
 };

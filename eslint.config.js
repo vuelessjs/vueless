@@ -6,7 +6,8 @@ import prettierEslintConfig from "@vue/eslint-config-prettier";
 import pluginVue from "eslint-plugin-vue";
 import pluginVitest from "@vitest/eslint-plugin";
 import pluginStorybook from "eslint-plugin-storybook";
-import pluginTailwind from "eslint-plugin-tailwindcss";
+// TODO: Install the plugin when it will supports TailwindCSS 4
+// import pluginTailwind from "eslint-plugin-tailwindcss";
 
 const languageOptions = {
   globals: {
@@ -90,7 +91,7 @@ export default [
     languageOptions,
   },
   ...pluginVue.configs["flat/recommended"],
-  ...pluginTailwind.configs["flat/recommended"],
+  //...pluginTailwind.configs["flat/recommended"],
   ...pluginStorybook.configs["flat/recommended"].map((item) => ({
     ...item,
     ...(item.name.includes("stories-rules") ? { files: ["**/stories.{js,ts,jsx,tsx,mjs,cjs}"] } : {}),

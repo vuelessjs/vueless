@@ -21,9 +21,6 @@ export async function loadSvg(id, options) {
   let [svgPath, query] = id.split("?", 2);
   const importType = query || defaultImport;
 
-  // clear svg path from prefix if exist
-  svgPath = svgPath.replace("/__skip_vite/", "");
-
   // use default svg loader
   if (importType === "url") {
     return;

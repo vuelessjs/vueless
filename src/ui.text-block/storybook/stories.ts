@@ -1,14 +1,18 @@
 import {
+  getArgs,
   getArgTypes,
   getSlotNames,
   getSlotsFragment,
   getDocsDescription,
+  getEnumVariantDescription,
 } from "../../utils/storybook.ts";
 
 import UText from "../../ui.text-block/UText.vue";
 import URow from "../../ui.container-row/URow.vue";
 import UCol from "../../ui.container-col/UCol.vue";
 import UBadge from "../../ui.text-badge/UBadge.vue";
+
+import tooltip from "../../directives/tooltip/vTooltip.ts";
 
 import type { Meta, StoryFn } from "@storybook/vue3";
 import type { Props } from "../types.ts";
@@ -42,11 +46,7 @@ const defaultTemplate = `
 
 const DefaultTemplate: StoryFn<UTextArgs> = (args: UTextArgs) => ({
   components: { UText, URow, UBadge },
-  setup() {
-    const slots = getSlotNames(UText.__name);
-
-    return { args, slots };
-  },
+  setup: () => ({ args, slots: getSlotNames(UText.__name) }),
   template: `
     <UText v-bind="args">
       ${args.slotTemplate || getSlotsFragment(defaultTemplate)}
@@ -54,21 +54,17 @@ const DefaultTemplate: StoryFn<UTextArgs> = (args: UTextArgs) => ({
   `,
 });
 
-const EnumVariantTemplate: StoryFn<UTextArgs> = (args: UTextArgs, { argTypes }) => ({
+const EnumTemplate: StoryFn<UTextArgs> = (args: UTextArgs, { argTypes }) => ({
   components: { UText, UCol },
-  setup() {
-    return {
-      args,
-      options: argTypes?.[args.enum]?.options || [],
-    };
-  },
+  directives: { tooltip },
+  setup: () => ({ args, argTypes, getArgs }),
   template: `
     <UCol>
       <UText
-        v-for="(option, index) in options"
-        :key="index"
-        v-bind="args"
-        :[args.enum]="option"
+        v-for="option in argTypes?.[args.enum]?.options"
+        v-bind="getArgs(args, option)"
+        :key="option"
+        v-tooltip="option"
         class="w-full"
       >
         ${args.slotTemplate || defaultTemplate}
@@ -80,11 +76,13 @@ const EnumVariantTemplate: StoryFn<UTextArgs> = (args: UTextArgs, { argTypes }) 
 export const Default = DefaultTemplate.bind({});
 Default.args = {};
 
-export const Align = EnumVariantTemplate.bind({});
+export const Align = EnumTemplate.bind({});
 Align.args = { enum: "align" };
+Align.parameters = getEnumVariantDescription();
 
-export const Sizes = EnumVariantTemplate.bind({});
+export const Sizes = EnumTemplate.bind({});
 Sizes.args = { enum: "size" };
+Sizes.parameters = getEnumVariantDescription();
 
 export const Line = DefaultTemplate.bind({});
 Line.args = {
@@ -143,11 +141,11 @@ List.args = {
   `,
 };
 
-export const SlotDefault = DefaultTemplate.bind({});
-SlotDefault.args = {
+export const DefaultSlot = DefaultTemplate.bind({});
+DefaultSlot.args = {
   slotTemplate: `
-    <UText>To proceed with your registration, please enter your
-    <UBadge label="email address" v-bind="args" color="green" /> in the field below.
-    A verification link will be sent to your inbox shortly.</UText>
+    <p>To proceed with your registration, please enter your
+    <UBadge label="email address" v-bind="args" color="success" /> in the field below.
+    A verification link will be sent to your inbox shortly.</p>
   `,
 };

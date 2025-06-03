@@ -1,45 +1,45 @@
 export default /*tw*/ {
   avatar: {
     base: `
-      flex items-center justify-center shrink-0
-      bg-{color}-100 bg-contain bg-center bg-no-repeat
-      text-{color}-600
+      flex items-center justify-center shrink-0 border
+      text-{color} bg-{color}/10 bg-contain bg-center bg-no-repeat
     `,
     variants: {
-      bordered: {
-        true: "border border-{color}-200",
+      variant: {
+        solid: "border-transparent text-inverted bg-{color}",
+        outlined: "border-{color} text-{color}",
+        subtle: "border-{color}/15 text-{color} bg-{color}/10",
+        soft: "border-transparent text-{color} bg-{color}/10",
       },
       size: {
-        "3xs": "size-4 text-2xs",
-        "2xs": "size-5 text-2xs",
-        xs: "size-6 text-xs",
-        sm: "size-8 text-sm",
+        "3xs": "size-4 text-tiny",
+        "2xs": "size-5 text-xs",
+        xs: "size-6 text-sm",
+        sm: "size-8 text-base",
         md: "size-10 text-lg",
-        lg: "size-12 text-2xl",
-        xl: "size-14 text-3xl",
-        "2xl": "size-16 text-4xl",
-        "3xl": "size-20 text-5xl",
+        lg: "size-12 text-xl",
+        xl: "size-14 text-2xl",
+        "2xl": "size-16 text-3xl",
+        "3xl": "size-20 text-4xl",
       },
       rounded: {
-        dynamic: "rounded-dynamic",
         none: "rounded-none",
-        sm: "rounded",
-        md: "rounded-md",
-        lg: "rounded-lg",
+        sm: "rounded-small",
+        md: "rounded-medium",
+        lg: "rounded-large",
         full: "rounded-full",
       },
-      color: {
-        white: "bg-white text-gray-900",
-        grayscale: "bg-gray-100 text-gray-900",
+      src: {
+        true: "bg-transparent",
       },
     },
   },
   placeholderIcon: "{UIcon}",
   defaults: {
     color: "grayscale",
-    rounded: "dynamic",
+    variant: "solid",
+    rounded: "md",
     size: "md",
-    bordered: false,
     /* icons */
     placeholderIcon: "image",
   },

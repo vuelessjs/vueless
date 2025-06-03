@@ -1,4 +1,5 @@
 import {
+  getArgs,
   getArgTypes,
   getSlotNames,
   getSlotsFragment,
@@ -19,6 +20,7 @@ import type { Props } from "../types.ts";
 
 interface UCardArgs extends Props {
   slotTemplate?: string;
+  enum: "variant";
 }
 
 export default {
@@ -39,34 +41,48 @@ export default {
 } as Meta;
 
 const defaultTemplate = `
-  <p>
-    The <strong>Card</strong> component is a versatile UI element designed to present
-    structured content in an organized manner. It can be used for displaying
-    user profiles, product details, notifications, or any other grouped information.
-  </p>
-  <p>
-    With a clean layout that includes a title and content area, this component
-    is ideal for dashboards, settings pages, and interactive modals. You can
-    customize it further by adding buttons, images, icons, or additional
-    sections as needed.
-  </p>
-  <p>
-    Whether you're building a simple info box or a detailed summary card, this
-    component helps maintain a visually consistent and responsive design.
-  </p>
+  <UCol>
+    <p>
+      The <strong>Card</strong> component is a versatile UI element designed to present
+      structured content in an organized manner. It can be used for displaying
+      user profiles, product details, notifications, or any other grouped information.
+    </p>
+    <p>
+      With a clean layout that includes a title and content area, this component
+      is ideal for dashboards, settings pages, and interactive modals. You can
+      customize it further by adding buttons, images, icons, or additional
+      sections as needed.
+    </p>
+    <p>
+      Whether you're building a simple info box or a detailed summary card, this
+      component helps maintain a visually consistent and responsive design.
+    </p>
+  </UCol>
 `;
 
 const DefaultTemplate: StoryFn<UCardArgs> = (args: UCardArgs) => ({
-  components: { UCard, UButton, UInput, UIcon, UHeader, URow },
-  setup() {
-    const slots = getSlotNames(UCard.__name);
-
-    return { args, slots };
-  },
+  components: { UCard, UCol, UButton, UInput, UIcon, UHeader, URow },
+  setup: () => ({ args, slots: getSlotNames(UCard.__name) }),
   template: `
     <UCard v-bind="args">
       ${args.slotTemplate || getSlotsFragment(defaultTemplate)}
     </UCard>
+  `,
+});
+
+const EnumTemplate: StoryFn<UCardArgs> = (args: UCardArgs, { argTypes }) => ({
+  components: { UCard, UCol, UButton, UInput, UIcon, UHeader, URow },
+  setup: () => ({ args, argTypes, getArgs }),
+  template: `
+    <UCol gap="lg">
+      <UCard
+        v-for="option in argTypes?.[args.enum]?.options"
+        v-bind="getArgs(args, option)"
+        :key="option"
+      >
+        ${defaultTemplate}
+      </UCard>
+    </UCol>
   `,
 });
 
@@ -75,6 +91,9 @@ Default.args = {};
 
 export const Description = DefaultTemplate.bind({});
 Description.args = { description: "Displays key details about a user, product, or feature." };
+
+export const Variant = EnumTemplate.bind({});
+Variant.args = { enum: "variant", title: "{enumValue}" };
 
 export const Slots: StoryFn<UCardArgs> = (args) => ({
   components: { UCard, UIcon, URow, UCol, UButton, UBadge },

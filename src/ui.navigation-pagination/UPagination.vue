@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed } from "vue";
+import { computed, useTemplateRef } from "vue";
 import { range } from "lodash-es";
 
 import useUI from "../composables/useUI.ts";
@@ -37,6 +37,8 @@ const emit = defineEmits([
    */
   "update:modelValue",
 ]);
+
+const paginationRef = useTemplateRef<HTMLDivElement>("pagination");
 
 const currentPage = computed({
   get: () => props.modelValue,
@@ -100,6 +102,14 @@ function goToLastPage() {
   currentPage.value = totalPages.value;
 }
 
+defineExpose({
+  /**
+   * A reference to the component's wrapper element for direct DOM manipulation.
+   * @property {HTMLDivElement}
+   */
+  paginationRef,
+});
+
 /**
  * Get element / nested component attributes for each config token ✨
  * Applies: `class`, `config`, redefined default `props` and dev `vl-...` attributes.
@@ -122,10 +132,10 @@ const {
 </script>
 
 <template>
-  <div v-bind="paginationAttrs">
+  <div ref="pagination" v-bind="paginationAttrs">
     <UButton
       v-if="showFirst"
-      variant="thirdary"
+      variant="ghost"
       :label="firstLabel"
       :square="!firstLabel"
       :disabled="prevIsDisabled"
@@ -140,8 +150,7 @@ const {
       <slot name="first" :icon-name="config.defaults.firstIcon">
         <UIcon
           v-if="!firstLabel"
-          internal
-          color="brand"
+          color="primary"
           :name="config.defaults.firstIcon"
           v-bind="firstIconAttrs"
         />
@@ -149,7 +158,7 @@ const {
     </UButton>
 
     <UButton
-      variant="thirdary"
+      variant="ghost"
       :label="prevLabel"
       :square="!prevLabel"
       :disabled="prevIsDisabled"
@@ -164,8 +173,7 @@ const {
       <slot name="prev" :icon-name="config.defaults.prevIcon">
         <UIcon
           v-if="!prevLabel"
-          internal
-          color="brand"
+          color="primary"
           :name="config.defaults.prevIcon"
           v-bind="prevIconAttrs"
         />
@@ -177,7 +185,7 @@ const {
         v-if="!isFinite(page.number)"
         square
         disabled
-        variant="thirdary"
+        variant="ghost"
         v-bind="inactiveButtonAttrs"
       >
         <!-- @slot Use it to add something instead of the ellipsis. -->
@@ -186,7 +194,6 @@ const {
 
       <UButton
         v-else-if="page.isActive"
-        filled
         :variant="variant"
         :label="String(page.number)"
         :disabled="disabled"
@@ -196,7 +203,7 @@ const {
 
       <UButton
         v-else
-        variant="thirdary"
+        variant="ghost"
         :label="String(page.number)"
         :disabled="disabled"
         v-bind="inactiveButtonAttrs"
@@ -206,7 +213,7 @@ const {
     </template>
 
     <UButton
-      variant="thirdary"
+      variant="ghost"
       :label="nextLabel"
       :square="!nextLabel"
       :disabled="nextIsDisabled"
@@ -221,8 +228,7 @@ const {
       <slot name="next">
         <UIcon
           v-if="!nextLabel"
-          internal
-          color="brand"
+          color="primary"
           :name="config.defaults.nextIcon"
           v-bind="nextIconAttrs"
         />
@@ -231,7 +237,7 @@ const {
 
     <UButton
       v-if="showLast"
-      variant="thirdary"
+      variant="ghost"
       :label="lastLabel"
       :square="!lastLabel"
       :disabled="nextIsDisabled"
@@ -246,8 +252,7 @@ const {
       <slot name="last">
         <UIcon
           v-if="!lastLabel"
-          internal
-          color="brand"
+          color="primary"
           :name="config.defaults.lastIcon"
           v-bind="lastIconAttrs"
         />

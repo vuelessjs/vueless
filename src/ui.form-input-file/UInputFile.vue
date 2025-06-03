@@ -1,20 +1,27 @@
 <script setup lang="ts">
-import { computed, nextTick, onBeforeUnmount, onMounted, ref, watch, useId } from "vue";
-import { merge } from "lodash-es";
+import {
+  computed,
+  nextTick,
+  onBeforeUnmount,
+  onMounted,
+  ref,
+  watch,
+  useId,
+  useTemplateRef,
+} from "vue";
 
 import useUI from "../composables/useUI.ts";
 import { getDefaults } from "../utils/ui.ts";
 import { hasSlotContent } from "../utils/helper.ts";
 import { getFileMbSize } from "./utilFileForm.ts";
+import { useComponentLocaleMessages } from "../composables/useComponentLocaleMassages.ts";
 
 import UText from "../ui.text-block/UText.vue";
 import ULabel from "../ui.form-label/ULabel.vue";
 import UButton from "../ui.button/UButton.vue";
 import UFiles from "../ui.text-files/UFiles.vue";
 
-import { useLocale } from "../composables/useLocale.ts";
-
-import { COMPONENT_NAME } from "./constants.ts";
+import { COMPONENT_NAME, MIME_TYPES, COMMON_MIME_TYPES } from "./constants.ts";
 import defaultConfig from "./config.ts";
 
 import type { Props, Config } from "./types.ts";
@@ -24,7 +31,8 @@ defineOptions({ inheritAttrs: false });
 const props = withDefaults(defineProps<Props>(), {
   ...getDefaults<Props, Config>(defaultConfig, COMPONENT_NAME),
   modelValue: () => [],
-  allowedFileTypes: () => [],
+  allowedFileTypes: () =>
+    getDefaults<Props, Config>(defaultConfig, COMPONENT_NAME).allowedFileTypes || [],
   label: "",
 });
 
@@ -42,17 +50,18 @@ const emit = defineEmits([
   "error",
 ]);
 
-const { tm } = useLocale();
-
-const dropZoneRef = ref<HTMLDivElement | null>(null);
-const fileInputRef = ref<HTMLInputElement | null>(null);
+const dropZoneRef = useTemplateRef<HTMLDivElement>("dropZone");
+const fileInputRef = useTemplateRef<HTMLInputElement>("fileInput");
 
 const localError = ref("");
 
 const elementId = props.id || useId();
 
-const i18nGlobal = tm(COMPONENT_NAME);
-const currentLocale = computed(() => merge({}, defaultConfig.i18n, i18nGlobal, props.config.i18n));
+const { localeMessages } = useComponentLocaleMessages<typeof defaultConfig.i18n>(
+  COMPONENT_NAME,
+  defaultConfig.i18n,
+  props?.config?.i18n,
+);
 
 const currentFiles = computed<File | File[] | null>({
   get: () => props.modelValue,
@@ -65,12 +74,19 @@ const currentFiles = computed<File | File[] | null>({
 
 const currentError = computed(() => localError.value || props.error);
 
-const extensionNames = computed(() => {
-  return props.allowedFileTypes.map((type) => type.replace(".", ""));
-});
-
 const allowedFileTypeFormats = computed(() => {
-  return props.allowedFileTypes.map((type) => (type.startsWith(".") ? type : `.${type}`));
+  return props.allowedFileTypes
+    .map((type) => {
+      const isMimeType = MIME_TYPES.some((mimeType) => type.includes(mimeType));
+      const extension = type.startsWith(".") ? type : `.${type}`;
+
+      if (isMimeType) {
+        return type;
+      }
+
+      return COMMON_MIME_TYPES[extension] || extension;
+    })
+    .flat();
 });
 
 const accept = computed(() => {
@@ -125,20 +141,20 @@ function removeDuplicates(files: File[]) {
 function validate(file: File) {
   const targetFileSize = getFileMbSize(file);
 
-  const isValidType = extensionNames.value.length
-    ? extensionNames.value.some((item) => file.type.includes(item))
+  const isValidType = allowedFileTypeFormats.value.length
+    ? allowedFileTypeFormats.value.includes(file.type)
     : true;
 
   const isValidSize = Number(targetFileSize) <= props.maxFileSize;
 
   if (!isValidType) {
-    localError.value = currentLocale.value.formatError;
+    localError.value = localeMessages.value.formatError;
 
     return;
   }
 
   if (!isValidSize && props.maxFileSize) {
-    localError.value = currentLocale.value.sizeError;
+    localError.value = localeMessages.value.sizeError;
 
     return;
   }
@@ -204,19 +220,19 @@ function onDragLeave(event: DragEvent) {
 function onDrop(event: DragEvent) {
   event.preventDefault();
 
-  let targetFiles: (File | null)[] = [];
+  let targetFiles: File[] = [];
 
-  if (event.dataTransfer && event.dataTransfer.items) {
+  if (event.dataTransfer?.items) {
     targetFiles = [...event.dataTransfer.items]
       .filter((item) => item.kind === "file")
       .map((item) => item.getAsFile())
-      .filter((file): file is File => !file);
-  } else if (event.dataTransfer && event.dataTransfer.files) {
-    targetFiles = [...event.dataTransfer.files];
+      .filter((file) => file !== null);
+  } else if (event.dataTransfer?.files) {
+    targetFiles = [...event.dataTransfer.files].filter((file) => file !== null);
   }
 
   if (targetFiles.length) {
-    targetFiles.filter((file): file is File => !file).forEach(validate);
+    targetFiles.forEach(validate);
   }
 
   nextTick(() => {
@@ -226,14 +242,12 @@ function onDrop(event: DragEvent) {
       return;
     }
 
-    const validFiles = targetFiles.filter((file): file is File => !file);
-
     currentFiles.value = props.multiple
       ? [
           ...(Array.isArray(currentFiles.value) ? currentFiles.value : []),
-          ...removeDuplicates(validFiles),
+          ...removeDuplicates(targetFiles),
         ]
-      : validFiles[0];
+      : targetFiles[0];
   });
 }
 
@@ -243,6 +257,14 @@ function onClickRemoveItem(id: string | number) {
   }
 }
 
+defineExpose({
+  /**
+   * An error.
+   * @property {boolean}
+   */
+  error: currentError,
+});
+
 /**
  * Get element / nested component attributes for each config token ✨
  * Applies: `class`, `config`, redefined default `props` and dev `vl-...` attributes.
@@ -251,14 +273,6 @@ const mutatedProps = computed(() => ({
   error: Boolean(currentError.value),
   label: Boolean(props.label),
 }));
-
-defineExpose({
-  /**
-   * An error.
-   * @property {boolean}
-   */
-  error: currentError,
-});
 
 const {
   getDataTest,
@@ -299,7 +313,7 @@ const {
       <slot name="label" :label="label" />
     </template>
 
-    <div ref="dropZoneRef" :ondrop="onDrop" v-bind="dropzoneAttrs">
+    <div ref="dropZone" :ondrop="onDrop" v-bind="dropzoneAttrs">
       <UText v-if="hasSlotContent($slots['top'])" :size="size" v-bind="descriptionTopAttrs">
         <!-- @slot Use it to add something above the component content. -->
         <slot name="top" />
@@ -309,7 +323,7 @@ const {
         <!-- @slot Use it to add something before the placeholder. -->
         <slot name="left" />
 
-        <span v-if="!isValue" v-bind="placeholderAttrs" v-text="currentLocale.noFile" />
+        <span v-if="!isValue" v-bind="placeholderAttrs" v-text="localeMessages.noFile" />
 
         <UFiles
           v-else
@@ -334,13 +348,12 @@ const {
         <div v-bind="buttonsAttrs">
           <template v-if="Array.isArray(currentFiles) || !currentFiles">
             <UButton
-              filled
               tabindex="-1"
               :for="elementId"
               tag="label"
-              variant="thirdary"
+              variant="soft"
               :right-icon="config.defaults.chooseFileIcon"
-              :label="currentLocale.uploadFile"
+              :label="localeMessages.uploadFile"
               :disabled="disabled"
               v-bind="currentError ? chooseFileButtonErrorAttrs : chooseFileButtonAttrs"
               :data-test="getDataTest('upload')"
@@ -348,7 +361,7 @@ const {
 
             <input
               :id="elementId"
-              ref="fileInputRef"
+              ref="fileInput"
               type="file"
               :disabled="disabled"
               :accept="accept"
@@ -362,10 +375,9 @@ const {
             v-if="isValue && !disabled"
             round
             square
-            filled
-            variant="thirdary"
+            variant="soft"
             :disabled="disabled"
-            :left-icon="config.defaults.clearIcon"
+            :icon="config.defaults.clearIcon"
             v-bind="currentError ? clearButtonErrorAttrs : clearButtonAttrs"
             :data-test="getDataTest('clear')"
             @click="onClickResetFiles"

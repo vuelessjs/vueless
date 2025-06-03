@@ -119,14 +119,8 @@ const mutatedProps = computed(() => ({
   error: Boolean(props.error),
 }));
 
-const {
-  getDataTest,
-  config,
-  checkboxAttrs,
-  iconWrapperAttrs,
-  checkboxLabelAttrs,
-  checkedIconAttrs,
-} = useUI<Config>(defaultConfig, mutatedProps);
+const { getDataTest, config, checkboxAttrs, checkedAttrs, checkboxLabelAttrs, checkedIconAttrs } =
+  useUI<Config>(defaultConfig, mutatedProps);
 </script>
 
 <template>
@@ -164,11 +158,10 @@ const {
       @change="onChange"
     />
 
-    <label v-if="isChecked" v-bind="iconWrapperAttrs" :for="elementId">
+    <label v-if="isChecked" v-bind="checkedAttrs" :for="elementId">
       <UIcon
-        internal
         :name="partial ? config.defaults.partiallyCheckedIcon : config.defaults.checkedIcon"
-        color="white"
+        color="inherit"
         v-bind="checkedIconAttrs"
       />
     </label>

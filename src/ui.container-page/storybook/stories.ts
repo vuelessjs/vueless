@@ -1,4 +1,5 @@
 import {
+  getArgs,
   getArgTypes,
   getSlotNames,
   getSlotsFragment,
@@ -21,7 +22,7 @@ import type { Props } from "../types.ts";
 
 interface UPageArgs extends Props {
   slotTemplate?: string;
-  enum: "size" | "titleSize";
+  enum: "size" | "titleSize" | "variant";
 }
 
 export default {
@@ -30,12 +31,12 @@ export default {
   component: UPage,
   args: {
     title: "User Profile",
-    gray: true,
   },
   argTypes: {
     ...getArgTypes(UPage.__name),
   },
   parameters: {
+    storyClasses: "p-0",
     docs: {
       ...getDocsDescription(UPage.__name),
     },
@@ -44,12 +45,14 @@ export default {
 
 const defaultTemplate = `
   <UCard title="Profile Information">
-    <URow>
-      <UInput label="Full Name" placeholder="John Doe" />
-      <UInput label="Email Address" type="email" placeholder="john.doe@example.com" />
-    </URow>
+    <UCol align="stretch">
+      <URow>
+        <UInput label="Full Name" placeholder="John Doe" />
+        <UInput label="Email Address" type="email" placeholder="john.doe@example.com" />
+      </URow>
 
-    <UTextarea class="mb-7 mt-4" label="Message" placeholder="Enter your message here..." rows="4" />
+      <UTextarea label="Message" placeholder="Enter your message here..." rows="4" />
+    </UCol>
   </UCard>
 `;
 
@@ -58,17 +61,14 @@ const DefaultTemplate: StoryFn<UPageArgs> = (args: UPageArgs) => ({
     UPage,
     UCard,
     URow,
+    UCol,
     UInput,
     UTextarea,
     UButton,
     UIcon,
     UHeader,
   },
-  setup() {
-    const slots = getSlotNames(UPage.__name);
-
-    return { args, slots };
-  },
+  setup: () => ({ args, slots: getSlotNames(UPage.__name) }),
   template: `
     <UPage v-bind="args">
       ${args.slotTemplate || getSlotsFragment(defaultTemplate)}
@@ -76,25 +76,18 @@ const DefaultTemplate: StoryFn<UPageArgs> = (args: UPageArgs) => ({
   `,
 });
 
-const EnumVariantTemplate: StoryFn<UPageArgs> = (args: UPageArgs, { argTypes }) => ({
-  components: { UPage, UCard, URow, UInput, UTextarea },
-  setup() {
-    return {
-      args,
-      options: argTypes?.[args.enum]?.options,
-    };
-  },
+const EnumTemplate: StoryFn<UPageArgs> = (args: UPageArgs, { argTypes }) => ({
+  components: { UPage, UCard, URow, UCol, UInput, UTextarea },
+  setup: () => ({ args, argTypes, getArgs }),
   template: `
-    <URow v-for="(option, index) in options" :key="index">
-      <UPage
-        v-bind="args"
-        :[args.enum]="option"
-        :description="option"
-        :config="{ wrapper: 'min-h-max', page: 'min-h-max' }"
-      >
-        ${defaultTemplate}
-      </UPage>
-    </URow>
+    <UPage
+      v-for="option in argTypes?.[args.enum]?.options"
+      v-bind="getArgs(args, option)"
+      :key="option"
+      :config="{ wrapper: 'min-h-max', page: 'min-h-max' }"
+    >
+      ${defaultTemplate}
+    </UPage>
   `,
 });
 
@@ -122,15 +115,25 @@ BackLink.parameters = {
   },
 };
 
-export const TitleSize = EnumVariantTemplate.bind({});
-TitleSize.args = { enum: "titleSize" };
+export const TitleSize = EnumTemplate.bind({});
+TitleSize.args = { enum: "titleSize", description: "{enumValue}" };
 
-export const Size = EnumVariantTemplate.bind({});
-Size.args = { enum: "size" };
-Size.parameters = {
+export const Sizes = EnumTemplate.bind({});
+Sizes.args = { enum: "size", description: "{enumValue}" };
+Sizes.parameters = {
   docs: {
     description: {
       story: "Page size (width).",
+    },
+  },
+};
+
+export const Variant = EnumTemplate.bind({});
+Variant.args = { enum: "variant", description: "{enumValue}" };
+Variant.parameters = {
+  docs: {
+    description: {
+      story: "Page variant.",
     },
   },
 };
@@ -168,7 +171,7 @@ export const Slots: StoryFn<UPageArgs> = (args) => ({
       <UPage v-bind="args" description="Actions Slot">
         <template #actions>
           <URow class="max-w-fit">
-            <UButton size="sm" variant="secondary" label="Clear" />
+            <UButton size="sm" variant="outlined" label="Clear" />
             <UButton size="sm" label="Submit" />
           </URow>
         </template>

@@ -1,6 +1,6 @@
 import defaultConfig from "./config.ts";
 
-import type { Option } from "../ui.dropdown-list/types.ts";
+import type { Option } from "../ui.form-listbox/types.ts";
 import type { ComponentConfig } from "../types.ts";
 
 export type Config = typeof defaultConfig;
@@ -47,6 +47,11 @@ export interface Props {
   size?: "sm" | "md" | "lg";
 
   /**
+   * Time in milliseconds before search value emit.
+   */
+  debounce?: number | string;
+
+  /**
    * Left icon name.
    */
   leftIcon?: string;
@@ -55,6 +60,11 @@ export interface Props {
    * Right icon name.
    */
   rightIcon?: string;
+
+  /**
+   * Select toggle icon.
+   */
+  toggleIcon?: boolean | string;
 
   /**
    * Select open direction.
@@ -101,6 +111,16 @@ export interface Props {
    * Allows multiple selection.
    */
   multiple?: boolean;
+
+  /**
+   * Controls multiple selection view.
+   */
+  multipleVariant?: "inline" | "list" | "badge";
+
+  /**
+   * Determines how many selected option labels are shown in the label.
+   */
+  labelDisplayCount?: number;
 
   /**
    * Allows to search value in a list.

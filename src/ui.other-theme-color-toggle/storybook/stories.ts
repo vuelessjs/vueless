@@ -1,4 +1,5 @@
 import {
+  getArgs,
   getArgTypes,
   getSlotNames,
   getSlotsFragment,
@@ -7,6 +8,7 @@ import {
 
 import UThemeColorToggle from "../UThemeColorToggle.vue";
 import UCol from "../../ui.container-col/UCol.vue";
+import URow from "../../ui.container-row/URow.vue";
 import UButton from "../../ui.button/UButton.vue";
 
 import type { Meta, StoryFn } from "@storybook/vue3";
@@ -18,14 +20,14 @@ interface UThemeColorToggleArgs extends Props {
 }
 
 export default {
-  id: "100020",
+  id: "100030",
   title: "Other / Theme Color Toggle",
   component: UThemeColorToggle,
   args: {
-    brand: "",
-    gray: "",
-    brandColors: {
-      grayscale: "bg-gray-900",
+    primary: "",
+    neutral: "",
+    primaryColors: {
+      grayscale: "bg-grayscale",
       red: "bg-red-600",
       orange: "bg-orange-600",
       amber: "bg-amber-600",
@@ -44,9 +46,9 @@ export default {
       pink: "bg-pink-600",
       rose: "bg-rose-600",
     },
-    grayColors: {
+    neutralColors: {
       slate: "bg-slate-600",
-      cool: "bg-cool-600",
+      gray: "bg-gray-600",
       zinc: "bg-zinc-600",
       neutral: "bg-neutral-600",
       stone: "bg-stone-600",
@@ -63,43 +65,36 @@ export default {
 } as Meta;
 
 const DefaultTemplate: StoryFn<UThemeColorToggleArgs> = (args: UThemeColorToggleArgs) => ({
-  components: { UThemeColorToggle, UButton, UCol },
-  setup() {
-    const slots = getSlotNames(UThemeColorToggle.__name);
-
-    return { args, slots };
-  },
+  components: { UThemeColorToggle, UButton, UCol, URow },
+  setup: () => ({ args, slots: getSlotNames(UThemeColorToggle.__name) }),
   template: `
     <UCol>
-      <UThemeColorToggle v-bind="args" v-model:brand="args.brand" v-model:gray="args.gray">
+      <UThemeColorToggle v-bind="args" v-model:primary="args.primary" v-model:neutral="args.neutral">
         ${args.slotTemplate || getSlotsFragment("")}
       </UThemeColorToggle>
 
-      <UButton label="Brand button" color="brand"/>
+      <URow>
+        <UButton label="Primary button" color="primary" />
+        <UButton label="Neutral button" color="neutral" />
+      </URow>
     </UCol>
   `,
 });
 
-const EnumVariantTemplate: StoryFn<UThemeColorToggleArgs> = (
+const EnumTemplate: StoryFn<UThemeColorToggleArgs> = (
   args: UThemeColorToggleArgs,
   { argTypes },
 ) => ({
   components: { UCol, UThemeColorToggle },
-  setup() {
-    return {
-      args,
-      options: argTypes?.[args.enum]?.options,
-    };
-  },
+  setup: () => ({ args, argTypes, getArgs }),
   template: `
     <UCol>
       <UThemeColorToggle
-        v-for="(option, index) in options"
-        :key="index"
-        v-bind="args"
-        v-model:brand="args.brand"
-        v-model:gray="args.gray"
-        :[args.enum]="option"
+        v-for="option in argTypes?.[args.enum]?.options"
+        v-bind="getArgs(args, option)"
+        :key="option"
+        v-model:primary="args.primary"
+        v-model:neutral="args.neutral"
       />
     </UCol>
   `,
@@ -108,5 +103,5 @@ const EnumVariantTemplate: StoryFn<UThemeColorToggleArgs> = (
 export const Default = DefaultTemplate.bind({});
 Default.args = {};
 
-export const Sizes = EnumVariantTemplate.bind({});
+export const Sizes = EnumTemplate.bind({});
 Sizes.args = { enum: "size" };

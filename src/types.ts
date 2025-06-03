@@ -3,11 +3,11 @@ import UAlertDefaultConfig from "./ui.text-alert/config.ts";
 import UEmptyDefaultConfig from "./ui.text-empty/config.ts";
 import UFileDefaultConfig from "./ui.text-file/config.ts";
 import UFilesDefaultConfig from "./ui.text-files/config.ts";
-import UMoneyDefaultConfig from "./ui.text-money/config.ts";
 import UHeaderDefaultConfig from "./ui.text-header/config.ts";
 import UNotifyDefaultConfig from "./ui.text-notify/config.ts";
 import UNumberDefaultConfig from "./ui.text-number/config.ts";
 import UDotDefaultConfig from "./ui.other-dot/config.ts";
+import UChipDefaultConfig from "./ui.other-chip/config.ts";
 import UButtonDefaultConfig from "./ui.button/config.ts";
 import ULinkDefaultConfig from "./ui.button-link/config.ts";
 import UToggleDefaultConfig from "./ui.button-toggle/config.ts";
@@ -19,7 +19,6 @@ import UDataTableConfig from "./ui.data-table/config.ts";
 import UDropdownBadgeConfig from "./ui.dropdown-badge/config.ts";
 import UDropdownButtonConfig from "./ui.dropdown-button/config.ts";
 import UDropdownLinkConfig from "./ui.dropdown-link/config.ts";
-import UDropdownListConfig from "./ui.dropdown-list/config.ts";
 import UAccordionConfig from "./ui.container-accordion/config.ts";
 import UCardConfig from "./ui.container-card/config.ts";
 import UColConfig from "./ui.container-col/config.ts";
@@ -49,18 +48,20 @@ import UTextareaConfig from "./ui.form-textarea/config.ts";
 import ULabelConfig from "./ui.form-label/config.ts";
 import UColorPickerConfig from "./ui.other-theme-color-toggle/config.ts";
 import UInputConfig from "./ui.form-input/config.ts";
-import UInputNumberConfig from "./ui.form-input-number/config.ts";
+import UInputCounterConfig from "./ui.form-input-counter/config.ts";
+import UInputPasswordConfig from "./ui.form-input-password/config.ts";
 import UInputRatingConfig from "./ui.form-input-rating/config.ts";
 import UInputSearchConfig from "./ui.form-input-search/config.ts";
 import UInputFileConfig from "./ui.form-input-file/config.ts";
-import UInputMoneyConfig from "./ui.form-input-money/config.ts";
+import UInputNumberConfig from "./ui.form-input-number/config.ts";
 import UDataListConfig from "./ui.data-list/config.ts";
 import USelectConfig from "./ui.form-select/config.ts";
+import UListboxConfig from "./ui.form-listbox/config.ts";
 
 import type { Props } from "tippy.js";
 import type { Config as TailwindConfig } from "tailwindcss";
 import type { ComputedRef, Ref, ComponentInternalInstance } from "vue";
-import type { LocaleOptions } from "./adatper.locale/vueless.ts";
+import type { LocaleOptions } from "./adapter.locale/vueless.ts";
 
 export enum ColorMode {
   Dark = "dark",
@@ -68,66 +69,92 @@ export enum ColorMode {
   Auto = "auto",
 }
 
+export interface ThemeConfigText {
+  xs: number;
+  sm: number;
+  md: number;
+  lg: number;
+}
+
+export interface ThemeConfigRounding {
+  sm: number;
+  md: number;
+  lg: number;
+}
+
+export interface ThemeConfigOutline {
+  sm: number;
+  md: number;
+  lg: number;
+}
+
 export interface ThemeConfig {
   /**
-   * Components brand (primary) color.
+   * Components primary color.
    */
-  brand?: BrandColors;
+  primary?: PrimaryColors;
 
   /**
-   * Components gray (secondary) color.
+   * Components neutral color.
    */
-  gray?: GrayColors;
+  neutral?: NeutralColors;
 
   /**
-   * Default components small size rounding (border-radius).
+   * Default components font size.
    */
-  roundingSm?: number;
+  text?: number | ThemeConfigText;
 
   /**
    * Default components rounding (border-radius).
    */
-  rounding?: number;
-
-  /**
-   * Default components large size rounding (border-radius).
-   */
-  roundingLg?: number;
-
-  /**
-   * Default components small size outline width.
-   */
-  outlineSm?: number;
+  rounding?: number | ThemeConfigRounding;
 
   /**
    * Default components outline width.
    */
-  outline?: number;
+  outline?: number | ThemeConfigOutline;
 
   /**
-   * Default components large size outline width.
+   * Default components opacity for disabled state (in percents).
    */
-  outlineLg?: number;
+  disabledOpacity?: number;
 
   /**
    * Default color mode.
    */
   colorMode?: `${ColorMode}`;
+
+  /**
+   * Light theme design system CSS variables.
+   */
+  lightTheme?: Partial<VuelessCssVariables>;
+
+  /**
+   * Dark theme design system CSS variables.
+   */
+  darkTheme?: Partial<VuelessCssVariables>;
 }
 
 export interface Config extends ThemeConfig {
   /**
-   * Component classes merge behavior.
-   * – merge (default) – smartly merge provided custom classes with default config classes.
-   * – replace – replace default config keys by provided custom keys (override only provided keys, the rest classes will be taken from the default config).
-   * – override – override default config by provided custom config (keeps only custom config, removes all default classes).
+   * Array of colors to use as primary and neutral colors.
+   * If set, a full color palette for each color will be safelisted.
+   * If not set, will disable runtime color changing.
+   *
    */
-  strategy?: Strategies;
+  runtimeColors?: (PrimaryColors | NeutralColors)[] | boolean;
 
   /**
-   * Classes which will be applied to the root element of all vueless components.
+   * Array of colors to show in component color props.
+   * If set, only defined colors will be available in component color props.
+   * If not set, will use default Vueless state colors.
    */
-  baseClasses?: string;
+  colors?: StateColors[];
+
+  /**
+   * Removes default component styles (keeps only custom config, removes all default classes).
+   */
+  unstyled?: boolean;
 
   /**
    * Component configs.
@@ -148,7 +175,7 @@ export interface Config extends ThemeConfig {
   /**
    * Tailwind-merge config extension for custom classes.
    * All lists of rules available here:
-   * https://github.com/dcastil/tailwind-merge/blob/v2.3.0/src/lib/default-config.ts.
+   * https://github.com/dcastil/tailwind-merge/blob/main/src/lib/default-config.ts
    */
   tailwindMerge?: UnknownObject;
 }
@@ -158,11 +185,21 @@ export type UnknownArray = unknown[];
 export type UnknownType = string | number | boolean | UnknownObject | undefined | null;
 
 export type ComponentNames = keyof Components & string; // keys union
-export type Strategies = "merge" | "replace" | "override";
 
-export type GrayColors = "slate" | "cool" | "zinc" | "neutral" | "stone" | string;
-export type BrandColors =
+export type StateColors =
+  | "primary"
+  | "secondary"
+  | "error"
+  | "warning"
+  | "success"
+  | "info"
+  | "notice"
+  | "neutral"
   | "grayscale"
+  | string;
+
+export type NeutralColors = "slate" | "gray" | "zinc" | "neutral" | "stone" | string;
+export type PrimaryColors =
   | "red"
   | "orange"
   | "amber"
@@ -192,11 +229,11 @@ export interface Components {
   UEmpty: Partial<typeof UEmptyDefaultConfig>;
   UFile: Partial<typeof UFileDefaultConfig>;
   UFiles: Partial<typeof UFilesDefaultConfig>;
-  UMoney: Partial<typeof UMoneyDefaultConfig>;
   UHeader: Partial<typeof UHeaderDefaultConfig>;
   UNotify: Partial<typeof UNotifyDefaultConfig>;
   UNumber: Partial<typeof UNumberDefaultConfig>;
   UDot: Partial<typeof UDotDefaultConfig>;
+  UChip: Partial<typeof UChipDefaultConfig>;
   UButton: Partial<typeof UButtonDefaultConfig>;
   ULink: Partial<typeof ULinkDefaultConfig>;
   UToggle: Partial<typeof UToggleDefaultConfig>;
@@ -208,7 +245,7 @@ export interface Components {
   UDropdownBadge: Partial<typeof UDropdownBadgeConfig>;
   UDropdownButton: Partial<typeof UDropdownButtonConfig>;
   UDropdownLink: Partial<typeof UDropdownLinkConfig>;
-  UDropdownList: Partial<typeof UDropdownListConfig>;
+  UListbox: Partial<typeof UListboxConfig>;
   UAccordion: Partial<typeof UAccordionConfig>;
   UCard: Partial<typeof UCardConfig>;
   UCol: Partial<typeof UColConfig>;
@@ -238,11 +275,12 @@ export interface Components {
   ULabel: Partial<typeof ULabelConfig>;
   UColorPicker: Partial<typeof UColorPickerConfig>;
   UInput: Partial<typeof UInputConfig>;
-  UInputNumber: Partial<typeof UInputNumberConfig>;
+  UInputCounter: Partial<typeof UInputCounterConfig>;
+  UInputPassword: Partial<typeof UInputPasswordConfig>;
   UInputRating: Partial<typeof UInputRatingConfig>;
   UInputSearch: Partial<typeof UInputSearchConfig>;
   UInputFile: Partial<typeof UInputFileConfig>;
-  UInputMoney: Partial<typeof UInputMoneyConfig>;
+  UInputNumber: Partial<typeof UInputNumberConfig>;
   UDataList: Partial<typeof UDataListConfig>;
   USelect: Partial<typeof USelectConfig>;
   [key: string]: UnknownObject;
@@ -323,57 +361,100 @@ export interface VueAttrs {
   value?: string;
 }
 
-export interface CreateVuelessOptions {
+export interface CreateVuelessOptions extends Config {
   i18n?: LocaleOptions;
-}
-
-export interface TailwindColorShades {
-  50: string;
-  100: string;
-  200: string;
-  300: string;
-  400: string;
-  500: string;
-  600: string;
-  700: string;
-  800: string;
-  900: string;
-  950: string;
+  config?: Config;
 }
 
 export interface VuelessCssVariables {
+  /* Outline size CSS variables */
   "--vl-outline-sm": string;
-  "--vl-outline": string;
+  "--vl-outline-md": string;
   "--vl-outline-lg": string;
+  /* Border radius size variables */
   "--vl-rounding-sm": string;
-  "--vl-rounding": string;
+  "--vl-rounding-md": string;
   "--vl-rounding-lg": string;
+  /* Font size CSS variables */
+  "--vl-text-xs": string;
+  "--vl-text-sm": string;
+  "--vl-text-md": string;
+  "--vl-text-lg": string;
+  /* Primary CSS variables */
+  "--vl-primary-50": string;
+  "--vl-primary-100": string;
+  "--vl-primary-200": string;
+  "--vl-primary-300": string;
+  "--vl-primary-400": string;
+  "--vl-primary-500": string;
+  "--vl-primary-600": string;
+  "--vl-primary-700": string;
+  "--vl-primary-800": string;
+  "--vl-primary-900": string;
+  "--vl-primary-950": string;
   /* Gray CSS variables */
-  "--vl-color-gray-50": string;
-  "--vl-color-gray-100": string;
-  "--vl-color-gray-200": string;
-  "--vl-color-gray-300": string;
-  "--vl-color-gray-400": string;
-  "--vl-color-gray-500": string;
-  "--vl-color-gray-600": string;
-  "--vl-color-gray-700": string;
-  "--vl-color-gray-800": string;
-  "--vl-color-gray-900": string;
-  "--vl-color-gray-950": string;
-  "--vl-color-gray-default": string;
-  /* Brand CSS variables */
-  "--vl-color-brand-50": string;
-  "--vl-color-brand-100": string;
-  "--vl-color-brand-200": string;
-  "--vl-color-brand-300": string;
-  "--vl-color-brand-400": string;
-  "--vl-color-brand-500": string;
-  "--vl-color-brand-600": string;
-  "--vl-color-brand-700": string;
-  "--vl-color-brand-800": string;
-  "--vl-color-brand-900": string;
-  "--vl-color-brand-950": string;
-  "--vl-color-brand-default": string;
+  "--vl-neutral-50": string;
+  "--vl-neutral-100": string;
+  "--vl-neutral-200": string;
+  "--vl-neutral-300": string;
+  "--vl-neutral-400": string;
+  "--vl-neutral-500": string;
+  "--vl-neutral-600": string;
+  "--vl-neutral-700": string;
+  "--vl-neutral-800": string;
+  "--vl-neutral-900": string;
+  "--vl-neutral-950": string;
+  /* Primary design system CSS variables */
+  "--vl-primary": string;
+  "--vl-primary-toned": string;
+  "--vl-primary-accented": string;
+  /* Secondary design system CSS variables */
+  "--vl-secondary": string;
+  "--vl-secondary-toned": string;
+  "--vl-secondary-accented": string;
+  /* Neutral design system CSS variables */
+  "--vl-neutral": string;
+  "--vl-neutral-toned": string;
+  "--vl-neutral-accented": string;
+  /* Success design system CSS variables */
+  "--vl-success": string;
+  "--vl-success-toned": string;
+  "--vl-success-accented": string;
+  /* Info design system CSS variables */
+  "--vl-info": string;
+  "--vl-info-toned": string;
+  "--vl-info-accented": string;
+  /* Warning design system CSS variables */
+  "--vl-warning": string;
+  "--vl-warning-toned": string;
+  "--vl-warning-accented": string;
+  /* Error design system CSS variables */
+  "--vl-error": string;
+  "--vl-error-toned": string;
+  "--vl-error-accented": string;
+  /* Grayscale design system CSS variables */
+  "--vl-grayscale": string;
+  "--vl-grayscale-toned": string;
+  "--vl-grayscale-accented": string;
+  /* Text neutral design system CSS variables */
+  "--vl-text": string;
+  "--vl-text-lifted": string;
+  "--vl-text-accented": string;
+  "--vl-text-muted": string;
+  "--vl-text-inverted": string;
+  /* Border neutral design system CSS variables */
+  "--vl-border": string;
+  "--vl-border-lifted": string;
+  "--vl-border-accented": string;
+  "--vl-border-muted": string;
+  /* Background neutral design system CSS variables */
+  "--vl-bg": string;
+  "--vl-bg-lifted": string;
+  "--vl-bg-accented": string;
+  "--vl-bg-muted": string;
+  "--vl-bg-inverted": string;
+  /* Amy other design system CSS variables */
+  [key: string]: string;
 }
 
 /* Web-types interfaces and types */

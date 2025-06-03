@@ -4,10 +4,10 @@ export default /*tw*/ {
   datepickerInputActive: {
     base: "{>datepickerInput}",
     wrapper: {
-      base: "outline outline-dynamic-sm outline-brand-600 border-brand-600 hover:border-brand-600",
+      base: "outline outline-small outline-primary border-primary hover:border-primary",
       variants: {
         error: {
-          true: "border-red-600 hover:border-red-600 outline-red-600",
+          true: "border-error hover:border-error outline-error",
         },
       },
     },
@@ -22,16 +22,16 @@ export default /*tw*/ {
       },
     },
   },
-  rangeButton: "flex rounded-dynamic max-md:justify-between",
+  rangeButton: "flex rounded-medium max-md:justify-between",
   rangeButtonSelect: "{UButton} shrink-0 grow rounded-none",
   rangeButtonShift: `
-    first:rounded-dynamic first:rounded-r-none
-    last:rounded-dynamic last:rounded-l-none
+    first:rounded-medium first:rounded-r-none
+    last:rounded-medium last:rounded-l-none
   `,
   menu: {
     base: `
-      absolute z-40 mb-3 w-80 overflow-hidden rounded-dynamic
-      border border-gray-300 bg-white p-2 shadow focus:outline-none
+      absolute z-40 mb-3 w-80 overflow-hidden rounded-medium
+      border border-default bg-default p-2 shadow-sm focus:outline-hidden
     `,
     variants: {
       openDirectionX: {
@@ -59,10 +59,10 @@ export default /*tw*/ {
   },
   periodRow: "mb-1 flex min-w-64 gap-1",
   periodButton: "{UButton} h-[3.125rem] w-full",
-  periodButtonActive: "{>periodButton} !bg-gray-700/15",
+  periodButtonActive: "{>periodButton} !bg-grayscale-accented/15",
   rangeSwitchWrapper: "flex items-center justify-between py-2",
   rangeSwitchButton: "{UButton}",
-  rangeSwitchTitle: "font-medium text-sm",
+  rangeSwitchTitle: "font-medium text-medium",
   periodDateList: {
     base: "grid grid-rows-1 gap-0.5",
     variants: {
@@ -76,7 +76,7 @@ export default /*tw*/ {
   },
   periodDate: "w-full",
   periodDateSelected: "{>periodDate}",
-  periodDateCurrent: "{>periodDate} border-2 border-brand-600",
+  periodDateCurrent: "{>periodDate} border-2 border-primary",
   periodDateCurrentSelected: "{>periodDate} {>periodDateSelected} {>periodDateCurrent}",
   customRangeButton: {
     base: "{>periodButton}",
@@ -87,7 +87,7 @@ export default /*tw*/ {
     },
   },
   customRangeDescription: "",
-  rangeInputWrapper: "flex mt-4 -space-x-px group/range-input-wrapper",
+  rangeInputWrapper: "flex mt-4 group/range-input-wrapper",
   rangeInput: {
     base: "{UInput}",
     inputLabel: {
@@ -95,7 +95,7 @@ export default /*tw*/ {
       wrapper: "w-full transition",
       description: "hidden",
     },
-    wrapper: "focus-within:z-10 focus-within:outline-0 focus-within:border-gray-500 hover:focus-within:border-gray-500",
+    wrapper: "focus-within:z-10",
   },
   rangeInputFirst: {
     base: "{UInput} {>rangeInput}",
@@ -105,7 +105,7 @@ export default /*tw*/ {
     base: "{UInput} {>rangeInput}",
     wrapper: "!rounded-l-none",
   },
-  rangeInputError: "text-xs font-normal leading-none mt-2 text-center text-red-500",
+  rangeInputError: "text-small font-normal leading-none mt-2 text-center text-red-500",
   datepickerCalendar: {
     base: "{UCalendar}",
     wrapper: "p-0 pt-2 w-full border-none shadow-none rounded-none",
@@ -203,7 +203,7 @@ export default /*tw*/ {
   defaults: {
     userDateFormat: "j F Y",
     size: "md",
-    variant: "button",
+    variant: "input",
     labelAlign: "topInside",
     openDirectionX: "auto",
     openDirectionY: "auto",

@@ -6,11 +6,6 @@ export default /*tw*/ {
   },
   inputIcon: {
     base: "{UIcon}",
-    variants: {
-      disabled: {
-        true: "text-gray-400 pointer-events-none",
-      },
-    },
     defaults: {
       size: {
         sm: "xs",
@@ -22,7 +17,7 @@ export default /*tw*/ {
   clearIcon: "{>inputIcon}",
   searchIcon: "{>inputIcon}",
   searchButton: {
-    base: "{UButton} rounded-l-none ml-1 outline outline-1 outline-gray-900",
+    base: "{UButton} rounded-l-none ml-2",
     defaults: {
       size: {
         sm: "xs",
@@ -39,7 +34,7 @@ export default /*tw*/ {
     disabled: false,
     readonly: false,
     /* icons */
-    clearIcon: "close",
+    clearIcon: "close_small",
     searchIcon: "search",
   },
 };

@@ -1,6 +1,5 @@
 <script setup lang="ts" generic="TModelValue extends DateValue">
 import { computed, ref, watch, useTemplateRef, nextTick } from "vue";
-import { merge } from "lodash-es";
 
 import useUI from "../composables/useUI.ts";
 import { getDefaults } from "../utils/ui.ts";
@@ -18,7 +17,7 @@ import {
 
 import { getDateWithoutTime, addMonths, addDays, addYears, getSortedLocale } from "./utilDate.ts";
 
-import { useLocale } from "../composables/useLocale.ts";
+import { useComponentLocaleMessages } from "../composables/useComponentLocaleMassages.ts";
 
 import {
   COMPONENT_NAME,
@@ -39,8 +38,8 @@ import {
 
 import defaultConfig from "./config.ts";
 
-import type { UCalendarProps, DateValue, RangeDate, Locale, Config } from "./types.ts";
-import type { ComputedRef, Ref } from "vue";
+import type { Props, DateValue, RangeDate, Locale, Config } from "./types.ts";
+import type { Ref } from "vue";
 import type { DateLocale } from "./utilFormatting.ts";
 import type { ComponentExposed } from "../types.ts";
 
@@ -48,14 +47,11 @@ import DayView from "./UCalendarDayView.vue";
 import MonthView from "./UCalendarMonthView.vue";
 import YearView from "./UCalendarYearView.vue";
 
-type DefaultLocale = typeof defaultConfig.i18n;
-
 defineOptions({ inheritAttrs: false });
 
-type Props = UCalendarProps<TModelValue>;
-const props = withDefaults(defineProps<Props>(), {
+const props = withDefaults(defineProps<Props<TModelValue>>(), {
   view: View.Day,
-  ...getDefaults<Props, Config>(defaultConfig, COMPONENT_NAME),
+  ...getDefaults<Props<TModelValue>, Config>(defaultConfig, COMPONENT_NAME),
   modelValue: undefined,
   minDate: undefined,
   maxDate: undefined,
@@ -92,13 +88,12 @@ const emit = defineEmits([
   "userDateChange",
 ]);
 
-const { tm } = useLocale();
-
 const wrapperRef = useTemplateRef<HTMLDivElement>("wrapper");
 const hoursRef = useTemplateRef<HTMLInputElement>("hours-input");
 const minutesRef = useTemplateRef<HTMLInputElement>("minutes-input");
 const secondsRef = useTemplateRef<HTMLInputElement>("seconds-input");
 const okButton = useTemplateRef<ComponentExposed<typeof UButton>>("ok-button");
+const dayViewRef = useTemplateRef<ComponentExposed<typeof DayView>>("day-view");
 
 const activeDate: Ref<Date | null> = ref(null);
 const activeMonth: Ref<Date | null> = ref(null);
@@ -126,18 +121,18 @@ const isCurrentView = computed(() => ({
   year: currentView.value === View.Year,
 }));
 
-const i18nGlobal = tm<DefaultLocale>(COMPONENT_NAME);
-
-const currentLocale: ComputedRef<Locale> = computed(() =>
-  merge({}, defaultConfig.i18n, i18nGlobal, props.config?.i18n),
+const { localeMessages } = useComponentLocaleMessages<Locale>(
+  COMPONENT_NAME,
+  defaultConfig.i18n,
+  props?.config?.i18n,
 );
 
 const locale = computed(() => {
-  const { months, weekdays } = currentLocale.value;
+  const { months, weekdays } = localeMessages.value;
 
   // formatted locale
   return {
-    ...currentLocale.value,
+    ...localeMessages.value,
     months: {
       shorthand: getSortedLocale(months.shorthand, LocaleType.Month),
       longhand: getSortedLocale(months.longhand, LocaleType.Month),
@@ -164,21 +159,19 @@ const actualUserFormat = computed(() => {
 });
 
 const userFormatLocale = computed(() => {
-  const { months, weekdays } = currentLocale.value;
+  const { months, weekdays } = localeMessages.value;
 
-  const monthsLonghand =
-    Boolean(currentLocale.value.months.userFormat) || Boolean(i18nGlobal?.months?.userFormat)
-      ? months.userFormat
-      : months.longhand;
+  const monthsLonghand = Boolean(localeMessages.value.months.userFormat)
+    ? months.userFormat
+    : months.longhand;
 
-  const weekdaysLonghand =
-    Boolean(currentLocale.value.weekdays.userFormat) || Boolean(i18nGlobal?.weekdays?.userFormat)
-      ? weekdays.userFormat
-      : weekdays.longhand;
+  const weekdaysLonghand = Boolean(localeMessages.value.weekdays.userFormat)
+    ? weekdays.userFormat
+    : weekdays.longhand;
 
   // formatted locale
   return {
-    ...currentLocale.value,
+    ...localeMessages.value,
     months: {
       shorthand: getSortedLocale(months.shorthand, LocaleType.Month),
       longhand: getSortedLocale(monthsLonghand, LocaleType.Month),
@@ -304,6 +297,24 @@ const viewSwitchLabel = computed(() => {
   };
 });
 
+const currentViewLabel = computed(() => {
+  let label = "";
+
+  if (isCurrentView.value.day) {
+    label = `${viewSwitchLabel.value.month} ${viewSwitchLabel.value.year}`;
+  }
+
+  if (isCurrentView.value.month) {
+    label = viewSwitchLabel.value.year;
+  }
+
+  if (isCurrentView.value.year) {
+    label = viewSwitchLabel.value.yearsRange;
+  }
+
+  return label;
+});
+
 watch(userFormattedDate, () => {
   emit("userDateChange", userFormattedDate.value);
 });
@@ -334,6 +345,47 @@ watch(
     }
   },
   { immediate: true },
+);
+
+watch(
+  localValue,
+  (newValue) => {
+    if ((isRangeDate(newValue) && (!newValue.to || !newValue.from)) || !isRangeDate(newValue)) {
+      return;
+    }
+
+    const parsedNewDateTo = parseDate(newValue.to, props.dateFormat, locale.value);
+    const parsedNewValueFrom = parseDate(newValue.from, props.dateFormat, locale.value);
+
+    if (parsedNewDateTo) {
+      const notInView = dateIsOutOfRange(
+        parsedNewDateTo,
+        dayViewRef.value?.days?.at(0),
+        dayViewRef.value?.days?.at(-1),
+        locale.value,
+        actualDateFormat.value,
+      );
+
+      if (notInView) {
+        activeMonth.value = parsedNewDateTo;
+      }
+    }
+
+    if (parsedNewValueFrom) {
+      const notInView = dateIsOutOfRange(
+        parsedNewValueFrom,
+        dayViewRef.value?.days?.at(0),
+        dayViewRef.value?.days?.at(-1),
+        locale.value,
+        actualDateFormat.value,
+      );
+
+      if (notInView) {
+        activeMonth.value = parsedNewValueFrom;
+      }
+    }
+  },
+  { deep: true },
 );
 
 function getCurrentValueType(value: DateValue): DateValue {
@@ -368,7 +420,8 @@ function onInputDate(newDate: Date | null) {
 
   if (props.range && isRangeDate(localValue.value)) {
     const isFullReset =
-      localValue.value.to || !localValue.value.from || date <= localValue.value.from;
+      (localValue.value.from && date < localValue.value.from) ||
+      (localValue.value.to && localValue.value.from);
 
     const updatedValue = isFullReset
       ? { from: date, to: null }
@@ -446,21 +499,21 @@ function arrowKeyHandler(event: KeyboardEvent) {
     }
   } else if (currentView.value === View.Month) {
     if (event.code === KeyCode.ArrowDown) {
-      newActiveDate = addMonths(currentActiveDate, 4);
+      newActiveDate = addMonths(currentActiveDate, 3);
     } else if (event.code === KeyCode.ArrowLeft) {
       newActiveDate = addMonths(currentActiveDate, -1);
     } else if (event.code === KeyCode.ArrowUp) {
-      newActiveDate = addMonths(currentActiveDate, -4);
+      newActiveDate = addMonths(currentActiveDate, -3);
     } else if (event.code === KeyCode.ArrowRight) {
       newActiveDate = addMonths(currentActiveDate, 1);
     }
   } else if (currentView.value === View.Year) {
     if (event.code === KeyCode.ArrowDown) {
-      newActiveDate = addYears(currentActiveDate, 4);
+      newActiveDate = addYears(currentActiveDate, 3);
     } else if (event.code === KeyCode.ArrowLeft) {
       newActiveDate = addYears(currentActiveDate, -1);
     } else if (event.code === KeyCode.ArrowUp) {
-      newActiveDate = addYears(currentActiveDate, -4);
+      newActiveDate = addYears(currentActiveDate, -3);
     } else if (event.code === KeyCode.ArrowRight) {
       newActiveDate = addYears(currentActiveDate, 1);
     }
@@ -484,16 +537,14 @@ function arrowKeyHandler(event: KeyboardEvent) {
 
 function addActiveMonth(amount: number) {
   const currentActiveMonth = activeMonth.value || selectedDate.value || getDateWithoutTime();
-  const newActiveMonth = addMonths(currentActiveMonth, amount);
 
-  activeMonth.value = newActiveMonth;
+  activeMonth.value = addMonths(currentActiveMonth, amount);
 }
 
 function addActiveYear(amount: number) {
   const currentActiveMonth = activeMonth.value || selectedDate.value || getDateWithoutTime();
-  const newActiveMonth = addYears(currentActiveMonth, amount);
 
-  activeMonth.value = newActiveMonth;
+  activeMonth.value = addYears(currentActiveMonth, amount);
 }
 
 function onClickNextButton() {
@@ -504,12 +555,24 @@ function onClickNextButton() {
   if (isCurrentView.value.year) addActiveYear(YEARS_PER_VIEW);
 }
 
+function onClickNextYearButton() {
+  activeDate.value = null;
+
+  addActiveYear(1);
+}
+
 function onClickPrevButton() {
   activeDate.value = null;
 
   if (isCurrentView.value.day) addActiveMonth(-1);
   if (isCurrentView.value.month) addActiveYear(-1);
   if (isCurrentView.value.year) addActiveYear(YEARS_PER_VIEW * -1);
+}
+
+function onClickPrevYearButton() {
+  activeDate.value = null;
+
+  addActiveYear(-1);
 }
 
 function enterKeyHandler() {
@@ -722,45 +785,66 @@ const {
   <div ref="wrapper" :tabindex="tabindex" v-bind="wrapperAttrs" @keydown="onKeydown">
     <div v-bind="navigationAttrs">
       <UButton
+        v-if="range"
         square
         size="sm"
         color="grayscale"
-        variant="thirdary"
-        :left-icon="config.defaults.prevIcon"
+        variant="ghost"
+        :icon="config.defaults.prevYearIcon"
+        v-bind="nextPrevButtonAttrs"
+        @mousedown.prevent.capture
+        @click="onClickPrevYearButton"
+      />
+
+      <UButton
+        square
+        size="sm"
+        color="grayscale"
+        variant="ghost"
+        :icon="config.defaults.prevIcon"
         v-bind="nextPrevButtonAttrs"
         @mousedown.prevent.capture
         @click="onClickPrevButton"
       />
 
       <UButton
+        block
         size="sm"
         color="grayscale"
-        variant="thirdary"
+        variant="ghost"
+        :label="currentViewLabel"
         v-bind="viewSwitchButtonAttrs"
         @mousedown.prevent.capture
         @click="onClickViewSwitch"
-      >
-        <template v-if="isCurrentView.day">
-          {{ viewSwitchLabel.month }} {{ viewSwitchLabel.year }}
-        </template>
-        <template v-if="isCurrentView.month">{{ viewSwitchLabel.year }}</template>
-        <template v-if="isCurrentView.year">{{ viewSwitchLabel.yearsRange }}</template>
-      </UButton>
+      />
 
       <UButton
         square
         size="sm"
         color="grayscale"
-        variant="thirdary"
-        :left-icon="config.defaults.nextIcon"
+        variant="ghost"
+        :icon="config.defaults.nextIcon"
         v-bind="nextPrevButtonAttrs"
         @mousedown.prevent.capture
         @click="onClickNextButton"
+      />
+
+      <UButton
+        v-if="range"
+        square
+        size="sm"
+        color="grayscale"
+        variant="ghost"
+        :icon="config.defaults.nextYearIcon"
+        v-bind="nextPrevButtonAttrs"
+        @mousedown.prevent.capture
+        @click="onClickNextYearButton"
       />
     </div>
 
     <DayView
       v-if="isCurrentView.day"
+      ref="day-view"
       :selected-date="selectedDate"
       :selected-date-to="selectedDateTo"
       :range="range"
@@ -805,7 +889,7 @@ const {
     />
 
     <div v-if="isTimepickerEnabled" v-bind="timepickerAttrs">
-      <span v-bind="timepickerLabelAttrs" v-text="currentLocale.timeLabel" />
+      <span v-bind="timepickerLabelAttrs" v-text="localeMessages.timeLabel" />
 
       <div v-bind="timepickerInputWrapperAttrs">
         <input
@@ -844,14 +928,13 @@ const {
 
       <UButton
         ref="ok-button"
-        filled
         size="sm"
         color="grayscale"
-        variant="thirdary"
+        variant="soft"
         v-bind="timepickerSubmitButtonAttrs"
         @click="onClickSubmit"
       >
-        {{ currentLocale.okLabel }}
+        {{ localeMessages.okLabel }}
       </UButton>
     </div>
   </div>

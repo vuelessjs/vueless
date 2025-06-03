@@ -1,7 +1,7 @@
 export default /*tw*/ {
   multiStateCheckbox: "{UCheckbox}",
   defaults: {
-    color: "brand",
+    color: "primary",
     size: "md",
     labelAlign: "right",
     disabled: false,

@@ -18,27 +18,15 @@ export interface Props {
    * Header color.
    */
   color?:
-    | "grayscale"
-    | "red"
-    | "orange"
-    | "amber"
-    | "yellow"
-    | "lime"
-    | "green"
-    | "emerald"
-    | "teal"
-    | "cyan"
-    | "sky"
-    | "blue"
-    | "indigo"
-    | "violet"
-    | "purple"
-    | "fuchsia"
-    | "pink"
-    | "rose"
-    | "gray"
-    | "white"
-    | "brand";
+    | "primary"
+    | "secondary"
+    | "error"
+    | "warning"
+    | "success"
+    | "info"
+    | "notice"
+    | "neutral"
+    | "grayscale";
 
   /**
    * Allows changing HTML tag.
@@ -49,11 +37,6 @@ export interface Props {
    * Removes text line height (useful for 1-line text).
    */
   line?: boolean;
-
-  /**
-   * Show the underline.
-   */
-  underlined?: boolean;
 
   /**
    * Component config object.

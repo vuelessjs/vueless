@@ -45,9 +45,9 @@ export interface Props {
   wrap?: boolean;
 
   /**
-   * Disables mobile adaptivity.
+   * Make the Row expand to fill the entire width of its container.
    */
-  noMobile?: boolean;
+  block?: boolean;
 
   /**
    * Component config object.

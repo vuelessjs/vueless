@@ -1,31 +1,28 @@
 <script setup lang="ts">
-import { ref, computed, nextTick, watch, useSlots, onMounted, useId } from "vue";
-import { merge } from "lodash-es";
+import { ref, computed, nextTick, watch, useSlots, onMounted, useId, useTemplateRef } from "vue";
 
 import UIcon from "../ui.image-icon/UIcon.vue";
 import ULabel from "../ui.form-label/ULabel.vue";
-import UDropdownList from "../ui.dropdown-list/UDropdownList.vue";
+import UListbox from "../ui.form-listbox/UListbox.vue";
+import UBadge from "../ui.text-badge/UBadge.vue";
+import ULink from "../ui.button-link/ULink.vue";
+
+import { vClickOutside } from "../directives";
 
 import useUI from "../composables/useUI.ts";
-import { createDebounce, hasSlotContent } from "../utils/helper.ts";
+import { hasSlotContent } from "../utils/helper.ts";
 import { getDefaults } from "../utils/ui.ts";
 import { isMac } from "../utils/platform.ts";
 import { useMutationObserver } from "../composables/useMutationObserver.ts";
+import { getCurrentOption } from "./utilSelect.ts";
+import { useComponentLocaleMessages } from "../composables/useComponentLocaleMassages.ts";
 
-import {
-  filterOptions,
-  filterGroups,
-  removeSelectedValues,
-  getCurrentOption,
-} from "./utilSelect.ts";
 import defaultConfig from "./config.ts";
-import { COMPONENT_NAME, DIRECTION, KEYS } from "./constants.ts";
+import { COMPONENT_NAME, DIRECTION, KEYS, MULTIPLE_VARIANTS } from "./constants.ts";
 
-import { useLocale } from "../composables/useLocale.ts";
-
-import type { Option, Config as UDropdownListConfig } from "../ui.dropdown-list/types.ts";
+import type { Option, Config as UListboxConfig } from "../ui.form-listbox/types.ts";
 import type { Props, Config } from "./types.ts";
-import type { ComponentExposed, KeyAttrsWithConfig } from "../types.ts";
+import type { KeyAttrsWithConfig } from "../types.ts";
 
 defineOptions({ inheritAttrs: false });
 
@@ -57,13 +54,13 @@ const emit = defineEmits([
   "searchChange",
 
   /**
-   * Triggers when option is removed.
+   * Triggers when the option is removed.
    * @property {string} option
    */
   "remove",
 
   /**
-   * Triggers when option is selected.
+   * Triggers when an option is selected.
    * @property {string} value
    * @property {number} value
    * @property {Option} value
@@ -77,28 +74,32 @@ const emit = defineEmits([
 
   /**
    * Triggers when the user commits the change to options or selected value explicitly.
+   * @property {string} value
+   * @property {number} value
+   * @property {Option} value
+   * @property {Option[]} options
    */
   "change",
 ]);
 
 const slots = useSlots();
-const { tm } = useLocale();
 
 const isOpen = ref(false);
 const preferredOpenDirection = ref(DIRECTION.bottom);
-const search = ref("");
 
-const dropdownListRef = ref<ComponentExposed<typeof UDropdownList> | null>(null);
-const wrapperRef = ref<HTMLDivElement | null>(null);
-const searchInputRef = ref<HTMLInputElement | null>(null);
-const labelComponentRef = ref<ComponentExposed<typeof ULabel> | null>(null);
-const leftSlotWrapperRef = ref<HTMLSpanElement | null>(null);
-const innerWrapperRef = ref<HTMLDivElement | null>(null);
+const listboxRef = useTemplateRef<InstanceType<typeof UListbox>>("listbox");
+const wrapperRef = useTemplateRef<HTMLDivElement>("wrapper");
+const labelComponentRef = useTemplateRef<InstanceType<typeof ULabel>>("labelComponent");
+const leftSlotWrapperRef = useTemplateRef<HTMLDivElement>("leftSlotWrapper");
+const innerWrapperRef = useTemplateRef<HTMLDivElement>("innerWrapper");
 
 const elementId = props.id || useId();
 
-const i18nGlobal = tm(COMPONENT_NAME);
-const currentLocale = computed(() => merge({}, defaultConfig.i18n, i18nGlobal, props.config.i18n));
+const { localeMessages } = useComponentLocaleMessages<typeof defaultConfig.i18n>(
+  COMPONENT_NAME,
+  defaultConfig.i18n,
+  props?.config?.i18n,
+);
 
 const isTop = computed(() => {
   if (props.openDirection === DIRECTION.top) return true;
@@ -107,67 +108,35 @@ const isTop = computed(() => {
   return preferredOpenDirection.value === DIRECTION.top;
 });
 
-const inputPlaceholder = computed(() => {
-  const message = currentLocale.value.addMore;
-
-  return props.multiple && localValue.value?.length ? message : props.placeholder;
-});
-
 const dropdownValue = computed({
-  get: () => props.modelValue,
-  set: (newValue) => {
-    let value;
-
-    if (props.multiple) {
-      value = Array.isArray(props.modelValue) ? [...props.modelValue, newValue] : [newValue];
-    } else {
-      value = newValue;
+  get: () => {
+    if (props.multiple && !Array.isArray(props.modelValue)) {
+      return props.modelValue ? [props.modelValue] : [];
     }
 
+    return props.modelValue;
+  },
+  set: (value) => {
     emit("update:modelValue", value);
     emit("change", { value, options: props.options });
-    deactivate();
+
+    if (!props.multiple) deactivate();
   },
 });
 
-const filteredOptions = computed(() => {
-  const normalizedSearch = search.value.toLowerCase().trim() || "";
+const isMultipleInlineVariant = computed(
+  () => props.multiple && props.multipleVariant === MULTIPLE_VARIANTS.inline,
+);
 
-  let selectedValues: (string | number)[] = [];
+const isMultipleListVariant = computed(
+  () => props.multiple && props.multipleVariant === MULTIPLE_VARIANTS.list,
+);
 
-  if (Array.isArray(props.modelValue)) {
-    selectedValues = props.modelValue.map((value) => {
-      if (typeof value === "object") {
-        return value[props.valueKey] as string | number;
-      }
+const isMultipleBadgeVariant = computed(
+  () => props.multiple && props.multipleVariant === MULTIPLE_VARIANTS.badge,
+);
 
-      return value;
-    });
-  } else if (props.modelValue) {
-    selectedValues =
-      typeof props.modelValue === "object"
-        ? [props.modelValue[props.valueKey]]
-        : [props.modelValue];
-  }
-
-  let options = props.multiple
-    ? removeSelectedValues(props.options, selectedValues, props.valueKey, props.groupValueKey)
-    : [...props.options];
-
-  options = props.groupValueKey
-    ? filterGroups(
-        options,
-        normalizedSearch,
-        props.labelKey,
-        props.groupValueKey,
-        props.groupLabelKey,
-      )
-    : filterOptions(options, normalizedSearch, props.labelKey);
-
-  return options.slice(0, props.optionsLimit || options.length);
-});
-
-const localValue = computed(() => {
+const localValue = computed<Option | Option[]>(() => {
   if (!props.multiple) {
     const [singleValue] = Array.isArray(props.modelValue) ? props.modelValue : [props.modelValue];
 
@@ -175,10 +144,36 @@ const localValue = computed(() => {
   }
 
   return props.modelValue && Array.isArray(props.modelValue)
-    ? props.modelValue.map((value) =>
-        getCurrentOption(props.options, value, props.valueKey, props.groupValueKey),
-      )
+    ? (props.modelValue
+        .map((value) => getCurrentOption(props.options, value, props.valueKey, props.groupValueKey))
+        .filter(Boolean) as Option[])
     : [];
+});
+
+const selectedOption = computed(() => {
+  return !props.multiple && !Array.isArray(localValue.value) ? localValue.value : {};
+});
+
+const selectedOptions = computed(() => {
+  const options = props.multiple && Array.isArray(localValue.value) ? localValue.value : [];
+
+  return {
+    full: options,
+    visible: options.slice(0, props.labelDisplayCount),
+    hidden: options.slice(props.labelDisplayCount),
+  };
+});
+
+const selectedOptionsLabel = computed(() => {
+  return {
+    full: selectedOptions.value.full.map((item) => item[props.labelKey]).join(", "),
+    visible: selectedOptions.value.visible.map((item) => item[props.labelKey]).join(", "),
+    hidden: selectedOptions.value.hidden.map((item) => item[props.labelKey]).join(", "),
+  };
+});
+
+const hiddenSelectedOptionsCount = computed(() => {
+  return selectedOptions.value.hidden.length;
 });
 
 const isLocalValue = computed(() => {
@@ -195,34 +190,40 @@ const isLocalValue = computed(() => {
   return !!String(value);
 });
 
-const selectedLabel = computed(() => {
-  return isLocalValue.value ? getOptionLabel(localValue.value as Option) : "";
+const toggleIconName = computed(() => {
+  if (typeof props.toggleIcon === "string") {
+    return props.toggleIcon;
+  }
+
+  return props.toggleIcon ? config.value.defaults.toggleIcon : "";
 });
 
-const isEmpty = computed(() => {
-  return (
-    (filteredOptions.value.length === 0 && search) ||
-    (props.multiple && localValue.value?.length === props.options.length)
-  );
-});
+const clickOutsideOptions = computed(() => ({
+  ignore: [labelComponentRef.value?.wrapperElement, labelComponentRef.value?.labelElement],
+}));
 
-const onSearchChange = createDebounce(function (query) {
-  emit("searchChange", query);
-}, 300);
-
-watch(search, onSearchChange);
 watch(localValue, setLabelPosition, { deep: true });
 
-if (props.addOption) {
-  document.addEventListener("keydown", onKeydownAddOption);
+onMounted(() => {
+  setLabelPosition();
+
+  if (props.addOption) {
+    document.addEventListener("keydown", onKeydownAddOption);
+  }
+});
+
+function onSearchChange(query: string) {
+  emit("searchChange", query);
 }
 
-onMounted(setLabelPosition);
+function onListboxInteraction(event: MouseEvent) {
+  const target = event.target as HTMLElement;
 
-function getOptionLabel(option: Option) {
-  if (!option) return "";
+  if (target.closest("input")) {
+    return;
+  }
 
-  return option[props.labelKey] || "";
+  event.preventDefault();
 }
 
 function onKeydownAddOption(event: KeyboardEvent) {
@@ -252,40 +253,39 @@ function toggle() {
 }
 
 function deactivate() {
-  if (!isOpen.value || props.disabled) return;
+  if (!isOpen.value || props.disabled) {
+    return;
+  }
 
-  props.searchable && searchInputRef.value ? searchInputRef.value.blur() : wrapperRef.value?.blur();
+  if (props.searchable) wrapperRef.value?.blur();
 
-  search.value = "";
   isOpen.value = false;
 
   nextTick(() => emit("close", localValue.value, elementId));
 }
 
 function activate() {
-  if (isOpen.value || props.disabled) return;
+  if (isOpen.value || props.disabled) {
+    return;
+  }
 
   adjustPosition();
 
   isOpen.value = true;
 
-  if (props.searchable) {
-    search.value = "";
+  wrapperRef.value?.focus();
 
-    nextTick(() => searchInputRef.value && searchInputRef.value.focus());
-  }
-
-  if (wrapperRef.value && !props.searchable) {
-    wrapperRef.value.focus();
-  }
+  nextTick(() => {
+    listboxRef.value?.listboxInputRef?.input.focus();
+  });
 
   emit("open", elementId);
 }
 
 function adjustPosition() {
-  if (typeof window === "undefined" || !dropdownListRef.value || !wrapperRef.value) return;
+  if (typeof window === "undefined" || !listboxRef.value || !wrapperRef.value) return;
 
-  const dropdownHeight = dropdownListRef.value.wrapperRef?.getBoundingClientRect().height || 0;
+  const dropdownHeight = listboxRef.value.wrapperRef?.getBoundingClientRect().height || 0;
   const spaceAbove = wrapperRef.value.getBoundingClientRect().top;
   const spaceBelow = window.innerHeight - wrapperRef.value.getBoundingClientRect().bottom;
   const hasEnoughSpaceBelow = spaceBelow > dropdownHeight;
@@ -295,6 +295,21 @@ function adjustPosition() {
   } else {
     preferredOpenDirection.value = DIRECTION.top;
   }
+}
+
+function onWrapperBlur(event: FocusEvent) {
+  const related = event.relatedTarget as HTMLElement | null;
+
+  const isInsideWrapper = related && wrapperRef.value?.contains(related);
+  const isInsideListbox = related && listboxRef.value?.$el?.contains(related);
+
+  const shouldIgnoreBlur = isInsideWrapper || isInsideListbox;
+
+  if (shouldIgnoreBlur) {
+    return;
+  }
+
+  deactivate();
 }
 
 function onMouseDownClearItem(event: MouseEvent, option: Option) {
@@ -347,18 +362,19 @@ function setLabelPosition() {
   }
 
   const leftSlotWidth = leftSlotWrapperRef.value.getBoundingClientRect().width;
+
   const innerWrapperPaddingLeft = parseInt(
     window.getComputedStyle(innerWrapperRef.value).paddingLeft,
   );
 
   const nestedLabel = labelComponentRef.value.labelElement;
 
-  if (props.multiple && Array.isArray(localValue.value) && localValue.value.length >= 1) {
+  if (props.multiple && isLocalValue.value) {
     if (nestedLabel) {
       nestedLabel.style.left = `${leftSlotWidth - innerWrapperPaddingLeft}px`;
     }
 
-    leftSlotWrapperRef.value.classList.remove("group-[]/placement-inside:-mt-4");
+    leftSlotWrapperRef.value.classList.remove("group-[*]/placement-inside:-mt-4");
   } else {
     if (nestedLabel) {
       nestedLabel.style.left = `${leftSlotWidth + innerWrapperPaddingLeft}px`;
@@ -368,38 +384,32 @@ function setLabelPosition() {
 
 defineExpose({
   /**
-   * A reference to the dropdown list element for direct DOM manipulation.
-   * @property {HTMLElement}
+   * A reference to the UListbox instance for direct DOM manipulation.
+   * @property {InstanceType<typeof UListbox>}
    */
-  dropdownListRef,
+  listboxRef,
 
   /**
    * A reference to the wrapper element for direct DOM manipulation.
-   * @property {HTMLElement}
+   * @property {HTMLDivElement}
    */
   wrapperRef,
 
   /**
-   * A reference to the search input element for direct DOM manipulation.
-   * @property {HTMLElement}
-   */
-  searchInputRef,
-
-  /**
-   * A reference to the label component for direct DOM manipulation.
-   * @property {HTMLElement}
+   * A reference to the ULabel instance for direct DOM manipulation.
+   * @property {InstanceType<typeof ULabel>}
    */
   labelComponentRef,
 
   /**
    * A reference to the left slot wrapper element for direct DOM manipulation.
-   * @property {HTMLElement}
+   * @property {HTMLDivElement}
    */
   leftSlotWrapperRef,
 
   /**
    * A reference to the inner wrapper element for direct DOM manipulation.
-   * @property {HTMLElement}
+   * @property {HTMLDivElement}
    */
   innerWrapperRef,
 });
@@ -412,15 +422,18 @@ const mutatedProps = computed(() => ({
   error: Boolean(props.error) && !props.disabled,
   label: Boolean(props.label),
   /* component state, not a props */
-  selected: Boolean(selectedLabel.value),
+  selected: Boolean(isLocalValue.value),
   opened: isOpen.value,
   openedTop: isTop.value,
+  placeholder: Boolean(props.placeholder),
 }));
 
 const {
   config,
   getDataTest,
   selectLabelAttrs,
+  selectedLabelTextAttrs,
+  counterAttrs,
   wrapperAttrs,
   innerWrapperAttrs,
   leftSlotAttrs,
@@ -431,22 +444,25 @@ const {
   afterToggleAttrs,
   toggleWrapperAttrs,
   clearAttrs,
-  clearMultipleTextAttrs,
-  clearMultipleAttrs,
-  searchAttrs,
-  searchInputAttrs,
+  listClearAllAttrs,
+  listFooterAttrs,
+  listFooterCounterAttrs,
+  placeholderAttrs,
+  listAddMoreAttrs,
   selectedLabelsAttrs,
   selectedLabelAttrs,
-  dropdownListAttrs,
+  listboxAttrs,
   toggleIconAttrs,
   clearIconAttrs,
-  clearMultipleIconAttrs,
+  listClearIconAttrs,
+  badgeLabelAttrs,
+  badgeClearIconAttrs,
 } = useUI(defaultConfig, mutatedProps);
 </script>
 
 <template>
   <ULabel
-    ref="labelComponentRef"
+    ref="labelComponent"
     :for="elementId"
     :size="size"
     :label="label"
@@ -459,6 +475,7 @@ const {
     v-bind="selectLabelAttrs"
     :data-test="getDataTest()"
     :tabindex="-1"
+    @click="toggle"
   >
     <template #label>
       <!--
@@ -469,42 +486,43 @@ const {
     </template>
 
     <div
-      ref="wrapperRef"
+      ref="wrapper"
+      v-click-outside="[deactivate, clickOutsideOptions]"
       :tabindex="searchable || disabled ? -1 : 0"
       role="combobox"
       :aria-owns="'listbox-' + elementId"
       v-bind="wrapperAttrs"
       @focus="activate"
-      @blur="deactivate"
-      @keydown.self.down.prevent="dropdownListRef?.pointerForward"
-      @keydown.self.up.prevent="dropdownListRef?.pointerBackward"
-      @keydown.enter.tab.stop.self="dropdownListRef?.addPointerElement()"
+      @blur="onWrapperBlur"
+      @keydown.self.down.prevent="listboxRef?.pointerForward"
+      @keydown.self.up.prevent="listboxRef?.pointerBackward"
+      @keydown.enter.tab.stop.self="listboxRef?.addPointerElement()"
       @keyup.esc="deactivate"
     >
-      <div v-if="hasSlotContent($slots['right']) || rightIcon" v-bind="rightSlotAttrs">
+      <div
+        v-if="hasSlotContent($slots['right'], { iconName: rightIcon }) || rightIcon"
+        v-bind="rightSlotAttrs"
+      >
         <!--
             @slot Use it to add something to the right of input.
             @binding {string} icon-name
           -->
         <slot name="right" :icon-name="rightIcon">
-          <UIcon v-if="rightIcon" :name="rightIcon" internal v-bind="rightIconAttrs" />
+          <UIcon v-if="rightIcon" :name="rightIcon" v-bind="rightIconAttrs" />
         </slot>
       </div>
 
       <div
-        v-if="hasSlotContent($slots['after-toggle']) && !(multiple && localValue?.length)"
+        v-if="hasSlotContent($slots['after-toggle']) && (!multiple || !isLocalValue)"
         v-bind="afterToggleAttrs"
         :tabindex="-1"
       >
-        <!--
-          @slot Use it to add something after toggle.
-          @binding {object} option
-        -->
-        <slot :option="localValue" name="after-toggle" />
+        <!-- @slot Use it to add something after toggle. -->
+        <slot name="after-toggle" />
       </div>
 
       <div
-        v-show="!multiple || (!isLocalValue && multiple)"
+        v-if="!isMultipleListVariant || !isLocalValue"
         v-bind="toggleWrapperAttrs"
         :tabindex="-1"
         :data-test="getDataTest('toggle')"
@@ -515,12 +533,13 @@ const {
           @binding {string} icon-name
           @binding {boolean} opened
         -->
-        <slot name="toggle" :icon-name="config.defaults.dropdownIcon" :opened="isOpen">
+        <slot name="toggle" :icon-name="toggleIconName" :opened="isOpen">
           <UIcon
-            internal
+            v-if="toggleIconName"
             interactive
-            color="gray"
-            :name="config.defaults.dropdownIcon"
+            color="neutral"
+            :disabled="disabled"
+            :name="toggleIconName"
             v-bind="toggleIconAttrs"
             :tabindex="-1"
           />
@@ -528,7 +547,7 @@ const {
       </div>
 
       <div
-        v-if="isLocalValue && clearable && !disabled && !multiple"
+        v-if="!isMultipleListVariant && isLocalValue && clearable"
         v-bind="clearAttrs"
         :data-test="getDataTest('clear')"
         @mousedown="onMouseDownClear"
@@ -539,9 +558,9 @@ const {
         -->
         <slot name="clear" :icon-name="config.defaults.clearIcon">
           <UIcon
-            internal
             interactive
-            color="gray"
+            color="neutral"
+            :disabled="disabled"
             :name="config.defaults.clearIcon"
             v-bind="clearIconAttrs"
           />
@@ -549,145 +568,237 @@ const {
       </div>
 
       <div
-        v-if="hasSlotContent($slots['before-toggle']) && !(multiple && localValue?.length)"
+        v-if="hasSlotContent($slots['before-toggle']) && (!multiple || !isLocalValue)"
         v-bind="beforeToggleAttrs"
       >
-        <!--
-          @slot Use it to add something before toggle.
-          @binding {object} option
-        -->
-        <slot :option="localValue" name="before-toggle" />
+        <!-- @slot Use it to add something before toggle. -->
+        <slot name="before-toggle" />
       </div>
 
-      <div ref="innerWrapperRef" v-bind="innerWrapperAttrs">
-        <div v-if="multiple && localValue?.length" v-bind="selectedLabelsAttrs">
-          <div
-            v-for="item in localValue as Option[]"
-            :key="String(item[valueKey])"
-            v-bind="selectedLabelAttrs"
-          >
-            <!--
-              @slot Use it to customise selected value label.
-              @binding {string} selected-label
-              @binding {object} option
-            -->
-            <slot
-              name="selected-label"
-              :selected-label="getOptionLabel(item)"
-              :value="item[valueKey]"
-              :option="item"
-            >
-              {{ getOptionLabel(item) }}
-            </slot>
+      <div ref="innerWrapper" v-bind="innerWrapperAttrs">
+        <div v-if="!isLocalValue" v-bind="placeholderAttrs">
+          <!-- Used invisible symbol to keep same height of the div. -->
+          {{ placeholder || "‎" }}
+        </div>
 
-            <!--
-              @slot Use it to add something after selected value label.
-              @binding {object} option
-            -->
-            <slot :option="item" name="selected-label-after" />
-
-            <div
-              v-if="!disabled"
-              v-bind="clearMultipleAttrs"
-              :data-test="getDataTest('clear-item')"
-              @mousedown.prevent.capture
-              @click.prevent.capture
-              @mousedown="onMouseDownClearItem($event, item)"
-            >
+        <template v-else>
+          <!--
+            @slot Use it to customize selected options.
+            @binding {array} options
+            @binding {object} options
+          -->
+          <slot name="selected-options" :options="multiple ? selectedOptions.full : selectedOption">
+            <span v-if="!multiple" v-bind="selectedLabelsAttrs" @mousedown.prevent="toggle">
               <!--
-                @slot Use it to add something instead of the clear icon (when multiple prop enabled).
-                @binding {string} icon-name
+                @slot Use it to customize selected option.
+                @binding {string} label
+                @binding {modelValue} value
+                @binding {object} option
               -->
-              <slot name="clear-multiple" :icon-name="config.defaults.clearMultipleIcon">
-                <UIcon
-                  internal
-                  interactive
-                  color="gray"
-                  :name="config.defaults.clearMultipleIcon"
-                  v-bind="clearMultipleIconAttrs"
+              <slot
+                name="selected-option"
+                :label="selectedOption[labelKey]"
+                :value="selectedOption[valueKey]"
+                :option="localValue"
+              >
+                <div
+                  :title="(selectedOption[labelKey] || '') as string"
+                  v-bind="selectedLabelAttrs"
+                  v-text="selectedOption[labelKey]"
                 />
               </slot>
+            </span>
+
+            <div v-else v-bind="selectedLabelsAttrs">
+              <template v-if="isMultipleInlineVariant">
+                <div :title="selectedOptionsLabel.full" v-bind="selectedLabelAttrs">
+                  <template v-for="(option, index) in selectedOptions.visible" :key="index">
+                    <!--
+                      @slot Use it to customize selected option.
+                      @binding {string} label
+                      @binding {modelValue} value
+                      @binding {object} option
+                    -->
+                    <slot
+                      name="selected-option"
+                      :label="option[labelKey]"
+                      :value="option[valueKey]"
+                      :option="option"
+                    >
+                      {{
+                        option[labelKey] +
+                        (index === selectedOptions.visible.length - 1 ? "" : ", ")
+                      }}
+                    </slot>
+                  </template>
+                </div>
+
+                <!--
+                  @slot Use it to customize selected options counter.
+                  @binding {number} count
+                -->
+                <slot name="selected-counter" :count="hiddenSelectedOptionsCount">
+                  <span
+                    v-if="hiddenSelectedOptionsCount"
+                    v-bind="counterAttrs"
+                    v-text="`&nbsp;+${hiddenSelectedOptionsCount}`"
+                  />
+                </slot>
+              </template>
+
+              <template v-if="isMultipleBadgeVariant">
+                <div
+                  v-for="(option, index) in selectedOptions.visible"
+                  :key="index"
+                  v-bind="selectedLabelAttrs"
+                >
+                  <!--
+                    @slot Use it to customize selected option.
+                    @binding {string} label
+                    @binding {modelValue} value
+                    @binding {object} option
+                  -->
+                  <slot
+                    name="selected-option"
+                    :label="option[labelKey]"
+                    :value="option[valueKey]"
+                    :option="option"
+                  >
+                    <UBadge
+                      :title="option[labelKey]"
+                      :size="size"
+                      variant="subtle"
+                      v-bind="badgeLabelAttrs"
+                      @click="toggle"
+                    >
+                      <div v-bind="selectedLabelTextAttrs">
+                        {{ option[labelKey] }}
+                      </div>
+
+                      <template #right>
+                        <UIcon
+                          interactive
+                          color="inherit"
+                          :disabled="disabled"
+                          :name="config.defaults.badgeClearIcon"
+                          v-bind="badgeClearIconAttrs"
+                          @click="onMouseDownClearItem($event, option)"
+                        />
+                      </template>
+                    </UBadge>
+                  </slot>
+                </div>
+
+                <!--
+                  @slot Use it to customize selected options counter.
+                  @binding {number} count
+                -->
+                <slot name="selected-counter" :count="hiddenSelectedOptionsCount">
+                  <UBadge
+                    v-if="hiddenSelectedOptionsCount"
+                    :label="`+${hiddenSelectedOptionsCount}`"
+                    :title="selectedOptionsLabel.hidden"
+                    :size="size"
+                    variant="subtle"
+                    v-bind="badgeLabelAttrs"
+                  />
+                </slot>
+              </template>
+
+              <template v-if="isMultipleListVariant">
+                <div
+                  v-for="(option, index) in selectedOptions.visible"
+                  :key="index"
+                  :title="option[labelKey] as string"
+                  v-bind="selectedLabelAttrs"
+                >
+                  <!--
+                    @slot Use it to customize selected option.
+                    @binding {string} label
+                    @binding {modelValue} value
+                    @binding {object} option
+                  -->
+                  <slot
+                    name="selected-option"
+                    :label="option[labelKey]"
+                    :value="option[valueKey]"
+                    :option="option"
+                  >
+                    <div v-bind="selectedLabelTextAttrs">
+                      {{ option[labelKey] }}
+                    </div>
+
+                    <UIcon
+                      v-if="!disabled"
+                      interactive
+                      color="neutral"
+                      :name="config.defaults.listClearIcon"
+                      :data-test="getDataTest('clear-item')"
+                      v-bind="listClearIconAttrs"
+                      @mousedown.prevent.capture
+                      @click.prevent.capture
+                      @mousedown="onMouseDownClearItem($event, option)"
+                    />
+                  </slot>
+                </div>
+
+                <div v-bind="listFooterAttrs">
+                  <div v-bind="listFooterCounterAttrs">
+                    <!--
+                      @slot Use it to customize selected options counter.
+                      @binding {number} count
+                    -->
+                    <slot name="selected-counter" :count="hiddenSelectedOptionsCount">
+                      <span
+                        v-if="hiddenSelectedOptionsCount"
+                        :title="selectedOptionsLabel.hidden"
+                        v-bind="counterAttrs"
+                        v-text="`+${hiddenSelectedOptionsCount}`"
+                      />
+                    </slot>
+                    <div v-bind="listAddMoreAttrs" v-text="localeMessages.addMore" />
+                  </div>
+
+                  <ULink
+                    v-if="clearable && !disabled"
+                    :label="localeMessages.clear"
+                    :size="size"
+                    color="neutral"
+                    :underlined="false"
+                    v-bind="listClearAllAttrs"
+                    :data-test="getDataTest('clear-all')"
+                    @mousedown.prevent.capture="onMouseDownClear"
+                    @click.prevent.capture
+                  />
+                </div>
+              </template>
             </div>
-          </div>
-        </div>
-
-        <div v-bind="searchAttrs">
-          <input
-            :id="elementId"
-            ref="searchInputRef"
-            v-model="search"
-            type="text"
-            autocomplete="off"
-            :spellcheck="false"
-            :placeholder="inputPlaceholder"
-            :disabled="disabled || !searchable"
-            :aria-controls="'listbox-' + elementId"
-            v-bind="searchInputAttrs"
-            :data-test="getDataTest('search')"
-            @focus="activate"
-            @blur.prevent="deactivate"
-            @keyup.esc="deactivate"
-            @keydown.down.prevent="dropdownListRef?.pointerForward"
-            @keydown.up.prevent="dropdownListRef?.pointerBackward"
-            @keydown.enter.prevent.stop.self="dropdownListRef?.addPointerElement()"
-          />
-        </div>
-
-        <span
-          v-if="!multiple && isLocalValue && ((searchable && !isOpen) || !searchable)"
-          v-bind="selectedLabelAttrs"
-          @mousedown.prevent="toggle"
-        >
-          <!--
-            @slot Use it to add selected value label.
-            @binding {string} selected-label
-            @binding {string} value
-            @binding {object} option
-          -->
-          <slot
-            name="selected-label"
-            :selected-label="selectedLabel"
-            :value="(localValue as Option)[valueKey]"
-            :option="localValue"
-          >
-            {{ selectedLabel }}
           </slot>
-
-          <!--
-            @slot Use it to add something after selected value label.
-            @binding {object} option
-          -->
-          <slot :option="localValue" name="selected-label-after" />
-        </span>
-
-        <div
-          v-if="isLocalValue && clearable && !disabled && multiple"
-          v-bind="clearMultipleTextAttrs"
-          :data-test="getDataTest('clear-all')"
-          @mousedown.prevent.capture="onMouseDownClear"
-          @click.prevent.capture
-          v-text="currentLocale.clear"
-        />
+        </template>
       </div>
 
-      <UDropdownList
+      <UListbox
         v-if="isOpen"
-        ref="dropdownListRef"
+        ref="listbox"
         v-model="dropdownValue as string | number"
-        :options="filteredOptions"
+        :searchable="searchable"
+        :multiple="multiple"
+        :options="options"
         :disabled="disabled"
         :size="size"
+        :debounce="debounce"
         :visible-options="visibleOptions"
         :value-key="valueKey"
         :label-key="labelKey"
         :add-option="addOption"
         tabindex="-1"
-        v-bind="dropdownListAttrs as KeyAttrsWithConfig<UDropdownListConfig>"
+        v-bind="listboxAttrs as KeyAttrsWithConfig<UListboxConfig>"
         :data-test="getDataTest()"
         @add="onAddOption"
         @focus="activate"
-        @mousedown.prevent.capture
-        @click.prevent.capture
+        @update:model-value="onSearchChange"
+        @mousedown.capture="onListboxInteraction"
+        @click.capture="onListboxInteraction"
       >
         <template #before-option="{ option, index }">
           <!--
@@ -700,7 +811,7 @@ const {
 
         <template #option="{ option, index }">
           <!--
-            @slot Use it to customise the option.
+            @slot Use it to customize the option.
             @binding {object} option
             @binding {number} index
           -->
@@ -715,21 +826,11 @@ const {
           -->
           <slot name="after-option" :option="option" :index="index" />
         </template>
-
-        <template #empty>
-          <template v-if="isEmpty">
-            {{ currentLocale.listIsEmpty }}
-          </template>
-
-          <template v-else>
-            {{ currentLocale.noDataToShow }}
-          </template>
-        </template>
-      </UDropdownList>
+      </UListbox>
 
       <div
         v-if="hasSlotContent($slots['left']) || leftIcon"
-        ref="leftSlotWrapperRef"
+        ref="leftSlotWrapper"
         v-bind="leftSlotAttrs"
       >
         <!--
@@ -737,7 +838,7 @@ const {
             @binding {string} icon-name
           -->
         <slot name="left" :icon-name="leftIcon">
-          <UIcon v-if="leftIcon" :name="leftIcon" internal v-bind="leftIconAttrs" />
+          <UIcon v-if="leftIcon" :name="leftIcon" v-bind="leftIconAttrs" />
         </slot>
       </div>
     </div>

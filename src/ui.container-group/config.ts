@@ -1,16 +1,17 @@
 export default /*tw*/ {
   wrapper: "w-full",
-  upperline: "{UDivider}",
-  underline: {
-    base: "{UDivider}",
+  header: {
+    base: "flex items-center justify-between mb-6 border-muted",
     variants: {
+      upperlined: {
+        true: "border-t pt-6",
+      },
       underlined: {
-        true: "pt-1.5",
+        true: "border-b pb-1.5",
       },
     },
   },
-  header: "flex items-center justify-between",
-  headerLeftFallback: "flex items-center",
+  titleFallback: "flex items-center",
   title: "{UHeader} pr-2",
   content: "",
   defaults: {

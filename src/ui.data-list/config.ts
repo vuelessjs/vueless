@@ -1,14 +1,14 @@
 export default /*tw*/ {
   wrapper: "",
   draggable: "",
-  draggableDrag: "bg-gray-100",
-  draggableGhost: "bg-gray-100/50",
+  draggableDrag: "bg-lifted",
+  draggableGhost: "bg-lifted/50",
   itemWrapper: "group/item-wrapper",
   item: {
     base: `
       group/item
-      border-b border-gray-100
-      group-last/item-wrapper:border-b-0 group-[]/nested:group-last/item-wrapper:border-b
+      border-b border-muted
+      group-last/item-wrapper:border-b-0 group-[*]/nested:group-last/item-wrapper:border-b
       flex flex-auto items-center justify-between
     `,
     variants: {
@@ -35,9 +35,9 @@ export default /*tw*/ {
     base: "font-normal flex-auto pt-px",
     variants: {
       size: {
-        sm: "text-xs",
-        md: "text-sm",
-        lg: "text-base",
+        sm: "text-small",
+        md: "text-medium",
+        lg: "text-large",
       },
     },
   },

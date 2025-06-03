@@ -7,12 +7,17 @@ import {
   getQuartersDateList,
   getMonthsDateList,
 } from "./utilDateRange.ts";
+import { parseDate } from "../ui.form-calendar/utilCalendar.ts";
 
 import UButton from "../ui.button/UButton.vue";
 
 import { Period } from "./constants.ts";
 
-import type { UDatePickerRangePeriodMenuProps, IsDatePeriodOutOfRange } from "./types.ts";
+import type {
+  UDatePickerRangePeriodMenuProps,
+  IsDatePeriodOutOfRange,
+  SortedLocale,
+} from "./types.ts";
 import type { DatePeriodRange } from "./utilDateRange.ts";
 
 defineOptions({ internal: true });
@@ -54,6 +59,8 @@ const rangeSwitchTitle = computed(() => {
   return "";
 });
 
+onClickPeriodButton(period.value as Period);
+
 function onClickPeriodButton(periodName: `${Period}`) {
   const localDate = localValue.value.from !== null ? localValue.value.from : new Date();
 
@@ -76,7 +83,7 @@ function onClickPeriodButton(periodName: `${Period}`) {
   }
 
   if (periodName === Period.Year) {
-    periodDateList.value = getYearDateList(localDate);
+    periodDateList.value = getYearDateList(localDate || activeDate);
 
     period.value = Period.Year;
   }
@@ -87,9 +94,17 @@ function onClickOwnRange() {
 }
 
 function selectDate(date: DatePeriodRange) {
+  const parsedMinDate =
+    props.minDate && parseDate<SortedLocale>(props.minDate, props.dateFormat, props.locale);
+  const parsedMaxDate =
+    props.maxDate && parseDate<SortedLocale>(props.maxDate, props.dateFormat, props.locale);
+
+  const isStartLessThanMinDate = parsedMinDate && date.startRange <= parsedMinDate;
+  const isEndGreaterThanMaxDate = parsedMaxDate && date.endRange >= parsedMaxDate;
+
   localValue.value = {
-    from: date.startRange,
-    to: date.endRange,
+    from: isStartLessThanMinDate ? parsedMinDate : date.startRange,
+    to: isEndGreaterThanMaxDate ? parsedMaxDate : date.endRange,
   };
 }
 
@@ -138,10 +153,9 @@ function getDatePeriodState(date: DatePeriodRange) {
       <UButton
         v-if="periodButton.name !== period"
         square
-        filled
         size="xs"
         color="grayscale"
-        variant="thirdary"
+        variant="soft"
         :label="periodButton.title"
         v-bind="attrs.periodButtonAttrs.value"
         @click="onClickPeriodButton(periodButton.name)"
@@ -150,10 +164,9 @@ function getDatePeriodState(date: DatePeriodRange) {
       <UButton
         v-else
         square
-        filled
         size="xs"
         color="grayscale"
-        variant="thirdary"
+        variant="soft"
         :label="periodButton.title"
         v-bind="attrs.periodButtonActiveAttrs.value"
         @click="onClickPeriodButton(periodButton.name)"
@@ -165,10 +178,9 @@ function getDatePeriodState(date: DatePeriodRange) {
     <UButton
       v-if="customRangeButton.range.to && customRangeButton.range.from && Period.Custom !== period"
       square
-      filled
       size="xs"
       color="grayscale"
-      variant="thirdary"
+      variant="soft"
       v-bind="attrs.customRangeButtonAttrs.value"
       @click="onClickCustomRangeButton"
     >
@@ -183,10 +195,9 @@ function getDatePeriodState(date: DatePeriodRange) {
     <UButton
       v-if="customRangeButton.range.to && customRangeButton.range.from && Period.Custom === period"
       square
-      filled
       size="xs"
       color="grayscale"
-      variant="thirdary"
+      variant="soft"
       v-bind="attrs.customRangeButtonAttrs.value"
       @click="onClickCustomRangeButton"
     >
@@ -201,10 +212,9 @@ function getDatePeriodState(date: DatePeriodRange) {
     <UButton
       v-if="Period.OwnRange !== period"
       square
-      filled
       size="xs"
       color="grayscale"
-      variant="thirdary"
+      variant="soft"
       :label="locale.ownRange"
       :left-icon="config.defaults?.ownRangeIcon"
       v-bind="attrs.periodButtonAttrs.value"
@@ -214,10 +224,9 @@ function getDatePeriodState(date: DatePeriodRange) {
     <UButton
       v-else
       square
-      filled
       size="xs"
       color="grayscale"
-      variant="thirdary"
+      variant="soft"
       :label="locale.ownRange"
       :left-icon="config.defaults?.ownRangeIcon"
       v-bind="attrs.periodButtonActiveAttrs.value"
@@ -231,8 +240,8 @@ function getDatePeriodState(date: DatePeriodRange) {
         square
         size="sm"
         color="grayscale"
-        variant="thirdary"
-        :left-icon="config.defaults?.prevIcon"
+        variant="ghost"
+        :icon="config.defaults?.prevIcon"
         v-bind="attrs.rangeSwitchButtonAttrs.value"
         @click="emit('clickPrev')"
       />
@@ -245,8 +254,8 @@ function getDatePeriodState(date: DatePeriodRange) {
         square
         size="sm"
         color="grayscale"
-        variant="thirdary"
-        :left-icon="config.defaults?.nextIcon"
+        variant="ghost"
+        :icon="config.defaults?.nextIcon"
         v-bind="attrs.rangeSwitchButtonAttrs.value"
         @click="emit('clickNext')"
       />
@@ -259,10 +268,9 @@ function getDatePeriodState(date: DatePeriodRange) {
       >
         <UButton
           v-if="getDatePeriodState(date).isSelected && getDatePeriodState(date).isCurrentDate"
-          filled
           size="sm"
-          color="brand"
-          variant="thirdary"
+          color="primary"
+          variant="solid"
           :disabled="isDatePeriodOutOfRange(date)"
           v-bind="attrs.periodDateCurrentSelectedAttrs.value"
           :label="String(date.title)"
@@ -271,10 +279,9 @@ function getDatePeriodState(date: DatePeriodRange) {
 
         <UButton
           v-else-if="getDatePeriodState(date).isSelected"
-          filled
           size="sm"
-          color="brand"
-          variant="thirdary"
+          color="primary"
+          variant="solid"
           :disabled="isDatePeriodOutOfRange(date)"
           v-bind="attrs.periodDateSelectedAttrs.value"
           :label="String(date.title)"
@@ -283,10 +290,9 @@ function getDatePeriodState(date: DatePeriodRange) {
 
         <UButton
           v-else-if="getDatePeriodState(date).isCurrentDate"
-          filled
           size="sm"
-          color="brand"
-          variant="secondary"
+          color="primary"
+          variant="outlined"
           :disabled="isDatePeriodOutOfRange(date)"
           v-bind="attrs.periodDateCurrentAttrs.value"
           :label="String(date.title)"
@@ -297,7 +303,7 @@ function getDatePeriodState(date: DatePeriodRange) {
           v-else
           size="sm"
           color="grayscale"
-          variant="thirdary"
+          variant="ghost"
           :disabled="isDatePeriodOutOfRange(date)"
           v-bind="attrs.periodDateAttrs.value"
           :label="String(date.title)"

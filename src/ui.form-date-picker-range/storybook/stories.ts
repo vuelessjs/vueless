@@ -1,5 +1,6 @@
 import type { Meta, StoryFn } from "@storybook/vue3";
 import {
+  getArgs,
   getArgTypes,
   getSlotNames,
   getSlotsFragment,
@@ -16,16 +17,22 @@ import { addDays } from "../../ui.form-calendar/utilDate.ts";
 
 import { COMPONENT_NAME } from "../constants.ts";
 
-import type { UDatePickerRangeProps } from "../types.ts";
+import type { Props } from "../types.ts";
 
-interface DefaultUDatePickerRangeArgs extends UDatePickerRangeProps<unknown> {
+interface DefaultUDatePickerRangeArgs extends Props<unknown> {
   slotTemplate?: string;
 }
 
-interface EnumUDatePickerRangeArgs extends UDatePickerRangeProps<unknown> {
+interface EnumUDatePickerRangeArgs extends Props<unknown> {
   slotTemplate?: string;
   enum: "size" | "variant" | "labelAlign";
 }
+
+const currentDate = new Date();
+
+const oneDayMs = 24 * 60 * 60 * 1000;
+const fromDate = new Date(currentDate.getTime());
+const toDate = new Date(currentDate.getTime() + oneDayMs * 24);
 
 export default {
   id: "3180",
@@ -34,8 +41,8 @@ export default {
   args: {
     label: "Select a date",
     modelValue: {
-      from: new Date(2022, 1, 14),
-      to: new Date(2022, 2, 20),
+      from: fromDate,
+      to: toDate,
     },
   },
   argTypes: {
@@ -55,11 +62,7 @@ const DefaultTemplate: StoryFn<DefaultUDatePickerRangeArgs> = (
   args: DefaultUDatePickerRangeArgs,
 ) => ({
   components: { UDatePickerRange, UIcon, UButton },
-  setup() {
-    const slots = getSlotNames(COMPONENT_NAME);
-
-    return { args, slots };
-  },
+  setup: () => ({ args, slots: getSlotNames(COMPONENT_NAME) }),
   template: `
     <UDatePickerRange open-direction-y="bottom" v-bind="args" v-model="args.modelValue">
       ${args.slotTemplate || getSlotsFragment("")}
@@ -71,27 +74,19 @@ const DefaultTemplate: StoryFn<DefaultUDatePickerRangeArgs> = (
   `,
 });
 
-const EnumVariantTemplate: StoryFn<EnumUDatePickerRangeArgs> = (
+const EnumTemplate: StoryFn<EnumUDatePickerRangeArgs> = (
   args: EnumUDatePickerRangeArgs,
   { argTypes },
 ) => ({
   components: { UDatePickerRange, UCol },
-  setup() {
-    return {
-      args,
-      options: argTypes[args.enum]?.options,
-    };
-  },
+  setup: () => ({ args, argTypes, getArgs }),
   template: `
     <UCol>
       <UDatePickerRange
-        v-for="(option, index) in options"
-        :key="index"
-        open-direction-y="bottom"
-        v-bind="args"
+        v-for="option in argTypes?.[args.enum]?.options"
+        v-bind="getArgs(args, option)"
+        :key="option"
         v-model="args.modelValue"
-        :[args.enum]="option"
-        :placeholder="option"
         class="w-full"
       />
     </UCol>
@@ -101,12 +96,12 @@ const EnumVariantTemplate: StoryFn<EnumUDatePickerRangeArgs> = (
 const OpenDirectionTemplate: StoryFn<DefaultUDatePickerRangeArgs> = (
   args: DefaultUDatePickerRangeArgs,
 ) => ({
-  components: { UDatePickerRange, URow },
+  components: { UDatePickerRange, UCol },
   setup() {
     return { args };
   },
   template: `
-    <URow class="!flex-col">
+    <UCol>
       <UDatePickerRange
         class="w-full"
         open-direction-y="top"
@@ -139,7 +134,7 @@ const OpenDirectionTemplate: StoryFn<DefaultUDatePickerRangeArgs> = (
         v-model="args.modelValue"
         label="Bottom Right"
       />
-    </URow>
+    </UCol>
   `,
 });
 
@@ -165,21 +160,23 @@ Error.args = { variant: "input", error: "Please select a valid date." };
 export const Disabled = DefaultTemplate.bind({});
 Disabled.args = { disabled: true };
 
-export const Variants = EnumVariantTemplate.bind({});
-Variants.args = { enum: "variant" };
+export const Variants = EnumTemplate.bind({});
+Variants.args = { enum: "variant", placeholder: "{enumValue}" };
 
-export const LabelPlacement = EnumVariantTemplate.bind({});
-LabelPlacement.args = {
+export const LabelAlign = EnumTemplate.bind({});
+LabelAlign.args = {
   variant: "input",
   enum: "labelAlign",
   modelValue: { from: null, to: null },
+  placeholder: "{enumValue}",
 };
 
-export const Size = EnumVariantTemplate.bind({});
-Size.args = {
+export const Sizes = EnumTemplate.bind({});
+Sizes.args = {
   variant: "input",
   enum: "size",
   modelValue: { from: null, to: null },
+  placeholder: "{enumValue}",
 };
 
 export const OpenDirection = OpenDirectionTemplate.bind({});
@@ -215,9 +212,9 @@ UserDateFormat.parameters = {
 
 export const MinMax = DefaultTemplate.bind({});
 MinMax.args = {
-  minDate: new Date(2022, 2, 22),
-  maxDate: new Date(2022, 2, 26),
-  modelValue: { from: new Date(2022, 2, 24), to: new Date(2022, 2, 25) },
+  minDate: currentDate,
+  maxDate: new Date(currentDate.getTime() + oneDayMs * 35),
+  modelValue: { from: fromDate, to: toDate },
 };
 MinMax.parameters = {
   docs: {
@@ -271,7 +268,7 @@ export const Slots: StoryFn<DefaultUDatePickerRangeArgs> = (args) => ({
     return { args };
   },
   template: `
-    <URow justify="stretch">
+    <URow align="stretch">
       <UDatePickerRange
         v-bind="args"
         v-model="args.modelValue"

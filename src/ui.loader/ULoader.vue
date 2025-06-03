@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { useTemplateRef } from "vue";
+
 import useUI from "../composables/useUI.ts";
 import { getDefaults } from "../utils/ui.ts";
 
@@ -13,6 +15,16 @@ withDefaults(defineProps<Props>(), {
   ...getDefaults<Props, Config>(defaultConfig, COMPONENT_NAME),
 });
 
+const loaderRef = useTemplateRef<HTMLDivElement>("loader");
+
+defineExpose({
+  /**
+   * A reference to the loader element for direct DOM manipulation.
+   * @property {HTMLDivElement}
+   */
+  loaderRef,
+});
+
 /**
  * Get element / nested component attributes for each config token ✨
  * Applies: `class`, `config`, redefined default `props` and dev `vl-...` attributes.
@@ -21,8 +33,8 @@ const { getDataTest, config, loaderAttrs, ellipseAttrs } = useUI<Config>(default
 </script>
 
 <template>
-  <Transition v-bind="config.transition">
-    <div v-if="loading" v-bind="loaderAttrs" :data-test="getDataTest()">
+  <Transition v-bind="config.loaderTransition">
+    <div v-if="loading" ref="loader" v-bind="loaderAttrs" :data-test="getDataTest()">
       <!-- @slot Use it to add something instead of the default loader. -->
       <slot>
         <div v-for="ellipse in ELLIPSES_AMOUNT" :key="ellipse" v-bind="ellipseAttrs" />

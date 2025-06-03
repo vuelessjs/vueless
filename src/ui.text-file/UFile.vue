@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, useId } from "vue";
+import { ref, computed, useId, useTemplateRef } from "vue";
 
 import useUI from "../composables/useUI.ts";
 import { getDefaults } from "../utils/ui.ts";
@@ -27,9 +27,15 @@ const emit = defineEmits([
   "remove",
 ]);
 
+const fileRef = useTemplateRef<InstanceType<typeof ULink>>("file");
+
 const focus = ref(false);
 
 const fileId = props.id || useId();
+
+const link = computed(() => {
+  return fileRef.value?.linkRef || null;
+});
 
 function onRemove() {
   emit("remove", fileId);
@@ -43,10 +49,22 @@ function onBlur() {
   focus.value = false;
 }
 
+defineExpose({
+  /**
+   * A reference to the ULink instance for direct DOM manipulation.
+   * @property {InstanceType<typeof ULink>}
+   */
+  link,
+});
+
 /**
  * Get element / nested component attributes for each config token ✨
  * Applies: `class`, `config`, redefined default `props` and dev `vl-...` attributes.
  */
+const mutatedProps = computed(() => ({
+  imageUrl: Boolean(props.imageUrl),
+}));
+
 const {
   getDataTest,
   config,
@@ -56,11 +74,11 @@ const {
   fileLabelAttrs,
   fileImageAttrs,
   removeIconAttrs,
-} = useUI<Config>(defaultConfig);
+} = useUI<Config>(defaultConfig, mutatedProps);
 </script>
 
 <template>
-  <ULink :href="url" v-bind="fileAttrs" :data-test="getDataTest()">
+  <ULink ref="file" :href="url" v-bind="fileAttrs" :data-test="getDataTest()">
     <!-- @slot Use it to add something before the file. -->
     <slot name="left" />
 
@@ -77,16 +95,15 @@ const {
 
         <UIcon
           v-else
-          internal
           interactive
-          color="gray"
+          color="neutral"
           :name="config.defaults.fileIcon"
           v-bind="fileIconAttrs"
           @focus="onFocus"
           @blur="onBlur"
         />
 
-        <ULink :label="label" :size="size" color="gray" dashed v-bind="fileLabelAttrs" />
+        <ULink :label="label" :size="size" color="grayscale" dashed v-bind="fileLabelAttrs" />
       </div>
     </slot>
 
@@ -94,9 +111,8 @@ const {
     <slot name="right">
       <UIcon
         v-if="removable"
-        internal
         interactive
-        color="gray"
+        color="neutral"
         :name="config.defaults.removeIcon"
         v-bind="removeIconAttrs"
         :data-test="getDataTest('remove-item')"

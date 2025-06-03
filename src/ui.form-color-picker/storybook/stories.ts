@@ -1,4 +1,5 @@
 import {
+  getArgs,
   getArgTypes,
   getSlotNames,
   getSlotsFragment,
@@ -23,9 +24,9 @@ export default {
   component: UColorPicker,
   args: {
     modelValue: "",
-    colors: {
-      grayscale: "bg-gray-900",
-      gray: "bg-gray-600",
+    colors: /*tw*/ {
+      grayscale: "bg-grayscale",
+      neutral: "bg-neutral-600",
       red: "bg-red-600",
       orange: "bg-orange-600",
       amber: "bg-amber-600",
@@ -57,11 +58,7 @@ export default {
 
 const DefaultTemplate: StoryFn<UColorPickerArgs> = (args: UColorPickerArgs) => ({
   components: { UColorPicker, UButton, UCol },
-  setup() {
-    const slots = getSlotNames(UColorPicker.__name);
-
-    return { args, slots };
-  },
+  setup: () => ({ args, slots: getSlotNames(UColorPicker.__name) }),
   template: `
     <UColorPicker v-bind="args" v-model="args.modelValue">
       ${args.slotTemplate || getSlotsFragment("")}
@@ -69,22 +66,16 @@ const DefaultTemplate: StoryFn<UColorPickerArgs> = (args: UColorPickerArgs) => (
   `,
 });
 
-const EnumVariantTemplate: StoryFn<UColorPickerArgs> = (args: UColorPickerArgs, { argTypes }) => ({
+const EnumTemplate: StoryFn<UColorPickerArgs> = (args: UColorPickerArgs, { argTypes }) => ({
   components: { UCol, UColorPicker },
-  setup() {
-    return {
-      args,
-      options: argTypes?.[args.enum]?.options,
-    };
-  },
+  setup: () => ({ args, argTypes, getArgs }),
   template: `
     <UCol>
       <UColorPicker
-        v-for="(option, index) in options"
-        :key="index"
-        v-bind="args"
+        v-for="option in argTypes?.[args.enum]?.options"
+        v-bind="getArgs(args, option)"
+        :key="option"
         v-model="args.modelValue"
-        :[args.enum]="option"
       />
     </UCol>
   `,
@@ -93,5 +84,5 @@ const EnumVariantTemplate: StoryFn<UColorPickerArgs> = (args: UColorPickerArgs, 
 export const Default = DefaultTemplate.bind({});
 Default.args = {};
 
-export const Sizes = EnumVariantTemplate.bind({});
+export const Sizes = EnumTemplate.bind({});
 Sizes.args = { enum: "size" };

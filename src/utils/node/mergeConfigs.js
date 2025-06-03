@@ -1,12 +1,11 @@
 import { cloneDeep } from "lodash-es";
 
-import { SYSTEM_CONFIG_KEY, STRATEGY_TYPE } from "../../constants.js";
+import { SYSTEM_CONFIG_KEY } from "../../constants.js";
 
 export function createMergeConfigs(cx) {
   /**
    * Recursively merge config objects with removing tailwind classes duplicates.
    * config - final merged config.
-   * isReplace - enables class replacement instead of merge.
    * isVariants - if true, prevents adding a "base" key into nested objects.
    */
   function mergeConfigs({
@@ -14,7 +13,6 @@ export function createMergeConfigs(cx) {
     globalConfig,
     propsConfig,
     config = {},
-    isReplace = false,
     isVariants = false,
   }) {
     globalConfig = cloneDeep(stringToObject(globalConfig, { addBase: true }));
@@ -40,24 +38,17 @@ export function createMergeConfigs(cx) {
       }
     }
 
-    const {
-      i18n,
-      defaults,
-      strategy,
-      safelist,
-      safelistColors,
-      defaultVariants,
-      compoundVariants,
-    } = SYSTEM_CONFIG_KEY;
+    const { i18n, defaults, unstyled, colors, defaultVariants, compoundVariants } =
+      SYSTEM_CONFIG_KEY;
 
     for (const key in composedConfig) {
       if (isGlobalConfig || isPropsConfig) {
-        if (key === safelist || key === safelistColors) {
+        if (key === colors) {
           if (propsConfig[key]) {
             // eslint-disable-next-line no-console
             console.warn(`Passing '${key}' key in 'config' prop is not allowed.`);
           }
-        } else if (key === strategy) {
+        } else if (key === unstyled) {
           config[key] = propsConfig[key] || globalConfig[key] || defaultConfig[key];
         } else if (key === defaults || key === defaultVariants) {
           config[key] = {
@@ -70,7 +61,6 @@ export function createMergeConfigs(cx) {
             defaultConfig,
             globalConfig,
             propsConfig,
-            isReplace,
           });
         } else {
           const isObjectComposedConfig = typeof composedConfig[key] === "object";
@@ -85,19 +75,23 @@ export function createMergeConfigs(cx) {
             isVariants = true;
           }
 
-          config[key] =
-            isObject && !isEmpty && !isI18n
-              ? mergeConfigs({
-                  defaultConfig: stringToObject(composedConfig[key], { addBase: !isVariants }),
-                  globalConfig: stringToObject(globalConfig[key], { addBase: !isVariants }),
-                  propsConfig: stringToObject(propsConfig[key], { addBase: !isVariants }),
-                  config: stringToObject(composedConfig[key], { addBase: !isVariants }),
-                  isReplace,
-                  isVariants,
-                })
-              : isReplace || isI18n
-                ? propsConfig[key] || globalConfig[key] || defaultConfig[key]
-                : cx([defaultConfig[key], globalConfig[key], propsConfig[key]]);
+          let mergedKey = "";
+
+          if (isObject && !isEmpty && !isI18n) {
+            mergedKey = mergeConfigs({
+              defaultConfig: stringToObject(composedConfig[key], { addBase: !isVariants }),
+              globalConfig: stringToObject(globalConfig[key], { addBase: !isVariants }),
+              propsConfig: stringToObject(propsConfig[key], { addBase: !isVariants }),
+              config: stringToObject(composedConfig[key], { addBase: !isVariants }),
+              isVariants,
+            });
+          } else if (isI18n) {
+            mergedKey = propsConfig[key] || globalConfig[key] || defaultConfig[key];
+          } else {
+            mergedKey = cx([defaultConfig[key], globalConfig[key], propsConfig[key]]);
+          }
+
+          config[key] = mergedKey;
         }
       } else {
         config[key] = composedConfig[key];
@@ -109,9 +103,8 @@ export function createMergeConfigs(cx) {
 
   /**
    * Merge CVA compound variants arrays.
-   * isReplace - enables class replacement instead of merge.
    */
-  function mergeCompoundVariants({ defaultConfig, globalConfig, propsConfig, isReplace }) {
+  function mergeCompoundVariants({ defaultConfig, globalConfig, propsConfig }) {
     if (
       (globalConfig.compoundVariants && !Array.isArray(globalConfig.compoundVariants)) ||
       (propsConfig.compoundVariants && !Array.isArray(propsConfig.compoundVariants)) ||
@@ -169,9 +162,7 @@ export function createMergeConfigs(cx) {
       return globalConfigItem || propsConfigItem
         ? {
             ...defaultConfigItem,
-            class: isReplace
-              ? propsConfigItem?.class || globalConfigItem?.class || defaultConfigItem.class
-              : cx([defaultConfigItem.class, globalConfigItem?.class, propsConfigItem?.class]),
+            class: cx([defaultConfigItem.class, globalConfigItem?.class, propsConfigItem?.class]),
           }
         : defaultConfigItem;
     });
@@ -216,31 +207,22 @@ export function createGetMergedConfig(cx) {
   /**
    * Get merged config based on config merging strategy.
    */
-  function getMergedConfig({ defaultConfig, globalConfig, propsConfig, vuelessStrategy }) {
+  function getMergedConfig({ defaultConfig, globalConfig, propsConfig, unstyled }) {
     defaultConfig = cloneDeep(defaultConfig);
 
-    let mergedConfig = {};
-    const strategy =
-      !globalConfig && !propsConfig
-        ? STRATEGY_TYPE.merge
-        : propsConfig?.strategy || globalConfig?.strategy || vuelessStrategy || STRATEGY_TYPE.merge;
+    const isUnstyled = propsConfig?.unstyled || globalConfig?.unstyled || unstyled;
 
-    if (strategy === STRATEGY_TYPE.merge) {
-      mergedConfig = mergeConfigs({ defaultConfig, globalConfig, propsConfig });
+    if (isUnstyled) {
+      const { i18n, defaults, unstyled } = SYSTEM_CONFIG_KEY;
+
+      defaultConfig = {
+        ...(defaultConfig[i18n] ? { [i18n]: defaultConfig[i18n] } : {}),
+        ...(defaultConfig[defaults] ? { [defaults]: defaultConfig[defaults] } : {}),
+        [unstyled]: defaultConfig[unstyled],
+      };
     }
 
-    if (strategy === STRATEGY_TYPE.replace) {
-      mergedConfig = mergeConfigs({ defaultConfig, globalConfig, propsConfig, isReplace: true });
-    }
-
-    if (strategy === STRATEGY_TYPE.overwrite) {
-      const isGlobalConfig = globalConfig && Object.keys(globalConfig).length;
-      const isPropsConfig = propsConfig && Object.keys(propsConfig).length;
-
-      mergedConfig = isPropsConfig ? propsConfig : isGlobalConfig ? globalConfig : defaultConfig;
-    }
-
-    return mergedConfig;
+    return mergeConfigs({ defaultConfig, globalConfig, propsConfig });
   }
 
   return getMergedConfig;

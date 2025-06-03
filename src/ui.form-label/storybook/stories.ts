@@ -1,4 +1,5 @@
 import {
+  getArgs,
   getArgTypes,
   getSlotNames,
   getSlotsFragment,
@@ -49,11 +50,7 @@ const defaultTemplate = "johndoe@example.com";
 
 const DefaultTemplate: StoryFn<ULabelArgs> = (args: ULabelArgs) => ({
   components: { ULabel, UText, UIcon, UBadge },
-  setup() {
-    const slots = getSlotNames(ULabel.__name);
-
-    return { args, slots };
-  },
+  setup: () => ({ args, slots: getSlotNames(ULabel.__name) }),
   template: `
     <ULabel v-bind="args">
       <UText v-bind="args">${getSlotsFragment(defaultTemplate)}</UText>
@@ -62,40 +59,17 @@ const DefaultTemplate: StoryFn<ULabelArgs> = (args: ULabelArgs) => ({
   `,
 });
 
-const EnumVariantTemplate: StoryFn<ULabelArgs> = (args: ULabelArgs, { argTypes }) => ({
+const EnumTemplate: StoryFn<ULabelArgs> = (args: ULabelArgs, { argTypes }) => ({
   components: { ULabel, UCol, UText },
-  setup() {
-    function getText(value: string, name: string) {
-      return name === "size" ? `This is ${value} size.` : `This is ${value} label placement.`;
-    }
-
-    let prefixedOptions;
-
-    const enumArgType = argTypes?.[args.enum];
-
-    if (enumArgType && "name" in enumArgType && "options" in enumArgType) {
-      const { name, options } = enumArgType;
-
-      prefixedOptions = options?.map((option: string) => getText(option, name));
-    }
-
-    return {
-      args,
-      options: argTypes?.[args.enum]?.options,
-      prefixedOptions,
-    };
-  },
+  setup: () => ({ args, argTypes, getArgs }),
   template: `
     <UCol class="gap-10">
       <ULabel
-        v-for="(option, index) in options"
-        :key="index"
-        v-bind="args"
-        :[args.enum]="option"
+        v-for="option in argTypes?.[args.enum]?.options"
+        v-bind="getArgs(args, option)"
+        :key="option"
       >
-        <UText :[args.enum]="option">
-          {{ prefixedOptions[index] }}
-        </UText>
+        <UText :[args.enum]="option">{{ option }}</UText>
       </ULabel>
     </UCol>
   `,
@@ -126,27 +100,27 @@ Interactive.parameters = {
 export const Centred = DefaultTemplate.bind({});
 Centred.args = { centred: true };
 
-export const Sizes = EnumVariantTemplate.bind({});
+export const Sizes = EnumTemplate.bind({});
 Sizes.args = { enum: "size" };
 
-export const LabelPlacement = EnumVariantTemplate.bind({});
-LabelPlacement.args = { enum: "align" };
+export const LabelAlign = EnumTemplate.bind({});
+LabelAlign.args = { enum: "align" };
 
-export const SlotLabel = DefaultTemplate.bind({});
-SlotLabel.args = {
+export const LabelSlot = DefaultTemplate.bind({});
+LabelSlot.args = {
   label: "Email Address",
   slotTemplate: `
     <template #label="{ label }">
-      <UBadge :label="label" color="green" />
+      <UBadge :label="label" color="success" />
     </template>
   `,
 };
 
-export const SlotBottom = DefaultTemplate.bind({});
-SlotBottom.args = {
+export const BottomSlot = DefaultTemplate.bind({});
+BottomSlot.args = {
   slotTemplate: `
     <template #bottom>
-      <UBadge label="Your opinion is important for us!" color="green" class="max-w-fit" />
+      <UBadge label="Your opinion is important for us!" color="success" class="max-w-fit" />
     </template>
   `,
 };

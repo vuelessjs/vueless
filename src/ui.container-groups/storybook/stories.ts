@@ -1,4 +1,10 @@
-import { getArgTypes, getSlotNames, getDocsDescription } from "../../utils/storybook.ts";
+import {
+  getArgs,
+  getArgTypes,
+  getSlotNames,
+  getSlotsFragment,
+  getDocsDescription,
+} from "../../utils/storybook.ts";
 
 import UGroups from "../../ui.container-groups/UGroups.vue";
 import UGroup from "../../ui.container-group/UGroup.vue";
@@ -30,47 +36,37 @@ export default {
 
 const DefaultTemplate: StoryFn<UGroupsArgs> = (args: UGroupsArgs) => ({
   components: { UGroups, UGroup, UCol, UInput },
-  setup() {
-    const slots = getSlotNames(UGroups.__name);
-
-    return { args, slots };
-  },
+  setup: () => ({ args, slots: getSlotNames(UGroups.__name) }),
   template: `
     <UGroups v-bind="args">
-      ${args.slotTemplate}
+      ${args.slotTemplate || getSlotsFragment("")}
     </UGroups>
   `,
 });
 
-const EnumVariantTemplate: StoryFn<UGroupsArgs> = (args: UGroupsArgs, { argTypes }) => ({
+const EnumTemplate: StoryFn<UGroupsArgs> = (args: UGroupsArgs, { argTypes }) => ({
   components: { UGroups, UGroup, UCol, UInput },
-  setup() {
-    return {
-      args,
-      options: argTypes?.[args.enum]?.options,
-    };
-  },
+  setup: () => ({ args, argTypes, getArgs }),
   template: `
-    <div>
+    <UCol align="stretch">
       <UGroups
-        v-for="(option, index) in options"
+        v-for="option in argTypes?.[args.enum]?.options"
+        v-bind="getArgs(args, option)"
         :key="option"
-        :[args.enum]="option"
-        class="mb-8"
       >
-        <UGroup :title="option" :upperlined="index !== 0">
+        <UGroup :title="option" upperlined>
           <UCol>
             <UInput placeholder="Enter full name" label="Full Name" />
             <UInput placeholder="Enter email address" label="Email Address" />
           </UCol>
         </UGroup>
-        <UGroup title="'Additional Group'">
+        <UGroup title="Additional Group" class="mt-4">
           <UCol>
             <UInput placeholder="Enter phone number" label="Phone Number" />
           </UCol>
         </UGroup>
       </UGroups>
-    </div>
+    </UCol>
   `,
 });
 
@@ -86,5 +82,5 @@ Default.args = {
   `,
 };
 
-export const Gap = EnumVariantTemplate.bind({});
+export const Gap = EnumTemplate.bind({});
 Gap.args = { enum: "gap" };

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, ref, useId } from "vue";
+import { computed, ref, useId, useTemplateRef } from "vue";
 
 import useUI from "../composables/useUI.ts";
 import { getDefaults } from "../utils/ui.ts";
@@ -27,19 +27,33 @@ const emit = defineEmits([
   "click",
 ]);
 
+const wrapperRef = useTemplateRef<HTMLDivElement>("wrapper");
+
 const isOpened = ref(false);
 
 const elementId = props.id || useId();
 
-const toggleIcon = computed(() =>
-  isOpened.value ? config.value.defaults.collapseIcon : config.value.defaults.expandIcon,
-);
+const toggleIconName = computed(() => {
+  if (typeof props.toggleIcon === "string") {
+    return props.toggleIcon;
+  }
+
+  return props.toggleIcon ? config.value.defaults.toggleIcon : "";
+});
 
 function onClickItem() {
   isOpened.value = !isOpened.value;
 
   emit("click", elementId, isOpened.value);
 }
+
+defineExpose({
+  /**
+   * A reference to the component's wrapper element for direct DOM manipulation.
+   * @property {HTMLDivElement}
+   */
+  wrapperRef,
+});
 
 const mutatedProps = computed(() => ({
   /* component state, not a props */
@@ -59,7 +73,7 @@ const {
 </script>
 
 <template>
-  <div v-bind="wrapperAttrs" :data-test="getDataTest()" @click="onClickItem">
+  <div ref="wrapper" v-bind="wrapperAttrs" :data-test="getDataTest()" @click="onClickItem">
     <div v-bind="bodyAttrs">
       <div v-bind="titleAttrs">
         {{ title }}
@@ -68,8 +82,14 @@ const {
           @binding {string} icon-name
           @binding {boolean} opened
         -->
-        <slot name="toggle" :icon-name="toggleIcon" :opened="isOpened">
-          <UIcon :name="toggleIcon" :size="size" color="gray" internal v-bind="toggleIconAttrs" />
+        <slot name="toggle" :icon-name="toggleIconName" :opened="isOpened">
+          <UIcon
+            v-if="toggleIconName"
+            :name="toggleIconName"
+            :size="size"
+            color="neutral"
+            v-bind="toggleIconAttrs"
+          />
         </slot>
       </div>
 

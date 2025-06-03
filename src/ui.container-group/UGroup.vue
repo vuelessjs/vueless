@@ -1,7 +1,9 @@
 <script setup lang="ts">
+import { useTemplateRef } from "vue";
+
 import useUI from "../composables/useUI.ts";
 import { getDefaults } from "../utils/ui.ts";
-import UDivider from "../ui.container-divider/UDivider.vue";
+
 import UHeader from "../ui.text-header/UHeader.vue";
 
 import { COMPONENT_NAME } from "./constants.ts";
@@ -15,31 +17,34 @@ withDefaults(defineProps<Props>(), {
   ...getDefaults<Props, Config>(defaultConfig, COMPONENT_NAME),
 });
 
+const wrapperRef = useTemplateRef<HTMLDivElement>("wrapper");
+
+defineExpose({
+  /**
+   * A reference to the component's wrapper element for direct DOM manipulation.
+   * @property {HTMLDivElement}
+   */
+  wrapperRef,
+});
+
 /**
  * Get element / nested component attributes for each config token ✨
  * Applies: `class`, `config`, redefined default `props` and dev `vl-...` attributes.
  */
-const {
-  getDataTest,
-  headerAttrs,
-  wrapperAttrs,
-  headerLeftFallbackAttrs,
-  titleAttrs,
-  upperlineAttrs,
-  underlineAttrs,
-  contentAttrs,
-} = useUI<Config>(defaultConfig);
+const { getDataTest, headerAttrs, wrapperAttrs, titleFallbackAttrs, titleAttrs, contentAttrs } =
+  useUI<Config>(defaultConfig);
 </script>
 
 <template>
-  <div v-bind="wrapperAttrs" :data-test="getDataTest()">
+  <div ref="wrapper" v-bind="wrapperAttrs" :data-test="getDataTest()">
     <template v-if="title">
-      <UDivider v-if="upperlined" size="xl" padding="after" v-bind="upperlineAttrs" />
-
       <div v-bind="headerAttrs">
-        <!-- @slot Use it to add something on the left side of the header. -->
-        <slot name="title">
-          <div v-bind="headerLeftFallbackAttrs">
+        <!--
+          @slot Use it to add something on the left side of the header.
+          @binding {string} title
+        -->
+        <slot name="title" :title="title">
+          <div v-bind="titleFallbackAttrs">
             <!-- @slot Use it to add something before the title. -->
             <slot name="before-title" />
 
@@ -53,8 +58,6 @@ const {
         <!-- @slot Use it to add something on the right side of the header. -->
         <slot name="actions" />
       </div>
-
-      <UDivider size="xl" padding="after" :border="underlined" v-bind="underlineAttrs" />
     </template>
 
     <div v-bind="contentAttrs">

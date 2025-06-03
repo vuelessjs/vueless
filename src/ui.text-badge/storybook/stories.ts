@@ -1,4 +1,5 @@
 import {
+  getArgs,
   getArgTypes,
   getSlotNames,
   getSlotsFragment,
@@ -9,14 +10,15 @@ import UBadge from "../../ui.text-badge/UBadge.vue";
 import UIcon from "../../ui.image-icon/UIcon.vue";
 import URow from "../../ui.container-row/URow.vue";
 import UCol from "../../ui.container-col/UCol.vue";
-import UMoney from "../../ui.text-money/UMoney.vue";
+import UNumber from "../../ui.text-number/UNumber.vue";
 
 import type { Meta, StoryFn } from "@storybook/vue3";
 import type { Props } from "../types.ts";
 
 interface UBadgeArgs extends Props {
   slotTemplate?: string;
-  enum: "variant" | "size";
+  enum: "variant" | "size" | "color";
+  outerEnum: "variant";
 }
 
 export default {
@@ -38,11 +40,7 @@ export default {
 
 const DefaultTemplate: StoryFn<UBadgeArgs> = (args: UBadgeArgs) => ({
   components: { UBadge, UIcon },
-  setup() {
-    const slots = getSlotNames(UBadge.__name);
-
-    return { args, slots };
-  },
+  setup: () => ({ args, slots: getSlotNames(UBadge.__name) }),
   template: `
     <UBadge v-bind="args">
       ${args.slotTemplate || getSlotsFragment("")}
@@ -50,50 +48,33 @@ const DefaultTemplate: StoryFn<UBadgeArgs> = (args: UBadgeArgs) => ({
   `,
 });
 
-const ColorsTemplate: StoryFn<UBadgeArgs> = (args: UBadgeArgs, { argTypes }) => ({
-  components: { UBadge, URow, UCol },
-  setup() {
-    return {
-      args,
-      variants: argTypes?.variant?.options,
-      colors: argTypes?.color?.options,
-    };
-  },
-  template: `
-    <UCol>
-      <URow v-for="(variant, index) in variants" :key="index">
-        <UBadge
-          v-for="(color, index) in colors"
-          :key="index"
-          v-bind="args"
-          :color="color"
-          :variant="variant"
-          :label="color"
-        />
-      </URow>
-    </UCol>
-  `,
-});
-
-const EnumVariantTemplate: StoryFn<UBadgeArgs> = (args: UBadgeArgs, { argTypes }) => ({
+const EnumTemplate: StoryFn<UBadgeArgs> = (args: UBadgeArgs, { argTypes }) => ({
   components: { UBadge, URow },
-  setup() {
-    function getText(value: string) {
-      return `Badge ${value}`;
-    }
-
-    return { args, options: argTypes?.[args.enum]?.options || [], getText };
-  },
+  setup: () => ({ args, argTypes, getArgs }),
   template: `
     <URow>
       <UBadge
-        v-for="(option, index) in options"
-        :key="index"
-        v-bind="args"
-        :[args.enum]="option"
-        :label="getText(option)"
+        v-for="option in argTypes?.[args.enum]?.options"
+        v-bind="getArgs(args, option)"
+        :key="option"
       />
     </URow>
+  `,
+});
+
+const MultiEnumTemplate: StoryFn<UBadgeArgs> = (args: UBadgeArgs, { argTypes }) => ({
+  components: { UBadge, URow, UCol },
+  setup: () => ({ args, argTypes, getArgs }),
+  template: `
+    <UCol>
+      <URow v-for="outerOption in argTypes?.[args.outerEnum]?.options" :key="outerOption">
+        <UBadge
+          v-for="option in argTypes?.[args.enum]?.options"
+          v-bind="getArgs(args, option, outerOption)"
+          :key="option"
+        />
+      </URow>
+    </UCol>
   `,
 });
 
@@ -103,28 +84,14 @@ Default.args = {};
 export const Round = DefaultTemplate.bind({});
 Round.args = { round: true };
 
-export const Bordered = DefaultTemplate.bind({});
-Bordered.args = {
-  variant: "thirdary",
-  bordered: true,
-  color: "green",
-};
-Bordered.parameters = {
-  docs: {
-    description: {
-      story: "Add border to the `thirdary` variant.",
-    },
-  },
-};
+export const Variants = EnumTemplate.bind({});
+Variants.args = { enum: "variant", label: "{enumValue}" };
 
-export const Variants = EnumVariantTemplate.bind({});
-Variants.args = { enum: "variant" };
+export const Sizes = EnumTemplate.bind({});
+Sizes.args = { enum: "size", label: "{enumValue}" };
 
-export const Sizes = EnumVariantTemplate.bind({});
-Sizes.args = { enum: "size" };
-
-export const Color = ColorsTemplate.bind({});
-Color.args = {};
+export const Colors = MultiEnumTemplate.bind({});
+Colors.args = { outerEnum: "variant", enum: "color", label: "{enumValue}" };
 
 export const IconProps: StoryFn<UBadgeArgs> = (args) => ({
   components: { UBadge, URow },
@@ -132,7 +99,7 @@ export const IconProps: StoryFn<UBadgeArgs> = (args) => ({
     return { args };
   },
   template: `
-    <URow no-mobile>
+    <URow>
       <UBadge
         v-bind="args"
         left-icon="mail"
@@ -153,13 +120,13 @@ export const IconProps: StoryFn<UBadgeArgs> = (args) => ({
 });
 
 export const Slots: StoryFn<UBadgeArgs> = (args) => ({
-  components: { UBadge, UIcon, URow, UMoney },
+  components: { UBadge, UIcon, URow, UNumber },
   setup() {
     return { args };
   },
   template: `
-    <URow no-mobile>
-      <UBadge v-bind="args" label="Add to favorite">
+    <URow>
+      <UBadge label="Add to favorite">
         <template #left>
           <UIcon
             name="heart_plus"
@@ -169,13 +136,13 @@ export const Slots: StoryFn<UBadgeArgs> = (args) => ({
         </template>
       </UBadge>
 
-      <UBadge v-bind="args" label="shopping_cart">
+      <UBadge label="shopping_cart">
         <template #default="{ label }">
-          <UMoney
+          <UNumber
             value="20.25"
             size="sm"
+            currency="$"
             color="inherit"
-            symbol="$"
           />
           <UIcon
             :name="label"
@@ -185,7 +152,7 @@ export const Slots: StoryFn<UBadgeArgs> = (args) => ({
         </template>
       </UBadge>
 
-      <UBadge v-bind="args" label="Delete">
+      <UBadge label="Delete">
         <template #right>
           <UIcon
             name="delete"

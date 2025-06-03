@@ -1,14 +1,17 @@
 import {
+  getArgs,
   getArgTypes,
   getSlotNames,
   getSlotsFragment,
   getDocsDescription,
+  getEnumVariantDescription,
 } from "../../utils/storybook.ts";
 
 import UDot from "../../ui.other-dot/UDot.vue";
 import URow from "../../ui.container-row/URow.vue";
-import UCol from "../../ui.container-col/UCol.vue";
 import UBadge from "../../ui.text-badge/UBadge.vue";
+
+import tooltip from "../../directives/tooltip/vTooltip.ts";
 
 import type { Meta, StoryFn } from "@storybook/vue3";
 import type { Props } from "../types.ts";
@@ -34,11 +37,7 @@ export default {
 
 const DefaultTemplate: StoryFn<UDotArgs> = (args: UDotArgs) => ({
   components: { UDot },
-  setup() {
-    const slots = getSlotNames(UDot.__name);
-
-    return { args, slots };
-  },
+  setup: () => ({ args, slots: getSlotNames(UDot.__name) }),
   template: `
     <UDot v-bind="args">
       ${args.slotTemplate || getSlotsFragment("")}
@@ -46,33 +45,29 @@ const DefaultTemplate: StoryFn<UDotArgs> = (args: UDotArgs) => ({
   `,
 });
 
-const EnumVariantTemplate: StoryFn<UDotArgs> = (args: UDotArgs, { argTypes }) => ({
-  components: { UCol, URow, UDot, UBadge },
-  setup() {
-    return {
-      args,
-      options: argTypes?.[args.enum]?.options,
-    };
-  },
+const EnumTemplate: StoryFn<UDotArgs> = (args: UDotArgs, { argTypes }) => ({
+  components: { URow, UDot, UBadge },
+  directives: { tooltip },
+  setup: () => ({ args, argTypes, getArgs }),
   template: `
-    <UCol>
-      <URow
-        v-for="(option, index) in options"
-        :key="index"
-        align="center"
-      >
-        <UDot v-bind="args" :[args.enum]="option"/>
-        <UBadge :label="option" :[args.enum]="option" variant="thirdary" size="md"/>
-      </URow>
-    </UCol>
+    <URow>
+      <UDot
+        v-for="option in argTypes?.[args.enum]?.options"
+        v-bind="getArgs(args, option)"
+        :key="option"
+        v-tooltip="option"
+      />
+    </URow>
   `,
 });
 
 export const Default = DefaultTemplate.bind({});
 Default.args = {};
 
-export const Colors = EnumVariantTemplate.bind({});
+export const Colors = EnumTemplate.bind({});
 Colors.args = { enum: "color" };
+Colors.parameters = getEnumVariantDescription();
 
-export const Sizes = EnumVariantTemplate.bind({});
+export const Sizes = EnumTemplate.bind({});
 Sizes.args = { enum: "size" };
+Sizes.parameters = getEnumVariantDescription();

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, useSlots, watch, ref, useId } from "vue";
+import { computed, useSlots, watch, useId, nextTick, useTemplateRef } from "vue";
 
 import useUI from "../composables/useUI.ts";
 import { getDefaults } from "../utils/ui.ts";
@@ -8,7 +8,7 @@ import { hasSlotContent } from "../utils/helper.ts";
 import ULink from "../ui.button-link/ULink.vue";
 import UIcon from "../ui.image-icon/UIcon.vue";
 import UHeader from "../ui.text-header/UHeader.vue";
-import UDivider from "../ui.container-divider/UDivider.vue";
+import UButton from "../ui.button/UButton.vue";
 
 import defaultConfig from "./config.ts";
 import { COMPONENT_NAME } from "./constants.ts";
@@ -35,13 +35,18 @@ const emit = defineEmits([
    * Triggers when a back link is clicked.
    */
   "back",
+
+  /**
+   * Triggers when the modal is closed.
+   */
+  "close",
 ]);
 
 const elementId = props.id || useId();
 
 const slots = useSlots();
 
-const wrapperRef = ref<HTMLElement | null>(null);
+const wrapperRef = useTemplateRef<HTMLDivElement>("wrapper");
 
 const isShownModal = computed({
   get: () => props.modelValue,
@@ -66,13 +71,61 @@ const isExistFooter = computed(() => {
   return hasSlotContent(slots["footer-left"]) || hasSlotContent(slots["footer-right"]);
 });
 
-watch(() => isShownModal.value, preventOverlayFromScrolling);
+function getFocusableElements() {
+  if (!wrapperRef.value) return [];
 
-function preventOverlayFromScrolling(newValue: boolean) {
-  // focus wrapper to be able to close modal on esc
-  setTimeout(() => wrapperRef.value?.focus(), 0);
+  return Array.from(
+    wrapperRef.value.querySelectorAll(
+      'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])',
+    ),
+  );
+}
+
+function trapFocus(e: KeyboardEvent) {
+  if (e.key !== "Tab") return;
+
+  const focusableElements = getFocusableElements();
+
+  if (!focusableElements.length) return;
+
+  const firstElement = focusableElements.at(0) as HTMLElement;
+  const lastElement = focusableElements.at(-1) as HTMLElement;
+
+  // Shift+Tab - if focused on first element, move to last
+  if (e.shiftKey && document.activeElement === firstElement) {
+    e.preventDefault();
+    lastElement.focus();
+
+    return;
+  }
+
+  // Tab - if focused on last element, move to first
+  if (!e.shiftKey && document.activeElement === lastElement) {
+    e.preventDefault();
+    firstElement.focus();
+  }
+}
+
+watch(isShownModal, onChangeShownModal);
+
+function onChangeShownModal(newValue: boolean) {
+  toggleEventListeners();
+  toggleOverflow();
 
   if (newValue) {
+    nextTick(focusModal);
+  }
+}
+
+function focusModal() {
+  const focusableElements = getFocusableElements();
+  const firstFocusableElement = focusableElements.at(0) as HTMLElement;
+
+  focusableElements.length ? firstFocusableElement.focus() : wrapperRef.value?.focus();
+}
+
+function toggleOverflow() {
+  if (isShownModal.value) {
     document.body.style.overflow = "hidden";
   } else {
     const element = document.getElementById(`${elementId}`);
@@ -85,6 +138,16 @@ function preventOverlayFromScrolling(newValue: boolean) {
   }
 }
 
+function toggleEventListeners() {
+  if (isShownModal.value) {
+    document.addEventListener("keydown", trapFocus);
+    document.addEventListener("keydown", onKeydownEsc);
+  } else {
+    document.removeEventListener("keydown", trapFocus);
+    document.removeEventListener("keydown", onKeydownEsc);
+  }
+}
+
 function onClickBackLink() {
   emit("back");
 }
@@ -93,17 +156,25 @@ function onClickOutside() {
   props.closeOnOverlay && closeModal();
 }
 
-function onKeydownEsc() {
-  props.closeOnEsc && closeModal();
-}
+function onKeydownEsc(e: KeyboardEvent) {
+  if (e.key !== "Escape" || !props.closeOnEsc) return;
 
-function onClickCloseModal() {
-  props.closeOnCross && closeModal();
+  closeModal();
 }
 
 function closeModal() {
   isShownModal.value = false;
+
+  emit("close");
 }
+
+defineExpose({
+  /**
+   * A reference to the component's wrapper element for direct DOM manipulation.
+   * @property {HTMLDivElement}
+   */
+  wrapperRef,
+});
 
 /**
  * Get element / nested component attributes for each config token ✨
@@ -118,18 +189,18 @@ const {
   backLinkAttrs,
   backLinkIconAttrs,
   closeIconAttrs,
-  modalDividerAttrs,
   overlayAttrs,
   wrapperAttrs,
   innerWrapperAttrs,
   headerAttrs,
-  headerLeftAttrs,
-  headerLeftFallbackAttrs,
   descriptionAttrs,
   bodyAttrs,
   footerLeftAttrs,
   footerAttrs,
   footerRightAttrs,
+  closeButtonAttrs,
+  beforeTitleAttrs,
+  titleFallbackAttrs,
 } = useUI<Config>(defaultConfig);
 </script>
 
@@ -142,7 +213,7 @@ const {
     <div
       v-if="isShownModal"
       :id="elementId"
-      ref="wrapperRef"
+      ref="wrapper"
       tabindex="0"
       v-bind="wrapperAttrs"
       :data-test="getDataTest()"
@@ -151,24 +222,23 @@ const {
       <div v-bind="innerWrapperAttrs" @click.self="onClickOutside">
         <div v-bind="modalAttrs">
           <div v-if="isExistHeader" v-bind="headerAttrs">
-            <div v-bind="headerLeftAttrs">
+            <div v-bind="beforeTitleAttrs">
               <!-- @slot Use it to add something before the header title. -->
               <slot name="before-title" />
               <!-- @slot Use it to add something to the left side of the header. -->
               <slot name="title">
-                <div v-bind="headerLeftFallbackAttrs">
+                <div v-bind="titleFallbackAttrs">
                   <div v-if="isShownArrowButton" v-bind="backLinkWrapperAttrs">
                     <UIcon
-                      internal
                       size="2xs"
-                      color="gray"
+                      color="neutral"
                       :name="config.defaults.backIcon"
                       v-bind="backLinkIconAttrs"
                     />
 
                     <ULink
                       size="sm"
-                      color="gray"
+                      color="neutral"
                       :to="backTo"
                       :label="backLabel"
                       v-bind="backLinkAttrs"
@@ -184,24 +254,31 @@ const {
               <slot name="after-title" />
             </div>
 
-            <div v-if="closeOnCross" v-bind="closeIconAttrs">
-              <!--
+            <!--
                 @slot Use it to add something instead of the close button.
                 @binding {string} icon-name
                 @binding {function} close
               -->
-              <slot name="actions" :icon-name="config.defaults.closeIcon" :close="closeModal">
+            <slot name="actions" :icon-name="config.defaults.closeIcon" :close="closeModal">
+              <UButton
+                v-if="closeOnCross"
+                size="2xs"
+                square
+                color="grayscale"
+                variant="ghost"
+                v-bind="closeButtonAttrs"
+                @click="closeModal"
+              >
                 <UIcon
-                  internal
                   interactive
                   size="sm"
+                  color="grayscale"
                   :name="config.defaults.closeIcon"
                   v-bind="closeIconAttrs"
                   :data-test="getDataTest('close')"
-                  @click="onClickCloseModal"
                 />
-              </slot>
-            </div>
+              </UButton>
+            </slot>
           </div>
 
           <div v-bind="bodyAttrs">
@@ -209,27 +286,17 @@ const {
             <slot />
           </div>
 
-          <UDivider
-            v-if="divider || !isExistFooter"
-            :border="divider && isExistFooter"
-            variant="dark"
-            padding="before"
-            v-bind="modalDividerAttrs"
-          />
-
-          <template v-if="isExistFooter">
-            <div v-bind="footerAttrs">
-              <div v-if="hasSlotContent($slots['footer-left'])" v-bind="footerLeftAttrs">
-                <!-- @slot Use it to add something to the left side of the footer. -->
-                <slot name="footer-left" />
-              </div>
-
-              <div v-if="hasSlotContent($slots['footer-right'])" v-bind="footerRightAttrs">
-                <!-- @slot Use it to add something to the right side of the footer. -->
-                <slot name="footer-right" />
-              </div>
+          <div v-if="isExistFooter" v-bind="footerAttrs">
+            <div v-if="hasSlotContent($slots['footer-left'])" v-bind="footerLeftAttrs">
+              <!-- @slot Use it to add something to the left side of the footer. -->
+              <slot name="footer-left" />
             </div>
-          </template>
+
+            <div v-if="hasSlotContent($slots['footer-right'])" v-bind="footerRightAttrs">
+              <!-- @slot Use it to add something to the right side of the footer. -->
+              <slot name="footer-right" />
+            </div>
+          </div>
         </div>
       </div>
     </div>

@@ -1,4 +1,5 @@
 import {
+  getArgs,
   getArgTypes,
   getSlotNames,
   getSlotsFragment,
@@ -10,18 +11,24 @@ import URow from "../../ui.container-row/URow.vue";
 import ULoader from "../../ui.loader/ULoader.vue";
 import tooltip from "../../directives/tooltip/vTooltip.ts";
 
-import type { Meta, StoryFn } from "@storybook/vue3";
-import type { UAvatarProps } from "../types.ts";
+import johnDoeImg from "./assets/john-doe.png";
 
-interface UAvatarArgs extends UAvatarProps {
+import type { Meta, StoryFn } from "@storybook/vue3";
+import type { Props } from "../types.ts";
+
+interface UAvatarArgs extends Props {
   slotTemplate?: string;
-  enum: "size" | "rounded" | "color";
+  enum: "variant" | "size" | "rounded" | "color";
 }
 
 export default {
   id: "6030",
   title: "Images & Icons / Avatar",
   component: UAvatar,
+  args: {
+    label: "John Doe",
+    size: "xl",
+  },
   argTypes: {
     ...getArgTypes(UAvatar.__name),
   },
@@ -34,11 +41,7 @@ export default {
 
 const DefaultTemplate: StoryFn<UAvatarArgs> = (args: UAvatarArgs) => ({
   components: { UAvatar, ULoader },
-  setup() {
-    const slots = getSlotNames(UAvatar.__name);
-
-    return { args, slots };
-  },
+  setup: () => ({ args, slots: getSlotNames(UAvatar.__name) }),
   template: `
     <UAvatar v-bind="args">
       ${args.slotTemplate || getSlotsFragment("")}
@@ -46,94 +49,81 @@ const DefaultTemplate: StoryFn<UAvatarArgs> = (args: UAvatarArgs) => ({
   `,
 });
 
-const EnumVariantTemplate: StoryFn<UAvatarArgs> = (args: UAvatarArgs, { argTypes }) => ({
+const EnumTemplate: StoryFn<UAvatarArgs> = (args: UAvatarArgs, { argTypes }) => ({
   components: { URow, UAvatar },
   directives: { tooltip },
-  setup() {
-    return {
-      args,
-      options: argTypes?.[args.enum]?.options,
-    };
-  },
+  setup: () => ({ args, argTypes, getArgs }),
   template: `
     <URow>
       <UAvatar
-        v-for="(option, index) in options"
-        :key="index"
-        v-bind="args"
-        :[args.enum]="option"
-        :label="option"
-        v-tooltip="option"
+        v-for="option in argTypes?.[args.enum]?.options"
+        v-bind="getArgs(args, option)"
+        :key="option"
       />
     </URow>
   `,
 });
 
 export const Default = DefaultTemplate.bind({});
-Default.args = { size: "3xl" };
+Default.args = {};
 
-export const Src = DefaultTemplate.bind({});
-Src.args = {
-  src: "https://i.pravatar.cc/300?img=67",
-  size: "3xl",
+export const Src: StoryFn<UAvatarArgs> = (args: UAvatarArgs) => ({
+  components: { UAvatar, URow },
+  setup: () => ({ args, slots: getSlotNames(UAvatar.__name), johnDoeImg }),
+  template: `
+    <URow>
+      <UAvatar v-bind="args" src="https://i.pravatar.cc/300?img=67" />
+      <UAvatar v-bind="args" :src="johnDoeImg" />
+    </URow>
+  `,
+});
+Src.parameters = {
+  docs: {
+    description: {
+      story:
+        "The `src` prop can be used to display an image avatar. You can use a URL or a local image.",
+    },
+    source: {
+      code: `
+<script setup>
+import johnDoeImg from "./assets/john-doe.png";
+</script>
+
+<template>
+  <URow>
+    <UAvatar src="https://i.pravatar.cc/300?img=67" />
+    <UAvatar :src="johnDoeImg" />
+  </URow>
+</template>
+      `,
+    },
+  },
 };
 
 export const PlaceholderIcon = DefaultTemplate.bind({});
 PlaceholderIcon.args = {
+  label: undefined,
   placeholderIcon: "account_circle",
-  size: "3xl",
 };
 
-export const Label = DefaultTemplate.bind({});
-Label.args = { label: "Name Surname", size: "3xl" };
+export const Variants = EnumTemplate.bind({});
+Variants.args = { enum: "variant" };
 
-export const Size = EnumVariantTemplate.bind({});
-Size.args = { enum: "size" };
-Size.parameters = {
-  docs: {
-    description: {
-      story: "Hold cursor above an avatar to see the value.",
-    },
-  },
-};
+export const Sizes = EnumTemplate.bind({});
+Sizes.args = { enum: "size" };
 
-export const Rounded = EnumVariantTemplate.bind({});
-Rounded.args = { enum: "rounded", label: "John Doe", color: "orange" };
-Rounded.parameters = {
-  docs: {
-    description: {
-      story: "Hold cursor above an avatar to see the value.",
-    },
-  },
-};
+export const Colors = EnumTemplate.bind({});
+Colors.args = { enum: "color" };
 
-export const Color = EnumVariantTemplate.bind({});
-Color.args = { enum: "color" };
-Color.parameters = {
-  docs: {
-    description: {
-      story: "Hold cursor above an avatar to see the value.",
-    },
-  },
-};
+export const Rounded = EnumTemplate.bind({});
+Rounded.args = { enum: "rounded" };
 
-export const Bordered = EnumVariantTemplate.bind({});
-Bordered.args = { enum: "color", bordered: true };
-Bordered.parameters = {
-  docs: {
-    description: {
-      story: "Hold cursor above an avatar to see the value.",
-    },
-  },
-};
-
-export const SlotPlaceholder = DefaultTemplate.bind({});
-SlotPlaceholder.args = {
-  color: "green",
-  size: "3xl",
+export const PlaceholderSlot = DefaultTemplate.bind({});
+PlaceholderSlot.args = {
+  color: "primary",
   slotTemplate: `
-    <template #placeholder="{ iconColor }">
-      <ULoader loading :color="iconColor" />
+    <template #placeholder>
+      <ULoader loading size="sm" color="inherit" />
     </template>
   `,
 };

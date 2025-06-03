@@ -12,7 +12,7 @@ export interface ULinkSlotProps {
 
 export interface Props {
   /**
-   * Button label.
+   * Link label.
    */
   label?: string;
 
@@ -35,27 +35,16 @@ export interface Props {
    * Link color.
    */
   color?:
+    | "primary"
+    | "secondary"
+    | "error"
+    | "warning"
+    | "success"
+    | "info"
+    | "notice"
+    | "neutral"
     | "grayscale"
-    | "red"
-    | "orange"
-    | "amber"
-    | "yellow"
-    | "lime"
-    | "green"
-    | "emerald"
-    | "teal"
-    | "cyan"
-    | "sky"
-    | "blue"
-    | "indigo"
-    | "violet"
-    | "purple"
-    | "fuchsia"
-    | "pink"
-    | "rose"
-    | "gray"
-    | "white"
-    | "brand";
+    | "inherit";
 
   /**
    * Link open type behavior.
@@ -98,12 +87,17 @@ export interface Props {
   dashed?: boolean;
 
   /**
+   * Set link underline style as dotted.
+   */
+  dotted?: boolean;
+
+  /**
    * Disable the link.
    */
   disabled?: boolean;
 
   /**
-   * Make the Button fill the width with its container.
+   * Make the Link expand to fill the entire width of its container.
    */
   block?: boolean;
 

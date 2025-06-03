@@ -1,4 +1,5 @@
 import {
+  getArgs,
   getArgTypes,
   getSlotNames,
   getSlotsFragment,
@@ -54,11 +55,7 @@ export default {
 
 const DefaultTemplate: StoryFn<UCheckboxMultiStateArgs> = (args: UCheckboxMultiStateArgs) => ({
   components: { UCheckboxMultiState },
-  setup() {
-    const slots = getSlotNames(UCheckboxMultiState.__name);
-
-    return { args, slots };
-  },
+  setup: () => ({ args, slots: getSlotNames(UCheckboxMultiState.__name) }),
   template: `
     <UCheckboxMultiState v-bind="args" v-model="args.modelValue">
       ${args.slotTemplate || getSlotsFragment("")}
@@ -66,26 +63,19 @@ const DefaultTemplate: StoryFn<UCheckboxMultiStateArgs> = (args: UCheckboxMultiS
   `,
 });
 
-const EnumVariantTemplate: StoryFn<UCheckboxMultiStateArgs> = (
+const EnumTemplate: StoryFn<UCheckboxMultiStateArgs> = (
   args: UCheckboxMultiStateArgs,
   { argTypes },
 ) => ({
   components: { UCheckboxMultiState, UCol },
-  setup() {
-    return {
-      args,
-      options: argTypes?.[args.enum]?.options,
-    };
-  },
+  setup: () => ({ args, argTypes, getArgs }),
   template: `
     <UCol>
       <UCheckboxMultiState
-        v-for="(option, index) in options"
-        :key="index"
-        v-bind="args"
+        v-for="option in argTypes?.[args.enum]?.options"
+        v-bind="getArgs(args, option)"
+        :key="option"
         v-model="args.modelValue"
-        :[args.enum]="option"
-        :label="option"
       />
     </UCol>
   `,
@@ -97,11 +87,11 @@ Default.args = {};
 export const Disabled = DefaultTemplate.bind({});
 Disabled.args = { disabled: true };
 
-export const LabelPlacement = EnumVariantTemplate.bind({});
-LabelPlacement.args = { enum: "labelAlign" };
+export const LabelAlign = EnumTemplate.bind({});
+LabelAlign.args = { enum: "labelAlign" };
 
-export const Sizes = EnumVariantTemplate.bind({});
+export const Sizes = EnumTemplate.bind({});
 Sizes.args = { enum: "size" };
 
-export const Color = EnumVariantTemplate.bind({});
-Color.args = { enum: "color" };
+export const Colors = EnumTemplate.bind({});
+Colors.args = { enum: "color" };

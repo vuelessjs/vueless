@@ -1,6 +1,6 @@
 export default /*tw*/ {
-  container: {
-    base: "flex items-center text-gray-500 !leading-none",
+  wrapper: {
+    base: "flex items-center text-default !leading-none",
     variants: {
       size: {
         sm: "gap-1.5",
@@ -9,12 +9,12 @@ export default /*tw*/ {
       },
     },
   },
-  stars: "flex",
+  stars: "flex relative",
   star: {
     base: "{UIcon}",
     variants: {
       disabled: {
-        true: "text-gray-400 pointer-events-none",
+        true: "text-muted pointer-events-none",
       },
     },
     defaults: {
@@ -25,10 +25,12 @@ export default /*tw*/ {
       },
     },
   },
+  starLabel: "",
+  input: "sr-only",
   counter: {
     variants: {
       size: {
-        sm: "text-base",
+        sm: "text-large",
         md: "text-xl",
         lg: "text-2xl",
       },
@@ -37,8 +39,8 @@ export default /*tw*/ {
   total: {
     variants: {
       size: {
-        sm: "text-sm",
-        md: "text-base",
+        sm: "text-medium",
+        md: "text-large",
         lg: "text-xl",
       },
     },
@@ -47,7 +49,8 @@ export default /*tw*/ {
     size: "md",
     stars: 5,
     counter: false,
-    selectable: false,
+    readonly: false,
+    disabled: false,
     /* icons */
     selectedIcon: "star-fill",
     unselectedIcon: "star",

@@ -5,10 +5,8 @@ export default /*tw*/ {
     button: {
       compoundVariants: [
         {
-          filled: true,
-          variant: "thirdary",
-          color: "grayscale",
-          class: "bg-gray-800/10 dark:bg-gray-200/10",
+          variant: "soft",
+          class: "bg-{color}-lifted/10",
         },
       ],
     },
@@ -25,5 +23,7 @@ export default /*tw*/ {
   },
   defaults: {
     size: "md",
+    colors: {},
+    labels: {},
   },
 };

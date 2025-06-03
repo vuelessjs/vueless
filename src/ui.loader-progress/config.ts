@@ -1,11 +1,7 @@
 export default /*tw*/ {
-  stripe: {
-    base: "top-0 left-0 right-0 fixed transition-all ease-linear bg-{color}-600",
+  progress: {
+    base: "top-0 left-0 right-0 fixed transition-all ease-linear bg-{color}",
     variants: {
-      color: {
-        white: "bg-white",
-        grayscale: "bg-gray-900",
-      },
       size: {
         xs: "h-px",
         sm: "h-0.5",
@@ -13,12 +9,12 @@ export default /*tw*/ {
         lg: "h-1",
       },
       error: {
-        true: "bg-red-600",
+        true: "bg-error",
       },
     },
   },
   defaults: {
-    color: "brand",
+    color: "primary",
     size: "md",
     loading: undefined,
   },

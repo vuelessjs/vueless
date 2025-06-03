@@ -3,18 +3,18 @@ export default /*tw*/ {
   wrapper: {
     base: `
       flex flex-row-reverse justify-between w-full min-h-full box-border relative
-      rounded-dynamic border border-gray-300 bg-white
-      hover:border-gray-400 hover:transition hover:focus-within:border-brand-600 focus-within:border-brand-600
-      focus-within:outline focus-within:outline-dynamic-sm focus-within:outline-brand-600
+      rounded-medium border border-default bg-default outline-transparent
+      hover:border-lifted hover:transition hover:focus-within:border-primary focus-within:border-primary
+      focus-within:outline focus-within:outline-small focus-within:outline-primary focus-within:transition
     `,
     variants: {
       error: {
-        true: "!border-red-600 focus-within:outline-red-600",
+        true: "!border-error focus-within:outline-error",
       },
       disabled: {
         true: `
-          focus-within:outline-0 bg-gray-100
-          hover:border-gray-300 focus-within:border-gray-300 hover:focus-within:border-gray-300
+          focus-within:outline-0 bg-lifted
+          hover:border-default focus-within:border-default hover:focus-within:border-default
         `,
       },
       opened: {
@@ -31,46 +31,57 @@ export default /*tw*/ {
     ],
   },
   innerWrapper: {
-    base: "py-2 px-3 flex min-h-full w-full overflow-hidden justify-between",
-    variants: {
-      multiple: {
-        true: "grid grid-cols-1 grid-rows-[minmax(0, 1fr)_min-content]",
-      },
-    },
+    base: "py-2 px-3 flex min-h-full w-full overflow-hidden justify-start",
     compoundVariants: [{ labelAlign: "topInside", label: true, class: "pt-0" }],
   },
-  selectedLabels: "flex flex-col col-span-2",
-  selectedLabel: {
-    base: `
-        font-normal !leading-none relative truncate
-        inline-flex items-center whitespace-nowrap mb-0 w-full
-      `,
+  selectedLabels: {
+    base: "w-full !leading-none items-center whitespace-nowrap",
     variants: {
       size: {
-        sm: "text-xs",
-        md: "text-sm",
-        lg: "text-base",
+        sm: "text-small",
+        md: "text-medium",
+        lg: "text-large",
       },
       disabled: {
-        true: "text-gray-700",
-      },
-      multiple: {
-        true: "py-2 last:mb-2.5 flex justify-between border-b border-gray-100",
+        true: "opacity-(--vl-disabled-opacity)",
       },
     },
     compoundVariants: [
-      { size: "sm", multiple: true, class: "text-xs" },
-      { size: "md", multiple: true, class: "text-sm" },
-      { size: "lg", multiple: true, class: "text-base" },
+      { multiple: true, multipleVariant: "list", class: "flex flex-col col-span-2" },
+      { multiple: true, multipleVariant: "inline", class: "flex order-last" },
+      { multiple: true, multipleVariant: "badge", class: "flex gap-1 flex-wrap" },
     ],
   },
-  selectIcon: {
-    base: "{UIcon}",
-    variants: {
-      disabled: {
-        true: "cursor-not-allowed",
+  selectedLabelText: "truncate",
+  selectedLabel: {
+    base: "truncate",
+    compoundVariants: [
+      {
+        multiple: true,
+        multipleVariant: "list",
+        class: "py-2 flex justify-between items-center border-b border-muted w-full",
+      },
+    ],
+  },
+  counter: "",
+  badgeLabel: "{UBadge} py-0.5 px-1.5 gap-0.5 rounded-small max-w-full",
+  badgeClearIcon: {
+    base: "{>clearIcon} -mr-1",
+    defaults: {
+      size: {
+        sm: "4xs",
+        md: "3xs",
+        lg: "2xs",
       },
     },
+  },
+  listClearIcon: "{UIcon} {>selectIcon}",
+  listFooter: "flex items-center justify-between w-full mt-2.5 mb-1",
+  listFooterCounter: "flex gap-1.5 items-center",
+  listAddMore: "{>placeholder}",
+  listClearAll: "{ULink}",
+  selectIcon: {
+    base: "{UIcon}",
     defaults: {
       size: {
         sm: "xs",
@@ -79,11 +90,6 @@ export default /*tw*/ {
       },
     },
   },
-  leftIcon: "{UIcon} {>selectIcon}",
-  rightIcon: "{UIcon} {>selectIcon}",
-  leftSlot: "{>toggle} pl-2.5",
-  rightSlot: "{>toggle} pr-2.5",
-  beforeToggle: "{>toggle} cursor-auto",
   afterToggle: {
     base: "{>toggle} mr-2.5 items-start cursor-auto",
     variants: {
@@ -108,47 +114,25 @@ export default /*tw*/ {
     ],
   },
   toggleWrapper: "{>toggle} mr-3",
-  toggleIcon: "{UIcon} {>selectIcon} transition duration-300 group-[]/active:rotate-180",
+  toggleIcon: "{UIcon} {>selectIcon} -mr-1 transition duration-300 group-[*]/active:rotate-180",
+  leftIcon: "{UIcon} {>selectIcon}",
+  rightIcon: "{UIcon} {>selectIcon}",
+  leftSlot: "{>toggle} pl-2.5",
+  rightSlot: "{>toggle} pr-2.5",
+  beforeToggle: "{>toggle} cursor-auto",
   clear: "{>toggle}",
   clearIcon: "{UIcon} {>selectIcon}",
-  clearMultiple: "flex items-center",
-  clearMultipleIcon: "{UIcon} {>selectIcon}",
-  clearMultipleText: {
-    base: "cursor-pointer flex items-center text-sm font-normal text-gray-400 hover:text-gray-500 transition",
-    compoundVariants: [
-      { size: "sm", class: "text-xs" },
-      { size: "md", class: "text-sm" },
-      { size: "lg", class: "text-base" },
-    ],
-  },
-  search: {
-    base: "flex w-full",
-    compoundVariants: [
-      { multiple: false, selected: true, opened: false, class: "w-0" },
-      { multiple: false, selected: true, searchable: false, class: "w-0" },
-    ],
-  },
-  searchInput: {
-    base: `
-        p-0 font-normal !leading-none relative w-full border-none bg-transparent
-        focus:shadow-none focus:outline-none focus:ring-0
-        placeholder:text-gray-400 placeholder:font-normal
-      `,
+  placeholder: {
+    base: "flex items-center text-muted !leading-none",
     variants: {
       size: {
-        sm: "text-xs placeholder:text-xs",
-        md: "text-sm placeholder:text-sm",
-        lg: "text-base placeholder:text-base",
-      },
-      disabled: {
-        true: "cursor-not-allowed",
-      },
-      error: {
-        true: "placeholder:text-red-300",
+        sm: "text-small",
+        md: "text-medium",
+        lg: "text-large",
       },
     },
   },
-  dropdownList: "{UDropdownList} group-[]/top:bottom-full group-[]/top:top-auto top-full w-full",
+  listbox: "{UListbox} group-[*]/top:bottom-full group-[*]/top:top-auto top-full w-full",
   i18n: {
     listIsEmpty: "List is empty.",
     noDataToShow: "No data to show.",
@@ -162,16 +146,21 @@ export default /*tw*/ {
     valueKey: "id",
     labelKey: "label",
     groupLabelKey: "label",
+    multipleVariant: "inline",
+    debounce: 0,
     optionsLimit: 0,
     visibleOptions: 8,
+    labelDisplayCount: 2,
     multiple: false,
     disabled: false,
-    searchable: true,
+    searchable: false,
     clearable: true,
     addOption: false,
     /* icons */
-    dropdownIcon: "expand_more",
+    toggleIcon: "keyboard_arrow_down",
     clearIcon: "close_small",
-    clearMultipleIcon: "close_small",
+    listClearIcon: "close_small",
+    badgeClearIcon: "close",
+    selectedIcon: "check",
   },
 };

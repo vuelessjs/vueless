@@ -1,6 +1,6 @@
 export default /*tw*/ {
   confirmModal: "{UModal}",
-  footerLeftFallback: "flex space-x-4",
+  footerLeftFallback: "flex gap-3",
   confirmButton: "{UButton} w-full",
   cancelButton: "{UButton} w-full",
   i18n: {
@@ -9,13 +9,13 @@ export default /*tw*/ {
   },
   defaults: {
     size: "sm",
-    confirmColor: "brand",
+    variant: "solid",
+    confirmColor: "primary",
     inner: false,
-    divider: false,
+    divided: false,
     closeOnEsc: true,
     closeOnCross: true,
     closeOnOverlay: true,
-    mobileStickBottom: false,
     confirmDisabled: false,
     cancelHidden: false,
   },

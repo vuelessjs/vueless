@@ -39,31 +39,26 @@ export default {
 
 const DefaultTemplate: StoryFn<ULoaderOverlayArgs> = (args: ULoaderOverlayArgs) => ({
   components: { ULoaderOverlay },
-  setup() {
-    const slots = getSlotNames(ULoaderOverlay.__name);
-
-    return { args, slots };
-  },
+  setup: () => ({ args, slots: getSlotNames(ULoaderOverlay.__name) }),
   template: `
-    <ULoaderOverlay v-bind="args" :config="{ overlay: 'h-full w-full' }">
+    <ULoaderOverlay v-bind="args">
       ${args.slotTemplate || getSlotsFragment("")}
     </ULoaderOverlay>
   `,
 });
 
-const EnumVariantTemplate: StoryFn<ULoaderOverlayArgs> = (
-  args: ULoaderOverlayArgs,
-  { argTypes },
-) => ({
+const EnumTemplate: StoryFn<ULoaderOverlayArgs> = (args: ULoaderOverlayArgs, { argTypes }) => ({
   components: { ULoaderOverlay, USelect },
   setup() {
     const selectModel = ref(null);
-    const options = computed(() =>
-      argTypes?.[args.enum]?.options?.map((label, id) => ({ label, id })),
-    );
-    const selectedValue = computed(
-      () => options.value?.find((option) => option.id === selectModel.value)?.label,
-    );
+
+    const options = computed(() => {
+      return argTypes?.[args.enum]?.options?.map((label, id) => ({ label, id }));
+    });
+
+    const selectedValue = computed(() => {
+      return options.value?.find((option) => option.id === selectModel.value)?.label;
+    });
 
     return {
       args,
@@ -78,44 +73,31 @@ const EnumVariantTemplate: StoryFn<ULoaderOverlayArgs> = (
       :options="options"
       placeholder="Select loader color..."
       open-direction="bottom"
-      class="max-w-60 absolute z-50"
+      class="max-w-60 absolute z-[99999]"
     />
 
-    <ULoaderOverlay
-      v-bind="args"
-      :[args.enum]="selectedValue"
-      :config="{ overlay: 'h-full w-full z-10' }"
-    />
+    <ULoaderOverlay :color="selectedValue" />
   `,
 });
 
 const LoadingTemplate: StoryFn<ULoaderOverlayArgs> = (args: ULoaderOverlayArgs) => ({
   components: { ULoaderOverlay, UButton },
   setup() {
-    const loaderOverlay = useLoaderOverlay();
+    const { isLoading, loaderOverlayOn, loaderOverlayOff } = useLoaderOverlay();
 
-    const loaderOverlayOn = loaderOverlay.loaderOverlayOn;
-    const loaderOverlayOff = loaderOverlay.loaderOverlayOff;
-    const isLoading = loaderOverlay.isLoading;
-
-    function toggleLoading() {
-      isLoading.value ? loaderOverlayOff() : loaderOverlayOn();
-    }
-
-    return { args, isLoading, toggleLoading };
+    return { args, isLoading, loaderOverlayOn, loaderOverlayOff };
   },
   template: `
     <UButton
-      label="Toggle loading"
       size="sm"
-      class="absolute z-50"
-      @click="toggleLoading"
+      label="Toggle loading"
+      class="absolute z-[99999]"
+      @click="isLoading ? loaderOverlayOff() : loaderOverlayOn()"
     />
 
     <ULoaderOverlay
       v-bind="args"
       :loading="isLoading"
-      :config="{ overlay: 'h-full w-full z-10' }"
     />
   `,
 });
@@ -126,11 +108,11 @@ Default.args = {};
 export const Loading = LoadingTemplate.bind({});
 Loading.args = {};
 
-export const Color = EnumVariantTemplate.bind({});
-Color.args = { enum: "color" };
+export const Colors = EnumTemplate.bind({});
+Colors.args = { enum: "color" };
 
-export const SlotDefault = DefaultTemplate.bind({});
-SlotDefault.args = {
+export const DefaultSlot = DefaultTemplate.bind({});
+DefaultSlot.args = {
   slotTemplate: `
     <template #default>
       <img src="https://media.tenor.com/9zmtHZ0tIjkAAAAi/nyancat-rainbow-cat.gif" alt="Cat" />

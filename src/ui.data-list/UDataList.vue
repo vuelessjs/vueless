@@ -1,7 +1,6 @@
 <script setup lang="ts">
-import { computed } from "vue";
+import { useTemplateRef } from "vue";
 import draggable from "vuedraggable";
-import { merge } from "lodash-es";
 
 import useUI from "../composables/useUI.ts";
 import { getDefaults } from "../utils/ui.ts";
@@ -12,7 +11,7 @@ import UEmpty from "../ui.text-empty/UEmpty.vue";
 
 import { COMPONENT_NAME } from "./constants.ts";
 import defaultConfig from "./config.ts";
-import { useLocale } from "../composables/useLocale.ts";
+import { useComponentLocaleMessages } from "../composables/useComponentLocaleMassages.ts";
 
 import type { Props, DragMoveEvent, DataListItem, Config } from "./types.ts";
 
@@ -31,10 +30,13 @@ const emit = defineEmits([
   "dragSort",
 ]);
 
-const { tm } = useLocale();
+const wrapperRef = useTemplateRef<HTMLDivElement>("wrapper");
 
-const i18nGlobal = tm(COMPONENT_NAME);
-const currentLocale = computed(() => merge({}, defaultConfig.i18n, i18nGlobal, props.config.i18n));
+const { localeMessages } = useComponentLocaleMessages<typeof defaultConfig.i18n>(
+  COMPONENT_NAME,
+  defaultConfig.i18n,
+  props?.config?.i18n,
+);
 
 function isCrossed(element: DataListItem) {
   return Boolean(element.crossed);
@@ -78,6 +80,14 @@ function prepareSortData(list: DataListItem[] = [], parentValue: string | number
   return sortData;
 }
 
+defineExpose({
+  /**
+   * A reference to the component's wrapper element for direct DOM manipulation.
+   * @property {HTMLDivElement}
+   */
+  wrapperRef,
+});
+
 /**
  * Get element / nested component attributes for each config token ✨
  * Applies: `class`, `config`, redefined default `props` and dev `vl-...` attributes.
@@ -100,7 +110,7 @@ const {
 </script>
 
 <template>
-  <div v-bind="wrapperAttrs">
+  <div ref="wrapper" v-bind="wrapperAttrs">
     <!--
       @slot Use it to add custom empty state.
       @binding {string} empty-title
@@ -109,12 +119,12 @@ const {
     <slot
       v-if="!hideEmptyStateForNesting && !list?.length"
       name="empty"
-      :empty-title="currentLocale.emptyTitle"
-      :empty-description="currentLocale.emptyDescription"
+      :empty-title="localeMessages.emptyTitle"
+      :empty-description="localeMessages.emptyDescription"
     >
       <UEmpty
-        :title="currentLocale.emptyTitle"
-        :description="currentLocale.emptyDescription"
+        :title="localeMessages.emptyTitle"
+        :description="localeMessages.emptyDescription"
         v-bind="emptyAttrs"
       />
     </slot>
@@ -144,8 +154,7 @@ const {
               -->
               <slot name="drag" :item="element" :icon-name="config.defaults.dragIcon">
                 <UIcon
-                  internal
-                  color="gray"
+                  color="neutral"
                   variant="light"
                   :name="config.defaults.dragIcon"
                   v-bind="dragIconAttrs"
@@ -165,7 +174,10 @@ const {
             </div>
 
             <template v-if="element.actions !== false">
-              <div v-if="hasSlotContent($slots['actions'])" v-bind="customActionsAttrs">
+              <div
+                v-if="hasSlotContent($slots['actions'], { item: element })"
+                v-bind="customActionsAttrs"
+              >
                 <!--
                   @slot Use it to add custom actions.
                   @binding {object} item

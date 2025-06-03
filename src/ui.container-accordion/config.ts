@@ -5,40 +5,46 @@ export default /*tw*/ {
     base: "flex items-center justify-between font-medium",
     variants: {
       size: {
-        sm: "text-sm",
-        md: "text-base",
-        lg: "text-lg",
+        sm: "text-small",
+        md: "text-medium",
+        lg: "text-large",
       },
     },
   },
   description: {
-    base: "text-gray-600 h-0 opacity-0 transition-all",
+    base: "text-accented h-0 opacity-0 transition-all",
     variants: {
       size: {
-        sm: "text-xs",
-        md: "text-sm",
-        lg: "text-base",
+        sm: "text-tiny",
+        md: "text-small",
+        lg: "text-medium",
       },
       opened: {
         true: "pt-2 h-fit opacity-100",
       },
     },
   },
-  toggleIcon: "{UIcon}",
+  toggleIcon: {
+    base: "{UIcon} transition duration-300",
+    variants: {
+      opened: {
+        true: "group-[*]:rotate-180",
+      },
+    },
+  },
   accordionDivider: {
     base: "{UDivider} group-last:hidden",
-    defaults: {
+    variants: {
       size: {
-        sm: "md",
-        md: "lg",
-        lg: "xl",
+        sm: "py-4",
+        md: "py-5",
+        lg: "py-6",
       },
     },
   },
   defaults: {
     size: "md",
     /* icons */
-    expandIcon: "add",
-    collapseIcon: "remove",
+    toggleIcon: "keyboard_arrow_down",
   },
 };

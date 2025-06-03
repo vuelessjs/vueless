@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed } from "vue";
+import { computed, useTemplateRef } from "vue";
 
 import useUI from "../composables/useUI.ts";
 import { getDefaults } from "../utils/ui.ts";
@@ -9,12 +9,12 @@ import UIcon from "../ui.image-icon/UIcon.vue";
 import { COMPONENT_NAME } from "./constants.ts";
 import defaultConfig from "./config.ts";
 
-import type { UAvatarProps, Config } from "./types.ts";
+import type { Props, Config } from "./types.ts";
 
 defineOptions({ inheritAttrs: false });
 
-const props = withDefaults(defineProps<UAvatarProps>(), {
-  ...getDefaults<UAvatarProps, Config>(defaultConfig, COMPONENT_NAME),
+const props = withDefaults(defineProps<Props>(), {
+  ...getDefaults<Props, Config>(defaultConfig, COMPONENT_NAME),
   label: "",
 });
 
@@ -24,6 +24,8 @@ const emit = defineEmits([
    */
   "click",
 ]);
+
+const avatarRef = useTemplateRef<HTMLDivElement>("avatar");
 
 const labelFirstLetters = computed(() => {
   if (!props.label) return "";
@@ -37,29 +39,43 @@ const labelFirstLetters = computed(() => {
 });
 
 const backgroundImage = computed(() => {
-  const baseUrl = import.meta.env.BASE_URL;
-  const src = props.src && props.src.includes("http") ? props.src : baseUrl + props.src;
-
-  return props.src ? `background-image: url(${src});` : "";
-});
-
-const componentColor = computed(() => {
-  return props.color === "white" ? "grayscale" : props.color;
+  return props.src ? `background-image: url(${props.src});` : "";
 });
 
 function onClick(event: MouseEvent) {
   emit("click", event);
 }
 
+const placeholderIconName = computed(() => {
+  return props.placeholderIcon || config.value.defaults.placeholderIcon;
+});
+
+defineExpose({
+  /**
+   * A reference to the avatar element for direct DOM manipulation.
+   * @property {HTMLDivElement}
+   */
+  avatarRef,
+});
+
 /**
  * Get element / nested component attributes for each config token ✨
  * Applies: `class`, `config`, redefined default `props` and dev `vl-...` attributes.
  */
-const { getDataTest, config, avatarAttrs, placeholderIconAttrs } = useUI<Config>(defaultConfig);
+const mutatedProps = computed(() => ({
+  /* component state, not a props */
+  src: Boolean(props.src),
+}));
+
+const { getDataTest, config, avatarAttrs, placeholderIconAttrs } = useUI<Config>(
+  defaultConfig,
+  mutatedProps,
+);
 </script>
 
 <template>
   <div
+    ref="avatar"
     :title="label"
     :style="backgroundImage"
     v-bind="avatarAttrs"
@@ -67,18 +83,17 @@ const { getDataTest, config, avatarAttrs, placeholderIconAttrs } = useUI<Config>
     @click="onClick"
   >
     <template v-if="!backgroundImage">
-      <template v-if="labelFirstLetters">{{ labelFirstLetters }}</template>
       <!--
         @slot Use it to add something instead of the avatar image placeholder.
         @binding {string} icon-name
-        @binding {string} icon-color
       -->
-      <slot v-else name="placeholder" :icon-name="placeholderIcon" :icon-color="componentColor">
+      <slot name="placeholder" :icon-name="placeholderIconName">
+        <template v-if="labelFirstLetters">{{ labelFirstLetters }}</template>
         <UIcon
-          internal
+          v-else
           :size="size"
-          :color="componentColor"
-          :name="placeholderIcon || config.defaults.placeholderIcon"
+          color="inherit"
+          :name="placeholderIconName"
           v-bind="placeholderIconAttrs"
         />
       </slot>

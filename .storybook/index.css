@@ -1,42 +1,62 @@
-@config "./tailwind.config.js";
+@import "tailwindcss";
+@import "../src/tailwind.css";
 
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
 
 /* -------------------- Storybook Preview UI -------------------- */
 /* -------------------- General -------------------- */
 
 ::-webkit-scrollbar {
-  @apply w-3 h-3;
+  width: 0.75rem; /* w-3 */
+  height: 0.75rem; /* h-3 */
 }
 
 ::-webkit-scrollbar-track {
-  @apply transition;
+  transition: all 0.2s; /* transition */
 }
 
 ::-webkit-scrollbar-thumb {
-  @apply rounded-sm transition;
+  border-radius: 0.125rem; /* rounded-xs */
+  transition: all 0.2s; /* transition */
 }
 
 .light::-webkit-scrollbar-track,
 .light ::-webkit-scrollbar-track {
-  @apply bg-gray-50 hover:bg-gray-200;
+  background-color: #f9fafb; /* bg-gray-50 */
+}
+
+.light::-webkit-scrollbar-track:hover,
+.light ::-webkit-scrollbar-track:hover {
+  background-color: #e5e7eb; /* hover:bg-gray-200 */
 }
 
 .light::-webkit-scrollbar-thumb,
 .light ::-webkit-scrollbar-thumb {
-  @apply bg-gray-400 hover:bg-gray-500;
+  background-color: #9ca3af; /* bg-gray-400 */
 }
 
- .dark::-webkit-scrollbar-track,
- .dark ::-webkit-scrollbar-track {
-  @apply bg-gray-950 hover:bg-gray-800;
+.light::-webkit-scrollbar-thumb:hover,
+.light ::-webkit-scrollbar-thumb:hover {
+  background-color: #6b7280; /* hover:bg-gray-500 */
+}
+
+.dark::-webkit-scrollbar-track,
+.dark ::-webkit-scrollbar-track {
+  background-color: #030712; /* bg-gray-950 */
+}
+
+.dark::-webkit-scrollbar-track:hover,
+.dark ::-webkit-scrollbar-track:hover {
+  background-color: #1f2937; /* hover:bg-gray-800 */
 }
 
 .dark::-webkit-scrollbar-thumb,
-.dark ::-webkit-scrollbar-thumb  {
-  @apply bg-gray-600 hover:bg-gray-500;
+.dark ::-webkit-scrollbar-thumb {
+  background-color: #4b5563; /* bg-gray-600 */
+}
+
+.dark::-webkit-scrollbar-thumb:hover,
+.dark ::-webkit-scrollbar-thumb:hover {
+  background-color: #6b7280; /* hover:bg-gray-500 */
 }
 
 @supports (-moz-appearance: none) {
@@ -52,11 +72,15 @@
 }
 
 html.dark {
-  @apply bg-gray-950;
+  background-color: #030712; /* bg-gray-950 */
 }
 
 html.light {
-  @apply bg-gray-50;
+  background-color: #f9fafb; /* bg-gray-50 */
+}
+
+html.vl-dark #storybook-root {
+  background-color: #111827; /* bg-gray-900 */
 }
 
 body {
@@ -72,7 +96,7 @@ body {
 .light .sbdocs .sbdocs-content > p,
 .light .sbdocs .sbdocs-content > table th,
 .light .sbdocs .sbdocs-content > table td {
-  @apply !text-gray-900;
+  color: #111827 !important; /* !text-gray-900 */
 }
 
 .dark .sbdocs .sbdocs-content > h1,
@@ -80,245 +104,315 @@ body {
 .dark .sbdocs .sbdocs-content > h3,
 .dark .sbdocs .sbdocs-content > .sb-anchor > h3,
 .dark .sbdocs .sbdocs-content > .sb-anchor > p,
-.dark .sbdocs .sbdocs-content ul > li,
+.dark .sbdocs .sbdocs-content > ul > li,
 .dark .sbdocs .sbdocs-content > p,
 .dark .sbdocs .sbdocs-content > table th,
 .dark .sbdocs .sbdocs-content > table td {
-  @apply !text-gray-200;
+  color: #e5e7eb !important; /* !text-gray-200 */
 }
 
 .sbdocs .sbdocs-content > table tr {
-  @apply border-none;
+  border-style: none; /* border-none */
 }
 
 .sbdocs .sbdocs-content > table th,
 .sbdocs .sbdocs-content > table td {
-  @apply border-l-0 border-t-0 text-left;
+  border-left-width: 0; /* border-l-0 */
+  border-top-width: 0;  /* border-t-0 */
+  text-align: left;       /* text-left */
 }
 
 .sbdocs .sbdocs-content > table th:last-child,
 .sbdocs .sbdocs-content > table td:last-child {
-  @apply border-r-0;
+  border-right-width: 0; /* border-r-0 */
 }
 
 .sbdocs .sbdocs-content > table tbody tr:last-child td {
-  @apply border-b-0;
+  border-bottom-width: 0; /* border-b-0 */
 }
 
 .light .sbdocs .sbdocs-content > table th {
-  @apply bg-gray-100 border-gray-200;
+  background-color: #f3f4f6; /* bg-gray-100 */
+  border-color: #e5e7eb;     /* border-gray-200 */
 }
 
 .light .sbdocs .sbdocs-content > table td {
-  @apply bg-white border-gray-200;
+  background-color: #ffffff; /* bg-white */
+  border-color: #e5e7eb;     /* border-gray-200 */
 }
 
 .light .sbdocs .sbdocs-content > table {
-  @apply rounded-lg outline outline-1 outline-gray-200 overflow-hidden;
+  border-radius: 0.5rem;            /* rounded-lg */
+  outline: 1px solid #e5e7eb;       /* outline-1 outline-gray-200 */
+  overflow: hidden;                 /* overflow-hidden */
 }
 
 .dark .sbdocs .sbdocs-content > table th {
-  @apply bg-gray-800 border-gray-700;
+  background-color: #1f2937; /* bg-gray-800 */
+  border-color: #374151;     /* border-gray-700 */
 }
 
 .dark .sbdocs .sbdocs-content > table td {
-  @apply bg-gray-900 border-gray-700;
+  background-color: #111827; /* bg-gray-900 */
+  border-color: #374151;     /* border-gray-700 */
 }
 
 .dark .sbdocs .sbdocs-content > table {
-  @apply rounded-lg outline outline-1 outline-gray-700 overflow-hidden;
+  border-radius: 0.5rem;            /* rounded-lg */
+  outline: 1px solid #374151;       /* outline-1 outline-gray-700 */
+  overflow: hidden;                 /* overflow-hidden */
 }
 
 /* -------------------- Storybook preview skeleton -------------------- */
 
 .light .sb-preparing-docs,
 .light .sb-preparing-story {
-  @apply bg-gray-50;
+  background-color: #f9fafb; /* bg-gray-50 */
 }
 
 .light .sb-previewBlock {
-  @apply bg-white border-gray-200 rounded-lg;
+  background-color: #ffffff;       /* bg-white */
+  border-color: #e5e7eb;           /* border-gray-200 */
+  border-radius: 0.5rem;           /* rounded-lg */
   box-shadow: none !important;
 }
 
 .light .sb-previewBlock_header {
-  @apply border-solid border-b !border-b-gray-200;
+  border-style: solid;             /* border-solid */
+  border-bottom-width: 1px;        /* border-b */
+  border-bottom-color: #e5e7eb !important; /* !border-b-gray-200 */
   box-shadow: none !important;
 }
 
 .light .sb-previewBlock_icon {
-  @apply bg-gray-300;
+  background-color: #d1d5db; /* bg-gray-300 */
 }
 
 .light .sb-argstableBlock-body {
-  @apply rounded;
+  border-radius: 0.125rem; /* rounded-sm */
   box-shadow: rgb(0 0 0 / 5%) 0 1px 3px 1px, rgb(0 0 0 / 4%) 0 0 0 1px;
 }
 
 .light .sb-argstableBlock-body td {
-  @apply bg-white border-solid border-b !border-b-gray-200;
+  background-color: #ffffff;       /* bg-white */
+  border-style: solid;             /* border-solid */
+  border-bottom-width: 1px;        /* border-b */
+  border-bottom-color: #e5e7eb !important; /* !border-b-gray-200 */
 }
 
 .light .sb-argstableBlock-body tr:last-child td {
-  @apply border-b-0;
+  border-bottom-width: 0px; /* border-b-0 */
 }
 
 .light .sb-argstableBlock span,
 .light .sb-argstableBlock button {
-  @apply bg-gray-200;
+  background-color: #e5e7eb; /* bg-gray-200 */
 }
 
 .dark .sb-preparing-docs,
 .dark .sb-preparing-story {
-  @apply bg-gray-950;
+  background-color: #030712; /* bg-gray-950 */
 }
 
 .dark .sb-previewBlock {
-  @apply bg-gray-900 border-gray-800 rounded-lg;
+  background-color: #111827;       /* bg-gray-900 */
+  border-color: #1f2937;           /* border-gray-800 */
+  border-radius: 0.5rem;           /* rounded-lg */
   box-shadow: none !important;
 }
 
 .dark .sb-previewBlock_header {
-  @apply border-solid border-b !border-b-gray-800;
+  border-style: solid;             /* border-solid */
+  border-bottom-width: 1px;        /* border-b */
+  border-bottom-color: #1f2937 !important; /* !border-b-gray-800 */
   box-shadow: none !important;
 }
 
 .dark .sb-previewBlock_icon {
-  @apply bg-gray-700;
+  background-color: #374151; /* bg-gray-700 */
 }
 
 .dark .sb-argstableBlock-body {
-  @apply rounded;
+  border-radius: 0.125rem; /* rounded-sm */
   box-shadow: rgb(255 255 255 / 10%) 0 1px 3px 1px, rgb(255 255 255 / 7%) 0 0 0 1px;
 }
 
 .dark .sb-argstableBlock-body td {
-  @apply bg-gray-900 border-solid border-b !border-b-gray-800;
+  background-color: #111827;       /* bg-gray-900 */
+  border-style: solid;             /* border-solid */
+  border-bottom-width: 1px;        /* border-b */
+  border-bottom-color: #1f2937 !important; /* !border-b-gray-800 */
 }
 
 .dark .sb-argstableBlock-body tr:last-child td {
-  @apply border-b-0;
+  border-bottom-width: 0px; /* border-b-0 */
 }
 
 .dark .sb-argstableBlock span,
 .dark .sb-argstableBlock button {
-  @apply bg-gray-700;
+  background-color: #374151; /* bg-gray-700 */
 }
 
 /* -------------------- All docs block -------------------- */
 
 .dark .sbdocs {
-  @apply bg-gray-950;
+  background-color: #030712; /* bg-gray-950 */
 }
 
 /* -------------------- Main story -------------------- */
 
 .sb-anchor {
-  @apply mt-2;
+  margin-top: 0.5rem; /* mt-2 */
+}
+
+.sb-anchor > p {
+  margin-top: -0.5rem; /* mt-2 */
+  margin-bottom: -0.5rem; /* -mt-2 */
 }
 
 .dark .sb-anchor > p > a {
-  @apply text-green-400;
+  color: #4ade80; /* text-green-400 */
+  text-decoration: underline dashed #4ade80;
 }
 
 .light .sb-anchor > p > a {
-  @apply text-green-600;
+  color: #16a34a; /* text-green-600 */
+  text-decoration: underline dashed #16a34a;
 }
 
 .sb-bar,
 .docs-story {
-  @apply bg-white;
+  background-color: #ffffff; /* bg-white */
 }
 
 .vl-dark .sb-bar,
-.vl-dark .docs-story {
-  @apply bg-gray-900;
+.vl-dark .docs-story,
+.vl-dark .docs-story + div {
+  background-color: #111827 !important; /* !bg-gray-900 */
 }
 
+/* prevents showing scrollbar in buttons stories */
 .docs-story > div > div {
-  @apply mb-px;
+  overflow-y: hidden;
 }
 
 .sb-bar {
-  @apply border-0;
+  border-width: 0; /* border-0 */
 }
 
 .dark .sb-bar {
-  @apply border-b border-gray-300;
+  border-bottom: 1px solid #d1d5db; /* border-b border-gray-300 */
   box-shadow: none !important;
 }
 
-.vl-dark .sb-bar  {
-  @apply border-b border-gray-800;
+.vl-dark .sb-bar {
+  border-bottom: 1px solid #1f2937; /* border-b border-gray-800 */
   box-shadow: none !important;
 }
 
 .sbdocs.sbdocs-preview .prismjs {
-  @apply border-t border-t-gray-700 bg-gray-800;
+  border-top: 1px solid #374151; /* border-t border-t-gray-700 */
+  background-color: #1f2937; /* bg-gray-800 */
 }
 
 .vl-dark .docblock-code-toggle {
-  @apply bg-gray-800 border-gray-800 text-gray-400 rounded-tl-none;
+  background-color: #1f2937; /* bg-gray-800 */
+  border-color: #1f2937;     /* border-gray-800 */
+  color: #9ca3af;            /* text-gray-400 */
+}
+
+.vl-light .docblock-code-toggle {
+  border: 1px solid #d1d5db !important; /* !border border-gray-300 */
+}
+
+.vl-dark .docblock-code-toggle {
+  border: 1px solid #374151 !important; /* !border border-gray-700 */
+}
+
+.docblock-code-toggle,
+.docblock-source > div > button,
+.docs-story > div > button,
+.docs-story + div > div > button {
+  margin: 0 4px 4px 0 !important;
+  border-radius: 8px !important;
+  box-shadow: none !important;
+}
+
+.docblock-code-toggle,
+.docblock-source > div,
+.docs-story > div,
+.docs-story + div > div {
+  background: transparent !important;
 }
 
 .sbdocs-preview {
+  border-radius: 8px !important;
   box-shadow: none !important;
 }
 
 .dark .sbdocs.sbdocs-preview,
 .vl-dark .sbdocs.sbdocs-preview {
-  @apply border-gray-800;
+  border-color: #1f2937; /* border-gray-800 */
 }
 
 /* -------------------- Args table -------------------- */
 
 @media screen and (max-width: 600px) {
   div:has(> .docblock-argstable) {
-    @apply !mb-10 overflow-x-scroll;
+    margin-bottom: 2.5rem !important;
+    overflow-x: scroll;
   }
 
   .docblock-argstable {
-    @apply !mb-0;
+    margin-bottom: 0 !important;
   }
 }
 
 .dark .docblock-argstable,
 .dark .docblock-argstable-head th {
-  @apply !text-gray-200;
+  color: rgb(229, 231, 235) !important; /* text-gray-200 */
 }
 
 .docblock-argstable-body {
-  @apply rounded-lg !filter-none;
+  border-radius: 0.5rem; /* rounded-lg */
+  filter: none !important;
 }
 
 .docblock-argstable-body tr td {
-  @apply !rounded-none;
+  border-radius: 0 !important; /* !rounded-none */
 }
 
 .docblock-argstable-body tr:not([title]) > td {
-  @apply !bg-white;
+  background-color: #fff !important; /* bg-white */
 }
 
 .dark .docblock-argstable-body tr > td {
-  @apply border-b border-solid !bg-gray-900 border-s-0 border-e-0 !border-t-gray-800;
-  border-block-end: none !important;
+  border-top: 1px solid rgb(31, 41, 55) !important;
+  border-bottom: 1px solid rgb(31, 41, 55) !important; /* border-b border-gray-800 */
+  background-color: rgb(17, 24, 39) !important; /* bg-gray-900 */
+  border-inline-start-style: solid;
+  border-inline-start-width: 0;
+  border-inline-end-style: solid;
+  border-inline-end-width: 0;
 }
 
 .dark .docblock-argstable-body tr > td:first-child,
 .dark .docblock-argstable-body tr > td:last-child {
-  @apply !border-s-gray-800 !border-e-gray-800;
+  border-inline-start-color: rgb(31, 41, 55) !important; /* border-s-gray-800 */
+  border-inline-end-color: rgb(31, 41, 55) !important; /* border-s-gray-800 */
 }
 
 .dark .docblock-argstable-body {
-  @apply border border-b-gray-800;
+  border-bottom: 1px solid rgb(31, 41, 55); /* border-b-gray-800 */
 }
 
 .dark .docblock-argstable-body tr[title] > td {
-  @apply !bg-gray-800 !text-gray-400;
+  background-color: rgb(31, 41, 55) !important;
+  color: rgb(156, 163, 175) !important; /* text-gray-400 */
 }
 
 .dark .docblock-argstable-body tr[title] > td svg {
-  @apply !text-gray-400;
+  color: rgb(156, 163, 175) !important;  /* text-gray-400 */
 }
 
 .light .sbdocs .sbdocs-content code,
@@ -327,7 +421,9 @@ body {
 .light .docblock-argstable-body tr > td:nth-child(2) > div > div > span[class],
 .light .docblock-argstable-body tr > td:nth-child(3) > div > span[class],
 .light .docblock-argstable-body tr > td:nth-child(3) > span[class] {
-  @apply bg-gray-100 border-gray-200 text-gray-800;
+  background-color: rgb(243, 244, 246); /* bg-gray-100 */
+  border-color: rgb(229, 231, 235); /* border-gray-200 */
+  color: rgb(31, 41, 55); /* text-gray-800 */
 }
 
 .dark .rejt-value-node:hover .rejt-value,
@@ -337,16 +433,21 @@ body {
 .dark .docblock-argstable-body tr > td:nth-child(2) > div > div > span[class],
 .dark .docblock-argstable-body tr > td:nth-child(3) > div > span[class],
 .dark .docblock-argstable-body tr > td:nth-child(3) > span[class] {
-  @apply bg-gray-800 border-gray-700/50 text-gray-400;
+  background-color: rgb(31, 41, 55); /* bg-gray-800 */
+  border-color: rgba(55, 65, 81, 0.5); /* border-gray-700/50 */
+  color: rgb(156, 163, 175); /* text-gray-400 */
+  border-radius: 4px !important;
 }
 
 .dark .sb-story code,
 .light .sb-story code {
-  @apply !bg-inherit !text-inherit;
+  background-color: inherit !important;
+  color: inherit !important;
+  border-radius: 4px !important;
 }
 
 .dark .docblock-argstable-body tr > td > div + div > span:not([class]) {
-  @apply text-gray-400;
+  color: rgb(156, 163, 175); /* text-gray-400 */
 }
 
 .dark .docblock-argstable-body tr > td .rejt-edit-form,
@@ -354,17 +455,40 @@ body {
 .dark .docblock-argstable-body tr > td textarea,
 .dark .docblock-argstable-body tr > td select,
 .dark .docblock-argstable-body tr > td:nth-child(4) button {
-  @apply text-gray-200 bg-gray-800 border border-solid border-gray-700/50 hover:border-gray-600 focus:border-gray-500 text-[13px];
+  color: rgb(229, 231, 235); /* text-gray-200 */
+  background-color: rgb(31, 41, 55); /* bg-gray-800 */
+  border: 1px solid rgba(55, 65, 81, 0.5); /* border-gray-700/50 */
+  font-size: 13px;
   box-shadow: none !important;
   color-scheme: dark;
 }
 
+.dark .docblock-argstable-body tr > td .rejt-edit-form:hover,
+.dark .docblock-argstable-body tr > td input:hover,
+.dark .docblock-argstable-body tr > td textarea:hover,
+.dark .docblock-argstable-body tr > td select:hover,
+.dark .docblock-argstable-body tr > td:nth-child(4) button:hover {
+  border: 1px solid #4b5563; /* border-gray-600 */
+}
+
+.dark .docblock-argstable-body tr > td .rejt-edit-form:focus,
+.dark .docblock-argstable-body tr > td input:focus,
+.dark .docblock-argstable-body tr > td textarea:focus,
+.dark .docblock-argstable-body tr > td select:focus,
+.dark .docblock-argstable-body tr > td:nth-child(4) button:focus {
+  border: 1px solid rgb(107, 114, 128); /* border-gray-500 */
+}
+
 .docblock-argstable-body tr > td .rejt-add-value-node button {
-  @apply px-1.5 py-0.5 leading-none;
+  padding-left: 0.375rem; /* px-1.5 */
+  padding-right: 0.375rem;
+  padding-top: 0.125rem; /* py-0.5 */
+  padding-bottom: 0.125rem;
+  line-height: 1;
 }
 
 .light .docblock-argstable-body tr > td .rejt-add-value-node button[type="submit"] {
-  @apply bg-white;
+  background-color: #fff;
 }
 
 .light .docblock-argstable-body tr > td .rejt-edit-form,
@@ -372,77 +496,118 @@ body {
 .light .docblock-argstable-body tr > td textarea,
 .light .docblock-argstable-body tr > td select,
 .light .docblock-argstable-body tr > td:nth-child(4) button {
-  @apply text-gray-900 border border-solid border-gray-300 hover:border-gray-400 focus:border-gray-500 text-[13px];
+  color: rgb(17, 24, 39); /* text-gray-900 */
+  border: 1px solid rgb(209, 213, 219); /* border-gray-300 */
+  font-size: 13px;
   box-shadow: none !important;
 }
 
+.light .docblock-argstable-body tr > td .rejt-edit-form:hover,
+.light .docblock-argstable-body tr > td input:hover,
+.light .docblock-argstable-body tr > td textarea:hover,
+.light .docblock-argstable-body tr > td select:hover,
+.light .docblock-argstable-body tr > td:nth-child(4) button:hover {
+  border: 1px solid rgb(156, 163, 175); /* border-gray-400 */
+}
+
+.light .docblock-argstable-body tr > td .rejt-edit-form:focus,
+.light .docblock-argstable-body tr > td input:focus,
+.light .docblock-argstable-body tr > td textarea:focus,
+.light .docblock-argstable-body tr > td select:focus,
+.light .docblock-argstable-body tr > td:nth-child(4) button:focus {
+  border: 1px solid rgb(107, 114, 128); /* border-gray-500 */
+}
+
 .dark .docblock-argstable-body label[aria-disabled] {
-  @apply bg-gray-800;
+  background-color: rgb(31, 41, 55); /* bg-gray-800 */
 }
 
 .dark .docblock-argstable-body label[aria-disabled] span {
-  @apply text-gray-200;
+  color: rgb(229, 231, 235); /* text-gray-200 */
 }
 
 .dark .docblock-argstable-body [type='checkbox'],
 .dark .docblock-argstable-body [type='radio'] {
-  @apply border border-solid !border-gray-700;
+  border: 1px solid rgb(55, 65, 81) !important; /* border-gray-700 */
   box-shadow: none !important;
 }
 
-.dark .docblock-argstable-body [type='checkbox']:checked,
 .dark .docblock-argstable-body [type='radio']:checked {
-  @apply bg-gray-900 invert grayscale !border-gray-300;
+  background-color: rgb(17, 24, 39); /* bg-gray-900 */
 }
 
-.light .docblock-argstable-body [type='checkbox']:checked,
 .light .docblock-argstable-body [type='radio']:checked {
-  @apply !bg-gray-900;
+  background-color: rgb(17, 24, 39) !important; /* bg-gray-900 */
 }
 
 .docblock-argstable [type='checkbox']:focus,
 .docblock-argstable [type='radio']:focus {
-  @apply !ring-gray-300;
+  outline-color: rgb(209, 213, 219) !important; /* ring-gray-300 */
 }
 
 .dark .rejt-name,
 .dark .rejt-collapsed-text {
-  @apply !text-gray-400;
+  color: rgb(156, 163, 175) !important; /* text-gray-400 */
 }
 
 .dark .rejt-value {
-  @apply !text-gray-200;
+  color: rgb(229, 231, 235) !important; /* text-gray-200 */
 }
 
 /* -------------------- Code block and user markdown -------------------- */
 
 #storybook-docs h2 {
-  @apply mt-8 mb-6 pb-2 font-bold;
+  margin-top: 2rem;          /* mt-8 */
+  margin-bottom: 1.5rem;     /* mb-6 */
+  padding-bottom: 0.5rem;    /* pb-2 */
+  font-weight: 700;          /* font-bold */
 }
 
 .dark h2 {
-  @apply border-b-gray-800;
+  border-bottom-color: rgb(31, 41, 55); /* border-b-gray-800 */
 }
 
 .docblock-source {
-  @apply !bg-gray-800 border-gray-800 !rounded-lg;
+  background-color: rgb(31, 41, 55) !important; /* !bg-gray-800 */
+  border-color: rgb(31, 41, 55);               /* border-gray-800 */
   box-shadow: none !important;
+  border-radius: 8px !important;
 }
 
 .dark .docblock-source {
-  @apply !bg-gray-900 !border-gray-800;
+  background-color: rgb(17, 24, 39) !important; /* !bg-gray-900 */
+  border-color: rgb(31, 41, 55) !important;     /* !border-gray-800 */
 }
 
 .dark .docblock-source button {
-  @apply bg-gray-800 border-gray-800 text-gray-400 rounded-tl-none;
+  background-color: rgb(31, 41, 55);       /* bg-gray-800 */
+  border-color: rgb(31, 41, 55);           /* border-gray-800 */
+  color: rgb(156, 163, 175);               /* text-gray-400 */
+  border-top-left-radius: 0;    /* rounded-tl-none */
+}
+
+.dark a.sbdocs.sbdocs-a {
+  color: #6b7280; /* text-gray-500 */
+}
+
+.light a.sbdocs.sbdocs-a {
+  color: #6b7280; /* text-gray-500 */
+}
+
+.light a.sbdocs.sbdocs-a:hover,
+.dark a.sbdocs.sbdocs-a:hover{
+  text-decoration: underline dashed #6b7280; /* text-gray-500 */
+  text-underline-offset: 3px;
 }
 
 /* -------------------- Storybook story preview -------------------- */
 
 .vl-dark {
-  @apply min-h-full bg-gray-900;
+  min-height: 100%;                  /* min-h-full */
+  background-color: rgb(17, 24, 39); /* bg-gray-900 */
 }
 
 .vl-light {
-  @apply min-h-full bg-white;
+  min-height: 100%;           /* min-h-full */
+  background-color: #ffffff;  /* bg-white */
 }

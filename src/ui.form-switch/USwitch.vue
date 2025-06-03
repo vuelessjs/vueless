@@ -1,16 +1,15 @@
 <script setup lang="ts">
-import { computed, useId } from "vue";
-import { merge } from "lodash-es";
+import { computed, useId, useTemplateRef } from "vue";
 
 import useUI from "../composables/useUI.ts";
 import { getDefaults } from "../utils/ui.ts";
+import { useComponentLocaleMessages } from "../composables/useComponentLocaleMassages.ts";
 
 import UIcon from "../ui.image-icon/UIcon.vue";
 import ULabel from "../ui.form-label/ULabel.vue";
 
 import { COMPONENT_NAME } from "./constants.ts";
 import defaultConfig from "./config.ts";
-import { useLocale } from "../composables/useLocale.ts";
 
 import type { Props, Config } from "./types.ts";
 
@@ -30,10 +29,13 @@ const emit = defineEmits([
   "update:modelValue",
 ]);
 
-const { tm } = useLocale();
+const wrapperRef = useTemplateRef<HTMLLabelElement>("wrapper");
 
-const i18nGlobal = tm(COMPONENT_NAME);
-const currentLocale = computed(() => merge({}, defaultConfig.i18n, i18nGlobal, props.config?.i18n));
+const { localeMessages } = useComponentLocaleMessages<typeof defaultConfig.i18n>(
+  COMPONENT_NAME,
+  defaultConfig.i18n,
+  props?.config?.i18n,
+);
 
 const checkedValue = computed({
   get: () => props.modelValue,
@@ -43,11 +45,11 @@ const checkedValue = computed({
 const elementId = props.id || useId();
 
 const switchLabel = computed(() => {
-  return checkedValue.value ? currentLocale.value.active : currentLocale.value.inactive;
+  return checkedValue.value ? localeMessages.value.active : localeMessages.value.inactive;
 });
 
 const iconColor = computed(() => {
-  return checkedValue.value ? props.color : "grayscale";
+  return checkedValue.value ? props.color : "inherit";
 });
 
 const toggleIconName = computed(() => {
@@ -67,6 +69,14 @@ function onClickToggle() {
 function onKeydownSpace() {
   toggle();
 }
+
+defineExpose({
+  /**
+   * A reference to the component's wrapper element for direct DOM manipulation.
+   * @property {HTMLLabelElement}
+   */
+  wrapperRef,
+});
 
 /**
  * Get element / nested component attributes for each config token ✨
@@ -110,6 +120,7 @@ const {
     </template>
 
     <label
+      ref="wrapper"
       tabindex="0"
       :for="elementId"
       v-bind="wrapperAttrs"
@@ -129,7 +140,6 @@ const {
       <span v-bind="circleAttrs">
         <UIcon
           v-if="toggleIcon"
-          internal
           :name="toggleIconName"
           :color="iconColor"
           v-bind="toggleIconAttrs"

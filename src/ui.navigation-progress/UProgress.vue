@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed } from "vue";
+import { computed, useTemplateRef } from "vue";
 
 import useUI from "../composables/useUI.ts";
 import { getDefaults } from "../utils/ui.ts";
@@ -10,14 +10,16 @@ import { COMPONENT_NAME, VARIANT } from "./constants.ts";
 import UStepperProgress from "./UStepperProgress.vue";
 import UHeader from "../ui.text-header/UHeader.vue";
 
-import type { UProgressProps, Config } from "./types.ts";
+import type { Props, Config } from "./types.ts";
 
 defineOptions({ inheritAttrs: false });
 
-const props = withDefaults(defineProps<UProgressProps>(), {
-  ...getDefaults<UProgressProps, Config>(defaultConfig, COMPONENT_NAME),
+const props = withDefaults(defineProps<Props>(), {
+  ...getDefaults<Props, Config>(defaultConfig, COMPONENT_NAME),
   max: 100,
 });
+
+const wrapperRef = useTemplateRef<HTMLDivElement>("wrapper");
 
 const isSteps = computed(() => Array.isArray(props.max));
 
@@ -49,10 +51,22 @@ function isActiveStep(index: number | string) {
   return Number(index) === props.value;
 }
 
+defineExpose({
+  /**
+   * A reference to the component's wrapper element for direct DOM manipulation.
+   * @property {HTMLDivElement}
+   */
+  wrapperRef,
+});
+
 /**
  * Get element / nested component attributes for each config token ✨
  * Applies: `class`, `config`, redefined default `props` and dev `vl-...` attributes.
  */
+const mutatedProps = computed(() => ({
+  value: Boolean(props.value),
+}));
+
 const {
   getDataTest,
   progressAttrs,
@@ -61,11 +75,11 @@ const {
   stepAttrs,
   stepperAttrs,
   headerAttrs,
-} = useUI<Config>(defaultConfig);
+} = useUI<Config>(defaultConfig, mutatedProps);
 </script>
 
 <template>
-  <div v-bind="wrapperAttrs">
+  <div ref="wrapper" v-bind="wrapperAttrs">
     <template v-if="isVariant.progress">
       <div v-if="indicator" v-bind="indicatorAttrs" :style="{ width: progressPercent }">
         <!--

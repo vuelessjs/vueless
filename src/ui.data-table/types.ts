@@ -29,11 +29,8 @@ export interface DateDivider {
 
 export interface Row {
   id: RowId;
-  isChecked?: boolean;
-  isShown?: boolean;
   rowDate?: string | Date;
   row?: Row | Row[];
-  nestedData?: Row;
   class?: string | ((row: Row) => string);
   [key: string]: Cell | RowKeys;
 }
@@ -54,7 +51,7 @@ export interface ColumnObject {
 
 export type Column = ColumnObject | string;
 
-export interface UTableProps {
+export interface Props {
   /**
    * Table columns (headers).
    */
@@ -64,6 +61,16 @@ export interface UTableProps {
    * Table rows data.
    */
   rows: Row[];
+
+  /**
+   * Selected rows.
+   */
+  selectedRows?: Row[];
+
+  /**
+   * Selected rows id.
+   */
+  expandedRows?: RowId[];
 
   /**
    * Label to display for empty cell values.
@@ -119,14 +126,9 @@ export interface UTableRowAttrs {
   bodyCellNestedExpandIconAttrs: Ref<UnknownObject>;
   bodyCellNestedCollapseIconAttrs: Ref<UnknownObject>;
   bodyCellBaseAttrs: Ref<UnknownObject>;
-  bodyCellNestedExpandIconWrapperAttrs: Ref<UnknownObject>;
+  bodyCellNestedIconWrapperAttrs: Ref<UnknownObject>;
   bodyRowCheckedAttrs: Ref<UnknownObject>;
   bodyRowAttrs: Ref<UnknownObject>;
-  bodyDateDividerAttrs: Ref<UnknownObject>;
-  bodySelectedDateDividerAttrs: Ref<UnknownObject>;
-  bodyCellDateDividerAttrs: Ref<UnknownObject>;
-  bodyRowDateDividerAttrs: Ref<UnknownObject>;
-  bodyRowCheckedDateDividerAttrs: Ref<UnknownObject>;
 }
 
 export interface UTableRowProps {
@@ -137,9 +139,8 @@ export interface UTableRowProps {
   nestedLevel: number;
   dataTest: string | null;
   attrs: UTableRowAttrs;
-  isDateDivider: boolean;
-  selectedWithin: boolean;
-  dateDividerData: DateDivider;
   colsCount: number;
   config: Config;
+  isChecked: boolean;
+  isExpanded: boolean;
 }

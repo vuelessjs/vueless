@@ -56,25 +56,30 @@ export function createDebounce<T extends unknown[]>(func: (...args: T) => void, 
  * Check if Vue slot defined, and have a content.
  */
 export function hasSlotContent(slot: Slot | undefined | null, props = {}): boolean {
-  type Args = VNode | VNode[] | undefined | null;
+  type Args = VNode | VNode[];
 
-  const asArray = (arg: Args) => {
-    return Array.isArray(arg) ? arg : arg != null ? [arg] : [];
+  const toArray = (arg: Args) => {
+    return Array.isArray(arg) ? arg : [arg];
   };
 
   const isVNodeEmpty = (vnode: Args) => {
     return (
       !vnode ||
-      asArray(vnode).every(
-        (vnode) =>
+      toArray(vnode).every((vnode) => {
+        return (
           vnode.type === Comment ||
           (vnode.type === Text && !vnode.children?.length) ||
-          (vnode.type === Fragment && !vnode.children?.length),
-      )
+          (vnode.type === Fragment && !vnode.children?.length)
+        );
+      })
     );
   };
 
-  return !isVNodeEmpty(slot?.(props));
+  if (!slot) {
+    return false;
+  }
+
+  return !isVNodeEmpty(slot(props));
 }
 
 /**
@@ -111,3 +116,60 @@ export const isSSR: boolean = typeof window === "undefined";
  * Check is code rendering on the client side.
  */
 export const isCSR: boolean = typeof window !== "undefined";
+
+/**
+ * Set cookie on the client side
+ */
+export function setCookie(name: string, value: string, attributes = {} as UnknownObject) {
+  attributes = {
+    path: "/",
+    ...attributes,
+  };
+
+  if (attributes.expires instanceof Date) {
+    attributes.expires = attributes.expires.toUTCString();
+  }
+
+  let updatedCookie = encodeURIComponent(name) + "=" + encodeURIComponent(value);
+
+  for (const attributeKey in attributes) {
+    updatedCookie += "; " + attributeKey;
+    const attributeValue = attributes[attributeKey];
+
+    if (attributeValue !== true) {
+      updatedCookie += "=" + attributeValue;
+    }
+  }
+
+  document.cookie = updatedCookie;
+}
+
+/**
+ * Get cookie on the client side
+ */
+export function getCookie(name: string) {
+  const matches = document.cookie.match(
+    new RegExp("(?:^|; )" + name.replace(/([\.$?*|{}\(\)\[\]\\\/\+^])/g, "\\$1") + "=([^;]*)"),
+  );
+
+  return matches ? decodeURIComponent(matches[1]) : undefined;
+}
+
+/**
+ * Delete cookie on the client side
+ */
+export function deleteCookie(name: string) {
+  setCookie(name, "", {
+    "max-age": -1,
+  });
+}
+
+export function isEmptyValue(value: object | null | undefined | string | unknown) {
+  return (
+    value === null ||
+    value === undefined ||
+    value === "" ||
+    (Array.isArray(value) && value.length === 0) ||
+    (typeof value === "object" && !Object.keys(value).length)
+  );
+}

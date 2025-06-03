@@ -6,8 +6,8 @@ export default /*tw*/ {
   },
   wrapper: {
     base: `
-      flex items-center p-0.5 relative rounded-full cursor-pointer transition
-      focus-visible:outline focus-visible:outline-dynamic focus-visible:outline-offset-2 focus-visible:outline-{color}-600
+      flex items-center p-0.5 relative rounded-full outline-transparent cursor-pointer transition focus-within:transition
+      focus-visible:outline focus-visible:outline-medium focus-visible:outline-offset-2 focus-visible:outline-{color}
     `,
     variants: {
       size: {
@@ -15,26 +15,25 @@ export default /*tw*/ {
         md: "w-8",
         lg: "w-10",
       },
-      color: {
-        grayscale: "outline-gray-900",
-      },
       checked: {
-        true: "bg-{color}-600 hover:bg-{color}-700 active:bg-{color}-800",
-        false: "bg-gray-300 hover:bg-gray-400 active:bg-gray-600",
+        true: "bg-{color} hover:bg-{color}-lifted active:bg-{color}-accented",
+        false: "bg-accented",
+      },
+      disabled: {
+        true: "pointer-events-none",
       },
     },
     compoundVariants: [
       { toggleLabel: true, size: "sm", class: "w-10" },
       { toggleLabel: true, size: "md", class: "w-12" },
       { toggleLabel: true, size: "lg", class: "w-14" },
-      { color: "grayscale", checked: true, class: "bg-gray-900 hover:bg-gray-800 active:bg-gray-700" },
-      { disabled: true, checked: false, class: "bg-gray-300" },
-      { disabled: true, checked: true, class: "bg-gray-400" },
+      { disabled: true, checked: false, class: "bg-accented/(--vl-disabled-opacity)" },
+      { disabled: true, checked: true, class: "bg-{color}/(--vl-disabled-opacity)" },
     ],
   },
-  input: "absolute size-0 opacity-0",
+  input: "sr-only",
   circle: {
-    base: "rounded-full bg-white flex items-center justify-center transition-all",
+    base: "rounded-full bg-default flex items-center justify-center transition-all",
     variants: {
       size: {
         sm: "size-3",
@@ -52,31 +51,26 @@ export default /*tw*/ {
     base: "{UIcon}",
     defaults: {
       size: {
-        sm: "2xs",
-        md: "xs",
-        lg: "sm",
+        sm: "3xs",
+        md: "2xs",
+        lg: "xs",
       },
     },
   },
   toggleLabel: {
-    base: "absolute text-center text-2xs font-medium uppercase text-white",
+    base: "absolute text-center text-tiny font-medium uppercase text-inverted",
     compoundVariants: [
       { toggleLabel: true, checked: true, class: "w-1/2 left-1" },
       { toggleLabel: true, checked: false, class: "w-1/2 right-1" },
       {
         toggleLabel: false,
         checked: true,
-        class: "bg-{color}-600 hover:bg-{color}-700 active:bg-{color}-800",
+        class: "bg-{color} hover:bg-{color}-lifted active:bg-{color}-accented",
       },
       {
         toggleLabel: false,
         checked: false,
-        class: "bg-gray-300 hover:bg-gray-400 active:bg-gray-500",
-      },
-      {
-        toggleLabel: false,
-        color: "grayscale",
-        class: "bg-gray-700 hover:bg-gray-800 active:bg-gray-900",
+        class: "bg-accented",
       },
     ],
   },
@@ -85,7 +79,7 @@ export default /*tw*/ {
     active: "On",
   },
   defaults: {
-    color: "brand",
+    color: "primary",
     size: "md",
     labelAlign: "right",
     disabled: false,

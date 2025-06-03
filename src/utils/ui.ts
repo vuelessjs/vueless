@@ -1,31 +1,19 @@
 import { merge } from "lodash-es";
 import { defineConfig } from "cva";
 import { extendTailwindMerge } from "tailwind-merge";
-import { isCSR, isSSR } from "./helper.ts";
+
+import { isCSR } from "./helper.ts";
 import { createGetMergedConfig } from "./node/mergeConfigs.js";
 import { COMPONENT_NAME as U_ICON } from "../ui.image-icon/constants.ts";
-import { getSelectedBrandColor } from "./theme.ts";
-import {
-  BRAND_COLOR,
-  GRAYSCALE_COLOR,
-  ICON_NON_PROPS_DEFAULTS,
-  TAILWIND_MERGE_EXTENSION,
-} from "../constants.js";
+import { ICON_NON_PROPS_DEFAULTS, TAILWIND_MERGE_EXTENSION } from "../constants.js";
 
-import type {
-  Config,
-  Defaults,
-  Strategies,
-  BrandColors,
-  UnknownObject,
-  ComponentNames,
-} from "../types.ts";
+import type { Config, Defaults, UnknownObject, ComponentNames } from "../types.ts";
 
 interface MergedConfigOptions {
   defaultConfig: unknown;
   globalConfig: unknown;
   propsConfig?: unknown;
-  vuelessStrategy?: Strategies;
+  unstyled?: boolean;
 }
 
 type GetMergedConfig = (options: MergedConfigOptions) => unknown;
@@ -33,25 +21,13 @@ type GetMergedConfig = (options: MergedConfigOptions) => unknown;
 /**
  * Load Vueless config from the project root.
  * Both for server and client side renderings.
- * IIFE for SSR is used to prevent top level await issue.
  */
 export let vuelessConfig: Config = {};
 
-if (isSSR) {
-  /* Load Vueless config from the project root in IIFE (no top-level await). */
-  (async () => {
-    try {
-      const filePath = `${process.cwd()}/vueless.config`;
+export function setVuelessConfig(config?: Config) {
+  config = config || {};
 
-      vuelessConfig = (await import(/* @vite-ignore */ `${filePath}.js`)).default;
-
-      if (!vuelessConfig) {
-        vuelessConfig = (await import(/* @vite-ignore */ `${filePath}.ts`)).default;
-      }
-    } catch {
-      vuelessConfig = {};
-    }
-  })();
+  vuelessConfig = Object.keys(config).length ? config : vuelessConfig;
 }
 
 if (isCSR) {
@@ -105,13 +81,10 @@ export function getDefaults<Props, Config>(defaultConfig: Config, name: Componen
 
   const defaults = merge({}, componentDefaults, globalDefaults) as Props & Defaults;
 
-  if (defaults.color) {
-    defaults.color = getColor(defaults.color as BrandColors);
-  }
-
   /* Remove non a props defaults. */
   for (const key in defaults) {
-    const isNonPropIcon = /Icon/.test(key) && !/(leftIcon|rightIcon)/.test(key);
+    const isNonPropIcon =
+      /Icon/.test(key) && !/(leftIcon|rightIcon|toggleIcon|placeholderIcon)/.test(key);
     const isNonPropIconDefaults = ICON_NON_PROPS_DEFAULTS.includes(key) && name === U_ICON;
 
     if (isNonPropIcon || isNonPropIconDefaults) {
@@ -124,17 +97,6 @@ export function getDefaults<Props, Config>(defaultConfig: Config, name: Componen
     dataTest: "",
     config: () => ({}),
   };
-}
-
-/**
- * Return `grayscale` color if in component config it `brand` but in vueless config it `grayscale`
- * Otherwise return given color.
- */
-export function getColor(color: string) {
-  const isComponentColorBrand = color === BRAND_COLOR;
-  const isSelectedColorGrayscale = getSelectedBrandColor() === GRAYSCALE_COLOR;
-
-  return isComponentColorBrand && isSelectedColorGrayscale ? GRAYSCALE_COLOR : color;
 }
 
 /**

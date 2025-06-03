@@ -4,9 +4,9 @@ export default /*tw*/ {
     base: "{UButton} font-normal",
     variants: {
       size: {
-        sm: "text-xs",
-        md: "text-sm",
-        lg: "text-base",
+        sm: "text-small",
+        md: "text-medium",
+        lg: "text-large",
       },
     },
     defaults: {
@@ -34,7 +34,7 @@ export default /*tw*/ {
   prevIcon: "{>paginationIcon}",
   nextIcon: "{>paginationIcon}",
   defaults: {
-    variant: "primary",
+    variant: "solid",
     size: "md",
     limit: 5,
     perPage: 20,

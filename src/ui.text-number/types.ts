@@ -12,38 +12,41 @@ export interface Props {
   /**
    * Number size.
    */
-  size?: "xs" | "sm" | "md" | "lg" | "xl";
+  size?: "xs" | "sm" | "md" | "lg";
 
   /**
    * Number color.
    */
   color?:
-    | "grayscale"
-    | "red"
-    | "orange"
-    | "amber"
-    | "yellow"
-    | "lime"
-    | "green"
-    | "emerald"
-    | "teal"
-    | "cyan"
-    | "sky"
-    | "blue"
-    | "indigo"
-    | "violet"
-    | "purple"
-    | "fuchsia"
-    | "pink"
-    | "rose"
-    | "gray"
-    | "white"
-    | "brand";
+    | "primary"
+    | "secondary"
+    | "error"
+    | "warning"
+    | "success"
+    | "info"
+    | "notice"
+    | "neutral"
+    | "grayscale";
 
   /**
    * Number sign.
    */
   sign?: "auto" | "positive" | "negative" | "unsigned";
+
+  /**
+   * Currency symbol.
+   */
+  currency?: string;
+
+  /**
+   * Currency align.
+   */
+  currencyAlign?: "left" | "right";
+
+  /**
+   * Add space between currency and sum.
+   */
+  currencySpace?: boolean;
 
   /**
    * Minimal number of signs after the decimal separator (fractional part of a number).

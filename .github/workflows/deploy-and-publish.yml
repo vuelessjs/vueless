@@ -1,55 +1,51 @@
 name: Deploy and Publish Workflow
 
 on:
-  push:
-    branches: [ main ]
+  workflow_dispatch:
+    inputs:
+      release_type:
+        description: 'Type of release'
+        required: true
+        type: choice
+        options:
+          - patch
+          - minor
+          - major
 
 permissions: write-all
 
 jobs:
   lint:
-    if: "!contains(github.event.head_commit.message, 'GITBOOK')"
+    name: 'Lint'
+    if: "github.ref_name == 'main'"
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with:
-          node-version: 20
+          node-version: 22
           cache: 'npm'
       - run: npm ci
       - run: npm run lint:ci
 
   test:
-    if: "!contains(github.event.head_commit.message, 'GITBOOK')"
+    name: 'Test'
+    if: "github.ref_name == 'main'"
     needs: lint
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with:
-          node-version: 20
+          node-version: 22
           cache: 'npm'
       - run: npm ci
       - run: npm run test:ci
 
-  release-ui-docs:
-    if: "!contains(github.event.head_commit.message, 'GITBOOK')"
+  release:
+    name: "Release: ${{ github.event.inputs.release_type }}"
+    if: github.ref_name == 'main'
     needs: test
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
-        with:
-          node-version: 20
-          cache: 'npm'
-      - run: sudo apt-get install -y lftp
-      - run: npm ci
-      - run: npm run build
-      - run: lftp -c "set ftp:ssl-force true; set ssl:verify-certificate false; open -u ${{ secrets.FTP_USERNAME }},${{ secrets.FTP_PASSWORD }} ${{ secrets.FTP_HOSTNAME }}; mirror -Renv --parallel=10 ./storybook-static ./www"
-
-  publish-npm:
-    if: "!contains(github.event.head_commit.message, 'GITBOOK')"
-    needs: release-ui-docs
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -57,7 +53,7 @@ jobs:
           fetch-depth: 0
       - uses: actions/setup-node@v4
         with:
-          node-version: 20
+          node-version: 22
           cache: 'npm'
           registry-url: https://registry.npmjs.org/
       - name: git config
@@ -66,7 +62,7 @@ jobs:
           git config user.email "${GITHUB_ACTOR}@users.noreply.github.com"
       - run: npm ci
       - run: npm run release:prepare
-      - run: npm run release:patch
+      - run: npm run release:${{ github.event.inputs.release_type }}
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

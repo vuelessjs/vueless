@@ -1,13 +1,17 @@
 import {
+  getArgs,
   getArgTypes,
   getSlotNames,
   getSlotsFragment,
   getDocsDescription,
+  getEnumVariantDescription,
 } from "../../utils/storybook.ts";
 
 import UHeader from "../../ui.text-header/UHeader.vue";
 import UCol from "../../ui.container-col/UCol.vue";
 import UBadge from "../../ui.text-badge/UBadge.vue";
+
+import tooltip from "../../directives/tooltip/vTooltip.ts";
 
 import type { Meta, StoryFn } from "@storybook/vue3";
 import type { Props } from "../types.ts";
@@ -36,11 +40,7 @@ export default {
 
 const DefaultTemplate: StoryFn<UHeaderArgs> = (args: UHeaderArgs) => ({
   components: { UHeader, UBadge },
-  setup() {
-    const slots = getSlotNames(UHeader.__name);
-
-    return { args, slots };
-  },
+  setup: () => ({ args, slots: getSlotNames(UHeader.__name) }),
   template: `
     <UHeader v-bind="args">
       ${args.slotTemplate || getSlotsFragment("")}
@@ -48,22 +48,17 @@ const DefaultTemplate: StoryFn<UHeaderArgs> = (args: UHeaderArgs) => ({
   `,
 });
 
-const EnumVariantTemplate: StoryFn<UHeaderArgs> = (args: UHeaderArgs, { argTypes }) => ({
+const EnumTemplate: StoryFn<UHeaderArgs> = (args: UHeaderArgs, { argTypes }) => ({
   components: { UHeader, UCol },
-  setup() {
-    return {
-      args,
-      options: argTypes?.[args.enum]?.options,
-    };
-  },
+  directives: { tooltip },
+  setup: () => ({ args, argTypes, getArgs }),
   template: `
     <UCol>
       <UHeader
-        v-for="(option, index) in options"
-        :key="index"
-        v-bind="args"
-        :[args.enum]="option"
-        :label="args.label + ' (' + option + ')'"
+        v-for="option in argTypes?.[args.enum]?.options"
+        v-bind="getArgs(args, option)"
+        :key="option"
+        v-tooltip="option"
       />
     </UCol>
   `,
@@ -72,32 +67,17 @@ const EnumVariantTemplate: StoryFn<UHeaderArgs> = (args: UHeaderArgs, { argTypes
 export const Default = DefaultTemplate.bind({});
 Default.args = {};
 
-export const Sizes = EnumVariantTemplate.bind({});
+export const Sizes = EnumTemplate.bind({});
 Sizes.args = { enum: "size" };
+Sizes.parameters = getEnumVariantDescription();
 
-export const Underlined = EnumVariantTemplate.bind({});
-Underlined.args = { enum: "size", underlined: true };
-
-export const Line = DefaultTemplate.bind({});
-Line.args = {
-  size: "xl",
-  line: true,
-  label: "Detailed Analysis of User Engagement Metrics",
-};
-Line.parameters = {
-  docs: {
-    description: {
-      story: "Removes text line height (useful for 1-line text).",
-    },
-  },
-};
-
-export const Colors = EnumVariantTemplate.bind({});
+export const Colors = EnumTemplate.bind({});
 Colors.args = { enum: "color" };
+Colors.parameters = getEnumVariantDescription();
 
-export const SlotDefault = DefaultTemplate.bind({});
-SlotDefault.args = {
+export const DefaultSlot = DefaultTemplate.bind({});
+DefaultSlot.args = {
   slotTemplate: `
-    <UBadge v-bind="args" size="lg" color="green" />
+    <span class="dark:text-red-400 text-red-600">Detailed Analysis</span> of User Engagement Metrics
   `,
 };

@@ -17,12 +17,7 @@ export interface Props {
   /**
    * Alert variant.
    */
-  variant?: "primary" | "secondary" | "thirdary";
-
-  /**
-   * Add border to the `thirdary` variant.
-   */
-  bordered?: boolean;
+  variant?: "solid" | "outlined" | "subtle" | "soft";
 
   /**
    * Alert size.
@@ -33,30 +28,23 @@ export interface Props {
    * Alert color.
    */
   color?:
-    | "grayscale"
-    | "red"
-    | "orange"
-    | "amber"
-    | "yellow"
-    | "lime"
-    | "green"
-    | "emerald"
-    | "teal"
-    | "cyan"
-    | "sky"
-    | "blue"
-    | "indigo"
-    | "violet"
-    | "purple"
-    | "fuchsia"
-    | "pink"
-    | "rose"
-    | "gray"
-    | "white"
-    | "brand";
+    | "primary"
+    | "secondary"
+    | "error"
+    | "warning"
+    | "success"
+    | "info"
+    | "notice"
+    | "neutral"
+    | "grayscale";
 
   /**
-   * Alert timeout.
+   * Alert icon name.
+   */
+  icon?: string;
+
+  /**
+   * Delayed hide alert (milliseconds).
    */
   timeout?: number;
 

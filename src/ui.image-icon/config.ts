@@ -1,20 +1,14 @@
 export default /*tw*/ {
   icon: {
-    base: "fill-current shrink-0 grow-0 focus:outline-0",
+    base: "text-{color} fill-current shrink-0 grow-0 focus:outline-0",
     variants: {
       variant: {
-        light: "text-{color}-400 dark:text-{color}-200",
-        default: "text-{color}-600 dark:text-{color}-400",
-        dark: "text-{color}-800 dark:text-{color}-600",
+        light: "brightness-125",
+        default: "brightness-100",
+        dark: "brightness-75",
       },
       color: {
-        white: "text-white",
-        black: "text-gray-900",
-        grayscale: "text-gray-900 dark:text-white",
         inherit: "text-inherit",
-      },
-      interactive: {
-        true: "cursor-pointer",
       },
       size: {
         "4xs": "size-2.5",
@@ -29,6 +23,12 @@ export default /*tw*/ {
         "3xl": "size-14",
         "4xl": "size-16",
         "5xl": "size-20",
+      },
+      interactive: {
+        true: "cursor-pointer hover:text-{color}-lifted active:text-{color}-accented",
+      },
+      disabled: {
+        true: "!text-{color}/(--vl-disabled-opacity) cursor-not-allowed",
       },
     },
   },

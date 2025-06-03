@@ -1,5 +1,6 @@
 import { ref } from "vue";
 import {
+  getArgs,
   getArgTypes,
   getSlotNames,
   getSlotsFragment,
@@ -10,6 +11,8 @@ import UToggle from "../../ui.button-toggle/UToggle.vue";
 import UIcon from "../../ui.image-icon/UIcon.vue";
 import URow from "../../ui.container-row/URow.vue";
 import UBadge from "../../ui.text-badge/UBadge.vue";
+import UDot from "../../ui.other-dot/UDot.vue";
+import ULabel from "../../ui.form-label/ULabel.vue";
 
 import type { Meta, StoryFn } from "@storybook/vue3";
 import type { Props } from "../types.ts";
@@ -43,12 +46,8 @@ export default {
 } as Meta;
 
 const DefaultTemplate: StoryFn<UToggleArgs> = (args: UToggleArgs) => ({
-  components: { UToggle, UIcon, UBadge },
-  setup() {
-    const slots = getSlotNames(UToggle.__name);
-
-    return { args, slots };
-  },
+  components: { UToggle, UIcon, UBadge, UDot, ULabel },
+  setup: () => ({ args, slots: getSlotNames(UToggle.__name) }),
   template: `
     <UToggle v-bind="args" v-model="args.modelValue">
       ${args.slotTemplate || getSlotsFragment("")}
@@ -56,29 +55,25 @@ const DefaultTemplate: StoryFn<UToggleArgs> = (args: UToggleArgs) => ({
   `,
 });
 
-const EnumVariantTemplate: StoryFn<UToggleArgs> = (args: UToggleArgs, { argTypes }) => ({
+const EnumTemplate: StoryFn<UToggleArgs> = (args: UToggleArgs, { argTypes }) => ({
   components: { UToggle, URow },
   setup() {
-    const values = ref(["2xs", "xs", "sm", "md", "lg", "xl"]);
+    const values = ref(argTypes.size?.options);
 
     return {
       args,
       values,
-      options: argTypes?.[args.enum]?.options,
+      argTypes,
+      getArgs,
     };
   },
   template: `
     <URow>
       <UToggle
-        v-for="(option, index) in options"
-        :key="index"
-        v-bind="args"
+        v-for="option in argTypes?.[args.enum]?.options"
+        v-bind="getArgs(args, option)"
+        :key="option"
         v-model="values[option]"
-        :[args.enum]="option"
-        :options="[
-          { value: option + 1, label: option },
-          { value: option + 2, label: option },
-        ]"
         class="w-auto"
       />
     </URow>
@@ -86,30 +81,20 @@ const EnumVariantTemplate: StoryFn<UToggleArgs> = (args: UToggleArgs, { argTypes
 });
 
 export const Default = DefaultTemplate.bind({});
-Default.args = {
-  name: "Default",
-};
+Default.args = { name: "Default" };
 
-export const Disabled = DefaultTemplate.bind({});
-Disabled.args = {
-  name: "Disabled",
+export const Sizes = EnumTemplate.bind({});
+Sizes.args = {
+  name: "sizeTemplate",
+  enum: "size",
   options: [
-    { value: "11", label: "Admin" },
-    { value: "12", label: "Editor", disabled: true },
-    { value: "13", label: "Viewer" },
-    { value: "14", label: "Guest", disabled: true },
+    { value: 1, label: "{enumValue}" },
+    { value: 2, label: "{enumValue}" },
   ],
 };
 
-export const Sizes = EnumVariantTemplate.bind({});
-Sizes.args = { name: "sizeTemplate", enum: "size" };
-
 export const Multiple = DefaultTemplate.bind({});
-Multiple.args = {
-  name: "multiple",
-  multiple: true,
-  modelValue: [],
-};
+Multiple.args = { name: "multiple", multiple: true, modelValue: ["11", "12"] };
 
 export const Block = DefaultTemplate.bind({});
 Block.args = { name: "block", block: true };
@@ -136,24 +121,49 @@ Square.args = {
   `,
 };
 
-export const OptionSlot = DefaultTemplate.bind({});
-OptionSlot.args = {
-  name: "optionSlot",
-  options: [
-    { value: "1", label: "Download", iconName: "download", color: "green" },
-    { value: "2", label: "Edit", iconName: "edit_note", color: "orange" },
-    { value: "3", label: "Delete", iconName: "delete", color: "red" },
-  ],
-  slotTemplate: `
-    <template #option="{ label, index }">
-      <UBadge
-        :label="label"
-        :color="args.options[index].color"
-        :right-icon="args.options[index].iconName"
-      />
-    </template>
-  `,
+export const Disabled = DefaultTemplate.bind({});
+Disabled.args = {
+  name: "DisabledItems",
+  disabled: true,
 };
+
+export const DisabledItems = DefaultTemplate.bind({});
+DisabledItems.args = {
+  name: "DisabledItems",
+  options: [
+    { value: "11", label: "Admin" },
+    { value: "12", label: "Editor", disabled: true },
+    { value: "13", label: "Viewer" },
+    { value: "14", label: "Guest", disabled: true },
+  ],
+};
+
+export const OptionSlot: StoryFn<UToggleArgs> = (args) => ({
+  components: { UToggle, UDot, ULabel },
+  setup() {
+    const modelValue = ref("1");
+
+    return { args, modelValue };
+  },
+  template: `
+    <ULabel label="Select transaction status:">
+      <UToggle
+        name="optionSlot"
+        v-model="modelValue"
+        :options="[
+          { value: '1', label: 'Success', color: 'success' },
+          { value: '2', label: 'Warning', color: 'warning' },
+          { value: '3', label: 'Error', color: 'error' },
+        ]"
+      >
+        <template #option="{ option }">
+          <UDot :color="option.color" />
+          {{ option.label }}
+        </template>
+      </UToggle>
+    </ULabel>
+  `,
+});
 
 export const Slots: StoryFn<UToggleArgs> = (args) => ({
   components: { UToggle, URow, UIcon },
@@ -164,7 +174,7 @@ export const Slots: StoryFn<UToggleArgs> = (args) => ({
     return { args, leftModel, rightModel };
   },
   template: `
-    <URow no-mobile>
+    <URow>
       <UToggle v-bind="args" v-model="leftModel" name="leftSlot">
         <template #left="{ index }">
           <UIcon size="sm" color="inherit" v-if="index === 0" name="settings" />
@@ -173,7 +183,7 @@ export const Slots: StoryFn<UToggleArgs> = (args) => ({
 
       <UToggle v-bind="args" v-model="rightModel" name="rightSlot">
         <template #right="{ index }">
-          <UIcon size="sm" color="inherit" v-if="index === 2" name="person" />
+          <div class="font-medium" v-if="index === 2">(24)</div>
         </template>
       </UToggle>
     </URow>

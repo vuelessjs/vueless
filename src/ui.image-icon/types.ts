@@ -6,12 +6,7 @@ import type { ComponentConfig } from "../types.ts";
 
 export type Config = typeof defaultConfig;
 
-export type IconLibraries =
-  | "vueless"
-  | "@material-symbols"
-  | "bootstrap-icons"
-  | "heroicons"
-  | "custom-icons";
+export type IconLibraries = "@material-symbols" | "bootstrap-icons" | "heroicons" | "custom-icons";
 
 export interface Props {
   /**
@@ -28,29 +23,16 @@ export interface Props {
    * Icon color.
    */
   color?:
+    | "primary"
+    | "secondary"
+    | "error"
+    | "warning"
+    | "success"
+    | "info"
+    | "notice"
+    | "neutral"
     | "grayscale"
-    | "red"
-    | "orange"
-    | "amber"
-    | "yellow"
-    | "lime"
-    | "green"
-    | "emerald"
-    | "teal"
-    | "cyan"
-    | "sky"
-    | "blue"
-    | "indigo"
-    | "violet"
-    | "purple"
-    | "fuchsia"
-    | "pink"
-    | "rose"
-    | "gray"
-    | "black"
-    | "white"
-    | "inherit"
-    | "brand";
+    | "inherit";
 
   /**
    * Icon size.
@@ -68,9 +50,9 @@ export interface Props {
   interactive?: boolean;
 
   /**
-   * Mark that Icon used inside Vueless components (used to get icons from vueless library).
+   * Disable the icon.
    */
-  internal?: boolean;
+  disabled?: boolean;
 
   /**
    * Component config object.

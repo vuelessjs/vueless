@@ -1,40 +1,41 @@
 export default /*tw*/ {
   textareaLabel: "{ULabel}",
-  slot: "flex items-center justify-center whitespace-nowrap gap-1 rounded-dynamic",
+  slot: "flex items-center justify-center whitespace-nowrap gap-1 rounded-medium",
   leftSlot: "{>slot} pl-2.5 rounded-r-none",
   rightSlot: "{>slot} pr-2.5 rounded-l-none",
   wrapper: {
     base: `
-      flex bg-white transition w-full
-      rounded-dynamic border border-gray-300 hover:border-gray-400 hover:focus-within:border-brand-600 focus-within:border-brand-600
-      focus-within:outline focus-within:outline-dynamic-sm focus-within:outline-brand-600
+      flex w-full bg-default transition
+      rounded-medium border border-default outline-transparent
+      hover:border-lifted hover:focus-within:border-primary focus-within:border-primary
+      focus-within:outline focus-within:outline-small focus-within:outline-primary focus-within:transition
     `,
     variants: {
       error: {
-        true: "!border-red-600 focus-within:outline-red-600",
+        true: "!border-error focus-within:outline-error",
       },
       disabled: {
-        true: "!border-gray-300 focus-within:outline-0 bg-gray-100",
+        true: "!border-default focus-within:outline-0 bg-lifted",
       },
     },
   },
   textarea: {
     base: `
       px-3 pt-2 pb-1.5 block w-full bg-transparent border-none font-normal
-      placeholder:text-gray-400 placeholder:font-normal placeholder:leading-none
-      focus:ring-0 disabled:cursor-not-allowed
+      placeholder:text-muted placeholder:font-normal placeholder:leading-none
+      focus:ring-0 focus:outline-none disabled:cursor-not-allowed
     `,
     variants: {
       size: {
-        sm: "text-xs placeholder:text-xs",
-        md: "text-sm placeholder:text-sm",
-        lg: "text-base placeholder:text-base",
+        sm: "text-small placeholder:text-small",
+        md: "text-medium placeholder:text-medium",
+        lg: "text-large placeholder:text-large",
       },
       resizable: {
         false: "resize-none",
       },
       error: {
-        true: "placeholder:text-red-300",
+        true: "placeholder:text-error/50",
       },
     },
     compoundVariants: [

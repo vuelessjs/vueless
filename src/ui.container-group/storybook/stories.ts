@@ -47,11 +47,7 @@ const defaultTemplate = `
 
 const DefaultTemplate: StoryFn<UGroupArgs> = (args: UGroupArgs) => ({
   components: { UGroup, UCol, UInput, UButton },
-  setup() {
-    const slots = getSlotNames(UGroup.__name);
-
-    return { args, slots };
-  },
+  setup: () => ({ args, slots: getSlotNames(UGroup.__name) }),
   template: `
     <UGroup v-bind="args">
       ${args.slotTemplate || getSlotsFragment(defaultTemplate)}
@@ -114,7 +110,7 @@ export const Slots: StoryFn<UGroupArgs> = (args) => ({
       <UGroup v-bind="args" title="Actions Slot">
         <template #actions>
           <URow class="max-w-fit">
-            <UButton size="sm" variant="secondary" label="Clear" />
+            <UButton size="sm" variant="outlined" label="Clear" />
             <UButton size="sm" label="Submit" />
           </URow>
         </template>

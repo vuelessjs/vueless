@@ -94,9 +94,9 @@ const TypesTemplate: StoryFn<UNotifyArgs> = (args: UNotifyArgs) => ({
     <UNotify class="m-4" />
 
     <UCol>
-      <UButton label="Success" color="green" @click="onClick('success')"/>
-      <UButton label="Warning" color="orange" @click="onClick('warning')"/>
-      <UButton label="Error" color="red" @click="onClick('error')"/>
+      <UButton label="Success" color="success" @click="onClick('success')"/>
+      <UButton label="Warning" color="warning" @click="onClick('warning')"/>
+      <UButton label="Error" color="error" @click="onClick('error')"/>
     </UCol>
   `,
 });

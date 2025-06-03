@@ -7,10 +7,11 @@ import { getDefaults } from "../utils/ui.ts";
 import ULabel from "../ui.form-label/ULabel.vue";
 
 import defaultConfig from "./config.ts";
-import { COMPONENT_NAME } from "./constants.ts";
 
+import { COMPONENT_NAME } from "./constants.ts";
 import type { Props, LocalValueType, Config } from "./types.ts";
 import type { SetRadioGroupSelectedItem } from "../ui.form-radio-group/types.ts";
+import { isEqual } from "lodash-es";
 
 defineOptions({ inheritAttrs: false });
 
@@ -26,7 +27,7 @@ const getRadioGroupSelectedItem = inject("getRadioGroupSelectedItem", null);
 
 const props = withDefaults(defineProps<Props>(), {
   ...getDefaults<Props, Config>(defaultConfig, COMPONENT_NAME),
-  modelValue: () => ({}),
+  modelValue: undefined,
   value: () => ({}),
   label: "",
 });
@@ -46,13 +47,15 @@ const radioSize = ref(toValue(getRadioGroupSize) || props.size);
 const radioDisabled = ref(toValue(getRadioGroupDisabled) || props.disabled);
 
 const isChecked = computed(() => {
+  if (props.checked) return true;
+
   const currentValue = props.modelValue ?? localValue.value;
 
-  if (typeof currentValue !== "object") {
-    return currentValue === props.value;
+  if (typeof currentValue === "object") {
+    return isEqual(currentValue, props.value);
   }
 
-  return JSON.stringify(currentValue) === JSON.stringify(props.value);
+  return currentValue === props.value;
 });
 
 const elementId = props.id || useId();
@@ -69,7 +72,13 @@ watchEffect(() => (radioColor.value = toValue(getRadioGroupColor) || props.color
 watchEffect(() => (radioSize.value = toValue(getRadioGroupSize) || props.size));
 watchEffect(() => (radioDisabled.value = toValue(getRadioGroupDisabled) || props.disabled));
 watchEffect(() => {
-  localValue.value = toValue(getRadioGroupSelectedItem) || null;
+  const radioGroupSelectedItem = toValue(getRadioGroupSelectedItem);
+
+  if (radioGroupSelectedItem === null || isEqual(props.modelValue, radioGroupSelectedItem)) {
+    return;
+  }
+
+  localValue.value = radioGroupSelectedItem || null;
   emit("update:modelValue", props.value);
 });
 
@@ -94,7 +103,7 @@ const mutatedProps = computed(() => ({
   error: Boolean(props.error),
 }));
 
-const { getDataTest, radioAttrs, radioLabelAttrs } = useUI<Config>(defaultConfig, mutatedProps);
+const { getDataTest, radioLabelAttrs, radioAttrs } = useUI<Config>(defaultConfig, mutatedProps);
 </script>
 
 <template>
@@ -123,7 +132,7 @@ const { getDataTest, radioAttrs, radioLabelAttrs } = useUI<Config>(defaultConfig
       type="radio"
       :value="radioValue"
       :name="radioName"
-      :checked="checked || isChecked"
+      :checked="isChecked"
       :disabled="radioDisabled"
       v-bind="radioAttrs"
       :data-test="getDataTest()"

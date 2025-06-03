@@ -21,7 +21,22 @@ export interface Props {
   size?: "sm" | "md" | "lg";
 
   /**
-   * Disable the input.
+   * Icon name for active (selected) stars.
+   */
+  activeIcon?: string;
+
+  /**
+   * Icon name for inactive (unselected) stars.
+   */
+  inactiveIcon?: string;
+
+  /**
+   * Make rating read-only.
+   */
+  readonly?: boolean;
+
+  /**
+   * Disable the rating.
    */
   disabled?: boolean;
 
@@ -36,9 +51,9 @@ export interface Props {
   counter?: boolean;
 
   /**
-   * Make rating selectable.
+   * Unique element id.
    */
-  selectable?: boolean;
+  id?: string;
 
   /**
    * Component config object.

@@ -1,10 +1,9 @@
 <script setup lang="ts">
-import { computed, onBeforeUnmount, onMounted, ref } from "vue";
-import { merge } from "lodash-es";
+import { onBeforeUnmount, onMounted, ref, useTemplateRef } from "vue";
 
 import useUI from "../composables/useUI.ts";
 import { getDefaults, vuelessConfig } from "../utils/ui.ts";
-import { useLocale } from "../composables/useLocale.ts";
+import { useComponentLocaleMessages } from "../composables/useComponentLocaleMassages.ts";
 
 import defaultConfig from "./config.ts";
 import { COMPONENT_NAME, NotificationType, NotificationPosition } from "./constants.ts";
@@ -19,15 +18,18 @@ const props = withDefaults(defineProps<Props>(), {
   ...getDefaults<Props, Config>(defaultConfig, COMPONENT_NAME),
 });
 
-const { tm } = useLocale();
+const notificationRef = useTemplateRef<HTMLDivElement>("notification");
 
 const notifications = ref<Notification[]>([]);
 const notifyPositionStyles = ref({});
 
 const notificationsWrapperRef = ref<NotificationsWrapperRef | null>(null);
 
-const i18nGlobal = tm(COMPONENT_NAME);
-const currentLocale = computed(() => merge({}, defaultConfig.i18n, i18nGlobal, props.config.i18n));
+const { localeMessages } = useComponentLocaleMessages<typeof defaultConfig.i18n>(
+  COMPONENT_NAME,
+  defaultConfig.i18n,
+  props?.config?.i18n,
+);
 
 onMounted(() => {
   window.addEventListener("resize", setPosition, { passive: true });
@@ -102,7 +104,7 @@ function setPosition() {
 }
 
 function getText(notificationText: string, type: Notification["type"]): string {
-  return notificationText || currentLocale.value[type]?.default;
+  return notificationText || localeMessages.value[type]?.default;
 }
 
 function getBodyAttrs(type: Notification["type"]) {
@@ -118,6 +120,14 @@ function getBodyAttrs(type: Notification["type"]) {
     return bodyErrorAttrs.value;
   }
 }
+
+defineExpose({
+  /**
+   * A reference to the component's wrapper element for direct DOM manipulation.
+   * @property {HTMLDivElement}
+   */
+  notificationRef,
+});
 
 /**
  * Get element / nested component attributes for each config token ✨
@@ -151,14 +161,12 @@ const {
     <div
       v-for="notification in notifications"
       :key="notification.id"
+      ref="notification"
       v-bind="getBodyAttrs(notification.type)"
     >
       <UIcon
         v-if="notification.type === NotificationType.Success"
-        color="green"
-        variant="light"
         size="md"
-        internal
         :name="config.defaults.successIcon"
         v-bind="successIconAttrs"
         data-test="type-notify"
@@ -166,10 +174,7 @@ const {
 
       <UIcon
         v-else-if="notification.type === NotificationType.Warning"
-        color="orange"
-        variant="light"
         size="md"
-        internal
         :name="config.defaults.warningIcon"
         v-bind="warningIconAttrs"
         data-test="type-notify"
@@ -178,10 +183,7 @@ const {
       <UIcon
         v-else-if="notification.type === NotificationType.Error"
         data-test="type-notify"
-        color="red"
-        variant="light"
         size="md"
-        internal
         :name="config.defaults.errorIcon"
         v-bind="errorIconAttrs"
       />
@@ -195,10 +197,7 @@ const {
       </div>
 
       <UIcon
-        color="gray"
-        variant="light"
         size="xs"
-        internal
         interactive
         :name="config.defaults.closeIcon"
         v-bind="closeIconAttrs"

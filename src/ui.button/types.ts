@@ -7,33 +7,21 @@ export interface Props {
   /**
    * Button variant.
    */
-  variant?: "primary" | "secondary" | "thirdary";
+  variant?: "solid" | "outlined" | "subtle" | "soft" | "ghost";
 
   /**
    * Button color.
    */
   color?:
-    | "grayscale"
-    | "red"
-    | "orange"
-    | "amber"
-    | "yellow"
-    | "lime"
-    | "green"
-    | "emerald"
-    | "teal"
-    | "cyan"
-    | "sky"
-    | "blue"
-    | "indigo"
-    | "violet"
-    | "purple"
-    | "fuchsia"
-    | "pink"
-    | "rose"
-    | "gray"
-    | "white"
-    | "brand";
+    | "primary"
+    | "secondary"
+    | "error"
+    | "warning"
+    | "success"
+    | "info"
+    | "notice"
+    | "neutral"
+    | "grayscale";
 
   /**
    * Button size.
@@ -51,7 +39,7 @@ export interface Props {
   tag?: string;
 
   /**
-   * Icon name (appears instead of label).
+   * Icon name (appears instead of the label).
    */
   icon?: string;
 
@@ -71,17 +59,12 @@ export interface Props {
   tabindex?: string | number;
 
   /**
-   * Fill the background for thirdary variant.
-   */
-  filled?: boolean;
-
-  /**
    * Disable the button.
    */
   disabled?: boolean;
 
   /**
-   * Make the Button fill the width with its container.
+   * Make the Button expand to fill the entire width of its container.
    */
   block?: boolean;
 

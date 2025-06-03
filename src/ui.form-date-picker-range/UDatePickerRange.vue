@@ -28,6 +28,7 @@ import {
   getStartOfWeek,
   getStartOfYear,
   getDatesDifference,
+  isSameDay,
 } from "../ui.form-calendar/utilDate.ts";
 
 import { formatDate, parseDate, dateIsOutOfRange } from "../ui.form-calendar/utilCalendar.ts";
@@ -59,7 +60,7 @@ import type {
   IsDatePeriodOutOfRange,
   ShiftActions,
   SortedLocale,
-  UDatePickerRangeProps,
+  Props,
   UDatePickerRangeInputsAttrs,
   UDatePickerRangePeriodMenuAttrs,
   Config,
@@ -69,9 +70,8 @@ import type { ComponentExposed, KeyAttrsWithConfig } from "../types.ts";
 
 defineOptions({ inheritAttrs: false });
 
-type Props = UDatePickerRangeProps<TModelValue>;
-const props = withDefaults(defineProps<Props>(), {
-  ...getDefaults<Props, Config>(defaultConfig, COMPONENT_NAME),
+const props = withDefaults(defineProps<Props<TModelValue>>(), {
+  ...getDefaults<Props<TModelValue>, Config>(defaultConfig, COMPONENT_NAME),
   customRangeButton: () => ({ range: { from: null, to: null } }),
   modelValue: undefined,
   minDate: undefined,
@@ -93,6 +93,7 @@ type UInputRef = InstanceType<typeof UInput>;
 
 const isShownMenu = ref(false);
 const wrapperRef = useTemplateRef<HTMLDivElement>("wrapper");
+const calendarRef = useTemplateRef<ComponentExposed<typeof UCalendar>>("calendar");
 const menuRef = useTemplateRef<HTMLDivElement>("menu");
 const buttonRef = useTemplateRef<UButtonRef>("button");
 const buttonPrevRef = useTemplateRef<UButtonRef>("button-prev");
@@ -230,8 +231,6 @@ watch(
       from: calendarValue.value.from,
       to: calendarValue.value.to,
     };
-
-    nextTick(() => menuRef.value?.focus());
   },
   { deep: true },
 );
@@ -279,22 +278,26 @@ watch(period, () => {
 });
 
 function isDatePeriodOutOfRange(datePeriod: DatePeriodRange) {
-  return (
-    dateIsOutOfRange(
-      datePeriod.startRange,
-      props.minDate,
-      props.maxDate,
-      locale.value,
-      props.dateFormat,
-    ) ||
-    dateIsOutOfRange(
-      datePeriod.endRange,
-      props.minDate,
-      props.maxDate,
-      locale.value,
-      props.dateFormat,
-    )
+  const isStartOutOfRange = dateIsOutOfRange(
+    datePeriod.startRange,
+    props.minDate,
+    props.maxDate,
+    locale.value,
+    props.dateFormat,
   );
+
+  const isEndOutOfRange = dateIsOutOfRange(
+    datePeriod.endRange,
+    props.minDate,
+    props.maxDate,
+    locale.value,
+    props.dateFormat,
+  );
+
+  const minDateWithinRange = props.minDate && datePeriod.startRange <= props.minDate;
+  const maxDateWithinRange = props.maxDate && datePeriod.endRange >= props.maxDate;
+
+  return (isStartOutOfRange && !minDateWithinRange) || (isEndOutOfRange && !maxDateWithinRange);
 }
 
 function activate() {
@@ -487,42 +490,63 @@ function onClickShiftRange(action: ShiftActions) {
     : shiftRangePrev(to, from, daysDifference);
 }
 
-function onMouseoverCalendar() {
-  const isInputActiveElement = document.activeElement instanceof HTMLInputElement;
-  const activeElement = isInputActiveElement
-    ? (document.activeElement as HTMLInputElement)
-    : undefined;
-  const isRangeInputFocus = activeElement?.name === rangeInputName.value;
+async function focusRangeInput(value: RangeDate) {
+  const parsedNewValueFrom = parseDate<SortedLocale>(value.from, props.dateFormat, locale.value);
+  const parsedNewDateTo = parseDate<SortedLocale>(value.to, props.dateFormat, locale.value);
 
-  if (
-    isRangeInputFocus ||
-    !rageInputs.value?.rangeInputStartRef ||
-    !rageInputs.value?.rangeInputEndRef
-  ) {
-    return;
-  }
+  const parsedCurrentValueFrom = parseDate<SortedLocale>(
+    calendarInnerValue.value.from || null,
+    props.dateFormat,
+    locale.value,
+  );
+  const parsedCurrentValueTo = parseDate<SortedLocale>(
+    calendarInnerValue.value.to || null,
+    props.dateFormat,
+    locale.value,
+  );
 
-  const hasValues =
-    calendarInnerValue.value.from && calendarInnerValue.value.to && !inputRangeToError.value;
-  const hasOnlyFromValue =
-    calendarInnerValue.value.from && !calendarInnerValue.value.to && !inputRangeFromError.value;
+  const isSameFromValue =
+    parsedCurrentValueFrom &&
+    parsedNewValueFrom &&
+    isSameDay(parsedCurrentValueFrom, parsedNewValueFrom);
 
-  if ((hasValues || !rangeStart.value) && rageInputs.value?.rangeInputStartRef?.inputRef) {
-    (rageInputs.value.rangeInputStartRef.inputRef as HTMLInputElement).focus();
+  const isSameToValue =
+    parsedCurrentValueTo && parsedNewDateTo && isSameDay(parsedCurrentValueTo, parsedNewDateTo);
 
-    return;
-  }
+  await nextTick(() => {
+    if (!isSameFromValue || !parsedCurrentValueFrom) {
+      (rageInputs.value?.rangeInputStartRef?.inputRef as HTMLInputElement).focus();
 
-  if (hasOnlyFromValue && rageInputs.value?.rangeInputEndRef?.inputRef) {
-    (rageInputs.value.rangeInputEndRef.inputRef as HTMLInputElement).focus();
+      return;
+    }
 
-    return;
-  }
+    if (!isSameToValue || !parsedCurrentValueTo) {
+      (rageInputs.value?.rangeInputEndRef?.inputRef as HTMLInputElement).focus();
+
+      return;
+    }
+  });
 }
 
 function onInputCalendar(value: RangeDate) {
+  focusRangeInput(value);
+
   calendarInnerValue.value = value;
 }
+
+defineExpose({
+  /**
+   * A reference to the component's wrapper element for direct DOM manipulation.
+   * @property {HTMLDivElement}
+   */
+  wrapperRef,
+
+  /**
+   * Reference to the UCalendar component instance for direct DOM manipulation.
+   * @property {ComponentExposed<typeof UCalendar>}
+   */
+  calendarRef,
+});
 
 /**
  * Get element / nested component attributes for each config token ✨
@@ -575,7 +599,7 @@ const {
 /* Merging DatePickerRange's i18n translations into Calendar's i18n translations. */
 
 /* TODO:
-   Find way to do it more explicity.
+   Find way to do it more explicit.
    It is not really clear that i18n changes datepickerCalendarAttrs now.
 */
 watchEffect(() => {
@@ -601,9 +625,10 @@ watchEffect(() => {
       :placeholder="placeholder"
       :description="description"
       :error="error"
-      readonly
       :left-icon="leftIcon"
       :right-icon="rightIcon || config.defaults.calendarIcon"
+      no-autocomplete
+      readonly
       v-bind="isShownMenu ? datepickerInputActiveAttrs : datepickerInputAttrs"
       @focus="activate"
       @keydown.esc="deactivate"
@@ -622,7 +647,7 @@ watchEffect(() => {
           @binding {string} icon-name
         -->
         <slot name="right" :icon-name="iconName">
-          <UIcon :name="iconName" color="gray" v-bind="rightIconAttrs" />
+          <UIcon :name="iconName" color="neutral" v-bind="rightIconAttrs" />
         </slot>
       </template>
     </UInput>
@@ -631,11 +656,10 @@ watchEffect(() => {
       <UButton
         ref="button-prev"
         square
-        filled
         :size="size"
         :disabled="disabled"
-        variant="thirdary"
-        :left-icon="config.defaults.prevIcon"
+        variant="soft"
+        :icon="config.defaults.prevIcon"
         v-bind="rangeButtonShiftAttrs"
         @click="onClickShiftRange(ShiftAction.Prev)"
       />
@@ -644,11 +668,10 @@ watchEffect(() => {
         :id="elementId"
         ref="button"
         square
-        filled
         :size="size"
         :disabled="disabled"
         :label="userFormatDate"
-        variant="thirdary"
+        variant="soft"
         v-bind="rangeButtonSelectAttrs"
         @click="activate"
       />
@@ -656,11 +679,10 @@ watchEffect(() => {
       <UButton
         ref="button-next"
         square
-        filled
         :size="size"
         :disabled="disabled"
-        variant="thirdary"
-        :left-icon="config.defaults.nextIcon"
+        variant="soft"
+        :icon="config.defaults.nextIcon"
         v-bind="rangeButtonShiftAttrs"
         @click="onClickShiftRange(ShiftAction.Next)"
       />
@@ -718,13 +740,13 @@ watchEffect(() => {
 
         <UCalendar
           v-if="isPeriod.ownRange"
+          ref="calendar"
           v-model="calendarValue"
           :min-date="minDate"
           :max-date="maxDate"
           :date-format="dateFormat"
           v-bind="datepickerCalendarAttrs as KeyAttrsWithConfig<UCalendarConfig>"
           range
-          @mouseenter="onMouseoverCalendar"
           @input="onInputCalendar"
         />
       </div>

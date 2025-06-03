@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, ref, watchEffect, useId, watch, useSlots } from "vue";
+import { computed, ref, watchEffect, useId, watch, useSlots, useTemplateRef } from "vue";
 
 import useUI from "../composables/useUI.ts";
 import { hasSlotContent } from "../utils/helper.ts";
@@ -23,7 +23,7 @@ const props = withDefaults(defineProps<Props>(), {
 const slots = useSlots();
 const elementId = props.id || useId();
 
-const buttonRef = ref<HTMLElement | null>(null);
+const buttonRef = useTemplateRef<HTMLElement>("button");
 const buttonStyle = ref({});
 const buttonWidth = ref(0);
 
@@ -67,15 +67,22 @@ const mutatedProps = computed(() => ({
   label: Boolean(props.label),
 }));
 
-const { getDataTest, buttonAttrs, loaderAttrs, leftIconAttrs, rightIconAttrs, centerIconAttrs } =
-  useUI<Config>(defaultConfig, mutatedProps);
+const {
+  getDataTest,
+  buttonAttrs,
+  loaderAttrs,
+  leftIconAttrs,
+  rightIconAttrs,
+  centerIconAttrs,
+  invisibleAttrs,
+} = useUI<Config>(defaultConfig, mutatedProps);
 </script>
 
 <template>
   <component
     :is="tag"
     :id="elementId"
-    ref="buttonRef"
+    ref="button"
     :disabled="disabled"
     v-bind="buttonAttrs"
     :style="buttonStyle"
@@ -97,7 +104,7 @@ const { getDataTest, buttonAttrs, loaderAttrs, leftIconAttrs, rightIconAttrs, ce
         @binding {string} icon-name
       -->
       <slot name="left" :icon-name="leftIcon">
-        <UIcon v-if="leftIcon" internal color="inherit" :name="leftIcon" v-bind="leftIconAttrs" />
+        <UIcon v-if="leftIcon" color="inherit" :name="leftIcon" v-bind="leftIconAttrs" />
       </slot>
 
       <!--
@@ -106,7 +113,7 @@ const { getDataTest, buttonAttrs, loaderAttrs, leftIconAttrs, rightIconAttrs, ce
         @binding {string} icon-name
       -->
       <slot name="default" :label="label" :icon-name="icon">
-        <UIcon v-if="icon" internal color="inherit" :name="icon" v-bind="centerIconAttrs" />
+        <UIcon v-if="icon" color="inherit" :name="icon" v-bind="centerIconAttrs" />
         <template v-else>
           {{ label }}
         </template>
@@ -117,21 +124,15 @@ const { getDataTest, buttonAttrs, loaderAttrs, leftIconAttrs, rightIconAttrs, ce
         @binding {string} icon-name
       -->
       <slot name="right" :icon-name="rightIcon">
-        <UIcon
-          v-if="rightIcon"
-          :name="rightIcon"
-          color="inherit"
-          internal
-          v-bind="rightIconAttrs"
-        />
+        <UIcon v-if="rightIcon" :name="rightIcon" color="inherit" v-bind="rightIconAttrs" />
       </slot>
     </template>
 
     <!-- This is needed to prevent changing button height -->
     <div
-      v-if="(!label && !hasSlotContent(slots['default'])) || loading"
+      v-if="(!label && !hasSlotContent(slots['default']) && !icon) || loading"
       tabindex="-1"
-      class="invisible w-0"
+      v-bind="invisibleAttrs"
       v-text="'invisible'"
     />
   </component>

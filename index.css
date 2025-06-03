@@ -1,0 +1,8 @@
+/**
+ * This file is needs only to support Tailwind CSS autocompletion:
+ * For Tailwind CSS configuration use:
+ * * `./.storybook/index.css` – storybook tailwind config.
+ * * `./src/tailwind.css` – vueless tailwind preset.
+ */
+@import "tailwindcss";
+@import "./src/tailwind.css";

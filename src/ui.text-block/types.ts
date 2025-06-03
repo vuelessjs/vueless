@@ -12,7 +12,7 @@ export interface Props {
   /**
    * Text size.
    */
-  size?: "sm" | "md" | "lg";
+  size?: "xs" | "sm" | "md" | "lg";
 
   /**
    * Text align.

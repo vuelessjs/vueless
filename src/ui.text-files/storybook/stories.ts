@@ -1,4 +1,5 @@
 import {
+  getArgs,
   getArgTypes,
   getSlotNames,
   getSlotsFragment,
@@ -42,11 +43,7 @@ export default {
 
 const DefaultTemplate: StoryFn<UFilesArgs> = (args: UFilesArgs) => ({
   components: { UFiles },
-  setup() {
-    const slots = getSlotNames(UFiles.__name);
-
-    return { args, slots };
-  },
+  setup: () => ({ args, slots: getSlotNames(UFiles.__name) }),
   template: `
     <UFiles v-bind="args">
       ${args.slotTemplate || getSlotsFragment("")}
@@ -54,19 +51,15 @@ const DefaultTemplate: StoryFn<UFilesArgs> = (args: UFilesArgs) => ({
   `,
 });
 
-const EnumVariantTemplate: StoryFn<UFilesArgs> = (args: UFilesArgs, { argTypes }) => ({
+const EnumTemplate: StoryFn<UFilesArgs> = (args: UFilesArgs, { argTypes }) => ({
   components: { UFiles, URow },
-  setup() {
-    return { args, options: argTypes?.[args.enum]?.options };
-  },
+  setup: () => ({ args, argTypes, getArgs }),
   template: `
     <URow>
       <UFiles
-        v-for="(option, index) in options"
-        :key="index"
-        v-bind="args"
-        :[args.enum]="option"
-        :label="option"
+        v-for="option in argTypes?.[args.enum]?.options"
+        v-bind="getArgs(args, option)"
+        :key="option"
       />
     </URow>
   `,
@@ -83,11 +76,11 @@ Description.args = {
 export const Removable = DefaultTemplate.bind({});
 Removable.args = { removable: true };
 
-export const Sizes = EnumVariantTemplate.bind({});
+export const Sizes = EnumTemplate.bind({});
 Sizes.args = { enum: "size" };
 
-export const LabelPlacement = EnumVariantTemplate.bind({});
-LabelPlacement.args = {
+export const LabelAlign = EnumTemplate.bind({});
+LabelAlign.args = {
   enum: "labelAlign",
   description: "These files include important documents like reports and employee data.",
 };
@@ -100,10 +93,10 @@ export const Slots: StoryFn<UFilesArgs> = (args) => ({
   template: `
     <UFiles v-bind="args">
       <template #left="{ index }">
-        <UIcon v-if="index === 0" name="info" color="orange" size="xs" />
+        <UIcon v-if="index === 0" name="info" color="warning" size="xs" />
       </template>
       <template #right="{ index }">
-        <UIcon v-if="index === 1" name="check_circle" color="green" size="xs" />
+        <UIcon v-if="index === 1" name="check_circle" color="success" size="xs" />
       </template>
     </UFiles>
   `,

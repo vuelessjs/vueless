@@ -1,10 +1,4 @@
 export default /*tw*/ {
-  transition: {
-    enterFromClass: "opacity-0",
-    enterActiveClass: "transition duration-500",
-    leaveActiveClass: "transition duration-500",
-    leaveToClass: "opacity-0",
-  },
   loader: {
     base: "relative flex items-center",
     variants: {
@@ -15,13 +9,16 @@ export default /*tw*/ {
       },
     },
   },
+  loaderTransition: {
+    enterFromClass: "opacity-0",
+    enterActiveClass: "transition duration-500",
+    leaveActiveClass: "transition duration-500",
+    leaveToClass: "opacity-0",
+  },
   ellipse: {
-    base: "absolute rounded-full bg-{color}-600 ease-[cubic-bezier(0,1,1,0)] vueless-loader-ellipse",
+    base: "absolute rounded-full bg-{color} ease-[cubic-bezier(0,1,1,0)] vueless-loader-ellipse",
     variants: {
       color: {
-        white: "bg-white",
-        black: "bg-gray-900",
-        grayscale: "bg-gray-900 dark:bg-white",
         inherit: "bg-current",
       },
       size: {
@@ -53,7 +50,7 @@ export default /*tw*/ {
     },
   },
   defaults: {
-    color: "brand",
+    color: "primary",
     size: "md",
     loading: false,
   },

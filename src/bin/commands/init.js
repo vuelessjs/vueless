@@ -15,7 +15,9 @@ export async function vuelessInit(options) {
   const isValidOptions = options.every((option) => vuelessInitOptions.includes(option));
 
   if (options.length && !isValidOptions) {
-    throw new Error("Invalid options were provided.");
+    console.log(styleText("red", "Invalid options were provided."));
+
+    return;
   }
 
   const fileExt = options.includes("--ts") ? TYPESCRIPT_EXT : JAVASCRIPT_EXT;
@@ -31,21 +33,21 @@ export async function vuelessInit(options) {
 
     await rename(formattedDestPath, renamedTarget);
 
-    const warnMessage = styleText(
-      "yellow",
-      // eslint-disable-next-line vue/max-len
-      `Current Vueless config backed into: '${path.basename(renamedTarget)}' folder. Don't forget to remove it before commit.`,
+    console.warn(
+      styleText(
+        "yellow",
+        // eslint-disable-next-line vue/max-len
+        `Current Vueless config backed into: '${path.basename(renamedTarget)}' folder. Don't forget to remove it before commit.`,
+      ),
     );
-
-    console.warn(warnMessage);
   }
 
   await writeFile(formattedDestPath, DEFAULT_VUELESS_CONFIG_CONTENT, "utf-8");
 
-  const successMessage = styleText(
-    "green",
-    `The '${formattedDestPath.split(path.sep).at(-1)}' was created in the project root directory.`,
+  console.log(
+    styleText(
+      "green",
+      `The '${formattedDestPath.split(path.sep).at(-1)}' was created in the project root directory.`,
+    ),
   );
-
-  console.log(successMessage);
 }

@@ -23,6 +23,11 @@ export interface Props {
   description?: string;
 
   /**
+   * Modal variant.
+   */
+  variant?: "solid" | "outlined" | "subtle" | "soft";
+
+  /**
    * Modal size (width).
    */
   size?: "xs" | "sm" | "md" | "lg" | "xl" | "2xl" | "3xl" | "4xl" | "5xl";
@@ -60,12 +65,7 @@ export interface Props {
   /**
    * Show divider between content and footer.
    */
-  divider?: boolean;
-
-  /**
-   * Attach small modal to the bottom of the screen (mobile version only).
-   */
-  mobileStickBottom?: boolean;
+  divided?: boolean;
 
   /**
    * Unique element id.

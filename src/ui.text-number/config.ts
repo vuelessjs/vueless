@@ -1,17 +1,12 @@
 export default /*tw*/ {
   wrapper: {
-    base: "whitespace-nowrap flex items-center text-{color}-600",
+    base: "whitespace-nowrap flex items-center text-{color}",
     variants: {
       size: {
-        xs: "text-2xs",
-        sm: "text-xs",
-        md: "text-sm",
-        lg: "text-base",
-        xl: "text-lg",
-      },
-      color: {
-        white: "text-white",
-        grayscale: "text-gray-900",
+        xs: "text-tiny",
+        sm: "text-small",
+        md: "text-medium",
+        lg: "text-large",
       },
       align: {
         left: "justify-start",
@@ -20,6 +15,12 @@ export default /*tw*/ {
     },
   },
   number: "",
+  currency: {
+    compoundVariants: [
+      { currencySpace: true, currencyAlign: "left", class: "mr-1" },
+      { currencySpace: true, currencyAlign: "right", class: "ml-1" },
+    ],
+  },
   mathSign: "",
   integer: "",
   fraction: "",
@@ -28,6 +29,8 @@ export default /*tw*/ {
     size: "md",
     sign: "auto",
     align: "left",
+    currencyAlign: "right",
+    currencySpace: false,
     minFractionDigits: 0,
     maxFractionDigits: 2,
     decimalSeparator: ",",

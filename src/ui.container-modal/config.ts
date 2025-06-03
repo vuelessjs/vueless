@@ -1,5 +1,5 @@
 export default /*tw*/ {
-  wrapper: "fixed inset-0 z-50 outline-none",
+  wrapper: "fixed inset-0 z-50 outline-hidden",
   wrapperTransition: {
     enterActiveClass: "ease-out duration-300",
     enterFromClass: "opacity-0 translate-y-4 sm:translate-y-0 transform sm:scale-95",
@@ -8,7 +8,7 @@ export default /*tw*/ {
     leaveFromClass: "opacity-100 translate-y-0 transform sm:scale-100",
     leaveToClass: "opacity-0 translate-y-4 sm:translate-y-0 transform sm:scale-95",
   },
-  overlay: "fixed inset-0 z-40 bg-gray-900/75",
+  overlay: "fixed inset-0 z-40 bg-inverted/15 dark:bg-lifted/75 backdrop-blur-md",
   overlayTransition: {
     enterActiveClass: "ease-out duration-300",
     enterFromClass: "opacity-0",
@@ -18,23 +18,41 @@ export default /*tw*/ {
     leaveToClass: "opacity-0",
   },
   innerWrapper: "py-12 w-full h-full overflow-auto",
-  header: "flex justify-between px-4 md:px-8 pb-6 pt-8",
-  headerLeft: "flex items-center gap-4",
-  headerLeftFallback: "flex flex-col",
+  header: "flex justify-between px-4 md:px-6 py-6",
+  beforeTitle: "flex items-center gap-4",
+  titleFallback: "flex flex-col",
   backLinkWrapper: "flex items-center gap-0.5 mb-0.5",
   backLink: "{ULink} flex items-center gap-0.5",
   backLinkIcon: "{UIcon}",
   title: "{UHeader}",
-  description: "mt-1.5 text-sm font-normal text-gray-500",
+  description: "mt-1.5 text-medium font-normal text-lifted",
   closeIcon: "{UIcon}",
-  body: "space-y-4 px-4 md:px-8 text-sm",
-  modalDivider: "{UDivider} pt-8",
-  footer: "flex justify-between px-4 md:px-8 py-8 max-md:flex-col max-md:gap-4",
-  footerLeft: "flex flex-col md:flex-row space-y-4 md:space-x-4 md:space-y-0 w-full",
-  footerRight: "flex flex-col md:flex-row space-y-4 md:space-x-4 md:space-y-0 w-full justify-end",
-  modal: {
-    base: "mx-auto rounded-dynamic-lg bg-white",
+  closeButton: "{UButton}",
+  body: "px-4 md:px-6 pb-6 text-medium",
+  footer: {
+    base: "flex justify-between px-4 md:px-6 py-6 max-md:flex-col max-md:gap-4",
     variants: {
+      divided: {
+        true: "border-t",
+        false: "pt-0",
+      },
+    },
+    compoundVariants: [
+      { divided: true, variant: ["subtle", "soft"], class: "border-default/50" },
+      { divided: true, variant: ["solid", "outlined"], class: "border-muted" },
+    ],
+  },
+  footerLeft: "flex flex-col md:flex-row gap-4 w-full",
+  footerRight: "flex flex-col md:flex-row gap-4 w-full justify-end",
+  modal: {
+    base: "mx-auto rounded-large border",
+    variants: {
+      variant: {
+        solid: "bg-default border-transparent",
+        outlined: "bg-default border-muted",
+        subtle: "bg-muted border-default/50",
+        soft: "bg-muted border-transparent",
+      },
       size: {
         xs: "md:w-[25rem]",
         sm: "md:w-[31.25rem]",
@@ -52,13 +70,13 @@ export default /*tw*/ {
     },
   },
   defaults: {
+    variant: "solid",
     size: "sm",
     inner: false,
-    divider: false,
+    divided: true,
     closeOnEsc: true,
     closeOnCross: true,
     closeOnOverlay: true,
-    mobileStickBottom: false,
     /* icons */
     backIcon: "arrow_back",
     closeIcon: "close",

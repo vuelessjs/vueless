@@ -1,135 +1,237 @@
 import path from "node:path";
 import { cwd } from "node:process";
 import { existsSync } from "node:fs";
-import { readFile } from "node:fs/promises";
-import { merge, cloneDeep, isEqual } from "lodash-es";
-import { extendTailwindMerge } from "tailwind-merge";
-import { defineConfig } from "cva";
+import { readFile, unlink, writeFile } from "node:fs/promises";
+import { merge } from "lodash-es";
 
+import { getDefaultComponentConfig, getMergedComponentConfig, getDirFiles } from "./helper.js";
 import { vuelessConfig } from "./vuelessConfig.js";
-import { createGetMergedConfig } from "./mergeConfigs.js";
-import { getComponentDefaultConfig, getDirFiles } from "./helper.js";
 import {
   COMPONENTS,
-  GRAY_COLOR,
-  BRAND_COLOR,
-  BRAND_COLORS,
-  STRATEGY_TYPE,
+  INTERNAL_ENV,
+  STORYBOOK_ENV,
+  STATE_COLORS,
+  COLOR_SHADES,
+  PRIMARY_COLORS,
+  NEUTRAL_COLORS,
   SYSTEM_CONFIG_KEY,
   DYNAMIC_COLOR_PATTERN,
-  TAILWIND_MERGE_EXTENSION,
-  TAILWIND_VARIANT_DELIMITER,
-  TAILWIND_COLOR_OPACITY_DELIMITER,
-  NESTED_COMPONENT_PATTERN_REG_EXP,
-  TAILWIND_VARIANT_DELIMITER_REG_EXP,
+  VUELESS_TAILWIND_SAFELIST,
+  DEFAULT_LIGHT_THEME,
+  DEFAULT_DARK_THEME,
+  DEFAULT_PRIMARY_COLOR,
+  DEFAULT_NEUTRAL_COLOR,
 } from "../../constants.js";
 
-const twMerge = extendTailwindMerge(merge(TAILWIND_MERGE_EXTENSION, vuelessConfig.tailwindMerge));
+/**
+ * Removes the Tailwind CSS safelist file if it exists.
+ *
+ * This method checks for the presence of a pre-defined safelist file in the cache.
+ * If the file is found, it deletes the file asynchronously.
+ *
+ * @return {Promise<void>} A promise that resolves after the safelist file is removed
+ *                         or does nothing if the file does not exist.
+ */
+export async function clearTailwindSafelist() {
+  const safelistPath = path.join(cwd(), VUELESS_TAILWIND_SAFELIST);
 
-export const { cx } = defineConfig({
-  hooks: {
-    onComplete: (classNames) => twMerge(classNames).replace(NESTED_COMPONENT_PATTERN_REG_EXP, ""),
-  },
-});
-
-const getMergedConfig = createGetMergedConfig(cx);
-
-export function clearTailwindSafelist() {
-  process.env.VUELESS_SAFELIST = "";
+  if (existsSync(safelistPath)) {
+    await unlink(safelistPath);
+  }
 }
 
-export async function createTailwindSafelist({ mode, env, debug, targetFiles = [] } = {}) {
-  const isStorybookMode = mode === "storybook";
-  const isVuelessEnv = env === "vueless";
-  const vuelessFilePath = isVuelessEnv ? "src" : "node_modules/vueless";
+/**
+ * Creates a TailwindCSS safelist file based on the given environment, source directory, and target files.
+ * The safelist includes classes and color variables essential for runtime color switching and component styles.
+ *
+ * @param {Object} options - The function options.
+ * @param {string} options.env - Current environment, used to tailor safelist generation.
+ * @param {string} options.srcDir - Source directory path containing files with styles to be included in the safelist.
+ * @param {string[]} [options.targetFiles=[]] - Optional array of target file paths to include in the safelist generation.
+ * @return {Promise<void>} A promise that resolves when the safelist file is successfully created and written to disk.
+ */
+export async function createTailwindSafelist({ env, srcDir, targetFiles = [] } = {}) {
+  const isStorybookEnv = env === STORYBOOK_ENV;
+  const isInternalEnv = env === INTERNAL_ENV;
 
-  const vuelessVueFiles = await getDirFiles(vuelessFilePath, ".vue");
-  const vuelessConfigJsFiles = await getDirFiles(vuelessFilePath, "/config.ts");
-  const vuelessConfigTsFiles = await getDirFiles(vuelessFilePath, "/config.js");
-  const vuelessConfigFiles = [...vuelessConfigJsFiles, ...vuelessConfigTsFiles].flat();
+  /* Safelist dynamic color classes in components. */
+  const classes = await getComponentsSafelistClasses({
+    env: { isStorybookEnv, isInternalEnv },
+    targetFiles,
+    srcDir,
+  });
+
+  /* Safelist all color shades to allow runtime color switching feature. */
+  const runtimeColorCSSVariables = getRuntimeColorCSSVariables(isStorybookEnv, isInternalEnv);
+
+  /* Safelist primary and neutral color variables. */
+  let brandColorCSSVariables = getBrandColorCSSVariables(isInternalEnv);
+
+  /* Safelist all color variables to allow runtime color switching feature. */
+  const themeCSSVariables = getThemeCSSVariables();
+
+  const safelist = [
+    ...new Set([
+      ...classes,
+      ...themeCSSVariables,
+      ...brandColorCSSVariables,
+      ...runtimeColorCSSVariables,
+    ]),
+  ];
+
+  const safelistPath = path.join(cwd(), VUELESS_TAILWIND_SAFELIST);
+
+  /* Cache safelist into the file. */
+  await writeFile(safelistPath, safelist.join("\n"));
+}
+
+/**
+ * Generates a list of runtime CSS color variables based on the environment
+ * and available configuration.
+ *
+ * @param {boolean} isStorybookEnv - Indicates if the method is executed in a Storybook environment.
+ * @param {boolean} isInternalEnv - Indicates if the method is executed in an Internal environment.
+ * @return {string[]} An array of strings, each representing CSS variable definitions for colors and shades.
+ */
+function getRuntimeColorCSSVariables(isStorybookEnv, isInternalEnv) {
+  if (!isStorybookEnv && !isInternalEnv && !vuelessConfig.runtimeColors) return [];
+
+  const colors = vuelessConfig.runtimeColors?.length
+    ? vuelessConfig.runtimeColors
+    : [...PRIMARY_COLORS, ...NEUTRAL_COLORS];
+
+  return COLOR_SHADES.map((shade) => {
+    return colors.map((color) => `--color-${color}-${shade}`).join("\n");
+  });
+}
+
+/**
+ * Generates an array of CSS variable strings for `primary` and `neutral` colors based on environment settings.
+ *
+ * @param {boolean} isInternalEnv - Indicates whether the current environment is internal.
+ * @return {string[]} An array of CSS variable strings representing brand colors and their shades.
+ */
+function getBrandColorCSSVariables(isInternalEnv) {
+  if (isInternalEnv) return [];
+
+  const colors = [
+    vuelessConfig.primary ?? DEFAULT_PRIMARY_COLOR,
+    vuelessConfig.neutral ?? DEFAULT_NEUTRAL_COLOR,
+  ];
+
+  return COLOR_SHADES.map((shade) => {
+    return colors.map((color) => `--color-${color}-${shade}`).join("\n");
+  });
+}
+
+/**
+ * Retrieves an array of CSS variable values from the light and dark theme configurations.
+ *
+ * This method combines theme settings from default and custom configurations and
+ * returns an array of variable values for each theme.
+ *
+ * @return {Array} An array containing CSS variable values from the light and dark themes.
+ */
+function getThemeCSSVariables() {
+  const lightThemeConfig = merge({}, DEFAULT_LIGHT_THEME, vuelessConfig.lightTheme);
+  const darkThemeConfig = merge({}, DEFAULT_DARK_THEME, vuelessConfig.darkTheme);
+
+  return [
+    ...Object.values(lightThemeConfig).map((value) => value),
+    ...Object.values(darkThemeConfig).map((value) => value),
+  ];
+}
+
+/**
+ * Asynchronously retrieves the safelist classes for components and nested components.
+ * This involves reading configuration files, merging configurations, and generating safelisted
+ * CSS classes based on component usage, environment conditions, and configured colors.
+ *
+ * @param {Object} params - The parameters for the function.
+ * @param {Array<string>} params.targetFiles - List of file paths to check for component usage.
+ * @param {Object} params.env - Environment variables for distinguishing between different environments.
+ * @param {boolean} params.env.isStorybookEnv - Indicates whether the function is running in a Storybook environment.
+ * @param {boolean} params.env.isInternalEnv - Indicates whether the function is running in an Internal environment.
+ * @param {string} params.srcDir - The source directory path to search for configuration files.
+ *
+ * @return {Promise<Array<string>>} A promise that resolves to an array of safelisted CSS class names
+ * for all matched components and nested components.
+ */
+async function getComponentsSafelistClasses({ targetFiles, env, srcDir }) {
+  const { isStorybookEnv, isInternalEnv } = env;
 
   let srcVueFiles = [];
+  const vuelessVueFiles = await getDirFiles(srcDir, ".vue");
 
-  if (!isVuelessEnv) {
-    srcVueFiles = await Promise.all(
-      targetFiles.map((componentPath) => getDirFiles(componentPath, ".vue")),
-    );
+  if (!isInternalEnv) {
+    const vueFiles = targetFiles.map((componentPath) => getDirFiles(componentPath, ".vue"));
 
-    srcVueFiles = srcVueFiles.flat();
+    srcVueFiles = (await Promise.all(vueFiles)).flat();
   }
 
-  const vuelessFiles = [...srcVueFiles, ...vuelessVueFiles, ...vuelessConfigFiles];
+  const files = [...srcVueFiles, ...vuelessVueFiles];
+  const vuelessConfigFiles = [
+    ...(await getDirFiles(srcDir, "/config.ts")),
+    ...(await getDirFiles(srcDir, "/config.js")),
+  ].flat();
 
-  const safelist = [];
-
-  const storybookColors = {
-    colors: [...BRAND_COLORS, BRAND_COLOR, GRAY_COLOR],
-    isComponentExists: true,
-  };
-
+  const classes = [];
+  const colors = vuelessConfig.colors?.length ? vuelessConfig.colors : STATE_COLORS;
   const componentNames = Object.keys(COMPONENTS);
 
   for await (const componentName of componentNames) {
-    const { colors, isComponentExists } = isStorybookMode
-      ? storybookColors
-      : await findComponentColors(componentName, vuelessFiles, vuelessConfigFiles);
+    const isCurrentComponentUsed = await isComponentUsed(componentName, files);
 
     const defaultConfig = await retrieveComponentDefaultConfig(componentName, vuelessConfigFiles);
     const match = JSON.stringify(defaultConfig).match(/\{U\w+\}/g) || [];
 
+    /* parent component */
+    if (isCurrentComponentUsed || isStorybookEnv || isInternalEnv) {
+      const mergedConfig = await getMergedComponentConfig(componentName);
+      const componentSafelistClasses = getSafelistClasses(mergedConfig, colors);
+
+      classes.push(...componentSafelistClasses);
+    }
+
+    /* nested components */
     const nestedComponents = match.map((nestedComponentPattern) =>
       nestedComponentPattern.replaceAll(/[{}]/g, ""),
     );
 
-    if (isComponentExists && colors.length) {
-      const mergedConfig = await getMergedComponentConfig(componentName, vuelessConfigFiles);
-      const componentSafelist = await getComponentSafelist(mergedConfig, colors);
-
-      safelist.push(...componentSafelist);
-    }
-
-    if (isComponentExists && colors.length && nestedComponents.length) {
+    if ((isCurrentComponentUsed || isStorybookEnv || isInternalEnv) && nestedComponents.length) {
       for await (const nestedComponent of nestedComponents) {
-        const mergedConfig = await getMergedComponentConfig(nestedComponent, vuelessConfigFiles);
-        const nestedComponentSafelist = await getComponentSafelist(mergedConfig, colors);
+        const mergedConfig = await getMergedComponentConfig(nestedComponent);
+        const nestedComponentSafelistClasses = getSafelistClasses(mergedConfig, colors);
 
-        safelist.push(...nestedComponentSafelist);
+        classes.push(...nestedComponentSafelistClasses);
       }
     }
   }
 
-  const mergedSafelist = mergeSafelistPatterns(safelist);
-
-  if (debug) {
-    // eslint-disable-next-line no-console
-    console.log("VUELESS_SAFELIST", mergedSafelist);
-  }
-
-  const globalSettings = cloneDeep(vuelessConfig);
-
-  delete globalSettings.components;
-  delete globalSettings.directives;
-  delete globalSettings.tailwindMerge;
-
-  process.env.VUELESS_GLOBAL_SETTINGS = globalSettings;
-  process.env.VUELESS_SAFELIST = JSON.stringify(mergedSafelist);
+  return classes;
 }
 
-function getSafelistClasses(config) {
+/**
+ * Extracts and consolidates a safelist of classes from the provided configuration object.
+ *
+ * @param {Object} config - The configuration object containing classes to safelist.
+ * @return {string[]} An array of safelisted class names after processing the configuration.
+ */
+function getClassesToSafelist(config) {
   const safelistItems = [];
 
   for (const key in config) {
     if (key === SYSTEM_CONFIG_KEY.defaults) continue;
 
-    if (Object.prototype.hasOwnProperty.call(config, key)) {
+    if (Object.hasOwn(config, key)) {
       const classes = config[key];
 
       if (typeof classes === "object" && Array.isArray(classes)) {
-        safelistItems.push(...classes.map(getSafelistClasses));
+        safelistItems.push(...classes.map(getClassesToSafelist));
       }
 
       if (typeof classes === "object" && !Array.isArray(classes)) {
-        safelistItems.push(...getSafelistClasses(classes));
+        safelistItems.push(...getClassesToSafelist(classes));
       }
 
       if (typeof classes === "string") {
@@ -143,243 +245,65 @@ function getSafelistClasses(config) {
   return safelistItems.flat().map((item) => item.replaceAll("\\n", "").trim());
 }
 
-function getSafelistItem(safelistClass, colorString) {
-  const classes = safelistClass.split(TAILWIND_VARIANT_DELIMITER_REG_EXP);
-  const mainClass = classes.at(-1);
-  const pattern = mainClass.replace(DYNAMIC_COLOR_PATTERN, colorString);
+/**
+ * Generates a set of safelisted CSS classes by replacing dynamic color patterns
+ * in the provided safelist with specified colors and a default color.
+ *
+ * @param {Object} config - The configuration object, which contains settings and defaults.
+ * @param {Array<string>} colors - An array of color strings to replace dynamic color patterns.
+ * @return {Set<string>} A set of safelisted CSS classes with replaced dynamic colors.
+ */
+function getSafelistClasses(config, colors) {
+  const classes = new Set();
+  const defaultColor = config.defaults?.color || "";
 
-  if (classes.length > 1) {
-    const variantClasses = classes.slice(0, classes.length - 1);
-
-    const variants =
-      variantClasses.length > 1
-        ? [variantClasses.join(TAILWIND_VARIANT_DELIMITER)].flat()
-        : [variantClasses.join()].flat();
-
-    return { pattern, variants };
-  } else {
-    return { pattern };
-  }
-}
-
-async function getComponentSafelist(mergedConfig, colors) {
-  const colorString = `(${colors.join("|")})`;
-
-  return getSafelistClasses(mergedConfig).map((safelistClass) =>
-    getSafelistItem(safelistClass, colorString),
-  );
-}
-
-async function getMergedComponentConfig(componentName, vuelessConfigFiles) {
-  const isStrategyValid =
-    vuelessConfig.strategy && Object.values(STRATEGY_TYPE).includes(vuelessConfig.strategy);
-
-  return getMergedConfig({
-    defaultConfig: await retrieveComponentDefaultConfig(componentName, vuelessConfigFiles),
-    globalConfig: vuelessConfig.components?.[componentName] || {},
-    vuelessStrategy: isStrategyValid ? vuelessConfig.strategy : STRATEGY_TYPE.merge,
+  getClassesToSafelist(config).map((safelistClass) => {
+    [...colors, defaultColor].forEach((color) => {
+      classes.add(safelistClass.replace(DYNAMIC_COLOR_PATTERN, color));
+    });
   });
+
+  return classes;
 }
 
+/**
+ * Retrieves the default config for a specific component.
+ *
+ * @param {string} componentName - The name of the component.
+ * @param {string[]} vuelessConfigFiles - An array of file paths to search for the component's configuration file.
+ * @return {Promise<Object>} A promise that resolves to the component's default configuration object.
+ */
 async function retrieveComponentDefaultConfig(componentName, vuelessConfigFiles) {
-  const componentDefaultConfigPath = vuelessConfigFiles.find((file) =>
-    isDefaultComponentConfig(file, componentName),
-  );
+  const configPath = vuelessConfigFiles.find((filePath) => {
+    return filePath.includes(`${COMPONENTS[componentName]}/`);
+  });
 
-  return componentDefaultConfigPath
-    ? await getComponentDefaultConfig(componentName, path.join(cwd(), componentDefaultConfigPath))
-    : {};
+  return await getDefaultComponentConfig(componentName, configPath);
 }
 
-async function findComponentColors(componentName, files, vuelessConfigFiles) {
-  const objectColorRegExp = new RegExp(/\bcolor\s*:\s*["']([^"'\s]+)["']/, "g");
-  const singleColorRegExp = new RegExp(/\bcolor\s*=\s*["']([^"'\s]+)["']/);
-  const ternaryColorRegExp = new RegExp(/\bcolor="[^']*'([^']*)'\s*:\s*'([^']*)'/);
-
-  const mergedComponentConfig = await getMergedComponentConfig(componentName, vuelessConfigFiles);
-  const defaultColor = mergedComponentConfig.defaults?.color || vuelessConfig.brand || "";
-  const colors = new Set();
-
-  if (defaultColor && defaultColor !== "grayscale") {
-    colors.add(defaultColor);
-  }
-
-  getSafelistColorsFromConfig(componentName).forEach((color) => colors.add(color));
-
-  let isComponentExists = false;
+/**
+ * Checks if a specific component is used within a collection of files.
+ *
+ * @param {string} componentName - The name of the component to search for.
+ * @param {string[]} files - An array of file paths to search for the component usage.
+ * @return {Promise<boolean>} A promise that resolves to true if the component is used in any of the files, otherwise false.
+ */
+async function isComponentUsed(componentName, files) {
+  let isComponentUsed = false;
 
   for await (const file of files) {
     if (!existsSync(file)) continue;
 
     const fileContent = await readFile(file, "utf-8");
-    const isDefaultConfig = isDefaultComponentConfig(file, componentName);
     const componentRegExp = new RegExp(`<${componentName}[^>]+>`, "g");
-    const componentExtendExp = new RegExp(`{${componentName}}`, "g");
     const matchedComponent = fileContent.match(componentRegExp);
-    const matchedExtendComponent = fileContent.match(componentExtendExp);
 
-    if (!isComponentExists) {
-      isComponentExists = Boolean(matchedComponent);
+    if (!isComponentUsed && matchedComponent) {
+      isComponentUsed = Boolean(matchedComponent);
+
+      break;
     }
-
-    if (isDefaultConfig) {
-      fileContent.match(objectColorRegExp)?.forEach((colorMatch) => {
-        const [, color] = objectColorRegExp.exec(colorMatch) || [];
-
-        colors.add(color);
-      });
-    }
-
-    if (matchedExtendComponent) {
-      const objectColors = objectColorRegExp.exec(fileContent) || [];
-
-      objectColors.forEach((color) => {
-        if (color) colors.add(color);
-      });
-    }
-
-    /* Collect color from U[Component] */
-    matchedComponent?.forEach((match) => {
-      const [, singleColor] = singleColorRegExp.exec(match) || [];
-      const [, ternaryColorOne, ternaryColorTwo] = ternaryColorRegExp.exec(match) || [];
-
-      // Match color in script variables.
-      const objectColors = objectColorRegExp.exec(fileContent) || [];
-
-      [singleColor, ternaryColorOne, ternaryColorTwo, ...objectColors].forEach((color) => {
-        if (color) colors.add(color);
-      });
-    });
   }
 
-  return {
-    colors: Array.from(colors).filter(
-      (color) => color && [...BRAND_COLORS, BRAND_COLOR, GRAY_COLOR].includes(color),
-    ),
-    isComponentExists,
-  };
-}
-
-function isDefaultComponentConfig(filePath, componentName) {
-  const componentDirName = filePath.split(path.sep).at(-2);
-
-  return (
-    componentDirName === COMPONENTS[componentName] &&
-    (filePath.endsWith("/config.js") || filePath.endsWith("/config.ts"))
-  );
-}
-
-function getSafelistColorsFromConfig(componentName) {
-  const globalSafelistColors = vuelessConfig.safelistColors || [];
-  const componentSafelistColors = vuelessConfig.components?.[componentName]?.safelistColors || [];
-
-  return [...globalSafelistColors, ...componentSafelistColors];
-}
-
-/**
- Combine collected tailwind patterns from different components into groups.
- */
-function mergeSafelistPatterns(safelist) {
-  const safelistData = getSafelistData(safelist);
-  const mergedColorsSafelist = mergeSafelistColors(safelistData);
-
-  return mergeSafelistVariants(mergedColorsSafelist).map((item) => {
-    const pattern = `${item.property}(${item.colorPattern})-(${Array.from(item.shades).join("|")})`;
-    const safelistItem = { pattern };
-
-    if (item.variants) {
-      safelistItem.variants = item.variants;
-    }
-
-    return safelistItem;
-  });
-}
-
-function getSafelistData(safelist) {
-  return safelist.map((safelistItem) => {
-    const matchGroupStart = 1;
-    const matchGroupEnd = 4;
-    const safelistItemRegExp = new RegExp(/^(.*-)\((.*)\)-(\d+(?:\/\d+)?)$/);
-
-    const [property, colorPattern, colorShade] = safelistItem.pattern
-      .match(safelistItemRegExp)
-      .slice(matchGroupStart, matchGroupEnd);
-
-    const [shade] = colorShade.split(TAILWIND_COLOR_OPACITY_DELIMITER);
-
-    return {
-      property,
-      colorPattern,
-      variants: safelistItem.variants,
-      shades: new Set([shade]),
-    };
-  });
-}
-
-function mergeSafelistColors(safelistData) {
-  const mergedSafelist = [];
-
-  safelistData.forEach((currentSafelistItem, currentIndex) => {
-    const duplicateIndex = mergedSafelist.findIndex((safelistItem, index) => {
-      const isSameItem = index === currentIndex;
-      const isSameProperty = safelistItem.property === currentSafelistItem.property;
-      const isSameVariants = isEqual(safelistItem.variants, currentSafelistItem.variants);
-
-      const currentItemColors = currentSafelistItem.colorPattern.split("|");
-      const safelistColors = safelistItem.colorPattern.split("|");
-
-      const isIncludesColors =
-        safelistItem.colorPattern === currentSafelistItem.colorPattern ||
-        currentItemColors.some((color) => safelistColors.includes(color)) ||
-        safelistColors.some((color) => currentItemColors.includes(color));
-
-      return !isSameItem && isSameProperty && isSameVariants && isIncludesColors;
-    });
-
-    if (!~duplicateIndex) {
-      mergedSafelist.push(currentSafelistItem);
-    } else {
-      const mergedColors = [
-        ...new Set([
-          ...currentSafelistItem.colorPattern.split("|"),
-          ...mergedSafelist[duplicateIndex].colorPattern.split("|"),
-        ]),
-      ];
-
-      mergedSafelist[duplicateIndex].colorPattern = mergedColors.join("|");
-      mergedSafelist[duplicateIndex].shades.add(
-        ...currentSafelistItem.shades,
-        ...mergedSafelist[duplicateIndex].shades,
-      );
-    }
-  });
-
-  return mergedSafelist;
-}
-
-function mergeSafelistVariants(safelistData) {
-  safelistData.forEach((currentItem, currentIndex) => {
-    if (!currentItem.variants) return;
-
-    const duplicateIndex = safelistData.findIndex((item, index) => {
-      const isSameItem = index === currentIndex;
-      const isSameProperty = item.property === currentItem.property;
-      const isSameColors = item.colorPattern === currentItem.colorPattern;
-      const isSameShades = isEqual(item.shades, currentItem.shades);
-
-      return !isSameItem && isSameProperty && isSameColors && isSameShades;
-    });
-
-    if (~duplicateIndex) {
-      const currentItemVariants = currentItem.variants;
-      const foundItemVariants = safelistData[duplicateIndex].variants || [];
-
-      safelistData[duplicateIndex].variants = [
-        ...new Set([...currentItemVariants, ...foundItemVariants]),
-      ];
-      safelistData.splice(currentIndex, 1);
-    }
-  });
-
-  return safelistData;
+  return isComponentUsed;
 }

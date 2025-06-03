@@ -1,5 +1,6 @@
 import type { Meta, StoryFn } from "@storybook/vue3";
 import {
+  getArgs,
   getArgTypes,
   getSlotNames,
   getSlotsFragment,
@@ -12,9 +13,9 @@ import UDatePicker from "../../ui.form-date-picker/UDatePicker.vue";
 
 import { COMPONENT_NAME } from "../constants.ts";
 
-import type { DateValue, UCalendarProps } from "../types.ts";
+import type { DateValue, Props } from "../types.ts";
 
-interface UCalendarArgs extends UCalendarProps<DateValue> {
+interface UCalendarArgs extends Props<DateValue> {
   slotTemplate?: string;
   enum: "view";
 }
@@ -41,11 +42,7 @@ export default {
 
 const DefaultTemplate: StoryFn<UCalendarArgs> = (args: UCalendarArgs) => ({
   components: { UCalendar },
-  setup() {
-    const slots = getSlotNames(COMPONENT_NAME);
-
-    return { args, slots };
-  },
+  setup: () => ({ args, slots: getSlotNames(COMPONENT_NAME) }),
   template: `
       <UCalendar v-bind="args" v-model="args.modelValue">
         ${args.slotTemplate || getSlotsFragment("")}
@@ -57,34 +54,24 @@ const DefaultTemplate: StoryFn<UCalendarArgs> = (args: UCalendarArgs) => ({
     `,
 });
 
-const EnumVariantTemplate: StoryFn<UCalendarArgs> = (args: UCalendarArgs, { argTypes }) => ({
+const EnumTemplate: StoryFn<UCalendarArgs> = (args: UCalendarArgs, { argTypes }) => ({
   components: { UCalendar, URow },
-  setup() {
-    return {
-      args,
-      options: argTypes[args.enum]?.options,
-    };
-  },
+  setup: () => ({ args, argTypes, getArgs }),
   template: `
-      <URow>
-        <UCalendar
-          v-for="(option, index) in options"
-          :key="index"
-          v-bind="args"
-          v-model="args.modelValue"
-          :[args.enum]="option"
-        />
-      </URow>
+    <URow>
+      <UCalendar
+        v-for="option in argTypes?.[args.enum]?.options"
+        v-bind="getArgs(args, option)"
+        :key="option"
+        v-model="args.modelValue"
+      />
+    </URow>
   `,
 });
 
 const UserDateFormatTemplate: StoryFn<UCalendarArgs> = (args: UCalendarArgs) => ({
   components: { UDatePicker },
-  setup() {
-    const slots = getSlotNames(COMPONENT_NAME);
-
-    return { args, slots };
-  },
+  setup: () => ({ args, slots: getSlotNames(COMPONENT_NAME) }),
   template: `
       <UDatePicker v-bind="args" v-model="args.modelValue" />
     `,
@@ -93,7 +80,7 @@ const UserDateFormatTemplate: StoryFn<UCalendarArgs> = (args: UCalendarArgs) => 
 export const Default = DefaultTemplate.bind({});
 Default.args = { modelValue: null };
 
-export const View = EnumVariantTemplate.bind({});
+export const View = EnumTemplate.bind({});
 View.args = { enum: "view" };
 View.parameters = {
   docs: {

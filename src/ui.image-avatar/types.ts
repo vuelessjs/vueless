@@ -4,21 +4,16 @@ import type { ComponentConfig } from "../types.ts";
 
 export type Config = typeof defaultConfig;
 
-export interface UAvatarProps {
-  /**
-   * Avatar image source.
-   */
-  src?: string;
-
+export interface Props {
   /**
    * Avatar label (username, nickname, etc.).
    */
   label?: string;
 
   /**
-   * Avatar placeholder icon.
+   * Badge variant.
    */
-  placeholderIcon?: string;
+  variant?: "solid" | "outlined" | "subtle" | "soft";
 
   /**
    * Avatar size.
@@ -29,37 +24,30 @@ export interface UAvatarProps {
    * Avatar color.
    */
   color?:
-    | "grayscale"
-    | "red"
-    | "orange"
-    | "amber"
-    | "yellow"
-    | "lime"
-    | "green"
-    | "emerald"
-    | "teal"
-    | "cyan"
-    | "sky"
-    | "blue"
-    | "indigo"
-    | "violet"
-    | "purple"
-    | "fuchsia"
-    | "pink"
-    | "rose"
-    | "gray"
-    | "white"
-    | "brand";
+    | "primary"
+    | "secondary"
+    | "error"
+    | "warning"
+    | "success"
+    | "info"
+    | "notice"
+    | "neutral"
+    | "grayscale";
 
   /**
    * Avatar corner rounding.
    */
-  rounded?: "dynamic" | "none" | "sm" | "md" | "lg" | "full";
+  rounded?: "none" | "sm" | "md" | "lg" | "full";
 
   /**
-   * Add border to the avatar.
+   * Avatar image source.
    */
-  bordered?: boolean;
+  src?: string;
+
+  /**
+   * Avatar placeholder icon.
+   */
+  placeholderIcon?: string;
 
   /**
    * Component config object.

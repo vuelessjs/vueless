@@ -1,10 +1,11 @@
-import { setup } from "@storybook/vue3";
+import { setup } from "@storybook/vue3-vite";
 
 import { getRandomId } from "../src";
 
 import themeLight from "./themes/themeLight.js";
 import themeDark from "./themes/themeDark.js";
 import themeLightDocs from "./themes/themeLightDocs.js";
+
 import { storyDarkModeDecorator } from "./decorators/storyDarkModeDecorator.js";
 import { vue3SourceDecorator } from "./decorators/vue3SourceDecorator.js";
 
@@ -58,7 +59,7 @@ export const parameters = {
   },
 };
 
-/* Reload the page on error "Failed to fetch dynamically imported module..." */
+/* Reload the page on the error "Failed to fetch dynamically imported module..." */
 window.addEventListener("error", (ev) => onFailedToFetchModule(ev.message));
 window.addEventListener("unhandledrejection", (ev) => onFailedToFetchModule(ev?.reason?.message));
 

@@ -36,7 +36,7 @@ export interface Props {
   scrollable?: boolean;
 
   /**
-   * Make the Tabs fill the width with its container.
+   * Make the Tabs expand to fill the entire width of its container.
    */
   block?: boolean;
 

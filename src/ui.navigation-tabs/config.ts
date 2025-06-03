@@ -1,20 +1,10 @@
 export default /*tw*/ {
-  wrapper: {
-    base: "mb-6 flex gap-1",
-    variants: {
-      block: {
-        true: "w-full",
-      },
-    },
-  },
+  wrapper: "flex gap-1 w-full",
   tabs: {
-    base: "flex border-b border-gray-200 dark:border-gray-700",
+    base: "flex border-b border-default w-full",
     variants: {
       scrollable: {
         true: "overflow-hidden flex-nowrap scroll-smooth",
-      },
-      block: {
-        true: "w-full",
       },
     },
   },
@@ -32,7 +22,7 @@ export default /*tw*/ {
         lg: "md",
         xl: "md",
       },
-      variant: "thirdary",
+      variant: "ghost",
       square: true,
     },
   },

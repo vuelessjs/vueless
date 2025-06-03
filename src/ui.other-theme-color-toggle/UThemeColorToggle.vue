@@ -1,10 +1,9 @@
 <script setup lang="ts">
-import { ref, computed, useId } from "vue";
+import { ref, computed, useId, useTemplateRef } from "vue";
 
 import useUI from "../composables/useUI.ts";
 import { getDefaults } from "../utils/ui.ts";
-import { setTheme, getSelectedBrandColor, getSelectedGrayColor } from "../utils/theme.ts";
-import { GRAYSCALE_COLOR } from "../constants.js";
+import { setTheme } from "../utils/theme.ts";
 
 import UDivider from "../ui.container-divider/UDivider.vue";
 import UColorPicker from "../ui.form-color-picker/UColorPicker.vue";
@@ -18,89 +17,89 @@ defineOptions({ inheritAttrs: false });
 
 const props = withDefaults(defineProps<Props>(), {
   ...getDefaults<Props, Config>(defaultConfig, COMPONENT_NAME),
-  brand: "",
-  gray: "",
-  brandColors: () => ({}),
-  grayColors: () => ({}),
-  brandLabels: () => ({}),
-  grayLabels: () => ({}),
+  primary: "",
+  neutral: "",
+  primaryColors: () => ({}),
+  neutralColors: () => ({}),
+  primaryLabels: () => ({}),
+  neutralLabels: () => ({}),
 });
 
 const emit = defineEmits([
   /**
-   * Triggers when the brand color changes.
+   * Triggers when the primary color changes.
    * @property {string} value
    */
-  "update:brand",
+  "update:primary",
 
   /**
-   * Triggers when the gray color changes.
+   * Triggers when the neutral color changes.
    * @property {string} value
    */
-  "update:gray",
+  "update:neutral",
 ]);
 
 const elementId = props.id || useId();
 
-const localBrand = ref("");
-const localGray = ref("");
+const listRef = useTemplateRef<HTMLDivElement>("list");
+const localPrimary = ref("");
+const localNeutral = ref("");
 
-const selectedBrandColor = computed({
-  get: () => props.brand || localBrand.value || getSelectedBrandColor(),
-  set: (brand: string) => {
-    const prevBrand = getSelectedBrandColor();
-    const isBrandGrayscale = brand === GRAYSCALE_COLOR;
-    const isPrevBrandGrayscale = prevBrand === GRAYSCALE_COLOR;
-
-    if (brand !== prevBrand && (isBrandGrayscale || isPrevBrandGrayscale)) {
-      window.location.reload();
-    }
-
-    setTheme({ brand });
-    emit("update:brand", brand);
-    localBrand.value = brand;
+const selectedPrimaryColor = computed({
+  get: () => props.primary || localPrimary.value || "",
+  set: (primary: string) => {
+    setTheme({ primary });
+    emit("update:primary", primary);
+    localPrimary.value = primary;
   },
 });
 
-const selectedGrayColor = computed({
-  get: () => props.gray || localGray.value || getSelectedGrayColor(),
-  set: (gray: string) => {
-    setTheme({ gray });
-    emit("update:gray", gray);
-    localGray.value = gray;
+const selectedNeutralColor = computed({
+  get: () => props.neutral || localNeutral.value || "",
+  set: (neutral: string) => {
+    setTheme({ neutral });
+    emit("update:neutral", neutral);
+    localNeutral.value = neutral;
   },
+});
+
+defineExpose({
+  /**
+   * A reference to the component's wrapper element for direct DOM manipulation.
+   * @property {HTMLDivElement}
+   */
+  listRef,
 });
 
 /**
  * Get element / nested component attributes for each config token ✨
  * Applies: `class`, `config`, redefined default `props` and dev `vl-...` attributes.
  */
-const { listAttrs, colorDividerAttrs, brandColorPickerAttrs, grayColorPickerAttrs } =
+const { listAttrs, colorDividerAttrs, primaryColorPickerAttrs, neutralColorPickerAttrs } =
   useUI<Config>(defaultConfig);
 </script>
 
 <template>
-  <div :id="elementId" v-bind="listAttrs">
+  <div :id="elementId" ref="list" v-bind="listAttrs">
     <UColorPicker
-      v-model="selectedBrandColor"
+      v-model="selectedPrimaryColor"
       :size="size"
-      :colors="brandColors"
-      :labels="brandLabels"
-      v-bind="brandColorPickerAttrs"
+      :colors="primaryColors"
+      :labels="primaryLabels"
+      v-bind="primaryColorPickerAttrs"
     />
 
     <UDivider
-      v-if="Object.keys(brandColors).length && Object.keys(grayColors).length"
-      size="xs"
+      v-if="Object.keys(primaryColors).length && Object.keys(neutralColors).length"
       v-bind="colorDividerAttrs"
     />
 
     <UColorPicker
-      v-model="selectedGrayColor"
+      v-model="selectedNeutralColor"
       :size="size"
-      :colors="grayColors"
-      :labels="grayLabels"
-      v-bind="grayColorPickerAttrs"
+      :colors="neutralColors"
+      :labels="neutralLabels"
+      v-bind="neutralColorPickerAttrs"
     />
   </div>
 </template>

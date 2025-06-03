@@ -1,6 +1,5 @@
 <script setup lang="ts">
-import { computed } from "vue";
-import { merge } from "lodash-es";
+import { computed, useTemplateRef } from "vue";
 
 import useUI from "../composables/useUI.ts";
 import { getDefaults } from "../utils/ui.ts";
@@ -11,7 +10,7 @@ import UModal from "../ui.container-modal/UModal.vue";
 
 import defaultConfig from "./config.ts";
 import { COMPONENT_NAME } from "./constants.ts";
-import { useLocale } from "../composables/useLocale.ts";
+import { useComponentLocaleMessages } from "../composables/useComponentLocaleMassages.ts";
 
 import type { Props, Config } from "./types.ts";
 
@@ -41,16 +40,21 @@ const emit = defineEmits([
   "close",
 ]);
 
-const { tm } = useLocale();
+const confirmModalRef = useTemplateRef<InstanceType<typeof UModal>>("confirmModal");
+
+const modal = computed(() => {
+  return confirmModalRef.value?.wrapperRef || null;
+});
 
 const isShownModal = computed({
   get: () => props.modelValue,
   set: (value) => emit("update:modelValue", value),
 });
 
-const i18nGlobal = tm(COMPONENT_NAME);
-const currentLocale = computed(() =>
-  merge({}, defaultConfig.i18n, i18nGlobal, props?.config?.i18n),
+const { localeMessages } = useComponentLocaleMessages<typeof defaultConfig.i18n>(
+  COMPONENT_NAME,
+  defaultConfig.i18n,
+  props?.config?.i18n,
 );
 
 function closeModal() {
@@ -66,6 +70,14 @@ function emitConfirmAction() {
   emit("confirm");
   closeModal();
 }
+
+defineExpose({
+  /**
+   * A reference to the UModal's wrapper element for direct DOM manipulation.
+   * @property {InstanceType<typeof UModal>}
+   */
+  modal,
+});
 
 /**
  * Get element / nested component attributes for each config token ✨
@@ -83,19 +95,21 @@ const {
 <template>
   <UModal
     :id="id"
+    ref="confirmModal"
     v-model="isShownModal"
     :size="size"
     :title="title"
     :description="description"
     :inner="inner"
+    :variant="variant"
     :close-on-esc="closeOnEsc"
     :close-on-cross="closeOnCross"
     :close-on-overlay="closeOnOverlay"
-    :mobile-stick-bottom="mobileStickBottom"
-    :divider="divider"
+    :divided="divided"
     mobile-bottom-align
     v-bind="confirmModalAttrs"
     :data-test="getDataTest()"
+    @close="onCloseModal"
   >
     <template #before-title>
       <!-- @slot Use it to add something before the header title. -->
@@ -130,7 +144,7 @@ const {
 
       <div v-else v-bind="footerLeftFallbackAttrs">
         <UButton
-          :label="confirmLabel || currentLocale.confirm"
+          :label="confirmLabel || localeMessages.confirm"
           :color="confirmColor"
           :disabled="confirmDisabled"
           v-bind="confirmButtonAttrs"
@@ -140,9 +154,9 @@ const {
 
         <UButton
           v-if="!cancelHidden"
-          :label="currentLocale.cancel"
-          variant="secondary"
-          color="gray"
+          :label="localeMessages.cancel"
+          variant="subtle"
+          color="neutral"
           v-bind="cancelButtonAttrs"
           :data-test="getDataTest('close')"
           @click="onCloseModal"

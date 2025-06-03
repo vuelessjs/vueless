@@ -5,30 +5,18 @@ export type Config = typeof defaultConfig;
 
 export interface Props {
   /**
-   * Loader stripe color.
+   * Loader progress color.
    */
   color?:
-    | "grayscale"
-    | "red"
-    | "orange"
-    | "amber"
-    | "yellow"
-    | "lime"
-    | "green"
-    | "emerald"
-    | "teal"
-    | "cyan"
-    | "sky"
-    | "blue"
-    | "indigo"
-    | "violet"
-    | "purple"
-    | "fuchsia"
-    | "pink"
-    | "rose"
-    | "gray"
-    | "white"
-    | "brand";
+    | "primary"
+    | "secondary"
+    | "error"
+    | "warning"
+    | "success"
+    | "info"
+    | "notice"
+    | "neutral"
+    | "grayscale";
 
   /**
    * API resource names (endpoint URIs).
@@ -36,7 +24,7 @@ export interface Props {
   resources?: string | string[] | "any" | ["any"];
 
   /**
-   * Progress size.
+   * Loader progress size.
    */
   size?: "xs" | "sm" | "md" | "lg";
 

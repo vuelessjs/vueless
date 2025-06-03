@@ -1,13 +1,11 @@
-import { ref, watch, watchEffect, getCurrentInstance, toValue, useAttrs, computed } from "vue";
+import { ref, watch, getCurrentInstance, toValue, useAttrs, computed } from "vue";
 import { isEqual } from "lodash-es";
 
-import { cx, cva, setColor, getColor, vuelessConfig, getMergedConfig } from "../utils/ui.ts";
+import { cx, cva, setColor, vuelessConfig, getMergedConfig } from "../utils/ui.ts";
 import { isCSR } from "../utils/helper.ts";
 import {
-  STRATEGY_TYPE,
   CVA_CONFIG_KEY,
   SYSTEM_CONFIG_KEY,
-  DEFAULT_BASE_CLASSES,
   EXTENDS_PATTERN_REG_EXP,
   NESTED_COMPONENT_PATTERN_REG_EXP,
 } from "../constants.js";
@@ -19,10 +17,9 @@ import type {
   Defaults,
   KeyAttrs,
   KeysAttrs,
-  Strategies,
-  BrandColors,
   MutatedProps,
   UnknownObject,
+  PrimaryColors,
   ComponentNames,
   NestedComponent,
   ComponentConfigFull,
@@ -49,34 +46,35 @@ export default function useUI<T>(
 
   const globalConfig = (vuelessConfig.components?.[componentName] || {}) as ComponentConfigFull<T>;
 
-  const vuelessStrategy = Object.values(STRATEGY_TYPE).includes(vuelessConfig.strategy || "")
-    ? (vuelessConfig.strategy as Strategies)
-    : (STRATEGY_TYPE.merge as Strategies);
-
   const firstClassKey = Object.keys(defaultConfig || {})[0];
   const config = ref({}) as Ref<ComponentConfigFull<T>>;
 
-  watchEffect(() => {
-    const propsConfig = props.config as ComponentConfigFull<T>;
+  watch(
+    () => props.config,
+    (newVal, oldVal) => {
+      if (isEqual(newVal, oldVal)) return;
 
-    config.value = getMergedConfig({
-      defaultConfig,
-      globalConfig,
-      propsConfig,
-      vuelessStrategy,
-    }) as ComponentConfigFull<T>;
-  });
+      const propsConfig = props.config as ComponentConfigFull<T>;
+
+      config.value = getMergedConfig({
+        defaultConfig,
+        globalConfig,
+        propsConfig,
+        unstyled: Boolean(vuelessConfig.unstyled),
+      }) as ComponentConfigFull<T>;
+    },
+    { deep: true, immediate: true },
+  );
 
   /**
-   * Get classes by given key (including CVA if config set).
+   * Get classes by a given key (including CVA if config set).
    */
   function getClasses(key: string, mutatedProps?: MutatedProps) {
     return computed(() => {
       const mutatedPropsValue = toValue(mutatedProps);
       const value = (config.value as ComponentConfigFull<T>)[key];
-      const color = (toValue(mutatedProps || {}).color || props.color) as BrandColors;
+      const color = (toValue(mutatedProps || {}).color || props.color) as PrimaryColors;
 
-      const isTopLevelKey = (topLevelClassKey || firstClassKey) === key;
       const isNestedComponent = Boolean(getNestedComponent(value));
 
       let classes = "";
@@ -85,16 +83,12 @@ export default function useUI<T>(
         classes = cva(value)({
           ...props,
           ...mutatedPropsValue,
-          ...(color ? { color: getColor(color) } : {}),
+          ...(color ? { color } : {}),
         });
       }
 
       if (typeof value === "string") {
         classes = value;
-      }
-
-      if (isTopLevelKey && !isNestedComponent) {
-        classes = cx([DEFAULT_BASE_CLASSES, vuelessConfig.baseClasses, classes]);
       }
 
       classes = classes
@@ -123,7 +117,7 @@ export default function useUI<T>(
   }
 
   /**
-   * Get an element attributes for a given key.
+   * Get element attributes for a given key.
    */
   function getAttrs(configKey: string, classes: ComputedRef<string>) {
     const vuelessAttrs = ref({} as KeyAttrs);
@@ -174,6 +168,7 @@ export default function useUI<T>(
           defaultConfig: extendsKeyConfig,
           globalConfig: keyConfig,
           propsConfig: attrs["config"] || {},
+          unstyled: Boolean(vuelessConfig.unstyled),
         }),
         ...getDefaults({
           ...(extendsKeyConfig.defaults || {}),
@@ -218,10 +213,16 @@ export default function useUI<T>(
       if (extendsKeys.length) {
         const [firstKey] = extendsKeys;
 
+        if (config.value[firstKey] === undefined) {
+          // eslint-disable-next-line no-console
+          console.warn(`[vueless] Missing ${firstKey} extend key.`);
+        }
+
         extendsKeyConfig = getMergedConfig({
-          defaultConfig: config.value[firstKey],
+          defaultConfig: config.value[firstKey] || {},
           globalConfig: globalConfig[firstKey],
           propsConfig: propsConfig[firstKey],
+          unstyled: Boolean(vuelessConfig.unstyled),
         }) as NestedComponent;
       }
 

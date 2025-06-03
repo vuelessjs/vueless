@@ -2,14 +2,17 @@ export default /*tw*/ {
   radioLabel: "{ULabel}",
   radio: {
     base: `
-      border border-gray-300 bg-white cursor-pointer transition
-      hover:border-gray-400
-      active:border-{color}-600 active:bg-{color}-200
-      checked:text-{color}-600
+      bg-default cursor-pointer transition
+      border border-default outline-transparent
+      hover:border-lifted hover:checked:border-{color}
+      active:border-{color} active:bg-{color}/15
+      checked:bg-{color} checked:border-{color}
+      checked:bg-radial-[circle_at_50%_50%] from-(--vl-bg) from-28% to-transparent to-32%
       focus:ring-0 focus:ring-offset-0
-      focus-visible:outline-{color}-600 focus-visible:outline-dynamic focus-visible:outline-offset-2
-      disabled:border-gray-300 disabled:bg-gray-100 disabled:cursor-not-allowed
-      disabled:checked:bg-gray-400 disabled:checked:border-transparent
+      focus-visible:outline-{color} focus-visible:outline-medium focus-visible:outline-offset-2 focus-visible:transition
+      disabled:border-default disabled:bg-lifted disabled:cursor-not-allowed
+      disabled:checked:bg-{color}/(--vl-disabled-opacity) disabled:checked:border-transparent
+
     `,
     variants: {
       size: {
@@ -17,16 +20,10 @@ export default /*tw*/ {
         md: "size-5",
         lg: "size-6",
       },
-      color: {
-        grayscale: `
-          focus-visible:outline-gray-900
-          checked:text-gray-900 checked:hover:text-gray-800 checked:active:text-gray-700
-        `,
-      },
     },
   },
   defaults: {
-    color: "brand",
+    color: "primary",
     labelAlign: "right",
     size: "md",
     checked: false,

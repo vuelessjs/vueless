@@ -33,6 +33,7 @@ const selectedItem = computed({
   set: (value) => emit("update:modelValue", value),
 });
 
+const wrapperRef = useTemplateRef<HTMLDivElement>("wrapper");
 const scrollContainerRef = useTemplateRef<HTMLDivElement | null>("scroll-container");
 const showLeftArrow = ref(false);
 const showRightArrow = ref(false);
@@ -79,6 +80,14 @@ provide("getUTabsScrollable", () => props.scrollable);
 provide("getUTabsSelectedItem", () => selectedItem.value);
 provide("setUTabsSelectedItem", (value: string) => (selectedItem.value = value));
 
+defineExpose({
+  /**
+   * A reference to the component's wrapper element for direct DOM manipulation.
+   * @property {HTMLDivElement}
+   */
+  wrapperRef,
+});
+
 /**
  * Get element / nested component attributes for each config token ✨
  * Applies: `class`, `config`, redefined default `props` and dev `vl-...` attributes.
@@ -97,7 +106,7 @@ const {
 </script>
 
 <template>
-  <div v-bind="wrapperAttrs">
+  <div ref="wrapper" v-bind="wrapperAttrs">
     <div v-if="scrollable && showLeftArrow" v-bind="prevAttrs" @click="scrollPrev">
       <!--
         @slot Use it to add something instead of the "prev" button.

@@ -1,64 +1,35 @@
 export default /*tw*/ {
   wrapper: {
-    base: "border p-4 flex flex-col rounded-dynamic",
+    base: "p-4 border-box flex flex-col border rounded-medium",
     variants: {
       variant: {
-        primary: "bg-{color}-600 text-white border-transparent",
-        secondary: "border-{color}-600 text-{color}-600",
-        thirdary: "bg-{color}-50 text-{color}-600 border-transparent",
+        solid: "text-inverted bg-{color} border-transparent",
+        outlined: "text-{color} border-{color}",
+        subtle: "text-{color} bg-{color}/10 border-{color}/15",
+        soft: "text-{color} bg-{color}/10 border-transparent",
       },
       size: {
-        xs: "text-2xs",
-        sm: "text-xs",
-        md: "text-sm",
-        lg: "text-base",
+        xs: "text-tiny",
+        sm: "text-small",
+        md: "text-medium",
+        lg: "text-large",
       },
     },
-    compoundVariants: [
-      { variant: "thirdary", bordered: true, class: "border-{color}-100" },
-      { color: "white", variant: "primary", class: "text-gray-900 bg-white" },
-      { color: "white", variant: "secondary", class: "text-gray-900 border-gray-200" },
-      { color: "white", variant: "thirdary", class: "text-gray-900 bg-white" },
-      { color: "white", variant: "thirdary", bordered: true, class: "border-gray-200" },
-      { color: "grayscale", variant: "primary", class: "bg-gray-900" },
-      { color: "grayscale", variant: "secondary", class: "text-gray-900 border-gray-900" },
-      { color: "grayscale", variant: "thirdary", class: "text-gray-900 bg-gray-50" },
-      { color: "grayscale", variant: "thirdary", bordered: true, class: "border-gray-200" },
-      { color: "gray", variant: "primary", class: "bg-gray-500" },
-      { color: "gray", variant: "secondary", class: "text-gray-500 border-gray-500" },
-      { color: "gray", variant: "thirdary", class: "text-gray-500 bg-gray-50" },
-      { color: "gray", variant: "thirdary", bordered: true, class: "border-gray-500" },
-    ],
   },
-  body: "flex items-start justify-between",
+  body: "flex items-center justify-between",
   contentWrapper: "flex gap-2",
   content: "",
-  title: {
-    base: "font-bold leading-tight",
-    variants: {
-      size: {
-        xs: "text-xs",
-        sm: "text-sm",
-        md: "text-base",
-        lg: "text-lg",
-      },
-    },
-  },
-  description: "",
-  text: {
-    base: "{UText}",
-    defaults: {
-      size: {
-        xs: "sm",
-        sm: "sm",
-        md: "md",
-        lg: "lg",
-      },
-    },
-  },
+  title: "font-semibold leading-tight",
+  description: "mt-0.5",
+  text: "{UText}",
   closeButton: "{UButton}",
-  closeIcon: {
+  icon: {
     base: "{UIcon}",
+    variants: {
+      variant: {
+        solid: "text-inverted",
+      },
+    },
     defaults: {
       size: {
         xs: "3xs",
@@ -68,12 +39,13 @@ export default /*tw*/ {
       },
     },
   },
+  closeIcon: "{>icon}",
+  alertIcon: "{>icon}",
   defaults: {
-    variant: "primary",
-    color: "brand",
+    variant: "subtle",
+    color: "primary",
     size: "md",
     timeout: 0,
-    bordered: false,
     closable: false,
     /* icons */
     closeIcon: "close",

@@ -1,27 +1,18 @@
 export default /*tw*/ {
   wrapper: {
     base: `
-      relative inline-flex items-center rounded
-      focus-visible:outline focus-visible:outline-dynamic focus-visible:outline-offset-4 focus-visible:outline-{color}-600
+      inline-flex gap-0.5 relative items-center justify-between rounded
+      focus-visible:outline focus-visible:outline-medium focus-visible:outline-offset-4 focus-visible:outline-{color}
     `,
     variants: {
-      color: {
-        grayscale: "focus-visible:outline-gray-900",
-        white: "focus-visible:outline-white",
-      },
       opened: {
         true: "group",
       },
     },
   },
-  dropdownLink: "{ULink} focus-visible:outline-none",
+  dropdownLink: "{ULink} focus-visible:outline-hidden",
   toggleIcon: {
-    base: "{UIcon} block transition duration-300 group-[]:rotate-180",
-    variants: {
-      disabled: {
-        true: "text-gray-400 pointer-events-none",
-      },
-    },
+    base: "{UIcon} block transition duration-300 group-[*]:rotate-180",
     defaults: {
       size: {
         sm: "2xs",
@@ -30,12 +21,12 @@ export default /*tw*/ {
       },
     },
   },
-  dropdownList: {
-    base: "{UDropdownList} w-fit",
+  listbox: {
+    base: "{UListbox} w-fit",
     variants: {
       yPosition: {
-        top: "bottom-3 mb-2.5",
-        bottom: "top-3 mt-2.5",
+        top: "bottom-full mb-2",
+        bottom: "top-full mt-2",
       },
       xPosition: {
         left: "left-0",
@@ -44,15 +35,18 @@ export default /*tw*/ {
     },
   },
   defaults: {
-    color: "brand",
+    color: "primary",
     size: "md",
     labelKey: "label",
+    valueKey: "id",
     yPosition: "bottom",
     xPosition: "left",
     underlined: undefined,
     dashed: true,
-    noIcon: false,
     disabled: false,
+    searchable: false,
+    multiple: false,
+    labelDisplayCount: 2,
     /* icons */
     toggleIcon: "keyboard_arrow_down",
   },

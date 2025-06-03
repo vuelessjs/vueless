@@ -2,16 +2,17 @@ export default /*tw*/ {
   inputLabel: "{ULabel}",
   wrapper: {
     base: `
-      border rounded-dynamic border-gray-300 relative flex w-full bg-white transition
-      hover:border-gray-400 hover:focus-within:border-brand-600 focus-within:border-brand-600
-      focus-within:outline focus-within:outline-dynamic-sm focus-within:outline-brand-600
+      flex w-full relative bg-default transition
+      border rounded-medium border-default outline-transparent
+      hover:border-lifted hover:focus-within:border-primary focus-within:border-primary
+      focus-within:outline focus-within:outline-small focus-within:outline-primary focus-within:transition
     `,
     variants: {
       error: {
-        true: "!border-red-600 focus-within:outline-red-600",
+        true: "!border-error focus-within:outline-error",
       },
       disabled: {
-        true: "!border-gray-300 focus-within:outline-0 bg-gray-100",
+        true: "!border-default focus-within:outline-0 bg-lifted",
       },
     },
   },
@@ -27,25 +28,23 @@ export default /*tw*/ {
   },
   leftIcon: "{UIcon} {>inputIcon}",
   rightIcon: "{UIcon} {>inputIcon}",
-  passwordIcon: "{UIcon} {>inputIcon}",
-  passwordIconWrapper: "flex items-center justify-end whitespace-nowrap pr-2.5 gap-1 rounded-inherit rounded-l-none",
   leftSlot: "pl-2.5 flex items-center",
   rightSlot: "pr-2.5 flex items-center",
   input: {
     base: `
       block w-full py-2 px-3 font-normal !leading-none bg-transparent
-      border-none rounded-inherit transition focus:ring-0
-      placeholder:font-normal placeholder-gray-400
-      disabled:text-gray-700 disabled:cursor-not-allowed
+      border-none rounded-inherit transition focus:ring-0 focus:outline-none
+      placeholder:font-normal placeholder:text-muted
+      disabled:text-accented disabled:cursor-not-allowed
     `,
     variants: {
       size: {
-        sm: "text-xs placeholder:text-xs placeholder:font-normal",
-        md: "text-sm placeholder:text-sm placeholder:font-normal",
-        lg: "text-base placeholder:text-base placeholder:font-normal",
+        sm: "text-small placeholder:text-small placeholder:font-normal",
+        md: "text-medium placeholder:text-medium placeholder:font-normal",
+        lg: "text-large placeholder:text-large placeholder:font-normal",
       },
       error: {
-        true: "placeholder:text-red-300",
+        true: "placeholder:text-error/50",
       },
       typePassword: {
         true: "tracking-widest [-webkit-text-security:disc]",
@@ -66,8 +65,5 @@ export default /*tw*/ {
     readonly: false,
     disabled: false,
     noAutocomplete: false,
-    /* icons */
-    passwordVisibleIcon: "visibility-fill",
-    passwordHiddenIcon: "visibility_off-fill",
   },
 };

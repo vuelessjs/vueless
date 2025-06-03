@@ -1,14 +1,18 @@
+import { ref } from "vue";
 import {
+  getArgs,
   getArgTypes,
   getSlotNames,
   getSlotsFragment,
   getDocsDescription,
+  getEnumVariantDescription,
 } from "../../utils/storybook.ts";
 
 import ULoader from "../../ui.loader/ULoader.vue";
 import URow from "../../ui.container-row/URow.vue";
 import UButton from "../../ui.button/UButton.vue";
-import { ref } from "vue";
+
+import tooltip from "../../directives/tooltip/vTooltip.ts";
 
 import type { Meta, StoryFn } from "@storybook/vue3";
 import type { Props } from "../types.ts";
@@ -37,11 +41,7 @@ export default {
 
 const DefaultTemplate: StoryFn<ULoaderArgs> = (args: ULoaderArgs) => ({
   components: { ULoader },
-  setup() {
-    const slots = getSlotNames(ULoader.__name);
-
-    return { args, slots };
-  },
+  setup: () => ({ args, slots: getSlotNames(ULoader.__name) }),
   template: `
     <ULoader v-bind="args">
       ${args.slotTemplate || getSlotsFragment("")}
@@ -49,21 +49,17 @@ const DefaultTemplate: StoryFn<ULoaderArgs> = (args: ULoaderArgs) => ({
   `,
 });
 
-const EnumVariantTemplate: StoryFn<ULoaderArgs> = (args: ULoaderArgs, { argTypes }) => ({
+const EnumTemplate: StoryFn<ULoaderArgs> = (args: ULoaderArgs, { argTypes }) => ({
   components: { ULoader, URow },
-  setup() {
-    return {
-      args,
-      options: argTypes?.[args.enum]?.options,
-    };
-  },
+  directives: { tooltip },
+  setup: () => ({ args, argTypes, getArgs }),
   template: `
-    <URow class="flex-wrap">
+    <URow wrap>
       <ULoader
-        v-for="(option, index) in options"
-        :key="index"
-        v-bind="args"
-        :[args.enum]="option"
+        v-for="option in argTypes?.[args.enum]?.options"
+        v-bind="getArgs(args, option)"
+        :key="option"
+        v-tooltip="option"
       />
     </URow>
   `,
@@ -91,17 +87,19 @@ const LoadingTemplate: StoryFn<ULoaderArgs> = (args: ULoaderArgs) => ({
 export const Default = DefaultTemplate.bind({});
 Default.args = {};
 
-export const Sizes = EnumVariantTemplate.bind({});
+export const Sizes = EnumTemplate.bind({});
 Sizes.args = { enum: "size" };
+Sizes.parameters = getEnumVariantDescription();
 
-export const Colors = EnumVariantTemplate.bind({});
+export const Colors = EnumTemplate.bind({});
 Colors.args = { enum: "color" };
+Colors.parameters = getEnumVariantDescription();
 
 export const Loading = LoadingTemplate.bind({});
 Loading.args = {};
 
-export const SlotDefault = DefaultTemplate.bind({});
-SlotDefault.args = {
+export const DefaultSlot = DefaultTemplate.bind({});
+DefaultSlot.args = {
   size: "lg",
   slotTemplate: `
     <template #default>

@@ -1,4 +1,5 @@
 import {
+  getArgs,
   getArgTypes,
   getSlotNames,
   getSlotsFragment,
@@ -10,7 +11,6 @@ import UCol from "../../ui.container-col/UCol.vue";
 import URow from "../../ui.container-row/URow.vue";
 import UBadge from "../../ui.text-badge/UBadge.vue";
 import UIcon from "../../ui.image-icon/UIcon.vue";
-import ULabel from "../../ui.form-label/ULabel.vue";
 
 import type { Meta, StoryFn } from "@storybook/vue3";
 import type { Props } from "../types.ts";
@@ -38,11 +38,7 @@ export default {
 
 const DefaultTemplate: StoryFn<UPaginationArgs> = (args: UPaginationArgs) => ({
   components: { UPagination },
-  setup() {
-    const slots = getSlotNames(UPagination.__name);
-
-    return { args, slots };
-  },
+  setup: () => ({ args, slots: getSlotNames(UPagination.__name) }),
   template: `
     <UPagination v-bind="args" v-model="args.modelValue">
       ${args.slotTemplate || getSlotsFragment("")}
@@ -50,26 +46,17 @@ const DefaultTemplate: StoryFn<UPaginationArgs> = (args: UPaginationArgs) => ({
   `,
 });
 
-const EnumVariantTemplate: StoryFn<UPaginationArgs> = (args: UPaginationArgs, { argTypes }) => ({
-  components: { UPagination, UCol, URow, ULabel },
-  setup() {
-    return {
-      args,
-      options: argTypes?.[args.enum]?.options,
-    };
-  },
+const EnumTemplate: StoryFn<UPaginationArgs> = (args: UPaginationArgs, { argTypes }) => ({
+  components: { UPagination },
+  setup: () => ({ args, argTypes, getArgs }),
   template: `
-    <UCol>
-      <URow
-        v-for="(option, index) in options"
-        :key="index"
-        align="center"
-      >
-        <ULabel :label="option">
-          <UPagination v-bind="args" :[args.enum]="option" />
-        </ULabel>
-      </URow>
-    </UCol>
+    <UPagination
+      v-for="option in argTypes?.[args.enum]?.options"
+      v-bind="getArgs(args, option)"
+      :key="option"
+      v-model="args.modelValue"
+      class="mb-4"
+    />
   `,
 });
 
@@ -99,11 +86,11 @@ Limit.parameters = {
   },
 };
 
-export const Variant = EnumVariantTemplate.bind({});
+export const Variant = EnumTemplate.bind({});
 Variant.args = { enum: "variant" };
 
-export const Size = EnumVariantTemplate.bind({});
-Size.args = { enum: "size" };
+export const Sizes = EnumTemplate.bind({});
+Sizes.args = { enum: "size" };
 
 export const SetCustomNavigationLabel = DefaultTemplate.bind({});
 SetCustomNavigationLabel.args = {
@@ -152,13 +139,13 @@ export const Slots: StoryFn<UPaginationArgs> = (args) => ({
     <UCol>
       <UPagination v-bind="args" v-model="args.modelValue">
         <template #first>
-          <UBadge label="Slot First" size="sm" />
+          <UBadge label="First Slot" size="sm" />
         </template>
       </UPagination>
 
       <UPagination v-bind="args" v-model="args.modelValue">
         <template #prev>
-          <UBadge label="Slot Prev" size="sm" />
+          <UBadge label="Prev Slot" size="sm" />
         </template>
       </UPagination>
 
@@ -168,18 +155,18 @@ export const Slots: StoryFn<UPaginationArgs> = (args) => ({
             <UIcon name="more_horiz" size="sm" />
           </template>
         </UPagination>
-        <span class="text-sm">Slot Ellipsis</span>
+        <span class="text-medium">Ellipsis Slot</span>
       </URow>
 
       <UPagination v-bind="args" v-model="args.modelValue">
         <template #next>
-          <UBadge label="Slot Next" size="sm" />
+          <UBadge label="Next Slot" size="sm" />
         </template>
       </UPagination>
 
       <UPagination v-bind="args" v-model="args.modelValue">
         <template #last>
-          <UBadge label="Slot Last" size="sm" />
+          <UBadge label="Last Slot" size="sm" />
         </template>
       </UPagination>
     </UCol>

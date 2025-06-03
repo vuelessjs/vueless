@@ -1,4 +1,5 @@
 import {
+  getArgs,
   getArgTypes,
   getSlotNames,
   getSlotsFragment,
@@ -38,11 +39,7 @@ export default {
 
 const DefaultTemplate: StoryFn<UEmptyArgs> = (args: UEmptyArgs) => ({
   components: { UEmpty, UIcon, UButton, UBadge },
-  setup() {
-    const slots = getSlotNames(UEmpty.__name);
-
-    return { args, slots };
-  },
+  setup: () => ({ args, slots: getSlotNames(UEmpty.__name) }),
   template: `
     <UEmpty v-bind="args">
       ${args.slotTemplate || getSlotsFragment("")}
@@ -50,22 +47,15 @@ const DefaultTemplate: StoryFn<UEmptyArgs> = (args: UEmptyArgs) => ({
   `,
 });
 
-const EnumVariantTemplate: StoryFn<UEmptyArgs> = (args: UEmptyArgs, { argTypes }) => ({
+const EnumTemplate: StoryFn<UEmptyArgs> = (args: UEmptyArgs, { argTypes }) => ({
   components: { UEmpty, URow },
-  setup() {
-    return {
-      args,
-      options: argTypes?.[args.enum]?.options,
-    };
-  },
+  setup: () => ({ args, argTypes, getArgs }),
   template: `
     <URow>
       <UEmpty
-        v-for="(option, index) in options"
-        :key="index"
-        v-bind="args"
-        :[args.enum]="option"
-        :title="option"
+        v-for="option in argTypes?.[args.enum]?.options"
+        v-bind="getArgs(args, option)"
+        :key="option"
       />
     </URow>
   `,
@@ -77,24 +67,24 @@ Default.args = {};
 export const Description = DefaultTemplate.bind({});
 Description.args = { description: "There are no contacts in the list." };
 
-export const Sizes = EnumVariantTemplate.bind({});
-Sizes.args = { enum: "size", title: "" };
+export const Sizes = EnumTemplate.bind({});
+Sizes.args = { enum: "size", title: "{enumValue}" };
 
-export const SlotHeader = DefaultTemplate.bind({});
-SlotHeader.args = {
+export const HeaderSlot = DefaultTemplate.bind({});
+HeaderSlot.args = {
   slotTemplate: `
     <template #header>
       <UIcon
         name="person"
-        color="blue"
+        color="info"
         size="2xl"
       />
     </template>
   `,
 };
 
-export const SlotDefault = DefaultTemplate.bind({});
-SlotDefault.args = {
+export const DefaultSlot = DefaultTemplate.bind({});
+DefaultSlot.args = {
   slotTemplate: `
     <template #default>
       <UBadge label="There are no contacts in the list." />
@@ -102,11 +92,11 @@ SlotDefault.args = {
   `,
 };
 
-export const SlotFooter = DefaultTemplate.bind({});
-SlotFooter.args = {
+export const FooterSlot = DefaultTemplate.bind({});
+FooterSlot.args = {
   slotTemplate: `
     <template #footer>
-      <UButton label="Add new one" size="sm" variant="thirdary" filled />
+      <UButton label="Add new one" size="sm" variant="soft" />
     </template>
   `,
 };

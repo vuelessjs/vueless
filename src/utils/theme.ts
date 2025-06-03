@@ -1,290 +1,514 @@
-import { merge } from "lodash-es";
+import { cloneDeep, merge } from "lodash-es";
 
-import { tailwindConfig } from "./tailwindConfig.ts";
 import { vuelessConfig } from "./ui.ts";
-import { isSSR, isCSR } from "./helper.ts";
+import { isCSR, setCookie } from "./helper.ts";
+
 import {
   PX_IN_REM,
   COLOR_MODE_KEY,
-  LIGHT_MODE_SELECTOR,
-  DARK_MODE_SELECTOR,
+  AUTO_MODE_KEY,
+  LIGHT_MODE_CLASS,
+  DARK_MODE_CLASS,
   GRAYSCALE_COLOR,
-  TAILWIND_COLORS,
-  DEFAULT_BRAND_COLOR,
-  DEFAULT_GRAY_COLOR,
+  DEFAULT_PRIMARY_COLOR,
+  DEFAULT_NEUTRAL_COLOR,
+  OUTLINE,
   DEFAULT_OUTLINE,
   OUTLINE_DECREMENT,
   OUTLINE_INCREMENT,
+  ROUNDING,
   DEFAULT_ROUNDING,
   ROUNDING_DECREMENT,
   ROUNDING_INCREMENT,
+  NEUTRAL_COLOR,
+  PRIMARY_COLOR,
+  COLOR_SHADES,
+  DEFAULT_LIGHT_THEME,
+  DEFAULT_DARK_THEME,
+  PRIMARY_COLORS,
+  NEUTRAL_COLORS,
+  TEXT,
+  DEFAULT_TEXT,
+  TEXT_INCREMENT,
+  TEXT_DECREMENT,
+  DISABLED_OPACITY,
+  DEFAULT_DISABLED_OPACITY,
 } from "../constants.js";
 
 import type {
-  GrayColors,
-  BrandColors,
+  NeutralColors,
+  PrimaryColors,
+  ThemeConfig,
+  ThemeConfigText,
+  ThemeConfigOutline,
+  ThemeConfigRounding,
   VuelessCssVariables,
-  TailwindColorShades,
-  Config,
 } from "../types.ts";
-
 import { ColorMode } from "../types.ts";
 
-type DefaultColors = typeof TAILWIND_COLORS;
-
-interface Colors extends DefaultColors {
-  [key: string]: Partial<TailwindColorShades> | string;
-}
-
 declare interface RootCSSVariableOptions {
-  colors: Colors;
-  brand: string;
-  gray: string;
-  outlineSm: number;
-  outline: number;
-  outlineLg: number;
-  roundingSm: number;
-  rounding: number;
-  roundingLg: number;
+  primary: PrimaryColors | string;
+  neutral: NeutralColors | string;
+  text: ThemeConfigText;
+  rounding: ThemeConfigRounding;
+  outline: ThemeConfigOutline;
+  disabledOpacity: number;
+  lightTheme: Partial<VuelessCssVariables>;
+  darkTheme: Partial<VuelessCssVariables>;
 }
 
-export function themeInit() {
-  if (isSSR) return;
+/* Creates a media query that checks if the user's system color scheme is set to the dark. */
+const prefersColorSchemeDark = isCSR && window.matchMedia("(prefers-color-scheme: dark)");
 
-  setTheme();
+function toggleColorModeClass() {
+  if (!prefersColorSchemeDark) return;
 
-  if (vuelessConfig.colorMode === ColorMode.Auto) {
-    const prefersColorSchemeDark = window.matchMedia("(prefers-color-scheme: dark)");
+  const colorMode = prefersColorSchemeDark.matches ? ColorMode.Dark : ColorMode.Light;
 
-    prefersColorSchemeDark.addEventListener("change", (event) => {
-      setTheme({ colorMode: event.matches ? ColorMode.Dark : ColorMode.Light });
+  setCookie(COLOR_MODE_KEY, colorMode);
+  localStorage.setItem(COLOR_MODE_KEY, colorMode);
+
+  document.documentElement.classList.toggle(DARK_MODE_CLASS, prefersColorSchemeDark.matches);
+  document.documentElement.classList.toggle(LIGHT_MODE_CLASS, !prefersColorSchemeDark.matches);
+}
+
+/**
+ * Sets color mode.
+ * @param {string} mode (dark | light | auto)
+ * @param {boolean} isCachedAutoMode
+ * @return {string} current color mode
+ */
+function setColorMode(mode: `${ColorMode}`, isCachedAutoMode?: boolean): string {
+  const colorMode = mode || getStored(COLOR_MODE_KEY) || vuelessConfig.colorMode || ColorMode.Light;
+
+  isCachedAutoMode = isCachedAutoMode ?? !!Number(getStored(AUTO_MODE_KEY));
+
+  const isAutoMode = colorMode === ColorMode.Auto;
+  const isSystemDarkMode = isAutoMode && prefersColorSchemeDark && prefersColorSchemeDark?.matches;
+  const isDarkMode = colorMode === ColorMode.Dark || isSystemDarkMode;
+
+  /* Removing system color mode change event listener. */
+  if (prefersColorSchemeDark) {
+    prefersColorSchemeDark.removeEventListener("change", toggleColorModeClass);
+  }
+
+  /* Adding system color mode change event listener. */
+  if ((isAutoMode || isCachedAutoMode) && prefersColorSchemeDark) {
+    prefersColorSchemeDark.addEventListener("change", toggleColorModeClass);
+  }
+
+  /* Adding color mode classes. */
+  document.documentElement.classList.toggle(DARK_MODE_CLASS, isDarkMode);
+  document.documentElement.classList.toggle(LIGHT_MODE_CLASS, !isDarkMode);
+
+  /* Dispatching custom event for the useDarkMode composable. */
+  window.dispatchEvent(new CustomEvent("darkModeChange", { detail: isDarkMode }));
+
+  /* Saving color mode value into cookies (server) and local storage (client). */
+  let currentColorMode = colorMode;
+
+  if (isAutoMode) {
+    currentColorMode = isDarkMode ? ColorMode.Dark : ColorMode.Light;
+  }
+
+  if (mode) {
+    setCookie(COLOR_MODE_KEY, currentColorMode);
+    setCookie(AUTO_MODE_KEY, String(Number(isAutoMode || isCachedAutoMode)));
+
+    localStorage.setItem(COLOR_MODE_KEY, currentColorMode);
+    localStorage.setItem(AUTO_MODE_KEY, String(Number(isAutoMode || isCachedAutoMode)));
+  }
+
+  return currentColorMode;
+}
+
+/**
+ * Retrieves CSS variable value to be easily used in the JavaScript code.
+ * @return string.
+ */
+export function cssVar(name: string) {
+  return (isCSR && getComputedStyle(document.documentElement).getPropertyValue(name)) || undefined;
+}
+
+/**
+ * Get a stored value from local storage.
+ * @return string | undefined
+ */
+export function getStored(key: string) {
+  return isCSR ? localStorage.getItem(key) : undefined;
+}
+
+/**
+ * Applying theme settings.
+ * Changes and reset Vueless CSS variables.
+ * @return string - CSS variables
+ */
+export function setTheme(config: ThemeConfig = {}, isCachedAutoMode?: boolean) {
+  if (isCSR) setColorMode(config.colorMode as ColorMode, isCachedAutoMode);
+
+  const text = getText(config.text);
+  const outline = getOutlines(config.outline);
+  const rounding = getRoundings(config.rounding);
+  const disabledOpacity = getDisabledOpacity(config.disabledOpacity);
+
+  let primary = getPrimaryColor(config.primary);
+  const neutral = getNeutralColor(config.neutral);
+
+  const lightTheme = merge({}, DEFAULT_LIGHT_THEME, vuelessConfig.lightTheme, config.lightTheme);
+  const darkTheme = merge({}, DEFAULT_DARK_THEME, vuelessConfig.darkTheme, config.darkTheme);
+
+  /* Redeclare primary color if grayscale color set as default */
+  if (primary === GRAYSCALE_COLOR) {
+    primary = neutral;
+
+    ["", "lifted", "accented"].forEach((shade) => {
+      const primaryShade: keyof VuelessCssVariables = shade
+        ? `--vl-primary-${shade}`
+        : "--vl-primary";
+
+      const grayscaleShade: keyof VuelessCssVariables = shade
+        ? `--vl-grayscale-${shade}`
+        : "--vl-grayscale";
+
+      if (!vuelessConfig.darkTheme?.[primaryShade] && !config.darkTheme?.[primaryShade]) {
+        darkTheme[primaryShade] = darkTheme[grayscaleShade];
+      }
+
+      if (!vuelessConfig.lightTheme?.[primaryShade] && !config.lightTheme?.[primaryShade]) {
+        lightTheme[primaryShade] = lightTheme[grayscaleShade];
+      }
     });
   }
-}
-
-export function setColorMode(colorMode: `${ColorMode}`) {
-  const cashedColorMode = isCSR ? (localStorage.getItem(COLOR_MODE_KEY) as ColorMode | null) : null;
-
-  const isDark = colorMode === ColorMode.Dark;
-  const isLight = colorMode === ColorMode.Light;
-  const isAuto = colorMode === ColorMode.Auto;
-
-  let newColorMode = ColorMode.Auto;
-
-  if (isAuto) {
-    const isSystemDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
-
-    newColorMode = isSystemDark ? ColorMode.Dark : ColorMode.Light;
-  }
-
-  if (cashedColorMode !== null) {
-    newColorMode = cashedColorMode;
-  }
-
-  if (isLight) {
-    newColorMode = ColorMode.Light;
-  }
-
-  if (isDark) {
-    newColorMode = ColorMode.Dark;
-  }
-
-  const darkModeChangeEvent = new CustomEvent("darkModeChange", {
-    detail: newColorMode === ColorMode.Dark,
-  });
-
-  if (isSSR) return;
-
-  if (newColorMode === ColorMode.Dark) {
-    document.documentElement.classList.remove(LIGHT_MODE_SELECTOR);
-    document.documentElement.classList.add(DARK_MODE_SELECTOR);
-  } else {
-    document.documentElement.classList.remove(DARK_MODE_SELECTOR);
-    document.documentElement.classList.add(LIGHT_MODE_SELECTOR);
-  }
-
-  window.dispatchEvent(darkModeChangeEvent);
-
-  if (!isAuto) {
-    localStorage.setItem(COLOR_MODE_KEY, newColorMode);
-  }
-}
-
-export function getSelectedBrandColor() {
-  return (isCSR && localStorage.getItem("brand")) || undefined;
-}
-
-export function getSelectedGrayColor() {
-  return (isCSR && localStorage.getItem("gray")) || undefined;
-}
-
-export function convertHexInRgb(hex?: string) {
-  if (!hex) return;
-
-  const color = hex.replace(/#/g, "");
-
-  let r, g, b;
-
-  if (color.length === 6) {
-    r = parseInt(color.substring(0, 2), 16);
-    g = parseInt(color.substring(2, 4), 16);
-    b = parseInt(color.substring(4, 6), 16);
-  }
-
-  if (color.length === 3) {
-    r = parseInt(color.substring(0, 1).repeat(2), 16);
-    g = parseInt(color.substring(1, 2).repeat(2), 16);
-    b = parseInt(color.substring(2, 3).repeat(2), 16);
-  }
-
-  return color.length === 6 || color.length === 3 ? `${r}, ${g}, ${b}` : "";
-}
-
-export function setTheme(config: Config = {}) {
-  setColorMode(vuelessConfig.colorMode || config.colorMode || ColorMode.Light);
-
-  const { roundingSm, rounding, roundingLg } = getRoundings(
-    config.roundingSm ?? vuelessConfig.roundingSm,
-    config.rounding ?? vuelessConfig.rounding,
-    config.roundingLg ?? vuelessConfig.roundingLg,
-  );
-
-  let brand: BrandColors =
-    config.brand ?? getSelectedBrandColor() ?? vuelessConfig.brand ?? DEFAULT_BRAND_COLOR;
-
-  let gray: GrayColors =
-    config.gray ?? getSelectedGrayColor() ?? vuelessConfig.gray ?? DEFAULT_GRAY_COLOR;
-
-  const { outlineSm, outline, outlineLg } = getRings(
-    config.outlineSm ?? vuelessConfig.outlineSm,
-    config.outline ?? vuelessConfig.outline,
-    config.outlineLg ?? vuelessConfig.outlineLg,
-  );
-
-  const colors: Colors = merge(
-    TAILWIND_COLORS as Colors,
-    tailwindConfig?.theme?.extend?.colors || {},
-    vuelessConfig.tailwindTheme?.extend?.colors || {},
-  );
-
-  const projectColors = Object.keys(colors);
-  const isBrandColor = projectColors.some((color) => color === brand) || brand === GRAYSCALE_COLOR;
-  const isGrayColor = projectColors.some((color) => color === gray);
-
-  if (!isBrandColor) {
-    // eslint-disable-next-line no-console
-    console.warn(`The brand color '${brand}' is missing in your palette.`);
-
-    brand = DEFAULT_BRAND_COLOR;
-  }
-
-  if (!isGrayColor) {
-    // eslint-disable-next-line no-console
-    console.warn(`The gray color '${gray}' is missing in your palette.`);
-
-    gray = DEFAULT_GRAY_COLOR;
-  }
-
-  isCSR && localStorage.setItem("brand", brand);
-  isCSR && localStorage.setItem("gray", gray);
 
   return setRootCSSVariables({
-    colors,
-    brand,
-    gray,
-    outlineSm,
+    primary,
+    neutral,
+    text,
     outline,
-    outlineLg,
-    roundingSm,
     rounding,
-    roundingLg,
+    disabledOpacity,
+    lightTheme,
+    darkTheme,
   });
 }
 
-function getRings(sm?: number, md?: number, lg?: number) {
-  const outline = Math.max(0, md ?? DEFAULT_OUTLINE);
-  const outlineSm = Math.max(0, outline - OUTLINE_DECREMENT);
-  let outlineLg = Math.max(0, outline + OUTLINE_INCREMENT);
+/**
+ * Retrieve primary color value and save them to cookie and localStorage.
+ * @return string - primary color.
+ */
+function getPrimaryColor(primary?: PrimaryColors) {
+  const storageKey = `vl-${PRIMARY_COLOR}`;
 
-  if (outline === 0) {
+  let primaryColor: PrimaryColors =
+    primary ?? getStored(storageKey) ?? vuelessConfig.primary ?? DEFAULT_PRIMARY_COLOR;
+
+  const isPrimaryColor =
+    PRIMARY_COLORS.some((color) => color === primaryColor) || primaryColor === GRAYSCALE_COLOR;
+
+  if (!isPrimaryColor) {
+    // eslint-disable-next-line no-console
+    console.warn(`The primary color '${primaryColor}' is missing in your palette.`);
+
+    primaryColor = DEFAULT_PRIMARY_COLOR;
+  }
+
+  if (isCSR && primary) {
+    setCookie(storageKey, String(primaryColor));
+    localStorage.setItem(storageKey, String(primaryColor));
+  }
+
+  return primaryColor;
+}
+
+/**
+ * Retrieve neutral color value and save them to cookie and localStorage.
+ * @return string - neutral color.
+ */
+function getNeutralColor(neutral?: NeutralColors) {
+  const storageKey = `vl-${NEUTRAL_COLOR}`;
+
+  let neutralColor: NeutralColors =
+    neutral ?? getStored(storageKey) ?? vuelessConfig.neutral ?? DEFAULT_NEUTRAL_COLOR;
+
+  const isNeutralColor = NEUTRAL_COLORS.some((color) => color === neutralColor);
+
+  if (!isNeutralColor) {
+    // eslint-disable-next-line no-console
+    console.warn(`The neutral color '${neutralColor}' is missing in your palette.`);
+
+    neutralColor = DEFAULT_NEUTRAL_COLOR;
+  }
+
+  if (isCSR && neutral) {
+    setCookie(storageKey, String(neutralColor));
+    localStorage.setItem(storageKey, String(neutralColor));
+  }
+
+  return neutralColor;
+}
+
+/**
+ * Calculate font-size values and save them to cookie and localStorage.
+ * @return object - xs, sm, md, lg font-size values.
+ */
+function getText(text?: ThemeConfig["text"]) {
+  const storageKey = {
+    xs: `vl-${TEXT}-xs`,
+    sm: `vl-${TEXT}-sm`,
+    md: `vl-${TEXT}-md`,
+    lg: `vl-${TEXT}-lg`,
+  };
+
+  const runtimeText = primitiveToObject(text) as ThemeConfigText;
+  const globalText = primitiveToObject(vuelessConfig.text) as ThemeConfigText;
+
+  const size = {
+    xs: runtimeText.xs ?? getStored(storageKey.xs) ?? globalText.xs,
+    sm: runtimeText.sm ?? getStored(storageKey.sm) ?? globalText.sm,
+    md: runtimeText.md ?? getStored(storageKey.md) ?? globalText.md,
+    lg: runtimeText.lg ?? getStored(storageKey.lg) ?? globalText.lg,
+  };
+
+  const textMd = Math.max(0, Number(size.md ?? DEFAULT_TEXT));
+  const textXs = Math.max(0, textMd - TEXT_DECREMENT * 2);
+  const textSm = Math.max(0, textMd - TEXT_DECREMENT);
+  const textLg = Math.max(0, textMd + TEXT_INCREMENT);
+
+  const mergedText = {
+    md: textMd,
+    xs: size.xs === undefined ? textXs : Math.max(0, Number(size.xs ?? 0)),
+    sm: size.sm === undefined ? textSm : Math.max(0, Number(size.sm ?? 0)),
+    lg: size.lg === undefined ? textLg : Math.max(0, Number(size.lg ?? 0)),
+  };
+
+  if (isCSR && text) {
+    setCookie(storageKey.sm, String(mergedText.xs));
+    setCookie(storageKey.sm, String(mergedText.sm));
+    setCookie(storageKey.md, String(mergedText.md));
+    setCookie(storageKey.lg, String(mergedText.lg));
+
+    localStorage.setItem(storageKey.sm, String(mergedText.xs));
+    localStorage.setItem(storageKey.sm, String(mergedText.sm));
+    localStorage.setItem(storageKey.md, String(mergedText.md));
+    localStorage.setItem(storageKey.lg, String(mergedText.lg));
+  }
+
+  return mergedText;
+}
+
+/**
+ * Calculate outline values and save them to cookie and localStorage.
+ * @return object - sm, md, lg outline values.
+ */
+function getOutlines(outline?: ThemeConfig["outline"]) {
+  const storageKey = {
+    sm: `vl-${OUTLINE}-sm`,
+    md: `vl-${OUTLINE}-md`,
+    lg: `vl-${OUTLINE}-lg`,
+  };
+
+  const runtimeOutline = primitiveToObject(outline) as ThemeConfigText;
+  const globalOutline = primitiveToObject(vuelessConfig.outline) as ThemeConfigText;
+
+  const size = {
+    sm: runtimeOutline.sm ?? getStored(storageKey.sm) ?? globalOutline.sm,
+    md: runtimeOutline.md ?? getStored(storageKey.md) ?? globalOutline.md,
+    lg: runtimeOutline.lg ?? getStored(storageKey.lg) ?? globalOutline.lg,
+  };
+
+  const outlineMd = Math.max(0, Number(size.md ?? DEFAULT_OUTLINE));
+  const outlineSm = Math.max(0, outlineMd - OUTLINE_DECREMENT);
+  let outlineLg = Math.max(0, outlineMd + OUTLINE_INCREMENT);
+
+  if (outlineMd === 0) {
     outlineLg = 0;
   }
 
-  return {
-    outline,
-    outlineSm: sm === undefined ? outlineSm : Math.max(0, sm),
-    outlineLg: lg === undefined ? outlineLg : Math.max(0, lg),
+  const mergedOutline = {
+    md: outlineMd,
+    sm: size.sm === undefined ? outlineSm : Math.max(0, Number(size.sm ?? 0)),
+    lg: size.lg === undefined ? outlineLg : Math.max(0, Number(size.lg ?? 0)),
   };
+
+  if (isCSR && outline) {
+    setCookie(storageKey.sm, String(mergedOutline.sm));
+    setCookie(storageKey.md, String(mergedOutline.md));
+    setCookie(storageKey.lg, String(mergedOutline.lg));
+
+    localStorage.setItem(storageKey.sm, String(mergedOutline.sm));
+    localStorage.setItem(storageKey.md, String(mergedOutline.md));
+    localStorage.setItem(storageKey.lg, String(mergedOutline.lg));
+  }
+
+  return mergedOutline;
 }
 
-function getRoundings(sm?: number, md?: number, lg?: number) {
-  const rounding = Math.max(0, md ?? DEFAULT_ROUNDING);
-  let roundingSm = Math.max(0, rounding - ROUNDING_DECREMENT);
-  let roundingLg = Math.max(0, rounding + ROUNDING_INCREMENT);
+/**
+ * Calculate rounding values and save them to cookie and localStorage.
+ * @return object - sm, md, lg rounding values.
+ */
+function getRoundings(rounding?: ThemeConfig["rounding"]) {
+  const storageKey = {
+    sm: `vl-${ROUNDING}-sm`,
+    md: `vl-${ROUNDING}-md`,
+    lg: `vl-${ROUNDING}-lg`,
+  };
 
-  if (rounding === ROUNDING_INCREMENT) {
+  const runtimeRounding = primitiveToObject(rounding) as ThemeConfigRounding;
+  const globalRounding = primitiveToObject(vuelessConfig.rounding) as ThemeConfigRounding;
+
+  const size = {
+    sm: runtimeRounding.sm ?? getStored(storageKey.sm) ?? globalRounding.sm,
+    md: runtimeRounding.md ?? getStored(storageKey.md) ?? globalRounding.md,
+    lg: runtimeRounding.lg ?? getStored(storageKey.lg) ?? globalRounding.lg,
+  };
+
+  const roundingMd = Math.max(0, Number(size.md ?? DEFAULT_ROUNDING));
+  let roundingSm = Math.max(0, roundingMd - ROUNDING_DECREMENT);
+  let roundingLg = Math.max(0, roundingMd + ROUNDING_INCREMENT);
+
+  if (roundingMd === ROUNDING_INCREMENT) {
     roundingSm = ROUNDING_DECREMENT;
   }
 
-  if (rounding === ROUNDING_DECREMENT) {
+  if (roundingMd === ROUNDING_DECREMENT) {
     roundingSm = ROUNDING_INCREMENT - ROUNDING_DECREMENT;
   }
 
-  if (rounding === 0) {
+  if (roundingMd === 0) {
     roundingLg = ROUNDING_INCREMENT - ROUNDING_DECREMENT;
   }
 
-  return {
-    rounding,
-    roundingSm: sm === undefined ? roundingSm : Math.max(0, sm),
-    roundingLg: lg === undefined ? roundingLg : Math.max(0, lg),
+  const mergedRounding = {
+    md: roundingMd,
+    sm: size.sm === undefined ? roundingSm : Math.max(0, Number(size.sm ?? 0)),
+    lg: size.lg === undefined ? roundingLg : Math.max(0, Number(size.lg ?? 0)),
   };
+
+  if (isCSR && rounding) {
+    setCookie(storageKey.sm, String(mergedRounding.sm));
+    setCookie(storageKey.md, String(mergedRounding.md));
+    setCookie(storageKey.lg, String(mergedRounding.lg));
+
+    localStorage.setItem(storageKey.sm, String(mergedRounding.sm));
+    localStorage.setItem(storageKey.md, String(mergedRounding.md));
+    localStorage.setItem(storageKey.lg, String(mergedRounding.lg));
+  }
+
+  return mergedRounding;
 }
 
-function setRootCSSVariables(options: RootCSSVariableOptions) {
-  if (options.brand === GRAYSCALE_COLOR) {
-    options.brand = options.gray;
+/**
+ * Retrieve disabled opacity value and save them to cookie and localStorage.
+ * @return number - opacity value.
+ */
+function getDisabledOpacity(disabledOpacity?: ThemeConfig["disabledOpacity"]) {
+  const storageKey = `vl-${DISABLED_OPACITY}`;
+
+  const opacity = disabledOpacity ?? getStored(storageKey) ?? vuelessConfig.disabledOpacity;
+  const mergedOpacity = Math.max(0, Number(opacity ?? DEFAULT_DISABLED_OPACITY));
+
+  if (isCSR && disabledOpacity) {
+    setCookie(storageKey, String(mergedOpacity));
+    localStorage.setItem(storageKey, String(mergedOpacity));
   }
 
-  const { colors, brand, gray, outlineSm, outline, outlineLg, roundingSm, rounding, roundingLg } =
-    options;
+  return mergedOpacity;
+}
 
-  const isDarkMode = isCSR && document.documentElement.classList.contains(DARK_MODE_SELECTOR);
-  const defaultBrandShade = isDarkMode ? 400 : 600;
-  const defaultGrayShade = isDarkMode ? 400 : 600;
+/**
+ * Converts a primitive value into an object with the primitive value assigned to a key "md".
+ * If the provided value is already an object, it returns a deeply cloned copy of that object.
+ */
+function primitiveToObject(value: unknown): object {
+  return typeof value === "object" ? cloneDeep(value as object) : { md: value };
+}
 
-  const variables: Partial<VuelessCssVariables> = {
-    "--vl-rounding-sm": `${Number(roundingSm) / PX_IN_REM}rem`,
-    "--vl-rounding": `${Number(rounding) / PX_IN_REM}rem`,
-    "--vl-rounding-lg": `${Number(roundingLg) / PX_IN_REM}rem`,
-    "--vl-outline-sm": `${outlineSm}px`,
-    "--vl-outline": `${outline}px`,
-    "--vl-outline-lg": `${outlineLg}px`,
-    "--vl-color-gray-default": convertHexInRgb(colors[gray]?.[defaultBrandShade]),
-    "--vl-color-brand-default": convertHexInRgb(colors[brand]?.[defaultGrayShade]),
+/**
+ * Generate and apply Vueless CSS variables.
+ * @return string - Vueless CSS variables string.
+ */
+function setRootCSSVariables(vars: RootCSSVariableOptions) {
+  let darkVariables: Partial<VuelessCssVariables> = {};
+
+  let variables: Partial<VuelessCssVariables> = {
+    "--vl-text-xs": `${vars.text.xs / PX_IN_REM}rem`,
+    "--vl-text-sm": `${vars.text.sm / PX_IN_REM}rem`,
+    "--vl-text-md": `${vars.text.md / PX_IN_REM}rem`,
+    "--vl-text-lg": `${vars.text.lg / PX_IN_REM}rem`,
+    "--vl-outline-sm": `${vars.outline.sm}px`,
+    "--vl-outline-md": `${vars.outline.md}px`,
+    "--vl-outline-lg": `${vars.outline.lg}px`,
+    "--vl-rounding-sm": `${vars.rounding.sm / PX_IN_REM}rem`,
+    "--vl-rounding-md": `${vars.rounding.md / PX_IN_REM}rem`,
+    "--vl-rounding-lg": `${vars.rounding.lg / PX_IN_REM}rem`,
+    "--vl-disabled-opacity": `${vars.disabledOpacity}%`,
   };
 
-  for (const key in colors[gray] as TailwindColorShades) {
-    const shade = key as unknown as keyof TailwindColorShades;
-
-    variables[`--vl-color-gray-${key}` as keyof VuelessCssVariables] = convertHexInRgb(
-      colors[gray]?.[shade],
-    );
+  for (const shade of COLOR_SHADES) {
+    variables[`--vl-${PRIMARY_COLOR}-${shade}` as keyof VuelessCssVariables] =
+      `var(--color-${vars.primary}-${shade})`;
   }
 
-  for (const key in colors[brand] as TailwindColorShades) {
-    const shade = key as unknown as keyof TailwindColorShades;
-
-    variables[`--vl-color-brand-${key}` as keyof VuelessCssVariables] = convertHexInRgb(
-      colors[brand]?.[shade],
-    );
+  for (const shade of COLOR_SHADES) {
+    variables[`--vl-${NEUTRAL_COLOR}-${shade}` as keyof VuelessCssVariables] =
+      `var(--color-${vars.neutral}-${shade})`;
   }
 
-  const stringVariables = Object.entries(variables)
+  const [light, dark] = generateCSSColorVariables(vars.lightTheme, vars.darkTheme);
+
+  variables = { ...variables, ...light };
+  darkVariables = { ...darkVariables, ...dark };
+
+  return setCSSVariables(variables, darkVariables);
+}
+
+/**
+ * Generate CSS color variables.
+ * @return string - Vueless color CSS variables.
+ */
+function generateCSSColorVariables(
+  lightTheme: Partial<VuelessCssVariables>,
+  darkTheme: Partial<VuelessCssVariables>,
+) {
+  const variables: Partial<VuelessCssVariables> = {};
+  const darkVariables: Partial<VuelessCssVariables> = {};
+
+  Object.entries(lightTheme).forEach(([vuelessVariable, lightColor]) => {
+    const variable = vuelessVariable as keyof VuelessCssVariables;
+
+    variables[variable] = lightColor?.startsWith("--") ? `var(${lightColor})` : lightColor;
+  });
+
+  Object.entries(darkTheme).forEach(([vuelessVariable, darkColor]) => {
+    const variable = vuelessVariable as keyof VuelessCssVariables;
+
+    darkVariables[variable] = darkColor?.startsWith("--") ? `var(${darkColor})` : darkColor;
+  });
+
+  return [variables, darkVariables];
+}
+
+/**
+ * Converts CSS variables object into strings and apply them.
+ * @return string - Vueless CSS variables.
+ */
+function setCSSVariables(
+  variables: Partial<VuelessCssVariables>,
+  darkVariables: Partial<VuelessCssVariables>,
+) {
+  const variablesString = Object.entries(variables)
     .map(([key, value]) => `${key}: ${value};`)
     .join(" ");
 
-  const rootVariables = `:root {${stringVariables}`;
+  const darkVariablesString = Object.entries(darkVariables)
+    .map(([key, value]) => `${key}: ${value};`)
+    .join(" ");
+
+  const rootVariables = `
+    :root {${variablesString}}
+    .${DARK_MODE_CLASS} {${darkVariablesString}}
+  `;
 
   if (isCSR) {
     const style = document.createElement("style");

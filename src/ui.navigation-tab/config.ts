@@ -15,9 +15,9 @@ export default /*tw*/ {
     },
   },
   tabButtonActive: {
-    base: "{>tabButton} border-brand-600",
+    base: "{>tabButton} border-primary",
     defaults: {
-      color: "brand",
+      color: "primary",
     },
   },
   defaults: {

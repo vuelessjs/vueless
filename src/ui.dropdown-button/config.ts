@@ -1,15 +1,15 @@
 export default /*tw*/ {
   wrapper: "relative inline-block",
   dropdownButton: {
-    base: "{UButton}",
+    base: "{UButton} justify-between",
     variants: {
       opened: {
         true: "group",
       },
     },
   },
-  dropdownIcon: {
-    base: "{UIcon} transition duration-300 group-[]:rotate-180",
+  toggleIcon: {
+    base: "{UIcon} transition duration-300 group-[*]:rotate-180 -mr-1",
     defaults: {
       size: {
         "2xs": "2xs",
@@ -21,8 +21,8 @@ export default /*tw*/ {
       },
     },
   },
-  dropdownList: {
-    base: "{UDropdownList} w-fit",
+  listbox: {
+    base: "{UListbox} w-fit",
     variants: {
       yPosition: {
         top: "bottom-full mb-1.5",
@@ -45,18 +45,20 @@ export default /*tw*/ {
     },
   },
   defaults: {
-    color: "brand",
+    color: "primary",
     size: "md",
-    variant: "primary",
+    variant: "solid",
     labelKey: "label",
+    valueKey: "id",
     yPosition: "bottom",
     xPosition: "left",
-    filled: false,
+    searchable: false,
     round: false,
     square: false,
-    noIcon: false,
     disabled: false,
+    multiple: false,
+    labelDisplayCount: 2,
     /* icons */
-    dropdownIcon: "keyboard_arrow_down",
+    toggleIcon: "keyboard_arrow_down",
   },
 };
