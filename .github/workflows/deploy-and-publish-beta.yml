@@ -1,4 +1,4 @@
-name: Deploy and Publish Workflow
+name: Deploy and Publish Workflow (Beta)
 
 on:
   push:
@@ -37,7 +37,7 @@ jobs:
 
   release-beta:
     name: 'Manual Beta Release'
-    if: github.event_name == 'workflow_dispatch' && !contains(github.event.head_commit.message, 'GITBOOK')
+    if: !contains(github.event.head_commit.message, 'GITBOOK')
     needs: test
     runs-on: ubuntu-latest
     steps:
