@@ -3,11 +3,13 @@ name: Deploy and Publish Workflow
 on:
   push:
     branches: [ main ]
+  workflow_dispatch:
 
 permissions: write-all
 
 jobs:
   lint:
+    name: 'Linting'
     if: "!contains(github.event.head_commit.message, 'GITBOOK')"
     runs-on: ubuntu-latest
     steps:
@@ -20,6 +22,7 @@ jobs:
       - run: npm run lint:ci
 
   test:
+    name: 'Tests'
     if: "!contains(github.event.head_commit.message, 'GITBOOK')"
     needs: lint
     runs-on: ubuntu-latest
@@ -32,8 +35,10 @@ jobs:
       - run: npm ci
       - run: npm run test:ci
 
-  publish-npm:
-    if: "!contains(github.event.head_commit.message, 'GITBOOK')"
+  release-patch:
+    name: 'Manual Patch Release'
+    if: github.event_name == 'workflow_dispatch' && !contains(github.event.head_commit.message, 'GITBOOK')
+    needs: test
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -51,6 +56,56 @@ jobs:
       - run: npm ci
       - run: npm run release:prepare
       - run: npm run release:patch
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+  release-minor:
+    name: 'Manual Minor Release'
+    if: github.event_name == 'workflow_dispatch' && !contains(github.event.head_commit.message, 'GITBOOK')
+    needs: test
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: 'npm'
+          registry-url: https://registry.npmjs.org/
+      - name: git config
+        run: |
+          git config user.name "${GITHUB_ACTOR}"
+          git config user.email "${GITHUB_ACTOR}@users.noreply.github.com"
+      - run: npm ci
+      - run: npm run release:prepare
+      - run: npm run release:minor
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+  release-major:
+    name: 'Manual Major Release'
+    if: github.event_name == 'workflow_dispatch' && !contains(github.event.head_commit.message, 'GITBOOK')
+    needs: test
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: 'npm'
+          registry-url: https://registry.npmjs.org/
+      - name: git config
+        run: |
+          git config user.name "${GITHUB_ACTOR}"
+          git config user.email "${GITHUB_ACTOR}@users.noreply.github.com"
+      - run: npm ci
+      - run: npm run release:prepare
+      - run: npm run release:major
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
