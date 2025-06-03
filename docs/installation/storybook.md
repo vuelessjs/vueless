@@ -40,7 +40,7 @@ Which:
 
 * creates `.storybook` folder with all needed configuration in the project's root.
 * adds commands into the project `package.json` to run and build Storybook locally.
-* creates `.npmrc` config (for `pnpm` propject only).
+* creates `.npmrc` config (for `pnpm` project only).
 
 {% hint style="info" %}
 If the `.storybook` folder already exists, the command will back it up by renaming it to `.storybook-backup-{timestamp}`. You should migrate your custom configuration (if any) and remove the backup folder manually afterward.
