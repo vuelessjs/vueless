@@ -1,4 +1,4 @@
-name: Pull Request Workflow
+name: Pull Request
 
 on:
   pull_request:
@@ -6,7 +6,7 @@ on:
 
 jobs:
   lint:
-    name: 'Linting'
+    name: 'Lint'
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -18,7 +18,7 @@ jobs:
       - run: npm run lint:ci
 
   test:
-    name: 'Tests'
+    name: 'Test'
     needs: lint
     runs-on: ubuntu-latest
     steps:

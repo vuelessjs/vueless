@@ -1,23 +1,15 @@
-name: Deploy and Publish Workflow
+name: Release (Beta)
 
 on:
-  workflow_dispatch:
-    inputs:
-      release_type:
-        description: 'Type of release'
-        required: true
-        type: choice
-        options:
-          - patch
-          - minor
-          - major
+  push:
+    branches: [ beta ]
 
 permissions: write-all
 
 jobs:
   lint:
     name: 'Lint'
-    if: "github.ref_name == 'main'"
+    if: "!contains(github.event.head_commit.message, 'GITBOOK')"
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -30,7 +22,7 @@ jobs:
 
   test:
     name: 'Test'
-    if: "github.ref_name == 'main'"
+    if: "!contains(github.event.head_commit.message, 'GITBOOK')"
     needs: lint
     runs-on: ubuntu-latest
     steps:
@@ -42,9 +34,9 @@ jobs:
       - run: npm ci
       - run: npm run test:ci
 
-  release:
-    name: "Release: ${{ github.event.inputs.release_type }}"
-    if: github.ref_name == 'main'
+  release-beta:
+    name: 'Release: beta'
+    if: "!contains(github.event.head_commit.message, 'GITBOOK')"
     needs: test
     runs-on: ubuntu-latest
     steps:
@@ -62,7 +54,7 @@ jobs:
           git config user.email "${GITHUB_ACTOR}@users.noreply.github.com"
       - run: npm ci
       - run: npm run release:prepare
-      - run: npm run release:${{ github.event.inputs.release_type }}
+      - run: npm run release:beta
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
