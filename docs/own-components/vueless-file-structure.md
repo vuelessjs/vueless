@@ -74,11 +74,11 @@ Contains unit tests for the component. We recommend using `vitest` with `@vue/te
 
 ### 📜 U\[component].vue
 
-Parent Vue component, see anatomy.
+Parent Vue component.
 
 ### 📜 U\[component]\[child].vue <mark style="color:yellow;">(optional)</mark>
 
-A child Vue component used within the parent component. The parent component may have multiple child components, all prefixed with the root component’s name.
+A child Vue component used within the parent component. The parent component may have multiple child components, all prefixed with the parent component’s name.
 
 Example: `UButtonIcon.vue` (child of `UButton.vue`).
 

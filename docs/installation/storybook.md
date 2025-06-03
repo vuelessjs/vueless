@@ -4,39 +4,37 @@ If you going to debug component stylings in a more easier way you can use our [S
 
 ## Installation
 
-1\. Install the docs package as a dev dependency.
+1\. Install the package as a dev dependency and apply Vueless Storybook preset to the project.
 
 {% tabs %}
 {% tab title="npm" %}
 ```bash
 npm install -D @vueless/storybook
+npx @vueless/storybook
 ```
 {% endtab %}
 
 {% tab title="yarn" %}
 ```bash
 yarn add -D @vueless/storybook
+yarn @vueless/storybook
 ```
 {% endtab %}
 
 {% tab title="pnpm" %}
 ```bash
 pnpm add -D @vueless/storybook --pnpm
+pnpm exec @vueless/storybook
 ```
 {% endtab %}
 
 {% tab title="bun" %}
 ```bash
 bun add @vueless/storybook -d
+bunx @vueless/storybook
 ```
 {% endtab %}
 {% endtabs %}
-
-2\. Run the command to apply Vueless Storybook preset to the project.
-
-```bash
-npx @vueless/storybook
-```
 
 Which:
 
@@ -48,7 +46,7 @@ Which:
 If the `.storybook` folder already exists, the command will back it up by renaming it to `.storybook-backup-{timestamp}`. You should migrate your custom configuration (if any) and remove the backup folder manually afterward.
 {% endhint %}
 
-3\. Run Storybook ✨
+2\. Run the Storybook ✨
 
 ```
 npm run sb:dev
@@ -67,7 +65,7 @@ npm run sb:build
 npm run sb:preview
 ```
 
-## Hiding unused components in storybook
+## Hiding unused components in Storybook
 
 If you don’t plan to use certain Vueless components, you can hide them from Storybook by setting the `storybook` key to `false` in the specific component’s config.
 

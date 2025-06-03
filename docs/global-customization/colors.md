@@ -2,102 +2,117 @@
 
 ## Predefined colors
 
-Components are based on a `brand` color and `gray` color.
+Components are based on a `primary` color and `neutral` color.
 
-<pre class="language-js" data-title="vueless.config.js"><code class="lang-js">export default {
-  brand: "blue", /* default -> grayscale */
-  gray: "stone", /* default -> cool */
+<pre class="language-js" data-title="vueless.config.{js,ts}"><code class="lang-js">export default {
+  primary: "green",  /* default -> grayscale */
+  neutral: "stone", /* default -> gray */
 }<a data-footnote-ref href="#user-content-fn-1">;</a>
 </code></pre>
 
 Vueless uses Tailwind CSS under the hood, so you can use any of the [Tailwind CSS colors](https://tailwindcss.com/docs/customizing-colors#color-palette-reference) or your own custom colors.
 
-***
+#### Default primary colors:&#x20;
 
-## Custom colors
+`red`, `orange`, `amber`, `yellow`, `lime`, `green`, `emerald`, `teal`, `cyan`, `sky`, `blue`, `indigo`, `violet`, `purple`, `fuchsia`, `pink`, `rose`
 
-When [using custom colors](https://tailwindcss.com/docs/customizing-colors#using-custom-colors) or [adding additional colors](https://tailwindcss.com/docs/customizing-colors#adding-additional-colors) through the `extend` key in your `tailwind.config.{js,ts}`, make sure to define all the shades from 50 to 950, as most of them are utilized in the Vueless components.
+#### Default neutral colors:&#x20;
 
-{% code title="tailwind.config.{js,ts}" %}
-```js
-export default {
-  theme: {
-    extend: {
-      colors: {
-        green: {
-          50: '#EFFDF5',
-          100: '#D9FBE8',
-          200: '#B3F5D1',
-          300: '#75EDAE',
-          400: '#00DC82',
-          500: '#00C16A',
-          600: '#00A155',
-          700: '#007F45',
-          800: '#016538',
-          900: '#0A5331',
-          950: '#052e16'
-        }
-      }
-    }
-  }
-}
-```
-{% endcode %}
-
-You can [generate your colors](https://tailwindcss.com/docs/customizing-colors#generating-colors) using tools such as [uicolors](https://uicolors.app) for example.
-
-***
-
-## Dynamic colors <a href="#css-variables" id="css-variables"></a>
-
-To provide dynamic colors that can be changed at runtime, Vueless uses CSS variables. Since Tailwind CSS already includes a `gray` color, the library automatically renames it to `cool` to avoid conflicts.&#x20;
-
-Similarly, you cannot define a `brand` color in your `tailwind.config.{js,ts}` file, as it would conflict with the `brand` color defined by the library.
-
-***
-
-## Brand and Gray colors
-
-We recommend to use the `brand` and `gray` colors in your components and pages, e.g.: `text-brand-700 dark:text-gray-300`, etc.
-
-***
-
-## Smart Safelisting
-
-Components with a color prop, such as `UAvatar`, `UButton`, `URadioGroup` and `UCheckbox`, using the brand color by default, but they can also handle all colors defined in your `tailwind.config.{js,ts}` or the default Tailwind CSS palette.
-
-The variant classes for these components follow a syntax like `bg-{color}-500` `dark:bg-{color}-400`, making them compatible with any color. However, since Tailwind CSS cannot detect these dynamically generated classes, it will not generate the corresponding CSS by default.
-
-The library leverages [Tailwind CSS’s safelist](https://tailwindcss.com/docs/content-configuration#safelisting-classes) feature to ensure the necessary component color classes are generated.
-
-Vueless **automatically** detects when you use a component with a specific color and safelists the relevant classes for you. For example, if you use a `red` color for a `UButton` component, the `red` color classes will be safelisted, keeping the CSS bundle size as small as possible.
-
-However, if you bind a dynamic color to a component (e.g., `<UBadge :color="color" />`, `<UButton :color="statuses[button.status]" />`), you’ll need to safelist the potential color values manually.
-
-{% code title="vueless.config.{js,ts}" %}
-```js
-export default {
-  safelistColors: ["orange", "amber", "sky"], // applies for all components
-  component: {
-    UButton: {
-      safelistColors: ["red"], // applies only for UButton
-    }
-  }
-}
-```
-{% endcode %}
-
-{% hint style="info" %}
-To minimize the app bundle size, it’s recommended to safelist colors for specific components rather than globally.
-{% endhint %}
+`slate`, `gray`, `zinc`, `neutral`, `stone`&#x20;
 
 ***
 
 ## CSS variables
 
-You can also use the corresponding CSS variables directly for all tailwind color shades:&#x20;
+To enable dynamic color changes at runtime, Vueless use the `--vl-primary-*` and `--vl-neutral-*` CSS variables. These variables will represent all Tailwind CSS shades of the defined Vueless colors.
 
-* `--vl-brand-50`,  `--vl-brand-100`, ... `--vl-brand-900`, `--vl-brand-950`
+* `--vl-primary-50`,  `--vl-primary-100`, ... `--vl-primary-900`, `--vl-primary-950`
 * `--vl-gray-50`,  `--vl-gray-100`, ... `--vl-gray-900`, `--vl-gray-950`
+
+Example usage ([custom properties syntax](https://tailwindcss.com/docs/color#using-a-custom-value)):
+
+```html
+<UButton 
+  class="
+    text-(--vl-primary-600) dark:text-(--vl-primary-400) 
+    bg-(--vl-neutral-200) dark:bg-(--vl-neutral-800)
+  "
+/>
+```
+
+***
+
+## Adding color utility classes
+
+To use all `primary` and `neutral` color shades in your components (e.g.: `text-primary-700 dark:text-neutral-300`), you must define them in the application’s main CSS file.
+
+{% code title="main.css" %}
+```scss
+@import "tailwindcss";
+@import "vueless";
+
+@theme {
+  /* Primary colors */
+  --color-primary-50: var(--vl-primary-50);
+  --color-primary-100: var(--vl-primary-100);
+  --color-primary-200: var(--vl-primary-200);
+  --color-primary-300: var(--vl-primary-300);
+  --color-primary-400: var(--vl-primary-400);
+  --color-primary-500: var(--vl-primary-500);
+  --color-primary-600: var(--vl-primary-600);
+  --color-primary-700: var(--vl-primary-700);
+  --color-primary-800: var(--vl-primary-800);
+  --color-primary-900: var(--vl-primary-900);
+  --color-primary-950: var(--vl-primary-950);
+
+  /* Neutral colors */
+  --color-neutral-50: var(--vl-neutral-50);
+  --color-neutral-100: var(--vl-neutral-100);
+  --color-neutral-200: var(--vl-neutral-200);
+  --color-neutral-300: var(--vl-neutral-300);
+  --color-neutral-400: var(--vl-neutral-400);
+  --color-neutral-500: var(--vl-neutral-500);
+  --color-neutral-600: var(--vl-neutral-600);
+  --color-neutral-700: var(--vl-neutral-700);
+  --color-neutral-800: var(--vl-neutral-800);
+  --color-neutral-900: var(--vl-neutral-900);
+  --color-neutral-950: var(--vl-neutral-950);
+}
+```
+{% endcode %}
+
+{% hint style="info" %}
+Keep in mind that Tailwind CSS already includes a neutral color in its palette, so it will be overridden. To avoid conflicts, consider using a different color name, such as `neu` (e.g., `--color-neu-*`).
+{% endhint %}
+
+***
+
+## Custom colors
+
+When [overriding default colors](https://tailwindcss.com/docs/colors#overriding-default-colors) or [adding custom colors](https://tailwindcss.com/docs/colors#customizing-your-colors), ensure you define all shades from 50 to 950, or at least the ones used in the default or your Vueless theme.
+
+{% code title="main.css" %}
+```scss
+@import "tailwindcss";
+@import "vueless";
+
+@theme {
+  /* Custom blue colors */
+  --color-blue-50: #f1f9fe;
+  --color-blue-100: #e1f3fd;
+  --color-blue-200: #bde6fa;
+  --color-blue-300: #62c8f4;
+  --color-blue-400: #41beef;
+  --color-blue-500: #18a5df;
+  --color-blue-600: #0b85be;
+  --color-blue-700: #0a6a9a;
+  --color-blue-800: #0d597f;
+  --color-blue-900: #104b6a;
+  --color-blue-950: #0b2f46;
+}
+```
+{% endcode %}
+
+You can generate your colors using tools such as [uicolors](https://uicolors.app) for example.
 
 [^1]: 

@@ -1,6 +1,6 @@
 # Quick start (Nuxt)
 
-1\. Install Vueless package.
+1\. Install Vueless Nuxt module.
 
 {% tabs %}
 {% tab title="npm" %}
@@ -32,7 +32,7 @@ bunx vueless init
 {% endtab %}
 {% endtabs %}
 
-2\. Register `@vueless/nuxt` module to the Nuxt config `modules` section.
+2\. Register `@vueless/nuxt` into the Nuxt config `modules` section.
 
 {% code title="nuxt.config.{js,ts}" %}
 ```javascript
@@ -43,6 +43,15 @@ export default defineNuxtConfig({
   ...
 })
 
+```
+{% endcode %}
+
+3\. Import Tailwind CSS and Vueless at the top of the main CSS file.
+
+{% code title="main.css" %}
+```scss
+@import "tailwindcss";
+@import "vueless";
 ```
 {% endcode %}
 

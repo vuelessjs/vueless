@@ -1,80 +1,35 @@
-# Quick start (Vue)
+# Getting Started
 
-1\. Install Vueless package.
+<figure><img src=".gitbook/assets/promo-image.png" alt=""><figcaption></figcaption></figure>
 
-{% tabs %}
-{% tab title="npm" %}
-```bash
-npm install vueless
-npx vueless init
-```
-{% endtab %}
+Vueless is an open-source UI library and design system framework for Vue.js 3 and Nuxt.js 3, built on top of Tailwind CSS v4.
 
-{% tab title="yarn" %}
-```bash
-yarn add vueless
-yarn vueless init
-```
-{% endtab %}
+It’s completely styleless, allowing you to extend or override default styles without modifying the components themselves — only your custom styles are included in the final build.
 
-{% tab title="pnpm" %}
-```bash
-pnpm add vueless
-pnpm exec vueless init
-```
-{% endtab %}
+Vueless is simple enough for everyday use and powerful enough for advanced scenarios, making it ideal for quickly building beautiful UIs in minutes or developing a fully customized corporate UI library that strictly follows your design guidelines.
 
-{% tab title="bun" %}
-```bash
-bun add vueless
-bunx vueless init
-```
-{% endtab %}
-{% endtabs %}
+### **Key features:**
 
-2\. In the file where you create the Vue application, add the following code:&#x20;
+* 🧩 65+ UI components (including range date picker, multi-selects, and nested table)
+* 📘 Built-in Storybook support
+* 🌈 Beautiful, modern default UI theme
+* 🌗 Light and dark mode support
+* 🌀 Unstyled mode
+* 🎨️ Flexible color palettes
+* 🎛️ Runtime theme and color switching
+* 🧬 Design tokens powered by CSS variables
+* ✨ Powerful yet simple styling customization system
+* 🌍 Internationalization (i18n)
+* ♿️ Accessibility (a11y)
+* ⚙️ Server-side rendering (SSR) friendly
+* 🖼️ 1000+ built-in SVG icons
+* 🛡️ Full TypeScript support with type safety
 
-{% code title="main.{js,ts}" %}
-```javascript
-import { createApp } from 'vue';
-import { createVueless } from "vueless";
-import App from './App.vue';
+### **Advance features:**
 
-const vueless = createVueless();
-
-createApp(App).use(vueless).mount('#app');
-```
-{% endcode %}
-
-3\. Install and configure [TailwindCSS](https://tailwindcss.com/docs/guides/vite#vue) (if not already done) and add `vuelessPreset`.
-
-{% code title="tailwind.config.{js,ts}" %}
-```javascript
-import { vuelessPreset } from "vueless/preset-tailwind";
-
-export default {
-  presets: [vuelessPreset],
-  ...
-};
-```
-{% endcode %}
-
-4\. Add Vite plugins.
-
-{% code title="vite.config.{js,ts}" overflow="wrap" %}
-```javascript
-import { Vueless, VuelessUnpluginComponents } from "vueless/plugin-vite";
-
-export default defineConfig({
-  plugins: [
-    ...
-    Vueless(),
-    VuelessUnpluginComponents(),
-  ],
-  ...
-});
-```
-{% endcode %}
-
-That’s it! Vueless is now ready to use in your app ✨
+* 🧰 Copy and extend existing components
+* 🧱 Create your own components
+* 🔧️ Define default values for props
+* 🔩️ Add or hide props to components
+* 🧿 `npm` package ships full source without TypeScript transpilation for better DX
 

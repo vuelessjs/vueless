@@ -32,9 +32,6 @@ const config = /*tw*/ {
 {% code title=".vscode/settings.json" %}
 ```json
 {
-  "files.associations": {
-      "*.css": "tailwindcss"
-  },
   "editor.quickSuggestions": {
       "strings": true
   },
@@ -54,9 +51,6 @@ const config = /*tw*/ {
 
 ```json
 {
-  "includeLanguages": {
-    "javascript": "javascript"
-  },
   "suggestions": true,
   "classAttributes": ["class", "config"],
   "experimental": {

@@ -6,10 +6,10 @@ To change theme settings at runtime, use the `setTheme()` method anywhere in you
 import { setTheme } from "vueless";
     
 setTheme({
-  brand: "green",
-  gray: "zink",  
-  ring: 4, /* px */
-  ringOffset: 0, /* px */
+  primary: "green",
+  neutral: "zink",  
+  text: 16, /* px */
+  outline: 4, /* px */
   rounding: 8, /* px */
   colorMode: "dark", /* dark | light | auto */
 });
@@ -18,5 +18,5 @@ setTheme({
 You can set only the parameters you need, and the rest will be taken from `vueless.config.{js,ts}` (if defined there) or from Vueless defaults.
 
 {% hint style="info" %}
-When you set the dark mode at runtime, the selected value will be saved into `localStorage` to preserve the user’s preferred setting after the page reloads.
+When you set the dark mode at runtime, the selected value will be saved into `localStorage` and `cookies` to preserve the user’s preferred setting after the page reloads in CSR, SSR and SSG apps.
 {% endhint %}
