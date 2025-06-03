@@ -1,15 +1,23 @@
 name: Deploy and Publish Workflow
 
 on:
-  push:
-    branches: [ main ]
+  workflow_dispatch:
+    inputs:
+      release_type:
+        description: 'Type of release'
+        required: true
+        type: choice
+        options:
+          - patch
+          - minor
+          - major
 
 permissions: write-all
 
 jobs:
   lint:
     name: 'Linting'
-    if: "!contains(github.event.head_commit.message, 'GITBOOK')"
+    if: "github.ref_name == 'main'"
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -22,7 +30,7 @@ jobs:
 
   test:
     name: 'Tests'
-    if: "!contains(github.event.head_commit.message, 'GITBOOK')"
+    if: "github.ref_name == 'main'"
     needs: lint
     runs-on: ubuntu-latest
     steps:
@@ -34,59 +42,9 @@ jobs:
       - run: npm ci
       - run: npm run test:ci
 
-#  release-patch:
-#    name: 'Manual Patch Release'
-#    if: !contains(github.event.head_commit.message, 'GITBOOK')
-#    needs: test
-#    runs-on: ubuntu-latest
-#    steps:
-#      - uses: actions/checkout@v4
-#        with:
-#          fetch-depth: 0
-#      - uses: actions/setup-node@v4
-#        with:
-#          node-version: 22
-#          cache: 'npm'
-#          registry-url: https://registry.npmjs.org/
-#      - name: git config
-#        run: |
-#          git config user.name "${GITHUB_ACTOR}"
-#          git config user.email "${GITHUB_ACTOR}@users.noreply.github.com"
-#      - run: npm ci
-#      - run: npm run release:prepare
-#      - run: npm run release:patch
-#        env:
-#          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
-#          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-#
-#  release-minor:
-#    name: 'Manual Minor Release'
-#    if: !contains(github.event.head_commit.message, 'GITBOOK')
-#    needs: test
-#    runs-on: ubuntu-latest
-#    steps:
-#      - uses: actions/checkout@v4
-#        with:
-#          fetch-depth: 0
-#      - uses: actions/setup-node@v4
-#        with:
-#          node-version: 22
-#          cache: 'npm'
-#          registry-url: https://registry.npmjs.org/
-#      - name: git config
-#        run: |
-#          git config user.name "${GITHUB_ACTOR}"
-#          git config user.email "${GITHUB_ACTOR}@users.noreply.github.com"
-#      - run: npm ci
-#      - run: npm run release:prepare
-#      - run: npm run release:minor
-#        env:
-#          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
-#          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
-  release-major:
-    name: 'Manual Major Release'
-    if: "!contains(github.event.head_commit.message, 'GITBOOK')"
+  release:
+    name: Manual ${{ github.event.inputs.release_type }} Release
+    if: github.ref_name == 'main'
     needs: test
     runs-on: ubuntu-latest
     steps:
@@ -104,7 +62,7 @@ jobs:
           git config user.email "${GITHUB_ACTOR}@users.noreply.github.com"
       - run: npm ci
       - run: npm run release:prepare
-      - run: npm run release:major
+      - run: npm run release:${{ github.event.inputs.release_type }}
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
