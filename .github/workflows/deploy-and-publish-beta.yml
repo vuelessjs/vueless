@@ -8,7 +8,7 @@ permissions: write-all
 
 jobs:
   lint:
-    name: 'Linting'
+    name: 'Lint'
     if: "!contains(github.event.head_commit.message, 'GITBOOK')"
     runs-on: ubuntu-latest
     steps:
@@ -21,7 +21,7 @@ jobs:
       - run: npm run lint:ci
 
   test:
-    name: 'Tests'
+    name: 'Test'
     if: "!contains(github.event.head_commit.message, 'GITBOOK')"
     needs: lint
     runs-on: ubuntu-latest
@@ -35,7 +35,7 @@ jobs:
       - run: npm run test:ci
 
   release-beta:
-    name: 'Manual Beta Release'
+    name: 'Release: beta'
     if: "!contains(github.event.head_commit.message, 'GITBOOK')"
     needs: test
     runs-on: ubuntu-latest

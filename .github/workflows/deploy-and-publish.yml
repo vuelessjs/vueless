@@ -16,7 +16,7 @@ permissions: write-all
 
 jobs:
   lint:
-    name: 'Linting'
+    name: 'Lint'
     if: "github.ref_name == 'main'"
     runs-on: ubuntu-latest
     steps:
@@ -29,7 +29,7 @@ jobs:
       - run: npm run lint:ci
 
   test:
-    name: 'Tests'
+    name: 'Test'
     if: "github.ref_name == 'main'"
     needs: lint
     runs-on: ubuntu-latest
@@ -43,7 +43,7 @@ jobs:
       - run: npm run test:ci
 
   release:
-    name: Manual ${{ github.event.inputs.release_type }} Release
+    name: "Release: ${{ github.event.inputs.release_type }}"
     if: github.ref_name == 'main'
     needs: test
     runs-on: ubuntu-latest
