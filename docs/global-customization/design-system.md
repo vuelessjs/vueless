@@ -18,7 +18,7 @@ Vueless automatically generates three CSS variables and defines custom Tailwind 
 
 Here’s an example of an `error` color:
 
-<table><thead><tr><th width="202.671875">CSS variable</th><th width="206.44140625">Tailwin CSS class example</th><th>Description</th></tr></thead><tbody><tr><td><code>--vl-error</code></td><td><code>bg-error</code></td><td>Default shade.</td></tr><tr><td><code>--vl-error-lifted</code></td><td><code>bg-error-lifted</code></td><td>Darker shade (e.g., for hover states).</td></tr><tr><td><code>--vl-error-accented</code></td><td><code>bg-error-accented</code></td><td>Darkest shade (e.g., for active states).</td></tr></tbody></table>
+<table><thead><tr><th width="202.671875">CSS variable</th><th width="206.44140625">Tailwind CSS class example</th><th>Description</th></tr></thead><tbody><tr><td><code>--vl-error</code></td><td><code>bg-error</code></td><td>Default shade.</td></tr><tr><td><code>--vl-error-lifted</code></td><td><code>bg-error-lifted</code></td><td>Darker shade (e.g., for hover states).</td></tr><tr><td><code>--vl-error-accented</code></td><td><code>bg-error-accented</code></td><td>Darkest shade (e.g., for active states).</td></tr></tbody></table>
 
 You can use this colors just like any regular Tailwind CSS colors or use CSS variable in a utility class directly `bg-(--vl-error)`.
 
