@@ -318,14 +318,6 @@ function onInputSearchBlur(event: FocusEvent) {
   }
 }
 
-function onKeydownUp() {
-  wrapperRef.value?.focus();
-}
-
-function onKeydownDown() {
-  wrapperRef.value?.focus();
-}
-
 defineExpose({
   /**
    * Allows setting the pointer to a specific index.
@@ -428,8 +420,8 @@ const {
         v-bind="listboxInputAttrs"
         :data-test="getDataTest('search')"
         @blur="onInputSearchBlur"
-        @keydown.self.down.prevent="onKeydownDown"
-        @keydown.self.up.prevent="onKeydownUp"
+        @keydown.self.down.prevent="wrapperRef?.focus()"
+        @keydown.self.up.prevent="wrapperRef?.focus()"
         @update:model-value="onSearchChange"
       />
     </div>
