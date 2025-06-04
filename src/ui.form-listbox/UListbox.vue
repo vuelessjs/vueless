@@ -55,7 +55,7 @@ const emit = defineEmits([
   /**
    * Triggers when the search input loses focus.
    */
-  "inputBlur",
+  "searchBlur",
 ]);
 
 const wrapperRef = useTemplateRef<HTMLDivElement>("wrapper");
@@ -312,13 +312,17 @@ function onClickOption(rawOption: Option) {
   emit("clickOption", option);
 }
 
-function onBlur(event: FocusEvent) {
+function onInputSearchBlur(event: FocusEvent) {
   if (props.searchable) {
-    emit("inputBlur", event);
+    emit("searchBlur", event);
   }
 }
 
-function onWrapperFocus() {
+function onKeydownUp() {
+  wrapperRef.value?.focus();
+}
+
+function onKeydownDown() {
   wrapperRef.value?.focus();
 }
 
@@ -423,9 +427,9 @@ const {
         :debounce="debounce"
         v-bind="listboxInputAttrs"
         :data-test="getDataTest('search')"
-        @blur="onBlur"
-        @keydown.self.down.prevent="onWrapperFocus"
-        @keydown.self.up.prevent="onWrapperFocus"
+        @blur="onInputSearchBlur"
+        @keydown.self.down.prevent="onKeydownDown"
+        @keydown.self.up.prevent="onKeydownUp"
         @update:model-value="onSearchChange"
       />
     </div>

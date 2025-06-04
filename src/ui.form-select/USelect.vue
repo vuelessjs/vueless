@@ -281,7 +281,7 @@ function adjustPosition() {
   }
 }
 
-function onWrapperBlur(event: FocusEvent) {
+function onBlur(event: FocusEvent) {
   const related = event.relatedTarget as HTMLElement | null;
 
   const isInsideWrapper = related && wrapperRef.value?.contains(related);
@@ -294,6 +294,18 @@ function onWrapperBlur(event: FocusEvent) {
   }
 
   deactivate();
+}
+
+function onWrapperBlur(event: FocusEvent) {
+  onBlur(event);
+}
+
+function onListboxBlur(event: FocusEvent) {
+  onBlur(event);
+}
+
+function onListboxSearchBlur(event: FocusEvent) {
+  onBlur(event);
 }
 
 function onClickClearItem(event: MouseEvent, option: Option) {
@@ -537,12 +549,7 @@ const {
           @binding {function} clear
           @binding {string} data-test
         -->
-        <slot
-          name="clear"
-          :icon-name="config.defaults.clearIcon"
-          :clear="onClickClear"
-          :data-test="getDataTest('clear')"
-        >
+        <slot name="clear" :icon-name="config.defaults.clearIcon" :clear="onClickClear">
           <UIcon
             interactive
             color="neutral"
@@ -781,8 +788,8 @@ const {
         :data-test="getDataTest()"
         @add="onAddOption"
         @focus="activate"
-        @blur="onWrapperBlur"
-        @input-blur="onWrapperBlur"
+        @blur="onListboxBlur"
+        @search-blur="onListboxSearchBlur"
         @update:model-value="onSearchChange"
       >
         <template #before-option="{ option, index }">
