@@ -7,8 +7,6 @@ import UListbox from "../ui.form-listbox/UListbox.vue";
 import UBadge from "../ui.text-badge/UBadge.vue";
 import ULink from "../ui.button-link/ULink.vue";
 
-import { vClickOutside } from "../directives";
-
 import useUI from "../composables/useUI.ts";
 import { hasSlotContent } from "../utils/helper.ts";
 import { getDefaults } from "../utils/ui.ts";
@@ -198,10 +196,6 @@ const toggleIconName = computed(() => {
   return props.toggleIcon ? config.value.defaults.toggleIcon : "";
 });
 
-const clickOutsideOptions = computed(() => ({
-  ignore: [labelComponentRef.value?.wrapperElement, labelComponentRef.value?.labelElement],
-}));
-
 watch(localValue, setLabelPosition, { deep: true });
 
 onMounted(() => {
@@ -214,16 +208,6 @@ onMounted(() => {
 
 function onSearchChange(query: string) {
   emit("searchChange", query);
-}
-
-function onListboxInteraction(event: MouseEvent) {
-  const target = event.target as HTMLElement;
-
-  if (target.closest("input")) {
-    return;
-  }
-
-  event.preventDefault();
 }
 
 function onKeydownAddOption(event: KeyboardEvent) {
@@ -257,7 +241,7 @@ function deactivate() {
     return;
   }
 
-  if (props.searchable) wrapperRef.value?.blur();
+  wrapperRef.value?.blur();
 
   isOpen.value = false;
 
@@ -312,7 +296,7 @@ function onWrapperBlur(event: FocusEvent) {
   deactivate();
 }
 
-function onMouseDownClearItem(event: MouseEvent, option: Option) {
+function onClickClearItem(event: MouseEvent, option: Option) {
   if (props.disabled) return;
 
   const value = Array.isArray(props.modelValue)
@@ -325,25 +309,23 @@ function onMouseDownClearItem(event: MouseEvent, option: Option) {
       })
     : [];
 
+  if (isOpen.value) wrapperRef.value?.focus();
+
   emit("update:modelValue", value);
   emit("change", { value, options: props.options });
   emit("remove", option);
 }
 
-function onMouseDownClear() {
+function onClickClear() {
   if (props.disabled) return;
-
-  if (!props.clearable && !props.multiple) {
-    deactivate();
-
-    return;
-  }
 
   const value = props.multiple ? [] : "";
 
   emit("update:modelValue", value);
   emit("change", { value, options: props.options });
   emit("remove", props.options);
+
+  deactivate();
 }
 
 useMutationObserver(leftSlotWrapperRef, (mutations) => mutations.forEach(setLabelPosition), {
@@ -475,19 +457,21 @@ const {
     v-bind="selectLabelAttrs"
     :data-test="getDataTest()"
     :tabindex="-1"
-    @click="toggle"
   >
     <template #label>
-      <!--
-        @slot Use this to add custom content instead of the label.
-        @binding {string} label
-      -->
-      <slot name="label" :label="label" />
+      <div @click="toggle" @mousedown.prevent>
+        <!--
+          @slot Use this to add custom content instead of the label.
+          @binding {string} label
+        -->
+        <slot name="label" :label="label">
+          {{ label }}
+        </slot>
+      </div>
     </template>
 
     <div
       ref="wrapper"
-      v-click-outside="[deactivate, clickOutsideOptions]"
       :tabindex="searchable || disabled ? -1 : 0"
       role="combobox"
       :aria-owns="'listbox-' + elementId"
@@ -526,7 +510,7 @@ const {
         v-bind="toggleWrapperAttrs"
         :tabindex="-1"
         :data-test="getDataTest('toggle')"
-        @mousedown.prevent.stop="toggle"
+        @click.stop="toggle"
       >
         <!--
           @slot Use it to add something instead of the toggle icon.
@@ -546,23 +530,27 @@ const {
         </slot>
       </div>
 
-      <div
-        v-if="!isMultipleListVariant && isLocalValue && clearable"
-        v-bind="clearAttrs"
-        :data-test="getDataTest('clear')"
-        @mousedown="onMouseDownClear"
-      >
+      <div v-if="!isMultipleListVariant && isLocalValue && clearable" v-bind="clearAttrs">
         <!--
           @slot Use it to add something instead of the clear icon.
           @binding {string} icon-name
+          @binding {function} clear
+          @binding {string} data-test
         -->
-        <slot name="clear" :icon-name="config.defaults.clearIcon">
+        <slot
+          name="clear"
+          :icon-name="config.defaults.clearIcon"
+          :clear="onClickClear"
+          :data-test="getDataTest('clear')"
+        >
           <UIcon
             interactive
             color="neutral"
             :disabled="disabled"
             :name="config.defaults.clearIcon"
             v-bind="clearIconAttrs"
+            :data-test="getDataTest('clear')"
+            @click.stop="onClickClear"
           />
         </slot>
       </div>
@@ -588,7 +576,7 @@ const {
             @binding {object} options
           -->
           <slot name="selected-options" :options="multiple ? selectedOptions.full : selectedOption">
-            <span v-if="!multiple" v-bind="selectedLabelsAttrs" @mousedown.prevent="toggle">
+            <span v-if="!multiple" v-bind="selectedLabelsAttrs" @click.stop="toggle">
               <!--
                 @slot Use it to customize selected option.
                 @binding {string} label
@@ -669,7 +657,7 @@ const {
                       :size="size"
                       variant="subtle"
                       v-bind="badgeLabelAttrs"
-                      @click="toggle"
+                      @click.stop="toggle"
                     >
                       <div v-bind="selectedLabelTextAttrs">
                         {{ option[labelKey] }}
@@ -682,7 +670,7 @@ const {
                           :disabled="disabled"
                           :name="config.defaults.badgeClearIcon"
                           v-bind="badgeClearIconAttrs"
-                          @click="onMouseDownClearItem($event, option)"
+                          @click.stop="onClickClearItem($event, option)"
                         />
                       </template>
                     </UBadge>
@@ -735,9 +723,7 @@ const {
                       :name="config.defaults.listClearIcon"
                       :data-test="getDataTest('clear-item')"
                       v-bind="listClearIconAttrs"
-                      @mousedown.prevent.capture
-                      @click.prevent.capture
-                      @mousedown="onMouseDownClearItem($event, option)"
+                      @click.stop="onClickClearItem($event, option)"
                     />
                   </slot>
                 </div>
@@ -767,8 +753,7 @@ const {
                     :underlined="false"
                     v-bind="listClearAllAttrs"
                     :data-test="getDataTest('clear-all')"
-                    @mousedown.prevent.capture="onMouseDownClear"
-                    @click.prevent.capture
+                    @click.stop="onClickClear"
                   />
                 </div>
               </template>
@@ -796,9 +781,9 @@ const {
         :data-test="getDataTest()"
         @add="onAddOption"
         @focus="activate"
+        @blur="onWrapperBlur"
+        @input-blur="onWrapperBlur"
         @update:model-value="onSearchChange"
-        @mousedown.capture="onListboxInteraction"
-        @click.capture="onListboxInteraction"
       >
         <template #before-option="{ option, index }">
           <!--
