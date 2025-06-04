@@ -179,5 +179,5 @@ const seelctConfig = {
 }
 </script>
 
-<USelect :config="seelctConfig">
+<USelect :config="selectConfig">
 ```
