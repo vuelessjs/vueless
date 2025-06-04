@@ -171,7 +171,7 @@ import { useI18n } from "vue-i18n";
 
 const { t } = useI18n();
 
-const seelctConfig = {
+const selectConfig = {
   i18n: {
     listIsEmpty: t("label.listIsEmpty"), // dynamyc message
     clear: "x", // static message
