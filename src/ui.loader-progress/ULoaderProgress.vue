@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, watch, ref, useTemplateRef } from "vue";
+import { computed, watch, ref, useTemplateRef, onBeforeMount, onBeforeUnmount } from "vue";
 
 import useUI from "../composables/useUI.ts";
 import { getDefaults } from "../utils/ui.ts";
@@ -27,7 +27,41 @@ const status = ref<number | null>(null);
 
 const progressRef = useTemplateRef<HTMLDivElement>("progress-bar");
 
-const { requestQueue } = useLoaderProgress();
+const { requestQueue, loaderProgressOff, loaderProgressOn } = useLoaderProgress();
+
+onBeforeMount(() => {
+  if (window._vuelss_progress_loader_instance === undefined) {
+    window._vuelss_progress_loader_instance = 0;
+  }
+
+  window._vuelss_progress_loader_instance += 1;
+
+  window.addEventListener("loaderProgressOn", onLoaderProgressOn as EventListener);
+  window.addEventListener("loaderProgressOff", onLoaderProgressOff as EventListener);
+});
+
+onBeforeUnmount(() => {
+  if (window._vuelss_progress_loader_instance === undefined) {
+    return;
+  }
+
+  window._vuelss_progress_loader_instance -= 1;
+
+  if (!window._vuelss_progress_loader_instance) {
+    delete window._vuelss_progress_loader_instance;
+
+    window.removeEventListener("loaderProgressOn", onLoaderProgressOn as EventListener);
+    window.removeEventListener("loaderProgressOff", onLoaderProgressOff as EventListener);
+  }
+});
+
+function onLoaderProgressOn(event: CustomEvent<{ resource: string }>) {
+  loaderProgressOn(event.detail.resource);
+}
+
+function onLoaderProgressOff(event: CustomEvent<{ resource: string }>) {
+  loaderProgressOff(event.detail.resource);
+}
 
 const isLoading = computed(() => {
   return typeof status.value === "number";
