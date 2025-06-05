@@ -334,7 +334,7 @@ export const Slots: StoryFn<USelectArgs> = (args) => ({
         </template>
       </USelect>
 
-      <URow>
+      <URow block>
         <USelect v-bind="args" v-model="args.beforeToggleModel" label="Slot before-toggle">
           <template #before-toggle>
             <UAvatar />
@@ -353,7 +353,7 @@ export const Slots: StoryFn<USelectArgs> = (args) => ({
         </USelect>
       </URow>
 
-      <URow>
+      <URow block>
         <USelect v-bind="args" v-model="args.leftModel" label="Slot left">
           <template #left>
             <UAvatar />

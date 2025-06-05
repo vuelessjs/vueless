@@ -281,7 +281,7 @@ function adjustPosition() {
   }
 }
 
-function onBlur(event: FocusEvent) {
+function handleBlurDeactivation(event: FocusEvent) {
   const related = event.relatedTarget as HTMLElement | null;
 
   const isInsideWrapper = related && wrapperRef.value?.contains(related);
@@ -296,16 +296,16 @@ function onBlur(event: FocusEvent) {
   deactivate();
 }
 
-function onWrapperBlur(event: FocusEvent) {
-  onBlur(event);
+function onBlur(event: FocusEvent) {
+  handleBlurDeactivation(event);
 }
 
 function onListboxBlur(event: FocusEvent) {
-  onBlur(event);
+  handleBlurDeactivation(event);
 }
 
 function onListboxSearchBlur(event: FocusEvent) {
-  onBlur(event);
+  handleBlurDeactivation(event);
 }
 
 function onClickClearItem(event: MouseEvent, option: Option) {
@@ -489,7 +489,7 @@ const {
       :aria-owns="'listbox-' + elementId"
       v-bind="wrapperAttrs"
       @focus="activate"
-      @blur="onWrapperBlur"
+      @blur="onBlur"
       @keydown.self.down.prevent="listboxRef?.pointerForward"
       @keydown.self.up.prevent="listboxRef?.pointerBackward"
       @keydown.enter.tab.stop.self="listboxRef?.addPointerElement()"
@@ -780,8 +780,10 @@ const {
         :size="size"
         :debounce="debounce"
         :visible-options="visibleOptions"
-        :value-key="valueKey"
         :label-key="labelKey"
+        :value-key="valueKey"
+        :group-label-key="groupLabelKey"
+        :group-value-key="groupValueKey"
         :add-option="addOption"
         tabindex="-1"
         v-bind="listboxAttrs as KeyAttrsWithConfig<UListboxConfig>"
