@@ -267,9 +267,9 @@ function activate() {
 }
 
 function adjustPosition() {
-  if (typeof window === "undefined" || !listboxRef.value || !wrapperRef.value) return;
+  if (typeof window === "undefined" || !wrapperRef.value) return;
 
-  const dropdownHeight = listboxRef.value.wrapperRef?.getBoundingClientRect().height || 0;
+  const dropdownHeight = listboxRef.value?.wrapperRef?.getBoundingClientRect().height || 0;
   const spaceAbove = wrapperRef.value.getBoundingClientRect().top;
   const spaceBelow = window.innerHeight - wrapperRef.value.getBoundingClientRect().bottom;
   const hasEnoughSpaceBelow = spaceBelow > dropdownHeight;
@@ -281,7 +281,7 @@ function adjustPosition() {
   }
 }
 
-function handleBlurDeactivation(event: FocusEvent) {
+function deactivateOnBlur(event: FocusEvent) {
   const related = event.relatedTarget as HTMLElement | null;
 
   const isInsideWrapper = related && wrapperRef.value?.contains(related);
@@ -297,15 +297,15 @@ function handleBlurDeactivation(event: FocusEvent) {
 }
 
 function onBlur(event: FocusEvent) {
-  handleBlurDeactivation(event);
+  deactivateOnBlur(event);
 }
 
 function onListboxBlur(event: FocusEvent) {
-  handleBlurDeactivation(event);
+  deactivateOnBlur(event);
 }
 
 function onListboxSearchBlur(event: FocusEvent) {
-  handleBlurDeactivation(event);
+  deactivateOnBlur(event);
 }
 
 function onClickClearItem(event: MouseEvent, option: Option) {
