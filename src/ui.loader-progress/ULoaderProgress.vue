@@ -34,10 +34,12 @@ onBeforeMount(() => {
     window._vuelss_progress_loader_instance = 0;
   }
 
-  window._vuelss_progress_loader_instance += 1;
+  if (!window._vuelss_progress_loader_instance) {
+    window.addEventListener("loaderProgressOn", onLoaderProgressOn as EventListener);
+    window.addEventListener("loaderProgressOff", onLoaderProgressOff as EventListener);
+  }
 
-  window.addEventListener("loaderProgressOn", onLoaderProgressOn as EventListener);
-  window.addEventListener("loaderProgressOff", onLoaderProgressOff as EventListener);
+  window._vuelss_progress_loader_instance += 1;
 });
 
 onBeforeUnmount(() => {
