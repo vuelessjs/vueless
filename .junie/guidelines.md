@@ -108,3 +108,4 @@ npm run preview
 - Use composables for shared logic
 - Use subcomponent if the main component is too large
 - Follow the naming conventions for components and files
+- Run the `lint:fix` command on all created and modified files at the end of your work
