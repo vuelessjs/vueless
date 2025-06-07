@@ -6,7 +6,7 @@ Vueless is a Vue Styleless UI Component Library powered by Tailwind CSS. It prov
 ## Tech Stack
 - **Vue 3**: Component framework
 - **TypeScript**: Type safety and better developer experience
-- **Tailwind CSS**: Utility-first CSS framework
+- **Tailwind CSS v4**: Utility-first CSS framework
 - **Storybook**: Component documentation and development environment
 - **Vitest**: Testing framework
 - **ESLint + Prettier**: Code quality and style enforcement
@@ -34,12 +34,15 @@ vueless/
 Each component follows a consistent structure:
 ```
 ui.component-name/
-├── UComponent.vue    # Main Vue component
-├── config.ts         # Component configuration
-├── constants.ts      # Component-specific constants
-├── types.ts          # TypeScript type definitions
-├── storybook/        # Storybook documentation
-└── tests/            # Component tests
+├── storybook/                    # Storybook documentation
+├── tests/                        # Component tests
+├── config.ts                     # Component configuration
+├── constants.ts                  # Component-specific constants
+├── types.ts                      # TypeScript type definitions
+├── UComponent.vue                # Main Vue component
+├── UComponentSubcomponent.vue    # Optional subcomponents
+├── useFeature.ts                 # Optional composables
+└── utilFeature.ts                # Optional utility functions
 ```
 
 ## Development Workflow
@@ -91,9 +94,10 @@ npm run preview
 - Test files should be placed in the `tests` directory of each component
 - Follow the naming convention: `UComponent.test.ts`
 - Test component props, slots, events, and exposed refs
-- Add comments above each test to shortly describe what it do (like in `UButton.test.ts`). 
+- Add comments above each test to shortly describe what it do (like in `UButton.test.ts`) 
 - Use constants for test values instead of hardcoded strings
 - Derive class names from component properties rather than hardcoding them
+- When testing class-related props, match expected classes from the component’s CVA config in `config.ts`
 
 ## Best Practices
 - Follow the established component structure for new components
@@ -104,4 +108,3 @@ npm run preview
 - Use composables for shared logic
 - Use subcomponent if the main component is too large
 - Follow the naming conventions for components and files
-
