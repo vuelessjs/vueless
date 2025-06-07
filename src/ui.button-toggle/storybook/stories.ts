@@ -57,16 +57,7 @@ const DefaultTemplate: StoryFn<UToggleArgs> = (args: UToggleArgs) => ({
 
 const EnumTemplate: StoryFn<UToggleArgs> = (args: UToggleArgs, { argTypes }) => ({
   components: { UToggle, URow },
-  setup() {
-    const values = ref(argTypes.size?.options);
-
-    return {
-      args,
-      values,
-      argTypes,
-      getArgs,
-    };
-  },
+  setup: () => ({ args, argTypes, getArgs, values: ref(argTypes.size?.options) }),
   template: `
     <URow>
       <UToggle
@@ -110,15 +101,10 @@ Square.args = {
   name: "square",
   square: true,
   options: [
-    { value: "11", label: "star" },
-    { value: "12", label: "add" },
-    { value: "13", label: "timer" },
+    { value: "11", icon: "star" },
+    { value: "12", icon: "add" },
+    { value: "13", icon: "timer" },
   ],
-  slotTemplate: `
-    <template #option="{ label, index }">
-      <UIcon :name="label" color="inherit" />
-    </template>
-  `,
 };
 
 export const Disabled = DefaultTemplate.bind({});
