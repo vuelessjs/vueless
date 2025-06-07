@@ -1,5 +1,5 @@
 import { mount } from "@vue/test-utils";
-import { describe, it, expect } from "vitest";
+import { describe, it, expect, beforeAll } from "vitest";
 
 import UBadge from "../UBadge.vue";
 import UIcon from "../../ui.image-icon/UIcon.vue";
@@ -7,6 +7,12 @@ import UIcon from "../../ui.image-icon/UIcon.vue";
 import type { Props } from "../types.ts";
 
 describe("UBadge.vue", () => {
+  let label: string;
+
+  beforeAll(() => {
+    label = "Badge";
+  });
+
   // Props tests
   describe("Props", () => {
     // Variant prop
@@ -76,8 +82,6 @@ describe("UBadge.vue", () => {
 
     // Label prop
     it("renders the correct label text", () => {
-      const label = "Badge";
-
       const component = mount(UBadge, {
         props: {
           label,
@@ -205,7 +209,6 @@ describe("UBadge.vue", () => {
 
     // Left slot
     it("renders content from left slot", () => {
-      const label = "Badge";
       const slotText = "Left";
       const slotClass = "left-content";
 
@@ -225,7 +228,6 @@ describe("UBadge.vue", () => {
 
     // Right slot
     it("renders content from right slot", () => {
-      const label = "Badge";
       const slotText = "Right";
       const slotClass = "right-content";
 
@@ -245,8 +247,9 @@ describe("UBadge.vue", () => {
 
     // Slot bindings
     it("provides correct bindings to slots", () => {
-      const label = "Badge";
       const icon = "star";
+      const labelClass = "badge-label";
+      const iconClass = "badge-icon";
 
       const component = mount(UBadge, {
         props: {
@@ -256,15 +259,15 @@ describe("UBadge.vue", () => {
         slots: {
           default: `
             <template #default="{ label, iconName }">
-              <span class="badge-label">{{ label }}</span>
-              <span class="badge-icon">{{ iconName }}</span>
+              <span class="${labelClass}">{{ label }}</span>
+              <span class="${iconClass}">{{ iconName }}</span>
             </template>
           `,
         },
       });
 
-      expect(component.find(".badge-label").text()).toBe(label);
-      expect(component.find(".badge-icon").text()).toBe(icon);
+      expect(component.find(`.${labelClass}`).text()).toBe(label);
+      expect(component.find(`.${iconClass}`).text()).toBe(icon);
     });
   });
 
@@ -275,6 +278,7 @@ describe("UBadge.vue", () => {
       const component = mount(UBadge, {});
 
       await component.trigger("click");
+
       expect(component.emitted("click")).toBeTruthy();
     });
 
@@ -283,6 +287,7 @@ describe("UBadge.vue", () => {
       const component = mount(UBadge, {});
 
       await component.trigger("focus");
+
       expect(component.emitted("focus")).toBeTruthy();
     });
 
@@ -291,6 +296,7 @@ describe("UBadge.vue", () => {
       const component = mount(UBadge, {});
 
       await component.trigger("blur");
+
       expect(component.emitted("blur")).toBeTruthy();
     });
 
@@ -299,6 +305,7 @@ describe("UBadge.vue", () => {
       const component = mount(UBadge, {});
 
       await component.trigger("keydown");
+
       expect(component.emitted("keydown")).toBeTruthy();
     });
   });
