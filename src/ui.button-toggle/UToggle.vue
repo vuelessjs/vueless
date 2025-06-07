@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, ref, useTemplateRef } from "vue";
+import { computed, ref, useId, useTemplateRef } from "vue";
 
 import UButton from "../ui.button/UButton.vue";
 
@@ -27,6 +27,7 @@ const emit = defineEmits([
   "update:modelValue",
 ]);
 
+const elementId = props.id || useId();
 const optionsRef = useTemplateRef<HTMLDivElement>("options");
 
 const hoveredItem = ref();
@@ -106,7 +107,7 @@ const {
 </script>
 
 <template>
-  <div ref="options" v-bind="optionsAttrs">
+  <div :id="elementId" ref="options" v-bind="optionsAttrs" :data-test="getDataTest()">
     <template v-for="(option, index) in options" :key="index">
       <UButton
         :label="option.label"
