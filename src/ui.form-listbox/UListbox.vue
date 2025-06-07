@@ -51,6 +51,11 @@ const emit = defineEmits([
    * Triggers when the search input value changes.
    */
   "searchChange",
+
+  /**
+   * Triggers when the search input loses focus.
+   */
+  "searchBlur",
 ]);
 
 const wrapperRef = useTemplateRef<HTMLDivElement>("wrapper");
@@ -220,6 +225,14 @@ function onSearchChange(value: string) {
   emit("searchChange", value);
 }
 
+function onKeydownUp() {
+  wrapperRef.value?.focus();
+}
+
+function onKeydownDown() {
+  wrapperRef.value?.focus();
+}
+
 function isMetaKey(key: string) {
   return ["isSubGroup", "groupLabel", "level", "isHidden", "onClick", "divider"].includes(key);
 }
@@ -305,6 +318,12 @@ function onClickOption(rawOption: Option) {
   }
 
   emit("clickOption", option);
+}
+
+function onInputSearchBlur(event: FocusEvent) {
+  if (props.searchable) {
+    emit("searchBlur", event);
+  }
 }
 
 defineExpose({
@@ -408,6 +427,9 @@ const {
         :debounce="debounce"
         v-bind="listboxInputAttrs"
         :data-test="getDataTest('search')"
+        @blur="onInputSearchBlur"
+        @keydown.self.down.prevent="onKeydownDown"
+        @keydown.self.up.prevent="onKeydownUp"
         @update:model-value="onSearchChange"
       />
     </div>

@@ -1,6 +1,6 @@
 # Nested components styling
 
-In some component default config (ex. `UTable`), you might find other component names enclosed in curly brackets, such as `{UButton}`, `{UIcon}`, `{ULink}`, etc. This indicates that the  component key contains this nested Vueless component.
+In some component default config (e.g.  `UTable`), you might find other component names enclosed in curly brackets, such as `{UButton}`, `{UIcon}`, `{ULink}`, etc. This indicates that the component key contains this nested Vueless component.
 
 {% code title="UTable default config" %}
 ```js
