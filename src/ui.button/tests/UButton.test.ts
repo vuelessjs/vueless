@@ -8,6 +8,7 @@ import UIcon from "../../ui.image-icon/UIcon.vue";
 import type { Props } from "../types.ts";
 
 describe("UButton.vue", () => {
+  // Props tests
   describe("Props", () => {
     // Variant prop
     it("applies the correct variant class", async () => {
