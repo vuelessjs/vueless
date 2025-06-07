@@ -225,6 +225,14 @@ function onSearchChange(value: string) {
   emit("searchChange", value);
 }
 
+function onKeydownUp() {
+  wrapperRef.value?.focus();
+}
+
+function onKeydownDown() {
+  wrapperRef.value?.focus();
+}
+
 function isMetaKey(key: string) {
   return ["isSubGroup", "groupLabel", "level", "isHidden", "onClick", "divider"].includes(key);
 }
@@ -420,8 +428,8 @@ const {
         v-bind="listboxInputAttrs"
         :data-test="getDataTest('search')"
         @blur="onInputSearchBlur"
-        @keydown.self.down.prevent="wrapperRef?.focus()"
-        @keydown.self.up.prevent="wrapperRef?.focus()"
+        @keydown.self.down.prevent="onKeydownDown"
+        @keydown.self.up.prevent="onKeydownUp"
         @update:model-value="onSearchChange"
       />
     </div>

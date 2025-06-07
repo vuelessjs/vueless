@@ -267,7 +267,7 @@ function activate() {
 }
 
 function adjustPosition() {
-  if (typeof window === "undefined" || !wrapperRef.value) return;
+  if (!wrapperRef.value) return;
 
   const dropdownHeight = listboxRef.value?.wrapperRef?.getBoundingClientRect().height || 0;
   const spaceAbove = wrapperRef.value.getBoundingClientRect().top;
