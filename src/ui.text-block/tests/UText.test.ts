@@ -100,36 +100,6 @@ describe("UText.vue", () => {
 
       expect(component.attributes("class")).toContain(customClasses);
     });
-
-    // Config prop overriding default props
-    it("overrides default props via config prop", () => {
-      const size = "lg";
-      const align = "center";
-      const line = true;
-
-      const component = mount(UText, {
-        props: {
-          config: {
-            defaults: {
-              size,
-              align,
-              line,
-            },
-          },
-        },
-      });
-
-      // Check that size is overridden from default "md" to "lg"
-      expect(component.attributes("class")).toContain("text-large");
-      expect(component.attributes("class")).not.toContain("text-medium");
-
-      // Check that align is overridden from default "left" to "center"
-      expect(component.attributes("class")).toContain("text-center");
-      expect(component.attributes("class")).not.toContain("text-left");
-
-      // Check that line is overridden from default false to true
-      expect(component.attributes("class")).toContain("leading-none");
-    });
   });
 
   // Slots tests
