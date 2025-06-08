@@ -69,6 +69,8 @@ const dynamicComponent = computed(() => {
       path.includes(`${ICONS_CACHED_DIR}/${userLibrary}/${props.name}.svg`),
     ) || [];
 
+  if (!component) return "";
+
   return defineAsyncComponent(async () => (await component) as AsyncComponentLoader);
 });
 
