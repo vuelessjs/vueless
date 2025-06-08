@@ -54,6 +54,6 @@ export default /*tw*/ {
   defaults: {
     size: "md",
     /* icons */
-    emptyIcon: "emoji_food_beverage",
+    placeholderIcon: "emoji_food_beverage",
   },
 };

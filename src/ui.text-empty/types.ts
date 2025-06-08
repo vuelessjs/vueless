@@ -15,6 +15,11 @@ export interface Props {
   description?: string;
 
   /**
+   * Empty state icon.
+   */
+  placeholderIcon?: boolean | string;
+
+  /**
    * Empty state size.
    */
   size?: "sm" | "md" | "lg";

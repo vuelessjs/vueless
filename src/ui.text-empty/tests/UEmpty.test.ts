@@ -26,10 +26,69 @@ describe("UEmpty.vue", () => {
           },
         });
 
-        const headerComponent = component.findComponent(UIcon);
+        const iconComponent = component.findComponent(UIcon);
 
-        expect(headerComponent.props("size")).toBe(value);
+        expect(iconComponent.props("size")).toBe(value);
       });
+    });
+
+    // Icon prop default
+    it("renders default icon when icon prop is not provided", () => {
+      const defaultIcon = "emoji_food_beverage";
+
+      const component = mount(UEmpty, {});
+      const iconComponent = component.findComponent(UIcon);
+
+      expect(iconComponent.exists()).toBe(true);
+      expect(iconComponent.props("name")).toBe(defaultIcon);
+    });
+
+    // Icon prop true
+    it("renders default icon when icon prop is true", () => {
+      const placeholderIcon = true;
+      const defaultIcon = "emoji_food_beverage";
+
+      const component = mount(UEmpty, {
+        props: {
+          placeholderIcon,
+        },
+      });
+
+      const iconComponent = component.findComponent(UIcon);
+
+      expect(iconComponent.exists()).toBe(true);
+      expect(iconComponent.props("name")).toBe(defaultIcon);
+    });
+
+    // Icon prop string
+    it("renders custom icon when icon prop is a string", () => {
+      const customIcon = "close";
+
+      const component = mount(UEmpty, {
+        props: {
+          placeholderIcon: customIcon,
+        },
+      });
+
+      const iconComponent = component.findComponent(UIcon);
+
+      expect(iconComponent.exists()).toBe(true);
+      expect(iconComponent.props("name")).toBe(customIcon);
+    });
+
+    // Icon prop false
+    it("does not render icon when icon prop is false", () => {
+      const placeholderIcon = false;
+
+      const component = mount(UEmpty, {
+        props: {
+          placeholderIcon,
+        },
+      });
+
+      const iconComponent = component.findComponent(UIcon);
+
+      expect(iconComponent.exists()).toBe(placeholderIcon);
     });
 
     // Title prop
