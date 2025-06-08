@@ -98,14 +98,18 @@ npm run preview
 - Use constants for test values instead of hardcoded strings
 - Derive class names from component properties rather than hardcoding them
 - When testing class-related props, match expected classes from the component’s CVA config in `config.ts`
+- Run tests by using command `npm run test:ci src/ui.[component-folder]` 
+- Run linter and fix issues on all created and modified files
 
 ## Best Practices
 - Follow the established component structure for new components
 - Use TypeScript for type safety
 - Document component props, events, and slots by following the Vue Styleguidist jsDoc comments
 - Create Storybook stories for each component with real-life examples
+- Simplify the component’s `storybook/docs.mdx` file to match the minimal structure used in other components
+- All css classes should be defined in component config
 - Write comprehensive tests for components
 - Use composables for shared logic
 - Use subcomponent if the main component is too large
 - Follow the naming conventions for components and files
-- Run the `lint:fix` command on all created and modified files at the end of your work
+- Run linter and fix issues on all created and modified files
