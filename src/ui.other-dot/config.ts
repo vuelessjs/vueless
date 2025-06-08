@@ -3,6 +3,7 @@ export default /*tw*/ {
     base: "rounded-full bg-{color}",
     variants: {
       size: {
+        "3xs": "size-0.25",
         "2xs": "size-0.5",
         xs: "size-1",
         sm: "size-1.5",

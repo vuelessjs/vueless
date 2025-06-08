@@ -74,7 +74,7 @@ Default.args = {};
 export const Icon = DefaultTemplate.bind({});
 Icon.args = {
   icon: "arrow_outward",
-  size: "2xs",
+  size: "3xs",
   slotTemplate: `
     <ULink label="Releases" class="mr-2" />
   `,
