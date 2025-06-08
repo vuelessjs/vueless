@@ -72,7 +72,6 @@ export default function useUI<T>(
   function getClasses(key: string, mutatedProps?: MutatedProps) {
     return computed(() => {
       const mutatedPropsValue = toValue(mutatedProps);
-      const configDefaultProps = (props.config as ComponentConfigFull<T>).defaults || {};
       const value = (config.value as ComponentConfigFull<T>)[key];
       const color = (toValue(mutatedProps || {}).color || props.color) as PrimaryColors;
 
@@ -83,7 +82,6 @@ export default function useUI<T>(
       if (typeof value === "object" && isCVA(value)) {
         classes = cva(value)({
           ...props,
-          ...configDefaultProps,
           ...mutatedPropsValue,
           ...(color ? { color } : {}),
         });
