@@ -16,6 +16,7 @@ const router = createRouter({
 });
 
 describe("ULink.vue", () => {
+  // Props tests
   describe("Props", () => {
     // Size prop
     it("applies the correct size class", async () => {
