@@ -2,7 +2,6 @@ import { ref, watch, getCurrentInstance, toValue, useAttrs, computed } from "vue
 import { isEqual } from "lodash-es";
 
 import { cx, cva, setColor, vuelessConfig, getMergedConfig } from "../utils/ui.ts";
-import { isCSR } from "../utils/helper.ts";
 import {
   CVA_CONFIG_KEY,
   SYSTEM_CONFIG_KEY,
@@ -141,7 +140,7 @@ export default function useUI<T>(
         keyConfig = config.value[configKey] as NestedComponent;
       }
 
-      const isDev = isCSR && import.meta.env?.DEV;
+      const isDev = import.meta.env?.DEV;
       const isTopLevelKey = (topLevelClassKey || firstClassKey) === configKey;
 
       const extendsClasses = getExtendsClasses(configKey);
