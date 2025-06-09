@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, useTemplateRef } from "vue";
+import { computed, inject, useTemplateRef } from "vue";
 
 import useUI from "../composables/useUI.ts";
 import { getDefaults } from "../utils/ui.ts";
@@ -24,6 +24,11 @@ const emit = defineEmits([
    */
   "click",
 ]);
+
+// Inject props from UAvatarGroup if available
+const getAvatarGroupSize = inject<() => Props["size"]>("getAvatarGroupSize", () => null);
+const getAvatarGroupVariant = inject<() => Props["variant"]>("getAvatarGroupVariant", () => null);
+const getAvatarGroupRounded = inject<() => Props["rounded"]>("getAvatarGroupRounded", () => null);
 
 const avatarRef = useTemplateRef<HTMLDivElement>("avatar");
 
@@ -65,6 +70,10 @@ defineExpose({
 const mutatedProps = computed(() => ({
   /* component state, not a props */
   src: Boolean(props.src),
+  // Use injected props from UAvatarGroup if available, otherwise use local props
+  size: getAvatarGroupSize() || props.size,
+  variant: getAvatarGroupVariant() || props.variant,
+  rounded: getAvatarGroupRounded() || props.rounded,
 }));
 
 const { getDataTest, config, avatarAttrs, placeholderIconAttrs } = useUI<Config>(
