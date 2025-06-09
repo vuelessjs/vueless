@@ -13,6 +13,7 @@ Vueless is simple enough for everyday use and powerful enough for advanced scena
 ### Key features
 
 - 🧩 65+ UI components (including range date picker, multi-selects, and nested table)
+- 🪄 Automatic on-demand component import (as you use them)
 - 📘 Built-in Storybook support
 - 🌈 Beautiful, modern default UI theme
 - 🌗 Light and dark mode support
@@ -66,12 +67,13 @@ createApp(App).use(vueless).mount('#app');
 4. Add Vite plugins.
 
 ```javascript
-import { Vueless, UnpluginComponents } from "vueless/plugin-vite";
+import { Vueless, TailwindCSS, UnpluginComponents } from "vueless/plugin-vite";
 
 export default defineConfig({
   plugins: [
     ...
     Vueless(),
+    TailwindCSS(),
     UnpluginComponents(),
   ],
   ...
