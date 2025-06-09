@@ -95,8 +95,9 @@ npm run preview
 - Follow the naming convention: `UComponent.test.ts`
 - Test component props, slots, events, and exposed refs
 - Add comments above each test to shortly describe what it do (like in `UButton.test.ts`) 
-- Use constants for test values instead of hardcoded strings
+- Use constants for test values instead of hardcoded strings, but do not use values directly from the `defaultConfig`
 - Derive class names from component properties rather than hardcoding them
+- Name constants that hold one or more class names using the `*Classes` suffix
 - When testing class-related props, match expected classes from the component’s CVA config in `config.ts`
 - Run tests by using command `npm run test:ci src/ui.[component-folder]` 
 - Run linter and fix issues on all created and modified files
