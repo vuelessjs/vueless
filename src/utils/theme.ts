@@ -262,23 +262,23 @@ function getText(text?: ThemeConfig["text"]) {
   const runtimeText = primitiveToObject(text) as ThemeConfigText;
   const globalText = primitiveToObject(vuelessConfig.text) as ThemeConfigText;
 
-  const size = {
-    xs: runtimeText.xs ?? getStored(storageKey.xs) ?? globalText.xs,
-    sm: runtimeText.sm ?? getStored(storageKey.sm) ?? globalText.sm,
-    md: runtimeText.md ?? getStored(storageKey.md) ?? globalText.md,
-    lg: runtimeText.lg ?? getStored(storageKey.lg) ?? globalText.lg,
-  };
-
-  const textMd = Math.max(0, Number(size.md ?? DEFAULT_TEXT));
+  const textMd = Math.max(0, Number(runtimeText.md ?? globalText.md ?? DEFAULT_TEXT));
   const textXs = Math.max(0, textMd - TEXT_DECREMENT * 2);
   const textSm = Math.max(0, textMd - TEXT_DECREMENT);
   const textLg = Math.max(0, textMd + TEXT_INCREMENT);
 
+  const definedText = {
+    xs: Math.max(0, Number(runtimeText.xs ?? getStored(storageKey.xs) ?? globalText.xs ?? 0)),
+    sm: Math.max(0, Number(runtimeText.sm ?? getStored(storageKey.sm) ?? globalText.sm ?? 0)),
+    md: Math.max(0, Number(runtimeText.md ?? getStored(storageKey.md) ?? globalText.md ?? 0)),
+    lg: Math.max(0, Number(runtimeText.lg ?? getStored(storageKey.lg) ?? globalText.lg ?? 0)),
+  };
+
   const mergedText = {
-    md: textMd,
-    xs: size.xs === undefined ? textXs : Math.max(0, Number(size.xs ?? 0)),
-    sm: size.sm === undefined ? textSm : Math.max(0, Number(size.sm ?? 0)),
-    lg: size.lg === undefined ? textLg : Math.max(0, Number(size.lg ?? 0)),
+    xs: runtimeText.xs === undefined ? textXs : definedText.xs,
+    sm: runtimeText.sm === undefined ? textSm : definedText.sm,
+    md: runtimeText.md === undefined ? textMd : definedText.md,
+    lg: runtimeText.lg === undefined ? textLg : definedText.lg,
   };
 
   if (isCSR && text) {
@@ -310,13 +310,7 @@ function getOutlines(outline?: ThemeConfig["outline"]) {
   const runtimeOutline = primitiveToObject(outline) as ThemeConfigText;
   const globalOutline = primitiveToObject(vuelessConfig.outline) as ThemeConfigText;
 
-  const size = {
-    sm: runtimeOutline.sm ?? getStored(storageKey.sm) ?? globalOutline.sm,
-    md: runtimeOutline.md ?? getStored(storageKey.md) ?? globalOutline.md,
-    lg: runtimeOutline.lg ?? getStored(storageKey.lg) ?? globalOutline.lg,
-  };
-
-  const outlineMd = Math.max(0, Number(size.md ?? DEFAULT_OUTLINE));
+  const outlineMd = Math.max(0, Number(runtimeOutline.md ?? globalOutline.md ?? DEFAULT_OUTLINE));
   const outlineSm = Math.max(0, outlineMd - OUTLINE_DECREMENT);
   let outlineLg = Math.max(0, outlineMd + OUTLINE_INCREMENT);
 
@@ -324,10 +318,16 @@ function getOutlines(outline?: ThemeConfig["outline"]) {
     outlineLg = 0;
   }
 
+  const definedOutline = {
+    sm: Math.max(0, Number(runtimeOutline.sm ?? getStored(storageKey.sm) ?? globalOutline.sm ?? 0)),
+    md: Math.max(0, Number(runtimeOutline.md ?? getStored(storageKey.md) ?? globalOutline.md ?? 0)),
+    lg: Math.max(0, Number(runtimeOutline.lg ?? getStored(storageKey.lg) ?? globalOutline.lg ?? 0)),
+  };
+
   const mergedOutline = {
-    md: outlineMd,
-    sm: size.sm === undefined ? outlineSm : Math.max(0, Number(size.sm ?? 0)),
-    lg: size.lg === undefined ? outlineLg : Math.max(0, Number(size.lg ?? 0)),
+    sm: runtimeOutline.sm === undefined ? outlineSm : definedOutline.sm,
+    md: runtimeOutline.md === undefined ? outlineMd : definedOutline.md,
+    lg: runtimeOutline.lg === undefined ? outlineLg : definedOutline.lg,
   };
 
   if (isCSR && outline) {
@@ -357,13 +357,8 @@ function getRoundings(rounding?: ThemeConfig["rounding"]) {
   const runtimeRounding = primitiveToObject(rounding) as ThemeConfigRounding;
   const globalRounding = primitiveToObject(vuelessConfig.rounding) as ThemeConfigRounding;
 
-  const size = {
-    sm: runtimeRounding.sm ?? getStored(storageKey.sm) ?? globalRounding.sm,
-    md: runtimeRounding.md ?? getStored(storageKey.md) ?? globalRounding.md,
-    lg: runtimeRounding.lg ?? getStored(storageKey.lg) ?? globalRounding.lg,
-  };
-
-  const roundingMd = Math.max(0, Number(size.md ?? DEFAULT_ROUNDING));
+  // eslint-disable-next-line prettier/prettier
+  const roundingMd = Math.max(0, Number(runtimeRounding.md ?? globalRounding.md ?? DEFAULT_ROUNDING));
   let roundingSm = Math.max(0, roundingMd - ROUNDING_DECREMENT);
   let roundingLg = Math.max(0, roundingMd + ROUNDING_INCREMENT);
 
@@ -379,10 +374,18 @@ function getRoundings(rounding?: ThemeConfig["rounding"]) {
     roundingLg = ROUNDING_INCREMENT - ROUNDING_DECREMENT;
   }
 
+  /* eslint-disable prettier/prettier */
+  const definedRounding = {
+    sm: Math.max(0, Number(runtimeRounding.sm ?? getStored(storageKey.sm) ?? globalRounding.sm ?? 0)),
+    md: Math.max(0, Number(runtimeRounding.md ?? getStored(storageKey.md) ?? globalRounding.md ?? 0)),
+    lg: Math.max(0, Number(runtimeRounding.lg ?? getStored(storageKey.lg) ?? globalRounding.lg ?? 0)),
+  };
+  /* eslint-enable prettier/prettier */
+
   const mergedRounding = {
-    md: roundingMd,
-    sm: size.sm === undefined ? roundingSm : Math.max(0, Number(size.sm ?? 0)),
-    lg: size.lg === undefined ? roundingLg : Math.max(0, Number(size.lg ?? 0)),
+    sm: runtimeRounding.sm === undefined ? roundingSm : definedRounding.sm,
+    md: runtimeRounding.md === undefined ? roundingMd : definedRounding.md,
+    lg: runtimeRounding.lg === undefined ? roundingLg : definedRounding.lg,
   };
 
   if (isCSR && rounding) {
