@@ -36,7 +36,7 @@
     "ts:check": "vue-tsc --build --force",
     "release:prepare": "npm run pre:start && rm -rf dist && mkdir -p dist && cp -r src/. package.json LICENSE README.md dist/ && npx node .scripts/writeLocales",
     "release:beta": "release-it --ci --npm.publish --preRelease=beta --increment=prerelease",
-    "release:patch": "release-it patch --ci --npm.publish",
+    "release:patch": "release-it patch --ci --npm.publish --git.tag --github.release",
     "release:minor": "release-it minor --ci --npm.publish --git.tag --github.release",
     "release:major": "release-it major --ci --npm.publish --git.tag --github.release",
     "lint": "eslint --no-fix src/ .storybook/",
