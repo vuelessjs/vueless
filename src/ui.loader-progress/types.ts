@@ -3,7 +3,7 @@ import type { ComponentConfig } from "../types.ts";
 
 declare global {
   interface Window {
-    _vuelss_progress_loader_instance?: number;
+    __VuelessProgressLoaderInstance?: number;
   }
 }
 

@@ -30,27 +30,27 @@ const progressRef = useTemplateRef<HTMLDivElement>("progress-bar");
 const { requestQueue, loaderProgressOff, loaderProgressOn } = useLoaderProgress();
 
 onBeforeMount(() => {
-  if (window._vuelss_progress_loader_instance === undefined) {
-    window._vuelss_progress_loader_instance = 0;
+  if (window.__VuelessProgressLoaderInstance === undefined) {
+    window.__VuelessProgressLoaderInstance = 0;
   }
 
-  if (!window._vuelss_progress_loader_instance) {
+  if (!window.__VuelessProgressLoaderInstance) {
     window.addEventListener("loaderProgressOn", onLoaderProgressOn as EventListener);
     window.addEventListener("loaderProgressOff", onLoaderProgressOff as EventListener);
   }
 
-  window._vuelss_progress_loader_instance += 1;
+  window.__VuelessProgressLoaderInstance += 1;
 });
 
 onBeforeUnmount(() => {
-  if (window._vuelss_progress_loader_instance === undefined) {
+  if (window.__VuelessProgressLoaderInstance === undefined) {
     return;
   }
 
-  window._vuelss_progress_loader_instance -= 1;
+  window.__VuelessProgressLoaderInstance -= 1;
 
-  if (!window._vuelss_progress_loader_instance) {
-    delete window._vuelss_progress_loader_instance;
+  if (!window.__VuelessProgressLoaderInstance) {
+    delete window.__VuelessProgressLoaderInstance;
 
     window.removeEventListener("loaderProgressOn", onLoaderProgressOn as EventListener);
     window.removeEventListener("loaderProgressOff", onLoaderProgressOff as EventListener);
