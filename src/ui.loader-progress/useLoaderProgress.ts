@@ -1,4 +1,4 @@
-import { inject, onBeforeMount, onBeforeUnmount, readonly, ref } from "vue";
+import { inject, readonly, ref } from "vue";
 
 import type { Ref } from "vue";
 
@@ -12,33 +12,27 @@ type LoaderProgress = {
   loaderProgressOff: (url: string | string[]) => void;
 };
 
-const requestQueue = ref<string[]>([]);
-
-function loaderProgressOn(url: string | string[]): void {
-  if (Array.isArray(url)) {
-    requestQueue.value.push(...url.map(getRequestWithoutQuery));
-  } else {
-    requestQueue.value.push(getRequestWithoutQuery(url));
-  }
-}
-
-function loaderProgressOff(url: string | string[]): void {
-  if (Array.isArray(url)) {
-    url.map(getRequestWithoutQuery).forEach(loaderProgressOff);
-  } else {
-    requestQueue.value = requestQueue.value.filter((item) => item !== getRequestWithoutQuery(url));
-  }
-}
-
-function setLoaderOnHandler(event: CustomEvent<{ resource: string }>) {
-  loaderProgressOn(event.detail.resource);
-}
-
-function setLoaderOffHandler(event: CustomEvent<{ resource: string }>) {
-  loaderProgressOff(event.detail.resource);
-}
-
 export function createLoaderProgress(): LoaderProgress {
+  const requestQueue = ref<string[]>([]);
+
+  function loaderProgressOn(url: string | string[]): void {
+    if (Array.isArray(url)) {
+      requestQueue.value.push(...url.map(getRequestWithoutQuery));
+    } else {
+      requestQueue.value.push(getRequestWithoutQuery(url));
+    }
+  }
+
+  function loaderProgressOff(url: string | string[]): void {
+    if (Array.isArray(url)) {
+      url.map(getRequestWithoutQuery).forEach(loaderProgressOff);
+    } else {
+      requestQueue.value = requestQueue.value.filter(
+        (item) => item !== getRequestWithoutQuery(url),
+      );
+    }
+  }
+
   return {
     requestQueue: readonly(requestQueue),
     loaderProgressOn,
@@ -48,16 +42,6 @@ export function createLoaderProgress(): LoaderProgress {
 
 export function useLoaderProgress(): LoaderProgress {
   const loaderProgress = inject<LoaderProgress>(LoaderProgressSymbol);
-
-  onBeforeMount(() => {
-    window.addEventListener("loaderProgressOn", setLoaderOnHandler as EventListener);
-    window.addEventListener("loaderProgressOff", setLoaderOffHandler as EventListener);
-  });
-
-  onBeforeUnmount(() => {
-    window.removeEventListener("loaderProgressOn", setLoaderOnHandler as EventListener);
-    window.removeEventListener("loaderProgressOff", setLoaderOffHandler as EventListener);
-  });
 
   if (!loaderProgress) {
     throw new Error(
