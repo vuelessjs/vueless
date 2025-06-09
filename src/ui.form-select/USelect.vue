@@ -457,7 +457,6 @@ const {
 <template>
   <ULabel
     ref="labelComponent"
-    :for="elementId"
     :size="size"
     :label="label"
     :error="error"
@@ -583,7 +582,12 @@ const {
             @binding {object} options
           -->
           <slot name="selected-options" :options="multiple ? selectedOptions.full : selectedOption">
-            <span v-if="!multiple" v-bind="selectedLabelsAttrs" @click.stop="toggle">
+            <span
+              v-if="!multiple"
+              v-bind="selectedLabelsAttrs"
+              @click.stop="toggle"
+              @mousedown.prevent
+            >
               <!--
                 @slot Use it to customize selected option.
                 @binding {string} label
@@ -604,7 +608,7 @@ const {
               </slot>
             </span>
 
-            <div v-else v-bind="selectedLabelsAttrs">
+            <div v-else v-bind="selectedLabelsAttrs" @click.stop="toggle" @mousedown.prevent>
               <template v-if="isMultipleInlineVariant">
                 <div :title="selectedOptionsLabel.full" v-bind="selectedLabelAttrs">
                   <template v-for="(option, index) in selectedOptions.visible" :key="index">
@@ -664,7 +668,6 @@ const {
                       :size="size"
                       variant="subtle"
                       v-bind="badgeLabelAttrs"
-                      @click.stop="toggle"
                     >
                       <div v-bind="selectedLabelTextAttrs">
                         {{ option[labelKey] }}
