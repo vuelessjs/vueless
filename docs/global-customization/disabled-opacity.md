@@ -3,7 +3,7 @@
 You can set the components disabled state opacity globally for related Vueless components.
 
 <pre class="language-js" data-title="vueless.config.{js,ts}"><code class="lang-js">export default {
-  disabledOpacity: 40, /* default -> 50 (persents, %) */
+  disabledOpacity: 40, /* default -> 50 (percent, %) */
 }<a data-footnote-ref href="#user-content-fn-1">;</a>
 </code></pre>
 

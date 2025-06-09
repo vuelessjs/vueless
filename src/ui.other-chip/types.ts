@@ -26,7 +26,7 @@ export interface Props {
   /**
    * Chip size.
    */
-  size?: "2xs" | "xs" | "sm" | "md" | "lg" | "xl" | "2xl";
+  size?: "3xs" | "2xs" | "xs" | "sm" | "md" | "lg" | "xl" | "2xl";
 
   /**
    * The position of the chip on the x-axis.

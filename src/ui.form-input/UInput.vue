@@ -72,6 +72,11 @@ const emit = defineEmits([
    * Triggers when content pasted to the input.
    */
   "paste",
+
+  /**
+   * Triggers when a key is pressed down while the input is focused.
+   */
+  "keydown",
 ]);
 
 const VALIDATION_RULES_REG_EX = {
@@ -162,6 +167,10 @@ function onPaste(event: ClipboardEvent) {
 
 function onCopy(event: ClipboardEvent) {
   emit("copy", event);
+}
+
+function onKeydown(event: KeyboardEvent) {
+  emit("keydown", event);
 }
 
 /**
@@ -295,6 +304,7 @@ const {
         @click="onClick"
         @paste="onPaste"
         @copy="onCopy"
+        @keydown="onKeydown"
       />
 
       <div
