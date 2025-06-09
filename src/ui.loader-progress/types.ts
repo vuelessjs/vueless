@@ -1,6 +1,12 @@
 import defaultConfig from "./config.ts";
 import type { ComponentConfig } from "../types.ts";
 
+declare global {
+  interface Window {
+    __VuelessProgressLoaderInstance?: number;
+  }
+}
+
 export type Config = typeof defaultConfig;
 
 export interface Props {
