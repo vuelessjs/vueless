@@ -441,12 +441,14 @@ export default {
 
 ## Runtime color switching
 
-If you want to allow users to switch `primary` or `neutral` colors at runtime, define them using the `runtimeColors` configuration key. Vueless automatically safelists CSS variables for all Tailwind color shades to [support this functionality](../helpers/change-settings-in-runtime.md).
+If you want to allow users to switch `primary` or `neutral` colors at runtime, define them using the `runtimeColors` configuration key. It can be set to either an array of color names or `true` to enable all supported colors. Vueless automatically safelists CSS variables for all Tailwind color shades to [support this functionality](../helpers/change-settings-in-runtime.md).
 
 {% code title="vueless.config.{js,ts}" %}
 ```js
 export default {
   runtimeColors: ["amber", "rose", "fuchsia", "teal"],
+  /* OR */
+  runtimeColors: true,
 }
 ```
 {% endcode %}
