@@ -95,12 +95,12 @@ npm run preview
 - Follow the naming convention: `UComponent.test.ts`
 - Test component props, slots, events, and exposed refs
 - Add comments above each test to shortly describe what it do (like in `UButton.test.ts`) 
-- Use constants for test values instead of hardcoded strings, but do not use values directly from the `defaultConfig`
+- Use constants for test values and props instead of hardcoded strings, but do not use values directly from the `defaultConfig`
+- Ensure props constant names match the prop names, and in tests, destructure props simply as { someProp1, someProp2 } instead of using { someProp1: someProp1, someProp2: someProp2 }.
 - Derive class names from component properties rather than hardcoding them
 - Name constants that hold one or more class names using the `*Classes` suffix
 - When testing class-related props, match expected classes from the component’s CVA config in `config.ts`
-- Run tests by using command `npm run test:ci src/ui.[component-folder]` 
-- Run linter and fix issues on all created and modified files
+- Run tests by using command `npm run test:ci src/ui.[component-folder]`
 
 ## Best Practices
 - Follow the established component structure for new components
@@ -113,4 +113,7 @@ npm run preview
 - Use composables for shared logic
 - Use subcomponent if the main component is too large
 - Follow the naming conventions for components and files
-- Run linter and fix issues on all created and modified files
+
+
+## Junie Agent Commands
+- Run linter and fix issues for all created and modified files before each task is done, including test case modifications or any other file modification

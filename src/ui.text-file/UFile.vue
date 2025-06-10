@@ -21,7 +21,7 @@ const props = withDefaults(defineProps<Props>(), {
 
 const emit = defineEmits([
   /**
-   * Triggers when remove button is clicked.
+   * Triggers when the remove button is clicked.
    * @property {string} fileId
    */
   "remove",
