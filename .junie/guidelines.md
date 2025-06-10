@@ -94,13 +94,15 @@ npm run preview
 - Test files should be placed in the `tests` directory of each component
 - Follow the naming convention: `UComponent.test.ts`
 - Test component props, slots, events, and exposed refs
-- Add comments above each test to shortly describe what it do (like in `UButton.test.ts`) 
+- Add comments above each test to shortly describe what is testing, example `// ImageUrl prop`. 
 - Use constants for test values and props instead of hardcoded strings, but do not use values directly from the `defaultConfig`
 - Ensure props constant names match the prop names, and in tests, destructure props simply as { someProp1, someProp2 } instead of using { someProp1: someProp1, someProp2: someProp2 }.
 - Derive class names from component properties rather than hardcoding them
 - Name constants that hold one or more class names using the `*Classes` suffix
+- Name constants that hold slot class should be singular `slotClass` or `*SlotClass`
 - When testing class-related props, match expected classes from the component’s CVA config in `config.ts`
-- Run tests by using command `npm run test:ci src/ui.[component-folder]`
+- Run tests by using command `npm run test:ci src/ui.[component-folder]`]
+- Import types with `type` keyword, example `import type { ComponentPublicInstance } from "vue"`
 
 ## Best Practices
 - Follow the established component structure for new components
