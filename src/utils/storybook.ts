@@ -304,7 +304,7 @@ export function getArgTypes(componentName: string | undefined) {
       description: event.description,
     };
 
-    if (import.meta.env.STORYBOOK_FULL) {
+    if (import.meta.env.DEV) {
       const eventName = "on" + event.name.charAt(0).toUpperCase() + event.name.slice(1);
 
       types[eventName] = {
