@@ -5,7 +5,6 @@ import UFiles from "../UFiles.vue";
 import UFile from "../../ui.text-file/UFile.vue";
 import ULabel from "../../ui.form-label/ULabel.vue";
 
-import type { ComponentPublicInstance } from "vue";
 import type { Props } from "../types.ts";
 
 // Mock URL.createObjectURL
@@ -97,7 +96,7 @@ describe("UFiles.vue", () => {
     });
 
     // Size prop
-    it("passes the correct size prop to ULabel", async () => {
+    it("passes the correct size prop to ULabel", () => {
       const sizes = ["sm", "md", "lg"];
 
       sizes.forEach((size) => {
@@ -245,7 +244,9 @@ describe("UFiles.vue", () => {
 
     // Default slot with bindings
     it("provides correct bindings to default slot", () => {
-      const fileList = [createMockFile("file1.pdf")];
+      const fileName = "file1.pdf";
+      const fileIndex = "0";
+      const fileList = [createMockFile(fileName)];
 
       // Define class names as constants instead of hardcoding them
       const idClass = "file-id";
@@ -261,23 +262,21 @@ describe("UFiles.vue", () => {
         slots: {
           default: `
             <template #default="{ id, label, url, imageUrl, index }">
-              <div class="${idClass}">{{ id }}</div>
-              <div class="${labelClass}">{{ label }}</div>
-              <div class="${urlClass}">{{ url }}</div>
-              <div class="${imageUrlClass}">{{ imageUrl || 'no-image' }}</div>
-              <div class="${indexClass}">{{ index }}</div>
+              <div v-if="id" class="${idClass}">{{ id }}</div>
+              <div v-if="label" class="${labelClass}">{{ label }}</div>
+              <div v-if="url" class="${urlClass}">{{ url }}</div>
+              <div v-if="imageUrl" class="${imageUrlClass}">{{ imageUrl || 'no-image' }}</div>
+              <div v-if="index" class="${indexClass}">{{ index }}</div>
             </template>
           `,
         },
       });
 
-      console.log("desc", component.find(`.${labelClass}`).html());
-
       expect(component.find(`.${idClass}`).exists()).toBe(true);
-      //expect(component.find(`.${labelClass}`).text()).toBe("file1.pdf");
+      expect(component.find(`.${labelClass}`).text()).toBe(fileName);
       expect(component.find(`.${urlClass}`).exists()).toBe(true);
-      expect(component.find(`.${imageUrlClass}`).text()).toBe("no-image");
-      expect(component.find(`.${indexClass}`).text()).toBe("0");
+      expect(component.find(`.${imageUrlClass}`).exists()).toBe(true);
+      expect(component.find(`.${indexClass}`).text()).toBe(fileIndex);
     });
   });
 
