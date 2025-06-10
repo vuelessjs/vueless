@@ -38,8 +38,6 @@ export default /*tw*/ {
   firstDayInRange: "{>day} {>edgeDateInRange} {>firstDateInRange}",
   anotherMonthFirstDayInRange: "{>day} {>anotherMonthDay} {>edgeDateInRange} {>firstDateInRange}",
   lastDayInRange: "{>day} {>edgeDateInRange} {>lastDateInRange}",
-  currentLastDayInRange: "{>day} {>edgeDateInRange} {>lastDateInRange} {>currentDate}",
-  currentFirstDayInRange: "{>day} {>edgeDateInRange} {>firstDateInRange} {>currentDate}",
   anotherMonthLastDayInRange: "{>day} {>anotherMonthDay} {>edgeDateInRange} {>lastDateInRange}",
   selectedDay: "{>day} {>selectedDate}",
   activeDay: "{>day} {>activeDate}",

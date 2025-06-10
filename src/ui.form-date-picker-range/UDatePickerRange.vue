@@ -224,16 +224,14 @@ const { userFormatDate } = useUserFormat(
   props.userDateFormat,
 );
 
-watch(
-  calendarValue,
-  () => {
+watch(calendarValue, () => {
+  if (calendarValue.value.from && calendarValue.value.to) {
     localValue.value = {
       from: calendarValue.value.from,
       to: calendarValue.value.to,
     };
-  },
-  { deep: true },
-);
+  }
+});
 
 watch(
   () => props.modelValue,
