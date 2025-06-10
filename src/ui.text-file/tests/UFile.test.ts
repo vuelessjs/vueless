@@ -5,6 +5,7 @@ import UFile from "../UFile.vue";
 import ULink from "../../ui.button-link/ULink.vue";
 import UIcon from "../../ui.image-icon/UIcon.vue";
 
+import type { ComponentPublicInstance } from "vue";
 import type { Props } from "../types.ts";
 
 describe("UFile.vue", () => {
@@ -78,16 +79,17 @@ describe("UFile.vue", () => {
     // ID prop
     it("uses provided id", () => {
       const id = "test-file-id";
+      const removable = true;
 
       const component = mount(UFile, {
         props: {
           id,
-          removable: true, // Need to set removable to true to show the remove button
+          removable, // Need to set removable to true to show the remove button
         },
       });
 
-      // Directly trigger the onRemove method
-      component.vm.onRemove();
+      // Directly call the onRemove method
+      (component.vm as ComponentPublicInstance & { onRemove: () => void }).onRemove();
 
       expect(component.emitted("remove")?.[0][0]).toBe(id);
     });
@@ -95,17 +97,22 @@ describe("UFile.vue", () => {
     // Removable prop
     it("shows remove button when removable prop is true", () => {
       const removable = true;
+      const dataTest = "test-file";
+      const removeIconDataTest = "test-file-remove-item";
 
       const component = mount(UFile, {
         props: {
           removable,
+          dataTest,
         },
       });
 
-      // Find all UIcon components and check if there are two (file icon and remove button)
-      const icons = component.findAllComponents(UIcon);
+      // Get the remove button directly using the same approach as in the event test
+      const removeIcon = component.findAllComponents(UIcon).find((component) => {
+        return component.props("dataTest") === removeIconDataTest;
+      });
 
-      expect(icons.length).toBe(2);
+      expect(removeIcon).toBeDefined();
     });
 
     // DataTest prop
@@ -144,6 +151,12 @@ describe("UFile.vue", () => {
       const url = "https://example.com/file.pdf";
       const imageUrl = "https://example.com/image.jpg";
 
+      // Define class names as constants instead of hardcoding them
+      const idClass = "file-id";
+      const labelClass = "file-label";
+      const urlClass = "file-url";
+      const imageUrlClass = "file-image-url";
+
       const component = mount(UFile, {
         props: {
           id,
@@ -154,19 +167,19 @@ describe("UFile.vue", () => {
         slots: {
           default: `
             <template #default="{ id, label, url, imageUrl }">
-              <div class="file-id">{{ id }}</div>
-              <div class="file-label">{{ label }}</div>
-              <div class="file-url">{{ url }}</div>
-              <div class="file-image-url">{{ imageUrl }}</div>
+              <div class="${idClass}">{{ id }}</div>
+              <div class="${labelClass}">{{ label }}</div>
+              <div class="${urlClass}">{{ url }}</div>
+              <div class="${imageUrlClass}">{{ imageUrl }}</div>
             </template>
           `,
         },
       });
 
-      expect(component.find(".file-id").text()).toBe(id);
-      expect(component.find(".file-label").text()).toBe(label);
-      expect(component.find(".file-url").text()).toBe(url);
-      expect(component.find(".file-image-url").text()).toBe(imageUrl);
+      expect(component.find(`.${idClass}`).text()).toBe(id);
+      expect(component.find(`.${labelClass}`).text()).toBe(label);
+      expect(component.find(`.${urlClass}`).text()).toBe(url);
+      expect(component.find(`.${imageUrlClass}`).text()).toBe(imageUrl);
     });
 
     // Left slot
@@ -204,12 +217,14 @@ describe("UFile.vue", () => {
   describe("Events", () => {
     // Remove event
     it("emits remove event when remove button is clicked", async () => {
+      const id = "test-file-id";
       const removable = true;
       const dataTest = "test-file";
       const removeIconDataTest = "test-file-remove-item";
 
       const component = mount(UFile, {
         props: {
+          id,
           removable,
           dataTest,
         },
@@ -222,10 +237,11 @@ describe("UFile.vue", () => {
       expect(removeIcon).toBeDefined();
 
       // Directly call the onRemove method
-      component.vm.onRemove();
+      (component.vm as ComponentPublicInstance & { onRemove: () => void }).onRemove();
 
-      // Check if the remove event was emitted
+      // Check if the remove event was emitted with the correct value
       expect(component.emitted("remove")).toBeTruthy();
+      expect(component.emitted("remove")?.[0][0]).toBe(id);
     });
   });
 
