@@ -38,6 +38,7 @@ export default {
   args: {
     label: "Select a date",
     modelValue: null,
+    openDirectionY: "bottom",
   },
   argTypes: {
     ...getArgTypes(COMPONENT_NAME),

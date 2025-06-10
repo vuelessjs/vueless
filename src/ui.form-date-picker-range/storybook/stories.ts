@@ -44,6 +44,7 @@ export default {
       from: fromDate,
       to: toDate,
     },
+    openDirectionY: "bottom",
   },
   argTypes: {
     ...getArgTypes(COMPONENT_NAME),

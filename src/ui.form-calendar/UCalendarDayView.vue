@@ -151,7 +151,6 @@ function getDayState(day: Date) {
   const isCurrentDay = isToday(day);
   const isAnotherMonthDay = isAnotherMothDay(day, activeMonthDate.value);
   const isAnotherMonthDayInRange = isAnotherMonthDay && isDayInRange;
-  const isCurrentDayInRange = isCurrentDay && isDayInRange;
   const isFirstDayInRange = props.range && isSameDay(day, localSelectedDate.value);
   const isRangeSameDay =
     props.selectedDateTo &&
@@ -160,8 +159,6 @@ function getDayState(day: Date) {
     isSameDay(day, props.selectedDateTo);
   const isLastDayInRange =
     props.selectedDateTo && props.range && isSameDay(day, props.selectedDateTo);
-  const isCurrentFirstDayInRange = isFirstDayInRange && isCurrentDay;
-  const isCurrentLastDayInRange = isLastDayInRange && isCurrentDay;
   const isAnotherMonthFirstDayInRange = isFirstDayInRange && isAnotherMonthDay;
   const isAnotherMonthLastDayInRange = isLastDayInRange && isAnotherMonthDay;
   const isActiveDay = props.activeDate && isSameDay(props.activeDate, day) && !props.range;
@@ -179,11 +176,8 @@ function getDayState(day: Date) {
     isSelectedDay,
     isCurrentDay,
     isAnotherMonthDay,
-    isCurrentDayInRange,
     isFirstDayInRange,
     isLastDayInRange,
-    isCurrentFirstDayInRange,
-    isCurrentLastDayInRange,
     isAnotherMonthFirstDayInRange,
     isAnotherMonthLastDayInRange,
     isActiveDay,
@@ -238,8 +232,6 @@ const {
   anotherMonthLastDayInRangeAttrs,
   selectedDayAttrs,
   activeDayAttrs,
-  currentLastDayInRangeAttrs,
-  currentFirstDayInRangeAttrs,
   anotherMonthDayInRangeAttrs,
 } = useUI<Config>(defaultConfig);
 
@@ -267,50 +259,6 @@ defineExpose({
           size="md"
           square
           v-bind="selectedDayAttrs"
-          :disabled="dateIsOutOfRange(day, minDate, maxDate, locale, dateFormat)"
-          :label="formatDate(day, 'j', locale)"
-          @mousedown.prevent.capture
-          @click="onClickDay(day)"
-          @mouseover="onMouseoverDay(day)"
-        />
-
-        <UButton
-          v-else-if="getDayState(day).isCurrentDay && !getDayState(day).isDayInRange"
-          tabindex="-1"
-          variant="ghost"
-          color="primary"
-          size="md"
-          square
-          v-bind="currentDayAttrs"
-          :disabled="dateIsOutOfRange(day, minDate, maxDate, locale, dateFormat)"
-          :label="formatDate(day, 'j', locale)"
-          @mousedown.prevent.capture
-          @click="onClickDay(day)"
-        />
-
-        <UButton
-          v-else-if="getDayState(day).isCurrentFirstDayInRange"
-          tabindex="-1"
-          variant="soft"
-          color="primary"
-          size="md"
-          square
-          v-bind="currentFirstDayInRangeAttrs"
-          :disabled="dateIsOutOfRange(day, minDate, maxDate, locale, dateFormat)"
-          :label="formatDate(day, 'j', locale)"
-          @mousedown.prevent.capture
-          @click="onClickDay(day)"
-          @mouseover="onMouseoverDay(day)"
-        />
-
-        <UButton
-          v-else-if="getDayState(day).isCurrentLastDayInRange"
-          tabindex="-1"
-          variant="soft"
-          color="primary"
-          size="md"
-          square
-          v-bind="currentLastDayInRangeAttrs"
           :disabled="dateIsOutOfRange(day, minDate, maxDate, locale, dateFormat)"
           :label="formatDate(day, 'j', locale)"
           @mousedown.prevent.capture
@@ -394,21 +342,6 @@ defineExpose({
         />
 
         <UButton
-          v-else-if="getDayState(day).isDayInRange && getDayState(day).isCurrentDay"
-          tabindex="-1"
-          variant="ghost"
-          color="primary"
-          size="md"
-          square
-          v-bind="currentDayInRangeAttrs"
-          :disabled="dateIsOutOfRange(day, minDate, maxDate, locale, dateFormat)"
-          :label="formatDate(day, 'j', locale)"
-          @mousedown.prevent.capture
-          @click="onClickDay(day)"
-          @mouseover="onMouseoverDay(day)"
-        />
-
-        <UButton
           v-else-if="
             getDayState(day).isAnotherMonthDayInRange ||
             getDayState(day).isInRangePreviewAnotherMonth
@@ -427,6 +360,24 @@ defineExpose({
         />
 
         <UButton
+          v-else-if="
+            getDayState(day).isCurrentDay &&
+            (getDayState(day).isDayInRange || getDayState(day).isInRangePreview)
+          "
+          tabindex="-1"
+          variant="ghost"
+          color="primary"
+          size="md"
+          square
+          v-bind="currentDayInRangeAttrs"
+          :disabled="dateIsOutOfRange(day, minDate, maxDate, locale, dateFormat)"
+          :label="formatDate(day, 'j', locale)"
+          @mousedown.prevent.capture
+          @click="onClickDay(day)"
+          @mouseover="onMouseoverDay(day)"
+        />
+
+        <UButton
           v-else-if="getDayState(day).isDayInRange || getDayState(day).isInRangePreview"
           tabindex="-1"
           variant="ghost"
@@ -434,6 +385,21 @@ defineExpose({
           size="md"
           square
           v-bind="dayInRangeAttrs"
+          :disabled="dateIsOutOfRange(day, minDate, maxDate, locale, dateFormat)"
+          :label="formatDate(day, 'j', locale)"
+          @mousedown.prevent.capture
+          @click="onClickDay(day)"
+          @mouseover="onMouseoverDay(day)"
+        />
+
+        <UButton
+          v-else-if="getDayState(day).isCurrentDay && !getDayState(day).isDayInRange"
+          tabindex="-1"
+          variant="ghost"
+          color="primary"
+          size="md"
+          square
+          v-bind="currentDayAttrs"
           :disabled="dateIsOutOfRange(day, minDate, maxDate, locale, dateFormat)"
           :label="formatDate(day, 'j', locale)"
           @mousedown.prevent.capture
