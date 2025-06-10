@@ -1,6 +1,7 @@
 import esbuild from "esbuild";
 import path from "node:path";
 import { cwd } from "node:process";
+import { pathToFileURL } from "node:url";
 import { existsSync, statSync } from "node:fs";
 import { mkdir, readdir, readFile, writeFile } from "node:fs/promises";
 
@@ -100,7 +101,9 @@ export async function getDefaultComponentConfig(name, configDir) {
   }
 
   if (existsSync(configOutPath)) {
-    config = (await import(configOutPath)).default;
+    const module = await import(pathToFileURL(configOutPath));
+
+    config = module.default;
   }
 
   return config;

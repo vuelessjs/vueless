@@ -1,6 +1,7 @@
 import fs from "node:fs";
 import path from "node:path";
 import { cwd } from "node:process";
+import { pathToFileURL } from "node:url";
 import { defineConfig } from "cva";
 import { createGetMergedConfig } from "./mergeConfigs.js";
 import { merge } from "lodash-es";
@@ -35,7 +36,9 @@ export let vuelessConfig = {};
   fs.existsSync(configPathTs) && (await buildTSFile(configPathTs, configOutPath));
 
   if (fs.existsSync(configOutPath)) {
-    vuelessConfig = (await import(configOutPath)).default;
+    const module = await import(pathToFileURL(configOutPath));
+
+    vuelessConfig = module.default;
   }
 })();
 
