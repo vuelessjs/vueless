@@ -24,7 +24,7 @@ const emit = defineEmits([
   /**
    * Triggers when the alert is hidden.
    */
-  "hidden",
+  "hide",
 ]);
 
 const wrapperRef = useTemplateRef<HTMLDivElement>("wrapper");
@@ -39,7 +39,7 @@ onMounted(() => {
 
 function onClickClose() {
   isShownAlert.value = false;
-  emit("hidden");
+  emit("hide");
 }
 
 const closeButtonColor = computed(() => {
