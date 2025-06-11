@@ -189,9 +189,11 @@ describe("UFile.vue", () => {
 
       const component = mount(UFile, {
         slots: {
-          "before-file": `<template #before-file>
-            <span class='${slotClass}'>${slotText}</span>
-          </template>`,
+          "before-file": `
+            <template #before-file>
+              <span class='${slotClass}'>${slotText}</span>
+            </template>
+          `,
         },
       });
 
@@ -206,9 +208,11 @@ describe("UFile.vue", () => {
 
       const component = mount(UFile, {
         slots: {
-          "after-file": `<template #after-file>
-            <span class='${slotClass}'>${slotText}</span>
-          </template>`,
+          "after-file": `
+            <template #after-file>
+              <span class='${slotClass}'>${slotText}</span>
+            </template>
+          `,
         },
       });
 

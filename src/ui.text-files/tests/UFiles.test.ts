@@ -212,9 +212,11 @@ describe("UFiles.vue", () => {
           fileList,
         },
         slots: {
-          "before-file": `<template #before-file="{ index }">
-            <span class='${slotClass}'>${slotText}{{ index }}</span>
-          </template>`,
+          "before-file": `
+            <template #before-file="{ index }">
+              <span class='${slotClass}'>${slotText}{{ index }}</span>
+            </template>
+          `,
         },
       });
 
@@ -232,9 +234,11 @@ describe("UFiles.vue", () => {
           fileList,
         },
         slots: {
-          "after-file": `<template #after-file="{ index }">
-            <span class='${slotClass}'>${slotText}{{ index }}</span>
-          </template>`,
+          "after-file": `
+            <template #after-file="{ index }">
+              <span class='${slotClass}'>${slotText}{{ index }}</span>
+            </template>
+          `,
         },
       });
 
