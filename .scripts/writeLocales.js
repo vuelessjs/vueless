@@ -2,6 +2,7 @@
 
 import path from "node:path";
 import { cwd } from "node:process";
+import { pathToFileURL } from "node:url";
 import { writeFile, rm, mkdir } from "node:fs/promises";
 
 import { buildTSFile } from "../src/utils/node/helper.js";
@@ -14,7 +15,7 @@ const jsonLocalePath = path.join(jsonLocaleDirPath, "en.json");
 
 await buildTSFile(tsLocalePath, jsLocalePath);
 
-const { default: defaultEnLocale } = await import(jsLocalePath);
+const { default: defaultEnLocale } = await import(pathToFileURL(jsLocalePath));
 
 await mkdir(jsonLocaleDirPath, { recursive: true });
 await writeFile(jsonLocalePath, JSON.stringify(defaultEnLocale), "utf-8");

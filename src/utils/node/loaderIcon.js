@@ -125,7 +125,7 @@ export function generateIconExports() {
   const entries = files
     .map((relativePath) => {
       const fullImportPath = path.resolve(cachePath, relativePath).replace(/\\/g, "/");
-      const virtualPath = path.join(cwd(), ICONS_CACHED_DIR, relativePath);
+      const virtualPath = path.join(cwd(), ICONS_CACHED_DIR, relativePath).replace(/\\/g, "/");
 
       return `  ["${virtualPath}", import("${fullImportPath}?component")]`;
     })
