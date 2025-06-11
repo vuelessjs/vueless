@@ -80,7 +80,7 @@ const {
 <template>
   <ULink ref="file" :href="url" v-bind="fileAttrs" :data-test="getDataTest()">
     <!-- @slot Use it to add something before the file. -->
-    <slot name="left" />
+    <slot name="before-file" />
 
     <!--
       @slot Use it to add a file directly.
@@ -108,7 +108,7 @@ const {
     </slot>
 
     <!-- @slot Use it to add something after the file. -->
-    <slot name="right">
+    <slot name="after-file">
       <UIcon
         v-if="removable"
         interactive

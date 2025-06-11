@@ -202,17 +202,17 @@ describe("UFiles.vue", () => {
       expect(component.find(`.${slotClass}`).text()).toBe(slotText);
     });
 
-    // Left slot
-    it("renders content from left slot", () => {
-      const slotText = "Left";
-      const slotClass = "left-content";
+    // Before-file slot
+    it("renders content from before-file slot", () => {
+      const slotText = "Before";
+      const slotClass = "before-content";
 
       const component = mount(UFiles, {
         props: {
           fileList,
         },
         slots: {
-          left: `<template #left="{ index }">
+          "before-file": `<template #before-file="{ index }">
             <span class='${slotClass}'>${slotText}{{ index }}</span>
           </template>`,
         },
@@ -222,17 +222,17 @@ describe("UFiles.vue", () => {
       expect(component.find(`.${slotClass}`).text()).toBe(`${slotText}0`);
     });
 
-    // Right slot
-    it("renders content from right slot", () => {
-      const slotText = "Right";
-      const slotClass = "right-content";
+    // After-file slot
+    it("renders content from after-file slot", () => {
+      const slotText = "After";
+      const slotClass = "after-content";
 
       const component = mount(UFiles, {
         props: {
           fileList,
         },
         slots: {
-          right: `<template #right="{ index }">
+          "after-file": `<template #after-file="{ index }">
             <span class='${slotClass}'>${slotText}{{ index }}</span>
           </template>`,
         },
@@ -242,10 +242,9 @@ describe("UFiles.vue", () => {
       expect(component.find(`.${slotClass}`).text()).toBe(`${slotText}0`);
     });
 
-    // Default slot with bindings
-    it("provides correct bindings to default slot", () => {
+    // File slot with bindings
+    it("provides correct bindings to file slot", () => {
       const fileName = "file1.pdf";
-      const fileIndex = "0";
       const fileList = [createMockFile(fileName)];
 
       // Define class names as constants instead of hardcoding them
@@ -260,13 +259,13 @@ describe("UFiles.vue", () => {
           fileList,
         },
         slots: {
-          default: `
-            <template #default="{ id, label, url, imageUrl, index }">
+          file: `
+            <template #file="{ id, label, url, imageUrl, index }">
               <div v-if="id" class="${idClass}">{{ id }}</div>
               <div v-if="label" class="${labelClass}">{{ label }}</div>
               <div v-if="url" class="${urlClass}">{{ url }}</div>
               <div v-if="imageUrl" class="${imageUrlClass}">{{ imageUrl }}</div>
-              <div v-if="index" class="${indexClass}">{{ index }}</div>
+              <div class="${indexClass}">{{ index }}</div>
             </template>
           `,
         },
@@ -276,7 +275,7 @@ describe("UFiles.vue", () => {
       expect(component.find(`.${labelClass}`).text()).toBe(fileName);
       expect(component.find(`.${urlClass}`).exists()).toBe(true);
       expect(component.find(`.${imageUrlClass}`).exists()).toBe(false);
-      expect(component.find(`.${indexClass}`).html()).toBe(fileIndex);
+      expect(component.find(`.${indexClass}`).text()).toBe("0");
     });
   });
 

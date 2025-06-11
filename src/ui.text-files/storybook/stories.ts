@@ -92,10 +92,10 @@ export const Slots: StoryFn<UFilesArgs> = (args) => ({
   },
   template: `
     <UFiles v-bind="args">
-      <template #left="{ index }">
+      <template #before-file="{ index }">
         <UIcon v-if="index === 0" name="info" color="warning" size="xs" />
       </template>
-      <template #right="{ index }">
+      <template #after-file="{ index }">
         <UIcon v-if="index === 1" name="check_circle" color="success" size="xs" />
       </template>
     </UFiles>

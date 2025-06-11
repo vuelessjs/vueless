@@ -96,12 +96,12 @@ const { getDataTest, filesLabelAttrs, itemsAttrs, itemAttrs } = useUI<Config>(de
           :data-test="getDataTest(`item-${index}`)"
           @remove="onRemoveFile"
         >
-          <template #left>
+          <template #before-file>
             <!--
-              @slot Use it to add something left.
+              @slot Use it to add something before the file content.
               @binding {number} index
             -->
-            <slot name="left" :index="index" />
+            <slot name="before-file" :index="index" />
           </template>
 
           <!--
@@ -121,12 +121,12 @@ const { getDataTest, filesLabelAttrs, itemsAttrs, itemAttrs } = useUI<Config>(de
             :index="index"
           />
 
-          <template #right>
+          <template #after-file>
             <!--
-              @slot Use it to add something right.
+              @slot Use it to add something after the file content.
               @binding {number} index
             -->
-            <slot name="right" :index="index" />
+            <slot name="after-file" :index="index" />
           </template>
         </UFile>
       </slot>
