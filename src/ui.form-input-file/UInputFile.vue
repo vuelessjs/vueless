@@ -340,6 +340,7 @@ const {
               @binding {string} label
               @binding {string} url
               @binding {string} image-url
+              @binding {number} index
             -->
             <slot :id="id" :label="label" :url="url" :image-url="imageUrl" :index="index" />
           </template>
