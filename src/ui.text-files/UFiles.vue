@@ -112,14 +112,7 @@ const { getDataTest, filesLabelAttrs, itemsAttrs, itemAttrs } = useUI<Config>(de
               @binding {string} image-url
               @binding {number} index
             -->
-            <slot
-              :id="id"
-              name="default"
-              :label="label"
-              :url="url"
-              :image-url="imageUrl"
-              :index="index"
-            />
+            <slot :id="id" :label="label" :url="url" :image-url="imageUrl" :index="index" />
           </template>
 
           <template #right>
