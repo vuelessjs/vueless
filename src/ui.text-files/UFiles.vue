@@ -104,16 +104,21 @@ const { getDataTest, filesLabelAttrs, itemsAttrs, itemAttrs } = useUI<Config>(de
             <slot name="left" :index="index" />
           </template>
 
-          <template #default="{ id, label, url, imageUrl }">
-            <!-- @slot Use it to add a file directly.
-              @binding {string | number} id
-              @binding {string} label
-              @binding {string} url
-              @binding {string} image-url
-              @binding {number} index
-            -->
-            <slot :id="id" :label="label" :url="url" :image-url="imageUrl" :index="index" />
-          </template>
+          <!--
+            @slot Use it to add a file directly.
+            @binding {string | number} id
+            @binding {string} label
+            @binding {string} url
+            @binding {string} image-url
+            @binding {number} index
+          -->
+          <slot
+            :id="file?.id"
+            :label="file?.label"
+            :url="file?.url"
+            :image-url="file?.imageUrl"
+            :index="index"
+          />
 
           <template #right>
             <!--

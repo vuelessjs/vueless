@@ -265,8 +265,8 @@ describe("UFiles.vue", () => {
               <div v-if="id" class="${idClass}">{{ id }}</div>
               <div v-if="label" class="${labelClass}">{{ label }}</div>
               <div v-if="url" class="${urlClass}">{{ url }}</div>
-              <div v-if="imageUrl" class="${imageUrlClass}">{{ imageUrl || 'no-image' }}</div>
-              <div v-if="index" class="${indexClass}">{{ index }}</div>
+              <div v-if="imageUrl" class="${imageUrlClass}">{{ imageUrl }}</div>
+              <div class="${indexClass}">{{ index }}</div>
             </template>
           `,
         },
@@ -275,8 +275,8 @@ describe("UFiles.vue", () => {
       expect(component.find(`.${idClass}`).exists()).toBe(true);
       expect(component.find(`.${labelClass}`).text()).toBe(fileName);
       expect(component.find(`.${urlClass}`).exists()).toBe(true);
-      expect(component.find(`.${imageUrlClass}`).exists()).toBe(true);
-      expect(component.find(`.${indexClass}`).text()).toBe(fileIndex);
+      expect(component.find(`.${imageUrlClass}`).exists()).toBe(false);
+      expect(component.find(`.${indexClass}`).html()).toBe(fileIndex);
     });
   });
 
