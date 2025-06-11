@@ -249,6 +249,7 @@ describe("UFiles.vue", () => {
     // File slot with bindings
     it("provides correct bindings to file slot", () => {
       const fileName = "file1.pdf";
+      const fileIndex = "0";
       const fileList = [createMockFile(fileName)];
 
       // Define class names as constants instead of hardcoding them
@@ -279,7 +280,7 @@ describe("UFiles.vue", () => {
       expect(component.find(`.${labelClass}`).text()).toBe(fileName);
       expect(component.find(`.${urlClass}`).exists()).toBe(true);
       expect(component.find(`.${imageUrlClass}`).exists()).toBe(false);
-      expect(component.find(`.${indexClass}`).text()).toBe("0");
+      expect(component.find(`.${indexClass}`).text()).toBe(fileIndex);
     });
   });
 
