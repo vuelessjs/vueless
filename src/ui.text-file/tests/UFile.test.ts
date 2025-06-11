@@ -182,15 +182,15 @@ describe("UFile.vue", () => {
       expect(component.find(`.${imageUrlClass}`).text()).toBe(imageUrl);
     });
 
-    // Before-file slot
-    it("renders content from before-file slot", () => {
+    // Left slot
+    it("renders content from left slot", () => {
       const slotText = "Before";
       const slotClass = "before-content";
 
       const component = mount(UFile, {
         slots: {
-          "before-file": `
-            <template #before-file>
+          left: `
+            <template #left>
               <span class='${slotClass}'>${slotText}</span>
             </template>
           `,
@@ -201,15 +201,15 @@ describe("UFile.vue", () => {
       expect(component.find(`.${slotClass}`).text()).toBe(slotText);
     });
 
-    // After-file slot
-    it("renders content from after-file slot", () => {
+    // Right slot
+    it("renders content from right slot", () => {
       const slotText = "After";
       const slotClass = "after-content";
 
       const component = mount(UFile, {
         slots: {
-          "after-file": `
-            <template #after-file>
+          right: `
+            <template #right>
               <span class='${slotClass}'>${slotText}</span>
             </template>
           `,

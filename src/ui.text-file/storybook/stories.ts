@@ -95,13 +95,13 @@ export const Slots: StoryFn<UFileArgs> = (args) => ({
   template: `
     <URow>
       <UFile v-bind="args">
-        <template #before-file>
+        <template #left>
           <UIcon name="info" color="warning" size="xs" />
         </template>
       </UFile>
 
       <UFile v-bind="args">
-        <template #after-file>
+        <template #right>
           <UBadge label="File uploaded" color="success" />
         </template>
       </UFile>
