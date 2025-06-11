@@ -114,6 +114,7 @@ const { getDataTest, filesLabelAttrs, itemsAttrs, itemAttrs } = useUI<Config>(de
           -->
           <slot
             :id="file?.id"
+            name="file"
             :label="file?.label"
             :url="file?.url"
             :image-url="file?.imageUrl"
