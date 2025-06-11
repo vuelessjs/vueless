@@ -184,16 +184,12 @@ describe("UFile.vue", () => {
 
     // Left slot
     it("renders content from left slot", () => {
-      const slotText = "Before";
-      const slotClass = "before-content";
+      const slotText = "Left";
+      const slotClass = "left-content";
 
       const component = mount(UFile, {
         slots: {
-          left: `
-            <template #left>
-              <span class='${slotClass}'>${slotText}</span>
-            </template>
-          `,
+          left: `<span class='${slotClass}'>${slotText}</span>`,
         },
       });
 
@@ -203,16 +199,12 @@ describe("UFile.vue", () => {
 
     // Right slot
     it("renders content from right slot", () => {
-      const slotText = "After";
-      const slotClass = "after-content";
+      const slotText = "Right";
+      const slotClass = "right-content";
 
       const component = mount(UFile, {
         slots: {
-          right: `
-            <template #right>
-              <span class='${slotClass}'>${slotText}</span>
-            </template>
-          `,
+          right: `<span class='${slotClass}'>${slotText}</span>`,
         },
       });
 
