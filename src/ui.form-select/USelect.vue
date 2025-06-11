@@ -795,7 +795,7 @@ const {
         @focus="activate"
         @blur="onListboxBlur"
         @search-blur="onListboxSearchBlur"
-        @search-change="onSearchChange"
+        @update:model-value="onSearchChange"
       >
         <template #before-option="{ option, index }">
           <!--
