@@ -1,3 +1,4 @@
+import { ref } from "vue";
 import {
   getArgs,
   getArgTypes,
@@ -10,7 +11,7 @@ import UInputPassword from "../UInputPassword.vue";
 import UCol from "../../ui.container-col/UCol.vue";
 import URow from "../../ui.container-row/URow.vue";
 import UButton from "../../ui.button/UButton.vue";
-import UAvatar from "../../ui.image-avatar/UAvatar.vue";
+import UDropdownButton from "../../ui.dropdown-button/UDropdownButton.vue";
 
 import type { Meta, StoryFn } from "@storybook/vue3";
 import type { Props } from "../types.ts";
@@ -126,25 +127,42 @@ export const IconProps: StoryFn<UInputPasswordArgs> = (args) => ({
 });
 
 export const Slots: StoryFn<UInputPasswordArgs> = (args) => ({
-  components: { UInputPassword, URow, UButton, UAvatar },
+  components: { UInputPassword, URow, UButton, UDropdownButton },
   setup() {
-    return { args };
+    const wifiTypes = [
+      { label: "WPA2", id: "wpa2" },
+      { label: "WPA3", id: "wpa3" },
+    ];
+
+    const wifiType = ref(null);
+
+    return { args, wifiType, wifiTypes };
   },
   template: `
     <URow>
       <UInputPassword
         v-bind="args"
         v-model="args.modelValue"
+        placeholder="Enter your password"
         :config="{ passwordInput: { leftSlot: 'pl-0' } }"
       >
         <template #left>
-          <UAvatar />
+          <UDropdownButton
+            v-model="wifiType"
+            :options="wifiTypes"
+            label="Wifi type"
+            size="sm"
+            variant="ghost"
+            class="rounded-r-none h-full"
+            :config="{ wrapper: 'h-full', listbox: 'w-full' }"
+          />
         </template>
       </UInputPassword>
 
       <UInputPassword
         v-bind="args"
         v-model="args.modelValue"
+        placeholder="Enter your password"
         :config="{ passwordInput: { rightSlot: 'pr-0' } }"
       >
         <template #right="{ visible, toggle }">
@@ -153,7 +171,7 @@ export const Slots: StoryFn<UInputPasswordArgs> = (args) => ({
             color="neutral"
             variant="ghost"
             size="sm"
-            class="rounded-l-none h-full"
+            class="rounded-l-none h-full min-h-[38px] min-w-[69px]"
             @click="toggle"
           />
         </template>
@@ -161,3 +179,10 @@ export const Slots: StoryFn<UInputPasswordArgs> = (args) => ({
     </URow>
   `,
 });
+Slots.parameters = {
+  docs: {
+    story: {
+      height: "200px",
+    },
+  },
+};

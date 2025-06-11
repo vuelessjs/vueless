@@ -8,13 +8,13 @@ import {
 
 import UInput from "../../ui.form-input/UInput.vue";
 import UIcon from "../../ui.image-icon/UIcon.vue";
-import UButton from "../../ui.button/UButton.vue";
 import UCol from "../../ui.container-col/UCol.vue";
 import URow from "../../ui.container-row/URow.vue";
-import UAvatar from "../../ui.image-avatar/UAvatar.vue";
+import UDropdownButton from "../../ui.dropdown-button/UDropdownButton.vue";
 
 import type { Meta, StoryFn } from "@storybook/vue3";
 import type { Props } from "../types.ts";
+import { ref } from "vue";
 
 interface UInputArgs extends Props {
   slotTemplate?: string;
@@ -177,23 +177,49 @@ export const IconProps: StoryFn<UInputArgs> = (args) => ({
 });
 
 export const Slots: StoryFn<UInputArgs> = (args) => ({
-  components: { UInput, URow, UButton, UAvatar },
+  components: { UInput, URow, UDropdownButton },
   setup() {
-    return { args };
+    const countryCodes = [
+      { label: "+33", id: "+33" },
+      { label: "+44", id: "+44" },
+      { label: "+49", id: "+49" },
+    ];
+
+    const countryCode = ref("+33");
+
+    return { args, countryCode, countryCodes };
   },
   template: `
     <URow>
-      <UInput v-bind="args">
+      <UInput
+        label="Phone Number"
+        placeholder="Enter your phone number"
+        :config="{ leftSlot: 'pl-0' }"
+      >
         <template #left>
-          <UAvatar />
+          <UDropdownButton
+            v-model="countryCode"
+            :options="countryCodes"
+            size="xs"
+            variant="ghost"
+            class="rounded-r-none h-full"
+            :config="{ wrapper: 'h-full' }"
+          />
         </template>
       </UInput>
 
-      <UInput v-bind="args" :config="{ rightSlot: 'pr-0' }">
+      <UInput label="Website" placeholder="Enter your website">
         <template #right>
-          <UButton label="Search" size="sm" class="rounded-l-none h-full" />
+          <span class="text-neutral-lifted">.com</span>
         </template>
       </UInput>
     </URow>
   `,
 });
+Slots.parameters = {
+  docs: {
+    story: {
+      height: "200px",
+    },
+  },
+};

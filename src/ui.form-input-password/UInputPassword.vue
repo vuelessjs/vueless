@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, computed, useId } from "vue";
+import { ref, computed } from "vue";
 
 import useUI from "../composables/useUI.ts";
 import { getDefaults } from "../utils/ui.ts";
@@ -27,8 +27,6 @@ const emit = defineEmits([
    */
   "update:modelValue",
 ]);
-
-const elementId = props.id || useId();
 
 const isShownPassword = ref(false);
 
@@ -89,7 +87,7 @@ const { getDataTest, config, passwordInputAttrs, passwordIconAttrs, passwordIcon
     </template>
 
     <template #right>
-      <label v-bind="passwordIconWrapperAttrs" :for="elementId">
+      <div v-bind="passwordIconWrapperAttrs">
         <!--
           @slot Use it to add something instead of the password icon.
           @binding {string} icon-name
@@ -111,7 +109,7 @@ const { getDataTest, config, passwordInputAttrs, passwordIconAttrs, passwordIcon
             @click="onClickShowPassword"
           />
         </slot>
-      </label>
+      </div>
     </template>
   </UInput>
 </template>

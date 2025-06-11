@@ -11,7 +11,6 @@ import UTextarea from "../../ui.form-textarea/UTextarea.vue";
 import UIcon from "../../ui.image-icon/UIcon.vue";
 import UCol from "../../ui.container-col/UCol.vue";
 import URow from "../../ui.container-row/URow.vue";
-import UAvatar from "../../ui.image-avatar/UAvatar.vue";
 import tooltip from "../../directives/tooltip/vTooltip.ts";
 
 import type { Meta, StoryFn } from "@storybook/vue3";
@@ -123,18 +122,20 @@ NoAutocomplete.parameters = {
 };
 
 export const Slots: StoryFn<UTextareaArgs> = (args) => ({
-  components: { UTextarea, URow, UIcon, UAvatar },
+  components: { UTextarea, URow, UIcon },
   directives: { tooltip },
   setup() {
     const switchModel = ref(false);
+    const text = ref("");
+    const maxLength = 300;
 
-    return { args, switchModel };
+    return { args, switchModel, text, maxLength };
   },
   template: `
     <URow>
-      <UTextarea v-bind="args">
+      <UTextarea v-bind="args" v-model="text" :max-length="maxLength">
         <template #left>
-          <UAvatar />
+          <span class="text-sm text-neutral-lifted">{{ text.length }}/{{ maxLength }}</span>
         </template>
       </UTextarea>
 

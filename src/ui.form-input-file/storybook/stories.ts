@@ -10,6 +10,7 @@ import UInputFile from "../../ui.form-input-file/UInputFile.vue";
 import UCol from "../../ui.container-col/UCol.vue";
 import UBadge from "../../ui.text-badge/UBadge.vue";
 import UIcon from "../../ui.image-icon/UIcon.vue";
+import URow from "../../ui.container-row/URow.vue";
 
 import type { Meta, StoryFn } from "@storybook/vue3";
 import type { Props } from "../types.ts";
@@ -84,7 +85,7 @@ MaxFileSize.args = {
 
 export const AllowedFileTypes = DefaultTemplate.bind({});
 AllowedFileTypes.args = {
-  allowedFileTypes: ["png", "jpeg"],
+  allowedFileTypes: [".png", ".jpeg"],
   description: "Only png and jpeg formats are allowed.",
 };
 
@@ -104,39 +105,55 @@ LabelSlot.args = {
 };
 
 export const Slots: StoryFn<UInputFileArgs> = (args) => ({
-  components: { UInputFile, UCol, UBadge, UIcon },
+  components: { UInputFile, UCol, UBadge, UIcon, URow },
   setup() {
     return { args };
   },
   template: `
-    <UCol>
+    <UCol gap="xl">
       <UInputFile
         v-bind="args"
         v-model="args.files"
-        label="Slot Top"
+        label="Top Slot"
+        :allowedFileTypes="['.jpeg', '.png']"
+        :maxFileSize="2"
       >
         <template #top>
-          <UBadge label="Pending Review..." />
+          <URow align="center" gap="xs">
+            <UIcon name="info" size="sm" />
+            <span class="text-sm text-neutral-lifted">Recommended size: 400x400px, max 2MB</span>
+          </URow>
         </template>
       </UInputFile>
 
       <UInputFile
         v-bind="args"
         v-model="args.files"
-        label="Slot Left"
+        label="Left Slot"
+        :allowedFileTypes="['.pdf', '.doc', '.docx']"
       >
         <template #left>
-          <UIcon name="info" color="warning" />
+          <URow align="center" gap="xs">
+            <UIcon name="description" size="sm" />
+            <span class="text-xs text-neutral-lifted text-nowrap">PDF, DOC, DOCX</span>
+          </URow>
         </template>
       </UInputFile>
 
       <UInputFile
         v-bind="args"
         v-model="args.files"
-        label="Slot Bottom"
+        label="Bottom Slot"
+        multiple
+        :allowedFileTypes="['.png', '.jpeg']"
       >
         <template #bottom>
-          <UBadge label="An antivirus check will be performed after file upload." />
+          <URow align="center" gap="xs">
+            <UIcon name="schedule" size="sm" />
+            <span class="text-sm text-neutral-lifted">
+              Processing may take a few moments for multiple files
+            </span>
+          </URow>
         </template>
       </UInputFile>
     </UCol>

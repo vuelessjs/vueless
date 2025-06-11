@@ -1,3 +1,4 @@
+import { ref } from "vue";
 import {
   getArgs,
   getArgTypes,
@@ -7,12 +8,10 @@ import {
 } from "../../utils/storybook.ts";
 
 import UInputSearch from "../../ui.form-input-search/UInputSearch.vue";
-import UButton from "../../ui.button/UButton.vue";
 import UIcon from "../../ui.image-icon/UIcon.vue";
 import UCol from "../../ui.container-col/UCol.vue";
 import URow from "../../ui.container-row/URow.vue";
-import UAvatar from "../../ui.image-avatar/UAvatar.vue";
-import UBadge from "../../ui.text-badge/UBadge.vue";
+import UDropdownButton from "../../ui.dropdown-button/UDropdownButton.vue";
 
 import type { Meta, StoryFn } from "@storybook/vue3";
 import type { Props } from "../types.ts";
@@ -40,7 +39,7 @@ export default {
 } as Meta;
 
 const DefaultTemplate: StoryFn<UInputSearchArgs> = (args: UInputSearchArgs) => ({
-  components: { UInputSearch, UButton, UIcon },
+  components: { UInputSearch, UIcon },
   setup: () => ({ args, slots: getSlotNames(UInputSearch.__name) }),
   template: `
     <UInputSearch
@@ -136,21 +135,52 @@ export const IconProps: StoryFn<UInputSearchArgs> = (args) => ({
 });
 
 export const Slots: StoryFn<UInputSearchArgs> = (args) => ({
-  components: { UInputSearch, URow, UButton, UAvatar, UBadge },
+  components: { UInputSearch, URow, UIcon, UDropdownButton },
   setup() {
-    return { args };
+    const aiVersions = [
+      { label: "GPT-4o", id: "gpt-4o" },
+      { label: "GPT-4o-mini", id: "gpt-4o-mini" },
+      { label: "GPT-4", id: "gpt-4" },
+    ];
+
+    const aiVersion = ref(null);
+
+    return { args, aiVersion, aiVersions };
   },
   template: `
-    <URow>
-      <UInputSearch v-bind="args" :config="{ searchInput: { leftSlot: 'pl-0' } }">
+    <URow class="gap-4" align="stretch">
+      <UInputSearch
+        placeholder="Ask something..."
+        :config="{ searchInput: { leftSlot: 'pl-0' } }"
+      >
         <template #left>
-          <UAvatar size="sm" />
+          <UDropdownButton
+            v-model="aiVersion"
+            :options="aiVersions"
+            label="AI Version"
+            size="sm"
+            variant="ghost"
+            class="rounded-r-none h-full"
+            :config="{ wrapper: 'h-full', listbox: 'w-auto' }"
+          />
         </template>
       </UInputSearch>
 
-      <UInputSearch v-bind="args" :config="{ searchInput: { rightSlot: 'pr-0' } }">
+      <UInputSearch
+        placeholder="Search by rental district..."
+        :config="{
+          searchInput: {
+            inputLabel: {
+              content: '!h-full',
+            },
+          },
+        }"
+      >
         <template #right>
-          <UBadge label="Search" size="sm" color="success" />
+          <URow align="center" gap="xs">
+            <UIcon name="straighten" size="sm" />
+            <span class="text-sm text-neutral-600">+2km</span>
+          </URow>
         </template>
       </UInputSearch>
     </URow>
