@@ -269,7 +269,7 @@ describe("UFiles.vue", () => {
               <div v-if="label" class="${labelClass}">{{ label }}</div>
               <div v-if="url" class="${urlClass}">{{ url }}</div>
               <div v-if="imageUrl" class="${imageUrlClass}">{{ imageUrl }}</div>
-              <div class="${indexClass}">{{ index }}</div>
+              <div v-if="index >= 0" class="${indexClass}">{{ index }}</div>
             </template>
           `,
         },
