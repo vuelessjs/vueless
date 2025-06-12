@@ -303,9 +303,6 @@ export const IconProps: StoryFn<USelectArgs> = (args) => ({
 export const Slots: StoryFn<USelectArgs> = (args) => ({
   components: { USelect, UCol, URow, ULink, UBadge, UAvatar, UIcon },
   setup() {
-    const leftModel = ref(null);
-    const rightModel = ref(null);
-
     const paymentOptions = [
       { label: "Visa", id: "visa", icon: "credit_card", details: "•••• 4242" },
       { label: "PayPal", id: "paypal", icon: "payments", details: "user@example.com" },
@@ -314,25 +311,25 @@ export const Slots: StoryFn<USelectArgs> = (args) => ({
     ];
 
     const selectedLeftOption = computed(
-      () => paymentOptions.find((option) => option.id === leftModel.value) || null,
+      () => paymentOptions.find((option) => option.id === args.leftSlotModel) || null,
     );
 
     const selectedRightOption = computed(
-      () => paymentOptions.find((option) => option.id === rightModel.value) || null,
+      () => paymentOptions.find((option) => option.id === args.rightSlotModel) || null,
     );
 
-    return { args, leftModel, rightModel, paymentOptions, selectedLeftOption, selectedRightOption };
+    return { args, paymentOptions, selectedLeftOption, selectedRightOption };
   },
   template: `
     <URow>
       <USelect
-        v-model="leftModel"
+        v-model="args.leftSlotModel"
         label="Select Payment Method"
         :options="paymentOptions"
       >
         <template #left>
           <UIcon
-            v-if="leftModel"
+            v-if="args.leftSlotModel"
             :name="selectedLeftOption.icon"
             color="primary"
             size="sm"
@@ -341,13 +338,13 @@ export const Slots: StoryFn<USelectArgs> = (args) => ({
       </USelect>
 
       <USelect
-        v-model="rightModel"
+        v-model="args.rightSlotModel"
         label="Select Payment Method"
         :options="paymentOptions"
       >
         <template #right>
           <span
-            v-if="rightModel"
+            v-if="args.rightSlotModel"
             class="text-small text-lifted text-nowrap"
           >
             {{ selectedRightOption.details }}
