@@ -1,4 +1,3 @@
-import { ref } from "vue";
 import {
   getArgs,
   getArgTypes,
@@ -124,18 +123,12 @@ NoAutocomplete.parameters = {
 export const Slots: StoryFn<UTextareaArgs> = (args) => ({
   components: { UTextarea, URow, UIcon },
   directives: { tooltip },
-  setup() {
-    const switchModel = ref(false);
-    const text = ref("");
-    const maxLength = 300;
-
-    return { args, switchModel, text, maxLength };
-  },
+  setup: () => ({ args }),
   template: `
     <URow>
-      <UTextarea v-bind="args" v-model="text" :max-length="maxLength">
+      <UTextarea v-bind="args" v-model="args.modelValue" :max-length="300">
         <template #left>
-          <span class="text-sm text-neutral-lifted">{{ text.length }}/{{ maxLength }}</span>
+          <span class="text-sm text-lifted">{{ args.modelValue.length }}/300</span>
         </template>
       </UTextarea>
 

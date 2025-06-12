@@ -121,7 +121,7 @@ export const Slots: StoryFn<UInputFileArgs> = (args) => ({
         <template #top>
           <URow align="center" gap="xs">
             <UIcon name="info" size="sm" />
-            <span class="text-sm text-neutral-lifted">Recommended size: 400x400px, max 2MB</span>
+            <span class="text-sm text-lifted">Recommended size: 400x400px, max 2MB</span>
           </URow>
         </template>
       </UInputFile>
@@ -135,7 +135,7 @@ export const Slots: StoryFn<UInputFileArgs> = (args) => ({
         <template #left>
           <URow align="center" gap="xs">
             <UIcon name="description" size="sm" />
-            <span class="text-xs text-neutral-lifted text-nowrap">PDF, DOC, DOCX</span>
+            <span class="text-xs text-lifted text-nowrap">PDF, DOC, DOCX</span>
           </URow>
         </template>
       </UInputFile>
@@ -150,7 +150,7 @@ export const Slots: StoryFn<UInputFileArgs> = (args) => ({
         <template #bottom>
           <URow align="center" gap="xs">
             <UIcon name="schedule" size="sm" />
-            <span class="text-sm text-neutral-lifted">
+            <span class="text-sm text-lifted">
               Processing may take a few moments for multiple files
             </span>
           </URow>

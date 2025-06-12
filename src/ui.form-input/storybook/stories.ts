@@ -211,7 +211,7 @@ export const Slots: StoryFn<UInputArgs> = (args) => ({
 
       <UInput label="Website" placeholder="Enter your website">
         <template #right>
-          <span class="text-neutral-lifted">.com</span>
+          <span class="text-lifted">.com</span>
         </template>
       </UInput>
     </URow>
