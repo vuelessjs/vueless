@@ -186,3 +186,10 @@ export const Slots: StoryFn<UInputSearchArgs> = (args) => ({
     </URow>
   `,
 });
+Slots.parameters = {
+  docs: {
+    story: {
+      height: "200px",
+    },
+  },
+};

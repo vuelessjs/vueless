@@ -139,7 +139,7 @@ export const Slots: StoryFn<UInputPasswordArgs> = (args) => ({
     return { args, wifiType, wifiTypes };
   },
   template: `
-    <URow>
+    <URow align="stretch">
       <UInputPassword
         v-bind="args"
         v-model="args.modelValue"
@@ -163,7 +163,14 @@ export const Slots: StoryFn<UInputPasswordArgs> = (args) => ({
         v-bind="args"
         v-model="args.modelValue"
         placeholder="Enter your password"
-        :config="{ passwordInput: { rightSlot: 'pr-0' } }"
+        :config="{
+          passwordInput: {
+            inputLabel: {
+              content: 'h-full',
+            },
+            rightSlot: 'pr-0',
+          },
+        }"
       >
         <template #right="{ visible, toggle }">
           <UButton
@@ -171,7 +178,7 @@ export const Slots: StoryFn<UInputPasswordArgs> = (args) => ({
             color="neutral"
             variant="ghost"
             size="sm"
-            class="rounded-l-none h-full min-h-[38px] min-w-[69px]"
+            class="rounded-l-none h-full min-w-[69px]"
             @click="toggle"
           />
         </template>

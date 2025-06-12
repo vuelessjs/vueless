@@ -209,7 +209,8 @@ export const Slots: StoryFn<UInputNumberArgs> = (args) => ({
           <UDropdownButton
             v-model="currency"
             :options="currencies"
-            size="xs"
+            square
+            size="sm"
             variant="ghost"
             class="rounded-r-none h-full"
             :config="{ wrapper: 'h-full' }"
@@ -231,7 +232,7 @@ export const Slots: StoryFn<UInputNumberArgs> = (args) => ({
 Slots.parameters = {
   docs: {
     story: {
-      height: "200px",
+      height: "250px",
     },
   },
 };
