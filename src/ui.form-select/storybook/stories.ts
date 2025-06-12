@@ -1,4 +1,4 @@
-import { ref } from "vue";
+import { ref, computed } from "vue";
 import {
   getArgs,
   getArgTypes,
@@ -14,6 +14,11 @@ import UBadge from "../../ui.text-badge/UBadge.vue";
 import UIcon from "../../ui.image-icon/UIcon.vue";
 import ULink from "../../ui.button-link/ULink.vue";
 import UAvatar from "../../ui.image-avatar/UAvatar.vue";
+
+import johnDoe from "./assets/images/john-doe.png";
+import emilyDavis from "./assets/images/emily-davis.png";
+import alexJohnson from "./assets/images/alex-johnson.png";
+import patMorgan from "./assets/images/pat-morgan.png";
 
 import type { Meta, StoryFn } from "@storybook/vue3";
 import type { Props } from "../types.ts";
@@ -296,149 +301,302 @@ export const IconProps: StoryFn<USelectArgs> = (args) => ({
 });
 
 export const Slots: StoryFn<USelectArgs> = (args) => ({
-  components: { USelect, UCol, URow, ULink, UBadge, UAvatar },
+  components: { USelect, UCol, URow, ULink, UBadge, UAvatar, UIcon },
   setup() {
-    const clearModel = ref(null);
-    const clearMultipleModel = ref([]);
-    const beforeToggleModel = ref(null);
-    const afterToggleModel = ref(null);
     const leftModel = ref(null);
     const rightModel = ref(null);
 
-    return {
-      args,
-      clearModel,
-      clearMultipleModel,
-      beforeToggleModel,
-      afterToggleModel,
-      leftModel,
-      rightModel,
-    };
+    const paymentOptions = [
+      { label: "Visa", id: "visa", icon: "credit_card", details: "•••• 4242" },
+      { label: "PayPal", id: "paypal", icon: "payments", details: "user@example.com" },
+      { label: "Bank Transfer", id: "bank", icon: "account_balance", details: "Acct **** 1234" },
+      { label: "Apple Pay", id: "apple", icon: "phone_iphone", details: "iPhone 15" },
+    ];
+
+    const selectedLeftOption = computed(
+      () => paymentOptions.find((option) => option.id === leftModel.value) || null,
+    );
+
+    const selectedRightOption = computed(
+      () => paymentOptions.find((option) => option.id === rightModel.value) || null,
+    );
+
+    return { args, leftModel, rightModel, paymentOptions, selectedLeftOption, selectedRightOption };
   },
   template: `
-    <UCol>
-      <USelect v-bind="args" v-model="args.clearModel" label="Slot clear">
-        <template #clear>
-          <ULink label="Close" />
+    <URow>
+      <USelect
+        v-model="leftModel"
+        label="Select Payment Method"
+        :options="paymentOptions"
+      >
+        <template #left>
+          <UIcon
+            v-if="leftModel"
+            :name="selectedLeftOption.icon"
+            color="primary"
+            size="sm"
+          />
         </template>
       </USelect>
 
       <USelect
-        v-bind="args"
-        v-model="args.clearMultipleModel"
-        multiple
-        label="Slot clear-multiple"
+        v-model="rightModel"
+        label="Select Payment Method"
+        :options="paymentOptions"
       >
-        <template #clear-multiple>
-          <ULink label="Close" color="success" />
+        <template #right>
+          <span
+            v-if="rightModel"
+            class="text-small text-lifted text-nowrap"
+          >
+            {{ selectedRightOption.details }}
+          </span>
+        </template>
+      </USelect>
+    </URow>
+  `,
+});
+
+export const ToggleSlots: StoryFn<USelectArgs> = (args) => ({
+  components: { USelect, URow, UAvatar, UIcon },
+  setup() {
+    const beforeToggleModel = ref(null);
+    const toggleModel = ref(null);
+    const afterToggleModel = ref(null);
+
+    return { args, beforeToggleModel, toggleModel, afterToggleModel };
+  },
+  template: `
+    <URow>
+      <USelect
+        v-model="beforeToggleModel"
+        label="Before Toggle Slot"
+        :options="[
+          { label: 'John Doe', id: '1' },
+          { label: 'Jane Smith', id: '2' },
+          { label: 'Mike Johnson', id: '3' },
+        ]"
+      >
+        <template #before-toggle>
+          <UIcon name="person" color="primary" />
         </template>
       </USelect>
 
-      <URow block>
-        <USelect v-bind="args" v-model="args.beforeToggleModel" label="Slot before-toggle">
-          <template #before-toggle>
-            <UAvatar />
-          </template>
-        </USelect>
+      <USelect
+        v-model="toggleModel"
+        label="Toggle Slot"
+        :options="[
+          { label: 'High', id: 'high' },
+          { label: 'Medium', id: 'medium' },
+          { label: 'Low', id: 'low' }
+        ]"
+      >
+        <template #toggle="{ opened }">
+          <UIcon
+            name="expand_circle_down"
+            :class="{ 'rotate-180': opened }"
+            color="primary"
+          />
+        </template>
+      </USelect>
 
-        <USelect
-          v-bind="args"
-          v-model="args.afterToggleModel"
-          :config="{ afterToggle: 'pt-0 items-center' }"
-          label="Slot after-toggle"
-        >
-          <template #after-toggle>
-            <UAvatar />
-          </template>
-        </USelect>
-      </URow>
-
-      <URow block>
-        <USelect v-bind="args" v-model="args.leftModel" label="Slot left">
-          <template #left>
-            <UAvatar />
-          </template>
-        </USelect>
-
-        <USelect v-bind="args" v-model="args.rightModel" label="Slot right">
-          <template #right>
-            <UAvatar />
-          </template>
-        </USelect>
-      </URow>
-    </UCol>
+      <USelect
+        v-model="afterToggleModel"
+        label="After Toggle Slot"
+        :options="[
+          { label: 'In Progress', id: 'in_progress' },
+          { label: 'Done', id: 'done' },
+          { label: 'Blocked', id: 'blocked' }
+        ]"
+      >
+        <template #after-toggle>
+          <UIcon name="info" color="primary" />
+        </template>
+      </USelect>
+    </URow>
   `,
 });
-Slots.parameters = {
+
+export const ClearSlot = DefaultTemplate.bind({});
+ClearSlot.args = {
+  slotTemplate: `
+    <template #clear="{ clear }">
+      <ULink label="Clear" @click="clear" />
+    </template>
+  `,
+};
+
+export const SelectedOptionsSlots: StoryFn<USelectArgs> = (args) => ({
+  components: { USelect, URow, UIcon },
+  setup() {
+    const options = [
+      { label: "Paris", id: "1", icon: "flight" },
+      { label: "Venice", id: "2", icon: "sailing" },
+      { label: "Rome", id: "3", icon: "directions_car" },
+      { label: "Milan", id: "4", icon: "directions_bike" },
+    ];
+
+    const selectedOption = ref(null);
+    const selectedOptions = ref(null);
+
+    return { args, selectedOption, selectedOptions, options };
+  },
+  template: `
+    <URow>
+      <USelect
+        v-model="selectedOption"
+        label="Selected option slot"
+        :options="options"
+      >
+        <template #selected-option="{ option }">
+          <URow align="center" gap="2xs">
+            <span>{{ option.label }}</span>
+            <UIcon
+              :name="option.icon"
+              size="2xs"
+              color="success"
+            />
+          </URow>
+        </template>
+      </USelect>
+
+      <USelect
+        v-model="selectedOptions"
+        label="Selected options slot"
+        :options="options"
+        multiple
+      >
+        <template #selected-options="{ options }">
+          <URow
+            v-for="(option, index) in options"
+            :key="index"
+            align="center"
+            gap="2xs"
+          >
+            <span class="text-medium leading-none">{{ option.label }}</span>
+            <UIcon
+              :name="option.icon"
+              size="2xs"
+              color="success"
+            />
+            <UIcon
+              v-if="index !== options.length - 1"
+              name="east"
+              size="2xs"
+              class="mr-1"
+            />
+          </URow>
+        </template>
+      </USelect>
+    </URow>
+  `,
+});
+SelectedOptionsSlots.parameters = {
   docs: {
-    story: {
-      height: "500px",
+    description: {
+      story:
+        // eslint-disable-next-line vue/max-len
+        "The `selected-option` and `selected-options` slots allow you to customize the selected option or options display. <br/> In this example, we've added an icon to the selected option and a separator between options in the `selected-options` slot.",
     },
   },
 };
 
-export const ToggleSlot = DefaultTemplate.bind({});
-ToggleSlot.args = {
+export const SelectedCounterSlot = DefaultTemplate.bind({});
+SelectedCounterSlot.args = {
+  multiple: true,
   slotTemplate: `
-    <template #toggle="{ opened }">
-      <UIcon
-        name="expand_circle_down"
-        :class="{ 'rotate-180': opened }"
-      />
+    <template #selected-counter="{ count, hiddenOptions }">
+      <span v-if="count" :title="hiddenOptions">, and {{ count }} more variant(s)</span>
     </template>
   `,
 };
 
-export const SelectedValueLabelSlot = DefaultTemplate.bind({});
-SelectedValueLabelSlot.args = {
-  slotTemplate: `
-    <template #selected-label="{ selectedLabel }">
-      <UBadge :label="selectedLabel" color="success" />
-    </template>
-  `,
-};
+export const OptionSlots: StoryFn<USelectArgs> = (args) => ({
+  components: { USelect, URow, UCol, UAvatar, UIcon, UBadge },
+  setup() {
+    const beforeOptionModel = ref(null);
+    const optionModel = ref(null);
+    const afterOptionModel = ref(null);
 
-export const SelectedValueLabelAfterSlot = DefaultTemplate.bind({});
-SelectedValueLabelAfterSlot.args = {
-  options: [
-    { label: "Venice", id: "1", icon: "sailing", color: "green" },
-    { label: "Paris", id: "2", icon: "flight", color: "orange" },
-  ],
-  slotTemplate: `
-    <template #selected-label-after="{ option }">
-      <UIcon
-        :name="option.icon"
-        :color="option.color"
-        size="xs"
-        class="ml-1"
-      />
-    </template>
-  `,
-};
+    const options = [
+      {
+        label: "John Doe",
+        id: "1",
+        role: "Developer",
+        avatar: johnDoe,
+        status: "online",
+      },
+      {
+        label: "Jane Smith",
+        id: "2",
+        role: "Designer",
+        avatar: emilyDavis,
+        status: "away",
+      },
+      {
+        label: "Mike Johnson",
+        id: "3",
+        role: "Product Manager",
+        avatar: alexJohnson,
+        status: "offline",
+      },
+      {
+        label: "Sarah Wilson",
+        id: "4",
+        role: "QA Engineer",
+        avatar: patMorgan,
+        status: "online",
+      },
+    ];
 
-export const BeforeOptionSlot = DefaultTemplate.bind({});
-BeforeOptionSlot.args = {
-  slotTemplate: `
-    <template #before-option="{ option, index }">
-      <UBadge v-if="index === 3" label="Special offer!" color="info" class="mr-1" />
-    </template>
-  `,
-};
+    return { args, beforeOptionModel, optionModel, afterOptionModel, options };
+  },
+  template: `
+    <URow>
+      <USelect
+        v-model="beforeOptionModel"
+        label="Before option slot"
+        :options="options"
+      >
+        <template #before-option="{ option }">
+          <UAvatar :src="option.avatar" size="sm" />
+        </template>
+      </USelect>
 
-export const OptionSlot = DefaultTemplate.bind({});
-OptionSlot.args = {
-  slotTemplate: `
-    <template #option="{ option, index }">
-      <UBadge v-if="index === 1" :label="option.label" />
-    </template>
-  `,
-};
+      <USelect
+        v-model="optionModel"
+        label="Option slot"
+        :options="options"
+      >
+        <template #option="{ option }">
+          <URow align="center" gap="2xs">
+            <UAvatar :src="option.avatar" size="sm" />
+            <UCol gap="none">
+              <span class="text-small font-medium">{{ option.label }}</span>
+              <span class="text-tiny text-lifted">{{ option.role }}</span>
+            </UCol>
+            <UBadge
+              :label="option.status"
+              :color="option.status === 'online' ? 'success' : option.status === 'away' ? 'warning' : 'grayscale'"
+              size="sm"
+            />
+          </URow>
+        </template>
+      </USelect>
 
-export const AfterOptionSlot = DefaultTemplate.bind({});
-AfterOptionSlot.args = {
-  slotTemplate: `
-    <template #after-option="{ option, index }">
-      <UBadge v-if="index === 2" label="Special offer!" color="info" class="ml-1" />
-    </template>
+      <USelect
+        v-model="afterOptionModel"
+        label="After option slot"
+        :options="options"
+      >
+        <template #after-option="{ option }">
+          <UBadge
+            :label="option.status"
+            :color="option.status === 'online' ? 'success' : option.status === 'away' ? 'warning' : 'grayscale'"
+          />
+        </template>
+      </USelect>
+    </URow>
   `,
-};
+});

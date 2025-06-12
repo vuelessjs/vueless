@@ -635,8 +635,13 @@ const {
                 <!--
                   @slot Use it to customize selected options counter.
                   @binding {number} count
+                  @binding {string} hidden-options
                 -->
-                <slot name="selected-counter" :count="hiddenSelectedOptionsCount">
+                <slot
+                  name="selected-counter"
+                  :count="hiddenSelectedOptionsCount"
+                  :hidden-options="selectedOptionsLabel.hidden"
+                >
                   <span
                     v-if="hiddenSelectedOptionsCount"
                     v-bind="counterAttrs"
@@ -690,8 +695,13 @@ const {
                 <!--
                   @slot Use it to customize selected options counter.
                   @binding {number} count
+                  @binding {string} hidden-options
                 -->
-                <slot name="selected-counter" :count="hiddenSelectedOptionsCount">
+                <slot
+                  name="selected-counter"
+                  :count="hiddenSelectedOptionsCount"
+                  :hidden-options="selectedOptionsLabel.hidden"
+                >
                   <UBadge
                     v-if="hiddenSelectedOptionsCount"
                     :label="`+${hiddenSelectedOptionsCount}`"
@@ -743,8 +753,13 @@ const {
                     <!--
                       @slot Use it to customize selected options counter.
                       @binding {number} count
+                      @binding {string} hidden-options
                     -->
-                    <slot name="selected-counter" :count="hiddenSelectedOptionsCount">
+                    <slot
+                      name="selected-counter"
+                      :count="hiddenSelectedOptionsCount"
+                      :hidden-options="selectedOptionsLabel.hidden"
+                    >
                       <span
                         v-if="hiddenSelectedOptionsCount"
                         :title="selectedOptionsLabel.hidden"
