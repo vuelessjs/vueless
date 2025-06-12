@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, useTemplateRef } from "vue";
+import { computed, useTemplateRef, useSlots } from "vue";
 
 import useUI from "../composables/useUI.ts";
 import { getDefaults } from "../utils/ui.ts";
@@ -23,6 +23,8 @@ const emit = defineEmits([
    */
   "click",
 ]);
+
+const slots = useSlots();
 
 const wrapperRef = useTemplateRef<HTMLDivElement>("wrapper");
 const labelRef = useTemplateRef<HTMLLabelElement>("label");
@@ -71,6 +73,7 @@ defineExpose({
  */
 const mutatedProps = computed(() => ({
   error: Boolean(props.error) && !props.disabled,
+  label: Boolean(props.label),
 }));
 
 const { getDataTest, wrapperAttrs, contentAttrs, labelAttrs, descriptionAttrs } = useUI<Config>(
@@ -92,9 +95,9 @@ const { getDataTest, wrapperAttrs, contentAttrs, labelAttrs, descriptionAttrs } 
     </div>
 
     <!-- `v-bind` isn't assigned, because the div is system -->
-    <div v-if="label || hasSlotContent($slots['label'], { label }) || error || description">
+    <div v-if="label || hasSlotContent(slots['label'], { label }) || error || description">
       <label
-        v-if="label || hasSlotContent($slots['label'], { label })"
+        v-if="label || hasSlotContent(slots['label'], { label })"
         ref="label"
         :for="props.for"
         v-bind="labelAttrs"
@@ -131,7 +134,7 @@ const { getDataTest, wrapperAttrs, contentAttrs, labelAttrs, descriptionAttrs } 
 
   <div v-else ref="wrapper" v-bind="wrapperAttrs">
     <label
-      v-if="label || hasSlotContent($slots['label'])"
+      v-if="label || hasSlotContent(slots['label'])"
       v-bind="labelAttrs"
       ref="label"
       :for="props.for"

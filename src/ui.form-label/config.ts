@@ -4,8 +4,8 @@ export default /*tw*/ {
     variants: {
       align: {
         topInside: "flex-col gap-0 relative",
-        topWithDesc: "flex-col-reverse gap-2",
-        top: "flex-col gap-2",
+        topWithDesc: "flex-col-reverse",
+        top: "flex-col",
         right: "flex-row w-fit",
         left: "flex-row-reverse w-fit",
       },
@@ -20,6 +20,7 @@ export default /*tw*/ {
       { align: ["left", "right"], centred: true, class: "items-center w-auto" },
       { align: "left", centred: true, class: "justify-end" },
       { align: "right", centred: true, class: "justify-start" },
+      { align: ["top", "topWithDesc"], label: true, class: "gap-2" },
     ],
   },
   content: "flex",
