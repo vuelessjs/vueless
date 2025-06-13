@@ -108,6 +108,7 @@ npm run preview
 - Name constants that hold slot class should be named `slotClass` or `*SlotClass`
 - When testing class-related props, match expected classes from the component’s CVA config in `config.ts`
 - Run tests by using command `npm run test:ci src/ui.[component-folder]`]
+- Ensure the tests meet Testing Guidelines
 - Import types with `type` keyword, example `import type { ComponentPublicInstance } from "vue"`
 
 ## Best Practices
