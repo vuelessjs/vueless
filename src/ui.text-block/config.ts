@@ -18,6 +18,9 @@ export default /*tw*/ {
         accented: "text-{color}-accented",
         muted: "text-{color}/(--vl-disabled-opacity)",
       },
+      color: {
+        inherit: "text-inherit",
+      },
       size: {
         xs: "text-tiny space-y-1",
         sm: "text-small space-y-2",
