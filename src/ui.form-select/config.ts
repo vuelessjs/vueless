@@ -152,6 +152,7 @@ export default /*tw*/ {
     visibleOptions: 8,
     labelDisplayCount: 2,
     multiple: false,
+    readonly: false,
     disabled: false,
     searchable: false,
     clearable: true,
