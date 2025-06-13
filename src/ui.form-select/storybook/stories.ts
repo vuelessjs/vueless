@@ -14,6 +14,7 @@ import UBadge from "../../ui.text-badge/UBadge.vue";
 import UIcon from "../../ui.image-icon/UIcon.vue";
 import ULink from "../../ui.button-link/ULink.vue";
 import UAvatar from "../../ui.image-avatar/UAvatar.vue";
+import UText from "../../ui.text-block/UText.vue";
 
 import johnDoe from "./assets/images/john-doe.png";
 import emilyDavis from "./assets/images/emily-davis.png";
@@ -63,7 +64,7 @@ export default {
 } as Meta;
 
 const DefaultTemplate: StoryFn<USelectArgs> = (args: USelectArgs) => ({
-  components: { USelect, UIcon, UBadge, ULink, UAvatar },
+  components: { USelect, UIcon, ULink, UText },
   setup() {
     function getSelectedBadge(options: SelectOption[], currentValue: string | number) {
       return options?.find((option) => option.id === currentValue);
@@ -72,7 +73,7 @@ const DefaultTemplate: StoryFn<USelectArgs> = (args: USelectArgs) => ({
     const slots = getSlotNames(USelect.__name);
     const showAlert = (message: string) => alert(message);
 
-    return { args, slots, getSelectedBadge, showAlert };
+    return { args, slots, getSelectedBadge, showAlert }; // move to separate template - add option
   },
   template: `
     <USelect
@@ -306,23 +307,19 @@ export const IconProps: StoryFn<USelectArgs> = (args) => ({
 });
 
 export const Slots: StoryFn<USelectArgs> = (args) => ({
-  components: { USelect, UCol, URow, ULink, UBadge, UAvatar, UIcon },
-  setup() {
-    const paymentOptions = [
-      { label: "Visa", id: "visa", icon: "credit_card", details: "•••• 4242" },
-      { label: "PayPal", id: "paypal", icon: "payments", details: "user@example.com" },
-      { label: "Bank Transfer", id: "bank", icon: "account_balance", details: "Acct **** 1234" },
-      { label: "Apple Pay", id: "apple", icon: "phone_iphone", details: "iPhone 15" },
-    ];
-
-    return { args, paymentOptions };
-  },
+  components: { USelect, URow, UIcon, UText },
+  setup: () => ({ args }),
   template: `
     <URow>
       <USelect
         v-model="args.leftSlotModel"
         label="Select Payment Method"
-        :options="paymentOptions"
+        :options="[
+          { label: 'Visa', id: 'visa', icon: 'credit_card', details: '•••• 4242' },
+          { label: 'PayPal', id: 'paypal', icon: 'payments', details: 'user@example.com' },
+          { label: 'Bank Transfer', id: 'bank', icon: 'account_balance', details: 'Acct **** 1234' },
+          { label: 'Apple Pay', id: 'apple', icon: 'phone_iphone', details: 'iPhone 15' },
+        ]"
       >
         <template #left="{ options }">
           <UIcon
@@ -337,15 +334,22 @@ export const Slots: StoryFn<USelectArgs> = (args) => ({
       <USelect
         v-model="args.rightSlotModel"
         label="Select Payment Method"
-        :options="paymentOptions"
+        :options="[
+          { label: 'Visa', id: 'visa', icon: 'credit_card', details: '•••• 4242' },
+          { label: 'PayPal', id: 'paypal', icon: 'payments', details: 'user@example.com' },
+          { label: 'Bank Transfer', id: 'bank', icon: 'account_balance', details: 'Acct **** 1234' },
+          { label: 'Apple Pay', id: 'apple', icon: 'phone_iphone', details: 'iPhone 15' },
+        ]"
       >
         <template #right="{ options }">
-          <span
+          <UText
             v-if="args.rightSlotModel"
-            class="text-small text-lifted text-nowrap"
+            size="sm"
+            variant="lifted"
+            class="text-nowrap"
           >
             {{ options?.details }}
-          </span>
+          </UText>
         </template>
       </USelect>
     </URow>
@@ -353,7 +357,7 @@ export const Slots: StoryFn<USelectArgs> = (args) => ({
 });
 
 export const ToggleSlots: StoryFn<USelectArgs> = (args) => ({
-  components: { USelect, URow, UAvatar, UIcon },
+  components: { USelect, URow, UIcon },
   setup() {
     const beforeToggleModel = ref(null);
     const toggleModel = ref(null);
@@ -416,33 +420,29 @@ export const ClearSlot = DefaultTemplate.bind({});
 ClearSlot.args = {
   slotTemplate: `
     <template #clear="{ clear }">
-      <ULink label="Clear" @click="clear" />
+      <ULink label="clear" @click="clear" class="mr-1" />
     </template>
   `,
 };
 
 export const SelectedOptionsSlots: StoryFn<USelectArgs> = (args) => ({
-  components: { USelect, URow, UIcon },
-  setup() {
-    const options = [
-      { label: "Paris", id: "1", icon: "flight" },
-      { label: "Venice", id: "2", icon: "sailing" },
-      { label: "Rome", id: "3", icon: "directions_car" },
-      { label: "Milan", id: "4", icon: "directions_bike" },
-    ];
-
-    return { args, options };
-  },
+  components: { USelect, URow, UIcon, UText },
+  setup: () => ({ args }),
   template: `
     <URow>
       <USelect
         v-model="args.selectedOption"
         label="Selected option slot"
-        :options="options"
+        :options="[
+          { label: 'Paris', id: '1', icon: 'flight' },
+          { label: 'Venice', id: '2', icon: 'sailing' },
+          { label: 'Rome', id: '3', icon: 'directions_car' },
+          { label: 'Milan', id: '4', icon: 'directions_bike' },
+        ]"
       >
         <template #selected-option="{ option }">
           <URow align="center" gap="2xs">
-            <span>{{ option.label }}</span>
+            <UText>{{ option.label }}</UText>
             <UIcon
               :name="option.icon"
               size="2xs"
@@ -455,7 +455,12 @@ export const SelectedOptionsSlots: StoryFn<USelectArgs> = (args) => ({
       <USelect
         v-model="args.selectedOptions"
         label="Selected options slot"
-        :options="options"
+        :options="[
+          { label: 'Paris', id: '1', icon: 'flight' },
+          { label: 'Venice', id: '2', icon: 'sailing' },
+          { label: 'Rome', id: '3', icon: 'directions_car' },
+          { label: 'Milan', id: '4', icon: 'directions_bike' },
+        ]"
         multiple
       >
         <template #selected-options="{ options }">
@@ -465,7 +470,7 @@ export const SelectedOptionsSlots: StoryFn<USelectArgs> = (args) => ({
             align="center"
             gap="2xs"
           >
-            <span class="text-medium leading-none">{{ option.label }}</span>
+            <UText line>{{ option.label }}</UText>
             <UIcon
               :name="option.icon"
               size="2xs"
@@ -498,57 +503,53 @@ SelectedCounterSlot.args = {
   multiple: true,
   slotTemplate: `
     <template #selected-counter="{ count, hiddenOptions }">
-      <span v-if="count" :title="hiddenOptions">, and {{ count }} more variant(s)</span>
+      <UText v-if="count" :title="hiddenOptions">, and {{ count }} more variant(s)</UText>
     </template>
   `,
 };
 
 export const OptionSlots: StoryFn<USelectArgs> = (args) => ({
-  components: { USelect, URow, UCol, UAvatar, UIcon, UBadge },
-  setup() {
-    const beforeOptionModel = ref(null);
-    const optionModel = ref(null);
-    const afterOptionModel = ref(null);
-
-    const options = [
-      {
-        label: "John Doe",
-        id: "1",
-        role: "Developer",
-        avatar: johnDoe,
-        status: "online",
-      },
-      {
-        label: "Jane Smith",
-        id: "2",
-        role: "Designer",
-        avatar: emilyDavis,
-        status: "away",
-      },
-      {
-        label: "Mike Johnson",
-        id: "3",
-        role: "Product Manager",
-        avatar: alexJohnson,
-        status: "offline",
-      },
-      {
-        label: "Sarah Wilson",
-        id: "4",
-        role: "QA Engineer",
-        avatar: patMorgan,
-        status: "online",
-      },
-    ];
-
-    return { args, beforeOptionModel, optionModel, afterOptionModel, options };
-  },
+  components: { USelect, URow, UCol, UAvatar, UIcon, UBadge, UText },
+  setup: () => ({ args, johnDoe, emilyDavis, alexJohnson, patMorgan }),
   template: `
     <URow>
       <USelect
-        v-model="beforeOptionModel"
+        v-model="args.beforeOptionModel"
         label="Before option slot"
-        :options="options"
+        :options="[
+          {
+            label: 'John Doe',
+            id: '1',
+            role: 'Developer',
+            avatar: johnDoe,
+            status: 'online',
+            statusColor: 'success',
+          },
+          {
+            label: 'Jane Smith',
+            id: '2',
+            role: 'Designer',
+            avatar: emilyDavis,
+            status: 'away',
+            statusColor: 'warning',
+          },
+          {
+            label: 'Mike Johnson',
+            id: '3',
+            role: 'Product Manager',
+            avatar: alexJohnson,
+            status: 'offline',
+            statusColor: 'grayscale',
+          },
+          {
+            label: 'Sarah Wilson',
+            id: '4',
+            role: 'QA Engineer',
+            avatar: patMorgan,
+            status: 'online',
+            statusColor: 'success',
+          },
+        ]"
       >
         <template #before-option="{ option }">
           <UAvatar :src="option.avatar" size="sm" />
@@ -556,35 +557,103 @@ export const OptionSlots: StoryFn<USelectArgs> = (args) => ({
       </USelect>
 
       <USelect
-        v-model="optionModel"
+        v-model="args.optionModel"
         label="Option slot"
-        :options="options"
+        :options="[
+          {
+            label: 'John Doe',
+            id: '1',
+            role: 'Developer',
+            avatar: johnDoe,
+            status: 'online',
+            statusColor: 'success',
+          },
+          {
+            label: 'Jane Smith',
+            id: '2',
+            role: 'Designer',
+            avatar: emilyDavis,
+            status: 'away',
+            statusColor: 'warning',
+          },
+          {
+            label: 'Mike Johnson',
+            id: '3',
+            role: 'Product Manager',
+            avatar: alexJohnson,
+            status: 'offline',
+            statusColor: 'grayscale',
+          },
+          {
+            label: 'Sarah Wilson',
+            id: '4',
+            role: 'QA Engineer',
+            avatar: patMorgan,
+            status: 'online',
+            statusColor: 'success',
+          },
+        ]"
       >
         <template #option="{ option }">
-          <URow align="center" gap="2xs">
-            <UAvatar :src="option.avatar" size="sm" />
+          <URow align="center" gap="xs">
             <UCol gap="none">
-              <span class="text-small font-medium">{{ option.label }}</span>
-              <span class="text-tiny text-lifted">{{ option.role }}</span>
+              <UText size="sm">{{ option.label }}</UText>
+              <UText variant="lifted" size="xs">{{ option.role }}</UText>
             </UCol>
             <UBadge
               :label="option.status"
-              :color="option.status === 'online' ? 'success' : option.status === 'away' ? 'warning' : 'grayscale'"
+              :color="option.statusColor"
               size="sm"
+              variant="subtle"
             />
           </URow>
         </template>
       </USelect>
 
       <USelect
-        v-model="afterOptionModel"
+        v-model="args.afterOptionModel"
         label="After option slot"
-        :options="options"
+        :options="[
+          {
+            label: 'John Doe',
+            id: '1',
+            role: 'Developer',
+            avatar: johnDoe,
+            status: 'online',
+            statusColor: 'success',
+          },
+          {
+            label: 'Jane Smith',
+            id: '2',
+            role: 'Designer',
+            avatar: emilyDavis,
+            status: 'away',
+            statusColor: 'warning',
+          },
+          {
+            label: 'Mike Johnson',
+            id: '3',
+            role: 'Product Manager',
+            avatar: alexJohnson,
+            status: 'offline',
+            statusColor: 'grayscale',
+          },
+          {
+            label: 'Sarah Wilson',
+            id: '4',
+            role: 'QA Engineer',
+            avatar: patMorgan,
+            status: 'online',
+            statusColor: 'success',
+          },
+        ]"
       >
         <template #after-option="{ option }">
           <UBadge
             :label="option.status"
-            :color="option.status === 'online' ? 'success' : option.status === 'away' ? 'warning' : 'grayscale'"
+            :color="option.statusColor"
+            size="sm"
+            variant="subtle"
           />
         </template>
       </USelect>

@@ -34,7 +34,7 @@ export default /*tw*/ {
       },
       align: {
         top: "font-medium",
-        topInside: "font-normal absolute left-3 text-lifted group-[*]:not([disabled]):not([readonly]):focus-within:text-primary",
+        topInside: "font-normal absolute left-3 text-lifted",
         topWithDesc: "font-medium",
         left: "font-normal",
         right: "font-normal",
@@ -47,7 +47,7 @@ export default /*tw*/ {
       },
     },
     compoundVariants: [
-      { interactive: true, disabled: false, class: "hover:not([readonly]):cursor-pointer" },
+      { interactive: true, disabled: false, class: "hover:cursor-pointer" },
       { align: "topInside", size: "sm", class: "top-2 text-tiny" },
       { align: "topInside", size: "md", class: "top-2.5 text-small" },
       { align: "topInside", size: "lg", class: "top-2.5 text-medium" },
@@ -58,6 +58,7 @@ export default /*tw*/ {
       { align: ["left", "right"], size: "md", class: "text-medium" },
       { align: ["left", "right"], size: "lg", class: "mt-px text-large" },
       { align: ["left", "right"], centred: false, class: "pt-1" },
+      { align: "topInside", disabled: false, class: "group-focus-within:text-primary" },
     ],
   },
   description: {

@@ -233,6 +233,8 @@ function onAddOption() {
 }
 
 function toggle() {
+  if (props.readonly) return;
+
   isOpen.value ? deactivate() : activate();
 }
 
@@ -472,7 +474,7 @@ const {
     <template #label>
       <div
         v-if="label || hasSlotContent($slots['label'], { label })"
-        @click="!readonly && toggle"
+        @click="toggle"
         @mousedown.prevent
       >
         <!--
