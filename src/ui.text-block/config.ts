@@ -12,6 +12,12 @@ export default /*tw*/ {
       [&_ul]:ml-2 [&_ol]:ml-2
     `,
     variants: {
+      variant: {
+        default: "text-{color}",
+        lifted: "text-{color}-lifted",
+        accented: "text-{color}-accented",
+        muted: "text-{color}/(--vl-disabled-opacity)",
+      },
       size: {
         xs: "text-tiny space-y-1",
         sm: "text-small space-y-2",
@@ -27,9 +33,17 @@ export default /*tw*/ {
         true: "leading-none",
       },
     },
+    compoundVariants: [
+      { color: "text", variant: "default", class: "text-default" },
+      { color: "text", variant: "lifted", class: "text-lifted" },
+      { color: "text", variant: "accented", class: "text-accented" },
+      { color: "text", variant: "muted", class: "text-muted" },
+    ],
   },
-  html: "",
+  label: "",
   defaults: {
+    color: "text",
+    variant: "default",
     size: "md",
     align: "left",
     line: false,
