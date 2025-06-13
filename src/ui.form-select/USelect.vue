@@ -470,7 +470,11 @@ const {
     :tabindex="-1"
   >
     <template #label>
-      <div @click="toggle" @mousedown.prevent>
+      <div
+        v-if="label || hasSlotContent($slots['label'], { label })"
+        @click="toggle"
+        @mousedown.prevent
+      >
         <!--
           @slot Use this to add custom content instead of the label.
           @binding {string} label
@@ -501,8 +505,14 @@ const {
         <!--
             @slot Use it to add something to the right of input.
             @binding {string} icon-name
+            @binding {array} options
+            @binding {object} options
           -->
-        <slot name="right" :icon-name="rightIcon">
+        <slot
+          name="right"
+          :icon-name="rightIcon"
+          :options="multiple ? selectedOptions.full : selectedOption"
+        >
           <UIcon v-if="rightIcon" :name="rightIcon" v-bind="rightIconAttrs" />
         </slot>
       </div>
@@ -846,10 +856,16 @@ const {
         v-bind="leftSlotAttrs"
       >
         <!--
-            @slot Use it to add something to the left of input.
-            @binding {string} icon-name
-          -->
-        <slot name="left" :icon-name="leftIcon">
+          @slot Use it to add something to the left of input.
+          @binding {string} icon-name
+          @binding {array} options
+          @binding {object} options
+        -->
+        <slot
+          name="left"
+          :icon-name="leftIcon"
+          :options="multiple ? selectedOptions.full : selectedOption"
+        >
           <UIcon v-if="leftIcon" :name="leftIcon" v-bind="leftIconAttrs" />
         </slot>
       </div>

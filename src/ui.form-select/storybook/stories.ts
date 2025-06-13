@@ -1,4 +1,4 @@
-import { ref, computed } from "vue";
+import { ref } from "vue";
 import {
   getArgs,
   getArgTypes,
@@ -285,12 +285,14 @@ export const IconProps: StoryFn<USelectArgs> = (args) => ({
   template: `
     <URow>
       <USelect
+        v-model="args.modelValueLeft"
         left-icon="feedback"
         label="Choose the level of our services"
         placeholder="Share your feedback with us"
         :options="levelOptions"
       />
       <USelect
+        v-model="args.modelValueRight"
         right-icon="person"
         label="Select your role"
         placeholder="Choose a role from the list"
@@ -310,15 +312,7 @@ export const Slots: StoryFn<USelectArgs> = (args) => ({
       { label: "Apple Pay", id: "apple", icon: "phone_iphone", details: "iPhone 15" },
     ];
 
-    const selectedLeftOption = computed(
-      () => paymentOptions.find((option) => option.id === args.leftSlotModel) || null,
-    );
-
-    const selectedRightOption = computed(
-      () => paymentOptions.find((option) => option.id === args.rightSlotModel) || null,
-    );
-
-    return { args, paymentOptions, selectedLeftOption, selectedRightOption };
+    return { args, paymentOptions };
   },
   template: `
     <URow>
@@ -327,10 +321,10 @@ export const Slots: StoryFn<USelectArgs> = (args) => ({
         label="Select Payment Method"
         :options="paymentOptions"
       >
-        <template #left>
+        <template #left="{ options }">
           <UIcon
             v-if="args.leftSlotModel"
-            :name="selectedLeftOption.icon"
+            :name="options?.icon"
             color="primary"
             size="sm"
           />
@@ -342,12 +336,12 @@ export const Slots: StoryFn<USelectArgs> = (args) => ({
         label="Select Payment Method"
         :options="paymentOptions"
       >
-        <template #right>
+        <template #right="{ options }">
           <span
             v-if="args.rightSlotModel"
             class="text-small text-lifted text-nowrap"
           >
-            {{ selectedRightOption.details }}
+            {{ options?.details }}
           </span>
         </template>
       </USelect>
@@ -434,15 +428,12 @@ export const SelectedOptionsSlots: StoryFn<USelectArgs> = (args) => ({
       { label: "Milan", id: "4", icon: "directions_bike" },
     ];
 
-    const selectedOption = ref(null);
-    const selectedOptions = ref(null);
-
-    return { args, selectedOption, selectedOptions, options };
+    return { args, options };
   },
   template: `
     <URow>
       <USelect
-        v-model="selectedOption"
+        v-model="args.selectedOption"
         label="Selected option slot"
         :options="options"
       >
@@ -459,7 +450,7 @@ export const SelectedOptionsSlots: StoryFn<USelectArgs> = (args) => ({
       </USelect>
 
       <USelect
-        v-model="selectedOptions"
+        v-model="args.selectedOptions"
         label="Selected options slot"
         :options="options"
         multiple

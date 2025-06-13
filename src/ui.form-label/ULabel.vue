@@ -73,7 +73,7 @@ defineExpose({
  */
 const mutatedProps = computed(() => ({
   error: Boolean(props.error) && !props.disabled,
-  label: Boolean(props.label),
+  label: Boolean(props.label) || hasSlotContent(slots["label"], { label: props.label }),
 }));
 
 const { getDataTest, wrapperAttrs, contentAttrs, labelAttrs, descriptionAttrs } = useUI<Config>(
@@ -134,7 +134,7 @@ const { getDataTest, wrapperAttrs, contentAttrs, labelAttrs, descriptionAttrs } 
 
   <div v-else ref="wrapper" v-bind="wrapperAttrs">
     <label
-      v-if="label || hasSlotContent(slots['label'])"
+      v-if="label || hasSlotContent(slots['label'], { label })"
       v-bind="labelAttrs"
       ref="label"
       :for="props.for"

@@ -53,7 +53,18 @@ export function createDebounce<T extends unknown[]>(func: (...args: T) => void, 
 }
 
 /**
- * Check if Vue slot defined, and have a content.
+ * Checks if a Vue slot is defined and contains actual content.
+ *
+ * @param slot - The Vue slot to check.
+ * @param props - Optional props to pass to the slot function.
+ * @returns {boolean} True if the slot exists and contains non-empty content, false otherwise.
+ *
+ * @remarks
+ * A slot is considered empty if it:
+ * - Is undefined or null
+ * - Contains only comments
+ * - Contains only empty text nodes
+ * - Contains only empty fragments
  */
 export function hasSlotContent(slot: Slot | undefined | null, props = {}): boolean {
   type Args = VNode | VNode[];
