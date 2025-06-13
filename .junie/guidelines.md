@@ -96,6 +96,7 @@ npm run preview
 - Test component props, slots, events, and exposed refs
 - Add comments above each test to shortly describe what is testing, example `// ImageUrl prop`. 
 - Use forEach for testing variants, the same as in `UButton.test.ts`
+- Use a variant object and iterate over its keys and values directly using forEach, without separately adding a variable with them.
 - Add types to the props for variants by using `as` keyword like `color: color as Props["color"],`
 - Use constants for test values and props instead of hardcoded strings, but do not use values directly from the `defaultConfig`
 - Ensure props constant names match the prop names, and in tests, destructure props simply as { someProp1, someProp2 } instead of using { someProp1: someProp1, someProp2: someProp2 }.
