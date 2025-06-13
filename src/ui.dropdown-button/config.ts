@@ -1,15 +1,8 @@
 export default /*tw*/ {
   wrapper: "relative inline-block",
-  dropdownButton: {
-    base: "{UButton} justify-between",
-    variants: {
-      opened: {
-        true: "group",
-      },
-    },
-  },
+  dropdownButton: "{UButton} justify-between",
   toggleIcon: {
-    base: "{UIcon} transition duration-300 group-[*]:rotate-180 -mr-1",
+    base: "{UIcon} transition duration-300 -mr-1",
     defaults: {
       size: {
         "2xs": "2xs",
@@ -20,6 +13,7 @@ export default /*tw*/ {
         xl: "sm",
       },
     },
+    compoundVariants: [{ opened: true, class: "rotate-180" }],
   },
   listbox: {
     base: "{UListbox} w-fit",

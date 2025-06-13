@@ -162,8 +162,12 @@ export const DefaultSlot = DefaultTemplate.bind({});
 DefaultSlot.args = {
   toggleIcon: false,
   slotTemplate: `
-    <template #default>
-      <UAvatar rounded="full" src="https://avatar.iran.liara.run/public" />
+    <template #default="{ opened }">
+      <UAvatar
+        rounded="full"
+        src="https://avatar.iran.liara.run/public"
+        :class="{ 'outline-medium outline-primary': opened }"
+      />
     </template>
   `,
 };
