@@ -18,7 +18,7 @@ import type { Props } from "../types.ts";
 
 interface UHeaderArgs extends Props {
   slotTemplate?: string;
-  enum: "size" | "color";
+  enum: "size" | "color" | "variant";
 }
 
 export default {
@@ -70,6 +70,10 @@ Default.args = {};
 export const Sizes = EnumTemplate.bind({});
 Sizes.args = { enum: "size" };
 Sizes.parameters = getEnumVariantDescription();
+
+export const Variants = EnumTemplate.bind({});
+Variants.args = { enum: "variant" };
+Variants.parameters = getEnumVariantDescription();
 
 export const Colors = EnumTemplate.bind({});
 Colors.args = { enum: "color" };

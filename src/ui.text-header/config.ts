@@ -1,7 +1,13 @@
 export default /*tw*/ {
   header: {
-    base: "text-{color} font-medium",
+    base: "font-medium",
     variants: {
+      variant: {
+        default: "text-{color}",
+        lifted: "text-{color}-lifted",
+        accented: "text-{color}-accented",
+        muted: "text-{color}/(--vl-disabled-opacity)",
+      },
       size: {
         xs: "text-lg",
         sm: "text-xl",
@@ -14,9 +20,16 @@ export default /*tw*/ {
         true: "!leading-none",
       },
     },
+    compoundVariants: [
+      { color: "text", variant: "default", class: "text-default" },
+      { color: "text", variant: "lifted", class: "text-lifted" },
+      { color: "text", variant: "accented", class: "text-accented" },
+      { color: "text", variant: "muted", class: "text-muted" },
+    ],
   },
   defaults: {
-    color: "grayscale",
+    color: "text",
+    variant: "default",
     size: "md",
     tag: "div",
     line: true,

@@ -15,6 +15,11 @@ export interface Props {
   size?: "xs" | "sm" | "md" | "lg" | "xl" | "2xl";
 
   /**
+   * Text variant.
+   */
+  variant?: "default" | "accented" | "lifted" | "muted";
+
+  /**
    * Header color.
    */
   color?:
@@ -26,7 +31,8 @@ export interface Props {
     | "info"
     | "notice"
     | "neutral"
-    | "grayscale";
+    | "grayscale"
+    | "text"; // the default design system text color
 
   /**
    * Allows changing HTML tag.
