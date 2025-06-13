@@ -233,13 +233,11 @@ function onAddOption() {
 }
 
 function toggle() {
-  if (props.readonly) return;
-
   isOpen.value ? deactivate() : activate();
 }
 
 function deactivate() {
-  if (!isOpen.value || props.disabled) {
+  if (!isOpen.value || props.disabled || props.readonly) {
     return;
   }
 
@@ -251,7 +249,7 @@ function deactivate() {
 }
 
 function activate() {
-  if (isOpen.value || props.disabled) {
+  if (isOpen.value || props.disabled || props.readonly) {
     return;
   }
 
