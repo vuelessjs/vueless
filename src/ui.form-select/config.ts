@@ -17,6 +17,9 @@ export default /*tw*/ {
           hover:border-default focus-within:border-default hover:focus-within:border-default
         `,
       },
+      readonly: {
+        true: "pointer-events-none",
+      },
       opened: {
         true: "z-[inherit] group/active",
       },

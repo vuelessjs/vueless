@@ -144,6 +144,9 @@ Description.args = { description: "You can only select a city from the list." };
 export const Error = DefaultTemplate.bind({});
 Error.args = { error: "Please select a city from the list" };
 
+export const Readonly = DefaultTemplate.bind({});
+Readonly.args = { readonly: true };
+
 export const Disabled = DefaultTemplate.bind({});
 Disabled.args = { disabled: true };
 

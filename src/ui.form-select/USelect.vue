@@ -472,7 +472,7 @@ const {
     <template #label>
       <div
         v-if="label || hasSlotContent($slots['label'], { label })"
-        @click="toggle"
+        @click="!readonly && toggle"
         @mousedown.prevent
       >
         <!--
