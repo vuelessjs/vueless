@@ -8,6 +8,9 @@ export default /*tw*/ {
         accented: "text-{color}-accented",
         muted: "text-{color}/(--vl-disabled-opacity)",
       },
+      color: {
+        inherit: "text-inherit",
+      },
       size: {
         xs: "text-lg",
         sm: "text-xl",
