@@ -5,9 +5,9 @@ export type Config = typeof defaultConfig;
 
 export interface Props {
   /**
-   * HTML markdown or plain text.
+   * Text label.
    */
-  html?: string;
+  label?: string;
 
   /**
    * Text size.
@@ -18,6 +18,27 @@ export interface Props {
    * Text align.
    */
   align?: "left" | "center" | "right";
+
+  /**
+   * Text variant.
+   */
+  variant?: "default" | "accented" | "lifted" | "muted";
+
+  /**
+   * Text color.
+   */
+  color?:
+    | "primary"
+    | "secondary"
+    | "error"
+    | "warning"
+    | "success"
+    | "info"
+    | "notice"
+    | "neutral"
+    | "grayscale"
+    | "inherit"
+    | "text"; // the default design system text color
 
   /**
    * Removes text line height (useful for 1-line text).

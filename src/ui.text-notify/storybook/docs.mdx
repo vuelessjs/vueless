@@ -21,18 +21,18 @@ Use `notifySuccess`, `notifyWarning`, `notifyError` shortcut methods to trigger 
 
 <Source code={`
 import {
-  notify,
-  notifySuccess,
-  notifyWarning,
-  notifyError,
+    notify,
+    notifySuccess,
+    notifyWarning,
+    notifyError,
 } from "vueless";
 
 notify({
-  type: "success", // @values: success, warning, error
-  label: "Hurray!",
-  description: "The file successfully downloaded.",
-  duration: 1000, // in milliseconds
-  ignoreDuplicates: false // ignore notifications with the same 'description'
+    type: "success", // @values: success, warning, error
+    label: "Hurray!",
+    description: "The file successfully downloaded.",
+    duration: 1000, // in milliseconds
+    ignoreDuplicates: false // ignore notifications with the same 'description'
 });
 
 notifySuccess({ description: "The file successfully downloaded." });
@@ -52,18 +52,18 @@ notifySuccess({ description: "The file successfully downloaded." });
 clearNotifications();
 `} language="jsx" dark />
 
-## Trigger notifications
+## Delayed notifications
 You can create a delayed notification which you can trigger any time later.
 
 <Source code={`
 import { setDelayedNotify, getDelayedNotify } from "vueless";
 
 setDelayedNotify({
-  type: "success", // @values: success, warning, error
-  label: "Hurray!",
-  description: "The file successfully downloaded.",
-  duration: 1000, // in milliseconds
-  ignoreDuplicates: false // ignore notifications with the same 'description'
+    type: "success", // @values: success, warning, error
+    label: "Hurray!",
+    description: "The file successfully downloaded.",
+    duration: 1000, // in milliseconds
+    ignoreDuplicates: false // ignore notifications with the same 'description'
 });
 
 // and somewhere below

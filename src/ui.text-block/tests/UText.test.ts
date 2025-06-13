@@ -47,6 +47,56 @@ describe("UText.vue", () => {
       });
     });
 
+    // Color prop
+    it("applies the correct color class", async () => {
+      const colors = [
+        "primary",
+        "secondary",
+        "error",
+        "warning",
+        "success",
+        "info",
+        "notice",
+        "neutral",
+        "grayscale",
+        "inherit",
+        "text",
+      ];
+
+      colors.forEach((color) => {
+        const component = mount(UText, {
+          props: {
+            color: color as Props["color"],
+          },
+        });
+
+        color === "text"
+          ? expect(component.attributes("class")).toContain("text-default")
+          : expect(component.attributes("class")).toContain(color);
+      });
+    });
+
+    // Variant prop
+    it("applies the correct variant class", async () => {
+      const variants = {
+        default: "text-primary",
+        lifted: "text-primary-lifted",
+        accented: "text-primary-accented",
+        muted: "text-primary/(--vl-disabled-opacity)",
+      };
+
+      Object.entries(variants).forEach(([variant, classes]) => {
+        const component = mount(UText, {
+          props: {
+            variant: variant as Props["variant"],
+            color: "primary",
+          },
+        });
+
+        expect(component.attributes("class")).toContain(classes);
+      });
+    });
+
     // Line prop
     it("applies line class when line prop is true", () => {
       const line = true;
@@ -60,17 +110,17 @@ describe("UText.vue", () => {
       expect(component.attributes("class")).toContain("leading-none");
     });
 
-    // HTML prop
-    it("renders the correct HTML content", () => {
-      const html = "<strong>Bold Text</strong>";
+    // Label prop
+    it("renders the correct label content", () => {
+      const label = "Text label";
 
       const component = mount(UText, {
         props: {
-          html,
+          label,
         },
       });
 
-      expect(component.html()).toContain(html);
+      expect(component.html()).toContain(label);
     });
 
     // DataTest prop
@@ -88,7 +138,7 @@ describe("UText.vue", () => {
 
     // Config prop overriding classes
     it("applies custom classes from config prop", () => {
-      const customClasses = "text-red-500 font-bold";
+      const customClasses = "font-bold";
 
       const component = mount(UText, {
         props: {
@@ -117,14 +167,14 @@ describe("UText.vue", () => {
       expect(component.text()).toContain(slotContent);
     });
 
-    // Default slot overrides html prop
-    it("default slot overrides html prop", () => {
-      const html = "<strong>Bold Text</strong>";
+    // Default slot overrides label prop
+    it("default slot overrides label prop", () => {
+      const label = "Label Text";
       const slotContent = "Custom Content";
 
       const component = mount(UText, {
         props: {
-          html,
+          label,
         },
         slots: {
           default: slotContent,
@@ -132,7 +182,7 @@ describe("UText.vue", () => {
       });
 
       expect(component.text()).toContain(slotContent);
-      expect(component.html()).not.toContain(html);
+      expect(component.html()).not.toContain(label);
     });
   });
 
