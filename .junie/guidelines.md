@@ -95,7 +95,12 @@ npm run preview
 - Follow the naming convention: `UComponent.test.ts`
 - Test component props, slots, events, and exposed refs
 - Add comments above each test to shortly describe what is testing, example `// ImageUrl prop`. 
-- Use forEach for testing variants, the same as in `UButton.test.ts`
+- Ensure variants constant have the name `variants`. If the test compares prop values and classes the variable should be an object where key is prop value and value is classes.
+- Ensure that any constant representing `variants` is named variants. When tests compare prop values and associated class names, define variants as an object where each key corresponds to a prop value and each value is the associated class string
+- Use forEach for testing variants, the same as in `UButton.test.ts`. The loop arguments should be `variant` and `classes`
+- Use keys and values from the `variants` object instead of if-else statements
+- For the color prop variant, use the `primary` color instead of using a {color} pattern string placeholder in classes.
+- Use a variant object and iterate over its keys and values directly using forEach, without separately adding a variable with them.
 - Add types to the props for variants by using `as` keyword like `color: color as Props["color"],`
 - Use constants for test values and props instead of hardcoded strings, but do not use values directly from the `defaultConfig`
 - Ensure props constant names match the prop names, and in tests, destructure props simply as { someProp1, someProp2 } instead of using { someProp1: someProp1, someProp2: someProp2 }.
@@ -117,6 +122,7 @@ npm run preview
 - Use composables for shared logic
 - Use subcomponent if the main component is too large
 - Follow the naming conventions for components and files
+- Use a ternary operator instead of an if/else statement when both branches contain only a single line of code
 
 
 ## Junie Agent Commands
