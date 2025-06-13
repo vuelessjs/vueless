@@ -1,4 +1,3 @@
-import { ref } from "vue";
 import {
   getArgs,
   getArgTypes,
@@ -143,9 +142,7 @@ export const Slots: StoryFn<UInputSearchArgs> = (args) => ({
       { label: "GPT-4", id: "gpt-4" },
     ];
 
-    const aiVersion = ref(null);
-
-    return { args, aiVersion, aiVersions };
+    return { args, aiVersions };
   },
   template: `
     <URow class="gap-4" align="stretch">
@@ -155,7 +152,7 @@ export const Slots: StoryFn<UInputSearchArgs> = (args) => ({
       >
         <template #left>
           <UDropdownButton
-            v-model="aiVersion"
+            v-model="args.aiVersion"
             :options="aiVersions"
             label="AI Version"
             size="sm"

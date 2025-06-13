@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, computed } from "vue";
+import { ref, computed, useId } from "vue";
 
 import useUI from "../composables/useUI.ts";
 import { getDefaults } from "../utils/ui.ts";
@@ -27,6 +27,8 @@ const emit = defineEmits([
    */
   "update:modelValue",
 ]);
+
+const elementId = props.id || useId();
 
 const isShownPassword = ref(false);
 

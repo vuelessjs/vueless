@@ -1,4 +1,3 @@
-import { ref } from "vue";
 import {
   getArgs,
   getArgTypes,
@@ -134,9 +133,7 @@ export const Slots: StoryFn<UInputPasswordArgs> = (args) => ({
       { label: "WPA3", id: "wpa3" },
     ];
 
-    const wifiType = ref(null);
-
-    return { args, wifiType, wifiTypes };
+    return { args, wifiTypes };
   },
   template: `
     <URow align="stretch">
@@ -148,7 +145,7 @@ export const Slots: StoryFn<UInputPasswordArgs> = (args) => ({
       >
         <template #left>
           <UDropdownButton
-            v-model="wifiType"
+            v-model="args.wifiType"
             :options="wifiTypes"
             label="Wifi type"
             size="sm"
