@@ -35,6 +35,7 @@ const { getDataTest, headerAttrs } = useUI<Config>(defaultConfig);
 
 <template>
   <component :is="tag" ref="header" v-bind="headerAttrs" :data-test="getDataTest()">
+    <!-- @slot Use it to add html inside. -->
     <slot>{{ label }}</slot>
   </component>
 </template>
