@@ -96,6 +96,7 @@ const { getDataTest, config, iconAttrs } = useUI<Config>(defaultConfig);
 <template>
   <component
     :is="dynamicComponent"
+    v-if="dynamicComponent"
     ref="icon"
     tabindex="-1"
     v-bind="iconAttrs"
