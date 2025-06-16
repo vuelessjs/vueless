@@ -9,7 +9,7 @@ import type { Props } from "../types.ts";
 describe("USkeletonChoice.vue", () => {
   // Props tests
   describe("Props", () => {
-    // Label prop
+    // Label prop - true
     it("renders label skeleton when label prop is true", () => {
       const label = true;
 
@@ -24,6 +24,7 @@ describe("USkeletonChoice.vue", () => {
       expect(skeletons.length).toBe(2); // Input and label skeletons
     });
 
+    // Label prop - false: Only input skeleton
     it("does not render label skeleton when label prop is false", () => {
       const label = false;
 
@@ -101,8 +102,8 @@ describe("USkeletonChoice.vue", () => {
     // LabelAlign prop
     it("applies the correct labelAlign class to wrapper", () => {
       const labelAlign = {
-        left: "flex items-center",
-        right: "flex flex-row-reverse items-center",
+        left: "flex-row",
+        right: "flex-row-reverse",
       };
 
       Object.entries(labelAlign).forEach(([labelAlign, classes]) => {
@@ -138,13 +139,9 @@ describe("USkeletonChoice.vue", () => {
 
     // Variant prop
     it("passes the correct variant to skeleton components", () => {
-      const variants = {
-        light: "light",
-        default: "default",
-        dark: "dark",
-      };
+      const variants = ["light", "default", "dark"];
 
-      Object.entries(variants).forEach(([variant, expectedVariant]) => {
+      variants.forEach((variant) => {
         const component = mount(USkeletonChoice, {
           props: {
             variant: variant as Props["variant"],
@@ -154,8 +151,8 @@ describe("USkeletonChoice.vue", () => {
         const inputSkeleton = component.findAllComponents(USkeleton)[0];
         const labelSkeleton = component.findAllComponents(USkeleton)[1];
 
-        expect(inputSkeleton.props("variant")).toBe(expectedVariant);
-        expect(labelSkeleton.props("variant")).toBe(expectedVariant);
+        expect(inputSkeleton.props("variant")).toBe(variant);
+        expect(labelSkeleton.props("variant")).toBe(variant);
       });
     });
 
