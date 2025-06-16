@@ -59,6 +59,11 @@ export interface Props {
   tabindex?: string;
 
   /**
+   * Unique element id.
+   */
+  id?: string;
+
+  /**
    * Component config object.
    */
   config?: ComponentConfig<Config>;

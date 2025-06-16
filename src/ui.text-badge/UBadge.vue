@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { useTemplateRef, computed, useSlots } from "vue";
+import { useTemplateRef, computed, useId, useSlots } from "vue";
 
 import useUI from "../composables/useUI.ts";
 import { hasSlotContent } from "../utils/helper.ts";
@@ -42,6 +42,7 @@ const emit = defineEmits([
 ]);
 
 const slots = useSlots();
+const elementId = props.id || useId();
 
 const wrapperRef = useTemplateRef<HTMLDivElement>("wrapper");
 
@@ -87,6 +88,7 @@ const { getDataTest, badgeAttrs, leftIconAttrs, centerIconAttrs, rightIconAttrs 
 
 <template>
   <div
+    :id="elementId"
     ref="wrapper"
     v-bind="badgeAttrs"
     :data-test="getDataTest()"
