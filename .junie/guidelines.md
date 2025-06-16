@@ -8,6 +8,7 @@ Vueless is a Vue Styleless UI Component Library powered by Tailwind CSS. It prov
 - **TypeScript**: Type safety and better developer experience
 - **Tailwind CSS v4**: Utility-first CSS framework
 - **Storybook**: Component documentation and development environment
+- **Vueless UI**: UI component library and design system framework
 - **Vitest**: Testing framework
 - **ESLint + Prettier**: Code quality and style enforcement
 
@@ -97,6 +98,7 @@ npm run preview
 - Test component props, slots, events, and exposed refs
 - Add comments above each test to shortly describe what is testing, example `// ImageUrl prop`. 
 - Define component props as a separate constants at the beginning of the each test.
+- Use a single `mount()` per test; if multiple mounts are needed, split the logic into separate tests
 - Define repeated data into `beforeAll` or `beforeEach` section.
 - Define expected value in constant after the props constants or other provided data, no hardcoding expected values!
 - Ensure that any constant representing variants, when tests compare prop values and associated class names, define variants as an object where each key corresponds to a prop value and each value is the associated class string
