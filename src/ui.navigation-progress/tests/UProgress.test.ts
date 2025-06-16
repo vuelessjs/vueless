@@ -258,7 +258,9 @@ describe("UProgress.vue", () => {
         },
       });
 
-      expect((component.vm as ComponentPublicInstance & { wrapperRef: HTMLDivElement }).wrapperRef).toBeDefined();
+      expect(
+        (component.vm as ComponentPublicInstance & { wrapperRef: HTMLDivElement }).wrapperRef,
+      ).toBeDefined();
     });
   });
 

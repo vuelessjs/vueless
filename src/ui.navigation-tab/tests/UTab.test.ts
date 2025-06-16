@@ -44,16 +44,22 @@ describe("UTab.vue", () => {
       const value = "tab1";
 
       // Test inactive state
-      const inactiveComponent = createWrapper({
-        label: "Tab",
-        value,
-      }, "tab2");
+      const inactiveComponent = createWrapper(
+        {
+          label: "Tab",
+          value,
+        },
+        "tab2",
+      );
 
       // Test active state
-      const activeComponent = createWrapper({
-        label: "Tab",
+      const activeComponent = createWrapper(
+        {
+          label: "Tab",
+          value,
+        },
         value,
-      }, value);
+      );
 
       // Check that the active component has the active class
       expect(inactiveComponent.classes()).not.toContain("border-primary");
@@ -244,7 +250,9 @@ describe("UTab.vue", () => {
         },
         global: {
           provide: {
-            setUTabsSelectedItem: (val: string) => { selectedValue = val; },
+            setUTabsSelectedItem: (val: string) => {
+              selectedValue = val;
+            },
             getUTabsSelectedItem: () => "",
             getUTabsScrollable: () => false,
             getUTabsSquare: () => false,
@@ -271,7 +279,9 @@ describe("UTab.vue", () => {
         },
         global: {
           provide: {
-            setUTabsSelectedItem: (val: string) => { selectedValue = val; },
+            setUTabsSelectedItem: (val: string) => {
+              selectedValue = val;
+            },
             getUTabsSelectedItem: () => "",
             getUTabsScrollable: () => false,
             getUTabsSquare: () => false,
@@ -294,7 +304,9 @@ describe("UTab.vue", () => {
         label: "Tab",
       });
 
-      expect((component.vm as ComponentPublicInstance & { button: HTMLButtonElement }).button).toBeDefined();
+      expect(
+        (component.vm as ComponentPublicInstance & { button: HTMLButtonElement }).button,
+      ).toBeDefined();
     });
   });
 });
