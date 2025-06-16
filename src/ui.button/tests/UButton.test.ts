@@ -12,6 +12,7 @@ describe("UButton.vue", () => {
   describe("Props", () => {
     // Variant prop
     it("applies the correct variant class", async () => {
+      const color = "primary";
       const variants = {
         solid: "text-inverted bg-primary",
         outlined: "text-primary border-primary",
@@ -24,7 +25,7 @@ describe("UButton.vue", () => {
         const component = mount(UButton, {
           props: {
             variant: variant as Props["variant"],
-            color: "primary",
+            color,
           },
         });
 
