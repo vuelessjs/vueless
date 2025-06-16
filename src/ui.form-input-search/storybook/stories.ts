@@ -11,6 +11,7 @@ import UIcon from "../../ui.image-icon/UIcon.vue";
 import UCol from "../../ui.container-col/UCol.vue";
 import URow from "../../ui.container-row/URow.vue";
 import UDropdownButton from "../../ui.dropdown-button/UDropdownButton.vue";
+import UText from "../../ui.text-block/UText.vue";
 
 import type { Meta, StoryFn } from "@storybook/vue3";
 import type { Props } from "../types.ts";
@@ -134,7 +135,7 @@ export const IconProps: StoryFn<UInputSearchArgs> = (args) => ({
 });
 
 export const Slots: StoryFn<UInputSearchArgs> = (args) => ({
-  components: { UInputSearch, UCol, URow, UIcon, UDropdownButton },
+  components: { UInputSearch, UCol, URow, UIcon, UDropdownButton, UText },
   setup() {
     const aiVersions = [
       { label: "GPT-4o", id: "gpt-4o" },
@@ -150,7 +151,7 @@ export const Slots: StoryFn<UInputSearchArgs> = (args) => ({
         <template #right>
           <URow align="center" gap="xs">
             <UIcon name="straighten" size="sm" />
-            <span class="text-sm text-neutral-600">+2km</span>
+            <UText label="+2km" variant="muted" />
           </URow>
         </template>
       </UInputSearch>

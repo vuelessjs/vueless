@@ -13,6 +13,7 @@ import UIcon from "../../ui.image-icon/UIcon.vue";
 import UButton from "../../ui.button/UButton.vue";
 import URow from "../../ui.container-row/URow.vue";
 import UDropdownButton from "../../ui.dropdown-button/UDropdownButton.vue";
+import UText from "../../ui.text-block/UText.vue";
 
 import type { Meta, StoryFn } from "@storybook/vue3";
 import type { Props } from "../types.ts";
@@ -186,7 +187,7 @@ export const IconProps: StoryFn<UInputNumberArgs> = (args) => ({
 });
 
 export const Slots: StoryFn<UInputNumberArgs> = (args) => ({
-  components: { UInputNumber, URow, UButton, UDropdownButton },
+  components: { UInputNumber, URow, UButton, UDropdownButton, UText },
   setup() {
     const currencies = [
       { label: "USD", id: "usd" },
@@ -222,7 +223,7 @@ export const Slots: StoryFn<UInputNumberArgs> = (args) => ({
         placeholder="Enter your annual payment"
       >
         <template #right>
-          <span class="text-lifted text-small text-nowrap">%, per year</span>
+          <UText label="%, per year" variant="lifted" size="sm" class="text-nowrap" />
         </template>
       </UInputNumber>
     </URow>

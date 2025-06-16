@@ -11,6 +11,7 @@ import UIcon from "../../ui.image-icon/UIcon.vue";
 import UCol from "../../ui.container-col/UCol.vue";
 import URow from "../../ui.container-row/URow.vue";
 import tooltip from "../../directives/tooltip/vTooltip.ts";
+import UText from "../../ui.text-block/UText.vue";
 
 import type { Meta, StoryFn } from "@storybook/vue3";
 import type { Props } from "../types.ts";
@@ -121,14 +122,14 @@ NoAutocomplete.parameters = {
 };
 
 export const Slots: StoryFn<UTextareaArgs> = (args) => ({
-  components: { UTextarea, URow, UIcon },
+  components: { UTextarea, URow, UIcon, UText },
   directives: { tooltip },
   setup: () => ({ args }),
   template: `
     <URow>
       <UTextarea v-bind="args" v-model="args.modelValue" :max-length="300">
         <template #left>
-          <span class="text-sm text-lifted">{{ args.modelValue.length }}/300</span>
+          <UText :label="args.modelValue?.length + '/300'" variant="lifted" />
         </template>
       </UTextarea>
 

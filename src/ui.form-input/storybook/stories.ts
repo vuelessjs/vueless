@@ -11,6 +11,7 @@ import UIcon from "../../ui.image-icon/UIcon.vue";
 import UCol from "../../ui.container-col/UCol.vue";
 import URow from "../../ui.container-row/URow.vue";
 import UDropdownButton from "../../ui.dropdown-button/UDropdownButton.vue";
+import UText from "../../ui.text-block/UText.vue";
 
 import type { Meta, StoryFn } from "@storybook/vue3";
 import type { Props } from "../types.ts";
@@ -177,7 +178,7 @@ export const IconProps: StoryFn<UInputArgs> = (args) => ({
 });
 
 export const Slots: StoryFn<UInputArgs> = (args) => ({
-  components: { UInput, URow, UDropdownButton },
+  components: { UInput, URow, UDropdownButton, UText },
   setup() {
     const countryCodes = [
       { label: "+33", id: "+33" },
@@ -210,7 +211,7 @@ export const Slots: StoryFn<UInputArgs> = (args) => ({
 
       <UInput label="Website" placeholder="Enter your website">
         <template #right>
-          <span class="text-lifted">.com</span>
+          <UText label=".com" variant="lifted" />
         </template>
       </UInput>
     </URow>
