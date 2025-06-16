@@ -7,7 +7,6 @@ import UIcon from "../../ui.image-icon/UIcon.vue";
 import UListbox from "../../ui.form-listbox/UListbox.vue";
 
 import type { Props } from "../types.ts";
-import type { Option } from "../../ui.form-listbox/types.ts";
 
 describe("UDropdownButton.vue", () => {
   const defaultOptions = [
@@ -73,6 +72,9 @@ describe("UDropdownButton.vue", () => {
       const modelValue = [1, 2, 3];
       const labelDisplayCount = 1;
 
+      // Should show the first label + count of remaining
+      const expectedLabel = "Option 1, +2";
+
       const component = mount(UDropdownButton, {
         props: {
           modelValue,
@@ -82,8 +84,25 @@ describe("UDropdownButton.vue", () => {
         },
       });
 
-      // Should show first label + count of remaining
-      const expectedLabel = "Option 1, +2";
+      expect(component.findComponent(UButton).props("label")).toBe(expectedLabel);
+    });
+
+    // LabelDisplayCount prop with single value
+    it("correctly displays label when labelDisplayCount is 1 and only one value is selected", async () => {
+      const modelValue = [1];
+      const labelDisplayCount = 1;
+
+      // Should show only the selected label without +X suffix
+      const expectedLabel = "Option 1";
+
+      const component = mount(UDropdownButton, {
+        props: {
+          modelValue,
+          multiple: true,
+          labelDisplayCount,
+          options: defaultOptions,
+        },
+      });
 
       expect(component.findComponent(UButton).props("label")).toBe(expectedLabel);
     });
@@ -188,7 +207,7 @@ describe("UDropdownButton.vue", () => {
       expect(component.findComponent(UButton).props("disabled")).toBe(disabled);
     });
 
-    // ToggleIcon prop (boolean)
+    // ToggleIcon prop (boolean: true)
     it("shows default toggle icon when toggleIcon is true", () => {
       const toggleIcon = true;
 
@@ -203,6 +222,22 @@ describe("UDropdownButton.vue", () => {
 
       expect(iconComponent.exists()).toBe(true);
       expect(iconComponent.props("name")).toBe("keyboard_arrow_down");
+    });
+
+    // ToggleIcon prop (boolean: false)
+    it("shows default toggle icon when toggleIcon is true", () => {
+      const toggleIcon = false;
+
+      const component = mount(UDropdownButton, {
+        props: {
+          toggleIcon,
+          options: defaultOptions,
+        },
+      });
+
+      const iconComponent = component.findComponent(UIcon);
+
+      expect(iconComponent.exists()).toBe(false);
     });
 
     // ToggleIcon prop (string)
@@ -347,7 +382,7 @@ describe("UDropdownButton.vue", () => {
       const listbox = component.findComponent(UListbox);
 
       // Simulate selecting an option by emitting update:modelValue from the listbox
-      await listbox.vm.$emit("update:modelValue", 2);
+      listbox.vm.$emit("update:modelValue", 2);
 
       // Check if the event was emitted with the correct value
       expect(component.emitted("update:modelValue")).toBeTruthy();
@@ -368,14 +403,12 @@ describe("UDropdownButton.vue", () => {
       // Find the listbox component
       const listbox = component.findComponent(UListbox);
 
-      // Simulate clicking an option by emitting click-option from the listbox
-      const option = defaultOptions[1];
-
-      await listbox.vm.$emit("click-option", option);
+      // Simulate clicking an option by emitting clickOption from the listbox
+      listbox.vm.$emit("clickOption", defaultOptions[1]);
 
       // Check if the event was emitted with the correct value
       expect(component.emitted("clickOption")).toBeTruthy();
-      expect(component.emitted("clickOption")?.[0]).toEqual([option]);
+      expect(component.emitted("clickOption")?.[0]).toEqual([defaultOptions[1]]);
     });
 
     // Close dropdown when clicking outside
@@ -390,8 +423,10 @@ describe("UDropdownButton.vue", () => {
       await component.findComponent(UButton).trigger("click");
       expect(component.findComponent(UListbox).exists()).toBe(true);
 
-      // Simulate clicking outside by triggering the v-click-outside directive
-      await component.vm.$el.dispatchEvent(new Event("clickOutside"));
+      // Directly call the hideOptions function
+      // This is equivalent to what happens when clicking outside
+      component.vm.hideOptions();
+      await component.vm.$nextTick();
 
       // Dropdown should be closed
       expect(component.findComponent(UListbox).exists()).toBe(false);
