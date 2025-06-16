@@ -1,4 +1,5 @@
 import {
+  trimText,
   getArgs,
   getArgTypes,
   getSlotNames,
@@ -19,13 +20,18 @@ import type { Props } from "../types.ts";
 
 interface UTextArgs extends Props {
   slotTemplate?: string;
-  enum: "size" | "align";
+  enum: "size" | "align" | "variant" | "color";
 }
 
 export default {
   id: "4020",
   title: "Text & Content / Text",
   component: UText,
+  args: {
+    label: trimText(`
+      Easily customize your UI with flexible components.
+    `),
+  },
   argTypes: {
     ...getArgTypes(UText.__name),
   },
@@ -34,22 +40,14 @@ export default {
       ...getDocsDescription(UText.__name),
     },
   },
-  args: {},
 } as Meta;
-
-const defaultTemplate = `
-  <p>
-    <b>To proceed with your registration</b>, please enter your <u>email address</u> in the field below.
-    <i>A verification link</i> will be sent to your inbox shortly.
-  </p>
-`;
 
 const DefaultTemplate: StoryFn<UTextArgs> = (args: UTextArgs) => ({
   components: { UText, URow, UBadge },
   setup: () => ({ args, slots: getSlotNames(UText.__name) }),
   template: `
     <UText v-bind="args">
-      ${args.slotTemplate || getSlotsFragment(defaultTemplate)}
+      ${args.slotTemplate || getSlotsFragment("")}
     </UText>
   `,
 });
@@ -65,10 +63,7 @@ const EnumTemplate: StoryFn<UTextArgs> = (args: UTextArgs, { argTypes }) => ({
         v-bind="getArgs(args, option)"
         :key="option"
         v-tooltip="option"
-        class="w-full"
-      >
-        ${args.slotTemplate || defaultTemplate}
-      </UText>
+      />
     </UCol>
   `,
 });
@@ -84,17 +79,35 @@ export const Sizes = EnumTemplate.bind({});
 Sizes.args = { enum: "size" };
 Sizes.parameters = getEnumVariantDescription();
 
-export const Line = DefaultTemplate.bind({});
-Line.args = {
-  line: true,
-};
-Line.parameters = {
-  docs: {
-    description: {
-      story: "Removes text line height (useful for 1-line text).",
-    },
-  },
-};
+export const Color = EnumTemplate.bind({});
+Color.args = { enum: "color" };
+Color.parameters = getEnumVariantDescription();
+
+export const Variant = EnumTemplate.bind({});
+Variant.args = { enum: "variant" };
+Variant.parameters = getEnumVariantDescription();
+
+export const Line: StoryFn<UTextArgs> = (args: UTextArgs) => ({
+  components: { UText, UCol },
+  setup: () => ({ args }),
+  template: `
+    <UCol>
+      <UText>
+        <div class="rounded-medium border border-primary border-dashed w-fit">
+          Text with default library line height.
+        </div>
+      </UText>
+
+      <UText line>
+        <div class="rounded-medium border border-primary border-dashed w-fit">
+          Text with line height equal to its font size.
+        </div>
+      </UText>
+    </UCol>
+  `,
+});
+Line.args = {};
+Line.parameters = getEnumVariantDescription("Removes text line height (useful for 1-line text).");
 
 export const Paragraphs = DefaultTemplate.bind({});
 Paragraphs.args = {
@@ -141,11 +154,21 @@ List.args = {
   `,
 };
 
-export const DefaultSlot = DefaultTemplate.bind({});
-DefaultSlot.args = {
+export const FormattedText = DefaultTemplate.bind({});
+FormattedText.args = {
+  slotTemplate: `
+    <p>
+      <b>To proceed with your registration</b>, please enter your <u>email address</u> in the field below.
+      <i>A verification link</i> will be sent to your inbox shortly.
+    </p>
+  `,
+};
+
+export const NestedComponent = DefaultTemplate.bind({});
+NestedComponent.args = {
   slotTemplate: `
     <p>To proceed with your registration, please enter your
-    <UBadge label="email address" v-bind="args" color="success" /> in the field below.
+    <UBadge label="email address" color="success" variant="subtle" /> in the field below.
     A verification link will be sent to your inbox shortly.</p>
   `,
 };

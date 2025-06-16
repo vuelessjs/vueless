@@ -42,6 +42,7 @@ describe("UHeader.vue", () => {
         "notice",
         "neutral",
         "grayscale",
+        "text",
       ];
 
       colors.forEach((color) => {
@@ -51,7 +52,30 @@ describe("UHeader.vue", () => {
           },
         });
 
-        expect(component.attributes("class")).toContain(color);
+        color === "text"
+          ? expect(component.attributes("class")).toContain("text-default")
+          : expect(component.attributes("class")).toContain(color);
+      });
+    });
+
+    // Variant prop
+    it("applies the correct variant class", async () => {
+      const variants = {
+        default: "text-primary",
+        lifted: "text-primary-lifted",
+        accented: "text-primary-accented",
+        muted: "text-primary/(--vl-disabled-opacity)",
+      };
+
+      Object.entries(variants).forEach(([variant, classes]) => {
+        const component = mount(UHeader, {
+          props: {
+            variant: variant as Props["variant"],
+            color: "primary",
+          },
+        });
+
+        expect(component.attributes("class")).toContain(classes);
       });
     });
 

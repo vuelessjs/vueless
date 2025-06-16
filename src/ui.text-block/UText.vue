@@ -30,13 +30,14 @@ defineExpose({
  * Get element / nested component attributes for each config token ✨
  * Applies: `class`, `config`, redefined default `props` and dev `vl-...` attributes.
  */
-const { getDataTest, wrapperAttrs, htmlAttrs } = useUI<Config>(defaultConfig);
+const { getDataTest, wrapperAttrs, labelAttrs } = useUI<Config>(defaultConfig);
 </script>
 
 <template>
   <div ref="wrapper" v-bind="wrapperAttrs" :data-test="getDataTest()">
     <!-- @slot Use it to add something inside. -->
-    <div v-if="!hasSlotContent($slots['default'])" v-bind="htmlAttrs" v-html="html" />
-    <slot />
+    <slot>
+      <div v-bind="labelAttrs" v-text="label" />
+    </slot>
   </div>
 </template>

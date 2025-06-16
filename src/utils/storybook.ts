@@ -409,3 +409,7 @@ export function getEnumVariantDescription(message = "Hover over a variant to see
     },
   };
 }
+
+export function trimText(text: string) {
+  return text.replace(/\s+/g, " ").trim();
+}
