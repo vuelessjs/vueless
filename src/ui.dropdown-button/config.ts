@@ -1,5 +1,5 @@
 export default /*tw*/ {
-  wrapper: "relative inline-block",
+  wrapper: "relative inline-block h-max",
   dropdownButton: "{UButton} justify-between",
   toggleIcon: {
     base: "{UIcon} transition duration-300 -mr-1",

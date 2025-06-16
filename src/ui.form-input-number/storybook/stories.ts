@@ -212,8 +212,7 @@ export const Slots: StoryFn<UInputNumberArgs> = (args) => ({
             square
             size="sm"
             variant="ghost"
-            class="rounded-r-none h-full"
-            :config="{ wrapper: 'h-full' }"
+            class="rounded-r-none h-[49px]"
           />
         </template>
       </UInputNumber>

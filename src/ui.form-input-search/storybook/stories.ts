@@ -134,7 +134,7 @@ export const IconProps: StoryFn<UInputSearchArgs> = (args) => ({
 });
 
 export const Slots: StoryFn<UInputSearchArgs> = (args) => ({
-  components: { UInputSearch, URow, UIcon, UDropdownButton },
+  components: { UInputSearch, UCol, URow, UIcon, UDropdownButton },
   setup() {
     const aiVersions = [
       { label: "GPT-4o", id: "gpt-4o" },
@@ -145,7 +145,16 @@ export const Slots: StoryFn<UInputSearchArgs> = (args) => ({
     return { args, aiVersions };
   },
   template: `
-    <URow class="gap-4" align="stretch">
+    <UCol>
+      <UInputSearch placeholder="Search by rental district...">
+        <template #right>
+          <URow align="center" gap="xs">
+            <UIcon name="straighten" size="sm" />
+            <span class="text-sm text-neutral-600">+2km</span>
+          </URow>
+        </template>
+      </UInputSearch>
+
       <UInputSearch
         placeholder="Ask something..."
         :config="{ searchInput: { leftSlot: 'pl-0' } }"
@@ -157,36 +166,17 @@ export const Slots: StoryFn<UInputSearchArgs> = (args) => ({
             label="AI Version"
             size="sm"
             variant="ghost"
-            class="rounded-r-none h-full"
-            :config="{ wrapper: 'h-full', listbox: 'w-auto' }"
+            class="rounded-r-none"
           />
         </template>
       </UInputSearch>
-
-      <UInputSearch
-        placeholder="Search by rental district..."
-        :config="{
-          searchInput: {
-            inputLabel: {
-              content: '!h-full',
-            },
-          },
-        }"
-      >
-        <template #right>
-          <URow align="center" gap="xs">
-            <UIcon name="straighten" size="sm" />
-            <span class="text-sm text-neutral-600">+2km</span>
-          </URow>
-        </template>
-      </UInputSearch>
-    </URow>
+    </UCol>
   `,
 });
 Slots.parameters = {
   docs: {
     story: {
-      height: "200px",
+      height: "270px",
     },
   },
 };

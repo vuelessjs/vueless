@@ -1,7 +1,5 @@
 export default /*tw*/ {
-  wrapper: {
-    base: "relative inline-block",
-  },
+  wrapper: "relative inline-block h-max",
   dropdownBadge: {
     base: "{UBadge}",
     variants: {

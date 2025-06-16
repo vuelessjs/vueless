@@ -1,10 +1,8 @@
 export default /*tw*/ {
-  wrapper: {
-    base: `
-      inline-flex gap-0.5 relative items-center justify-between rounded
-      focus-visible:outline focus-visible:outline-medium focus-visible:outline-offset-4 focus-visible:outline-{color}
-    `,
-  },
+  wrapper: `
+    inline-flex gap-0.5 relative items-center justify-between rounded h-max
+    focus-visible:outline focus-visible:outline-medium focus-visible:outline-offset-4 focus-visible:outline-{color}
+  `,
   dropdownLink: "{ULink} focus-visible:outline-hidden",
   toggleIcon: {
     base: "{UIcon} block transition duration-300",
