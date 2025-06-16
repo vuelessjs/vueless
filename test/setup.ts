@@ -1,6 +1,8 @@
 /* eslint-disable no-console */
-import { beforeAll, afterAll, vi } from "vitest";
 import { h } from "vue";
+import { config } from "@vue/test-utils";
+import { beforeAll, afterAll, vi } from "vitest";
+import { createLocale, LocaleSymbol } from "../src/composables/useLocale";
 
 const originalWarn = console.warn;
 
@@ -20,6 +22,15 @@ beforeAll(() => {
 afterAll(() => {
   console.warn = originalWarn;
 });
+
+// Create a mock locale instance for tests
+export const mockLocale = createLocale();
+
+// Configure Vue Test Utils to provide the locale instance globally
+config.global.provide = {
+  ...config.global.provide,
+  [LocaleSymbol]: mockLocale,
+};
 
 // Mock the virtual:vueless/icons import
 // Mock the icons module with dynamic icon generation
