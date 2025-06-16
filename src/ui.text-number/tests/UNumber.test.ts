@@ -296,7 +296,7 @@ describe("UNumber.vue", () => {
         },
       });
 
-      expect(component.find("[data-test]").attributes("data-test")).toBe(testDataTest);
+      expect(component.find("[vl-key='number']").attributes("data-test")).toBe(testDataTest);
     });
   });
 
