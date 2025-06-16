@@ -37,7 +37,7 @@ const emit = defineEmits([
    * Triggers when the select component is clicked.
    * @property {boolean} value
    */
-  "selectClick",
+  "click",
 
   /**
    * Triggers when a dropdown list is opened.
@@ -255,7 +255,7 @@ function deactivate() {
 }
 
 function activate() {
-  emit("selectClick", isOpen.value);
+  emit("click", isOpen.value);
 
   if (isOpen.value || props.disabled || props.readonly) {
     return;
