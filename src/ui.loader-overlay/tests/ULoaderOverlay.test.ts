@@ -8,9 +8,17 @@ import { LoaderOverlaySymbol, createLoaderOverlay } from "../useLoaderOverlay.ts
 import type { Props } from "../types.ts";
 
 describe("ULoaderOverlay.vue", () => {
+  // Define common test configurations
+  const loading = true;
+  const global = {
+    provide: {
+      [LoaderOverlaySymbol]: createLoaderOverlay(),
+    },
+  };
+
   // Props tests
   describe("Props", () => {
-    // Loading prop
+    // Loading prop - true
     it("shows overlay when loading prop is true", () => {
       const loading = true;
 
@@ -18,17 +26,14 @@ describe("ULoaderOverlay.vue", () => {
         props: {
           loading,
         },
-        global: {
-          provide: {
-            [LoaderOverlaySymbol]: createLoaderOverlay(),
-          },
-        },
+        global,
       });
 
-      expect(component.find("div").exists()).toBe(true);
+      expect(component.find("[vl-key='overlay']").exists()).toBe(true);
       expect(component.findComponent(ULoader).exists()).toBe(true);
     });
 
+    // Loading prop - false
     it("hides overlay when loading prop is false", () => {
       const loading = false;
 
@@ -36,14 +41,10 @@ describe("ULoaderOverlay.vue", () => {
         props: {
           loading,
         },
-        global: {
-          provide: {
-            [LoaderOverlaySymbol]: createLoaderOverlay(),
-          },
-        },
+        global,
       });
 
-      expect(component.find("div").exists()).toBe(false);
+      expect(component.find("[vl-key='overlay']").exists()).toBe(false);
     });
 
     // Color prop
@@ -63,14 +64,10 @@ describe("ULoaderOverlay.vue", () => {
       colors.forEach((color) => {
         const component = mount(ULoaderOverlay, {
           props: {
-            loading: true,
+            loading,
             color: color as Props["color"],
           },
-          global: {
-            provide: {
-              [LoaderOverlaySymbol]: createLoaderOverlay(),
-            },
-          },
+          global,
         });
 
         const loader = component.findComponent(ULoader);
@@ -85,17 +82,13 @@ describe("ULoaderOverlay.vue", () => {
 
       const component = mount(ULoaderOverlay, {
         props: {
-          loading: true,
+          loading,
           dataTest,
         },
-        global: {
-          provide: {
-            [LoaderOverlaySymbol]: createLoaderOverlay(),
-          },
-        },
+        global,
       });
 
-      expect(component.find("div").attributes("data-test")).toBe(dataTest);
+      expect(component.find("[vl-key='overlay']").attributes("data-test")).toBe(dataTest);
     });
   });
 
@@ -108,16 +101,12 @@ describe("ULoaderOverlay.vue", () => {
 
       const component = mount(ULoaderOverlay, {
         props: {
-          loading: true,
+          loading,
         },
         slots: {
           default: `<div class="${slotClass}">${slotContent}</div>`,
         },
-        global: {
-          provide: {
-            [LoaderOverlaySymbol]: createLoaderOverlay(),
-          },
-        },
+        global,
       });
 
       expect(component.findComponent(ULoader).exists()).toBe(false);
@@ -143,11 +132,7 @@ describe("ULoaderOverlay.vue", () => {
 
     it("adds event listeners on mount", () => {
       mount(ULoaderOverlay, {
-        global: {
-          provide: {
-            [LoaderOverlaySymbol]: createLoaderOverlay(),
-          },
-        },
+        global,
       });
 
       expect(addEventListenerSpy).toHaveBeenCalledWith("loaderOverlayOn", expect.any(Function));
@@ -156,11 +141,7 @@ describe("ULoaderOverlay.vue", () => {
 
     it("removes event listeners on unmount", () => {
       const component = mount(ULoaderOverlay, {
-        global: {
-          provide: {
-            [LoaderOverlaySymbol]: createLoaderOverlay(),
-          },
-        },
+        global,
       });
 
       component.unmount();
@@ -176,13 +157,9 @@ describe("ULoaderOverlay.vue", () => {
     it("exposes overlayRef", () => {
       const component = mount(ULoaderOverlay, {
         props: {
-          loading: true,
+          loading,
         },
-        global: {
-          provide: {
-            [LoaderOverlaySymbol]: createLoaderOverlay(),
-          },
-        },
+        global,
       });
 
       expect(component.vm.overlayRef).toBeDefined();
