@@ -143,6 +143,7 @@ defineExpose({
 
   /**
    * Hides the dropdown options.
+   * @property {function}
    */
   hideOptions,
 });
