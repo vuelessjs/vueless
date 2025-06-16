@@ -10,8 +10,37 @@ import type { Props } from "../types.ts";
 describe("UChip.vue", () => {
   // Props tests
   describe("Props", () => {
-    // Color prop
-    it("applies the correct color class to the dot", async () => {
+    // Icon prop
+    it("renders UIcon when icon prop is provided", () => {
+      const icon = "close";
+
+      const component = mount(UChip, {
+        props: {
+          icon,
+        },
+      });
+
+      const nestedUIconComponents = component.findAllComponents(UIcon);
+      const nestedUDotComponents = component.findAllComponents(UDot);
+
+      expect(nestedUIconComponents.length).toBe(1);
+      expect(nestedUIconComponents[0].props("name")).toBe(icon);
+      expect(nestedUDotComponents.length).toBe(0);
+    });
+
+    // Default to UDot when no icon
+    it("renders UDot when no icon prop is provided", () => {
+      const component = mount(UChip, {});
+
+      const nestedUIconComponents = component.findAllComponents(UIcon);
+      const nestedUDotComponents = component.findAllComponents(UDot);
+
+      expect(nestedUIconComponents.length).toBe(0);
+      expect(nestedUDotComponents.length).toBe(1);
+    });
+
+    // Color prop for UDot component
+    it("applies the correct color class to UDot component", async () => {
       const colors = [
         "primary",
         "secondary",
@@ -31,14 +60,46 @@ describe("UChip.vue", () => {
           },
         });
 
+        // Check if color is applied to the nested UDot component
         const dot = component.findComponent(UDot);
 
+        expect(dot.exists()).toBe(true);
         expect(dot.props("color")).toBe(color);
       });
     });
 
+    // Color prop for UIcon component
+    it("applies the correct color class to UIcon component", async () => {
+      const colors = [
+        "primary",
+        "secondary",
+        "error",
+        "warning",
+        "success",
+        "info",
+        "notice",
+        "neutral",
+        "grayscale",
+      ];
+
+      colors.forEach((color) => {
+        const componentWithIcon = mount(UChip, {
+          props: {
+            color: color as Props["color"],
+            icon: "close",
+          },
+        });
+
+        // Check if color is applied to the nested UIcon component
+        const icon = componentWithIcon.findComponent(UIcon);
+
+        expect(icon.exists()).toBe(true);
+        expect(icon.props("color")).toBe(color);
+      });
+    });
+
     // Size prop
-    it("applies the correct size to the dot", async () => {
+    it("applies the correct size class", async () => {
       const sizes = ["3xs", "2xs", "xs", "sm", "md", "lg", "xl", "2xl"];
 
       sizes.forEach((size) => {
@@ -54,87 +115,81 @@ describe("UChip.vue", () => {
       });
     });
 
-    // Icon prop
-    it("renders UIcon when icon prop is provided", () => {
-      const icon = "close";
-
-      const component = mount(UChip, {
-        props: {
-          icon,
-        },
-      });
-
-      expect(component.findComponent(UDot).exists()).toBe(false);
-      expect(component.findComponent(UIcon).exists()).toBe(true);
-      expect(component.findComponent(UIcon).props("name")).toBe(icon);
-    });
-
     // xPosition prop
     it("applies the correct xPosition class", async () => {
-      const positions = {
+      const xPositions = {
         left: "left-px",
         right: "right-px",
       };
 
-      Object.entries(positions).forEach(([position, expectedClass]) => {
+      Object.entries(xPositions).forEach(([position, classes]) => {
         const component = mount(UChip, {
           props: {
             xPosition: position as Props["xPosition"],
           },
         });
 
-        const chipWrapper = component.find("[class*='absolute transform']");
+        const chipWrapper = component.find("[vl-key='chipWrapper']");
 
-        expect(chipWrapper.attributes("class")).toContain(expectedClass);
+        expect(chipWrapper.attributes("class")).toContain(classes);
       });
     });
 
     // yPosition prop
     it("applies the correct yPosition class", async () => {
-      const positions = {
+      const yPositions = {
         top: "top-px",
         bottom: "bottom-px",
       };
 
-      Object.entries(positions).forEach(([position, expectedClass]) => {
+      Object.entries(yPositions).forEach(([position, classes]) => {
         const component = mount(UChip, {
           props: {
             yPosition: position as Props["yPosition"],
           },
         });
 
-        const chipWrapper = component.find("[class*='absolute transform']");
+        const chipWrapper = component.find("[vl-key='chipWrapper']");
 
-        expect(chipWrapper.attributes("class")).toContain(expectedClass);
+        expect(chipWrapper.attributes("class")).toContain(classes);
       });
     });
 
-    // Inset prop
-    it("applies the correct transform classes when inset is false", () => {
+    // Inset prop - when false
+    it("applies transform classes when inset prop is false", async () => {
+      const inset = false;
+      const yPosition = "top";
+      const xPosition = "right";
+
       const component = mount(UChip, {
         props: {
-          inset: false,
-          yPosition: "top",
-          xPosition: "right",
+          inset,
+          yPosition,
+          xPosition,
         },
       });
 
-      const chipWrapper = component.find("[class*='absolute transform']");
+      const chipWrapper = component.find("[vl-key='chipWrapper']");
 
       expect(chipWrapper.attributes("class")).toContain("-translate-y-1/2");
       expect(chipWrapper.attributes("class")).toContain("translate-x-1/2");
     });
 
-    it("does not apply transform classes when inset is true", () => {
+    // Inset prop - when true
+    it("does not apply transform classes when inset prop is true", async () => {
+      const inset = true;
+      const yPosition = "top";
+      const xPosition = "right";
+
       const component = mount(UChip, {
         props: {
-          inset: true,
-          yPosition: "top",
-          xPosition: "right",
+          inset,
+          yPosition,
+          xPosition,
         },
       });
 
-      const chipWrapper = component.find("[class*='absolute transform']");
+      const chipWrapper = component.find("[vl-key='chipWrapper']");
 
       expect(chipWrapper.attributes("class")).not.toContain("-translate-y-1/2");
       expect(chipWrapper.attributes("class")).not.toContain("translate-x-1/2");
@@ -176,46 +231,14 @@ describe("UChip.vue", () => {
 
       const component = mount(UChip, {
         slots: {
-          chip: `<div class="${slotClass}">${slotText}</div>`,
+          chip: `<span class='${slotClass}'>${slotText}</span>`,
         },
       });
 
+      expect(component.findAllComponents(UDot).length).toBe(0);
+      expect(component.findAllComponents(UIcon).length).toBe(0);
       expect(component.find(`.${slotClass}`).exists()).toBe(true);
       expect(component.find(`.${slotClass}`).text()).toBe(slotText);
-      expect(component.findComponent(UDot).exists()).toBe(false);
-    });
-  });
-
-  // Base rendering tests
-  describe("Rendering", () => {
-    it("renders as a div element", () => {
-      const component = mount(UChip, {});
-
-      expect(component.element.tagName.toLowerCase()).toBe("div");
-    });
-
-    it("has a wrapper with relative positioning", () => {
-      const component = mount(UChip, {});
-
-      expect(component.attributes("class")).toContain("relative");
-    });
-
-    it("renders UDot by default when no icon is provided", () => {
-      const component = mount(UChip, {});
-
-      expect(component.findComponent(UDot).exists()).toBe(true);
-      expect(component.findComponent(UIcon).exists()).toBe(false);
-    });
-
-    it("applies default props when no props are provided", () => {
-      const component = mount(UChip, {});
-      const chipWrapper = component.find("[class*='absolute transform']");
-
-      // Default values from config
-      expect(component.findComponent(UDot).props("color")).toBe("primary");
-      expect(component.findComponent(UDot).props("size")).toBe("md");
-      expect(chipWrapper.attributes("class")).toContain("right-px");
-      expect(chipWrapper.attributes("class")).toContain("top-px");
     });
   });
 
