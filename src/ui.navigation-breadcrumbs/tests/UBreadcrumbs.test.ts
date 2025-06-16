@@ -221,9 +221,9 @@ describe("UBreadcrumbs.vue", () => {
         },
       });
 
-      const dividerIcons = component.findAllComponents(UIcon).filter(
-        (icon) => icon.props("name") === "arrow_right"
-      );
+      const dividerIcons = component
+        .findAllComponents(UIcon)
+        .filter((icon) => icon.props("name") === "arrow_right");
 
       // There should be 2 divider icons (between 3 links)
       expect(dividerIcons.length).toBe(2);
@@ -341,7 +341,8 @@ describe("UBreadcrumbs.vue", () => {
       });
 
       expect(
-        (component.vm as ComponentPublicInstance & { breadcrumbsRef: HTMLDivElement }).breadcrumbsRef
+        (component.vm as ComponentPublicInstance & { breadcrumbsRef: HTMLDivElement })
+          .breadcrumbsRef,
       ).toBeDefined();
     });
   });
@@ -382,10 +383,7 @@ describe("UBreadcrumbs.vue", () => {
 
     // Link without to or href
     it("disables link when it has no to or href", () => {
-      const links: UBreadcrumb[] = [
-        { label: "Home" },
-        { label: "Products", to: "/products" },
-      ];
+      const links: UBreadcrumb[] = [{ label: "Home" }, { label: "Products", to: "/products" }];
 
       const component = mount(UBreadcrumbs, {
         props: {

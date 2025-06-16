@@ -68,9 +68,7 @@ describe("UTabs.vue", () => {
     // Size prop
     it("applies the correct size to tabs", () => {
       const sizes = ["2xs", "xs", "sm", "md", "lg", "xl"];
-      const options: UTabsOption[] = [
-        { value: "tab1", label: "Tab 1" },
-      ];
+      const options: UTabsOption[] = [{ value: "tab1", label: "Tab 1" }];
 
       sizes.forEach((size) => {
         const component = mount(UTabs, {
@@ -115,9 +113,7 @@ describe("UTabs.vue", () => {
     // Block prop
     it("provides block value to tabs", () => {
       const block = true;
-      const options: UTabsOption[] = [
-        { value: "tab1", label: "Tab 1" },
-      ];
+      const options: UTabsOption[] = [{ value: "tab1", label: "Tab 1" }];
 
       const component = mount(UTabs, {
         props: {
@@ -136,9 +132,7 @@ describe("UTabs.vue", () => {
     // Square prop
     it("provides square value to tabs", () => {
       const square = true;
-      const options: UTabsOption[] = [
-        { value: "tab1", label: "Tab 1" },
-      ];
+      const options: UTabsOption[] = [{ value: "tab1", label: "Tab 1" }];
 
       const component = mount(UTabs, {
         props: {
@@ -157,9 +151,7 @@ describe("UTabs.vue", () => {
     // DataTest prop
     it("applies the correct data-test attribute", () => {
       const dataTest = "test-tabs";
-      const options: UTabsOption[] = [
-        { value: "tab1", label: "Tab 1" },
-      ];
+      const options: UTabsOption[] = [{ value: "tab1", label: "Tab 1" }];
 
       const component = mount(UTabs, {
         props: {
@@ -304,7 +296,9 @@ describe("UTabs.vue", () => {
         },
       });
 
-      expect((component.vm as ComponentPublicInstance & { wrapperRef: HTMLDivElement }).wrapperRef).toBeDefined();
+      expect(
+        (component.vm as ComponentPublicInstance & { wrapperRef: HTMLDivElement }).wrapperRef,
+      ).toBeDefined();
     });
   });
 

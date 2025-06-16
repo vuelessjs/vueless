@@ -24,9 +24,7 @@ describe("UPagination.vue", () => {
           },
         });
 
-        const activeButton = component.findAll("button").find((button) =>
-          button.text() === "2"
-        );
+        const activeButton = component.findAll("button").find((button) => button.text() === "2");
 
         expect(activeButton?.attributes("class")).toContain(variant);
       });
@@ -67,9 +65,9 @@ describe("UPagination.vue", () => {
         },
       });
 
-      const activeButton = component.findAll("button").find((button) =>
-        button.text() === currentPage.toString()
-      );
+      const activeButton = component
+        .findAll("button")
+        .find((button) => button.text() === currentPage.toString());
 
       expect(activeButton?.attributes("class")).toContain("solid");
     });
