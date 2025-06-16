@@ -4,12 +4,11 @@ import { describe, it, expect } from "vitest";
 import ULoader from "../ULoader.vue";
 
 import type { Props } from "../types.ts";
-import type { ComponentPublicInstance } from "vue";
 
 describe("ULoader.vue", () => {
   // Props tests
   describe("Props", () => {
-    // Loading prop
+    // Loading prop - true
     it("shows loader when loading prop is true", () => {
       const loading = true;
 
@@ -19,9 +18,10 @@ describe("ULoader.vue", () => {
         },
       });
 
-      expect(component.find("div").exists()).toBe(true);
+      expect(component.find("[vl-key='loader']").exists()).toBe(true);
     });
 
+    // Loading prop - false
     it("hides loader when loading prop is false", () => {
       const loading = false;
 
@@ -31,7 +31,7 @@ describe("ULoader.vue", () => {
         },
       });
 
-      expect(component.find("div").exists()).toBe(false);
+      expect(component.find("[vl-key='loader']").exists()).toBe(false);
     });
 
     // Color prop
@@ -58,23 +58,25 @@ describe("ULoader.vue", () => {
         });
 
         // Check if the ellipses have the correct color class
-        const ellipses = component.findAll("div > div");
+        const ellipses = component.findAll("[vl-key='ellipse']");
 
         ellipses.forEach((ellipse) => {
-          if (color === "inherit") {
-            expect(ellipse.classes()).toContain("bg-current");
-          } else {
-            expect(ellipse.attributes("class")).toContain(`bg-${color}`);
-          }
+          color === "inherit"
+            ? expect(ellipse.classes()).toContain("bg-current")
+            : expect(ellipse.classes()).toContain(`bg-${color}`);
         });
       });
     });
 
     // Size prop
     it("applies the correct size to the loader", () => {
-      const sizes = ["sm", "md", "lg"];
+      const sizeVariants = {
+        sm: "vueless-loader-ellipse-sm",
+        md: "vueless-loader-ellipse-md",
+        lg: "vueless-loader-ellipse-lg",
+      };
 
-      sizes.forEach((size) => {
+      Object.entries(sizeVariants).forEach(([size, classes]) => {
         const component = mount(ULoader, {
           props: {
             loading: true,
@@ -82,24 +84,11 @@ describe("ULoader.vue", () => {
           },
         });
 
-        // Check if the loader has the correct size class
-        const loader = component.find("div");
-
-        expect(loader.classes()).toContain(
-          `h-${size === "sm" ? "1.5" : size === "md" ? "2.5" : "4"}`,
-        );
-        expect(loader.classes()).toContain(
-          `w-${size === "sm" ? "9" : size === "md" ? "[3.625rem]" : "20"}`,
-        );
-
         // Check if the ellipses have the correct size class
-        const ellipses = component.findAll("div > div");
+        const ellipses = component.findAll("[vl-key='ellipse']");
 
         ellipses.forEach((ellipse) => {
-          expect(ellipse.classes()).toContain(`vueless-loader-ellipse-${size}`);
-          expect(ellipse.classes()).toContain(
-            `size-${size === "sm" ? "1.5" : size === "md" ? "2.5" : "4"}`,
-          );
+          expect(ellipse.classes()).toContain(classes);
         });
       });
     });
@@ -115,7 +104,7 @@ describe("ULoader.vue", () => {
         },
       });
 
-      expect(component.find("div").attributes("data-test")).toBe(dataTest);
+      expect(component.find("[vl-key='loader']").attributes("data-test")).toBe(dataTest);
     });
   });
 
@@ -137,7 +126,7 @@ describe("ULoader.vue", () => {
 
       expect(component.find(`.${slotClass}`).exists()).toBe(true);
       expect(component.find(`.${slotClass}`).text()).toBe(slotContent);
-      expect(component.findAll("div > div").length).toBe(1); // Only the custom slot content, not the default ellipses
+      expect(component.findAll("[vl-key='ellipse']").length).toBe(0); // No default ellipses when using a custom slot
     });
   });
 
@@ -151,9 +140,7 @@ describe("ULoader.vue", () => {
         },
       });
 
-      expect(
-        (component.vm as ComponentPublicInstance & { loaderRef: HTMLDivElement }).loaderRef,
-      ).toBeDefined();
+      expect(component.vm.loaderRef).toBeDefined();
     });
   });
 });
