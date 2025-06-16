@@ -115,7 +115,7 @@ npm run preview
 - When testing class-related props, match expected classes from the component’s CVA config in `config.ts`
 - Run tests by using command `npm run test:ci src/ui.[component-folder]`]
 - Ensure the tests meet Testing Guidelines
-- Import types with `type` keyword, example `import type { ComponentPublicInstance } from "vue"`
+- Import types with `type` keyword, example `import type { ComponentPublicInstance } from "vue"`; Only add TypeScript types when a TypeScript error is present
 - Use vueless attributes to find the exact element `component.find("[vl-key='number']")` where is key is element config key
 
 ## Best Practices
