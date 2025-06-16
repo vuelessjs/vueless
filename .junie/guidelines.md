@@ -93,10 +93,14 @@ npm run preview
 - Use Vitest and Vue Test Utils for component testing
 - Test files should be placed in the `tests` directory of each component
 - Follow the naming convention: `UComponent.test.ts`
+- Use `UButton.test.ts` as reference
 - Test component props, slots, events, and exposed refs
 - Add comments above each test to shortly describe what is testing, example `// ImageUrl prop`. 
-- Expected value should be defined in constant after the props or other provided data, hardcoding that values are prohibited.
+- Define component props as a separate constants at the beginning of the each test.
+- Define repeated data into `beforeAll` or `beforeEach` section.
+- Define expected value in constant after the props constants or other provided data, no hardcoding expected values!
 - Ensure that any constant representing variants, when tests compare prop values and associated class names, define variants as an object where each key corresponds to a prop value and each value is the associated class string
+- Define colors variant as an array instead of object
 - Use forEach for testing variants, the same as in `UButton.test.ts`. The loop arguments should be `variant` and `classes`
 - Use keys and values from the `variants` object instead of if-else statements inside the forEach
 - For the color prop variant, use the `primary` color instead of using a {color} pattern string placeholder in classes.
@@ -110,6 +114,7 @@ npm run preview
 - Run tests by using command `npm run test:ci src/ui.[component-folder]`]
 - Ensure the tests meet Testing Guidelines
 - Import types with `type` keyword, example `import type { ComponentPublicInstance } from "vue"`
+- Use vueless attributes to find the exact element `component.find("[vl-key='number']")` where is key is element config key
 
 ## Best Practices
 - Follow the established component structure for new components
