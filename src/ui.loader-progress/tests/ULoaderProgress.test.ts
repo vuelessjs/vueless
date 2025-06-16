@@ -10,21 +10,23 @@ import type { Props } from "../types.ts";
 vi.useFakeTimers();
 
 describe("ULoaderProgress.vue", () => {
+  // Common test configuration
+  const loading = true;
+  const global = {
+    provide: {
+      [LoaderProgressSymbol]: createLoaderProgress(),
+    },
+  };
+
   // Props tests
   describe("Props", () => {
     // Loading prop
     it("accepts loading prop", () => {
-      const loading = true;
-
       const component = mount(ULoaderProgress, {
         props: {
           loading,
         },
-        global: {
-          provide: {
-            [LoaderProgressSymbol]: createLoaderProgress(),
-          },
-        },
+        global,
       });
 
       expect(component.props("loading")).toBe(loading);
@@ -38,11 +40,7 @@ describe("ULoaderProgress.vue", () => {
         props: {
           color,
         },
-        global: {
-          provide: {
-            [LoaderProgressSymbol]: createLoaderProgress(),
-          },
-        },
+        global,
       });
 
       expect(component.props("color")).toBe(color);
@@ -56,13 +54,9 @@ describe("ULoaderProgress.vue", () => {
         const component = mount(ULoaderProgress, {
           props: {
             size: size as Props["size"],
-            loading: true, // Ensure the component is visible
+            loading, // Ensure the component is visible
           },
-          global: {
-            provide: {
-              [LoaderProgressSymbol]: createLoaderProgress(),
-            },
-          },
+          global,
         });
 
         // Check if the prop is set correctly
@@ -83,11 +77,7 @@ describe("ULoaderProgress.vue", () => {
         props: {
           dataTest,
         },
-        global: {
-          provide: {
-            [LoaderProgressSymbol]: createLoaderProgress(),
-          },
-        },
+        global,
       });
 
       expect(component.props("dataTest")).toBe(dataTest);
@@ -100,11 +90,7 @@ describe("ULoaderProgress.vue", () => {
     // The component uses window.__VuelessProgressLoaderInstance to track instances
     it("exposes event handling methods", () => {
       const component = mount(ULoaderProgress, {
-        global: {
-          provide: {
-            [LoaderProgressSymbol]: createLoaderProgress(),
-          },
-        },
+        global,
       });
 
       // Check that the component has the event handling methods
@@ -126,11 +112,7 @@ describe("ULoaderProgress.vue", () => {
     // start method
     it("exposes start method", () => {
       const component = mount(ULoaderProgress, {
-        global: {
-          provide: {
-            [LoaderProgressSymbol]: createLoaderProgress(),
-          },
-        },
+        global,
       });
 
       expect(component.vm.start).toBeDefined();
@@ -140,11 +122,7 @@ describe("ULoaderProgress.vue", () => {
     // stop method
     it("exposes stop method", () => {
       const component = mount(ULoaderProgress, {
-        global: {
-          provide: {
-            [LoaderProgressSymbol]: createLoaderProgress(),
-          },
-        },
+        global,
       });
 
       expect(component.vm.stop).toBeDefined();
@@ -154,11 +132,7 @@ describe("ULoaderProgress.vue", () => {
     // isLoading computed property
     it("exposes isLoading computed property", () => {
       const component = mount(ULoaderProgress, {
-        global: {
-          provide: {
-            [LoaderProgressSymbol]: createLoaderProgress(),
-          },
-        },
+        global,
       });
 
       expect(component.vm.isLoading).toBeDefined();
@@ -168,13 +142,9 @@ describe("ULoaderProgress.vue", () => {
     it("exposes progressRef", () => {
       const component = mount(ULoaderProgress, {
         props: {
-          loading: true,
+          loading,
         },
-        global: {
-          provide: {
-            [LoaderProgressSymbol]: createLoaderProgress(),
-          },
-        },
+        global,
       });
 
       expect(component.vm.progressRef).toBeDefined();
@@ -183,11 +153,7 @@ describe("ULoaderProgress.vue", () => {
     // start and stop methods functionality
     it("has a functional start method", () => {
       const component = mount(ULoaderProgress, {
-        global: {
-          provide: {
-            [LoaderProgressSymbol]: createLoaderProgress(),
-          },
-        },
+        global,
       });
 
       // Verify the method exists and is a function
@@ -200,11 +166,7 @@ describe("ULoaderProgress.vue", () => {
 
     it("has a functional stop method", () => {
       const component = mount(ULoaderProgress, {
-        global: {
-          provide: {
-            [LoaderProgressSymbol]: createLoaderProgress(),
-          },
-        },
+        global,
       });
 
       // Verify the method exists and is a function
