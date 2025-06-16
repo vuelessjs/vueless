@@ -98,9 +98,9 @@ npm run preview
 - Test component props, slots, events, and exposed refs
 - Add comments above each test to shortly describe what is testing, example `// ImageUrl prop`. 
 - Define component props as a separate constants at the beginning of the each test.
-- Use a single `mount()` per test; if multiple mounts are needed, split the logic into separate tests
 - Define repeated data into `beforeAll` or `beforeEach` section.
-- Define expected value in constant after the props constants or other provided data, no hardcoding expected values!
+- Define the expected value in constant after the props constants or other provided data, for string values only!
+- Use a single `mount()` per test; if multiple mounts are needed, split the logic into separate tests
 - Ensure that any constant representing variants, when tests compare prop values and associated class names, define variants as an object where each key corresponds to a prop value and each value is the associated class string
 - Define colors variant as an array instead of object
 - Use forEach for testing variants, the same as in `UButton.test.ts`. The loop arguments should be `variant` and `classes`
@@ -115,7 +115,7 @@ npm run preview
 - When testing class-related props, match expected classes from the component’s CVA config in `config.ts`
 - Run tests by using command `npm run test:ci src/ui.[component-folder]`]
 - Ensure the tests meet Testing Guidelines
-- Import types with `type` keyword, example `import type { ComponentPublicInstance } from "vue"`; Only add TypeScript types when a TypeScript error is present
+- Import types with `type` keyword, byt only when a TypeScript error is present
 - Use vueless attributes to find the exact element `component.find("[vl-key='number']")` where is key is element config key
 
 ## Best Practices
