@@ -1,3 +1,4 @@
+import { h } from "vue";
 import { mount } from "@vue/test-utils";
 import { describe, it, expect, vi } from "vitest";
 
@@ -402,9 +403,7 @@ describe("UTab.vue", () => {
           value,
         },
         slots: {
-          left: (props) => {
-            return `<div data-active="${props.active}"></div>`;
-          },
+          left: (props) => h("div", { "data-active": props.active }),
         },
         global: {
           provide: {
@@ -414,16 +413,13 @@ describe("UTab.vue", () => {
         },
       });
 
-      expect(component.find('div[data-active="true"]').exists()).toBe(true);
+      expect(component.find('[data-active="true"]').exists()).toBe(true);
     });
 
     // Slot binding - icon-name
     it("passes icon-name to slots", () => {
       const leftIcon = "home";
-      let slotProps = {};
 
-      // Component is needed for test setup but not directly used in assertions
-      // eslint-disable-next-line @typescript-eslint/no-unused-vars
       const component = mount(UTab, {
         props: {
           label: "Tab Item",
@@ -431,18 +427,14 @@ describe("UTab.vue", () => {
           leftIcon,
         },
         slots: {
-          left: (props) => {
-            slotProps = props;
-
-            return "";
-          },
+          left: (props) => h("div", { "data-icon-name": props.iconName }),
         },
         global: {
           provide: defaultProvide,
         },
       });
 
-      expect(slotProps["iconName"]).toBe(leftIcon);
+      expect(component.find(`[data-icon-name="${leftIcon}"]`).exists()).toBe(true);
     });
   });
 
