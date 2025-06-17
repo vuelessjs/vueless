@@ -46,6 +46,11 @@ export interface Props {
   line?: boolean;
 
   /**
+   * Enables text wrapping.
+   */
+  wrap?: boolean;
+
+  /**
    * Component config object.
    */
   config?: ComponentConfig<Config>;
