@@ -1,4 +1,3 @@
-import { ref } from "vue";
 import {
   getArgs,
   getArgTypes,
@@ -11,8 +10,8 @@ import UTextarea from "../../ui.form-textarea/UTextarea.vue";
 import UIcon from "../../ui.image-icon/UIcon.vue";
 import UCol from "../../ui.container-col/UCol.vue";
 import URow from "../../ui.container-row/URow.vue";
-import UAvatar from "../../ui.image-avatar/UAvatar.vue";
 import tooltip from "../../directives/tooltip/vTooltip.ts";
+import UText from "../../ui.text-block/UText.vue";
 
 import type { Meta, StoryFn } from "@storybook/vue3";
 import type { Props } from "../types.ts";
@@ -123,18 +122,14 @@ NoAutocomplete.parameters = {
 };
 
 export const Slots: StoryFn<UTextareaArgs> = (args) => ({
-  components: { UTextarea, URow, UIcon, UAvatar },
+  components: { UTextarea, URow, UIcon, UText },
   directives: { tooltip },
-  setup() {
-    const switchModel = ref(false);
-
-    return { args, switchModel };
-  },
+  setup: () => ({ args }),
   template: `
     <URow>
-      <UTextarea v-bind="args">
+      <UTextarea v-bind="args" v-model="args.modelValue" :max-length="300">
         <template #left>
-          <UAvatar />
+          <UText :label="args.modelValue?.length + '/300'" variant="lifted" />
         </template>
       </UTextarea>
 

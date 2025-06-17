@@ -7,12 +7,11 @@ import {
 } from "../../utils/storybook.ts";
 
 import UInputSearch from "../../ui.form-input-search/UInputSearch.vue";
-import UButton from "../../ui.button/UButton.vue";
 import UIcon from "../../ui.image-icon/UIcon.vue";
 import UCol from "../../ui.container-col/UCol.vue";
 import URow from "../../ui.container-row/URow.vue";
-import UAvatar from "../../ui.image-avatar/UAvatar.vue";
-import UBadge from "../../ui.text-badge/UBadge.vue";
+import UDropdownButton from "../../ui.dropdown-button/UDropdownButton.vue";
+import UText from "../../ui.text-block/UText.vue";
 
 import type { Meta, StoryFn } from "@storybook/vue3";
 import type { Props } from "../types.ts";
@@ -40,7 +39,7 @@ export default {
 } as Meta;
 
 const DefaultTemplate: StoryFn<UInputSearchArgs> = (args: UInputSearchArgs) => ({
-  components: { UInputSearch, UButton, UIcon },
+  components: { UInputSearch, UIcon },
   setup: () => ({ args, slots: getSlotNames(UInputSearch.__name) }),
   template: `
     <UInputSearch
@@ -136,23 +135,49 @@ export const IconProps: StoryFn<UInputSearchArgs> = (args) => ({
 });
 
 export const Slots: StoryFn<UInputSearchArgs> = (args) => ({
-  components: { UInputSearch, URow, UButton, UAvatar, UBadge },
+  components: { UInputSearch, UCol, URow, UIcon, UDropdownButton, UText },
   setup() {
-    return { args };
+    const aiVersions = [
+      { label: "GPT-4o", id: "gpt-4o" },
+      { label: "GPT-4o-mini", id: "gpt-4o-mini" },
+      { label: "GPT-4", id: "gpt-4" },
+    ];
+
+    return { args, aiVersions };
   },
   template: `
-    <URow>
-      <UInputSearch v-bind="args" :config="{ searchInput: { leftSlot: 'pl-0' } }">
-        <template #left>
-          <UAvatar size="sm" />
+    <UCol>
+      <UInputSearch placeholder="Search by rental district...">
+        <template #right>
+          <URow align="center" gap="xs">
+            <UIcon name="straighten" size="sm" />
+            <UText label="+2km" variant="muted" />
+          </URow>
         </template>
       </UInputSearch>
 
-      <UInputSearch v-bind="args" :config="{ searchInput: { rightSlot: 'pr-0' } }">
-        <template #right>
-          <UBadge label="Search" size="sm" color="success" />
+      <UInputSearch
+        placeholder="Ask something..."
+        :config="{ searchInput: { leftSlot: 'pl-0' } }"
+      >
+        <template #left>
+          <UDropdownButton
+            v-model="args.aiVersion"
+            :options="aiVersions"
+            label="AI Version"
+            size="sm"
+            variant="ghost"
+            class="rounded-r-none"
+          />
         </template>
       </UInputSearch>
-    </URow>
+    </UCol>
   `,
 });
+Slots.parameters = {
+  docs: {
+    story: {
+      height: "270px",
+    },
+  },
+};

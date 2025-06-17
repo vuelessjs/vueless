@@ -1,3 +1,4 @@
+import { ref } from "vue";
 import {
   getArgs,
   getArgTypes,
@@ -11,7 +12,8 @@ import UCol from "../../ui.container-col/UCol.vue";
 import UIcon from "../../ui.image-icon/UIcon.vue";
 import UButton from "../../ui.button/UButton.vue";
 import URow from "../../ui.container-row/URow.vue";
-import UAvatar from "../../ui.image-avatar/UAvatar.vue";
+import UDropdownButton from "../../ui.dropdown-button/UDropdownButton.vue";
+import UText from "../../ui.text-block/UText.vue";
 
 import type { Meta, StoryFn } from "@storybook/vue3";
 import type { Props } from "../types.ts";
@@ -185,23 +187,51 @@ export const IconProps: StoryFn<UInputNumberArgs> = (args) => ({
 });
 
 export const Slots: StoryFn<UInputNumberArgs> = (args) => ({
-  components: { UInputNumber, URow, UButton, UAvatar },
+  components: { UInputNumber, URow, UButton, UDropdownButton, UText },
   setup() {
-    return { args };
+    const currencies = [
+      { label: "USD", id: "usd" },
+      { label: "EUR", id: "eur" },
+      { label: "UAH", id: "uah" },
+    ];
+
+    const currency = ref("usd");
+
+    return { args, currency, currencies };
   },
   template: `
-    <URow>
-      <UInputNumber v-bind="args">
+    <URow class="gap-4">
+      <UInputNumber
+        label="Left slot"
+        placeholder="Enter discount amount"
+        :config="{ numberInput: { leftSlot: 'pl-0' } }"
+      >
         <template #left>
-          <UAvatar />
+          <UDropdownButton
+            v-model="currency"
+            :options="currencies"
+            size="sm"
+            variant="ghost"
+            class="rounded-r-none h-[49px]"
+          />
         </template>
       </UInputNumber>
 
-      <UInputNumber v-bind="args" :config="{ moneyInput: { rightSlot: 'pr-0' } }">
+      <UInputNumber
+        label="Right slot"
+        placeholder="Enter your annual payment"
+      >
         <template #right>
-          <UButton label="Calculate" size="sm" class="rounded-l-none h-full" />
+          <UText label="%, per year" variant="lifted" size="sm" :wrap="false" />
         </template>
       </UInputNumber>
     </URow>
   `,
 });
+Slots.parameters = {
+  docs: {
+    story: {
+      height: "250px",
+    },
+  },
+};
