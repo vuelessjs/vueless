@@ -4,8 +4,8 @@ export default /*tw*/ {
     variants: {
       align: {
         topInside: "flex-col gap-0 relative",
-        topWithDesc: "flex-col-reverse gap-2",
-        top: "flex-col gap-2",
+        topWithDesc: "flex-col-reverse",
+        top: "flex-col",
         right: "flex-row w-fit",
         left: "flex-row-reverse w-fit",
       },
@@ -20,6 +20,7 @@ export default /*tw*/ {
       { align: ["left", "right"], centred: true, class: "items-center w-auto" },
       { align: "left", centred: true, class: "justify-end" },
       { align: "right", centred: true, class: "justify-start" },
+      { align: ["top", "topWithDesc"], label: true, class: "gap-2" },
     ],
   },
   content: "flex",
@@ -33,7 +34,7 @@ export default /*tw*/ {
       },
       align: {
         top: "font-medium",
-        topInside: "font-normal absolute left-3 text-lifted group-focus-within:text-primary",
+        topInside: "font-normal absolute left-3 text-lifted",
         topWithDesc: "font-medium",
         left: "font-normal",
         right: "font-normal",
@@ -57,6 +58,7 @@ export default /*tw*/ {
       { align: ["left", "right"], size: "md", class: "text-medium" },
       { align: ["left", "right"], size: "lg", class: "mt-px text-large" },
       { align: ["left", "right"], centred: false, class: "pt-1" },
+      { align: "topInside", disabled: false, class: "group-focus-within:text-primary" },
     ],
   },
   description: {

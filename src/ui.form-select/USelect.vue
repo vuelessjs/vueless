@@ -34,6 +34,12 @@ const props = withDefaults(defineProps<Props>(), {
 
 const emit = defineEmits([
   /**
+   * Triggers when the select component is clicked.
+   * @property {boolean} value
+   */
+  "click",
+
+  /**
    * Triggers when a dropdown list is opened.
    * @property {string} elementId
    */
@@ -237,7 +243,7 @@ function toggle() {
 }
 
 function deactivate() {
-  if (!isOpen.value || props.disabled) {
+  if (!isOpen.value || props.disabled || props.readonly) {
     return;
   }
 
@@ -249,7 +255,9 @@ function deactivate() {
 }
 
 function activate() {
-  if (isOpen.value || props.disabled) {
+  emit("click", isOpen.value);
+
+  if (isOpen.value || props.disabled || props.readonly) {
     return;
   }
 
@@ -470,7 +478,11 @@ const {
     :tabindex="-1"
   >
     <template #label>
-      <div @click="toggle" @mousedown.prevent>
+      <div
+        v-if="label || hasSlotContent($slots['label'], { label })"
+        @click="toggle"
+        @mousedown.prevent
+      >
         <!--
           @slot Use this to add custom content instead of the label.
           @binding {string} label
@@ -501,8 +513,14 @@ const {
         <!--
             @slot Use it to add something to the right of input.
             @binding {string} icon-name
+            @binding {array} options
+            @binding {object} options
           -->
-        <slot name="right" :icon-name="rightIcon">
+        <slot
+          name="right"
+          :icon-name="rightIcon"
+          :options="multiple ? selectedOptions.full : selectedOption"
+        >
           <UIcon v-if="rightIcon" :name="rightIcon" v-bind="rightIconAttrs" />
         </slot>
       </div>
@@ -635,8 +653,13 @@ const {
                 <!--
                   @slot Use it to customize selected options counter.
                   @binding {number} count
+                  @binding {string} hidden-options
                 -->
-                <slot name="selected-counter" :count="hiddenSelectedOptionsCount">
+                <slot
+                  name="selected-counter"
+                  :count="hiddenSelectedOptionsCount"
+                  :hidden-options="selectedOptionsLabel.hidden"
+                >
                   <span
                     v-if="hiddenSelectedOptionsCount"
                     v-bind="counterAttrs"
@@ -690,8 +713,13 @@ const {
                 <!--
                   @slot Use it to customize selected options counter.
                   @binding {number} count
+                  @binding {string} hidden-options
                 -->
-                <slot name="selected-counter" :count="hiddenSelectedOptionsCount">
+                <slot
+                  name="selected-counter"
+                  :count="hiddenSelectedOptionsCount"
+                  :hidden-options="selectedOptionsLabel.hidden"
+                >
                   <UBadge
                     v-if="hiddenSelectedOptionsCount"
                     :label="`+${hiddenSelectedOptionsCount}`"
@@ -743,8 +771,13 @@ const {
                     <!--
                       @slot Use it to customize selected options counter.
                       @binding {number} count
+                      @binding {string} hidden-options
                     -->
-                    <slot name="selected-counter" :count="hiddenSelectedOptionsCount">
+                    <slot
+                      name="selected-counter"
+                      :count="hiddenSelectedOptionsCount"
+                      :hidden-options="selectedOptionsLabel.hidden"
+                    >
                       <span
                         v-if="hiddenSelectedOptionsCount"
                         :title="selectedOptionsLabel.hidden"
@@ -831,10 +864,16 @@ const {
         v-bind="leftSlotAttrs"
       >
         <!--
-            @slot Use it to add something to the left of input.
-            @binding {string} icon-name
-          -->
-        <slot name="left" :icon-name="leftIcon">
+          @slot Use it to add something to the left of input.
+          @binding {string} icon-name
+          @binding {array} options
+          @binding {object} options
+        -->
+        <slot
+          name="left"
+          :icon-name="leftIcon"
+          :options="multiple ? selectedOptions.full : selectedOption"
+        >
           <UIcon v-if="leftIcon" :name="leftIcon" v-bind="leftIconAttrs" />
         </slot>
       </div>
