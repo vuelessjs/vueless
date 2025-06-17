@@ -1,25 +1,15 @@
 export default /*tw*/ {
-  wrapper: {
-    base: "relative inline-block",
-    variants: {
-      disabled: {
-        true: "cursor-not-allowed",
-      },
-    },
-  },
+  wrapper: "relative inline-block h-max",
   dropdownBadge: {
     base: "{UBadge}",
     variants: {
-      opened: {
-        true: "group",
-      },
       disabled: {
         true: "opacity-(--vl-disabled-opacity) pointer-events-none",
       },
     },
   },
   toggleIcon: {
-    base: "{UIcon} transition duration-300 group-[*]:rotate-180 -mr-0.5",
+    base: "{UIcon} transition duration-300 -mr-0.5",
     defaults: {
       size: {
         sm: "2xs",
@@ -27,6 +17,7 @@ export default /*tw*/ {
         lg: "xs",
       },
     },
+    compoundVariants: [{ opened: true, class: "rotate-180" }],
   },
   listbox: {
     base: "{UListbox} w-fit",

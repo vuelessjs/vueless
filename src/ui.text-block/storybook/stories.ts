@@ -5,15 +5,12 @@ import {
   getSlotNames,
   getSlotsFragment,
   getDocsDescription,
-  getEnumVariantDescription,
 } from "../../utils/storybook.ts";
 
 import UText from "../../ui.text-block/UText.vue";
 import URow from "../../ui.container-row/URow.vue";
 import UCol from "../../ui.container-col/UCol.vue";
 import UBadge from "../../ui.text-badge/UBadge.vue";
-
-import tooltip from "../../directives/tooltip/vTooltip.ts";
 
 import type { Meta, StoryFn } from "@storybook/vue3";
 import type { Props } from "../types.ts";
@@ -54,7 +51,6 @@ const DefaultTemplate: StoryFn<UTextArgs> = (args: UTextArgs) => ({
 
 const EnumTemplate: StoryFn<UTextArgs> = (args: UTextArgs, { argTypes }) => ({
   components: { UText, UCol },
-  directives: { tooltip },
   setup: () => ({ args, argTypes, getArgs }),
   template: `
     <UCol>
@@ -62,7 +58,7 @@ const EnumTemplate: StoryFn<UTextArgs> = (args: UTextArgs, { argTypes }) => ({
         v-for="option in argTypes?.[args.enum]?.options"
         v-bind="getArgs(args, option)"
         :key="option"
-        v-tooltip="option"
+        class="w-full"
       />
     </UCol>
   `,
@@ -73,19 +69,15 @@ Default.args = {};
 
 export const Align = EnumTemplate.bind({});
 Align.args = { enum: "align" };
-Align.parameters = getEnumVariantDescription();
 
 export const Sizes = EnumTemplate.bind({});
 Sizes.args = { enum: "size" };
-Sizes.parameters = getEnumVariantDescription();
 
 export const Color = EnumTemplate.bind({});
 Color.args = { enum: "color" };
-Color.parameters = getEnumVariantDescription();
 
 export const Variant = EnumTemplate.bind({});
 Variant.args = { enum: "variant" };
-Variant.parameters = getEnumVariantDescription();
 
 export const Line: StoryFn<UTextArgs> = (args: UTextArgs) => ({
   components: { UText, UCol },
@@ -107,7 +99,27 @@ export const Line: StoryFn<UTextArgs> = (args: UTextArgs) => ({
   `,
 });
 Line.args = {};
-Line.parameters = getEnumVariantDescription("Removes text line height (useful for 1-line text).");
+
+export const Wrap: StoryFn<UTextArgs> = (args: UTextArgs) => ({
+  components: { UText, UCol },
+  setup: () => ({ args }),
+  template: `
+    <UCol>
+      <UText>
+        <div class="rounded-medium border border-primary border-dashed w-32">
+          Text with wrapping enabled (default behavior).
+        </div>
+      </UText>
+
+      <UText :wrap="false">
+        <div class="rounded-medium border border-primary border-dashed w-32">
+          Text with wrapping disabled (text-nowrap).
+        </div>
+      </UText>
+    </UCol>
+  `,
+});
+Wrap.args = {};
 
 export const Paragraphs = DefaultTemplate.bind({});
 Paragraphs.args = {

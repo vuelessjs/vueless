@@ -116,9 +116,17 @@ RatingIcons.parameters = {
 
 export const CounterSlot = DefaultTemplate.bind({});
 CounterSlot.args = {
+  counter: true,
+  stars: 5,
+  modelValue: 0,
   slotTemplate: `
     <template #counter="{ counter }">
-      <UBadge :label="'Current rating is: ' + String(counter)" color="success" />
+      <UBadge
+        :label="counter === 0
+          ? 'No rating yet'
+          : counter + ' out of ' + args.stars + ' stars'"
+        :color="counter ? 'success' : 'warning'"
+      />
     </template>
   `,
 };
@@ -127,8 +135,12 @@ export const TotalSlot = DefaultTemplate.bind({});
 TotalSlot.args = {
   total: 250,
   slotTemplate: `
-    <template #total="{total}">
-      <UBadge :label="'Total reviews: ' + String(total)" color="success" />
+    <template #total="{ total }">
+      <UBadge
+        :label="total + ' reviews'"
+        color="info"
+        size="sm"
+      />
     </template>
   `,
 };

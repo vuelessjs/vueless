@@ -35,6 +35,9 @@ export default /*tw*/ {
       line: {
         true: "leading-none",
       },
+      wrap: {
+        false: "text-nowrap",
+      },
     },
     compoundVariants: [
       { color: "text", variant: "default", class: "text-default" },
@@ -50,5 +53,6 @@ export default /*tw*/ {
     size: "md",
     align: "left",
     line: false,
+    wrap: true,
   },
 };

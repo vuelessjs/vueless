@@ -110,6 +110,19 @@ describe("UText.vue", () => {
       expect(component.attributes("class")).toContain("leading-none");
     });
 
+    // Wrap prop
+    it("applies text-nowrap class when wrap prop is false", () => {
+      const wrap = false;
+
+      const component = mount(UText, {
+        props: {
+          wrap,
+        },
+      });
+
+      expect(component.attributes("class")).toContain("text-nowrap");
+    });
+
     // Label prop
     it("renders the correct label content", () => {
       const label = "Text label";
