@@ -19,7 +19,9 @@ describe("USkeletonText.vue", () => {
         },
       });
 
-      const headerSkeletons = component.findAll(".flex-col.gap-2")[0].findAllComponents(USkeleton);
+      const headerSkeletons = component
+        .find("[vl-key='headerWrapper']")
+        .findAllComponents(USkeleton);
 
       expect(headerSkeletons.length).toBe(headerLines);
     });
@@ -34,7 +36,7 @@ describe("USkeletonText.vue", () => {
         },
       });
 
-      const textSkeletons = component.findAll(".flex-col.gap-2")[1].findAllComponents(USkeleton);
+      const textSkeletons = component.find("[vl-key='textWrapper']").findAllComponents(USkeleton);
 
       expect(textSkeletons.length).toBe(textLines);
     });
@@ -59,7 +61,7 @@ describe("USkeletonText.vue", () => {
           },
         });
 
-        const headerSkeleton = component.findAll(".flex-col.gap-2")[0].findComponent(USkeleton);
+        const headerSkeleton = component.find("[vl-key='headerWrapper']").findComponent(USkeleton);
 
         expect(headerSkeleton.attributes("class")).toContain(classes);
       });
@@ -85,7 +87,7 @@ describe("USkeletonText.vue", () => {
           },
         });
 
-        const textSkeleton = component.findAll(".flex-col.gap-2")[1].findComponent(USkeleton);
+        const textSkeleton = component.find("[vl-key='textWrapper']").findComponent(USkeleton);
 
         expect(textSkeleton.attributes("class")).toContain(classes);
       });
@@ -93,13 +95,9 @@ describe("USkeletonText.vue", () => {
 
     // Variant prop
     it("passes the correct variant to skeleton components", () => {
-      const variants = {
-        light: "light",
-        default: "default",
-        dark: "dark",
-      };
+      const variants = ["light", "default", "dark"];
 
-      Object.entries(variants).forEach(([variant, expectedVariant]) => {
+      variants.forEach((variant) => {
         const component = mount(USkeletonText, {
           props: {
             variant: variant as Props["variant"],
@@ -108,11 +106,11 @@ describe("USkeletonText.vue", () => {
           },
         });
 
-        const headerSkeleton = component.findAll(".flex-col.gap-2")[0].findComponent(USkeleton);
-        const textSkeleton = component.findAll(".flex-col.gap-2")[1].findComponent(USkeleton);
+        const headerSkeleton = component.find("[vl-key='headerWrapper']").findComponent(USkeleton);
+        const textSkeleton = component.find("[vl-key='textWrapper']").findComponent(USkeleton);
 
-        expect(headerSkeleton.props("variant")).toBe(expectedVariant);
-        expect(textSkeleton.props("variant")).toBe(expectedVariant);
+        expect(headerSkeleton.props("variant")).toBe(variant);
+        expect(textSkeleton.props("variant")).toBe(variant);
       });
     });
 
