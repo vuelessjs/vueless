@@ -161,6 +161,7 @@ describe("UTab.vue", () => {
     // Active state
     it("applies active classes when tab is selected", () => {
       const value = "tab1";
+      const expectedClass = "border-primary";
 
       const component = mount(UTab, {
         props: {
@@ -177,12 +178,14 @@ describe("UTab.vue", () => {
 
       const button = component.findComponent(UButton);
 
-      expect(button.attributes("class")).toContain("border-primary");
+      expect(button.attributes("class")).toContain(expectedClass);
     });
 
     // Inactive state
     it("applies inactive classes when tab is not selected", () => {
       const value = "tab1";
+      const expectedClass = "border-transparent";
+      const nonExpectedClass = "border-primary";
 
       const component = mount(UTab, {
         props: {
@@ -199,8 +202,8 @@ describe("UTab.vue", () => {
 
       const button = component.findComponent(UButton);
 
-      expect(button.attributes("class")).toContain("border-transparent");
-      expect(button.attributes("class")).not.toContain("border-primary");
+      expect(button.attributes("class")).toContain(expectedClass);
+      expect(button.attributes("class")).not.toContain(nonExpectedClass);
     });
 
     // Disabled does not activate

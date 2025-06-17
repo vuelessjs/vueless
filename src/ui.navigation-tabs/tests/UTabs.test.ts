@@ -8,17 +8,20 @@ import UButton from "../../ui.button/UButton.vue";
 import type { Props, UTabsOption } from "../types.ts";
 import type { ComponentPublicInstance } from "vue";
 
+// Global options definition
+const options: UTabsOption[] = [
+  { value: "tab1", label: "Tab 1" },
+  { value: "tab2", label: "Tab 2" },
+  { value: "tab3", label: "Tab 3" },
+];
+
 describe("UTabs.vue", () => {
   // Props tests
   describe("Props", () => {
     // ModelValue prop
     it("correctly sets the selected tab", () => {
-      const options: UTabsOption[] = [
-        { value: "tab1", label: "Tab 1" },
-        { value: "tab2", label: "Tab 2" },
-        { value: "tab3", label: "Tab 3" },
-      ];
       const modelValue = "tab2";
+      const expectedActiveClass = "border-primary";
 
       const component = mount(UTabs, {
         props: {
@@ -36,17 +39,11 @@ describe("UTabs.vue", () => {
       // The second tab should be active
       const activeTab = tabs[1];
 
-      expect(activeTab.classes()).toContain("border-primary");
+      expect(activeTab.classes()).toContain(expectedActiveClass);
     });
 
     // Options prop
     it("renders the correct number of tabs from options", () => {
-      const options: UTabsOption[] = [
-        { value: "tab1", label: "Tab 1" },
-        { value: "tab2", label: "Tab 2" },
-        { value: "tab3", label: "Tab 3" },
-      ];
-
       const component = mount(UTabs, {
         props: {
           options,
@@ -56,7 +53,7 @@ describe("UTabs.vue", () => {
       // Find all UTab components
       const tabs = component.findAllComponents(UTab);
 
-      // Check that the correct number of tabs are rendered
+      // Check that the correct number of tabs is rendered
       expect(tabs.length).toBe(options.length);
 
       // Check that the tabs have the correct labels
@@ -68,12 +65,11 @@ describe("UTabs.vue", () => {
     // Size prop
     it("applies the correct size to tabs", () => {
       const sizes = ["2xs", "xs", "sm", "md", "lg", "xl"];
-      const options: UTabsOption[] = [{ value: "tab1", label: "Tab 1" }];
 
       sizes.forEach((size) => {
         const component = mount(UTabs, {
           props: {
-            options,
+            options: [{ value: "tab1", label: "Tab 1" }],
             size: size as Props["size"],
           },
         });
@@ -81,28 +77,29 @@ describe("UTabs.vue", () => {
         // Find the UTab component
         const tab = component.findComponent(UTab);
 
-        // Check that the tab has the correct size
-        expect(tab.attributes("size")).toBe(size);
+        // Find the UButton inside the UTab
+        const button = tab.findComponent(UButton);
+
+        // Check that the button has the correct size
+        expect(button.props("size")).toBe(size);
       });
     });
 
     // Scrollable prop
     it("applies scrollable class when scrollable prop is true", () => {
       const scrollable = true;
-      const options: UTabsOption[] = [
-        { value: "tab1", label: "Tab 1" },
-        { value: "tab2", label: "Tab 2" },
-      ];
+      const dataTest = "test-tabs";
 
       const component = mount(UTabs, {
         props: {
           options,
           scrollable,
+          dataTest,
         },
       });
 
       // Find the tabs container
-      const tabsContainer = component.find("[data-test]");
+      const tabsContainer = component.find(`[data-test="${dataTest}"]`);
 
       // Check that the container has the scrollable class
       expect(tabsContainer.classes()).toContain("overflow-hidden");
@@ -113,11 +110,10 @@ describe("UTabs.vue", () => {
     // Block prop
     it("provides block value to tabs", () => {
       const block = true;
-      const options: UTabsOption[] = [{ value: "tab1", label: "Tab 1" }];
 
       const component = mount(UTabs, {
         props: {
-          options,
+          options: [{ value: "tab1", label: "Tab 1" }],
           block,
         },
       });
@@ -125,18 +121,20 @@ describe("UTabs.vue", () => {
       // Find the UTab component
       const tab = component.findComponent(UTab);
 
-      // Check that the tab has the block attribute
-      expect(tab.attributes("block")).toBe("true");
+      // Find the UButton inside the UTab
+      const button = tab.findComponent(UButton);
+
+      // Check that the button has the block prop
+      expect(button.props("block")).toBe(true);
     });
 
     // Square prop
     it("provides square value to tabs", () => {
       const square = true;
-      const options: UTabsOption[] = [{ value: "tab1", label: "Tab 1" }];
 
       const component = mount(UTabs, {
         props: {
-          options,
+          options: [{ value: "tab1", label: "Tab 1" }],
           square,
         },
       });
@@ -144,18 +142,21 @@ describe("UTabs.vue", () => {
       // Find the UTab component
       const tab = component.findComponent(UTab);
 
-      // Check that the tab has the square attribute
-      expect(tab.attributes("square")).toBe("true");
+      // Find the UButton inside the UTab
+      const button = tab.findComponent(UButton);
+
+      // Check that the button has the square prop
+      expect(button.props("square")).toBe(true);
     });
 
     // DataTest prop
     it("applies the correct data-test attribute", () => {
       const dataTest = "test-tabs";
-      const options: UTabsOption[] = [{ value: "tab1", label: "Tab 1" }];
+      const singleOption = [options[0]];
 
       const component = mount(UTabs, {
         props: {
-          options,
+          options: singleOption,
           dataTest,
         },
       });
@@ -194,15 +195,17 @@ describe("UTabs.vue", () => {
     it("renders content from prev slot when scrollable", async () => {
       const slotContent = "Prev";
       const slotClass = "prev-content";
-      const options: UTabsOption[] = Array.from({ length: 10 }, (_, i) => ({
+      const dataTest = "test-tabs";
+      const manyOptions: UTabsOption[] = Array.from({ length: 10 }, (_, i) => ({
         value: `tab${i}`,
         label: `Tab ${i}`,
       }));
 
       const component = mount(UTabs, {
         props: {
-          options,
+          options: manyOptions,
           scrollable: true,
+          dataTest,
         },
         slots: {
           prev: `<div class="${slotClass}">${slotContent}</div>`,
@@ -210,7 +213,7 @@ describe("UTabs.vue", () => {
       });
 
       // Mock the scroll position to show left arrow
-      const scrollContainer = component.find("[data-test]").element;
+      const scrollContainer = component.find(`[data-test="${dataTest}"]`).element;
 
       Object.defineProperty(scrollContainer, "scrollLeft", { value: 10 });
       Object.defineProperty(scrollContainer, "scrollWidth", { value: 1000 });
@@ -228,15 +231,17 @@ describe("UTabs.vue", () => {
     it("renders content from next slot when scrollable", async () => {
       const slotContent = "Next";
       const slotClass = "next-content";
-      const options: UTabsOption[] = Array.from({ length: 10 }, (_, i) => ({
+      const dataTest = "test-tabs";
+      const manyOptions: UTabsOption[] = Array.from({ length: 10 }, (_, i) => ({
         value: `tab${i}`,
         label: `Tab ${i}`,
       }));
 
       const component = mount(UTabs, {
         props: {
-          options,
+          options: manyOptions,
           scrollable: true,
+          dataTest,
         },
         slots: {
           next: `<div class="${slotClass}">${slotContent}</div>`,
@@ -244,7 +249,7 @@ describe("UTabs.vue", () => {
       });
 
       // Mock the scroll position to show right arrow
-      const scrollContainer = component.find("[data-test]").element;
+      const scrollContainer = component.find(`[data-test="${dataTest}"]`).element;
 
       Object.defineProperty(scrollContainer, "scrollLeft", { value: 0 });
       Object.defineProperty(scrollContainer, "scrollWidth", { value: 1000 });
@@ -263,11 +268,6 @@ describe("UTabs.vue", () => {
   describe("Events", () => {
     // Update:modelValue event
     it("emits update:modelValue event when tab is clicked", async () => {
-      const options: UTabsOption[] = [
-        { value: "tab1", label: "Tab 1" },
-        { value: "tab2", label: "Tab 2" },
-      ];
-
       const component = mount(UTabs, {
         props: {
           options,
@@ -290,9 +290,11 @@ describe("UTabs.vue", () => {
   describe("Exposed refs", () => {
     // wrapperRef
     it("exposes wrapperRef", () => {
+      const singleOption = [options[0]];
+
       const component = mount(UTabs, {
         props: {
-          options: [{ value: "tab1", label: "Tab 1" }],
+          options: singleOption,
         },
       });
 
@@ -306,20 +308,22 @@ describe("UTabs.vue", () => {
   describe("Scroll functionality", () => {
     // Scroll buttons
     it("shows scroll buttons when scrollable and content overflows", async () => {
-      const options: UTabsOption[] = Array.from({ length: 10 }, (_, i) => ({
+      const dataTest = "test-tabs";
+      const manyOptions: UTabsOption[] = Array.from({ length: 10 }, (_, i) => ({
         value: `tab${i}`,
         label: `Tab ${i}`,
       }));
 
       const component = mount(UTabs, {
         props: {
-          options,
+          options: manyOptions,
           scrollable: true,
+          dataTest,
         },
       });
 
       // Mock the scroll position to show both arrows
-      const scrollContainer = component.find("[data-test]").element;
+      const scrollContainer = component.find(`[data-test="${dataTest}"]`).element;
 
       Object.defineProperty(scrollContainer, "scrollLeft", { value: 10 });
       Object.defineProperty(scrollContainer, "scrollWidth", { value: 1000 });
@@ -329,13 +333,17 @@ describe("UTabs.vue", () => {
       await component.find("[data-test]").trigger("scroll");
 
       // Both arrows should be visible
-      const prevButton = component.findAllComponents(UButton)[0];
-      const nextButton = component.findAllComponents(UButton)[1];
+      const buttons = component.findAllComponents(UButton);
 
-      expect(prevButton.exists()).toBe(true);
-      expect(nextButton.exists()).toBe(true);
-      expect(prevButton.props("icon")).toBe("chevron_left");
-      expect(nextButton.props("icon")).toBe("chevron_right");
+      // Check that at least two buttons are rendered
+      expect(buttons.length).toBeGreaterThanOrEqual(2);
+
+      // Find the buttons with the correct icons
+      const prevButton = buttons.find((button) => button.props("icon") === "chevron_left");
+      const nextButton = buttons.find((button) => button.props("icon") === "chevron_right");
+
+      expect(prevButton).toBeDefined();
+      expect(nextButton).toBeDefined();
     });
   });
 });
