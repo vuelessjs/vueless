@@ -366,7 +366,7 @@ describe("UDropdownLink.vue", () => {
       const listbox = component.findComponent(UListbox);
 
       // Simulate selecting an option by emitting update:modelValue from the listbox
-      await listbox.vm.$emit("update:modelValue", 2);
+      listbox.vm.$emit("update:modelValue", 2);
 
       // Check if the event was emitted with the correct value
       expect(component.emitted("update:modelValue")).toBeTruthy();
