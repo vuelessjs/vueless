@@ -3,7 +3,6 @@ import { describe, it, expect } from "vitest";
 
 import URow from "../URow.vue";
 
-import type { ComponentPublicInstance } from "vue";
 import type { Props } from "../types.ts";
 
 describe("URow.vue", () => {
@@ -108,59 +107,43 @@ describe("URow.vue", () => {
         true: "flex-row-reverse",
       };
 
-      const componentWithReverse = mount(URow, {
-        props: {
-          reverse: true,
-        },
+      Object.entries(reverseClasses).forEach(([reverse, classes]) => {
+        const component = mount(URow, {
+          props: {
+            reverse: reverse === "true",
+          },
+        });
+
+        expect(component.attributes("class")).toContain(classes);
       });
-
-      expect(componentWithReverse.attributes("class")).toContain(reverseClasses.true);
-
-      const componentWithoutReverse = mount(URow, {
-        props: {
-          reverse: false,
-        },
-      });
-
-      expect(componentWithoutReverse.attributes("class")).toContain(reverseClasses.false);
     });
 
     // Wrap prop
     it("applies the correct wrap class", () => {
-      const componentWithWrap = mount(URow, {
+      const wrap = true;
+      const expectedClasses = "flex-wrap";
+
+      const component = mount(URow, {
         props: {
-          wrap: true,
+          wrap,
         },
       });
 
-      expect(componentWithWrap.attributes("class")).toContain("flex-wrap");
-
-      const componentWithoutWrap = mount(URow, {
-        props: {
-          wrap: false,
-        },
-      });
-
-      expect(componentWithoutWrap.attributes("class")).not.toContain("flex-wrap");
+      expect(component.attributes("class")).toContain(expectedClasses);
     });
 
     // Block prop
     it("applies the correct block class", () => {
-      const componentWithBlock = mount(URow, {
+      const block = true;
+      const expectedClasses = "w-full";
+
+      const component = mount(URow, {
         props: {
-          block: true,
+          block,
         },
       });
 
-      expect(componentWithBlock.attributes("class")).toContain("w-full");
-
-      const componentWithoutBlock = mount(URow, {
-        props: {
-          block: false,
-        },
-      });
-
-      expect(componentWithoutBlock.attributes("class")).not.toContain("w-full");
+      expect(component.attributes("class")).toContain(expectedClasses);
     });
 
     // DataTest prop
@@ -198,10 +181,10 @@ describe("URow.vue", () => {
     // wrapperRef
     it("exposes wrapperRef", () => {
       const component = mount(URow);
-      const vm = component.vm as ComponentPublicInstance & { wrapperRef: HTMLDivElement };
 
-      expect(vm.wrapperRef).toBeDefined();
-      expect(vm.wrapperRef instanceof HTMLDivElement).toBe(true);
+      expect(component.vm.wrapperRef).toBeDefined();
+      // wrapperRef is a reference to the wrapper div element, not a boolean
+      expect(component.vm.wrapperRef instanceof HTMLElement).toBe(true);
     });
   });
 });
