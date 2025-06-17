@@ -210,7 +210,6 @@ export const Slots: StoryFn<UInputNumberArgs> = (args) => ({
           <UDropdownButton
             v-model="currency"
             :options="currencies"
-            square
             size="sm"
             variant="ghost"
             class="rounded-r-none h-[49px]"
