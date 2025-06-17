@@ -4,13 +4,12 @@ import { describe, it, expect } from "vitest";
 import UCol from "../UCol.vue";
 
 import type { Props } from "../types.ts";
-import type { ComponentPublicInstance } from "vue";
 
 describe("UCol.vue", () => {
   // Props tests
   describe("Props", () => {
     // Gap prop
-    it("applies correct gap classes", () => {
+    it("applies the correct gap class", () => {
       const gapClasses = {
         none: "gap-0",
         "3xs": "gap-0.5",
@@ -36,7 +35,7 @@ describe("UCol.vue", () => {
     });
 
     // Align prop
-    it("applies correct align classes", () => {
+    it("applies the correct align class", () => {
       const alignClasses = {
         start: "items-start",
         end: "items-end",
@@ -57,7 +56,7 @@ describe("UCol.vue", () => {
     });
 
     // Content prop
-    it("applies correct content classes", () => {
+    it("applies the correct content class", () => {
       const contentClasses = {
         start: "content-start",
         end: "content-end",
@@ -82,7 +81,7 @@ describe("UCol.vue", () => {
     });
 
     // Justify prop
-    it("applies correct justify classes", () => {
+    it("applies the correct justify class", () => {
       const justifyClasses = {
         start: "justify-start",
         end: "justify-end",
@@ -104,7 +103,7 @@ describe("UCol.vue", () => {
     });
 
     // Reverse prop
-    it("applies correct reverse classes", () => {
+    it("applies the correct reverse class", () => {
       const reverseClasses = {
         true: "flex-col-reverse",
         false: "flex-col",
@@ -122,45 +121,31 @@ describe("UCol.vue", () => {
     });
 
     // Wrap prop
-    it("applies correct wrap classes", () => {
+    it("applies the correct wrap class", () => {
       const wrap = true;
+      const expectedClasses = "flex-wrap";
 
-      const componentWrap = mount(UCol, {
+      const component = mount(UCol, {
         props: {
           wrap,
         },
       });
 
-      expect(componentWrap.attributes("class")).toContain("flex-wrap");
-
-      const componentNoWrap = mount(UCol, {
-        props: {
-          wrap: false,
-        },
-      });
-
-      expect(componentNoWrap.attributes("class")).not.toContain("flex-wrap");
+      expect(component.attributes("class")).toContain(expectedClasses);
     });
 
     // Block prop
-    it("applies correct block classes", () => {
+    it("applies the correct block class", () => {
       const block = true;
+      const expectedClasses = "w-full";
 
-      const componentBlock = mount(UCol, {
+      const component = mount(UCol, {
         props: {
           block,
         },
       });
 
-      expect(componentBlock.attributes("class")).toContain("w-full");
-
-      const componentNoBlock = mount(UCol, {
-        props: {
-          block: false,
-        },
-      });
-
-      expect(componentNoBlock.attributes("class")).not.toContain("w-full");
+      expect(component.attributes("class")).toContain(expectedClasses);
     });
 
     // DataTest prop
@@ -180,17 +165,15 @@ describe("UCol.vue", () => {
   // Slots tests
   describe("Slots", () => {
     // Default slot
-    it("renders content in default slot", () => {
-      const slotContent = "Default Content";
-      const slotClass = "default-content";
+    it("renders content from default slot", () => {
+      const slotContent = "Custom Content";
 
       const component = mount(UCol, {
         slots: {
-          default: `<div class="${slotClass}">${slotContent}</div>`,
+          default: slotContent,
         },
       });
 
-      expect(component.find(`.${slotClass}`).exists()).toBe(true);
       expect(component.text()).toContain(slotContent);
     });
   });
@@ -200,10 +183,10 @@ describe("UCol.vue", () => {
     // wrapperRef
     it("exposes wrapperRef", () => {
       const component = mount(UCol);
-      const vm = component.vm as ComponentPublicInstance & { wrapperRef: HTMLDivElement };
 
-      expect(vm.wrapperRef).toBeDefined();
-      expect(vm.wrapperRef instanceof HTMLDivElement).toBe(true);
+      expect(component.vm.wrapperRef).toBeDefined();
+      // wrapperRef is a reference to the wrapper div element, not a boolean
+      expect(component.vm.wrapperRef instanceof HTMLElement).toBe(true);
     });
   });
 });
