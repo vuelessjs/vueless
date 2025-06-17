@@ -28,17 +28,15 @@ const { getDataTest, inputAttrs, textareaAttrs, labelAttrs, wrapperAttrs } = use
     <slot v-if="props.labelAlign !== LABEL_ALIGN.topInside && props.label" name="label">
       <USkeleton :variant="variant" v-bind="labelAttrs" />
     </slot>
-    <div v-if="props.type === 'input'">
-      <USkeleton :variant="variant" v-bind="inputAttrs">
-        <!-- @slot Use it to add custom content inside the input skeleton. -->
-        <slot />
-      </USkeleton>
-    </div>
-    <div v-else>
-      <USkeleton :variant="variant" v-bind="textareaAttrs">
-        <!-- @slot Use it to add custom content inside the textarea skeleton. -->
-        <slot />
-      </USkeleton>
-    </div>
+
+    <USkeleton v-if="props.type === 'input'" :variant="variant" v-bind="inputAttrs">
+      <!-- @slot Use it to add custom content inside the input skeleton. -->
+      <slot />
+    </USkeleton>
+
+    <USkeleton v-else :variant="variant" v-bind="textareaAttrs">
+      <!-- @slot Use it to add custom content inside the textarea skeleton. -->
+      <slot />
+    </USkeleton>
   </div>
 </template>

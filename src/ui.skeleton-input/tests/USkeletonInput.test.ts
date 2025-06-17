@@ -14,36 +14,49 @@ describe("USkeletonInput.vue", () => {
       const label = true;
       const labelAlign = "top";
 
+      // Input and label skeletons
+      const expectedComponentAmount = 2;
+
       const component = mount(USkeletonInput, {
         props: {
           label,
-          labelAlign: labelAlign as Props["labelAlign"],
+          labelAlign,
         },
       });
 
       const skeletons = component.findAllComponents(USkeleton);
 
-      expect(skeletons.length).toBe(2); // Input and label skeletons
+      expect(skeletons.length).toBe(expectedComponentAmount);
     });
 
+    // Label prop - no label
     it("does not render label skeleton when label prop is false", () => {
       const label = false;
+      const labelAlign = "top";
+
+      // Only input skeleton
+      const expectedComponentAmount = 1;
 
       const component = mount(USkeletonInput, {
         props: {
           label,
+          labelAlign,
         },
       });
 
       const skeletons = component.findAllComponents(USkeleton);
 
-      expect(skeletons.length).toBe(1); // Only input skeleton
+      expect(skeletons.length).toBe(expectedComponentAmount);
     });
 
+    // Label prop - no label if labelAlign is topInside
     it("does not render label skeleton when labelAlign is topInside", () => {
       const label = true;
       const labelAlign = "topInside";
 
+      // Only input skeleton
+      const expectedComponentAmount = 1;
+
       const component = mount(USkeletonInput, {
         props: {
           label,
@@ -53,10 +66,10 @@ describe("USkeletonInput.vue", () => {
 
       const skeletons = component.findAllComponents(USkeleton);
 
-      expect(skeletons.length).toBe(1); // Only input skeleton
+      expect(skeletons.length).toBe(expectedComponentAmount);
     });
 
-    // Size prop
+    // Size prop - input
     it("applies the correct size class to input for input type", () => {
       const size = {
         sm: "h-11",
@@ -79,6 +92,7 @@ describe("USkeletonInput.vue", () => {
       });
     });
 
+    // Size prop - textarea
     it("applies the correct size class to input for textarea type", () => {
       const size = {
         sm: "h-15.75",
@@ -101,6 +115,7 @@ describe("USkeletonInput.vue", () => {
       });
     });
 
+    // Size prop - label
     it("applies the correct size class to label", () => {
       const size = {
         sm: "h-3",
@@ -116,7 +131,7 @@ describe("USkeletonInput.vue", () => {
           },
         });
 
-        const labelSkeleton = component.findAllComponents(USkeleton)[0];
+        const [labelSkeleton] = component.findAllComponents(USkeleton);
 
         expect(labelSkeleton.attributes("class")).toContain(classes);
       });
@@ -125,9 +140,9 @@ describe("USkeletonInput.vue", () => {
     // LabelAlign prop
     it("applies the correct labelAlign class to wrapper", () => {
       const labelAlign = {
-        top: "flex flex-col",
-        left: "flex items-center",
-        right: "flex flex-row-reverse items-center",
+        top: "flex-col",
+        left: "flex-row",
+        right: "flex-row-reverse",
       };
 
       Object.entries(labelAlign).forEach(([labelAlign, classes]) => {

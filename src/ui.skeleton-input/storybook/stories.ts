@@ -1,5 +1,10 @@
 import type { Meta, StoryFn } from "@storybook/vue3";
-import { getArgTypes, getSlotsFragment, getEnumVariantDescription } from "../../utils/storybook.ts";
+import {
+  getArgs,
+  getArgTypes,
+  getSlotsFragment,
+  getEnumVariantDescription,
+} from "../../utils/storybook.ts";
 
 import USkeletonInput from "../USkeletonInput.vue";
 import UCol from "../../ui.container-col/UCol.vue";
@@ -35,23 +40,16 @@ const DefaultTemplate: StoryFn<SkeletonInputArgs> = (args: SkeletonInputArgs) =>
   `,
 });
 
-const EnumVariantTemplate: StoryFn<SkeletonInputArgs> = (
-  args: SkeletonInputArgs,
-  { argTypes },
-) => ({
+const EnumTemplate: StoryFn<SkeletonInputArgs> = (args: SkeletonInputArgs, { argTypes }) => ({
   components: { USkeletonInput, UCol },
   directives: { tooltip },
-  setup() {
-    const filteredOptions = argTypes?.[args.enum]?.options || [];
-
-    return { args, filteredOptions };
-  },
+  setup: () => ({ args, argTypes, getArgs }),
   template: `
     <UCol>
       <USkeletonInput
-        v-for="(option, index) in filteredOptions"
-        :key="index"
-        v-bind="args"
+        v-for="option in argTypes?.[args.enum]?.options"
+        v-bind="getArgs(args, option)"
+        :key="option"
         :[args.enum]="option"
         class="max-w-96 w-full"
         v-tooltip="option"
@@ -66,17 +64,17 @@ Default.args = {};
 export const Label = DefaultTemplate.bind({});
 Label.args = { label: false };
 
-export const LabelPlacement = EnumVariantTemplate.bind({});
+export const LabelPlacement = EnumTemplate.bind({});
 LabelPlacement.args = { enum: "labelAlign" };
 
-export const Type = EnumVariantTemplate.bind({});
+export const Type = EnumTemplate.bind({});
 Type.args = { enum: "type" };
 
-export const Sizes = EnumVariantTemplate.bind({});
+export const Sizes = EnumTemplate.bind({});
 Sizes.args = { enum: "size" };
 Sizes.parameters = getEnumVariantDescription();
 
-export const Variant = EnumVariantTemplate.bind({});
+export const Variant = EnumTemplate.bind({});
 Variant.args = { enum: "variant" };
 
 export const Slot: StoryFn<SkeletonInputArgs> = (args) => ({
