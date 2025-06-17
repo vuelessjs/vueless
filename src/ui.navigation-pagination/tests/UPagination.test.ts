@@ -24,17 +24,23 @@ describe("UPagination.vue", () => {
           },
         });
 
-        const activeButton = component.findAll("button").find((button) => button.text() === "2");
+        const activeButton = component
+          .findAllComponents(UButton)
+          .find((button) => button.text() === "2");
 
-        expect(activeButton?.attributes("class")).toContain(variant);
+        expect(activeButton?.props("variant")).toBe(variant);
       });
     });
 
     // Size prop
     it("applies the correct size to buttons", async () => {
-      const sizes = ["sm", "md", "lg"];
+      const sizes = {
+        sm: "text-small",
+        md: "text-medium",
+        lg: "text-large",
+      };
 
-      sizes.forEach((size) => {
+      Object.entries(sizes).forEach(([size, classes]) => {
         const component = mount(UPagination, {
           props: {
             size: size as Props["size"],
@@ -46,9 +52,9 @@ describe("UPagination.vue", () => {
 
         const buttons = component.findAllComponents(UButton);
 
-        // Check that all buttons have the correct size
+        // Check that all buttons have the correct font-size class
         buttons.forEach((button) => {
-          expect(button.attributes("class")).toContain(size);
+          expect(button.attributes("class")).toContain(classes);
         });
       });
     });
@@ -66,17 +72,18 @@ describe("UPagination.vue", () => {
       });
 
       const activeButton = component
-        .findAll("button")
-        .find((button) => button.text() === currentPage.toString());
+        .findAllComponents(UButton)
+        .find((button) => button.text() === String(currentPage));
 
-      expect(activeButton?.attributes("class")).toContain("solid");
+      expect(activeButton?.props("variant")).toBe("solid");
     });
 
     // Total and perPage props
     it("calculates the correct number of pages", () => {
       const total = 100;
       const perPage = 10;
-      const expectedPages = Math.ceil(total / perPage);
+
+      const expectedAmountOfButtons = 5;
 
       const component = mount(UPagination, {
         props: {
@@ -87,14 +94,14 @@ describe("UPagination.vue", () => {
       });
 
       // Find all page buttons (excluding navigation buttons)
-      const pageButtons = component.findAll("button").filter((button) => {
+      const pageButtons = component.findAllComponents(UButton).filter((button) => {
         const text = button.text();
 
         return text && !isNaN(Number(text));
       });
 
       // With default limit of 5, we should see 5 page buttons or less
-      expect(pageButtons.length).toBeLessThanOrEqual(5);
+      expect(pageButtons.length).toBeLessThanOrEqual(expectedAmountOfButtons);
     });
 
     // Limit prop
@@ -111,7 +118,7 @@ describe("UPagination.vue", () => {
       });
 
       // Find all page buttons (excluding navigation buttons)
-      const pageButtons = component.findAll("button").filter((button) => {
+      const pageButtons = component.findAllComponents(UButton).filter((button) => {
         const text = button.text();
 
         return text && !isNaN(Number(text));
@@ -176,17 +183,20 @@ describe("UPagination.vue", () => {
 
     // Ellipsis prop
     it("shows ellipsis when ellipsis prop is true", () => {
+      const ellipsis = true;
+      const expectedEllipsis = "…";
+
       const component = mount(UPagination, {
         props: {
+          ellipsis,
           modelValue: 5,
           total: 100,
           perPage: 10,
-          ellipsis: true,
         },
       });
 
       // Check for ellipsis character
-      expect(component.html()).toContain("…");
+      expect(component.html()).toContain(expectedEllipsis);
     });
 
     // ShowFirst and ShowLast props
@@ -205,9 +215,9 @@ describe("UPagination.vue", () => {
       const firstButton = buttons[0];
       const lastButton = buttons[buttons.length - 1];
 
-      // First button should now be "prev" and last button should be "next"
-      expect(firstButton.find("i").attributes("class")).toContain("chevron_left");
-      expect(lastButton.find("i").attributes("class")).toContain("chevron_right");
+      // The first button should now be "prev" and the last button should be "next"
+      expect(firstButton.findComponent(UIcon).props("name")).toContain("chevron_left");
+      expect(lastButton.findComponent(UIcon).props("name")).toContain("chevron_right");
     });
 
     // DataTest prop
@@ -274,7 +284,7 @@ describe("UPagination.vue", () => {
 
     // Ellipsis slot
     it("renders content from ellipsis slot", () => {
-      const slotContent = "...";
+      const slotContent = "......";
       const slotClass = "ellipsis-content";
 
       const component = mount(UPagination, {
@@ -347,16 +357,17 @@ describe("UPagination.vue", () => {
       });
 
       // Find the second page button and click it
-      const pageButtons = component.findAll("button").filter((button) => {
+      const pageButtons = component.findAllComponents(UButton).filter((button) => {
         const text = button.text();
 
         return text && !isNaN(Number(text));
       });
 
+      // Second button
       await pageButtons[1].trigger("click");
 
       expect(component.emitted("change")).toBeTruthy();
-      expect(component.emitted("change")?.[0]).toEqual([2]);
+      expect(component.emitted("change")?.[0]).toEqual([2]); // Second button value
     });
 
     // Update:modelValue event
@@ -370,16 +381,17 @@ describe("UPagination.vue", () => {
       });
 
       // Find the second page button and click it
-      const pageButtons = component.findAll("button").filter((button) => {
+      const pageButtons = component.findAllComponents(UButton).filter((button) => {
         const text = button.text();
 
         return text && !isNaN(Number(text));
       });
 
+      // Second button
       await pageButtons[1].trigger("click");
 
       expect(component.emitted("update:modelValue")).toBeTruthy();
-      expect(component.emitted("update:modelValue")?.[0]).toEqual([2]);
+      expect(component.emitted("update:modelValue")?.[0]).toEqual([2]); // Second button value
     });
 
     // Navigation button clicks
