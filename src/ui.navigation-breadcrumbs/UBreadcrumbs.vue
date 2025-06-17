@@ -94,7 +94,7 @@ const {
         :dashed="dashed"
         :disabled="link.disabled || (!link.to && !link.href)"
         v-bind="breadcrumbLinkAttrs"
-        :data-test="getDataTest()"
+        :data-test="getDataTest(`item-${index}`)"
         @click="onClickLink(link)"
       >
         <template #default="slotProps">

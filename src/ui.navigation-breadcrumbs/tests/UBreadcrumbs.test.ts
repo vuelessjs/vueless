@@ -1,12 +1,34 @@
 import { mount } from "@vue/test-utils";
 import { describe, it, expect } from "vitest";
+import { createRouter, createWebHistory } from "vue-router";
 
 import UBreadcrumbs from "../UBreadcrumbs.vue";
 import ULink from "../../ui.button-link/ULink.vue";
 import UIcon from "../../ui.image-icon/UIcon.vue";
 
+import type { UnknownObject } from "../../types.ts";
 import type { Props, UBreadcrumb } from "../types.ts";
-import type { ComponentPublicInstance } from "vue";
+
+// Create a mock router for testing router-link functionality
+const router = createRouter({
+  history: createWebHistory(),
+  routes: [
+    { path: "/", name: "home", component: { template: "<div>Home</div>" } },
+    { path: "/products", name: "products", component: { template: "<div>Products</div>" } },
+    { path: "/products/1", name: "product", component: { template: "<div>Product 1</div>" } },
+  ],
+});
+
+// Helper function to mount component with router
+const mountWithRouter = (component: unknown, options: UnknownObject) => {
+  return mount(component, {
+    ...options,
+    global: {
+      plugins: [router],
+      ...(options.global || {}),
+    },
+  });
+};
 
 describe("UBreadcrumbs.vue", () => {
   // Props tests
@@ -19,7 +41,7 @@ describe("UBreadcrumbs.vue", () => {
         { label: "Product 1", to: "/products/1" },
       ];
 
-      const component = mount(UBreadcrumbs, {
+      const component = mountWithRouter(UBreadcrumbs, {
         props: {
           links,
         },
@@ -35,6 +57,54 @@ describe("UBreadcrumbs.vue", () => {
       });
     });
 
+    // Empty links array
+    it("renders nothing when links array is empty", () => {
+      const component = mountWithRouter(UBreadcrumbs, {
+        props: {
+          links: [],
+        },
+      });
+
+      const linkComponents = component.findAllComponents(ULink);
+
+      expect(linkComponents.length).toBe(0);
+    });
+
+    // Disabled link
+    it("disables link when disabled key is true", () => {
+      const links: UBreadcrumb[] = [
+        { label: "Home", to: "/", disabled: true },
+        { label: "Products", to: "/products" },
+      ];
+
+      const component = mountWithRouter(UBreadcrumbs, {
+        props: {
+          links,
+        },
+      });
+
+      const linkComponents = component.findAllComponents(ULink);
+
+      expect(linkComponents[0].props("disabled")).toBe(true);
+      expect(linkComponents[1].props("disabled")).toBe(false);
+    });
+
+    // Link without to or href
+    it("disables link when it has no to or href", () => {
+      const links: UBreadcrumb[] = [{ label: "Home" }, { label: "Products", to: "/products" }];
+
+      const component = mountWithRouter(UBreadcrumbs, {
+        props: {
+          links,
+        },
+      });
+
+      const linkComponents = component.findAllComponents(ULink);
+
+      expect(linkComponents[0].props("disabled")).toBe(true);
+      expect(linkComponents[1].props("disabled")).toBe(false);
+    });
+
     // Size prop
     it("applies the correct size to links", () => {
       const sizes = ["sm", "md", "lg"];
@@ -44,7 +114,7 @@ describe("UBreadcrumbs.vue", () => {
       ];
 
       sizes.forEach((size) => {
-        const component = mount(UBreadcrumbs, {
+        const component = mountWithRouter(UBreadcrumbs, {
           props: {
             links,
             size: size as Props["size"],
@@ -73,13 +143,14 @@ describe("UBreadcrumbs.vue", () => {
         "neutral",
         "grayscale",
       ];
+
       const links: UBreadcrumb[] = [
         { label: "Home", to: "/" },
         { label: "Products", to: "/products" },
       ];
 
       colors.forEach((color) => {
-        const component = mount(UBreadcrumbs, {
+        const component = mountWithRouter(UBreadcrumbs, {
           props: {
             links,
             color: color as Props["color"],
@@ -103,7 +174,7 @@ describe("UBreadcrumbs.vue", () => {
         { label: "Products", to: "/products" },
       ];
 
-      const component = mount(UBreadcrumbs, {
+      const component = mountWithRouter(UBreadcrumbs, {
         props: {
           links,
           target,
@@ -126,7 +197,7 @@ describe("UBreadcrumbs.vue", () => {
         { label: "Products", to: "/products" },
       ];
 
-      const component = mount(UBreadcrumbs, {
+      const component = mountWithRouter(UBreadcrumbs, {
         props: {
           links,
           underlined,
@@ -149,7 +220,7 @@ describe("UBreadcrumbs.vue", () => {
         { label: "Products", to: "/products" },
       ];
 
-      const component = mount(UBreadcrumbs, {
+      const component = mountWithRouter(UBreadcrumbs, {
         props: {
           links,
           dashed,
@@ -172,7 +243,7 @@ describe("UBreadcrumbs.vue", () => {
         { label: "Products", to: "/products" },
       ];
 
-      const component = mount(UBreadcrumbs, {
+      const component = mountWithRouter(UBreadcrumbs, {
         props: {
           links,
           dataTest,
@@ -182,8 +253,8 @@ describe("UBreadcrumbs.vue", () => {
       const linkComponents = component.findAllComponents(ULink);
 
       // Check that all links have the correct data-test attribute
-      linkComponents.forEach((link) => {
-        expect(link.attributes("data-test")).toBe(dataTest);
+      linkComponents.forEach((link, index) => {
+        expect(link.attributes("data-test")).toBe(`${dataTest}-item-${index}`);
       });
     });
 
@@ -194,7 +265,7 @@ describe("UBreadcrumbs.vue", () => {
         { label: "Products", to: "/products" },
       ];
 
-      const component = mount(UBreadcrumbs, {
+      const component = mountWithRouter(UBreadcrumbs, {
         props: {
           links,
         },
@@ -215,7 +286,7 @@ describe("UBreadcrumbs.vue", () => {
         { label: "Product 1", to: "/products/1" },
       ];
 
-      const component = mount(UBreadcrumbs, {
+      const component = mountWithRouter(UBreadcrumbs, {
         props: {
           links,
         },
@@ -241,7 +312,7 @@ describe("UBreadcrumbs.vue", () => {
       const slotContent = "Custom Icon";
       const slotClass = "icon-content";
 
-      const component = mount(UBreadcrumbs, {
+      const component = mountWithRouter(UBreadcrumbs, {
         props: {
           links,
         },
@@ -263,7 +334,7 @@ describe("UBreadcrumbs.vue", () => {
       const slotContent = "Custom Label";
       const slotClass = "label-content";
 
-      const component = mount(UBreadcrumbs, {
+      const component = mountWithRouter(UBreadcrumbs, {
         props: {
           links,
         },
@@ -285,7 +356,7 @@ describe("UBreadcrumbs.vue", () => {
       const slotContent = ">";
       const slotClass = "divider-content";
 
-      const component = mount(UBreadcrumbs, {
+      const component = mountWithRouter(UBreadcrumbs, {
         props: {
           links,
         },
@@ -308,7 +379,7 @@ describe("UBreadcrumbs.vue", () => {
         { label: "Products", to: "/products" },
       ];
 
-      const component = mount(UBreadcrumbs, {
+      const component = mountWithRouter(UBreadcrumbs, {
         props: {
           links,
         },
@@ -334,67 +405,13 @@ describe("UBreadcrumbs.vue", () => {
         { label: "Products", to: "/products" },
       ];
 
-      const component = mount(UBreadcrumbs, {
+      const component = mountWithRouter(UBreadcrumbs, {
         props: {
           links,
         },
       });
 
-      expect(
-        (component.vm as ComponentPublicInstance & { breadcrumbsRef: HTMLDivElement })
-          .breadcrumbsRef,
-      ).toBeDefined();
-    });
-  });
-
-  // Edge cases
-  describe("Edge cases", () => {
-    // Empty links array
-    it("renders nothing when links array is empty", () => {
-      const component = mount(UBreadcrumbs, {
-        props: {
-          links: [],
-        },
-      });
-
-      const linkComponents = component.findAllComponents(ULink);
-
-      expect(linkComponents.length).toBe(0);
-    });
-
-    // Disabled link
-    it("disables link when disabled prop is true", () => {
-      const links: UBreadcrumb[] = [
-        { label: "Home", to: "/", disabled: true },
-        { label: "Products", to: "/products" },
-      ];
-
-      const component = mount(UBreadcrumbs, {
-        props: {
-          links,
-        },
-      });
-
-      const linkComponents = component.findAllComponents(ULink);
-
-      expect(linkComponents[0].props("disabled")).toBe(true);
-      expect(linkComponents[1].props("disabled")).toBe(false);
-    });
-
-    // Link without to or href
-    it("disables link when it has no to or href", () => {
-      const links: UBreadcrumb[] = [{ label: "Home" }, { label: "Products", to: "/products" }];
-
-      const component = mount(UBreadcrumbs, {
-        props: {
-          links,
-        },
-      });
-
-      const linkComponents = component.findAllComponents(ULink);
-
-      expect(linkComponents[0].props("disabled")).toBe(true);
-      expect(linkComponents[1].props("disabled")).toBe(false);
+      expect(component.vm.breadcrumbsRef).toBeDefined();
     });
   });
 });
