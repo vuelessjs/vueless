@@ -16,7 +16,7 @@ const props = withDefaults(defineProps<Props>(), {
   ...getDefaults<Props, Config>(defaultConfig, COMPONENT_NAME),
 });
 
-const { getDataTest, inputAttrs, labelAttrs, wrapperAttrs } = useUI<Config>(
+const { getDataTest, inputAttrs, textareaAttrs, labelAttrs, wrapperAttrs } = useUI<Config>(
   defaultConfig,
   computed(() => props),
 );
@@ -24,11 +24,21 @@ const { getDataTest, inputAttrs, labelAttrs, wrapperAttrs } = useUI<Config>(
 
 <template>
   <div v-bind="wrapperAttrs" :data-test="getDataTest()">
+    <!-- @slot Use it to customize the label skeleton. -->
     <slot v-if="props.labelAlign !== LABEL_ALIGN.topInside && props.label" name="label">
       <USkeleton :variant="variant" v-bind="labelAttrs" />
     </slot>
-    <USkeleton :variant="variant" v-bind="inputAttrs">
-      <slot />
-    </USkeleton>
+    <div v-if="props.type === 'input'">
+      <USkeleton :variant="variant" v-bind="inputAttrs">
+        <!-- @slot Use it to add custom content inside the input skeleton. -->
+        <slot />
+      </USkeleton>
+    </div>
+    <div v-else>
+      <USkeleton :variant="variant" v-bind="textareaAttrs">
+        <!-- @slot Use it to add custom content inside the textarea skeleton. -->
+        <slot />
+      </USkeleton>
+    </div>
   </div>
 </template>
