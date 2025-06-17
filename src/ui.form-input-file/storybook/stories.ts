@@ -136,7 +136,7 @@ export const Slots: StoryFn<UInputFileArgs> = (args) => ({
         <template #left>
           <URow align="center" gap="xs">
             <UIcon name="description" size="sm" />
-            <UText label="PDF, DOC, DOCX" variant="lifted" size="xs" class="text-nowrap" />
+            <UText label="PDF, DOC, DOCX" variant="lifted" size="xs" :wrap="false" />
           </URow>
         </template>
       </UInputFile>

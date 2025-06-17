@@ -223,7 +223,7 @@ export const Slots: StoryFn<UInputNumberArgs> = (args) => ({
         placeholder="Enter your annual payment"
       >
         <template #right>
-          <UText label="%, per year" variant="lifted" size="sm" class="text-nowrap" />
+          <UText label="%, per year" variant="lifted" size="sm" :wrap="false" />
         </template>
       </UInputNumber>
     </URow>
