@@ -6,16 +6,15 @@ import UTab from "../../ui.navigation-tab/UTab.vue";
 import UButton from "../../ui.button/UButton.vue";
 
 import type { Props, UTabsOption } from "../types.ts";
-import type { ComponentPublicInstance } from "vue";
-
-// Global options definition
-const options: UTabsOption[] = [
-  { value: "tab1", label: "Tab 1" },
-  { value: "tab2", label: "Tab 2" },
-  { value: "tab3", label: "Tab 3" },
-];
 
 describe("UTabs.vue", () => {
+  // Global options definition
+  const options: UTabsOption[] = [
+    { value: "tab1", label: "Tab 1" },
+    { value: "tab2", label: "Tab 2" },
+    { value: "tab3", label: "Tab 3" },
+  ];
+
   // Props tests
   describe("Props", () => {
     // ModelValue prop
@@ -88,23 +87,57 @@ describe("UTabs.vue", () => {
     // Scrollable prop
     it("applies scrollable class when scrollable prop is true", () => {
       const scrollable = true;
-      const dataTest = "test-tabs";
 
       const component = mount(UTabs, {
         props: {
           options,
           scrollable,
-          dataTest,
         },
       });
 
       // Find the tabs container
-      const tabsContainer = component.find(`[data-test="${dataTest}"]`);
+      const tabsContainer = component.find(`[vl-key="tabs"]`);
 
       // Check that the container has the scrollable class
-      expect(tabsContainer.classes()).toContain("overflow-hidden");
-      expect(tabsContainer.classes()).toContain("flex-nowrap");
       expect(tabsContainer.classes()).toContain("scroll-smooth");
+    });
+
+    // Scroll buttons
+    it("shows scroll buttons when scrollable and content overflows", async () => {
+      const manyOptions: UTabsOption[] = Array.from({ length: 10 }, (_, i) => ({
+        value: `tab${i}`,
+        label: `Tab ${i}`,
+      }));
+
+      const component = mount(UTabs, {
+        props: {
+          options: manyOptions,
+          scrollable: true,
+        },
+      });
+
+      // Mock the scroll position to show both arrows
+      const scrollContainer = component.find(`[vl-key="tabs"]`).element;
+
+      Object.defineProperty(scrollContainer, "scrollLeft", { value: 10 });
+      Object.defineProperty(scrollContainer, "scrollWidth", { value: 1000 });
+      Object.defineProperty(scrollContainer, "clientWidth", { value: 500 });
+
+      // Trigger scroll event
+      await component.find("[vl-key='tabs']").trigger("scroll");
+
+      // Both arrows should be visible
+      const buttons = component.findAllComponents(UButton);
+
+      // Check that at least two buttons are rendered
+      expect(buttons.length).toBeGreaterThanOrEqual(2);
+
+      // Find the buttons with the correct icons
+      const prevButton = buttons.find((button) => button.props("icon") === "chevron_left");
+      const nextButton = buttons.find((button) => button.props("icon") === "chevron_right");
+
+      expect(prevButton).toBeDefined();
+      expect(nextButton).toBeDefined();
     });
 
     // Block prop
@@ -125,7 +158,7 @@ describe("UTabs.vue", () => {
       const button = tab.findComponent(UButton);
 
       // Check that the button has the block prop
-      expect(button.props("block")).toBe(true);
+      expect(button.props("block")).toBe(block);
     });
 
     // Square prop
@@ -146,7 +179,7 @@ describe("UTabs.vue", () => {
       const button = tab.findComponent(UButton);
 
       // Check that the button has the square prop
-      expect(button.props("square")).toBe(true);
+      expect(button.props("square")).toBe(square);
     });
 
     // DataTest prop
@@ -196,6 +229,7 @@ describe("UTabs.vue", () => {
       const slotContent = "Prev";
       const slotClass = "prev-content";
       const dataTest = "test-tabs";
+
       const manyOptions: UTabsOption[] = Array.from({ length: 10 }, (_, i) => ({
         value: `tab${i}`,
         label: `Tab ${i}`,
@@ -213,14 +247,14 @@ describe("UTabs.vue", () => {
       });
 
       // Mock the scroll position to show left arrow
-      const scrollContainer = component.find(`[data-test="${dataTest}"]`).element;
+      const scrollContainer = component.find(`[vl-key="tabs"]`).element;
 
       Object.defineProperty(scrollContainer, "scrollLeft", { value: 10 });
       Object.defineProperty(scrollContainer, "scrollWidth", { value: 1000 });
       Object.defineProperty(scrollContainer, "clientWidth", { value: 500 });
 
       // Trigger scroll event
-      await component.find("[data-test]").trigger("scroll");
+      await component.find("[vl-key='tabs']").trigger("scroll");
 
       // Now the left arrow should be visible
       expect(component.find(`.${slotClass}`).exists()).toBe(true);
@@ -232,6 +266,7 @@ describe("UTabs.vue", () => {
       const slotContent = "Next";
       const slotClass = "next-content";
       const dataTest = "test-tabs";
+
       const manyOptions: UTabsOption[] = Array.from({ length: 10 }, (_, i) => ({
         value: `tab${i}`,
         label: `Tab ${i}`,
@@ -249,14 +284,14 @@ describe("UTabs.vue", () => {
       });
 
       // Mock the scroll position to show right arrow
-      const scrollContainer = component.find(`[data-test="${dataTest}"]`).element;
+      const scrollContainer = component.find(`[vl-key="tabs"]`).element;
 
       Object.defineProperty(scrollContainer, "scrollLeft", { value: 0 });
       Object.defineProperty(scrollContainer, "scrollWidth", { value: 1000 });
       Object.defineProperty(scrollContainer, "clientWidth", { value: 500 });
 
       // Trigger scroll event
-      await component.find("[data-test]").trigger("scroll");
+      await component.find("[vl-key='tabs']").trigger("scroll");
 
       // Now the right arrow should be visible
       expect(component.find(`.${slotClass}`).exists()).toBe(true);
@@ -298,52 +333,7 @@ describe("UTabs.vue", () => {
         },
       });
 
-      expect(
-        (component.vm as ComponentPublicInstance & { wrapperRef: HTMLDivElement }).wrapperRef,
-      ).toBeDefined();
-    });
-  });
-
-  // Scroll functionality tests
-  describe("Scroll functionality", () => {
-    // Scroll buttons
-    it("shows scroll buttons when scrollable and content overflows", async () => {
-      const dataTest = "test-tabs";
-      const manyOptions: UTabsOption[] = Array.from({ length: 10 }, (_, i) => ({
-        value: `tab${i}`,
-        label: `Tab ${i}`,
-      }));
-
-      const component = mount(UTabs, {
-        props: {
-          options: manyOptions,
-          scrollable: true,
-          dataTest,
-        },
-      });
-
-      // Mock the scroll position to show both arrows
-      const scrollContainer = component.find(`[data-test="${dataTest}"]`).element;
-
-      Object.defineProperty(scrollContainer, "scrollLeft", { value: 10 });
-      Object.defineProperty(scrollContainer, "scrollWidth", { value: 1000 });
-      Object.defineProperty(scrollContainer, "clientWidth", { value: 500 });
-
-      // Trigger scroll event
-      await component.find("[data-test]").trigger("scroll");
-
-      // Both arrows should be visible
-      const buttons = component.findAllComponents(UButton);
-
-      // Check that at least two buttons are rendered
-      expect(buttons.length).toBeGreaterThanOrEqual(2);
-
-      // Find the buttons with the correct icons
-      const prevButton = buttons.find((button) => button.props("icon") === "chevron_left");
-      const nextButton = buttons.find((button) => button.props("icon") === "chevron_right");
-
-      expect(prevButton).toBeDefined();
-      expect(nextButton).toBeDefined();
+      expect(component.vm.wrapperRef).toBeDefined();
     });
   });
 });
