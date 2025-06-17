@@ -5,6 +5,16 @@ import UTab from "../UTab.vue";
 import UButton from "../../ui.button/UButton.vue";
 
 describe("UTab.vue", () => {
+  // Default provide values for testing
+  const defaultProvide = {
+    getUTabsSelectedItem: () => "",
+    setUTabsSelectedItem: () => {},
+    getUTabsScrollable: false,
+    getUTabsSquare: false,
+    getUTabsBlock: false,
+    getUTabsSize: "md",
+  };
+
   // Props tests
   describe("Props", () => {
     // Label prop
@@ -14,6 +24,10 @@ describe("UTab.vue", () => {
       const component = mount(UTab, {
         props: {
           label,
+          value: "tab1",
+        },
+        global: {
+          provide: defaultProvide,
         },
       });
 
@@ -32,8 +46,8 @@ describe("UTab.vue", () => {
         },
         global: {
           provide: {
+            ...defaultProvide,
             setUTabsSelectedItem,
-            getUTabsSelectedItem: () => null,
           },
         },
       });
@@ -52,6 +66,9 @@ describe("UTab.vue", () => {
           value: "tab1",
           icon,
         },
+        global: {
+          provide: defaultProvide,
+        },
       });
 
       const button = component.findComponent(UButton);
@@ -68,6 +85,9 @@ describe("UTab.vue", () => {
           label: "Tab Item",
           value: "tab1",
           leftIcon,
+        },
+        global: {
+          provide: defaultProvide,
         },
       });
 
@@ -86,6 +106,9 @@ describe("UTab.vue", () => {
           value: "tab1",
           rightIcon,
         },
+        global: {
+          provide: defaultProvide,
+        },
       });
 
       const button = component.findComponent(UButton);
@@ -103,6 +126,9 @@ describe("UTab.vue", () => {
           value: "tab1",
           disabled,
         },
+        global: {
+          provide: defaultProvide,
+        },
       });
 
       const button = component.findComponent(UButton);
@@ -119,6 +145,9 @@ describe("UTab.vue", () => {
           label: "Tab Item",
           value: "tab1",
           dataTest,
+        },
+        global: {
+          provide: defaultProvide,
         },
       });
 
@@ -139,6 +168,7 @@ describe("UTab.vue", () => {
         },
         global: {
           provide: {
+            ...defaultProvide,
             getUTabsSelectedItem: () => value,
           },
         },
@@ -160,6 +190,7 @@ describe("UTab.vue", () => {
         },
         global: {
           provide: {
+            ...defaultProvide,
             getUTabsSelectedItem: () => "other-tab",
           },
         },
@@ -184,8 +215,8 @@ describe("UTab.vue", () => {
         },
         global: {
           provide: {
+            ...defaultProvide,
             setUTabsSelectedItem,
-            getUTabsSelectedItem: () => null,
           },
         },
       });
@@ -208,8 +239,8 @@ describe("UTab.vue", () => {
         },
         global: {
           provide: {
+            ...defaultProvide,
             getUTabsSize: size,
-            getUTabsSelectedItem: () => null,
           },
         },
       });
@@ -230,8 +261,8 @@ describe("UTab.vue", () => {
         },
         global: {
           provide: {
+            ...defaultProvide,
             getUTabsBlock: block,
-            getUTabsSelectedItem: () => null,
           },
         },
       });
@@ -252,8 +283,8 @@ describe("UTab.vue", () => {
         },
         global: {
           provide: {
+            ...defaultProvide,
             getUTabsSquare: square,
-            getUTabsSelectedItem: () => null,
           },
         },
       });
@@ -266,6 +297,7 @@ describe("UTab.vue", () => {
     // Scrollable prop from UTabs
     it("applies correct classes based on scrollable prop from UTabs", () => {
       const scrollable = false;
+      const expectedClasses = "-mb-px";
 
       const component = mount(UTab, {
         props: {
@@ -274,15 +306,15 @@ describe("UTab.vue", () => {
         },
         global: {
           provide: {
+            ...defaultProvide,
             getUTabsScrollable: scrollable,
-            getUTabsSelectedItem: () => null,
           },
         },
       });
 
       const button = component.findComponent(UButton);
 
-      expect(button.attributes("class")).toContain("-mb-px");
+      expect(button.attributes("class")).toContain(expectedClasses);
     });
   });
 
@@ -301,6 +333,9 @@ describe("UTab.vue", () => {
         },
         slots: {
           left: `<span class='${slotClass}'>${slotText}</span>`,
+        },
+        global: {
+          provide: defaultProvide,
         },
       });
 
@@ -323,6 +358,9 @@ describe("UTab.vue", () => {
         slots: {
           label: `<span class='${slotClass}'>${slotText}</span>`,
         },
+        global: {
+          provide: defaultProvide,
+        },
       });
 
       expect(component.text()).not.toContain(label);
@@ -344,6 +382,9 @@ describe("UTab.vue", () => {
         slots: {
           right: `<span class='${slotClass}'>${slotText}</span>`,
         },
+        global: {
+          provide: defaultProvide,
+        },
       });
 
       expect(component.text()).toContain(label);
@@ -354,7 +395,6 @@ describe("UTab.vue", () => {
     // Slot binding - active state
     it("passes active state to slots", () => {
       const value = "tab1";
-      let slotProps;
 
       const component = mount(UTab, {
         props: {
@@ -363,19 +403,18 @@ describe("UTab.vue", () => {
         },
         slots: {
           left: (props) => {
-            slotProps = props;
-
-            return "";
+            return `<div data-active="${props.active}"></div>`;
           },
         },
         global: {
           provide: {
+            ...defaultProvide,
             getUTabsSelectedItem: () => value,
           },
         },
       });
 
-      expect(slotProps.active).toBe(true);
+      expect(component.find('div[data-active="true"]').exists()).toBe(true);
     });
 
     // Slot binding - icon-name
@@ -383,6 +422,8 @@ describe("UTab.vue", () => {
       const leftIcon = "home";
       let slotProps = {};
 
+      // Component is needed for test setup but not directly used in assertions
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
       const component = mount(UTab, {
         props: {
           label: "Tab Item",
@@ -395,6 +436,9 @@ describe("UTab.vue", () => {
 
             return "";
           },
+        },
+        global: {
+          provide: defaultProvide,
         },
       });
 
@@ -416,8 +460,8 @@ describe("UTab.vue", () => {
         },
         global: {
           provide: {
+            ...defaultProvide,
             setUTabsSelectedItem,
-            getUTabsSelectedItem: () => null,
           },
         },
       });
@@ -435,6 +479,9 @@ describe("UTab.vue", () => {
         props: {
           label: "Tab Item",
           value: "tab1",
+        },
+        global: {
+          provide: defaultProvide,
         },
       });
 
