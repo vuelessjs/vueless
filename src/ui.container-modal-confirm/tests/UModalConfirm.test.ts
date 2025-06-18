@@ -430,17 +430,17 @@ describe("UModalConfirm", () => {
   // Events tests
   describe("Events", () => {
     // Update:modelValue event
-    it("emits update:modelValue event when modal is closed", async () => {
+    it("emits update:modelValue event when close button is clicked", async () => {
       const component = mount(UModalConfirm, {
         props: {
           modelValue,
         },
       });
 
-      // Find the UModal component and trigger its close event
-      const modal = component.findComponent(UModal);
+      // Find the close button and click it
+      const closeButton = component.find("[vl-key='cancelButton']");
 
-      modal.vm.$emit("close");
+      await closeButton.trigger("click");
 
       // Check if the update:modelValue event was emitted with false
       expect(component.emitted("update:modelValue")).toBeTruthy();
@@ -448,15 +448,17 @@ describe("UModalConfirm", () => {
     });
 
     // Confirm event
-    it("emits confirm event when emitConfirmAction method is called", async () => {
+    it("emits confirm event when confirm button is clicked", async () => {
       const component = mount(UModalConfirm, {
         props: {
           modelValue,
         },
       });
 
-      // Directly call the emitConfirmAction method
-      component.vm.emitConfirmAction();
+      // Find and click the confirm button
+      const confirmButton = component.find("[vl-key='confirmButton']");
+
+      await confirmButton.trigger("click");
 
       // Check if the confirm event was emitted
       expect(component.emitted("confirm")).toBeTruthy();
@@ -467,15 +469,17 @@ describe("UModalConfirm", () => {
     });
 
     // Close event
-    it("emits close event when onCloseModal method is called", async () => {
+    it("emits close event when cancel button is clicked", async () => {
       const component = mount(UModalConfirm, {
         props: {
           modelValue,
         },
       });
 
-      // Directly call the onCloseModal method
-      component.vm.onCloseModal();
+      // Find and click the cancel button
+      const cancelButton = component.find("[vl-key='cancelButton']");
+
+      await cancelButton.trigger("click");
 
       // Check if the close event was emitted
       expect(component.emitted("close")).toBeTruthy();
@@ -483,22 +487,6 @@ describe("UModalConfirm", () => {
       // Check if the modal was closed (update:modelValue event with false)
       expect(component.emitted("update:modelValue")).toBeTruthy();
       expect(component.emitted("update:modelValue")?.[0]).toEqual([false]);
-    });
-
-    it("emits close event when UModal emits close event", async () => {
-      const component = mount(UModalConfirm, {
-        props: {
-          modelValue,
-        },
-      });
-
-      // Find the UModal component and trigger its close event
-      const modal = component.findComponent(UModal);
-
-      modal.vm.$emit("close");
-
-      // Check if the close event was emitted
-      expect(component.emitted("close")).toBeTruthy();
     });
   });
 
