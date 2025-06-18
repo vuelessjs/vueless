@@ -118,41 +118,37 @@ export async function copyIconsCache(mirrorCacheDir) {
  *
  * @return {string} A string containing the export statement for the cached SVG icons as an array to be used in Vite.
  */
-export function generateIconExports() {
+export async function generateIconExports() {
   const cachePath = path.join(cwd(), ICONS_CACHED_DIR);
-  const files = walkSvgFiles(cachePath);
+  const files = await getDirFiles(cachePath, ".svg", {
+    recursive: true,
+  });
 
-  const entries = files
-    .map((relativePath) => {
-      const fullImportPath = path.resolve(cachePath, relativePath).replace(/\\/g, "/");
-      const virtualPath = path.join(cwd(), ICONS_CACHED_DIR, relativePath).replace(/\\/g, "/");
+  const entries = files.map((filePath) => {
+    const fullImportPath = path.resolve(filePath).replace(/\\/g, "/");
+    const virtualPath = filePath.replace(/\\/g, "/");
 
-      return `  ["${virtualPath}", import("${fullImportPath}?component")]`;
-    })
-    .join(",\n");
+    return `  ["${virtualPath}", import("${fullImportPath}?component")]`;
+  });
 
-  return `export const cachedIcons = [\n${entries}\n];`;
+  return `export const cachedIcons = [\n${entries.join(",\n")}\n];`;
 }
 
 /**
  * Reloads the server when the icons cache is updated. This function sets up a file system watcher
  * on the icons cache directory and triggers a full server reload whenever files are added or removed.
  * @param {Object} server - The vite server instance to be reloaded.
- * @param watcher
  */
+export function reloadServerOnIconsCacheUpdate(server) {
+  const module = server.moduleGraph.getModuleById(RESOLVED_ICONS_VIRTUAL_MODULE_ID);
 
-export function reloadServerOnIconsCacheUpdate(server, watcher) {
-  function reloadServer() {
-    const module = server.moduleGraph.getModuleById(RESOLVED_ICONS_VIRTUAL_MODULE_ID);
-
-    if (module) {
-      server.moduleGraph.invalidateModule(module);
-    }
-
-    server.ws.send({ type: "full-reload", path: "*" });
+  if (module) {
+    server.moduleGraph.invalidateModule(module);
   }
 
-  watcher.on("add", reloadServer).on("unlink", reloadServer);
+  server.ws.send({ type: "full-reload", path: "*" });
+
+  return new Promise((resolve) => setTimeout(resolve, 5000));
 }
 
 /**
@@ -333,37 +329,4 @@ function getIconLibraryPaths(name, library) {
     sourcePath,
     destinationPath,
   };
-}
-
-/**
- * Recursively walks through the specified directory and its subdirectories to find all `.svg` files.
- * Returns an array of file paths relative to the provided base directory.
- *
- * @param {string} dir - The directory to start searching for `.svg` files.
- * @param {string} [baseDir=dir] - The base directory used for calculating relative file paths.
- * @return {string[]} An array of relative file paths for all `.svg` files found.
- */
-function walkSvgFiles(dir, baseDir = dir) {
-  let results = [];
-
-  if (!fs.existsSync(dir)) {
-    return results;
-  }
-
-  const list = fs.readdirSync(dir);
-
-  for (const file of list) {
-    const fullPath = path.join(dir, file);
-    const stat = fs.statSync(fullPath);
-
-    if (stat && stat.isDirectory()) {
-      results = results.concat(walkSvgFiles(fullPath, baseDir));
-    } else if (file.endsWith(".svg")) {
-      const relative = path.relative(baseDir, fullPath);
-
-      results.push(relative.replace(/\\/g, "/"));
-    }
-  }
-
-  return results;
 }

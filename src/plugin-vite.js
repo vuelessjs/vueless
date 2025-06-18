@@ -2,9 +2,6 @@
  * The file has a `.js ` extension because it is a node script.
  * Please do not change the extension if you do not fully understand the consequences.
  */
-import path from "node:path";
-import { watch } from "chokidar";
-import { cwd } from "node:process";
 import TailwindVite from "@tailwindcss/vite";
 import TailwindPostcss from "@tailwindcss/postcss";
 import UnpluginVueComponents from "unplugin-vue-components/vite";
@@ -41,7 +38,6 @@ import {
   RESOLVED_ICONS_VIRTUAL_MODULE_ID,
   VUELESS_LOCAL_DIR,
   VUELESS_PACKAGE_DIR,
-  ICONS_CACHED_DIR,
 } from "./constants.js";
 
 /* TailwindCSS Vite plugins. */
@@ -70,9 +66,6 @@ export const Vueless = function (options = {}) {
   const isNuxtModuleEnv = env === NUXT_MODULE_ENV;
 
   const vuelessSrcDir = isInternalEnv ? VUELESS_LOCAL_DIR : VUELESS_PACKAGE_DIR;
-
-  const iconsCachePath = path.join(cwd(), ICONS_CACHED_DIR);
-  const iconsCacheWatcher = watch(iconsCachePath);
 
   const targetFiles = [
     ...(include || []),
@@ -141,10 +134,16 @@ export const Vueless = function (options = {}) {
     },
 
     /* update icons cache in dev env */
-    handleHotUpdate: async ({ file }) => {
+    handleHotUpdate: async ({ file, server }) => {
+      console.log("reload");
+
       if ([JAVASCRIPT_EXT, TYPESCRIPT_EXT, VUE_EXT].some((extension) => file.endsWith(extension))) {
         /* cache vueless built-in and project icons */
         await prepareIcons();
+
+        await reloadServerOnIconsCacheUpdate(server);
+
+        return [];
       }
     },
 
@@ -157,20 +156,15 @@ export const Vueless = function (options = {}) {
 
     /* load SVG images as a Vue components */
     load: async (id) => {
-      return id === RESOLVED_ICONS_VIRTUAL_MODULE_ID
-        ? generateIconExports()
-        : await loadSvg(id, options);
-    },
+      if (id === RESOLVED_ICONS_VIRTUAL_MODULE_ID) {
+        return generateIconExports();
+      }
 
-    /**
-     * reload vite server when cached icons updated,
-     * to immediately show new icons in dev env.
-     */
-    configureServer: (server) => reloadServerOnIconsCacheUpdate(server, iconsCacheWatcher),
+      return await loadSvg(id, options);
+    },
 
     /* remove cached icons */
     buildEnd: async () => {
-      iconsCacheWatcher.close();
       await removeIconsCache(mirrorCacheDir);
     },
   };
