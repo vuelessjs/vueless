@@ -4,7 +4,6 @@ import {
   getSlotNames,
   getSlotsFragment,
   getDocsDescription,
-  getEnumVariantDescription,
 } from "../../utils/storybook.ts";
 
 import UFile from "../../ui.text-file/UFile.vue";
@@ -78,14 +77,15 @@ export const Default = DefaultTemplate.bind({});
 Default.args = {};
 
 export const ImageURL = DefaultTemplate.bind({});
-ImageURL.args = { imageUrl: "https://picsum.photos/100" };
+ImageURL.args = {
+  imageUrl: "https://cdn-icons-png.flaticon.com/256/11039/11039912.png",
+};
 
 export const Removable = DefaultTemplate.bind({});
 Removable.args = { removable: true };
 
 export const Sizes = EnumTemplate.bind({});
 Sizes.args = { enum: "size" };
-Sizes.parameters = getEnumVariantDescription();
 
 export const Slots: StoryFn<UFileArgs> = (args) => ({
   components: { UFile, URow, UBadge, UIcon },
@@ -102,7 +102,7 @@ export const Slots: StoryFn<UFileArgs> = (args) => ({
 
       <UFile v-bind="args">
         <template #right>
-          <UBadge label="File uploaded" color="success" />
+          <UBadge label="File uploaded" color="success" size="sm" variant="subtle" right-icon="done_all" />
         </template>
       </UFile>
     </URow>

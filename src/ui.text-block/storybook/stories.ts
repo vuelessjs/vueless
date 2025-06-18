@@ -176,11 +176,13 @@ FormattedText.args = {
   `,
 };
 
-export const NestedComponent = DefaultTemplate.bind({});
-NestedComponent.args = {
+export const DefaultSlot = DefaultTemplate.bind({});
+DefaultSlot.args = {
   slotTemplate: `
-    <p>To proceed with your registration, please enter your
-    <UBadge label="email address" color="success" variant="subtle" /> in the field below.
-    A verification link will be sent to your inbox shortly.</p>
+    <template #default>
+      <p>To proceed with your registration, please enter your
+      <UBadge label="email address" color="success" variant="subtle" /> in the field below.
+      A verification link will be sent to your inbox shortly.</p>
+    </template>
   `,
 };

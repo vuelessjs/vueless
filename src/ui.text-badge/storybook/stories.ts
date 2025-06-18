@@ -11,6 +11,8 @@ import UIcon from "../../ui.image-icon/UIcon.vue";
 import URow from "../../ui.container-row/URow.vue";
 import UCol from "../../ui.container-col/UCol.vue";
 import UNumber from "../../ui.text-number/UNumber.vue";
+import UText from "../../ui.text-block/UText.vue";
+import UDot from "../../ui.other-dot/UDot.vue";
 
 import type { Meta, StoryFn } from "@storybook/vue3";
 import type { Props } from "../types.ts";
@@ -26,7 +28,7 @@ export default {
   title: "Text & Content / Badge",
   component: UBadge,
   args: {
-    label: "Badge",
+    label: "3 New Messages",
   },
   argTypes: {
     ...getArgTypes(UBadge.__name),
@@ -85,10 +87,10 @@ export const Round = DefaultTemplate.bind({});
 Round.args = { round: true };
 
 export const Variants = EnumTemplate.bind({});
-Variants.args = { enum: "variant", label: "{enumValue}" };
+Variants.args = { enum: "variant" };
 
 export const Sizes = EnumTemplate.bind({});
-Sizes.args = { enum: "size", label: "{enumValue}" };
+Sizes.args = { enum: "size" };
 
 export const Colors = MultiEnumTemplate.bind({});
 Colors.args = { outerEnum: "variant", enum: "color", label: "{enumValue}" };
@@ -120,45 +122,32 @@ export const IconProps: StoryFn<UBadgeArgs> = (args) => ({
 });
 
 export const Slots: StoryFn<UBadgeArgs> = (args) => ({
-  components: { UBadge, UIcon, URow, UNumber },
+  components: { UBadge, UIcon, URow, UNumber, UText, UDot },
   setup() {
     return { args };
   },
   template: `
     <URow>
-      <UBadge label="Add to favorite">
+      <UBadge label="Live" variant="outlined">
         <template #left>
-          <UIcon
-            name="heart_plus"
-            size="2xs"
-            color="inherit"
-          />
+          <UDot color="error" size="sm" />
         </template>
       </UBadge>
 
-      <UBadge label="shopping_cart">
-        <template #default="{ label }">
+      <UBadge variant="outlined">
+        <template #default>
           <UNumber
             value="20.25"
             size="sm"
             currency="$"
-            color="inherit"
-          />
-          <UIcon
-            :name="label"
-            size="2xs"
-            color="inherit"
+            currency-space
           />
         </template>
       </UBadge>
 
-      <UBadge label="Delete">
+      <UBadge label="Status:" variant="outlined">
         <template #right>
-          <UIcon
-            name="delete"
-            size="2xs"
-            color="inherit"
-          />
+          <UText label="Active" size="sm" />
         </template>
       </UBadge>
     </URow>
