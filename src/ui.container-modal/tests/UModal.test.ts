@@ -1,15 +1,44 @@
 import { mount } from "@vue/test-utils";
 import { describe, it, expect } from "vitest";
+import { createRouter, createWebHistory } from "vue-router";
 
 import UModal from "../UModal.vue";
 import UHeader from "../../ui.text-header/UHeader.vue";
 import UButton from "../../ui.button/UButton.vue";
+import ULink from "../../ui.button-link/ULink.vue";
+import UIcon from "../../ui.image-icon/UIcon.vue";
 
 import type { Props } from "../types.ts";
+import type { UnknownObject } from "../../types.ts";
 
-const modelValue = true;
+// Create a mock router for testing router-link functionality
+const router = createRouter({
+  history: createWebHistory(),
+  routes: [
+    { path: "/", name: "home", component: { template: "<div>Home</div>" } },
+    { path: "/back", name: "back", component: { template: "<div>Back</div>" } },
+  ],
+});
+
+// Helper function to mount component with router
+const mountWithRouter = (component: unknown, options: UnknownObject) => {
+  return mount(component, {
+    ...options,
+    global: {
+      plugins: [router],
+      ...(options.global || {}),
+    },
+  });
+};
 
 describe("UModal", () => {
+  const modelValue = true;
+
+  // Wait for an async component to load
+  function sleep(ms: number = 0) {
+    return new Promise((resolve) => setTimeout(resolve, ms));
+  }
+
   // Props tests
   describe("Props", () => {
     // ModelValue prop
@@ -116,9 +145,27 @@ describe("UModal", () => {
     });
 
     // BackTo and BackLabel props
-    it.skip("prepares for back link when backTo and backLabel are provided", () => {
-      // Skipping this test because it requires vue-router to be properly set up
-      // The back link functionality is tested indirectly through the onClickBackLink method test
+    it("renders back link when backTo and backLabel are provided", () => {
+      const title = "Modal Title";
+      const backTo = "/back";
+      const backLabel = "Back to previous page";
+
+      const component = mountWithRouter(UModal, {
+        props: {
+          modelValue,
+          title,
+          backTo,
+          backLabel,
+        },
+      });
+
+      const backLink = component.findComponent(ULink);
+      const backIcon = component.findComponent(UIcon);
+
+      expect(backLink.exists()).toBe(true);
+      expect(backIcon.exists()).toBe(true);
+      expect(backLink.props("to")).toBe(backTo);
+      expect(backLink.props("label")).toBe(backLabel);
     });
 
     // CloseOnCross prop
@@ -138,6 +185,48 @@ describe("UModal", () => {
         const closeButton = component.findComponent(UButton);
 
         expect(closeButton.exists()).toBe(value);
+      });
+    });
+
+    // CloseOnOverlay prop
+    it("renders with closeOnOverlay prop", () => {
+      const closeOnOverlay = [true, false];
+
+      closeOnOverlay.forEach(async (value) => {
+        const component = mount(UModal, {
+          props: {
+            modelValue,
+            closeOnOverlay: value,
+          },
+        });
+
+        const innerWrapper = component.find("[vl-key='innerWrapper']");
+
+        await innerWrapper.trigger("click");
+        await sleep(500);
+
+        expect(innerWrapper.exists()).toBe(!value);
+      });
+    });
+
+    // CloseOnEsc prop
+    it("renders with closeOnEsc prop", () => {
+      const closeOnEsc = [true, false];
+
+      closeOnEsc.forEach(async (value) => {
+        const component = mount(UModal, {
+          props: {
+            modelValue,
+            closeOnEsc: value,
+          },
+        });
+
+        const wrapper = component.find("[vl-key='wrapper']");
+
+        await wrapper.trigger("keydown", { key: "Escape" });
+        await sleep(500);
+
+        expect(component.exists()).toBe(!value);
       });
     });
 
@@ -440,20 +529,23 @@ describe("UModal", () => {
       expect(component.emitted("update:modelValue")?.[0]).toEqual([false]);
     });
 
-    // Back event
-    it("emits back event when onClickBackLink method is called", async () => {
-      // Create a simpler test that doesn't require the router
+    it("emits back event when back link is clicked", async () => {
       const title = "Modal Title";
+      const backTo = "/back";
+      const backLabel = "Back to previous page";
 
-      const component = mount(UModal, {
+      const component = mountWithRouter(UModal, {
         props: {
           modelValue,
           title,
+          backTo,
+          backLabel,
         },
       });
 
-      // Call the onClickBackLink method directly
-      component.vm.onClickBackLink();
+      const backLink = component.findComponent(ULink);
+
+      await backLink.trigger("click");
 
       expect(component.emitted("back")).toBeTruthy();
     });
@@ -476,6 +568,60 @@ describe("UModal", () => {
       await closeButton.trigger("click");
 
       expect(component.emitted("close")).toBeTruthy();
+    });
+
+    // CloseOnOverlay events
+    it("emits events when overlay is clicked based on closeOnOverlay prop", () => {
+      const closeOnOverlay = [true, false];
+
+      closeOnOverlay.forEach(async (value) => {
+        const component = mount(UModal, {
+          props: {
+            modelValue,
+            closeOnOverlay: value,
+          },
+        });
+
+        const innerWrapper = component.find("[vl-key='innerWrapper']");
+
+        await innerWrapper.trigger("click");
+
+        if (value) {
+          expect(component.emitted("update:modelValue")).toBeTruthy();
+          expect(component.emitted("update:modelValue")?.[0]).toEqual([false]);
+          expect(component.emitted("close")).toBeTruthy();
+        } else {
+          expect(component.emitted("update:modelValue")).toBeFalsy();
+          expect(component.emitted("close")).toBeFalsy();
+        }
+      });
+    });
+
+    // CloseOnEsc events
+    it("emits events when escape key is pressed based on closeOnEsc prop", () => {
+      const closeOnEsc = [true, false];
+
+      closeOnEsc.forEach(async (value) => {
+        const component = mount(UModal, {
+          props: {
+            modelValue,
+            closeOnEsc: value,
+          },
+        });
+
+        const wrapper = component.find("[vl-key='wrapper']");
+
+        await wrapper.trigger("keydown", { key: "Escape" });
+
+        if (value) {
+          expect(component.emitted("update:modelValue")).toBeTruthy();
+          expect(component.emitted("update:modelValue")?.[0]).toEqual([false]);
+          expect(component.emitted("close")).toBeTruthy();
+        } else {
+          expect(component.emitted("update:modelValue")).toBeFalsy();
+          expect(component.emitted("close")).toBeFalsy();
+        }
+      });
     });
   });
 
