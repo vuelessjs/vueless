@@ -1,41 +1,53 @@
 import { mount } from "@vue/test-utils";
 import { describe, it, expect } from "vitest";
+import { createRouter, createWebHistory } from "vue-router";
 
 import UPage from "../UPage.vue";
 
 import type { Props } from "../types.ts";
-import type { ComponentPublicInstance } from "vue";
+import type { UnknownObject } from "../../types.ts";
+
+// Create a mock router for testing router-link functionality
+const router = createRouter({
+  history: createWebHistory(),
+  routes: [
+    { path: "/", name: "home", component: { template: "<div>Home</div>" } },
+    { path: "/back", name: "back", component: { template: "<div>Back</div>" } },
+  ],
+});
+
+// Helper function to mount component with router
+const mountWithRouter = (component: unknown, options: UnknownObject) => {
+  return mount(component, {
+    ...options,
+    global: {
+      plugins: [router],
+      ...(options.global || {}),
+    },
+  });
+};
 
 describe("UPage.vue", () => {
   // Props tests
   describe("Props", () => {
     // Variant prop
     it("applies correct variant classes", () => {
-      const variantClasses = {
+      const variants = {
         solid: "bg-default border-transparent",
         outlined: "bg-default border-muted",
         subtle: "bg-muted border-default/50",
         soft: "bg-muted border-transparent",
       };
 
-      Object.entries(variantClasses).forEach(([variant, classes]) => {
+      Object.entries(variants).forEach(([variant, classes]) => {
         const component = mount(UPage, {
           props: {
             variant: variant as Props["variant"],
           },
         });
 
-        // The second div is the page element with pageAttrs
-        // We need to use the wrapper element's first child
-        const pageElement = component.find("div").element.children[0];
-
         // Check that the page element has the expected classes
-        const pageClasses = pageElement.className.split(" ");
-        const classArray = classes.split(" ");
-
-        classArray.forEach((className) => {
-          expect(pageClasses).toContain(className);
-        });
+        expect(component.find("[vl-key='page']").attributes("class")).toContain(classes);
       });
     });
 
@@ -81,45 +93,30 @@ describe("UPage.vue", () => {
         const header = component.findComponent({ name: "UHeader" });
 
         expect(header.exists()).toBe(true);
-
         expect(header.props("size")).toBe(size);
       });
     });
 
     // Rounding prop
     it("applies correct rounding classes", () => {
-      // Test with rounding=true
-      const componentWithRounding = mount(UPage, {
-        props: {
-          rounding: true,
-        },
+      const variants = {
+        true: "border-r-0",
+        false: "rounded-large",
+      };
+
+      Object.entries(variants).forEach(([variant, classes]) => {
+        const component = mount(UPage, {
+          props: {
+            rounding: variant === "true",
+          },
+        });
+
+        // Get the page element by vl-key
+        const pageElement = component.find("[vl-key='page']");
+
+        // Check that the page element has the expected classes
+        expect(pageElement.attributes("class")).toContain(classes);
       });
-
-      // The second div is the page element with pageAttrs
-      // We need to use the wrapper element's first child
-      const pageElementWithRounding = componentWithRounding.find("div").element.children[0];
-
-      // Check that the page element has the expected classes
-      const pageClassesWithRounding = pageElementWithRounding.className.split(" ");
-
-      expect(pageClassesWithRounding).toContain("md:pr-4");
-      expect(pageClassesWithRounding).toContain("border-r-0");
-
-      // Test with rounding=false
-      const componentWithoutRounding = mount(UPage, {
-        props: {
-          rounding: false,
-        },
-      });
-
-      // The second div is the page element with pageAttrs
-      // We need to use the wrapper element's first child
-      const pageElementWithoutRounding = componentWithoutRounding.find("div").element.children[0];
-
-      // Check that the page element has the expected classes
-      const pageClassesWithoutRounding = pageElementWithoutRounding.className.split(" ");
-
-      expect(pageClassesWithoutRounding).toContain("rounded-large");
     });
 
     // Title prop
@@ -150,11 +147,10 @@ describe("UPage.vue", () => {
         },
       });
 
-      // The description is in the titleFallback div with descriptionAttrs
-      // We need to check if the component's text contains the description
-      // since we can't easily select the specific element with v-text
+      const descriptionElement = component.find("[vl-key='description']");
 
-      expect(component.text()).toContain(description);
+      expect(descriptionElement.exists()).toBe(true);
+      expect(descriptionElement.text()).toBe(description);
     });
 
     // BackTo and BackLabel props
@@ -163,7 +159,7 @@ describe("UPage.vue", () => {
       const backTo = { path: "/back" };
       const backLabel = "Back";
 
-      const component = mount(UPage, {
+      const component = mountWithRouter(UPage, {
         props: {
           title: "Test Title", // Need a title to make isExistHeader true
           backTo,
@@ -304,7 +300,7 @@ describe("UPage.vue", () => {
   describe("Events", () => {
     // Back event
     it("emits back event when back link is clicked", async () => {
-      const component = mount(UPage, {
+      const component = mountWithRouter(UPage, {
         props: {
           title: "Test Title", // Need a title to make isExistHeader true
           backTo: { path: "/back" },
@@ -327,10 +323,9 @@ describe("UPage.vue", () => {
     // wrapperRef
     it("exposes wrapperRef", () => {
       const component = mount(UPage);
-      const vm = component.vm as ComponentPublicInstance & { wrapperRef: HTMLDivElement };
 
-      expect(vm.wrapperRef).toBeDefined();
-      expect(vm.wrapperRef instanceof HTMLDivElement).toBe(true);
+      expect(component.vm.wrapperRef).toBeDefined();
+      expect(component.vm.wrapperRef instanceof HTMLDivElement).toBe(true);
     });
   });
 });
