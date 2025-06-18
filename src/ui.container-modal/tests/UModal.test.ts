@@ -1,22 +1,13 @@
 import { mount } from "@vue/test-utils";
-import { describe, it, expect, vi } from "vitest";
+import { describe, it, expect } from "vitest";
 
 import UModal from "../UModal.vue";
 import UHeader from "../../ui.text-header/UHeader.vue";
-import UIcon from "../../ui.image-icon/UIcon.vue";
-import ULink from "../../ui.button-link/ULink.vue";
 import UButton from "../../ui.button/UButton.vue";
 
 import type { Props } from "../types.ts";
-import type { ComponentPublicInstance } from "vue";
 
-// Define a type for the UModal component instance with the methods we need to access
-interface UModalInstance extends ComponentPublicInstance {
-  onClickBackLink: () => void;
-  wrapperRef: HTMLDivElement;
-}
-
-// Instead of mocking vue-router, we'll modify the tests that use the back link
+const modelValue = true;
 
 describe("UModal", () => {
   // Props tests
@@ -24,26 +15,33 @@ describe("UModal", () => {
     // ModelValue prop
     it("renders when modelValue is true", () => {
       const component = mount(UModal, {
-        props: { modelValue: true },
+        props: {
+          modelValue,
+        },
       });
 
-      expect(component.isVisible()).toBe(true);
+      expect(component.isVisible()).toBe(modelValue);
     });
 
     it("does not render when modelValue is false", () => {
+      const modelValue = false;
+
       const component = mount(UModal, {
-        props: { modelValue: false },
+        props: {
+          modelValue,
+        },
       });
 
-      expect(component.find("[class*='fixed inset-0']").exists()).toBe(false);
+      expect(component.find("[vl-key='overlay']").exists()).toBe(modelValue);
     });
 
     // Title prop
     it("renders with title prop", () => {
       const title = "Modal Title";
+
       const component = mount(UModal, {
         props: {
-          modelValue: true,
+          modelValue,
           title,
         },
       });
@@ -56,11 +54,13 @@ describe("UModal", () => {
 
     // Description prop
     it("renders with description prop", () => {
+      const title = "Modal Title";
       const description = "Modal Description";
+
       const component = mount(UModal, {
         props: {
-          modelValue: true,
-          title: "Modal Title",
+          modelValue,
+          title,
           description,
         },
       });
@@ -80,18 +80,12 @@ describe("UModal", () => {
       Object.entries(variants).forEach(([variant, expectedClasses]) => {
         const component = mount(UModal, {
           props: {
-            modelValue: true,
+            modelValue,
             variant: variant as Props["variant"],
           },
         });
 
-        const modal = component.find("[class*='rounded-large']");
-        const modalClasses = modal.attributes("class");
-
-        // Split expected classes and check each one
-        expectedClasses.split(" ").forEach((className) => {
-          expect(modalClasses).toContain(className);
-        });
+        expect(component.find("[vl-key='modal']").attributes("class")).toContain(expectedClasses);
       });
     });
 
@@ -112,14 +106,12 @@ describe("UModal", () => {
       Object.entries(sizes).forEach(([size, expectedClass]) => {
         const component = mount(UModal, {
           props: {
-            modelValue: true,
+            modelValue,
             size: size as Props["size"],
           },
         });
 
-        const modal = component.find("[class*='rounded-large']");
-
-        expect(modal.attributes("class")).toContain(expectedClass);
+        expect(component.find("[vl-key='modal']").attributes("class")).toContain(expectedClass);
       });
     });
 
@@ -131,76 +123,76 @@ describe("UModal", () => {
 
     // CloseOnCross prop
     it("renders close button when closeOnCross is true", () => {
-      const component = mount(UModal, {
-        props: {
-          modelValue: true,
-          title: "Modal Title",
-          closeOnCross: true,
-        },
+      const title = "Modal Title";
+      const closeOnCross = [true, false];
+
+      closeOnCross.forEach((value) => {
+        const component = mount(UModal, {
+          props: {
+            modelValue,
+            title,
+            closeOnCross: value,
+          },
+        });
+
+        const closeButton = component.findComponent(UButton);
+
+        expect(closeButton.exists()).toBe(value);
       });
-
-      const closeButton = component.findComponent(UButton);
-
-      expect(closeButton.exists()).toBe(true);
-    });
-
-    it("does not render close button when closeOnCross is false", () => {
-      const component = mount(UModal, {
-        props: {
-          modelValue: true,
-          title: "Modal Title",
-          closeOnCross: false,
-        },
-      });
-
-      const closeButton = component.findComponent(UButton);
-
-      expect(closeButton.exists()).toBe(false);
     });
 
     // Inner prop
     it("applies inner class when inner prop is true", () => {
+      const inner = true;
+      const expectedClass = "!my-[4.5rem]";
+
       const component = mount(UModal, {
         props: {
-          modelValue: true,
-          inner: true,
+          modelValue,
+          inner,
         },
       });
 
-      const modal = component.find("[class*='rounded-large']");
+      const modal = component.find("[vl-key='modal']");
 
-      expect(modal.attributes("class")).toContain("!my-[4.5rem]");
+      expect(modal.attributes("class")).toContain(expectedClass);
     });
 
     // Divided prop
     it("applies divided class when divided prop is true", () => {
+      const divided = true;
+      const footerLeftContent = "Footer Left";
+      const footerRightContent = "Footer Right";
+      const expectedClass = "border-t";
+
       const component = mount(UModal, {
         props: {
-          modelValue: true,
-          divided: true,
+          modelValue,
+          divided,
         },
         slots: {
-          "footer-left": "Footer Left",
-          "footer-right": "Footer Right",
+          "footer-left": footerLeftContent,
+          "footer-right": footerRightContent,
         },
       });
 
-      const footer = component.find("[class*='flex justify-between']");
+      const footer = component.find("[vl-key='footer']");
 
-      expect(footer.attributes("class")).toContain("border-t");
+      expect(footer.attributes("class")).toContain(expectedClass);
     });
 
     // DataTest prop
     it("applies the correct data-test attribute", () => {
       const dataTest = "modal-test";
+
       const component = mount(UModal, {
         props: {
-          modelValue: true,
+          modelValue,
           dataTest,
         },
       });
 
-      const modalWrapper = component.find("[tabindex='0']");
+      const modalWrapper = component.find("[vl-key='wrapper']");
 
       expect(modalWrapper.attributes("data-test")).toBe(dataTest);
     });
@@ -212,6 +204,7 @@ describe("UModal", () => {
     it("renders content in default slot", () => {
       const slotClass = "default-content";
       const slotContent = "Default Content";
+
       const component = mount(UModal, {
         props: { modelValue: true },
         slots: {
@@ -224,9 +217,10 @@ describe("UModal", () => {
     });
 
     // Before-title slot
-    it("renders content in before-title slot", () => {
+    it("renders content in before-title slot and shows header", () => {
       const slotClass = "before-title";
       const slotContent = "Before Title";
+
       const component = mount(UModal, {
         props: {
           modelValue: true,
@@ -239,12 +233,20 @@ describe("UModal", () => {
 
       expect(component.find(`.${slotClass}`).exists()).toBe(true);
       expect(component.text()).toContain(slotContent);
+
+      // Check that header is shown when before-title slot is provided
+
+      const header = component.find("[vl-key='header']");
+
+      expect(header.exists()).toBe(true);
+      expect(header.text()).toContain(slotContent);
     });
 
     // Title slot
-    it("renders custom content in title slot", () => {
+    it("renders custom content in title slot and shows header", () => {
       const slotClass = "custom-title";
       const slotContent = "Custom Title";
+
       const component = mount(UModal, {
         props: {
           modelValue: true,
@@ -258,12 +260,20 @@ describe("UModal", () => {
       expect(component.find(`.${slotClass}`).exists()).toBe(true);
       expect(component.text()).toContain(slotContent);
       expect(component.findComponent(UHeader).exists()).toBe(false);
+
+      // Check that header is shown when title slot is provided
+
+      const header = component.find("[vl-key='header']");
+
+      expect(header.exists()).toBe(true);
+      expect(header.text()).toContain(slotContent);
     });
 
     // After-title slot
-    it("renders content in after-title slot", () => {
+    it("renders content in after-title slot and shows header", () => {
       const slotClass = "after-title";
       const slotContent = "After Title";
+
       const component = mount(UModal, {
         props: {
           modelValue: true,
@@ -276,12 +286,20 @@ describe("UModal", () => {
 
       expect(component.find(`.${slotClass}`).exists()).toBe(true);
       expect(component.text()).toContain(slotContent);
+
+      // Check that header is shown when after-title slot is provided
+
+      const header = component.find("[vl-key='header']");
+
+      expect(header.exists()).toBe(true);
+      expect(header.text()).toContain(slotContent);
     });
 
     // Actions slot
-    it("renders custom content in actions slot", () => {
+    it("renders custom content in actions slot and shows header", () => {
       const slotClass = "actions";
       const slotContent = "Actions";
+
       const component = mount(UModal, {
         props: {
           modelValue: true,
@@ -295,6 +313,23 @@ describe("UModal", () => {
       expect(component.find(`.${slotClass}`).exists()).toBe(true);
       expect(component.text()).toContain(slotContent);
       expect(component.findComponent(UButton).exists()).toBe(false);
+
+      // Check that header is shown when actions slot is provided
+
+      const header = component.find("[vl-key='header']");
+
+      expect(header.exists()).toBe(true);
+      expect(header.text()).toContain(slotContent);
+    });
+
+    it("does not show header when no title or slots are provided", () => {
+      const component = mount(UModal, {
+        props: { modelValue },
+      });
+
+      const header = component.find("[vl-key='header']");
+
+      expect(header.exists()).toBe(false);
     });
 
     it("provides icon-name and close bindings to actions slot", () => {
@@ -326,9 +361,10 @@ describe("UModal", () => {
     });
 
     // Footer-left slot
-    it("renders content in footer-left slot", () => {
+    it("renders content in footer-left slot and shows footer", () => {
       const slotClass = "footer-left";
       const slotContent = "Footer Left";
+
       const component = mount(UModal, {
         props: { modelValue: true },
         slots: {
@@ -338,12 +374,20 @@ describe("UModal", () => {
 
       expect(component.find(`.${slotClass}`).exists()).toBe(true);
       expect(component.text()).toContain(slotContent);
+
+      // Check that footer is shown when footer-left slot is provided
+
+      const footer = component.find("[vl-key='footer']");
+
+      expect(footer.exists()).toBe(true);
+      expect(footer.text()).toContain(slotContent);
     });
 
     // Footer-right slot
-    it("renders content in footer-right slot", () => {
+    it("renders content in footer-right slot and shows footer", () => {
       const slotClass = "footer-right";
       const slotContent = "Footer Right";
+
       const component = mount(UModal, {
         props: { modelValue: true },
         slots: {
@@ -353,6 +397,23 @@ describe("UModal", () => {
 
       expect(component.find(`.${slotClass}`).exists()).toBe(true);
       expect(component.text()).toContain(slotContent);
+
+      // Check that footer is shown when footer-right slot is provided
+
+      const footer = component.find("[vl-key='footer']");
+
+      expect(footer.exists()).toBe(true);
+      expect(footer.text()).toContain(slotContent);
+    });
+
+    it("does not show footer when no footer slots are provided", () => {
+      const component = mount(UModal, {
+        props: { modelValue },
+      });
+
+      const footer = component.find("[vl-key='footer']");
+
+      expect(footer.exists()).toBe(false);
     });
   });
 
@@ -360,11 +421,14 @@ describe("UModal", () => {
   describe("Events", () => {
     // Update:modelValue event
     it("emits update:modelValue event when modal is closed", async () => {
+      const title = "Modal Title";
+      const closeOnCross = true;
+
       const component = mount(UModal, {
         props: {
-          modelValue: true,
-          title: "Modal Title",
-          closeOnCross: true,
+          modelValue,
+          title,
+          closeOnCross,
         },
       });
 
@@ -379,26 +443,31 @@ describe("UModal", () => {
     // Back event
     it("emits back event when onClickBackLink method is called", async () => {
       // Create a simpler test that doesn't require the router
+      const title = "Modal Title";
+
       const component = mount(UModal, {
         props: {
-          modelValue: true,
-          title: "Modal Title",
+          modelValue,
+          title,
         },
       });
 
       // Call the onClickBackLink method directly
-      (component.vm as UModalInstance).onClickBackLink();
+      component.vm.onClickBackLink();
 
       expect(component.emitted("back")).toBeTruthy();
     });
 
     // Close event
     it("emits close event when modal is closed", async () => {
+      const title = "Modal Title";
+      const closeOnCross = true;
+
       const component = mount(UModal, {
         props: {
-          modelValue: true,
-          title: "Modal Title",
-          closeOnCross: true,
+          modelValue,
+          title,
+          closeOnCross,
         },
       });
 
@@ -410,151 +479,16 @@ describe("UModal", () => {
     });
   });
 
-  // Conditional rendering tests
-  describe("Conditional Rendering", () => {
-    // Header visibility
-    it("shows header when title prop is provided", () => {
-      const title = "Modal Title";
-      const component = mount(UModal, {
-        props: {
-          modelValue: true,
-          title,
-        },
-      });
-
-      const header = component.findComponent(UHeader);
-
-      expect(header.exists()).toBe(true);
-    });
-
-    it("shows header when before-title slot is provided", () => {
-      const slotContent = "Before Title";
-      const component = mount(UModal, {
-        props: { modelValue: true },
-        slots: {
-          "before-title": slotContent,
-        },
-      });
-
-      const header = component.find("[class*='flex justify-between']");
-
-      expect(header.exists()).toBe(true);
-      expect(header.text()).toContain(slotContent);
-    });
-
-    it("shows header when title slot is provided", () => {
-      const slotContent = "Custom Title";
-      const component = mount(UModal, {
-        props: { modelValue: true },
-        slots: {
-          title: slotContent,
-        },
-      });
-
-      const header = component.find("[class*='flex justify-between']");
-
-      expect(header.exists()).toBe(true);
-      expect(header.text()).toContain(slotContent);
-    });
-
-    it("shows header when after-title slot is provided", () => {
-      const slotContent = "After Title";
-      const component = mount(UModal, {
-        props: { modelValue: true },
-        slots: {
-          "after-title": slotContent,
-        },
-      });
-
-      const header = component.find("[class*='flex justify-between']");
-
-      expect(header.exists()).toBe(true);
-      expect(header.text()).toContain(slotContent);
-    });
-
-    it("shows header when actions slot is provided", () => {
-      const slotContent = "Actions";
-      const component = mount(UModal, {
-        props: { modelValue: true },
-        slots: {
-          actions: slotContent,
-        },
-      });
-
-      const header = component.find("[class*='flex justify-between']");
-
-      expect(header.exists()).toBe(true);
-      expect(header.text()).toContain(slotContent);
-    });
-
-    it("does not show header when no title or slots are provided", () => {
-      const component = mount(UModal, {
-        props: { modelValue: true },
-      });
-
-      const header = component.find("[class*='flex justify-between']");
-
-      expect(header.exists()).toBe(false);
-    });
-
-    // Footer visibility
-    it("shows footer when footer-left slot is provided", () => {
-      const slotContent = "Footer Left";
-      const component = mount(UModal, {
-        props: { modelValue: true },
-        slots: {
-          "footer-left": slotContent,
-        },
-      });
-
-      const footer = component.find("[class*='flex justify-between']");
-
-      expect(footer.exists()).toBe(true);
-      expect(footer.text()).toContain(slotContent);
-    });
-
-    it("shows footer when footer-right slot is provided", () => {
-      const slotContent = "Footer Right";
-      const component = mount(UModal, {
-        props: { modelValue: true },
-        slots: {
-          "footer-right": slotContent,
-        },
-      });
-
-      const footer = component.find("[class*='flex justify-between']");
-
-      expect(footer.exists()).toBe(true);
-      expect(footer.text()).toContain(slotContent);
-    });
-
-    it("does not show footer when no footer slots are provided", () => {
-      const component = mount(UModal, {
-        props: { modelValue: true },
-      });
-
-      // Check that the footer doesn't exist
-      const footers = component.findAll("[class*='flex justify-between']");
-
-      // If there's a header, there should be only one element with this class
-      if (footers.length > 0) {
-        expect(footers.length).toBe(1);
-      }
-    });
-  });
-
   // Exposed refs tests
   describe("Exposed refs", () => {
     // wrapperRef
     it("exposes wrapperRef", () => {
       const component = mount(UModal, {
-        props: { modelValue: true },
+        props: { modelValue },
       });
 
-      const vm = component.vm as UModalInstance;
-
-      expect(vm.wrapperRef).toBeDefined();
-      expect(vm.wrapperRef instanceof HTMLDivElement).toBe(true);
+      expect(component.vm.wrapperRef).toBeDefined();
+      expect(component.vm.wrapperRef instanceof HTMLDivElement).toBe(true);
     });
   });
 });

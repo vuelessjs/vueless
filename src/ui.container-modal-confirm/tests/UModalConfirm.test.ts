@@ -5,56 +5,17 @@ import UModalConfirm from "../UModalConfirm.vue";
 import UModal from "../../ui.container-modal/UModal.vue";
 import UButton from "../../ui.button/UButton.vue";
 
-import { LocaleSymbol } from "../../composables/useLocale.ts";
-import createVuelessAdapter from "../../adapter.locale/vueless.ts";
-
 import type { Props } from "../types.ts";
-import type { ComponentPublicInstance } from "vue";
-
-// Define a type for the UModalConfirm component instance with the methods we need to access
-interface UModalConfirmInstance extends ComponentPublicInstance {
-  emitConfirmAction: () => void;
-  onCloseModal: () => void;
-  modal: HTMLDivElement | null;
-}
 
 describe("UModalConfirm", () => {
-  // Create mock locale instance with UModalConfirm messages
-  const mockLocale = createVuelessAdapter({
-    messages: {
-      en: {
-        UModalConfirm: {
-          confirm: "Confirm",
-          cancel: "Cancel",
-        },
-      },
-    },
-  });
-
-  // Helper function to mount component with locale
-  function mountWithLocale(props = {}, slots = {}) {
-    return mount(UModalConfirm, {
-      props,
-      slots,
-      global: {
-        provide: {
-          [LocaleSymbol]: mockLocale,
-        },
-        stubs: {
-          // Don't stub UButton so we can find it in the tests
-          UButton: false,
-        },
-      },
-      attachTo: document.body, // Attach to document.body to ensure the component is fully rendered
-    });
-  }
-
   // Props tests
   describe("Props", () => {
     // ModelValue prop
     it("renders when modelValue is true", () => {
-      const component = mountWithLocale({
-        modelValue: true,
+      const component = mount(UModalConfirm, {
+        props: {
+          modelValue: true,
+        },
       });
 
       const modal = component.findComponent(UModal);
@@ -64,8 +25,10 @@ describe("UModalConfirm", () => {
     });
 
     it("does not render modal content when modelValue is false", () => {
-      const component = mountWithLocale({
-        modelValue: false,
+      const component = mount(UModalConfirm, {
+        props: {
+          modelValue: false,
+        },
       });
 
       const modal = component.findComponent(UModal);
@@ -77,9 +40,11 @@ describe("UModalConfirm", () => {
     // Title prop
     it("passes title prop to UModal", () => {
       const title = "Confirm Modal Title";
-      const wrapper = mountWithLocale({
-        modelValue: true,
-        title,
+      const wrapper = mount(UModalConfirm, {
+        props: {
+          modelValue: true,
+          title,
+        },
       });
 
       const modal = wrapper.findComponent(UModal);
@@ -90,9 +55,11 @@ describe("UModalConfirm", () => {
     // Description prop
     it("passes description prop to UModal", () => {
       const description = "Confirm Modal Description";
-      const wrapper = mountWithLocale({
-        modelValue: true,
-        description,
+      const wrapper = mount(UModalConfirm, {
+        props: {
+          modelValue: true,
+          description,
+        },
       });
 
       const modal = wrapper.findComponent(UModal);
@@ -103,9 +70,11 @@ describe("UModalConfirm", () => {
     // ConfirmLabel prop
     it("renders with custom confirmLabel prop", () => {
       const confirmLabel = "Custom Confirm";
-      const wrapper = mountWithLocale({
-        modelValue: true,
-        confirmLabel,
+      const wrapper = mount(UModalConfirm, {
+        props: {
+          modelValue: true,
+          confirmLabel,
+        },
       });
 
       // Instead of finding the button, check that the prop was passed correctly
@@ -127,9 +96,11 @@ describe("UModalConfirm", () => {
       ];
 
       colors.forEach((color) => {
-        const wrapper = mountWithLocale({
-          modelValue: true,
-          confirmColor: color,
+        const wrapper = mount(UModalConfirm, {
+          props: {
+            modelValue: true,
+            confirmColor: color,
+          },
         });
 
         // Instead of finding the button, check that the prop was passed correctly
@@ -139,9 +110,11 @@ describe("UModalConfirm", () => {
 
     // ConfirmDisabled prop
     it("disables confirm button when confirmDisabled is true", () => {
-      const wrapper = mountWithLocale({
-        modelValue: true,
-        confirmDisabled: true,
+      const wrapper = mount(UModalConfirm, {
+        props: {
+          modelValue: true,
+          confirmDisabled: true,
+        },
       });
 
       // Instead of finding the button, check that the prop was passed correctly
@@ -150,9 +123,11 @@ describe("UModalConfirm", () => {
 
     // CancelHidden prop
     it("hides cancel button when cancelHidden is true", () => {
-      const wrapper = mountWithLocale({
-        modelValue: true,
-        cancelHidden: true,
+      const wrapper = mount(UModalConfirm, {
+        props: {
+          modelValue: true,
+          cancelHidden: true,
+        },
       });
 
       const cancelButton = wrapper
@@ -167,9 +142,11 @@ describe("UModalConfirm", () => {
       const variants: Array<Props["variant"]> = ["solid", "outlined", "subtle", "soft"];
 
       variants.forEach((variant) => {
-        const wrapper = mountWithLocale({
-          modelValue: true,
-          variant,
+        const wrapper = mount(UModalConfirm, {
+          props: {
+            modelValue: true,
+            variant,
+          },
         });
 
         const modal = wrapper.findComponent(UModal);
@@ -193,9 +170,11 @@ describe("UModalConfirm", () => {
       ];
 
       sizes.forEach((size) => {
-        const wrapper = mountWithLocale({
-          modelValue: true,
-          size,
+        const wrapper = mount(UModalConfirm, {
+          props: {
+            modelValue: true,
+            size,
+          },
         });
 
         const modal = wrapper.findComponent(UModal);
@@ -206,9 +185,11 @@ describe("UModalConfirm", () => {
 
     // CloseOnCross prop
     it("passes closeOnCross prop to UModal", () => {
-      const wrapper = mountWithLocale({
-        modelValue: true,
-        closeOnCross: false,
+      const wrapper = mount(UModalConfirm, {
+        props: {
+          modelValue: true,
+          closeOnCross: false,
+        },
       });
 
       const modal = wrapper.findComponent(UModal);
@@ -218,9 +199,11 @@ describe("UModalConfirm", () => {
 
     // CloseOnOverlay prop
     it("passes closeOnOverlay prop to UModal", () => {
-      const wrapper = mountWithLocale({
-        modelValue: true,
-        closeOnOverlay: false,
+      const wrapper = mount(UModalConfirm, {
+        props: {
+          modelValue: true,
+          closeOnOverlay: false,
+        },
       });
 
       const modal = wrapper.findComponent(UModal);
@@ -230,9 +213,11 @@ describe("UModalConfirm", () => {
 
     // CloseOnEsc prop
     it("passes closeOnEsc prop to UModal", () => {
-      const wrapper = mountWithLocale({
-        modelValue: true,
-        closeOnEsc: false,
+      const wrapper = mount(UModalConfirm, {
+        props: {
+          modelValue: true,
+          closeOnEsc: false,
+        },
       });
 
       const modal = wrapper.findComponent(UModal);
@@ -242,9 +227,11 @@ describe("UModalConfirm", () => {
 
     // Inner prop
     it("passes inner prop to UModal", () => {
-      const wrapper = mountWithLocale({
-        modelValue: true,
-        inner: true,
+      const wrapper = mount(UModalConfirm, {
+        props: {
+          modelValue: true,
+          inner: true,
+        },
       });
 
       const modal = wrapper.findComponent(UModal);
@@ -254,9 +241,11 @@ describe("UModalConfirm", () => {
 
     // Divided prop
     it("passes divided prop to UModal", () => {
-      const wrapper = mountWithLocale({
-        modelValue: true,
-        divided: true,
+      const wrapper = mount(UModalConfirm, {
+        props: {
+          modelValue: true,
+          divided: true,
+        },
       });
 
       const modal = wrapper.findComponent(UModal);
@@ -267,9 +256,11 @@ describe("UModalConfirm", () => {
     // DataTest prop
     it("applies data-test attribute", () => {
       const dataTest = "modal-confirm-test";
-      const wrapper = mountWithLocale({
-        modelValue: true,
-        dataTest,
+      const wrapper = mount(UModalConfirm, {
+        props: {
+          modelValue: true,
+          dataTest,
+        },
       });
 
       // Instead of checking the attribute on the modal, check that the prop was passed correctly
@@ -283,14 +274,14 @@ describe("UModalConfirm", () => {
     it("passes default slot content to UModal", () => {
       const slotClass = "default-content";
       const slotContent = "Default Content";
-      const wrapper = mountWithLocale(
-        {
+      const wrapper = mount(UModalConfirm, {
+        props: {
           modelValue: true,
         },
-        {
+        slots: {
           default: `<div class="${slotClass}">${slotContent}</div>`,
         },
-      );
+      });
 
       // Find the UModal component
       const modal = wrapper.findComponent(UModal);
@@ -304,14 +295,14 @@ describe("UModalConfirm", () => {
     it("passes before-title slot content to UModal", () => {
       const slotClass = "before-title";
       const slotContent = "Before Title";
-      const wrapper = mountWithLocale(
-        {
+      const wrapper = mount(UModalConfirm, {
+        props: {
           modelValue: true,
         },
-        {
+        slots: {
           "before-title": `<div class="${slotClass}">${slotContent}</div>`,
         },
-      );
+      });
 
       // Find the UModal component
       const modal = wrapper.findComponent(UModal);
@@ -325,14 +316,14 @@ describe("UModalConfirm", () => {
     it("passes title slot content to UModal", () => {
       const slotClass = "title-content";
       const slotContent = "Title Content";
-      const wrapper = mountWithLocale(
-        {
+      const wrapper = mount(UModalConfirm, {
+        props: {
           modelValue: true,
         },
-        {
+        slots: {
           title: `<div class="${slotClass}">${slotContent}</div>`,
         },
-      );
+      });
 
       // Find the UModal component
       const modal = wrapper.findComponent(UModal);
@@ -346,14 +337,14 @@ describe("UModalConfirm", () => {
     it("passes after-title slot content to UModal", () => {
       const slotClass = "after-title";
       const slotContent = "After Title";
-      const wrapper = mountWithLocale(
-        {
+      const wrapper = mount(UModalConfirm, {
+        props: {
           modelValue: true,
         },
-        {
+        slots: {
           "after-title": `<div class="${slotClass}">${slotContent}</div>`,
         },
-      );
+      });
 
       // Find the UModal component
       const modal = wrapper.findComponent(UModal);
@@ -367,14 +358,14 @@ describe("UModalConfirm", () => {
     it("passes actions slot content to UModal", () => {
       const slotClass = "actions-content";
       const slotContent = "Actions Content";
-      const wrapper = mountWithLocale(
-        {
+      const wrapper = mount(UModalConfirm, {
+        props: {
           modelValue: true,
         },
-        {
+        slots: {
           actions: `<div class="${slotClass}">${slotContent}</div>`,
         },
-      );
+      });
 
       // Find the UModal component
       const modal = wrapper.findComponent(UModal);
@@ -388,14 +379,14 @@ describe("UModalConfirm", () => {
     it("renders custom content in footer-left slot instead of default buttons", () => {
       const slotClass = "footer-left";
       const slotContent = "Footer Left";
-      const wrapper = mountWithLocale(
-        {
+      const wrapper = mount(UModalConfirm, {
+        props: {
           modelValue: true,
         },
-        {
+        slots: {
           "footer-left": `<div class="${slotClass}">${slotContent}</div>`,
         },
-      );
+      });
 
       // Find the UModal component
       const modal = wrapper.findComponent(UModal);
@@ -416,14 +407,14 @@ describe("UModalConfirm", () => {
     it("passes footer-right slot content to UModal", () => {
       const slotClass = "footer-right";
       const slotContent = "Footer Right";
-      const wrapper = mountWithLocale(
-        {
+      const wrapper = mount(UModalConfirm, {
+        props: {
           modelValue: true,
         },
-        {
+        slots: {
           "footer-right": `<div class="${slotClass}">${slotContent}</div>`,
         },
-      );
+      });
 
       // Find the UModal component
       const modal = wrapper.findComponent(UModal);
@@ -438,14 +429,16 @@ describe("UModalConfirm", () => {
   describe("Events", () => {
     // Update:modelValue event
     it("emits update:modelValue event when modal is closed", async () => {
-      const wrapper = mountWithLocale({
-        modelValue: true,
+      const wrapper = mount(UModalConfirm, {
+        props: {
+          modelValue: true,
+        },
       });
 
       // Find the UModal component and trigger its close event
       const modal = wrapper.findComponent(UModal);
 
-      await modal.vm.$emit("close");
+      modal.vm.$emit("close");
 
       // Check if the update:modelValue event was emitted with false
       expect(wrapper.emitted("update:modelValue")).toBeTruthy();
@@ -454,12 +447,14 @@ describe("UModalConfirm", () => {
 
     // Confirm event
     it("emits confirm event when emitConfirmAction method is called", async () => {
-      const wrapper = mountWithLocale({
-        modelValue: true,
+      const wrapper = mount(UModalConfirm, {
+        props: {
+          modelValue: true,
+        },
       });
 
       // Directly call the emitConfirmAction method
-      (wrapper.vm as UModalConfirmInstance).emitConfirmAction();
+      wrapper.vm.emitConfirmAction();
 
       // Check if the confirm event was emitted
       expect(wrapper.emitted("confirm")).toBeTruthy();
@@ -471,12 +466,14 @@ describe("UModalConfirm", () => {
 
     // Close event
     it("emits close event when onCloseModal method is called", async () => {
-      const wrapper = mountWithLocale({
-        modelValue: true,
+      const wrapper = mount(UModalConfirm, {
+        props: {
+          modelValue: true,
+        },
       });
 
       // Directly call the onCloseModal method
-      (wrapper.vm as UModalConfirmInstance).onCloseModal();
+      wrapper.vm.onCloseModal();
 
       // Check if the close event was emitted
       expect(wrapper.emitted("close")).toBeTruthy();
@@ -487,14 +484,16 @@ describe("UModalConfirm", () => {
     });
 
     it("emits close event when UModal emits close event", async () => {
-      const wrapper = mountWithLocale({
-        modelValue: true,
+      const wrapper = mount(UModalConfirm, {
+        props: {
+          modelValue: true,
+        },
       });
 
       // Find the UModal component and trigger its close event
       const modal = wrapper.findComponent(UModal);
 
-      await modal.vm.$emit("close");
+      modal.vm.$emit("close");
 
       // Check if the close event was emitted
       expect(wrapper.emitted("close")).toBeTruthy();
@@ -505,13 +504,13 @@ describe("UModalConfirm", () => {
   describe("Exposed refs", () => {
     // modal
     it("exposes modal ref", () => {
-      const wrapper = mountWithLocale({
-        modelValue: true,
+      const wrapper = mount(UModalConfirm, {
+        props: {
+          modelValue: true,
+        },
       });
 
-      const vm = wrapper.vm as UModalConfirmInstance;
-
-      expect(vm.modal).toBeDefined();
+      expect(wrapper.vm.modal).toBeDefined();
     });
   });
 });
