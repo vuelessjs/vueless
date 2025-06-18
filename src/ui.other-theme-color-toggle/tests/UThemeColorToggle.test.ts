@@ -146,21 +146,16 @@ describe("UThemeColorToggle.vue", () => {
       expect(component.attributes("id")).toBe(id);
     });
 
-    // Skip DataTest prop test since it requires a fully working useUI composable
-    it.skip("applies the correct data-test attribute", () => {
+    // DataTest prop
+    it("applies the correct data-test attribute", () => {
       const dataTest = "test-theme-toggle";
 
       const component = mount(UThemeColorToggle, {
         props: {
           dataTest,
         },
-        attrs: {
-          "data-test": dataTest,
-        },
       });
 
-      // This assertion is skipped because the component uses useUI composable
-      // which requires a more complex setup to work correctly in tests
       expect(component.attributes("data-test")).toBe(dataTest);
     });
 
