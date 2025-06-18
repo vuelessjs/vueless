@@ -50,7 +50,6 @@ export default /*tw*/ {
     },
   },
   defaults: {
-    color: "neutral",
     variant: "default",
     labelAlign: "topInside",
     type: "input",
