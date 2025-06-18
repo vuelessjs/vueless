@@ -24,6 +24,7 @@ import {
   getVueDirs,
   getVuelessConfigDirs,
   cacheMergedConfigs,
+  fileIncludes,
 } from "./utils/node/helper.js";
 
 import {
@@ -135,7 +136,23 @@ export const Vueless = function (options = {}) {
 
     /* update icons cache in dev env */
     handleHotUpdate: async ({ file, server }) => {
-      if ([JAVASCRIPT_EXT, TYPESCRIPT_EXT, VUE_EXT].some((extension) => file.endsWith(extension))) {
+      const hasIcon = await fileIncludes(file, [
+        "UIcon",
+        "icon=",
+        "icon:",
+        "Icon:",
+        "Icon=",
+        "icon-name=",
+        "icon-name:",
+        "iconName=",
+        "iconName:",
+      ]);
+
+      const isScriptFile = [JAVASCRIPT_EXT, TYPESCRIPT_EXT, VUE_EXT].some((extension) =>
+        file.endsWith(extension),
+      );
+
+      if (isScriptFile && hasIcon) {
         /* cache vueless built-in and project icons */
         await prepareIcons();
 
