@@ -12,13 +12,14 @@ describe("UDot.vue", () => {
     // Size prop
     it("applies the correct size class", () => {
       const sizes = {
-        "2xs": "size-1",
-        xs: "size-1.5",
-        sm: "size-2",
-        md: "size-2.5",
-        lg: "size-3",
-        xl: "size-4",
-        "2xl": "size-5",
+        "3xs": "size-0.25",
+        "2xs": "size-0.5",
+        xs: "size-1",
+        sm: "size-1.5",
+        md: "size-2",
+        lg: "size-2.5",
+        xl: "size-3",
+        "2xl": "size-3.5",
       };
 
       Object.entries(sizes).forEach(([size, classes]) => {
