@@ -135,13 +135,11 @@ export const Vueless = function (options = {}) {
 
     /* update icons cache in dev env */
     handleHotUpdate: async ({ file, server }) => {
-      console.log("reload");
-
       if ([JAVASCRIPT_EXT, TYPESCRIPT_EXT, VUE_EXT].some((extension) => file.endsWith(extension))) {
         /* cache vueless built-in and project icons */
         await prepareIcons();
 
-        await reloadServerOnIconsCacheUpdate(server);
+        reloadServerOnIconsCacheUpdate(server);
 
         return [];
       }

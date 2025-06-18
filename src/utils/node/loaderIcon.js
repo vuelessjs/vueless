@@ -147,8 +147,6 @@ export function reloadServerOnIconsCacheUpdate(server) {
   }
 
   server.ws.send({ type: "full-reload", path: "*" });
-
-  return new Promise((resolve) => setTimeout(resolve, 5000));
 }
 
 /**
