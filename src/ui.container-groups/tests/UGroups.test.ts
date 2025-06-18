@@ -4,7 +4,6 @@ import { describe, it, expect } from "vitest";
 import UGroups from "../UGroups.vue";
 
 import type { Props } from "../types.ts";
-import type { ComponentPublicInstance } from "vue";
 
 describe("UGroups.vue", () => {
   // Props tests
@@ -68,10 +67,9 @@ describe("UGroups.vue", () => {
     // wrapperRef
     it("exposes wrapperRef", () => {
       const component = mount(UGroups);
-      const vm = component.vm as ComponentPublicInstance & { wrapperRef: HTMLDivElement };
 
-      expect(vm.wrapperRef).toBeDefined();
-      expect(vm.wrapperRef instanceof HTMLDivElement).toBe(true);
+      expect(component.vm.wrapperRef).toBeDefined();
+      expect(component.vm.wrapperRef instanceof HTMLDivElement).toBe(true);
     });
   });
 });
