@@ -154,7 +154,12 @@ export const Vueless = function (options = {}) {
 
       if (isScriptFile && hasIcon) {
         /* cache vueless built-in and project icons */
-        await prepareIcons();
+
+        await createIconsCache({ env, debug, targetFiles: [file] });
+
+        if (isNuxtModuleEnv) {
+          await copyIconsCache(mirrorCacheDir);
+        }
 
         reloadServerOnIconsCacheUpdate(server);
 
