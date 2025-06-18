@@ -75,18 +75,24 @@ defineExpose({
  * Get element / nested component attributes for each config token ✨
  * Applies: `class`, `config`, redefined default `props` and dev `vl-...` attributes.
  */
-const { listAttrs, colorDividerAttrs, primaryColorPickerAttrs, neutralColorPickerAttrs } =
-  useUI<Config>(defaultConfig);
+const {
+  getDataTest,
+  listAttrs,
+  colorDividerAttrs,
+  primaryColorPickerAttrs,
+  neutralColorPickerAttrs,
+} = useUI<Config>(defaultConfig);
 </script>
 
 <template>
-  <div :id="elementId" ref="list" v-bind="listAttrs">
+  <div :id="elementId" ref="list" v-bind="listAttrs" :data-test="getDataTest()">
     <UColorPicker
       v-model="selectedPrimaryColor"
       :size="size"
       :colors="primaryColors"
       :labels="primaryLabels"
       v-bind="primaryColorPickerAttrs"
+      :data-test="getDataTest('primary')"
     />
 
     <UDivider
@@ -100,6 +106,7 @@ const { listAttrs, colorDividerAttrs, primaryColorPickerAttrs, neutralColorPicke
       :colors="neutralColors"
       :labels="neutralLabels"
       v-bind="neutralColorPickerAttrs"
+      :data-test="getDataTest('neutral')"
     />
   </div>
 </template>

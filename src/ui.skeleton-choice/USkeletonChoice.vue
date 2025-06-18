@@ -25,6 +25,7 @@ const { getDataTest, inputAttrs, labelAttrs, wrapperAttrs } = useUI<Config>(
 <template>
   <div v-bind="wrapperAttrs" :data-test="getDataTest()">
     <USkeleton :variant="variant" v-bind="inputAttrs" />
+    <!-- @slot Use it to customize the label skeleton. -->
     <slot v-if="label" name="label">
       <USkeleton :variant="variant" v-bind="labelAttrs" />
     </slot>

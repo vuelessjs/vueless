@@ -8,6 +8,7 @@ Vueless is a Vue Styleless UI Component Library powered by Tailwind CSS. It prov
 - **TypeScript**: Type safety and better developer experience
 - **Tailwind CSS v4**: Utility-first CSS framework
 - **Storybook**: Component documentation and development environment
+- **Vueless UI**: UI component library and design system framework
 - **Vitest**: Testing framework
 - **ESLint + Prettier**: Code quality and style enforcement
 
@@ -93,12 +94,17 @@ npm run preview
 - Use Vitest and Vue Test Utils for component testing
 - Test files should be placed in the `tests` directory of each component
 - Follow the naming convention: `UComponent.test.ts`
+- Use `UButton.test.ts` as reference
 - Test component props, slots, events, and exposed refs
 - Add comments above each test to shortly describe what is testing, example `// ImageUrl prop`. 
-- Ensure variants constant have the name `variants`. If the test compares prop values and classes the variable should be an object where key is prop value and value is classes.
-- Ensure that any constant representing `variants` is named variants. When tests compare prop values and associated class names, define variants as an object where each key corresponds to a prop value and each value is the associated class string
+- Define component props as a separate constants at the beginning of the each test.
+- Define repeated data into `beforeAll` or `beforeEach` section.
+- Define the expected value in constant after the props constants or other provided data, for string values only!
+- Use a single `mount()` per test; if multiple mounts are needed, split the logic into separate tests
+- Ensure that any constant representing variants, when tests compare prop values and associated class names, define variants as an object where each key corresponds to a prop value and each value is the associated class string
+- Define colors variant as an array instead of object
 - Use forEach for testing variants, the same as in `UButton.test.ts`. The loop arguments should be `variant` and `classes`
-- Use keys and values from the `variants` object instead of if-else statements
+- Use keys and values from the `variants` object instead of if-else statements inside the forEach
 - For the color prop variant, use the `primary` color instead of using a {color} pattern string placeholder in classes.
 - Use a variant object and iterate over its keys and values directly using forEach, without separately adding a variable with them.
 - Add types to the props for variants by using `as` keyword like `color: color as Props["color"],`
@@ -108,7 +114,9 @@ npm run preview
 - Name constants that hold slot class should be named `slotClass` or `*SlotClass`
 - When testing class-related props, match expected classes from the component’s CVA config in `config.ts`
 - Run tests by using command `npm run test:ci src/ui.[component-folder]`]
-- Import types with `type` keyword, example `import type { ComponentPublicInstance } from "vue"`
+- Ensure the tests meet Testing Guidelines
+- Import types with `type` keyword, byt only when a TypeScript error is present
+- Use vueless attributes to find the exact element `component.find("[vl-key='number']")` where is key is element config key
 
 ## Best Practices
 - Follow the established component structure for new components

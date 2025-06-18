@@ -36,14 +36,14 @@ const mutatedProps = computed(() => ({
   icon: Boolean(props.icon),
 }));
 
-const { wrapperAttrs, chipWrapperAttrs, chipDotAttrs, chipIconAttrs } = useUI<Config>(
+const { getDataTest, wrapperAttrs, chipWrapperAttrs, chipDotAttrs, chipIconAttrs } = useUI<Config>(
   defaultConfig,
   mutatedProps,
 );
 </script>
 
 <template>
-  <div ref="wrapper" v-bind="wrapperAttrs">
+  <div ref="wrapper" v-bind="wrapperAttrs" :data-test="getDataTest()">
     <!-- @slot Use it to add something inside. -->
     <slot name="default" />
     <div v-bind="chipWrapperAttrs">

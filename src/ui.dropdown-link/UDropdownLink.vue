@@ -91,7 +91,7 @@ const linkLabel = computed(() => {
     .map((option) => option[props.labelKey]);
   const restLabelCount = selectedOptions.value.length - props.labelDisplayCount;
 
-  if (selectedLabels.length > 1 && restLabelCount > 0) {
+  if (restLabelCount > 0) {
     selectedLabels.push(`+${restLabelCount}`);
   }
 
@@ -142,6 +142,12 @@ defineExpose({
    * @property {HTMLDivElement}
    */
   wrapperRef,
+
+  /**
+   * Hides the dropdown options.
+   * @property {function}
+   */
+  hideOptions,
 });
 
 /**
