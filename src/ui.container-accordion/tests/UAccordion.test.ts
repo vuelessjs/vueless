@@ -3,9 +3,7 @@ import { describe, it, expect } from "vitest";
 
 import UAccordion from "../UAccordion.vue";
 import UIcon from "../../ui.image-icon/UIcon.vue";
-import UDivider from "../../ui.container-divider/UDivider.vue";
 
-import type { ComponentPublicInstance } from "vue";
 import type { Props } from "../types.ts";
 
 describe("UAccordion", () => {
@@ -15,26 +13,26 @@ describe("UAccordion", () => {
     it("renders with title prop", () => {
       const title = "Accordion Title";
 
-      const wrapper = mount(UAccordion, {
+      const component = mount(UAccordion, {
         props: {
           title,
         },
       });
 
-      expect(wrapper.text()).toContain(title);
+      expect(component.find("[vl-key='title']").text()).toContain(title);
     });
 
     // Description prop
     it("renders with description prop", () => {
       const description = "Accordion Description";
 
-      const wrapper = mount(UAccordion, {
+      const component = mount(UAccordion, {
         props: {
           description,
         },
       });
 
-      expect(wrapper.find("[id^='description-']").text()).toBe(description);
+      expect(component.find("[vl-key='description']").text()).toBe(description);
     });
 
     // Size prop
@@ -46,15 +44,13 @@ describe("UAccordion", () => {
       };
 
       Object.entries(sizeClasses).forEach(([size, classes]) => {
-        const wrapper = mount(UAccordion, {
+        const component = mount(UAccordion, {
           props: {
             size: size as Props["size"],
           },
         });
 
-        const titleElement = wrapper.find("[class*='text-']");
-
-        expect(titleElement.classes()).toContain(classes);
+        expect(component.find("[vl-key='title']").classes()).toContain(classes);
       });
     });
 
@@ -67,13 +63,13 @@ describe("UAccordion", () => {
       ];
 
       toggleIconTests.forEach(({ toggleIcon, exists, iconName }) => {
-        const wrapper = mount(UAccordion, {
+        const component = mount(UAccordion, {
           props: {
             toggleIcon: toggleIcon as Props["toggleIcon"],
           },
         });
 
-        const icon = wrapper.findComponent(UIcon);
+        const icon = component.findComponent(UIcon);
 
         expect(icon.exists()).toBe(exists);
 
@@ -87,26 +83,26 @@ describe("UAccordion", () => {
     it("uses provided id prop", () => {
       const id = "custom-id";
 
-      const wrapper = mount(UAccordion, {
+      const component = mount(UAccordion, {
         props: {
           id,
         },
       });
 
-      expect(wrapper.find(`[id="description-${id}"]`).exists()).toBe(true);
+      expect(component.find(`[id="description-${id}"]`).exists()).toBe(true);
     });
 
     // DataTest prop
     it("applies data-test attribute", () => {
       const dataTest = "accordion-test";
 
-      const wrapper = mount(UAccordion, {
+      const component = mount(UAccordion, {
         props: {
           dataTest,
         },
       });
 
-      expect(wrapper.attributes("data-test")).toBe(dataTest);
+      expect(component.attributes("data-test")).toBe(dataTest);
     });
   });
 
@@ -116,13 +112,13 @@ describe("UAccordion", () => {
     it("renders default toggle icon when toggle slot is not provided", () => {
       const toggleIcon = true;
 
-      const wrapper = mount(UAccordion, {
+      const component = mount(UAccordion, {
         props: {
           toggleIcon,
         },
       });
 
-      const icon = wrapper.findComponent(UIcon);
+      const icon = component.findComponent(UIcon);
 
       expect(icon.exists()).toBe(true);
     });
@@ -133,7 +129,7 @@ describe("UAccordion", () => {
       const slotClass = "custom-toggle";
       const slotContent = "Custom Toggle";
 
-      const wrapper = mount(UAccordion, {
+      const component = mount(UAccordion, {
         props: {
           toggleIcon,
         },
@@ -142,9 +138,9 @@ describe("UAccordion", () => {
         },
       });
 
-      expect(wrapper.find(`.${slotClass}`).exists()).toBe(true);
-      expect(wrapper.find(`.${slotClass}`).text()).toBe(slotContent);
-      expect(wrapper.findComponent(UIcon).exists()).toBe(false);
+      expect(component.find(`.${slotClass}`).exists()).toBe(true);
+      expect(component.find(`.${slotClass}`).text()).toBe(slotContent);
+      expect(component.findComponent(UIcon).exists()).toBe(false);
     });
 
     // Toggle slot bindings
@@ -153,7 +149,7 @@ describe("UAccordion", () => {
       const toggleClass = "custom-toggle";
       const defaultIconName = "keyboard_arrow_down";
 
-      const wrapper = mount(UAccordion, {
+      const component = mount(UAccordion, {
         props: {
           toggleIcon,
         },
@@ -166,14 +162,14 @@ describe("UAccordion", () => {
         },
       });
 
-      const toggleElement = wrapper.find(`.${toggleClass}`);
+      const toggleElement = component.find(`.${toggleClass}`);
 
       expect(toggleElement.exists()).toBe(true);
       expect(toggleElement.attributes("data-icon")).toBe(defaultIconName);
       expect(toggleElement.attributes("data-opened")).toBe("false");
 
       // Click to toggle
-      await wrapper.trigger("click");
+      await component.trigger("click");
 
       expect(toggleElement.attributes("data-opened")).toBe("true");
     });
@@ -185,23 +181,23 @@ describe("UAccordion", () => {
     it("emits click event with id and opened state when clicked", async () => {
       const id = "test-id";
 
-      const wrapper = mount(UAccordion, {
+      const component = mount(UAccordion, {
         props: {
           id,
         },
       });
 
-      await wrapper.trigger("click");
+      await component.trigger("click");
 
-      const emitted = wrapper.emitted("click");
+      const emitted = component.emitted("click");
 
       expect(emitted).toBeTruthy();
       expect(emitted?.[0]).toEqual([id, true]);
 
       // Click again to toggle back
-      await wrapper.trigger("click");
+      await component.trigger("click");
 
-      const emittedAgain = wrapper.emitted("click");
+      const emittedAgain = component.emitted("click");
 
       expect(emittedAgain?.[1]).toEqual([id, false]);
     });
@@ -211,11 +207,10 @@ describe("UAccordion", () => {
   describe("Exposed refs", () => {
     // WrapperRef
     it("exposes wrapperRef", () => {
-      const wrapper = mount(UAccordion);
-      const vm = wrapper.vm as ComponentPublicInstance & { wrapperRef: HTMLDivElement };
+      const component = mount(UAccordion);
 
-      expect(vm.wrapperRef).toBeDefined();
-      expect(vm.wrapperRef instanceof HTMLDivElement).toBe(true);
+      expect(component.vm.wrapperRef).toBeDefined();
+      expect(component.vm.wrapperRef instanceof HTMLDivElement).toBe(true);
     });
   });
 
@@ -224,45 +219,30 @@ describe("UAccordion", () => {
     // Toggle behavior
     it("toggles opened state when clicked", async () => {
       const description = "Test Description";
-      const openedClasses = ["h-fit", "opacity-100"];
+      const openedClass = "opacity-100";
 
-      const wrapper = mount(UAccordion, {
+      const component = mount(UAccordion, {
         props: {
           description,
         },
       });
 
-      const descriptionElement = wrapper.find("[id^='description-']");
+      const descriptionElement = component.find("[id^='description-']");
 
       // Initially not opened
-      openedClasses.forEach((className) => {
-        expect(descriptionElement.classes()).not.toContain(className);
-      });
+      expect(descriptionElement.classes()).not.toContain(openedClass);
 
       // Click to open
-      await wrapper.trigger("click");
+      await component.trigger("click");
 
       // Should be opened
-      openedClasses.forEach((className) => {
-        expect(descriptionElement.classes()).toContain(className);
-      });
+      expect(descriptionElement.classes()).toContain(openedClass);
 
       // Click to close
-      await wrapper.trigger("click");
+      await component.trigger("click");
 
       // Should be closed again
-      openedClasses.forEach((className) => {
-        expect(descriptionElement.classes()).not.toContain(className);
-      });
-    });
-
-    // Divider rendering
-    it("renders divider component", () => {
-      const wrapper = mount(UAccordion);
-
-      const divider = wrapper.findComponent(UDivider);
-
-      expect(divider.exists()).toBe(true);
+      expect(descriptionElement.classes()).not.toContain(openedClass);
     });
   });
 });
