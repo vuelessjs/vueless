@@ -34,6 +34,12 @@ const props = withDefaults(defineProps<Props>(), {
 
 const emit = defineEmits([
   /**
+   * Triggers when the select is clicked.
+   * @property {object} clickEvent
+   */
+  "click",
+
+  /**
    * Triggers when a dropdown list is opened.
    * @property {string} elementId
    */
@@ -472,7 +478,7 @@ const {
     <template #label>
       <div
         v-if="label || hasSlotContent($slots['label'], { label })"
-        @click="toggle"
+        @click="(emit('click', $event), toggle())"
         @mousedown.prevent
       >
         <!--
@@ -497,6 +503,7 @@ const {
       @keydown.self.up.prevent="listboxRef?.pointerBackward"
       @keydown.enter.tab.stop.self="listboxRef?.addPointerElement()"
       @keyup.esc="deactivate"
+      @click="emit('click', $event)"
     >
       <div
         v-if="hasSlotContent($slots['right'], { iconName: rightIcon }) || rightIcon"
@@ -531,7 +538,7 @@ const {
         v-bind="toggleWrapperAttrs"
         :tabindex="-1"
         :data-test="getDataTest('toggle')"
-        @click.stop="toggle"
+        @click="toggle"
       >
         <!--
           @slot Use it to add something instead of the toggle icon.
@@ -566,7 +573,7 @@ const {
             :name="config.defaults.clearIcon"
             v-bind="clearIconAttrs"
             :data-test="getDataTest('clear')"
-            @click.stop="onClickClear"
+            @click="onClickClear"
           />
         </slot>
       </div>
@@ -592,12 +599,7 @@ const {
             @binding {object} options
           -->
           <slot name="selected-options" :options="multiple ? selectedOptions.full : selectedOption">
-            <span
-              v-if="!multiple"
-              v-bind="selectedLabelsAttrs"
-              @click.stop="toggle"
-              @mousedown.prevent
-            >
+            <span v-if="!multiple" v-bind="selectedLabelsAttrs" @click="toggle" @mousedown.prevent>
               <!--
                 @slot Use it to customize selected option.
                 @binding {string} label
@@ -618,7 +620,7 @@ const {
               </slot>
             </span>
 
-            <div v-else v-bind="selectedLabelsAttrs" @click.stop="toggle" @mousedown.prevent>
+            <div v-else v-bind="selectedLabelsAttrs" @click="toggle" @mousedown.prevent>
               <template v-if="isMultipleInlineVariant">
                 <div :title="selectedOptionsLabel.full" v-bind="selectedLabelAttrs">
                   <template v-for="(option, index) in selectedOptions.visible" :key="index">
@@ -695,7 +697,7 @@ const {
                           :disabled="disabled"
                           :name="config.defaults.badgeClearIcon"
                           v-bind="badgeClearIconAttrs"
-                          @click.stop="onClickClearItem($event, option)"
+                          @click="onClickClearItem($event, option)"
                         />
                       </template>
                     </UBadge>
@@ -788,7 +790,7 @@ const {
                     :underlined="false"
                     v-bind="listClearAllAttrs"
                     :data-test="getDataTest('clear-all')"
-                    @click.stop="onClickClear"
+                    @click="onClickClear"
                   />
                 </div>
               </template>
