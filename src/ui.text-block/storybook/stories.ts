@@ -121,66 +121,13 @@ export const Wrap: StoryFn<UTextArgs> = (args: UTextArgs) => ({
 });
 Wrap.args = {};
 
-export const Paragraphs = DefaultTemplate.bind({});
-Paragraphs.args = {
+export const DefaultSlot = DefaultTemplate.bind({});
+DefaultSlot.args = {
   slotTemplate: `
     <template #default>
-      <p>
-        In a world where technology evolves at an unprecedented pace, staying
-        updated with the latest advancements is crucial for success. Companies
-        that adapt quickly to new trends often find themselves at the forefront
-        of their industries, leading to increased innovation and productivity.
-        However, it's not just about adopting new tools but also about integrating
-        them seamlessly into existing workflows to maximize their potential.
-      </p>
-
-      <p>
-        Employees must be encouraged to continuously learn and develop new skills,
-        ensuring they can leverage these technological advancements effectively.
-        This not only enhances their professional growth but also contributes to
-        the overall success of the organization. By fostering a culture of
-        continuous improvement, businesses can navigate the challenges of a
-        rapidly changing landscape and emerge stronger and more competitive.
-      </p>
+      <p>To proceed with your registration, please enter your
+      <UBadge label="email address" color="success" variant="subtle" /> in the field below.
+      A verification link will be sent to your inbox shortly.</p>
     </template>
-  `,
-};
-
-export const List = DefaultTemplate.bind({});
-List.args = {
-  slotTemplate: `
-    <template #default>
-      <URow gap="2xl">
-        <ul>
-          <li>Ensure your password is strong</li>
-          <li>Update your profile information</li>
-          <li>Check your email for updates</li>
-        </ul>
-        <ol>
-          <li>Create an account by signing up</li>
-          <li>Verify your email address</li>
-          <li>Log in to access your dashboard</li>
-        </ol>
-      </URow>
-    </template>
-  `,
-};
-
-export const FormattedText = DefaultTemplate.bind({});
-FormattedText.args = {
-  slotTemplate: `
-    <p>
-      <b>To proceed with your registration</b>, please enter your <u>email address</u> in the field below.
-      <i>A verification link</i> will be sent to your inbox shortly.
-    </p>
-  `,
-};
-
-export const NestedComponent = DefaultTemplate.bind({});
-NestedComponent.args = {
-  slotTemplate: `
-    <p>To proceed with your registration, please enter your
-    <UBadge label="email address" color="success" variant="subtle" /> in the field below.
-    A verification link will be sent to your inbox shortly.</p>
   `,
 };

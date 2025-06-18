@@ -4,14 +4,11 @@ import {
   getSlotNames,
   getSlotsFragment,
   getDocsDescription,
-  getEnumVariantDescription,
 } from "../../utils/storybook.ts";
 
 import UHeader from "../../ui.text-header/UHeader.vue";
 import UCol from "../../ui.container-col/UCol.vue";
 import UBadge from "../../ui.text-badge/UBadge.vue";
-
-import tooltip from "../../directives/tooltip/vTooltip.ts";
 
 import type { Meta, StoryFn } from "@storybook/vue3";
 import type { Props } from "../types.ts";
@@ -50,7 +47,6 @@ const DefaultTemplate: StoryFn<UHeaderArgs> = (args: UHeaderArgs) => ({
 
 const EnumTemplate: StoryFn<UHeaderArgs> = (args: UHeaderArgs, { argTypes }) => ({
   components: { UHeader, UCol },
-  directives: { tooltip },
   setup: () => ({ args, argTypes, getArgs }),
   template: `
     <UCol>
@@ -58,7 +54,6 @@ const EnumTemplate: StoryFn<UHeaderArgs> = (args: UHeaderArgs, { argTypes }) => 
         v-for="option in argTypes?.[args.enum]?.options"
         v-bind="getArgs(args, option)"
         :key="option"
-        v-tooltip="option"
       />
     </UCol>
   `,
@@ -69,15 +64,12 @@ Default.args = {};
 
 export const Sizes = EnumTemplate.bind({});
 Sizes.args = { enum: "size" };
-Sizes.parameters = getEnumVariantDescription();
 
 export const Variants = EnumTemplate.bind({});
 Variants.args = { enum: "variant" };
-Variants.parameters = getEnumVariantDescription();
 
 export const Colors = EnumTemplate.bind({});
 Colors.args = { enum: "color" };
-Colors.parameters = getEnumVariantDescription();
 
 export const DefaultSlot = DefaultTemplate.bind({});
 DefaultSlot.args = {

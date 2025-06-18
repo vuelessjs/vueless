@@ -12,6 +12,8 @@ import UCol from "../../ui.container-col/UCol.vue";
 import UIcon from "../../ui.image-icon/UIcon.vue";
 import UButton from "../../ui.button/UButton.vue";
 import UBadge from "../../ui.text-badge/UBadge.vue";
+import ULink from "../../ui.button-link/ULink.vue";
+import UText from "../../ui.text-block/UText.vue";
 
 import type { Meta, StoryFn } from "@storybook/vue3";
 import type { Props } from "../types.ts";
@@ -26,7 +28,7 @@ export default {
   title: "Text & Content / Alert",
   component: UAlert,
   args: {
-    title: "Network Error",
+    title: "Scheduled Maintenance Notice",
   },
   argTypes: {
     ...getArgTypes(UAlert.__name),
@@ -67,18 +69,23 @@ Default.args = {};
 
 export const Description = DefaultTemplate.bind({});
 Description.args = {
-  description:
-    "Unable to connect to the server. Please check your internet connection and try again.",
+  description: `
+    Our website will be undergoing scheduled maintenance on March 15th from 2:00 AM to 4:00 AM UTC.
+    Some features may be temporarily unavailable during this time. We appreciate your patience!
+  `,
 };
 
 export const Variants = EnumTemplate.bind({});
-Variants.args = { enum: "variant", title: "{enumValue}" };
+Variants.args = { enum: "variant" };
 
 export const Sizes = EnumTemplate.bind({});
-Sizes.args = { enum: "size", title: "{enumValue}" };
+Sizes.args = { enum: "size" };
 
 export const Colors = EnumTemplate.bind({});
-Colors.args = { enum: "color", title: "{enumValue}" };
+Colors.args = { enum: "color" };
+
+export const Icon = DefaultTemplate.bind({});
+Icon.args = { icon: "handyman" };
 
 export const Closable = DefaultTemplate.bind({});
 Closable.args = { closable: true };
@@ -90,8 +97,7 @@ CloseSlot.args = {
     <template #close="{ close }">
       <UButton
         label="Close"
-        variant="solid"
-        color="neutral"
+        variant="ghost"
         size="sm"
         @click="close"
       />
@@ -100,38 +106,74 @@ CloseSlot.args = {
 };
 
 export const Slots: StoryFn<UAlertArgs> = (args) => ({
-  components: { UAlert, UIcon, URow, UBadge },
+  components: { UAlert, UIcon, URow, UCol, UButton, UBadge, ULink, UText },
   setup() {
     return { args };
   },
   template: `
-    <URow>
-      <UAlert v-bind="args">
+    <UCol>
+      <UAlert
+        title="New Feature Available"
+        description="We've just released our new AI-powered analytics dashboard.
+          Try it out and let us know what you think!"
+        color="success"
+        icon="question_mark"
+      >
+        <template #left="{ iconName }">
+          <URow align="center" gap="none">
+            <ULink label="What's New" color="success" />
+            <UIcon :name="iconName" color="success" size="2xs" class="mb-1" />
+          </URow>
+        </template>
+      </UAlert>
+
+      <UAlert
+        title="System Maintenance"
+        description="Scheduled maintenance will begin in 30 minutes. Estimated downtime: 2 hours."
+        color="warning"
+      >
         <template #title>
-          <UBadge
-            label="Connection lost"
-            size="lg"
-            color="error"
-            variant="outlined"
-          />
+          <URow align="center" gap="sm">
+            <UBadge
+              label="MAINTENANCE"
+              size="sm"
+              color="warning"
+              variant="outlined"
+            />
+            <UText label="System Maintenance" size="sm" />
+          </URow>
         </template>
       </UAlert>
 
-      <UAlert v-bind="args">
+      <UAlert
+        title="Welcome to Vueless!"
+        description="You've successfully joined our community.
+          Check out our documentation to get started with building beautiful interfaces."
+        color="info"
+      >
         <template #description>
-          <UBadge
-            label="We are trying to reconnect. Please wait a moment or check your network settings."
-            color="error"
-            variant="soft"
-          />
+          <UCol>
+            <p>
+              You've successfully joined our community. Check out our documentation
+              to get started with building beautiful interfaces.
+            </p>
+            <URow gap="sm">
+              <UButton
+                label="View Docs"
+                variant="ghost"
+                size="sm"
+                color="info"
+              />
+              <UButton
+                label="Join Discord"
+                variant="ghost"
+                size="sm"
+                color="info"
+              />
+            </URow>
+          </UCol>
         </template>
       </UAlert>
-
-      <UAlert v-bind="args">
-        <template #left>
-          <UIcon name="warning" color="warning" />
-        </template>
-      </UAlert>
-    </URow>
+    </UCol>
   `,
 });
