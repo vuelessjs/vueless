@@ -305,7 +305,7 @@ function activate() {
     adjustPositionY();
     adjustPositionX();
 
-    menuRef.value?.focus();
+    menuRef.value?.focus({ preventScroll: true });
   });
 }
 

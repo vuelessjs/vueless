@@ -1,7 +1,7 @@
 import path from "node:path";
 import { cwd } from "node:process";
 import { existsSync } from "node:fs";
-import { readFile, unlink, writeFile } from "node:fs/promises";
+import { readFile, unlink, writeFile, mkdir } from "node:fs/promises";
 import { merge } from "lodash-es";
 
 import { getDefaultComponentConfig, getMergedComponentConfig, getDirFiles } from "./helper.js";
@@ -80,8 +80,10 @@ export async function createTailwindSafelist({ env, srcDir, targetFiles = [] } =
   ];
 
   const safelistPath = path.join(cwd(), VUELESS_TAILWIND_SAFELIST);
+  const safelistDir = path.dirname(safelistPath);
 
   /* Cache safelist into the file. */
+  await mkdir(safelistDir, { recursive: true });
   await writeFile(safelistPath, safelist.join("\n"));
 }
 
