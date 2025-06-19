@@ -118,41 +118,35 @@ export async function copyIconsCache(mirrorCacheDir) {
  *
  * @return {string} A string containing the export statement for the cached SVG icons as an array to be used in Vite.
  */
-export function generateIconExports() {
+export async function generateIconExports() {
   const cachePath = path.join(cwd(), ICONS_CACHED_DIR);
-  const files = walkSvgFiles(cachePath);
+  const files = await getDirFiles(cachePath, ".svg", {
+    recursive: true,
+  });
 
-  const entries = files
-    .map((relativePath) => {
-      const fullImportPath = path.resolve(cachePath, relativePath).replace(/\\/g, "/");
-      const virtualPath = path.join(cwd(), ICONS_CACHED_DIR, relativePath).replace(/\\/g, "/");
+  const entries = files.map((filePath) => {
+    const fullImportPath = path.resolve(filePath).replace(/\\/g, "/");
+    const virtualPath = filePath.replace(/\\/g, "/");
 
-      return `  ["${virtualPath}", import("${fullImportPath}?component")]`;
-    })
-    .join(",\n");
+    return `  ["${virtualPath}", import("${fullImportPath}?component")]`;
+  });
 
-  return `export const cachedIcons = [\n${entries}\n];`;
+  return `export const cachedIcons = [\n${entries.join(",\n")}\n];`;
 }
 
 /**
  * Reloads the server when the icons cache is updated. This function sets up a file system watcher
  * on the icons cache directory and triggers a full server reload whenever files are added or removed.
  * @param {Object} server - The vite server instance to be reloaded.
- * @param watcher
  */
+export function reloadServerOnIconsCacheUpdate(server) {
+  const module = server.moduleGraph.getModuleById(RESOLVED_ICONS_VIRTUAL_MODULE_ID);
 
-export function reloadServerOnIconsCacheUpdate(server, watcher) {
-  function reloadServer() {
-    const module = server.moduleGraph.getModuleById(RESOLVED_ICONS_VIRTUAL_MODULE_ID);
-
-    if (module) {
-      server.moduleGraph.invalidateModule(module);
-    }
-
-    server.ws.send({ type: "full-reload", path: "*" });
+  if (module) {
+    server.moduleGraph.invalidateModule(module);
   }
 
-  watcher.on("add", reloadServer).on("unlink", reloadServer);
+  server.ws.send({ type: "full-reload", path: "*" });
 }
 
 /**
@@ -336,34 +330,51 @@ function getIconLibraryPaths(name, library) {
 }
 
 /**
- * Recursively walks through the specified directory and its subdirectories to find all `.svg` files.
- * Returns an array of file paths relative to the provided base directory.
- *
- * @param {string} dir - The directory to start searching for `.svg` files.
- * @param {string} [baseDir=dir] - The base directory used for calculating relative file paths.
- * @return {string[]} An array of relative file paths for all `.svg` files found.
+ * Extract icon-related lines from file content for change detection
+ * @param {string} content - File content to analyze
+ * @returns {string[]} - Array of lines containing icon-related code
  */
-function walkSvgFiles(dir, baseDir = dir) {
-  let results = [];
+export function extractIconLines(content) {
+  const lines = content.split("\n");
+  const iconPatterns = [
+    // UIcon component usage
+    /<UIcon\b/,
+    // Other components with icon props
+    /\b\w*[Ii]con\w*\s*[:=]/,
+    // Icon usage in objects
+    /\w*icon\w*:\s*['"]/,
+    // Template literals with icon references
+    /\$\{[^}]*?icon[^}]*?\}/,
+    // Dynamic icon imports
+    /import\s+.*?\.svg/,
+    // Icon component definitions
+    /name\s*[:=]\s*['"][^'"]*icon/i,
+  ];
 
-  if (!fs.existsSync(dir)) {
-    return results;
+  return lines.filter((line) => {
+    const trimmedLine = line.trim();
+
+    return iconPatterns.some((pattern) => pattern.test(trimmedLine));
+  });
+}
+
+/**
+ * Compare text lines between two file versions
+ * @param {string[]} currentLines - Current line
+ * @param {string[]} previousLines - Previous line
+ * @returns {boolean} - True if there are changes in lines
+ */
+export function isIconChanged(currentLines, previousLines) {
+  if (currentLines.length !== previousLines.length) {
+    return true;
   }
 
-  const list = fs.readdirSync(dir);
-
-  for (const file of list) {
-    const fullPath = path.join(dir, file);
-    const stat = fs.statSync(fullPath);
-
-    if (stat && stat.isDirectory()) {
-      results = results.concat(walkSvgFiles(fullPath, baseDir));
-    } else if (file.endsWith(".svg")) {
-      const relative = path.relative(baseDir, fullPath);
-
-      results.push(relative.replace(/\\/g, "/"));
+  // Compare each line
+  for (let i = 0; i < currentLines.length; i++) {
+    if (currentLines[i].trim() !== previousLines[i].trim()) {
+      return true;
     }
   }
 
-  return results;
+  return false;
 }
