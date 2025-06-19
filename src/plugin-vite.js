@@ -157,7 +157,7 @@ export const Vueless = function (options = {}) {
 
       iconContentCache.set(file, currentIconLines);
 
-      if (hasIconChanges && currentIconLines.length > 0) {
+      if (hasIconChanges && currentIconLines.length) {
         /* cache vueless built-in and project icons */
         await createIconsCache({ env, debug, targetFiles: [file] });
 
