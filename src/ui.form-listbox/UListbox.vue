@@ -385,7 +385,6 @@ const {
   config,
   wrapperAttrs,
   listboxInputAttrs,
-  searchAttrs,
   listAttrs,
   listItemAttrs,
   addOptionLabelWrapperAttrs,
@@ -417,22 +416,21 @@ const {
     @keydown.self.up.prevent="pointerBackward"
     @keydown.enter.stop.self="addPointerElement('Enter')"
   >
-    <div v-if="searchable" v-bind="searchAttrs">
-      <UInputSearch
-        :id="elementId"
-        ref="listbox-input"
-        v-model="search"
-        :placeholder="localeMessages.search"
-        :size="size"
-        :debounce="debounce"
-        v-bind="listboxInputAttrs"
-        :data-test="getDataTest('search')"
-        @blur="onInputSearchBlur"
-        @keydown.self.down.prevent="onKeydownDown"
-        @keydown.self.up.prevent="onKeydownUp"
-        @update:model-value="onSearchChange"
-      />
-    </div>
+    <UInputSearch
+      v-if="searchable"
+      :id="elementId"
+      ref="listbox-input"
+      v-model="search"
+      :placeholder="localeMessages.search"
+      :size="size"
+      :debounce="debounce"
+      v-bind="listboxInputAttrs"
+      :data-test="getDataTest('search')"
+      @blur="onInputSearchBlur"
+      @keydown.self.down.prevent="onKeydownDown"
+      @keydown.self.up.prevent="onKeydownUp"
+      @update:model-value="onSearchChange"
+    />
 
     <ul :id="`listbox-${elementId}`" v-bind="listAttrs" role="listbox">
       <li
