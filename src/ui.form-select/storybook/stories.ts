@@ -27,6 +27,7 @@ import type { Props } from "../types.ts";
 interface USelectArgs extends Props {
   slotTemplate?: string;
   enum: "size" | "openDirection" | "labelAlign";
+  gap?: string;
 }
 
 interface SelectOption {
@@ -91,7 +92,7 @@ const EnumTemplate: StoryFn<USelectArgs> = (args: USelectArgs, { argTypes }) => 
   components: { USelect, UCol },
   setup: () => ({ args, argTypes, getArgs }),
   template: `
-    <UCol>
+    <UCol :gap="args.gap">
       <USelect
         v-for="option in argTypes?.[args.enum]?.options"
         v-bind="getArgs(args, option)"
@@ -152,7 +153,12 @@ export const Disabled = DefaultTemplate.bind({});
 Disabled.args = { disabled: true };
 
 export const LabelAlign = EnumTemplate.bind({});
-LabelAlign.args = { enum: "labelAlign", label: "{enumValue}" };
+LabelAlign.args = {
+  enum: "labelAlign",
+  label: "{enumValue}",
+  description: "Select a city from the list.",
+  gap: "2xl",
+};
 
 export const Sizes = EnumTemplate.bind({});
 Sizes.args = { enum: "size", multiple: true, modelValue: [], label: "{enumValue}" };

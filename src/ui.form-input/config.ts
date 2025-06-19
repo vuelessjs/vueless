@@ -1,5 +1,14 @@
 export default /*tw*/ {
-  inputLabel: "{ULabel}",
+  inputLabel: {
+    base: "{ULabel}",
+    content: "w-full",
+    variants: {
+      labelAlign: {
+        right: "w-full",
+        left: "w-full",
+      },
+    },
+  },
   wrapper: {
     base: `
       flex w-full relative bg-default transition

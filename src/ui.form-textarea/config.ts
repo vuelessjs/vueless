@@ -1,5 +1,14 @@
 export default /*tw*/ {
-  textareaLabel: "{ULabel}",
+  textareaLabel: {
+    base: "{ULabel}",
+    content: "w-full",
+    variants: {
+      labelAlign: {
+        right: "w-full",
+        left: "w-full",
+      },
+    },
+  },
   slot: "flex items-center justify-center whitespace-nowrap gap-1 rounded-medium",
   leftSlot: "{>slot} pl-2.5 rounded-r-none",
   rightSlot: "{>slot} pr-2.5 rounded-l-none",
