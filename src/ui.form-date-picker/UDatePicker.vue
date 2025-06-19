@@ -255,6 +255,7 @@ const mutatedProps = computed(() => ({
 }));
 
 const {
+  getDataTest,
   config,
   wrapperAttrs,
   rightIconAttrs,
@@ -278,7 +279,7 @@ watchEffect(() => {
 </script>
 
 <template>
-  <div v-bind="wrapperAttrs" ref="wrapper">
+  <div v-bind="wrapperAttrs" ref="wrapper" :data-test="getDataTest()">
     <UInput
       :id="elementId"
       :key="String(userFormatDate)"
@@ -295,6 +296,7 @@ watchEffect(() => {
       :right-icon="rightIcon || config.defaults.calendarIcon"
       no-autocomplete
       v-bind="isShownCalendar ? datepickerInputActiveAttrs : datepickerInputAttrs"
+      :data-test="getDataTest('input')"
       @input="onTextInput"
       @focus="activate"
       @copy="onCopy"
@@ -337,6 +339,7 @@ watchEffect(() => {
         :max-date="maxDate"
         :min-date="minDate"
         v-bind="datepickerCalendarAttrs"
+        :data-test="getDataTest('calendar')"
         @keydown.esc="deactivate"
         @user-date-change="onUserFormatDateChange"
         @input="onInput"
