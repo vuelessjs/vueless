@@ -1,5 +1,14 @@
 export default /*tw*/ {
-  selectLabel: "{ULabel}",
+  selectLabel: {
+    base: "{ULabel}",
+    content: "w-full",
+    variants: {
+      labelAlign: {
+        right: "w-full",
+        left: "w-full",
+      },
+    },
+  },
   wrapper: {
     base: `
       flex flex-row-reverse justify-between w-full min-h-full box-border relative
