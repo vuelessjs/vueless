@@ -13,7 +13,14 @@ export default /*tw*/ {
       rightSlot: "pr-1",
     },
   },
-  search: "",
+  search: {
+    base: "sticky -top-1 bg-default z-10",
+    variants: {
+      isScrolled: {
+        true: "pt-1",
+      },
+    },
+  },
   selectIcon: {
     base: "{UIcon}",
     variants: {

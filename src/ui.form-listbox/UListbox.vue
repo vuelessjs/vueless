@@ -1,5 +1,14 @@
 <script setup lang="ts">
-import { watch, computed, useId, ref, useTemplateRef, nextTick } from "vue";
+import {
+  watch,
+  computed,
+  useId,
+  ref,
+  useTemplateRef,
+  nextTick,
+  onMounted,
+  onBeforeUnmount,
+} from "vue";
 import { isEqual } from "lodash-es";
 
 import useUI from "../composables/useUI.ts";
@@ -68,6 +77,8 @@ const wrapperMaxHeight = ref("");
 
 const search = ref("");
 
+const isScrolled = ref(false);
+
 const { pointer, pointerDirty, pointerSet, pointerBackward, pointerForward, pointerReset } =
   usePointer(props.options, optionsRef, wrapperRef);
 
@@ -114,6 +125,14 @@ const filteredOptions = computed(() => {
     : filterOptions(options, normalizedSearch, props.labelKey);
 
   return options.slice(0, props.optionsLimit || options.length);
+});
+
+onMounted(() => {
+  if (wrapperRef.value) wrapperRef.value.addEventListener("scroll", onListScroll);
+});
+
+onBeforeUnmount(() => {
+  if (wrapperRef.value) wrapperRef.value.removeEventListener("scroll", onListScroll);
 });
 
 watch(
@@ -326,6 +345,10 @@ function onInputSearchBlur(event: FocusEvent) {
   }
 }
 
+function onListScroll() {
+  isScrolled.value = !!(wrapperRef.value && wrapperRef.value.scrollTop > 0);
+}
+
 defineExpose({
   /**
    * Allows setting the pointer to a specific index.
@@ -380,6 +403,11 @@ defineExpose({
  * Get element / nested component attributes for each config token ✨
  * Applies: `class`, `config`, redefined default `props` and dev `vl-...` attributes.
  */
+
+const mutatedProps = computed(() => ({
+  isScrolled: isScrolled.value,
+}));
+
 const {
   getDataTest,
   config,
@@ -403,7 +431,7 @@ const {
   optionHighlightedAttrs,
   optionDisabledAttrs,
   optionDisabledActiveAttrs,
-} = useUI<Config>(defaultConfig);
+} = useUI<Config>(defaultConfig, mutatedProps);
 </script>
 
 <template>
@@ -416,6 +444,7 @@ const {
     @keydown.self.down.prevent="pointerForward"
     @keydown.self.up.prevent="pointerBackward"
     @keydown.enter.stop.self="addPointerElement('Enter')"
+    @scroll="onListScroll"
   >
     <div v-if="searchable" v-bind="searchAttrs">
       <UInputSearch
