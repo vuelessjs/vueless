@@ -165,11 +165,18 @@ DefaultSlot.args = {
     <template #default="{ opened }">
       <UAvatar
         rounded="full"
-        src="https://avatar.iran.liara.run/public"
+        src="https://i.pravatar.cc/300"
         :class="{ 'outline-medium outline-primary': opened }"
       />
     </template>
   `,
+};
+DefaultSlot.parameters = {
+  docs: {
+    story: {
+      height: "220px",
+    },
+  },
 };
 
 export const LeftSlot = DefaultTemplate.bind({});
@@ -186,7 +193,7 @@ ToggleSlot.args = {
   slotTemplate: `
     <template #toggle="{ opened, toggle }">
       <UAvatar
-        src="https://avatar.iran.liara.run/public"
+        src="https://i.pravatar.cc/300"
         size="3xs"
         rounded="full"
         :class="{ 'outline-medium outline-primary': opened }"

@@ -40,7 +40,7 @@ export default /*tw*/ {
         right: "font-normal",
       },
       error: {
-        true: "text-error group-focus-within:text-error",
+        true: "text-error group-focus-within:!text-error",
       },
       disabled: {
         true: "text-lifted cursor-not-allowed",

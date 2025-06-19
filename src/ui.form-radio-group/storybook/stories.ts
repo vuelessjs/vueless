@@ -11,6 +11,8 @@ import URadio from "../../ui.form-radio/URadio.vue";
 import UAlert from "../../ui.text-alert/UAlert.vue";
 import UCol from "../../ui.container-col/UCol.vue";
 import UBadge from "../../ui.text-badge/UBadge.vue";
+import UText from "../../ui.text-block/UText.vue";
+import URow from "../../ui.container-row/URow.vue";
 
 import type { Meta, StoryFn } from "@storybook/vue3";
 import type { Props } from "../types.ts";
@@ -43,18 +45,12 @@ export default {
 } as Meta;
 
 const DefaultTemplate: StoryFn<URadioGroupArgs> = (args: URadioGroupArgs) => ({
-  components: { URadioGroup, URadio, UAlert, UCol, UBadge },
+  components: { URadioGroup, URadio, UAlert, UCol, UBadge, UText, URow },
   setup: () => ({ args, slots: getSlotNames(URadioGroup.__name) }),
   template: `
     <UCol gap="2xl">
       <URadioGroup v-bind="args" v-model="args.modelValue">
-        <URadio
-          v-for="(radio, index) in args.options"
-          :key="index"
-          v-bind="radio"
-        >
-          ${args.slotTemplate || getSlotsFragment("")}
-        </URadio>
+        ${args.slotTemplate || getSlotsFragment("")}
       </URadioGroup>
 
       <UAlert size="sm" variant="ghost" color="success" bordered>
@@ -126,7 +122,10 @@ LabelSlot.args = {
   name: "LabelSlot",
   slotTemplate: `
     <template #label="{ label }">
-      <UBadge :label="label" color="success" variant="soft" />
+      <URow gap="xs" align="center">
+        <UBadge label="Cannot be changed" color="warning" size="sm" variant="outlined" />
+        <UText :label="label" />
+      </URow>
     </template>
   `,
 };

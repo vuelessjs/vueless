@@ -251,9 +251,7 @@ export const IconProps: StoryFn<DefaultUDatePickerArgs> = (args) => ({
 
 export const Slots: StoryFn<DefaultUDatePickerArgs> = (args) => ({
   components: { UDatePicker, URow, UButton },
-  setup() {
-    return { args };
-  },
+  setup: () => ({ args }),
   template: `
     <URow align="stretch">
       <UDatePicker
@@ -263,9 +261,16 @@ export const Slots: StoryFn<DefaultUDatePickerArgs> = (args) => ({
         :config="{ datepickerInput: { leftSlot: 'pl-0' } }"
       >
         <template #left>
-          <UButton label="Export" size="xs" class="h-full rounded-r-none" />
+          <UButton
+            label="Today"
+            size="sm"
+            variant="ghost"
+            class="h-full rounded-r-none"
+            @click="args.modelValue = new Date()"
+          />
         </template>
       </UDatePicker>
+
       <UDatePicker
         v-bind="args"
         v-model="args.modelValue"
@@ -273,7 +278,13 @@ export const Slots: StoryFn<DefaultUDatePickerArgs> = (args) => ({
         :config="{ datepickerInput: { rightSlot: 'pr-0' } }"
       >
         <template #right>
-          <UButton label="Schedule" size="xs" class="h-full rounded-l-none" />
+          <UButton
+            label="Clear"
+            size="sm"
+            variant="ghost"
+            class="h-full rounded-l-none"
+            @click="args.modelValue = null"
+          />
         </template>
       </UDatePicker>
     </URow>

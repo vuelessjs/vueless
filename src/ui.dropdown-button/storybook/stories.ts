@@ -197,9 +197,16 @@ DefaultSlot.args = {
   ],
   slotTemplate: `
     <template #default>
-      <UAvatar size="sm" rounded="full" src="https://avatar.iran.liara.run/public" />
+      <UAvatar size="sm" rounded="full" src="https://i.pravatar.cc/300" />
     </template>
   `,
+};
+DefaultSlot.parameters = {
+  docs: {
+    story: {
+      height: "250px",
+    },
+  },
 };
 
 export const LeftSlot = DefaultTemplate.bind({});

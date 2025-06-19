@@ -10,6 +10,11 @@ import UCheckbox from "../../ui.form-checkbox/UCheckbox.vue";
 import UCheckboxGroup from "../../ui.form-checkbox-group/UCheckboxGroup.vue";
 import UBadge from "../../ui.text-badge/UBadge.vue";
 import UCol from "../../ui.container-col/UCol.vue";
+import UIcon from "../../ui.image-icon/UIcon.vue";
+import ULink from "../../ui.button-link/ULink.vue";
+import UText from "../../ui.text-block/UText.vue";
+import URow from "../../ui.container-row/URow.vue";
+import UChip from "../../ui.other-chip/UChip.vue";
 
 import type { Meta, StoryFn } from "@storybook/vue3";
 import type { Props } from "../types.ts";
@@ -37,7 +42,7 @@ export default {
 } as Meta;
 
 const DefaultTemplate: StoryFn<UCheckboxArgs> = (args: UCheckboxArgs) => ({
-  components: { UCheckbox, UBadge },
+  components: { UCheckbox, UBadge, UIcon, ULink, UText, URow, UChip },
   setup: () => ({ args, slots: getSlotNames(UCheckbox.__name) }),
   template: `
     <UCheckbox v-bind="args" v-model="args.modelValue">
@@ -162,7 +167,10 @@ export const LabelSlot = DefaultTemplate.bind({});
 LabelSlot.args = {
   slotTemplate: `
     <template #label>
-      <UBadge label="This option is required" color="error" size="sm" />
+      <URow gap="2xs" align="center">
+        <UText>I agree to the <ULink label="Privacy Policy" /></UText>
+        <UIcon name="contract" size="xs" />
+      </URow>
     </template>
   `,
 };
@@ -171,7 +179,9 @@ export const BottomSlot = DefaultTemplate.bind({});
 BottomSlot.args = {
   slotTemplate: `
     <template #bottom>
-      <UBadge label="Subscription is optional" color="success" size="sm" />
+      <UChip icon="arrow_outward" size="3xs" class="mt-2">
+        <ULink label="Learn more" size="sm" class="mr-1.5" />
+      </UChip>
     </template>
   `,
 };

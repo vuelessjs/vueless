@@ -96,7 +96,7 @@ Text.args = {
 export const Inset = DefaultTemplate.bind({});
 Inset.args = {
   inset: true,
-  slotTemplate: `<UAvatar src="https://avatar.iran.liara.run/public/11" rounded="full" />`,
+  slotTemplate: `<UAvatar src="https://i.pravatar.cc/300" rounded="full" />`,
 };
 
 export const Size = EnumTemplate.bind({});

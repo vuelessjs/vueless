@@ -186,7 +186,7 @@ DefaultSlot.args = {
   slotTemplate: `
     <template #default>
       <URow align="center" gap="xs">
-        <UAvatar size="3xs" src="https://avatar.iran.liara.run/public/boy" />
+        <UAvatar size="3xs" src="https://i.pravatar.cc/300" />
         <span class="text-small font-semibold">John Doe</span>
       </URow>
     </template>

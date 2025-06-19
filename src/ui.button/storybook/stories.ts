@@ -138,7 +138,7 @@ export const Slots: StoryFn<UButtonArgs> = (args) => ({
     <URow>
       <UButton v-bind="args" label="Profile">
         <template #left>
-          <UAvatar src="https://avatar.iran.liara.run/public" size="2xs" rounded="full" />
+          <UAvatar src="https://i.pravatar.cc/300" size="2xs" rounded="full" />
         </template>
       </UButton>
 

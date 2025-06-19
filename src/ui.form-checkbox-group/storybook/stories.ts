@@ -12,6 +12,9 @@ import UAlert from "../../ui.text-alert/UAlert.vue";
 import UCol from "../../ui.container-col/UCol.vue";
 import URow from "../../ui.container-row/URow.vue";
 import UBadge from "../../ui.text-badge/UBadge.vue";
+import UText from "../../ui.text-block/UText.vue";
+import ULink from "../../ui.button-link/ULink.vue";
+import UIcon from "../../ui.image-icon/UIcon.vue";
 
 import type { Meta, StoryFn } from "@storybook/vue3";
 import type { Props } from "../types.ts";
@@ -47,7 +50,7 @@ export default {
 } as Meta;
 
 const DefaultTemplate: StoryFn<UCheckboxGroupArgs> = (args: UCheckboxGroupArgs) => ({
-  components: { UCheckboxGroup, UCheckbox, UAlert, URow, UCol, UBadge },
+  components: { UCheckboxGroup, UCheckbox, UAlert, URow, UCol, UBadge, UText, ULink, UIcon },
   setup: () => ({ args, slots: getSlotNames(UCheckboxGroup.__name) }),
   template: `
     <UCol>
@@ -124,7 +127,10 @@ export const LabelSlot = DefaultTemplate.bind({});
 LabelSlot.args = {
   slotTemplate: `
     <template #label>
-      <UBadge label="At least one option is required" color="success" />
+      <URow gap="2xs" align="center">
+        <UText>Select your <ULink label="notification preferences" /></UText>
+        <UIcon name="notifications" size="xs" />
+      </URow>
     </template>
   `,
 };

@@ -9,7 +9,8 @@ import {
 import USwitch from "../../ui.form-switch/USwitch.vue";
 import UIcon from "../../ui.image-icon/UIcon.vue";
 import URow from "../../ui.container-row/URow.vue";
-import UBadge from "../../ui.text-badge/UBadge.vue";
+import UText from "../../ui.text-block/UText.vue";
+import ULink from "../../ui.button-link/ULink.vue";
 
 import type { Meta, StoryFn } from "@storybook/vue3";
 import type { Props } from "../types.ts";
@@ -37,7 +38,7 @@ export default {
 } as Meta;
 
 const DefaultTemplate: StoryFn<USwitchArgs> = (args: USwitchArgs) => ({
-  components: { USwitch, UIcon, UBadge },
+  components: { USwitch, UIcon, UText, ULink, URow },
   setup: () => ({ args, slots: getSlotNames(USwitch.__name) }),
   template: `
     <USwitch v-bind="args" v-model="args.modelValue">
@@ -96,7 +97,10 @@ LabelSlot.args = {
   label: "Enable Notifications",
   slotTemplate: `
     <template #label="{ label }">
-      <UBadge :label="label" color="success" />
+      <URow gap="2xs" align="center">
+        <UText>I agree to the <ULink label="Privacy Policy" /></UText>
+        <UIcon name="contract" size="xs" />
+      </URow>
     </template>
   `,
 };
