@@ -766,6 +766,7 @@ defineExpose({
  * Applies: `class`, `config`, redefined default `props` and dev `vl-...` attributes.
  */
 const {
+  getDataTest,
   config,
   wrapperAttrs,
   navigationAttrs,
@@ -782,8 +783,14 @@ const {
 </script>
 
 <template>
-  <div ref="wrapper" :tabindex="tabindex" v-bind="wrapperAttrs" @keydown="onKeydown">
-    <div v-bind="navigationAttrs">
+  <div
+    ref="wrapper"
+    :tabindex="tabindex"
+    v-bind="wrapperAttrs"
+    :data-test="getDataTest()"
+    @keydown="onKeydown"
+  >
+    <div v-bind="navigationAttrs" :data-test="getDataTest('navigation')">
       <UButton
         v-if="range"
         square
@@ -792,6 +799,7 @@ const {
         variant="ghost"
         :icon="config.defaults.prevYearIcon"
         v-bind="nextPrevButtonAttrs"
+        :data-test="getDataTest('prev-year')"
         @mousedown.prevent.capture
         @click="onClickPrevYearButton"
       />
@@ -803,6 +811,7 @@ const {
         variant="ghost"
         :icon="config.defaults.prevIcon"
         v-bind="nextPrevButtonAttrs"
+        :data-test="getDataTest('prev')"
         @mousedown.prevent.capture
         @click="onClickPrevButton"
       />
@@ -814,6 +823,7 @@ const {
         variant="ghost"
         :label="currentViewLabel"
         v-bind="viewSwitchButtonAttrs"
+        :data-test="getDataTest('view-switch')"
         @mousedown.prevent.capture
         @click="onClickViewSwitch"
       />
@@ -825,6 +835,7 @@ const {
         variant="ghost"
         :icon="config.defaults.nextIcon"
         v-bind="nextPrevButtonAttrs"
+        :data-test="getDataTest('next')"
         @mousedown.prevent.capture
         @click="onClickNextButton"
       />
@@ -837,6 +848,7 @@ const {
         variant="ghost"
         :icon="config.defaults.nextYearIcon"
         v-bind="nextPrevButtonAttrs"
+        :data-test="getDataTest('next-year')"
         @mousedown.prevent.capture
         @click="onClickNextYearButton"
       />
@@ -855,6 +867,7 @@ const {
       :date-format="actualDateFormat"
       :locale="locale"
       :config="config"
+      :data-test="getDataTest('day-view')"
       @input="onInputDate"
     />
 
@@ -870,6 +883,7 @@ const {
       :date-format="actualDateFormat"
       :locale="locale"
       :config="config"
+      :data-test="getDataTest('month-view')"
       @input="onInput"
     />
 
@@ -885,10 +899,11 @@ const {
       :date-format="actualDateFormat"
       :locale="locale"
       :config="config"
+      :data-test="getDataTest('year-view')"
       @input="onInput"
     />
 
-    <div v-if="isTimepickerEnabled" v-bind="timepickerAttrs">
+    <div v-if="isTimepickerEnabled" v-bind="timepickerAttrs" :data-test="getDataTest('timepicker')">
       <span v-bind="timepickerLabelAttrs" v-text="localeMessages.timeLabel" />
 
       <div v-bind="timepickerInputWrapperAttrs">
@@ -897,6 +912,7 @@ const {
           placeholder="00"
           type="text"
           v-bind="timepickerInputHoursAttrs"
+          :data-test="getDataTest('timepicker-hours')"
           @input.prevent="onTimeInput($event as InputEvent, InputType.Hours)"
           @click.prevent="onClickTimeInput"
           @focus.prevent="onFocusTimeInput"
@@ -908,6 +924,7 @@ const {
           placeholder="00"
           type="text"
           v-bind="timepickerInputMinutesAttrs"
+          :data-test="getDataTest('timepicker-minutes')"
           @input.prevent="onTimeInput($event as InputEvent, InputType.Minutes)"
           @click.prevent="onClickTimeInput"
           @focus.prevent="onFocusTimeInput"
@@ -919,6 +936,7 @@ const {
           placeholder="00"
           type="text"
           v-bind="timepickerInputSecondsAttrs"
+          :data-test="getDataTest('timepicker-seconds')"
           @input.prevent="onTimeInput($event as InputEvent, InputType.Seconds)"
           @click.prevent="onClickTimeInput"
           @focus.prevent="onFocusTimeInput"
@@ -932,6 +950,7 @@ const {
         color="grayscale"
         variant="soft"
         v-bind="timepickerSubmitButtonAttrs"
+        :data-test="getDataTest('timepicker-submit')"
         @click="onClickSubmit"
       >
         {{ localeMessages.okLabel }}

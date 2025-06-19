@@ -57,11 +57,11 @@ defineExpose({
  * Get element / nested component attributes for each config token ✨
  * Applies: `class`, `config`, redefined default `props` and dev `vl-...` attributes.
  */
-const { listAttrs, colorButtonAttrs, circleAttrs } = useUI<Config>(defaultConfig);
+const { getDataTest, listAttrs, colorButtonAttrs, circleAttrs } = useUI<Config>(defaultConfig);
 </script>
 
 <template>
-  <div :id="elementId" ref="list" v-bind="listAttrs">
+  <div :id="elementId" ref="list" v-bind="listAttrs" :data-test="getDataTest()">
     <UButton
       v-for="(colorClass, color) in colors"
       :key="color"
@@ -71,9 +71,10 @@ const { listAttrs, colorButtonAttrs, circleAttrs } = useUI<Config>(defaultConfig
       color="grayscale"
       :variant="selectedItem === color ? 'soft' : 'ghost'"
       v-bind="colorButtonAttrs"
+      :data-test="getDataTest(`button-${color}`)"
       @click="onClickColor(color)"
     >
-      <div :class="colorClass" v-bind="circleAttrs" />
+      <div :class="colorClass" v-bind="circleAttrs" :data-test="getDataTest(`circle-${color}`)" />
     </UButton>
   </div>
 </template>
