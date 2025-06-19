@@ -11,6 +11,9 @@ import UCol from "../../ui.container-col/UCol.vue";
 import UText from "../../ui.text-block/UText.vue";
 import UIcon from "../../ui.image-icon/UIcon.vue";
 import UBadge from "../../ui.text-badge/UBadge.vue";
+import URow from "../../ui.container-row/URow.vue";
+import ULink from "../../ui.button-link/ULink.vue";
+import UChip from "../../ui.other-chip/UChip.vue";
 
 import type { Meta, StoryFn } from "@storybook/vue3";
 import type { Props } from "../types.ts";
@@ -49,7 +52,7 @@ export default {
 const defaultTemplate = "johndoe@example.com";
 
 const DefaultTemplate: StoryFn<ULabelArgs> = (args: ULabelArgs) => ({
-  components: { ULabel, UText, UIcon, UBadge },
+  components: { ULabel, UText, UIcon, UBadge, URow, ULink, UChip },
   setup: () => ({ args, slots: getSlotNames(ULabel.__name) }),
   template: `
     <ULabel v-bind="args">
@@ -111,7 +114,12 @@ LabelSlot.args = {
   label: "Email Address",
   slotTemplate: `
     <template #label="{ label }">
-      <UBadge :label="label" color="success" />
+      <URow align="center" gap="xs">
+        <UIcon name="mail" size="sm" class="text-primary" />
+        <UChip icon="asterisk" color="error" size="2xs">
+          <UText :label="label" class="mr-2" />
+        </UChip>
+      </URow>
     </template>
   `,
 };
@@ -120,7 +128,10 @@ export const BottomSlot = DefaultTemplate.bind({});
 BottomSlot.args = {
   slotTemplate: `
     <template #bottom>
-      <UBadge label="Your opinion is important for us!" color="success" class="max-w-fit" />
+      <URow align="center" gap="2xs" class="mt-1">
+        <UIcon name="error" size="xs" />
+        <UText>Invalid email address. <ULink label="Need help?" /></UText>
+      </URow>
     </template>
   `,
 };

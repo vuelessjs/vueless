@@ -110,7 +110,7 @@ const { getDataTest, groupLabelAttrs, groupCheckboxAttrs, listAttrs } =
           :description="option.description"
           :disabled="disabled"
           v-bind="groupCheckboxAttrs"
-          :data-test="getDataTest('item-${index}')"
+          :data-test="getDataTest(`item-${index}`)"
         />
       </slot>
     </div>

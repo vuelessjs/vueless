@@ -48,19 +48,12 @@ export default {
 
 const DefaultTemplate: StoryFn<DefaultUListboxArgs> = (args: DefaultUListboxArgs) => ({
   components: { UListbox },
-  setup() {
-    const slots = getSlotNames(UListbox.__name);
-
-    const showAlert = (message: string) => alert(message);
-
-    return { args, slots, showAlert };
-  },
+  setup: () => ({ args, slots: getSlotNames(UListbox.__name) }),
   template: `
     <UListbox
       v-bind="args"
       v-model="args.modelValue"
       class="mx-4 w-[24rem]"
-      @add="showAlert('You triggered the add action!')"
     >
       ${args.slotTemplate || getSlotsFragment("")}
     </UListbox>
@@ -92,7 +85,22 @@ Searchable.args = { searchable: true };
 export const Multiple = DefaultTemplate.bind({});
 Multiple.args = { multiple: true, modelValue: [] };
 
-export const AddOption = DefaultTemplate.bind({});
+export const AddOption: StoryFn<DefaultUListboxArgs> = (args: DefaultUListboxArgs) => ({
+  components: { UListbox },
+  setup() {
+    const showAlert = (message: string) => alert(message);
+
+    return { args, showAlert };
+  },
+  template: `
+    <UListbox
+      v-bind="args"
+      v-model="args.modelValue"
+      class="mx-4 w-[24rem]"
+      @add="showAlert('You triggered the add action!')"
+    />
+  `,
+});
 AddOption.args = { addOption: true };
 AddOption.parameters = {
   docs: {

@@ -9,6 +9,8 @@ import {
 import URadio from "../../ui.form-radio/URadio.vue";
 import UBadge from "../../ui.text-badge/UBadge.vue";
 import URow from "../../ui.container-row/URow.vue";
+import UText from "../../ui.text-block/UText.vue";
+import ULink from "../../ui.button-link/ULink.vue";
 
 import type { Meta, StoryFn } from "@storybook/vue3";
 import type { Props } from "../types.ts";
@@ -39,7 +41,7 @@ export default {
 } as Meta;
 
 const DefaultTemplate: StoryFn<URadioArgs> = (args: URadioArgs) => ({
-  components: { URadio, UBadge },
+  components: { URadio, UBadge, UText, ULink, URow },
   setup: () => ({ args, slots: getSlotNames(URadio.__name) }),
   template: `
     <URadio v-bind="args">
@@ -95,20 +97,29 @@ Colors.args = { enum: "color", label: "{enumValue}" };
 
 export const LabelSlot = DefaultTemplate.bind({});
 LabelSlot.args = {
+  name: "delivery-method",
+  label: "Courier Delivery",
+  value: "courier",
+  color: "primary",
   slotTemplate: `
     <template #label="{ label }">
-      <UBadge :label="label" color="success" />
+      <URow gap="xs" align="center">
+        <UText :label="label" />
+        <UBadge label="Recommended" color="success" size="sm" variant="soft" />
+      </URow>
     </template>
   `,
 };
 
 export const BottomSlot = DefaultTemplate.bind({});
 BottomSlot.args = {
-  name: "radio5",
-  value: "radio",
+  name: "terms",
+  label: "I agree to the Terms and Conditions",
+  value: "terms",
+  color: "primary",
   slotTemplate: `
     <template #bottom>
-      <UBadge label="Add to favorite" color="success" size="sm" />
+      <UBadge label="Required to proceed" color="warning" variant="outlined" size="sm" class="mt-2" />
     </template>
   `,
 };
