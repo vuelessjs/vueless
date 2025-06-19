@@ -111,7 +111,7 @@ export const Colors = EnumTemplate.bind({});
 Colors.args = { enum: "color" };
 
 export const VisibleOptions = DefaultTemplate.bind({});
-VisibleOptions.args = { visibleOptions: 3, searchable: true };
+VisibleOptions.args = { visibleOptions: 3 };
 VisibleOptions.parameters = {
   docs: {
     description: {
