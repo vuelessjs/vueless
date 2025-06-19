@@ -13,6 +13,8 @@ import {
   copyIconsCache,
   generateIconExports,
   reloadServerOnIconsCacheUpdate,
+  extractIconLines,
+  isIconChanged,
 } from "./utils/node/loaderIcon.js";
 import { createTailwindSafelist, clearTailwindSafelist } from "./utils/node/tailwindSafelist.js";
 import { componentResolver, directiveResolver } from "./utils/node/vuelessResolver.js";
@@ -24,21 +26,19 @@ import {
   getVueDirs,
   getVuelessConfigDirs,
   cacheMergedConfigs,
-  fileIncludes,
 } from "./utils/node/helper.js";
-
 import {
-  VUE_EXT,
-  TYPESCRIPT_EXT,
-  JAVASCRIPT_EXT,
   INTERNAL_ENV,
   STORYBOOK_ENV,
   NUXT_MODULE_ENV,
-  DEFAULT_EXIT_CODE,
-  ICONS_VIRTUAL_MODULE_ID,
-  RESOLVED_ICONS_VIRTUAL_MODULE_ID,
   VUELESS_LOCAL_DIR,
   VUELESS_PACKAGE_DIR,
+  ICONS_VIRTUAL_MODULE_ID,
+  RESOLVED_ICONS_VIRTUAL_MODULE_ID,
+  DEFAULT_EXIT_CODE,
+  JAVASCRIPT_EXT,
+  TYPESCRIPT_EXT,
+  VUE_EXT,
 } from "./constants.js";
 
 /* TailwindCSS Vite plugins. */
@@ -68,6 +68,9 @@ export const Vueless = function (options = {}) {
 
   const vuelessSrcDir = isInternalEnv ? VUELESS_LOCAL_DIR : VUELESS_PACKAGE_DIR;
 
+  // Cache to store previous icon content for change detection
+  const iconContentCache = new Map();
+
   const targetFiles = [
     ...(include || []),
     ...getVuelessConfigDirs(),
@@ -86,6 +89,8 @@ export const Vueless = function (options = {}) {
 
     /* clear tailwind safelist */
     await clearTailwindSafelist(debug);
+
+    iconContentCache.clear();
 
     /* stop a command line process */
     process.exit(DEFAULT_EXIT_CODE);
@@ -135,26 +140,25 @@ export const Vueless = function (options = {}) {
     },
 
     /* update icons cache in dev env */
-    handleHotUpdate: async ({ file, server }) => {
-      const hasIcon = await fileIncludes(file, [
-        "UIcon",
-        "icon=",
-        "icon:",
-        "Icon:",
-        "Icon=",
-        "icon-name=",
-        "icon-name:",
-        "iconName=",
-        "iconName:",
-      ]);
-
+    handleHotUpdate: async ({ file, server, read }) => {
       const isScriptFile = [JAVASCRIPT_EXT, TYPESCRIPT_EXT, VUE_EXT].some((extension) =>
         file.endsWith(extension),
       );
 
-      if (isScriptFile && hasIcon) {
-        /* cache vueless built-in and project icons */
+      if (!isScriptFile) {
+        return;
+      }
 
+      const currentContent = await read();
+
+      const currentIconLines = extractIconLines(currentContent);
+      const previousIconLines = iconContentCache.get(file) || [];
+      const hasIconChanges = isIconChanged(currentIconLines, previousIconLines);
+
+      iconContentCache.set(file, currentIconLines);
+
+      if (hasIconChanges && currentIconLines.length > 0) {
+        /* cache vueless built-in and project icons */
         await createIconsCache({ env, debug, targetFiles: [file] });
 
         if (isNuxtModuleEnv) {

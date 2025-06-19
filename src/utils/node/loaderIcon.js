@@ -328,3 +328,53 @@ function getIconLibraryPaths(name, library) {
     destinationPath,
   };
 }
+
+/**
+ * Extract icon-related lines from file content for change detection
+ * @param {string} content - File content to analyze
+ * @returns {string[]} - Array of lines containing icon-related code
+ */
+export function extractIconLines(content) {
+  const lines = content.split("\n");
+  const iconPatterns = [
+    // UIcon component usage
+    /<UIcon\b/,
+    // Other components with icon props
+    /\b\w*[Ii]con\w*\s*[:=]/,
+    // Icon usage in objects
+    /\w*icon\w*:\s*['"]/,
+    // Template literals with icon references
+    /\$\{[^}]*?icon[^}]*?\}/,
+    // Dynamic icon imports
+    /import\s+.*?\.svg/,
+    // Icon component definitions
+    /name\s*[:=]\s*['"][^'"]*icon/i,
+  ];
+
+  return lines.filter((line) => {
+    const trimmedLine = line.trim();
+
+    return iconPatterns.some((pattern) => pattern.test(trimmedLine));
+  });
+}
+
+/**
+ * Compare text lines between two file versions
+ * @param {string[]} currentLines - Current line
+ * @param {string[]} previousLines - Previous line
+ * @returns {boolean} - True if there are changes in lines
+ */
+export function isIconChanged(currentLines, previousLines) {
+  if (currentLines.length !== previousLines.length) {
+    return true;
+  }
+
+  // Compare each line
+  for (let i = 0; i < currentLines.length; i++) {
+    if (currentLines[i].trim() !== previousLines[i].trim()) {
+      return true;
+    }
+  }
+
+  return false;
+}

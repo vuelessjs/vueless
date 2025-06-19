@@ -7,6 +7,7 @@
 - Use proper error handling patterns
 - Use tailwind css for styling
 - Don't leave unused variables or functions
+- Don't fix any linting errors manually, always run lint script from package.json when you are done
 
 ## Naming Conventions
 - Components: PascalCase (e.g., `UserProfile.tsx`)
