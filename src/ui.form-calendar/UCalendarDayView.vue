@@ -168,6 +168,8 @@ function getDayState(day: Date) {
     hoveredDay.value &&
     !props.selectedDateTo &&
     !dateIsOutOfRange(day, props.selectedDate, hoveredDay.value, props.locale, props.dateFormat);
+  const isLastRangePreview =
+    hoveredDay.value && isInRangePreview && isSameDay(day, hoveredDay.value);
 
   const isInRangePreviewAnotherMonth = isInRangePreview && isAnotherMonthDay;
 
@@ -185,6 +187,7 @@ function getDayState(day: Date) {
     isRangeSameDay,
     isInRangePreview,
     isInRangePreviewAnotherMonth,
+    isLastRangePreview,
   };
 }
 
@@ -334,6 +337,21 @@ defineExpose({
           size="md"
           square
           v-bind="anotherMonthLastDayInRangeAttrs"
+          :disabled="dateIsOutOfRange(day, minDate, maxDate, locale, dateFormat)"
+          :label="formatDate(day, 'j', locale)"
+          @mousedown.prevent.capture
+          @click="onClickDay(day)"
+          @mouseover="onMouseoverDay(day)"
+        />
+
+        <UButton
+          v-else-if="getDayState(day).isLastRangePreview"
+          tabindex="-1"
+          variant="ghost"
+          color="primary"
+          size="md"
+          square
+          v-bind="lastDayInRangeAttrs"
           :disabled="dateIsOutOfRange(day, minDate, maxDate, locale, dateFormat)"
           :label="formatDate(day, 'j', locale)"
           @mousedown.prevent.capture
