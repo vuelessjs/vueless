@@ -38,6 +38,13 @@ export default /*tw*/ {
       wrap: {
         false: "text-nowrap",
       },
+      weight: {
+        light: "font-light",
+        normal: "font-normal",
+        medium: "font-medium",
+        semibold: "font-semibold",
+        bold: "font-bold",
+      },
     },
     compoundVariants: [
       { color: "text", variant: "default", class: "text-default" },
@@ -54,5 +61,6 @@ export default /*tw*/ {
     align: "left",
     line: false,
     wrap: true,
+    weight: "normal",
   },
 };

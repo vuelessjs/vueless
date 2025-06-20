@@ -11,8 +11,6 @@ import URow from "../../ui.container-row/URow.vue";
 import UIcon from "../../ui.image-icon/UIcon.vue";
 import UBadge from "../../ui.text-badge/UBadge.vue";
 
-import tooltip from "../../directives/tooltip/vTooltip.ts";
-
 import type { Meta, StoryFn } from "@storybook/vue3";
 import type { Props } from "../types.ts";
 
@@ -59,7 +57,6 @@ const DefaultTemplate: StoryFn<UFileArgs> = (args: UFileArgs) => ({
 
 const EnumTemplate: StoryFn<UFileArgs> = (args: UFileArgs, { argTypes }) => ({
   components: { UFile, URow },
-  directives: { tooltip },
   setup: () => ({ args, argTypes, getArgs }),
   template: `
     <URow>
@@ -67,7 +64,6 @@ const EnumTemplate: StoryFn<UFileArgs> = (args: UFileArgs, { argTypes }) => ({
         v-for="option in argTypes?.[args.enum]?.options"
         v-bind="getArgs(args, option)"
         :key="option"
-        v-tooltip="option"
       />
     </URow>
   `,
