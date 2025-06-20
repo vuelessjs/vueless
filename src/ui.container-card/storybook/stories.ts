@@ -104,21 +104,21 @@ export const Slots: StoryFn<UCardArgs> = (args) => ({
     <UCol gap="lg">
       <UCard v-bind="args" description="Before Title Slot">
         <template #before-title>
-          <UIcon name="account_circle" size="sm" />
+          <UIcon name="account_circle" color="success" />
         </template>
         ${defaultTemplate}
       </UCard>
 
-      <UCard v-bind="args">
-        <template #title>
-          <UBadge label="Title Slot" size="lg" />
+      <UCard title="Title Slot">
+        <template #title="{ title }">
+          <UBadge :label="title" size="lg" color="primary" variant="outlined" />
         </template>
         ${defaultTemplate}
       </UCard>
 
       <UCard v-bind="args" description="After Title Slot">
         <template #after-title>
-          <UIcon name="verified" size="sm" />
+          <UIcon name="verified" color="success" />
         </template>
         ${defaultTemplate}
       </UCard>
@@ -126,7 +126,7 @@ export const Slots: StoryFn<UCardArgs> = (args) => ({
       <UCard v-bind="args" description="Actions Slot">
         <template #actions>
           <URow class="max-w-fit">
-            <UButton size="sm" label="Follow" />
+            <UButton size="sm" label="Follow" variant="subtle" />
             <UButton size="sm" label="Message" />
           </URow>
         </template>
@@ -136,7 +136,7 @@ export const Slots: StoryFn<UCardArgs> = (args) => ({
       <UCard v-bind="args" description="Footer Left Slot">
         ${defaultTemplate}
         <template #footer-left>
-          <UButton size="sm" label="Cancel" />
+          <UButton size="sm" label="Cancel" variant="outlined" />
         </template>
       </UCard>
 

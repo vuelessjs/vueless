@@ -66,8 +66,11 @@ const {
         <!-- @slot Use it to add something before left side of the header. -->
         <slot name="before-title" />
 
-        <!-- @slot Use it to customize left side of the header. -->
-        <slot name="title">
+        <!--
+          @slot Use it to customize left side of the header.
+          @binding {string} title
+        -->
+        <slot name="title" :title="title">
           <div v-bind="titleFallbackAttrs">
             <UHeader :label="title" size="xs" v-bind="titleAttrs" />
             <div v-if="description" v-bind="descriptionAttrs" v-text="description" />

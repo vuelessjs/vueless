@@ -115,7 +115,7 @@ Description.args = {
 };
 
 export const Inner: StoryFn<UModalArgs> = (args: UModalArgs) => ({
-  components: { UModal, UButton },
+  components: { UModal, UButton, UCol },
   setup() {
     const showMainModal = ref(false);
     const showInnerModal = ref(false);
@@ -133,11 +133,13 @@ export const Inner: StoryFn<UModalArgs> = (args: UModalArgs) => ({
   template: `
     <div>
       <UModal v-bind="args" v-model="showMainModal">
-        <p>
-          Are you sure you want to cancel your subscription?
-          This action will remove access to premium features and cannot be undone.
-        </p>
-        <UButton label="View Plan Details" @click="openInnerModal"/>
+        <UCol gap="sm">
+          <p>
+            Are you sure you want to cancel your subscription?
+            This action will remove access to premium features and cannot be undone.
+          </p>
+          <UButton label="View Plan Details" @click="openInnerModal"/>
+        </UCol>
 
         <UModal
           v-model="showInnerModal"

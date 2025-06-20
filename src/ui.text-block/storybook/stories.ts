@@ -17,7 +17,7 @@ import type { Props } from "../types.ts";
 
 interface UTextArgs extends Props {
   slotTemplate?: string;
-  enum: "size" | "align" | "variant" | "color";
+  enum: "size" | "align" | "variant" | "color" | "weight";
 }
 
 export default {
@@ -31,6 +31,12 @@ export default {
   },
   argTypes: {
     ...getArgTypes(UText.__name),
+    weight: {
+      ...getArgTypes(UText.__name)?.weight,
+      options: (getArgTypes(UText.__name)?.weight?.table?.type?.summary as string)
+        ?.split(" | ")
+        ?.filter((option) => option !== "light" && option !== "semibold"),
+    },
   },
   parameters: {
     docs: {
@@ -69,6 +75,9 @@ Default.args = {};
 
 export const Align = EnumTemplate.bind({});
 Align.args = { enum: "align" };
+
+export const Weight = EnumTemplate.bind({});
+Weight.args = { enum: "weight" };
 
 export const Sizes = EnumTemplate.bind({});
 Sizes.args = { enum: "size" };
