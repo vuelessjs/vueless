@@ -6,268 +6,417 @@ import ULabel from "../ULabel.vue";
 import type { Props } from "../types.ts";
 
 describe("ULabel.vue", () => {
-  // Props tests
   describe("Props", () => {
-    // Label prop
-    it("renders the correct label text", () => {
-      const label = "Label Text";
+    describe("label", () => {
+      it("rendered inside label element", () => {
+        const label = "Label Text";
 
-      const component = mount(ULabel, {
-        props: {
-          label,
-        },
-      });
-
-      expect(component.text()).toContain(label);
-    });
-
-    // For prop
-    it("applies the correct for attribute", () => {
-      const forId = "input-id";
-
-      const component = mount(ULabel, {
-        props: {
-          for: forId,
-          label: "Label", // Add label to ensure label element is rendered
-        },
-      });
-
-      // Check if the component passes the for prop to the label element
-      expect(component.html()).toContain(`for="${forId}"`);
-    });
-
-    // Description prop
-    it("renders the description text", () => {
-      const description = "This is a description";
-
-      const component = mount(ULabel, {
-        props: {
-          description,
-        },
-      });
-
-      expect(component.text()).toContain(description);
-    });
-
-    // Error prop
-    it("renders the error message", () => {
-      const error = "This field is required";
-
-      const component = mount(ULabel, {
-        props: {
-          error,
-        },
-      });
-
-      expect(component.text()).toContain(error);
-    });
-
-    // Interactive prop
-    it("applies interactive class when interactive prop is true", () => {
-      const interactive = true;
-
-      const component = mount(ULabel, {
-        props: {
-          interactive,
-          label: "Label",
-        },
-      });
-
-      const labelElement = component.find("label");
-
-      expect(labelElement.attributes("class")).toContain("hover:cursor-pointer");
-    });
-
-    // Align prop
-    it("applies the correct alignment class", () => {
-      const alignClasses = {
-        top: "flex-col",
-        topInside: "flex-col gap-0 relative",
-        topWithDesc: "flex-col-reverse",
-        left: "flex-row-reverse",
-        right: "flex-row",
-      };
-
-      Object.entries(alignClasses).forEach(([align, classes]) => {
-        const component = mount(ULabel, {
+        const wrapper = mount(ULabel, {
           props: {
-            align: align as Props["align"],
+            label,
+          },
+        });
+
+        expect(wrapper.get("label").text()).toContain(label);
+      });
+    });
+
+    describe("for", () => {
+      it("applied to label element", () => {
+        const forId = "input-id";
+
+        const wrapper = mount(ULabel, {
+          props: {
+            for: forId,
             label: "Label",
           },
         });
 
-        // Check if the component's HTML contains the expected class for this alignment
-        expect(component.html()).toContain(classes);
+        expect(wrapper.get("label").attributes("for")).toBe(forId);
       });
     });
 
-    // Size prop
-    it("applies the correct size class", () => {
-      const sizes = {
-        sm: "text-small",
-        md: "text-medium",
-        lg: "text-large",
-      };
+    describe("description", () => {
+      it("description is rendered with provided text", () => {
+        const description = "This is a description";
 
-      Object.entries(sizes).forEach(([size, classes]) => {
-        const component = mount(ULabel, {
+        const wrapper = mount(ULabel, {
           props: {
-            size: size as Props["size"],
+            description,
+          },
+        });
+
+        const descriptionElement = wrapper.find("[vl-key='description']");
+
+        expect(descriptionElement.attributes("class")).not.toContain("text-error");
+        expect(descriptionElement.text()).toBe(description);
+      });
+    });
+
+    describe("error", () => {
+      it("error is rendered with provided text", () => {
+        const error = "This field is required";
+        const errorClasses = "text-error";
+
+        const wrapper = mount(ULabel, {
+          props: {
+            error,
+            description: "This is a description",
+          },
+        });
+
+        const errorElement = wrapper.find("[vl-key='description']");
+
+        expect(errorElement.attributes("class")).toContain(errorClasses);
+        expect(errorElement.text()).toBe(error);
+      });
+
+      it("error overrides description when both are provided", () => {
+        const description = "This is a description";
+        const error = "This field is required";
+        const errorClasses = "text-error";
+
+        const wrapper = mount(ULabel, {
+          props: {
+            description,
+            error,
+          },
+        });
+
+        const descriptionElements = wrapper.findAll("[vl-key='description']");
+
+        expect(descriptionElements.length).toBe(1);
+        expect(descriptionElements[0].attributes("class")).toContain(errorClasses);
+        expect(descriptionElements[0].text()).toBe(error);
+      });
+    });
+
+    describe("interactive", () => {
+      it("applies cursor pointer class when true", () => {
+        const interactiveClasses = "hover:cursor-pointer";
+
+        const wrapper = mount(ULabel, {
+          props: {
+            interactive: true,
             label: "Label",
           },
         });
 
-        const labelElement = component.find("label");
+        expect(wrapper.get("label").attributes("class")).toContain(interactiveClasses);
+      });
 
-        expect(labelElement.attributes("class")).toContain(classes);
+      it("does not apply cursor pointer class when false", () => {
+        const interactiveClasses = "hover:cursor-pointer";
+
+        const wrapper = mount(ULabel, {
+          props: {
+            interactive: false,
+            label: "Label",
+          },
+        });
+
+        expect(wrapper.get("label").attributes("class")).not.toContain(interactiveClasses);
       });
     });
 
-    // Disabled prop
-    it("applies disabled class when disabled prop is true", () => {
-      const disabled = true;
+    describe("align", () => {
+      const alignClassCases: [Props["align"], string][] = [
+        ["top", "flex-col"],
+        ["topInside", "flex-col gap-0 relative"],
+        ["topWithDesc", "flex-col-reverse"],
+        ["left", "flex-row-reverse"],
+        ["right", "flex-row"],
+      ];
 
-      const component = mount(ULabel, {
-        props: {
-          disabled,
-          label: "Label",
+      it.each(alignClassCases)(
+        "applies correct classes for align prop: %s",
+        (align, expectedClass) => {
+          const wrapper = mount(ULabel, {
+            props: {
+              label: "Label",
+              align,
+            },
+          });
+
+          expect(wrapper.attributes("class")).toContain(expectedClass);
         },
-      });
-
-      const labelElement = component.find("label");
-
-      expect(labelElement.attributes("class")).toContain("cursor-not-allowed");
+      );
     });
 
-    // Centred prop
-    it("applies centred class when centred prop is true", () => {
-      const centred = true;
+    describe("size", () => {
+      const sizeClassCases: [Props["size"], string][] = [
+        ["sm", "text-small"],
+        ["md", "text-medium"],
+        ["lg", "text-large"],
+      ];
 
-      const component = mount(ULabel, {
-        props: {
-          centred,
-          label: "Label",
-          align: "left",
-        },
+      it.each(sizeClassCases)("applies correct class for size prop: %s", (size, expectedClass) => {
+        const wrapper = mount(ULabel, {
+          props: {
+            label: "Label",
+            size,
+          },
+        });
+
+        expect(wrapper.get("label").attributes("class")).toContain(expectedClass);
       });
-
-      // Use the exposed wrapperElement ref to check the class
-      expect(component.vm.wrapperElement.className).toContain("items-center");
     });
 
-    // DataTest prop
-    it("applies the correct data-test attribute", () => {
-      const dataTest = "test-label";
+    describe("disabled", () => {
+      it("applies disabled classes when true", () => {
+        const disabledClasses = "cursor-not-allowed";
 
-      const component = mount(ULabel, {
-        props: {
-          dataTest,
-          label: "Label",
-        },
+        const wrapper = mount(ULabel, {
+          props: {
+            disabled: true,
+            label: "Label",
+          },
+        });
+
+        expect(wrapper.attributes("class")).toContain(disabledClasses);
+        expect(wrapper.get("label").attributes("class")).toContain(disabledClasses);
       });
 
-      const wrapper = component.find("[data-test]");
+      it("does not apply disabled class when false", () => {
+        const disabledClasses = "cursor-not-allowed";
 
-      expect(wrapper.attributes("data-test")).toContain(dataTest);
+        const wrapper = mount(ULabel, {
+          props: {
+            disabled: false,
+            label: "Label",
+          },
+        });
+
+        expect(wrapper.attributes("class")).not.toContain(disabledClasses);
+        expect(wrapper.get("label").attributes("class")).not.toContain(disabledClasses);
+      });
+
+      it("interactive class is not applied when disabled true", () => {
+        const interactiveClasses = "hover:cursor-pointer";
+
+        const wrapper = mount(ULabel, {
+          props: {
+            disabled: true,
+            interactive: true,
+            label: "Label",
+          },
+        });
+
+        expect(wrapper.get("label").attributes("class")).not.toContain(interactiveClasses);
+      });
+
+      it("topInside label doesn't have focus styles disabled", () => {
+        const focusClasses = "group-focus-within:text-primary";
+
+        const wrapper = mount(ULabel, {
+          props: {
+            disabled: true,
+            label: "Label",
+            align: "topInside",
+          },
+        });
+
+        expect(wrapper.get("label").attributes("class")).not.toContain(focusClasses);
+      });
+
+      it("error is not rendered when disabled is true", () => {
+        const wrapper = mount(ULabel, {
+          props: {
+            error: "This field is required",
+            disabled: true,
+          },
+        });
+
+        const errorElement = wrapper.find("[vl-key='description']");
+
+        expect(errorElement.exists()).toBe(false);
+      });
+
+      it("description text is preserved when disabled is true", () => {
+        const description = "This is a description";
+
+        const wrapper = mount(ULabel, {
+          props: {
+            description,
+            disabled: true,
+          },
+        });
+
+        const descriptionElement = wrapper.find("[vl-key='description']");
+
+        expect(descriptionElement.text()).toBe(description);
+      });
+    });
+
+    describe("centred", () => {
+      it("applies centred class when true", () => {
+        const centredClasses = "items-center";
+
+        const wrapper = mount(ULabel, {
+          props: {
+            centred: true,
+            label: "Label",
+            align: "left",
+          },
+        });
+
+        expect(wrapper.attributes("class")).toContain(centredClasses);
+      });
+
+      it("does not apply centred class when false", () => {
+        const centredClasses = "items-center";
+
+        const wrapper = mount(ULabel, {
+          props: {
+            centred: false,
+            label: "Label",
+            align: "left",
+          },
+        });
+
+        expect(wrapper.attributes("class")).not.toContain(centredClasses);
+      });
+    });
+
+    describe("dataTest", () => {
+      const dataTestCases: string[] = ["label", "content", "error", "description"];
+
+      it.each(dataTestCases)("applies the correct data-test attributes", async (testCase) => {
+        const dataTest = "test";
+        const resolvedDataTest = `test-${testCase}`;
+
+        const testElementKey = testCase === "error" ? "description" : testCase;
+
+        const wrapper = mount(ULabel, {
+          props: {
+            dataTest,
+            label: "Label",
+            description: "Description",
+          },
+        });
+
+        if (testCase === "error") {
+          await wrapper.setProps({ error: "Error message" });
+        }
+
+        const testElement = wrapper.get(`[vl-key='${testElementKey}']`);
+
+        expect(testElement.attributes("data-test")).toBe(resolvedDataTest);
+      });
     });
   });
 
-  // Slots tests
   describe("Slots", () => {
-    // Default slot
-    it("renders content from default slot", () => {
-      const slotContent = "Default Slot Content";
-      const slotClass = "default-content";
+    describe("default", () => {
+      it("renders content from default slot", () => {
+        const slotContent = "Default Slot Content";
 
-      const component = mount(ULabel, {
-        slots: {
-          default: `<div class="${slotClass}">${slotContent}</div>`,
-        },
+        const wrapper = mount(ULabel, {
+          slots: {
+            default: slotContent,
+          },
+        });
+
+        expect(wrapper.find("[vl-key='content']").text()).toBe(slotContent);
       });
-
-      expect(component.find(`.${slotClass}`).exists()).toBe(true);
-      expect(component.find(`.${slotClass}`).text()).toBe(slotContent);
     });
 
-    // Label slot
-    it("renders content from label slot", () => {
-      const slotContent = "Custom Label";
-      const label = "Default Label";
-      const slotClass = "custom-label";
+    describe("label", () => {
+      it("renders content from label slot", () => {
+        const slotContent = "Custom Label";
+        const defaultLabel = "Default Label";
 
-      const component = mount(ULabel, {
-        props: {
-          label,
-        },
-        slots: {
-          label: `<span class="${slotClass}">${slotContent}</span>`,
-        },
+        const wrapper = mount(ULabel, {
+          props: {
+            label: defaultLabel,
+          },
+          slots: {
+            label: slotContent,
+          },
+        });
+
+        const labelElement = wrapper.get("label");
+
+        expect(labelElement.text()).toBe(slotContent);
+        expect(labelElement.text()).not.toContain(defaultLabel);
       });
 
-      expect(component.find(`.${slotClass}`).exists()).toBe(true);
-      expect(component.find(`.${slotClass}`).text()).toBe(slotContent);
-      expect(component.text()).not.toContain(label);
+      it("exposes label content", () => {
+        const defaultLabel = "Label Content";
+        const slotContent = "Modified Label Content";
+
+        const wrapper = mount(ULabel, {
+          props: {
+            label: defaultLabel,
+          },
+          slots: {
+            label: "Modified {{ params.label }}",
+          },
+        });
+
+        const labelElement = wrapper.get("label");
+
+        expect(labelElement.text()).toBe(slotContent);
+      });
     });
 
-    // Bottom slot
-    it("renders content from bottom slot", () => {
-      const slotContent = "Bottom Content";
-      const slotClass = "bottom-content";
+    describe("bottom", () => {
+      it("renders content from bottom slot", () => {
+        const slotContent = "<div data-test='custom-bottom'>Bottom Slot Content</div>";
 
-      const component = mount(ULabel, {
-        props: {
-          label: "Label",
-        },
-        slots: {
-          bottom: `<div class="${slotClass}">${slotContent}</div>`,
-        },
+        const wrapper = mount(ULabel, {
+          slots: {
+            bottom: slotContent,
+          },
+        });
+
+        expect(wrapper.find("[data-test='custom-bottom']").exists()).toBe(true);
       });
-
-      expect(component.find(`.${slotClass}`).exists()).toBe(true);
-      expect(component.find(`.${slotClass}`).text()).toBe(slotContent);
     });
   });
 
-  // Events tests
   describe("Events", () => {
-    // Click event
-    it("emits click event when label is clicked", async () => {
-      const component = mount(ULabel, {
-        props: {
-          label: "Label",
-        },
+    describe("click", () => {
+      it("emits click event when label is clicked", async () => {
+        const component = mount(ULabel, {
+          props: {
+            label: "Label",
+          },
+        });
+
+        const labelElement = component.get("label");
+
+        await labelElement.trigger("click");
+
+        expect(component.emitted("click")).toBeTruthy();
       });
-
-      const labelElement = component.find("label");
-
-      await labelElement.trigger("click");
-
-      expect(component.emitted("click")).toBeTruthy();
     });
   });
 
-  // Exposed refs tests
-  describe("Exposed refs", () => {
-    // labelElement
-    it("exposes labelElement", () => {
-      const component = mount(ULabel, {
+  describe("Exposed properties", () => {
+    it("exposes label element ref", () => {
+      const defaultLabel = "Label";
+
+      const wrapper = mount(ULabel, {
         props: {
-          label: "Label",
+          label: defaultLabel,
         },
       });
 
-      expect(component.vm.labelElement).toBeDefined();
+      expect(wrapper.vm.labelElement).toBeDefined();
+      expect(wrapper.vm.labelElement!.tagName).toBe("LABEL");
+      expect(wrapper.vm.labelElement!.textContent).toBe(defaultLabel);
     });
 
-    // wrapperElement
-    it("exposes wrapperElement", () => {
-      const component = mount(ULabel, {
+    it("exposes wrapper element ref", () => {
+      const wrapper = mount(ULabel, {
         props: {
           label: "Label",
         },
       });
 
-      expect(component.vm.wrapperElement).toBeDefined();
+      expect(wrapper.vm.wrapperElement).toBeDefined();
+      expect(wrapper.vm.wrapperElement!.getAttribute("vl-key")).toBe("wrapper");
     });
   });
 });
