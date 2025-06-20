@@ -194,6 +194,7 @@ describe("UButton.vue", () => {
     // Block prop
     it("applies block class when block prop is true", () => {
       const block = true;
+      const expectedClass = "w-full";
 
       const component = mount(UButton, {
         props: {
@@ -201,12 +202,13 @@ describe("UButton.vue", () => {
         },
       });
 
-      expect(component.attributes("class")).toContain("w-full");
+      expect(component.attributes("class")).toContain(expectedClass);
     });
 
     // Round prop
     it("applies round class when round prop is true", () => {
       const round = true;
+      const expectedClass = "rounded-full";
 
       const component = mount(UButton, {
         props: {
@@ -214,7 +216,7 @@ describe("UButton.vue", () => {
         },
       });
 
-      expect(component.attributes("class")).toContain("rounded-full");
+      expect(component.attributes("class")).toContain(expectedClass);
     });
 
     // Square prop
@@ -245,6 +247,7 @@ describe("UButton.vue", () => {
     it("shows loader when loading prop is true", async () => {
       const loading = true;
       const label = "Button with some long text";
+      const expectedClass = "pointer-events-none";
 
       const component = mount(UButton, {
         props: {
@@ -255,8 +258,8 @@ describe("UButton.vue", () => {
 
       expect(component.text()).not.toBe(label);
       expect(component.findComponent(ULoader).exists()).toBe(true);
-      expect(component.find("div.invisible").exists()).toBe(true);
-      expect(component.attributes("class")).toContain("pointer-events-none"); // Unclickable
+      expect(component.find("[vl-key='invisible']").exists()).toBe(true);
+      expect(component.attributes("class")).toContain(expectedClass); // Unclickable
     });
 
     // ID prop
