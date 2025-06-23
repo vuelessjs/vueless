@@ -76,11 +76,9 @@ export default /*tw*/ {
         left: "pt-0.5",
         right: "pt-0.5",
       },
-      error: {
-        true: "text-error",
-      },
     },
   },
+  error: "{>description} text-error",
   defaults: {
     align: "top",
     size: "md",
