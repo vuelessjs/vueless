@@ -7,20 +7,16 @@ import UIcon from "../../ui.image-icon/UIcon.vue";
 import type { Props } from "../types.ts";
 
 describe("UDivider", () => {
-  // Props
   describe("Props", () => {
-    // Default divider visibility
-    it("shows only one divider when no label, icon, or slot content is provided", () => {
+    it("No props – shows only one divider when no label, icon, or slot content is provided", () => {
       const component = mount(UDivider);
 
-      // Should have only one divider element
       const dividers = component.findAll("[vl-key='divider']");
 
       expect(dividers.length).toBe(1);
     });
 
-    // Label prop
-    it("renders with label prop", () => {
+    it("Label – renders with label prop", () => {
       const label = "Divider Label";
 
       const component = mount(UDivider, {
@@ -29,34 +25,13 @@ describe("UDivider", () => {
         },
       });
 
-      // Should have two divider elements (before and after icon)
       const dividers = component.findAll("[vl-key='divider']");
 
       expect(dividers.length).toBe(2);
       expect(component.text()).toContain(label);
     });
 
-    // Icon prop
-    it("renders with icon prop", () => {
-      const icon = "star";
-
-      const component = mount(UDivider, {
-        props: {
-          icon,
-        },
-      });
-
-      // Should have two divider elements (before and after icon)
-      const dividers = component.findAll("[vl-key='divider']");
-      const iconComponent = component.findComponent(UIcon);
-
-      expect(dividers.length).toBe(2);
-      expect(iconComponent.exists()).toBe(true);
-      expect(iconComponent.props("name")).toBe(icon);
-    });
-
-    // Priority of label over icon
-    it("prioritizes label over icon when both are provided", () => {
+    it("Label – prioritizes label over icon when both are provided", () => {
       const label = "Test Label";
       const icon = "star";
 
@@ -71,8 +46,24 @@ describe("UDivider", () => {
       expect(component.findComponent(UIcon).exists()).toBe(false);
     });
 
-    // Size prop
-    it("applies correct size classes", () => {
+    it("Icon – renders with icon prop", () => {
+      const icon = "star";
+
+      const component = mount(UDivider, {
+        props: {
+          icon,
+        },
+      });
+
+      const dividers = component.findAll("[vl-key='divider']");
+      const iconComponent = component.findComponent(UIcon);
+
+      expect(dividers.length).toBe(2);
+      expect(iconComponent.exists()).toBe(true);
+      expect(iconComponent.props("name")).toBe(icon);
+    });
+
+    it("Size – applies correct size classes", () => {
       const sizeClasses = {
         xs: "border-t",
         sm: "border-t-[2px]",
@@ -94,8 +85,7 @@ describe("UDivider", () => {
       });
     });
 
-    // Color prop
-    it("applies correct color classes", () => {
+    it("Color – applies correct color classes", () => {
       const colorClasses = {
         primary: "border-primary",
         secondary: "border-secondary",
@@ -122,8 +112,7 @@ describe("UDivider", () => {
       });
     });
 
-    // Dashed prop
-    it("applies dashed class when dashed prop is true", () => {
+    it("Dashed – applies dashed class when dashed prop is true", () => {
       const dashed = true;
       const expectedClass = "border-dashed";
 
@@ -136,8 +125,7 @@ describe("UDivider", () => {
       expect(component.find(`[vl-key='divider']`).classes()).toContain(expectedClass);
     });
 
-    // Dotted prop
-    it("applies dotted class when dotted prop is true", () => {
+    it("Dotted – applies dotted class when dotted prop is true", () => {
       const dotted = true;
       const expectedClass = "border-dotted";
 
@@ -150,8 +138,7 @@ describe("UDivider", () => {
       expect(component.find(`[vl-key='divider']`).classes()).toContain(expectedClass);
     });
 
-    // Vertical prop
-    it("applies vertical classes when vertical prop is true", () => {
+    it("Vertical – applies vertical classes when vertical prop is true", () => {
       const verticalVariants = {
         true: {
           wrapper: "flex-col",
@@ -170,16 +157,12 @@ describe("UDivider", () => {
           },
         });
 
-        // Check component has correct flex class
         expect(component.classes()).toContain(classes.wrapper);
-
-        // Check divider has correct border class
         expect(component.find("[vl-key='divider']").classes()).toContain(classes.divider);
       });
     });
 
-    // DataTest prop
-    it("applies data-test attribute", () => {
+    it("Data Test – applies data-test attribute", () => {
       const dataTest = "divider-test";
 
       const component = mount(UDivider, {
@@ -192,10 +175,8 @@ describe("UDivider", () => {
     });
   });
 
-  // Slots
   describe("Slots", () => {
-    // Default slot
-    it("renders content in default slot", () => {
+    it("Default – renders content in default slot", () => {
       const slotClass = "custom-content";
       const slotContent = "Custom Content";
 
@@ -205,7 +186,6 @@ describe("UDivider", () => {
         },
       });
 
-      // Should have two divider elements (before and after slot content)
       const dividers = component.findAll("[vl-key='divider']");
 
       expect(dividers.length).toBe(2);
@@ -213,7 +193,7 @@ describe("UDivider", () => {
       expect(component.text()).toContain(slotContent);
     });
 
-    it("provides label and icon-name bindings to default slot", () => {
+    it("Default – provides label and icon-name bindings to default slot", () => {
       const slotClass = "custom-content";
       const label = "Test Label";
       const icon = "star";
@@ -237,10 +217,8 @@ describe("UDivider", () => {
     });
   });
 
-  // Exposed refs
   describe("Exposed refs", () => {
-    // WrapperRef
-    it("exposes wrapperRef", () => {
+    it("Wrapper – exposes wrapperRef", () => {
       const component = mount(UDivider);
 
       expect(component.vm.wrapperRef).toBeDefined();
