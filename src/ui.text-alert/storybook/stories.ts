@@ -12,9 +12,7 @@ import UCol from "../../ui.container-col/UCol.vue";
 import UIcon from "../../ui.image-icon/UIcon.vue";
 import UButton from "../../ui.button/UButton.vue";
 import UBadge from "../../ui.text-badge/UBadge.vue";
-import ULink from "../../ui.button-link/ULink.vue";
 import UText from "../../ui.text-block/UText.vue";
-import UChip from "../../ui.other-chip/UChip.vue";
 
 import type { Meta, StoryFn } from "@storybook/vue3";
 import type { Props } from "../types.ts";
@@ -104,7 +102,7 @@ CloseSlot.args = {
 };
 
 export const Slots: StoryFn<UAlertArgs> = (args) => ({
-  components: { UAlert, URow, UCol, UButton, UBadge, ULink, UText, UChip },
+  components: { UAlert, URow, UCol, UButton, UBadge, UText, UIcon },
   setup() {
     return { args };
   },
@@ -119,9 +117,7 @@ export const Slots: StoryFn<UAlertArgs> = (args) => ({
         :config="{ contentWrapper: 'items-center' }"
       >
         <template #left>
-          <UChip icon="arrow_outward" color="success" size="3xs">
-            <ULink label="Try it out" color="success" size="sm" class="mr-1.5" />
-          </UChip>
+          <UIcon name="celebration" color="success" size="lg" />
         </template>
       </UAlert>
 
@@ -134,7 +130,7 @@ export const Slots: StoryFn<UAlertArgs> = (args) => ({
           <UBadge
             :label="title"
             color="warning"
-            variant="outlined"
+            variant="subtle"
           />
         </template>
       </UAlert>
@@ -145,12 +141,9 @@ export const Slots: StoryFn<UAlertArgs> = (args) => ({
           Check out our documentation to get started with building beautiful interfaces."
         color="info"
       >
-        <template #description>
+        <template #description="{ description }">
           <UCol gap="xs">
-            <p>
-              You've successfully joined our community. Check out our documentation
-              to get started with building beautiful interfaces.
-            </p>
+            <UText :label="description" color="inherit" />
             <URow gap="sm">
               <UButton
                 label="View Docs"

@@ -69,7 +69,7 @@ const { getDataTest, filesLabelAttrs, itemsAttrs, itemAttrs } = useUI<Config>(de
     :label="label"
     :description="description"
     :size="size"
-    :align="labelAlign"
+    align="topWithDesc"
     v-bind="filesLabelAttrs"
   >
     <template #label>

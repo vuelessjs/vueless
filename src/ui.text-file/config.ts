@@ -3,16 +3,16 @@ export default /*tw*/ {
     base: "{ULink} flex items-center",
     variants: {
       size: {
-        sm: "gap-0.5",
-        md: "gap-1",
-        lg: "gap-1.5",
+        sm: "gap-1",
+        md: "gap-1.5",
+        lg: "gap-2",
       },
     },
   },
   body: "flex items-center gap-2",
-  fileImage: "rounded-sm max-w-7",
+  fileImage: "rounded-sm max-w-7 hover:cursor-default",
   fileIcon: {
-    base: "{UIcon} -mr-1",
+    base: "{UIcon} hover:cursor-default",
     defaults: {
       size: {
         sm: "xs",

@@ -80,7 +80,16 @@ const {
 <template>
   <ULink ref="file" :href="url" v-bind="fileAttrs" :data-test="getDataTest()">
     <!-- @slot Use it to add something before the file. -->
-    <slot name="left" />
+    <slot name="left">
+      <UIcon
+        v-if="!imageUrl"
+        color="neutral"
+        :name="config.defaults.fileIcon"
+        v-bind="fileIconAttrs"
+        @focus="onFocus"
+        @blur="onBlur"
+      />
+    </slot>
 
     <!--
       @slot Use it to add a file directly.
@@ -92,16 +101,6 @@ const {
     <slot :id="fileId" :label="label" :url="url" :image-url="imageUrl">
       <div v-bind="bodyAttrs">
         <img v-if="imageUrl" :alt="label" :src="imageUrl" v-bind="fileImageAttrs" />
-
-        <UIcon
-          v-else
-          interactive
-          color="neutral"
-          :name="config.defaults.fileIcon"
-          v-bind="fileIconAttrs"
-          @focus="onFocus"
-          @blur="onBlur"
-        />
 
         <ULink :label="label" :size="size" color="grayscale" dashed v-bind="fileLabelAttrs" />
       </div>

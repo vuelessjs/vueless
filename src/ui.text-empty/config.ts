@@ -41,7 +41,7 @@ export default /*tw*/ {
     },
   },
   description: {
-    base: "text-center",
+    base: "text-center mt-2",
     variants: {
       size: {
         sm: "text-small",

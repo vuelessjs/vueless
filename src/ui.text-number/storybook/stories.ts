@@ -65,7 +65,7 @@ export const Align: StoryFn<UNumberArgs> = (args: UNumberArgs) => ({
   components: { UNumber, URow, UCol },
   setup: () => ({ args }),
   template: `
-    <UCol block align="stretch">
+    <UCol block align="stretch" class="p-2 rounded-medium border border-primary border-dashed">
       <UNumber v-bind="args" align="left" />
       <UNumber v-bind="args" align="right" />
     </UCol>
@@ -81,11 +81,16 @@ Sizes.args = { enum: "size" };
 export const CurrencyAlign = EnumTemplate.bind({});
 CurrencyAlign.args = { enum: "currencyAlign", currency: "USD", currencySpace: true };
 
-export const LimitFractionDigits = DefaultTemplate.bind({});
-LimitFractionDigits.args = {
-  minFractionDigits: 4,
-  maxFractionDigits: 6,
-};
+export const LimitFractionDigits: StoryFn<UNumberArgs> = (args: UNumberArgs) => ({
+  components: { UNumber, UCol },
+  setup: () => ({ args }),
+  template: `
+    <UCol>
+      <UNumber :value="-14.24" :minFractionDigits="4" :maxFractionDigits="6" />
+      <UNumber :value="-14.123456789" :minFractionDigits="4" :maxFractionDigits="6" />
+    </UCol>
+  `,
+});
 LimitFractionDigits.parameters = {
   docs: {
     description: {
@@ -107,7 +112,7 @@ DecimalSeparator.parameters = {
 };
 
 export const ThousandsSeparator = DefaultTemplate.bind({});
-ThousandsSeparator.args = { value: -1400000.24, thousandsSeparator: "-" };
+ThousandsSeparator.args = { value: -1400000.24, thousandsSeparator: "." };
 ThousandsSeparator.parameters = {
   docs: {
     description: {

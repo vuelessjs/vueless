@@ -18,6 +18,7 @@ import type { Props } from "../types.ts";
 interface UTextArgs extends Props {
   slotTemplate?: string;
   enum: "size" | "align" | "variant" | "color" | "weight";
+  class?: string;
 }
 
 export default {
@@ -64,7 +65,6 @@ const EnumTemplate: StoryFn<UTextArgs> = (args: UTextArgs, { argTypes }) => ({
         v-for="option in argTypes?.[args.enum]?.options"
         v-bind="getArgs(args, option)"
         :key="option"
-        class="w-full"
       />
     </UCol>
   `,
@@ -74,7 +74,7 @@ export const Default = DefaultTemplate.bind({});
 Default.args = {};
 
 export const Align = EnumTemplate.bind({});
-Align.args = { enum: "align" };
+Align.args = { enum: "align", class: "w-full" };
 
 export const Weight = EnumTemplate.bind({});
 Weight.args = { enum: "weight" };

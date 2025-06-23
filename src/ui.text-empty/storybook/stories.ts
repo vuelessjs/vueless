@@ -12,6 +12,8 @@ import UIcon from "../../ui.image-icon/UIcon.vue";
 import URow from "../../ui.container-row/URow.vue";
 import UBadge from "../../ui.text-badge/UBadge.vue";
 
+import emptyInbox from "./assets/empty-inbox.png";
+
 import type { Meta, StoryFn } from "@storybook/vue3";
 import type { Props } from "../types.ts";
 
@@ -39,7 +41,7 @@ export default {
 
 const DefaultTemplate: StoryFn<UEmptyArgs> = (args: UEmptyArgs) => ({
   components: { UEmpty, UIcon, UButton, UBadge },
-  setup: () => ({ args, slots: getSlotNames(UEmpty.__name) }),
+  setup: () => ({ args, slots: getSlotNames(UEmpty.__name), emptyInbox }),
   template: `
     <UEmpty v-bind="args">
       ${args.slotTemplate || getSlotsFragment("")}
@@ -68,17 +70,13 @@ export const Description = DefaultTemplate.bind({});
 Description.args = { description: "There are no contacts in the list." };
 
 export const Sizes = EnumTemplate.bind({});
-Sizes.args = { enum: "size", title: "{enumValue}" };
+Sizes.args = { enum: "size" };
 
 export const HeaderSlot = DefaultTemplate.bind({});
 HeaderSlot.args = {
   slotTemplate: `
     <template #header>
-      <UIcon
-        name="person"
-        color="info"
-        size="2xl"
-      />
+      <img :src="emptyInbox" alt="empty" width="300" />
     </template>
   `,
 };
@@ -87,7 +85,10 @@ export const DefaultSlot = DefaultTemplate.bind({});
 DefaultSlot.args = {
   slotTemplate: `
     <template #default>
-      <UBadge label="There are no contacts in the list." />
+      <span>
+        <i>Nothing to display here yet</i>. You can <a href="#" class="underline">add your own</a> <b>content</b>
+        or include custom <b>components</b> to enhance the view.
+      </span>
     </template>
   `,
 };
@@ -96,7 +97,12 @@ export const FooterSlot = DefaultTemplate.bind({});
 FooterSlot.args = {
   slotTemplate: `
     <template #footer>
-      <UButton label="Add new one" size="sm" variant="soft" />
+      <UButton
+        label="Add new one"
+        size="sm"
+        color="grayscale"
+        variant="soft"
+      />
     </template>
   `,
 };
