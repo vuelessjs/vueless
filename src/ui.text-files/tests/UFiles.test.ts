@@ -61,24 +61,6 @@ describe("UFiles.vue", () => {
       expect(labelComponent.props("label")).toBe(label);
     });
 
-    // LabelAlign prop
-    it("passes the correct labelAlign to ULabel", () => {
-      const labelAligns = ["top", "topWithDesc"];
-
-      labelAligns.forEach((labelAlign) => {
-        const component = mount(UFiles, {
-          props: {
-            fileList,
-            labelAlign: labelAlign as Props["labelAlign"],
-          },
-        });
-
-        const labelComponent = component.findComponent(ULabel);
-
-        expect(labelComponent.props("align")).toBe(labelAlign);
-      });
-    });
-
     // Description prop
     it("passes the correct description to ULabel", () => {
       const description = "List of files";

@@ -3,9 +3,9 @@ export default /*tw*/ {
     base: "{ULink} flex items-center",
     variants: {
       size: {
-        sm: "gap-1",
-        md: "gap-1.5",
-        lg: "gap-2",
+        sm: "gap-0.5",
+        md: "gap-1",
+        lg: "gap-1.5",
       },
     },
   },
