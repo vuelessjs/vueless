@@ -7,7 +7,7 @@ import type { Props } from "../types.ts";
 
 describe("ULabel.vue", () => {
   describe("Props", () => {
-    it("label — rendered inside label element", () => {
+    it("label – rendered inside label element", () => {
       const label = "Label Text";
 
       const wrapper = mount(ULabel, {
@@ -19,7 +19,7 @@ describe("ULabel.vue", () => {
       expect(wrapper.get("label").text()).toContain(label);
     });
 
-    it("for — applied to label element", () => {
+    it("for – applied to label element", () => {
       const forId = "input-id";
 
       const wrapper = mount(ULabel, {
@@ -32,7 +32,7 @@ describe("ULabel.vue", () => {
       expect(wrapper.get("label").attributes("for")).toBe(forId);
     });
 
-    it("description — description is rendered with provided text", () => {
+    it("description – description is rendered with provided text", () => {
       const description = "This is a description";
 
       const wrapper = mount(ULabel, {
@@ -47,7 +47,7 @@ describe("ULabel.vue", () => {
       expect(descriptionElement.text()).toBe(description);
     });
 
-    it("error — error is rendered with provided text", () => {
+    it("error – error is rendered with provided text", () => {
       const error = "This field is required";
       const errorClasses = "text-error";
 
@@ -64,7 +64,7 @@ describe("ULabel.vue", () => {
       expect(errorElement.text()).toBe(error);
     });
 
-    it("error — error overrides description when both are provided", () => {
+    it("error – error overrides description when both are provided", () => {
       const description = "This is a description";
       const error = "This field is required";
       const errorClasses = "text-error";
@@ -83,7 +83,7 @@ describe("ULabel.vue", () => {
       expect(descriptionElements[0].text()).toBe(error);
     });
 
-    it("interactive — applies cursor pointer class when true", () => {
+    it("interactive – applies cursor pointer class when true", () => {
       const interactiveClasses = "hover:cursor-pointer";
 
       const wrapper = mount(ULabel, {
@@ -96,7 +96,7 @@ describe("ULabel.vue", () => {
       expect(wrapper.get("label").attributes("class")).toContain(interactiveClasses);
     });
 
-    it("interactive — does not apply cursor pointer class when false", () => {
+    it("interactive – does not apply cursor pointer class when false", () => {
       const interactiveClasses = "hover:cursor-pointer";
 
       const wrapper = mount(ULabel, {
@@ -109,49 +109,47 @@ describe("ULabel.vue", () => {
       expect(wrapper.get("label").attributes("class")).not.toContain(interactiveClasses);
     });
 
-    const alignClassCases: [Props["align"], string][] = [
-      ["top", "flex-col"],
-      ["topInside", "flex-col gap-0 relative"],
-      ["topWithDesc", "flex-col-reverse"],
-      ["left", "flex-row-reverse"],
-      ["right", "flex-row"],
-    ];
+    it("align – applies correct classes for align prop", () => {
+      const alignClassCases = {
+        top: "flex-col",
+        topInside: "flex-col gap-0 relative",
+        topWithDesc: "flex-col-reverse",
+        left: "flex-row-reverse",
+        right: "flex-row",
+      };
 
-    it.each(alignClassCases)(
-      "align — applies correct classes for align prop: %s",
-      (align, expectedClass) => {
+      Object.entries(alignClassCases).forEach(([align, expectedClass]) => {
         const wrapper = mount(ULabel, {
           props: {
             label: "Label",
-            align,
+            align: align as Props["align"],
           },
         });
 
         expect(wrapper.attributes("class")).toContain(expectedClass);
-      },
-    );
+      });
+    });
 
-    const sizeClassCases: [Props["size"], string][] = [
-      ["sm", "text-small"],
-      ["md", "text-medium"],
-      ["lg", "text-large"],
-    ];
+    it("size – applies correct class for size prop", () => {
+      const sizeClassCases = {
+        sm: "text-small",
+        md: "text-medium",
+        lg: "text-large",
+      };
 
-    it.each(sizeClassCases)(
-      "size — applies correct class for size prop: %s",
-      (size, expectedClass) => {
+      Object.entries(sizeClassCases).forEach(([size, expectedClass]) => {
         const wrapper = mount(ULabel, {
           props: {
             label: "Label",
-            size,
+            size: size as Props["size"],
           },
         });
 
         expect(wrapper.get("label").attributes("class")).toContain(expectedClass);
-      },
-    );
+      });
+    });
 
-    it("disabled — applies disabled classes when true", () => {
+    it("disabled – applies disabled classes when true", () => {
       const disabledClasses = "cursor-not-allowed";
 
       const wrapper = mount(ULabel, {
@@ -165,7 +163,7 @@ describe("ULabel.vue", () => {
       expect(wrapper.get("label").attributes("class")).toContain(disabledClasses);
     });
 
-    it("disabled — does not apply disabled class when false", () => {
+    it("disabled – does not apply disabled class when false", () => {
       const disabledClasses = "cursor-not-allowed";
 
       const wrapper = mount(ULabel, {
@@ -179,7 +177,7 @@ describe("ULabel.vue", () => {
       expect(wrapper.get("label").attributes("class")).not.toContain(disabledClasses);
     });
 
-    it("disabled — interactive class is not applied when disabled true", () => {
+    it("disabled – interactive class is not applied when disabled true", () => {
       const interactiveClasses = "hover:cursor-pointer";
 
       const wrapper = mount(ULabel, {
@@ -193,7 +191,7 @@ describe("ULabel.vue", () => {
       expect(wrapper.get("label").attributes("class")).not.toContain(interactiveClasses);
     });
 
-    it("disabled — topInside label doesn't have focus styles disabled", () => {
+    it("disabled – topInside label doesn't have focus styles disabled", () => {
       const focusClasses = "group-focus-within:text-primary";
 
       const wrapper = mount(ULabel, {
@@ -207,7 +205,7 @@ describe("ULabel.vue", () => {
       expect(wrapper.get("label").attributes("class")).not.toContain(focusClasses);
     });
 
-    it("disabled — error is not rendered when disabled is true", () => {
+    it("disabled – error is not rendered when disabled is true", () => {
       const wrapper = mount(ULabel, {
         props: {
           error: "This field is required",
@@ -220,7 +218,7 @@ describe("ULabel.vue", () => {
       expect(errorElement.exists()).toBe(false);
     });
 
-    it("disabled — description text is preserved when disabled is true", () => {
+    it("disabled – description text is preserved when disabled is true", () => {
       const description = "This is a description";
 
       const wrapper = mount(ULabel, {
@@ -235,7 +233,7 @@ describe("ULabel.vue", () => {
       expect(descriptionElement.text()).toBe(description);
     });
 
-    it("centred — applies centred class when true", () => {
+    it("centred – applies centred class when true", () => {
       const centredClasses = "items-center";
 
       const wrapper = mount(ULabel, {
@@ -249,7 +247,7 @@ describe("ULabel.vue", () => {
       expect(wrapper.attributes("class")).toContain(centredClasses);
     });
 
-    it("centred — does not apply centred class when false", () => {
+    it("centred – does not apply centred class when false", () => {
       const centredClasses = "items-center";
 
       const wrapper = mount(ULabel, {
@@ -263,11 +261,10 @@ describe("ULabel.vue", () => {
       expect(wrapper.attributes("class")).not.toContain(centredClasses);
     });
 
-    const dataTestCases: string[] = ["label", "content", "error", "description"];
+    it("dataTest – applies the correct data-test attributes", async () => {
+      const dataTestCases: string[] = ["label", "content", "error", "description"];
 
-    it.each(dataTestCases)(
-      "dataTest — applies the correct data-test attributes",
-      async (testCase) => {
+      dataTestCases.forEach(async (testCase) => {
         const dataTest = "test";
         const resolvedDataTest = `test-${testCase}`;
 
@@ -288,12 +285,12 @@ describe("ULabel.vue", () => {
         const testElement = wrapper.get(`[vl-key='${testElementKey}']`);
 
         expect(testElement.attributes("data-test")).toBe(resolvedDataTest);
-      },
-    );
+      });
+    });
   });
 
   describe("Slots", () => {
-    it("default — renders content from default slot", () => {
+    it("default – renders content from default slot", () => {
       const slotContent = "Default Slot Content";
 
       const wrapper = mount(ULabel, {
@@ -305,7 +302,7 @@ describe("ULabel.vue", () => {
       expect(wrapper.find("[vl-key='content']").text()).toBe(slotContent);
     });
 
-    it("label — renders content from label slot", () => {
+    it("label – renders content from label slot", () => {
       const slotContent = "Custom Label";
       const defaultLabel = "Default Label";
 
@@ -324,7 +321,7 @@ describe("ULabel.vue", () => {
       expect(labelElement.text()).not.toContain(defaultLabel);
     });
 
-    it("label — exposes label content", () => {
+    it("label – exposes label content", () => {
       const defaultLabel = "Label Content";
       const slotContent = "Modified Label Content";
 
@@ -342,7 +339,7 @@ describe("ULabel.vue", () => {
       expect(labelElement.text()).toBe(slotContent);
     });
 
-    it("bottom — renders content from bottom slot", () => {
+    it("bottom – renders content from bottom slot", () => {
       const slotContent = "<div data-test='custom-bottom'>Bottom Slot Content</div>";
 
       const wrapper = mount(ULabel, {
@@ -356,7 +353,7 @@ describe("ULabel.vue", () => {
   });
 
   describe("Events", () => {
-    it("click — emits click event when label is clicked", async () => {
+    it("click – emits click event when label is clicked", async () => {
       const component = mount(ULabel, {
         props: {
           label: "Label",
