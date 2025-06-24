@@ -1,4 +1,5 @@
 export default /*tw*/ {
+  wrapper: "",
   icon: {
     base: "text-{color} fill-current shrink-0 grow-0 focus:outline-0",
     variants: {

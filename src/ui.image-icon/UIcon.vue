@@ -90,17 +90,11 @@ defineExpose({
  * Get element / nested component attributes for each config token ✨
  * Applies: `class`, `config`, redefined default `props` and dev `vl-...` attributes.
  */
-const { getDataTest, config, iconAttrs } = useUI<Config>(defaultConfig);
+const { getDataTest, config, iconAttrs, wrapperAttrs } = useUI<Config>(defaultConfig);
 </script>
 
 <template>
-  <component
-    :is="dynamicComponent"
-    v-if="dynamicComponent"
-    ref="icon"
-    tabindex="-1"
-    v-bind="iconAttrs"
-    :data-test="getDataTest()"
-    @click="onClick"
-  />
+  <div ref="icon" tabindex="-1" :data-test="getDataTest()" v-bind="wrapperAttrs" @click="onClick">
+    <component :is="dynamicComponent" v-if="dynamicComponent" v-bind="iconAttrs" />
+  </div>
 </template>
