@@ -139,22 +139,7 @@ watch(
           const marginTop = parseFloat(styles.marginTop || "0");
           const marginBottom = parseFloat(styles.marginBottom || "0");
 
-          const [childDiv] = el.getElementsByTagName("div");
-          const childStyles = childDiv && window.getComputedStyle(childDiv);
-          const childMarginTop = parseFloat(childStyles?.marginTop || "0");
-          const childMarginBottom = parseFloat(childStyles?.marginBottom || "0");
-          const childPaddingTop = parseFloat(childStyles?.paddingTop || "0");
-          const childPaddingBottom = parseFloat(childStyles?.paddingBottom || "0");
-
-          return (
-            elHeight +
-            marginTop +
-            marginBottom +
-            childMarginTop +
-            childMarginBottom +
-            childPaddingTop +
-            childPaddingBottom
-          );
+          return elHeight + marginTop + marginBottom;
         })
         .reduce((acc, cur) => acc + cur, 0);
 
@@ -167,27 +152,29 @@ watch(
 
       const inputEl = listboxInputRef.value?.input as HTMLInputElement | undefined;
       let listboxInputHeight = 0;
-      let listboxInputPaddingTop = 0;
-      let listboxInputPaddingBottom = 0;
+
+      let listboxInputWrapperPaddingTop = 0;
 
       if (inputEl) {
         const listboxInputStyle = getComputedStyle(inputEl);
+        const listboxInputWrapperStyle = getComputedStyle(
+          inputEl.parentElement?.parentElement?.parentElement as Element,
+        );
 
         listboxInputHeight = parseFloat(listboxInputStyle.height || "0");
-        listboxInputPaddingTop = parseFloat(listboxInputStyle.paddingTop || "0");
-        listboxInputPaddingBottom = parseFloat(listboxInputStyle.paddingBottom || "0");
+
+        listboxInputWrapperPaddingTop = parseFloat(listboxInputWrapperStyle.paddingTop || "0");
       }
 
       wrapperMaxHeight.value = `${
         maxHeight +
-        wrapperGap +
+        (props.searchable ? wrapperGap : 0) +
         wrapperPaddingTop +
         wrapperPaddingBottom +
         wrapperBorderTop +
         wrapperBorderBottom +
         listboxInputHeight +
-        listboxInputPaddingTop +
-        listboxInputPaddingBottom
+        (props.searchable ? listboxInputWrapperPaddingTop : 0)
       }px`;
     });
   },
