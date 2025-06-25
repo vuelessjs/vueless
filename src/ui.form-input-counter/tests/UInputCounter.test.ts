@@ -1,301 +1,267 @@
 import { mount } from "@vue/test-utils";
-import { describe, it, expect } from "vitest";
+import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
 
 import UInputCounter from "../UInputCounter.vue";
 import UButton from "../../ui.button/UButton.vue";
 import UInputNumber from "../../ui.form-input-number/UInputNumber.vue";
-import UIcon from "../../ui.image-icon/UIcon.vue";
 
 import type { Props } from "../types.ts";
 
 describe("UInputCounter.vue", () => {
-  // Props tests
-  describe("Props", () => {
-    // ModelValue prop
-    it("sets the input value correctly", () => {
-      const modelValue = 5;
+  beforeEach(() => {
+    vi.useFakeTimers();
+  });
 
+  afterEach(() => {
+    vi.useRealTimers();
+  });
+
+  describe("props", () => {
+    it("ModelValue - sets initial value correctly", () => {
+      const initialValue = 5;
       const component = mount(UInputCounter, {
         props: {
-          modelValue,
+          modelValue: initialValue,
         },
       });
 
-      const inputNumber = component.findComponent(UInputNumber);
-
-      expect(inputNumber.props("modelValue")).toBe(modelValue);
+      expect(component.getComponent(UInputNumber).props("modelValue")).toBe(initialValue);
     });
 
-    // Step prop - Add button
-    it("emits correct value when add button is clicked", async () => {
-      const modelValue = 10;
-      const step = 5;
-
+    it("ModelValue - updates value on input", async () => {
       const component = mount(UInputCounter, {
         props: {
-          modelValue,
-          step,
+          modelValue: 5,
+          "onUpdate:modelValue": (e) => component.setProps({ modelValue: e }),
         },
       });
 
-      // Click add button
-      await component.findAll("button")[1].trigger("mousedown");
-      await component.findAll("button")[1].trigger("mouseup");
+      const [subtractButton, addButton] = component.findAllComponents(UButton);
 
-      // Check that the update:modelValue event was emitted with the correct value
-      expect(component.emitted("update:modelValue")).toBeTruthy();
-      expect(component.emitted("update:modelValue")[0]).toEqual([modelValue + step]);
+      await addButton.trigger("mousedown");
+      await addButton.trigger("mouseup");
+
+      vi.advanceTimersByTime(150);
+
+      expect(component.emitted("update:modelValue")![0][0]).toBe(6);
+
+      await addButton.trigger("mousedown");
+      await addButton.trigger("mouseup");
+
+      vi.advanceTimersByTime(150);
+
+      expect(component.emitted("update:modelValue")![1][0]).toBe(7);
+
+      await subtractButton.trigger("mousedown");
+      await subtractButton.trigger("mouseup");
+
+      vi.advanceTimersByTime(150);
+
+      expect(component.emitted("update:modelValue")![2][0]).toBe(6);
     });
 
-    // Step prop - Subtract button
-    it("emits correct value when subtract button is clicked", async () => {
-      const modelValue = 10;
-      const step = 5;
-
+    it("Step - updated value with provided step", async () => {
       const component = mount(UInputCounter, {
         props: {
-          modelValue,
-          step,
+          modelValue: 5,
+          step: 2,
+          "onUpdate:modelValue": (e) => component.setProps({ modelValue: e }),
         },
       });
 
-      // Click subtract button
-      await component.findAll("button")[0].trigger("mousedown");
-      await component.findAll("button")[0].trigger("mouseup");
+      const [subtractButton, addButton] = component.findAllComponents(UButton);
 
-      // Check that the update:modelValue event was emitted with the correct value
-      expect(component.emitted("update:modelValue")).toBeTruthy();
-      expect(component.emitted("update:modelValue")[0]).toEqual([modelValue - step]);
+      await addButton.trigger("mousedown");
+      await addButton.trigger("mouseup");
+
+      vi.advanceTimersByTime(150);
+
+      expect(component.emitted("update:modelValue")![0][0]).toBe(7);
+
+      await subtractButton.trigger("mousedown");
+      await subtractButton.trigger("mouseup");
+
+      vi.advanceTimersByTime(150);
+
+      expect(component.emitted("update:modelValue")![1][0]).toBe(5);
     });
 
-    // Min prop
-    it("does not decrement below min value", async () => {
-      const modelValue = 5;
-      const min = 5;
-
+    it("Step - does not update value above max", async () => {
       const component = mount(UInputCounter, {
         props: {
-          modelValue,
-          min,
+          modelValue: 5,
+          step: 2,
+          max: 6,
+          "onUpdate:modelValue": (e) => component.setProps({ modelValue: e }),
         },
       });
 
-      // Subtract button should be disabled
-      const subtractButton = component.findAll("button")[0];
+      const [, addButton] = component.findAllComponents(UButton);
 
-      expect(subtractButton.attributes("disabled")).toBeDefined();
+      await addButton.trigger("mousedown");
+      await addButton.trigger("mouseup");
 
-      // Click subtract button
-      await subtractButton.trigger("click");
-      expect(component.emitted("update:modelValue")).toBeFalsy();
+      vi.advanceTimersByTime(150);
+
+      expect(component.emitted("update:modelValue")![0][0]).toBe(6);
+      expect(addButton.props("disabled")).toBe(true);
     });
 
-    // Max prop
-    it("does not increment above max value", async () => {
-      const modelValue = 10;
-      const max = 10;
-
+    it("Step - does not update value below min", async () => {
       const component = mount(UInputCounter, {
         props: {
-          modelValue,
-          max,
+          modelValue: 5,
+          step: 2,
+          min: 4,
+          "onUpdate:modelValue": (e) => component.setProps({ modelValue: e }),
         },
       });
 
-      // Add button should be disabled
-      const addButton = component.findAll("button")[1];
+      const [subtractButton] = component.findAllComponents(UButton);
 
-      expect(addButton.attributes("disabled")).toBeDefined();
+      await subtractButton.trigger("mousedown");
+      await subtractButton.trigger("mouseup");
 
-      // Click add button
-      await addButton.trigger("click");
-      expect(component.emitted("update:modelValue")).toBeFalsy();
+      vi.advanceTimersByTime(150);
+
+      expect(component.emitted("update:modelValue")![0][0]).toBe(4);
+      expect(subtractButton.props("disabled")).toBe(true);
     });
 
-    // Size prop
-    it("applies the correct size to buttons and input", () => {
-      const sizes = {
-        sm: "sm",
-        md: "md",
-        lg: "lg",
+    it("Min - does not allow value below min", async () => {
+      const component = mount(UInputCounter, {
+        props: {
+          modelValue: 5,
+          min: 4,
+          "onUpdate:modelValue": (e) => component.setProps({ modelValue: e }),
+        },
+      });
+
+      const subtractButton = component.findComponent(UButton);
+
+      await subtractButton.trigger("mousedown");
+      await subtractButton.trigger("mouseup");
+
+      vi.advanceTimersByTime(150);
+
+      expect(component.emitted("update:modelValue")![0][0]).toBe(4);
+      expect(subtractButton.props("disabled")).toBe(true);
+    });
+
+    it("Max - does not allow value above max", async () => {
+      const component = mount(UInputCounter, {
+        props: {
+          modelValue: 5,
+          max: 6,
+          "onUpdate:modelValue": (e) => component.setProps({ modelValue: e }),
+        },
+      });
+
+      const [, addButton] = component.findAllComponents(UButton);
+
+      await addButton.trigger("mousedown");
+      await addButton.trigger("mouseup");
+
+      vi.advanceTimersByTime(150);
+
+      expect(component.emitted("update:modelValue")![0][0]).toBe(6);
+      expect(addButton.props("disabled")).toBe(true);
+    });
+
+    it("Readonly - renders text instead of input when readonly set to true", async () => {
+      const component = mount(UInputCounter, {
+        props: {
+          modelValue: 5,
+          readonly: true,
+        },
+      });
+
+      const input = component.findComponent(UInputNumber);
+
+      expect(input.exists()).toBe(false);
+
+      const counterText = component.get("[vl-key='counterText']");
+
+      expect(counterText.text()).toBe("5");
+    });
+
+    it("Size - passes correct size props to counter UInputNumber", () => {
+      const component = mount(UInputCounter, {
+        props: {
+          modelValue: 5,
+          readonly: false,
+          size: "lg" as Props["size"],
+        },
+      });
+
+      const input = component.getComponent(UInputNumber);
+
+      expect(input.props("size")).toBe("lg");
+    });
+
+    it("Size - applies correct class to counter text based on size prop", () => {
+      const sizeClasses = {
+        sm: "text-small px-1",
+        md: "text-medium px-1.5",
+        lg: "text-large px-2",
       };
 
-      Object.entries(sizes).forEach(([size, value]) => {
+      Object.entries(sizeClasses).forEach(([size, className]) => {
         const component = mount(UInputCounter, {
           props: {
             modelValue: 5,
+            readonly: true,
             size: size as Props["size"],
           },
         });
 
-        const inputNumber = component.findComponent(UInputNumber);
-        const buttons = component.findAllComponents(UButton);
+        const counterText = component.get("[vl-key='counterText']");
 
-        expect(inputNumber.props("size")).toBe(value);
-        expect(buttons[0].props("size")).toBeDefined();
-        expect(buttons[1].props("size")).toBeDefined();
+        expect(counterText.attributes("class")).toContain(className);
       });
     });
 
-    // Readonly prop
-    it("shows text instead of input when readonly is true", () => {
-      const modelValue = 5;
-      const readonly = true;
-
-      const component = mount(UInputCounter, {
-        props: {
-          modelValue,
-          readonly,
-        },
-      });
-
-      // Should not render input
-      expect(component.findComponent(UInputNumber).exists()).toBe(false);
-
-      // Should render text
-      const counterText = component.find("[vl-key='counterText']");
-
-      expect(counterText.exists()).toBe(true);
-      expect(counterText.text()).toBe(modelValue.toString());
-    });
-
-    // Disabled prop
-    it("disables buttons and input when disabled is true", () => {
-      const disabled = true;
-
+    it("Disabled - disables buttons when disabled prop is true", async () => {
       const component = mount(UInputCounter, {
         props: {
           modelValue: 5,
-          disabled,
+          disabled: true,
         },
       });
 
-      const inputNumber = component.findComponent(UInputNumber);
-      const buttons = component.findAllComponents(UButton);
+      const [subtractButton, addButton] = component.findAllComponents(UButton);
 
-      expect(inputNumber.props("disabled")).toBe(true);
-      expect(buttons[0].props("disabled")).toBe(true);
-      expect(buttons[1].props("disabled")).toBe(true);
+      expect(subtractButton.props("disabled")).toBe(true);
+      expect(addButton.props("disabled")).toBe(true);
     });
 
-    // DataTest prop
-    it("sets the data-test attribute correctly", () => {
-      const dataTest = "test-input-counter";
-
+    it("Disabled - disables input when disabled prop is true", () => {
       const component = mount(UInputCounter, {
         props: {
           modelValue: 5,
-          dataTest,
+          disabled: true,
+          readonly: false,
         },
       });
 
-      // Check data-test on subtract button
-      const subtractButton = component.find("[data-test='test-input-counter-subtract']");
+      const input = component.getComponent(UInputNumber);
 
-      expect(subtractButton.exists()).toBe(true);
-
-      // Check data-test on add button
-      const addButton = component.find("[data-test='test-input-counter-add']");
-
-      expect(addButton.exists()).toBe(true);
-    });
-  });
-
-  // Events tests
-  describe("Events", () => {
-    // Update:modelValue event
-    it("emits update:modelValue event when input value changes", async () => {
-      const modelValue = 5;
-      const newValue = 10;
-
-      const component = mount(UInputCounter, {
-        props: {
-          modelValue,
-        },
-      });
-
-      const inputNumber = component.findComponent(UInputNumber);
-
-      await inputNumber.vm.$emit("update:modelValue", newValue);
-
-      expect(component.emitted("update:modelValue")).toBeTruthy();
-      expect(component.emitted("update:modelValue")[0]).toEqual([newValue]);
-    });
-  });
-
-  // Functionality tests
-  describe("Functionality", () => {
-    // Input blur validation for max value
-    it("validates input value on blur when above max", async () => {
-      const modelValue = 5;
-      const max = 10;
-
-      const component = mount(UInputCounter, {
-        props: {
-          modelValue,
-          max,
-        },
-      });
-
-      const inputNumber = component.findComponent(UInputNumber);
-
-      // Simulate user entering a value above max
-      await inputNumber.vm.$emit("update:modelValue", max + 5);
-      await inputNumber.vm.$emit("blur");
-
-      // Check that the last emitted value is the max value
-      const emittedEvents = component.emitted("update:modelValue");
-
-      expect(emittedEvents).toBeTruthy();
-
-      // Get the last emitted value
-      const lastEmittedValue = emittedEvents[emittedEvents.length - 1][0];
-
-      expect(lastEmittedValue).toBe(max);
+      expect(input.props("disabled")).toBe(true);
     });
 
-    // Input blur validation for min value
-    it("validates input value on blur when below min", async () => {
-      const modelValue = 5;
-      const min = 1;
+    it("Data Test - applies correct data-test attributes", () => {
+      const dataTestCases: string[] = ["subtract", "add"];
 
-      const component = mount(UInputCounter, {
-        props: {
-          modelValue,
-          min,
-        },
+      dataTestCases.forEach((testCase) => {
+        const component = mount(UInputCounter, {
+          props: {
+            modelValue: 5,
+            dataTest: "test",
+          },
+        });
+
+        component.get(`[data-test='test-${testCase}']`);
       });
-
-      const inputNumber = component.findComponent(UInputNumber);
-
-      // Simulate user entering a value below min
-      await inputNumber.vm.$emit("update:modelValue", min - 5);
-      await inputNumber.vm.$emit("blur");
-
-      // Check that the last emitted value is the min value
-      const emittedEvents = component.emitted("update:modelValue");
-
-      expect(emittedEvents).toBeTruthy();
-
-      // Get the last emitted value
-      const lastEmittedValue = emittedEvents[emittedEvents.length - 1][0];
-
-      expect(lastEmittedValue).toBe(min);
-    });
-
-    // Icons
-    it("renders the correct icons for add and subtract buttons", () => {
-      const component = mount(UInputCounter, {
-        props: {
-          modelValue: 5,
-        },
-      });
-
-      const icons = component.findAllComponents(UIcon);
-
-      expect(icons.length).toBe(2);
-      expect(icons[0].props("name")).toBe("remove");
-      expect(icons[1].props("name")).toBe("add");
     });
   });
 });

@@ -1,5 +1,5 @@
 import { flushPromises, mount } from "@vue/test-utils";
-import { describe, it, expect } from "vitest";
+import { describe, it, expect, vi } from "vitest";
 
 import UInputSearch from "../UInputSearch.vue";
 import UInput from "../../ui.form-input/UInput.vue";
@@ -22,6 +22,8 @@ describe("UInputSearch.vue", () => {
     });
 
     it("ModelValue - updates value on input", async () => {
+      vi.useFakeTimers();
+
       const updatedValue = "Test input 2";
 
       const component = mount(UInputSearch, {
@@ -33,9 +35,13 @@ describe("UInputSearch.vue", () => {
 
       await component.get("input").setValue(updatedValue);
 
-      setTimeout(() => {
-        expect(component.emitted("update:modelValue")![0][0]).toBe(updatedValue);
-      });
+      vi.advanceTimersByTime(0);
+      await flushPromises();
+
+      expect(component.emitted("update:modelValue")).toBeDefined();
+      expect(component.emitted("update:modelValue")![0][0]).toBe(updatedValue);
+
+      vi.useRealTimers();
     });
 
     it("Label - passes label to UInput", () => {
@@ -104,9 +110,9 @@ describe("UInputSearch.vue", () => {
       expect(component.getComponent(UInput).props("error")).toBe(error);
     });
 
-    it("Min Length - don't emit value if it has less length than minLength", () => {
+    it("Min Length - don't emit value if it has less length than minLength", async () => {
       const minLength = 5;
-      const shortValue = "Tesssssst";
+      const shortValue = "Test";
 
       const component = mount(UInputSearch, {
         props: {
@@ -116,11 +122,11 @@ describe("UInputSearch.vue", () => {
         },
       });
 
-      component.get("input").setValue(shortValue);
+      await component.get("input").setValue(shortValue);
+      await flushPromises();
 
-      setTimeout(() => {
-        expect(component.emitted("update:modelValue")![0][0]);
-      });
+      // Should not emit update:modelValue for short values
+      expect(component.emitted("update:modelValue")).toBeUndefined();
     });
 
     it("Search Button Label - renders search button with label", () => {
@@ -146,6 +152,8 @@ describe("UInputSearch.vue", () => {
     });
 
     it("Debounce - sets debounce time for input", async () => {
+      vi.useFakeTimers();
+
       const debounceTime = 300;
       const updatedValue = "Debounced input";
 
@@ -158,10 +166,13 @@ describe("UInputSearch.vue", () => {
 
       await component.get("input").setValue(updatedValue);
 
-      setTimeout(() => {
-        expect(component.emitted("update:modelValue")).toBeDefined();
-        expect(component.emitted("update:modelValue")![0][0]).toBe(updatedValue);
-      }, debounceTime);
+      vi.advanceTimersByTime(debounceTime);
+      await flushPromises();
+
+      expect(component.emitted("update:modelValue")).toBeDefined();
+      expect(component.emitted("update:modelValue")![0][0]).toBe(updatedValue);
+
+      vi.useRealTimers();
     });
 
     it("LeftIcon - passes leftIcon to UInput", () => {
