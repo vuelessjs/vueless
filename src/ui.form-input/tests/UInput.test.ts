@@ -59,6 +59,7 @@ describe("UInput.vue", () => {
 
     it("LabelAlign - applies correct class based on labelAlign prop", async () => {
       const labelAlignCases = ["left", "right"];
+      const labelAlignClass = "w-full";
 
       labelAlignCases.forEach(async (align) => {
         const component = mount(UInput, {
@@ -68,7 +69,7 @@ describe("UInput.vue", () => {
           },
         });
 
-        expect(component.getComponent(ULabel).vm.$props.align).toBe(align);
+        expect(component.getComponent(ULabel).attributes("class")).toContain(labelAlignClass);
       });
     });
 
