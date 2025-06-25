@@ -10,7 +10,7 @@ import type { Props } from "../types.ts";
 
 describe("UInputSearch.vue", () => {
   describe("props", () => {
-    it("ModelValue - set initial value correctly", () => {
+    it("ModelValue – set initial value correctly", () => {
       const initialValue = "Test input";
       const component = mount(UInputSearch, {
         props: {
@@ -21,7 +21,7 @@ describe("UInputSearch.vue", () => {
       expect(component.get("input").element.value).toBe(initialValue);
     });
 
-    it("ModelValue - updates value on input", async () => {
+    it("ModelValue – updates value on input", async () => {
       vi.useFakeTimers();
 
       const updatedValue = "Test input 2";
@@ -44,7 +44,7 @@ describe("UInputSearch.vue", () => {
       vi.useRealTimers();
     });
 
-    it("Label - passes label to UInput", () => {
+    it("Label – passes label to UInput", () => {
       const label = "Test Label";
       const component = mount(UInputSearch, {
         props: {
@@ -55,7 +55,7 @@ describe("UInputSearch.vue", () => {
       expect(component.getComponent(UInput).props("label")).toBe(label);
     });
 
-    it("Size - passes size to UInput", () => {
+    it("Size – passes size to UInput", () => {
       const size: Props["size"] = "lg";
       const component = mount(UInputSearch, {
         props: {
@@ -66,7 +66,7 @@ describe("UInputSearch.vue", () => {
       expect(component.getComponent(UInput).props("size")).toBe(size);
     });
 
-    it("Placeholder - passes placeholder to UInput", () => {
+    it("Placeholder – passes placeholder to UInput", () => {
       const placeholder = "Search here...";
       const component = mount(UInputSearch, {
         props: {
@@ -77,7 +77,7 @@ describe("UInputSearch.vue", () => {
       expect(component.getComponent(UInput).props("placeholder")).toBe(placeholder);
     });
 
-    it("Label Align - passes labelAlign to UInput", () => {
+    it("Label Align – passes labelAlign to UInput", () => {
       const labelAlign: Props["labelAlign"] = "top";
       const component = mount(UInputSearch, {
         props: {
@@ -88,7 +88,7 @@ describe("UInputSearch.vue", () => {
       expect(component.getComponent(UInput).props("labelAlign")).toBe(labelAlign);
     });
 
-    it("Description - passes description to UInput", () => {
+    it("Description – passes description to UInput", () => {
       const description = "This is a description";
       const component = mount(UInputSearch, {
         props: {
@@ -99,7 +99,7 @@ describe("UInputSearch.vue", () => {
       expect(component.getComponent(UInput).props("description")).toBe(description);
     });
 
-    it("Error - passes error to UInput", () => {
+    it("Error – passes error to UInput", () => {
       const error = "This is an error message";
       const component = mount(UInputSearch, {
         props: {
@@ -110,7 +110,7 @@ describe("UInputSearch.vue", () => {
       expect(component.getComponent(UInput).props("error")).toBe(error);
     });
 
-    it("Min Length - don't emit value if it has less length than minLength", async () => {
+    it("Min Length – don't emit value if it has less length than minLength", async () => {
       const minLength = 5;
       const shortValue = "Test";
 
@@ -129,7 +129,7 @@ describe("UInputSearch.vue", () => {
       expect(component.emitted("update:modelValue")).toBeUndefined();
     });
 
-    it("Search Button Label - renders search button with label", () => {
+    it("Search Button Label – renders search button with label", () => {
       const searchButtonLabel = "Search";
       const component = mount(UInputSearch, {
         props: {
@@ -140,7 +140,7 @@ describe("UInputSearch.vue", () => {
       expect(component.getComponent(UButton).props("label")).toBe(searchButtonLabel);
     });
 
-    it("Search Button Label - hides search icon when provided", async () => {
+    it("Search Button Label – hides search icon when provided", async () => {
       const component = mount(UInputSearch, {
         props: {
           modelValue: "Test input",
@@ -151,7 +151,7 @@ describe("UInputSearch.vue", () => {
       expect(component.find("[vl-key='searchIcon']").exists()).toBe(false);
     });
 
-    it("Debounce - sets debounce time for input", async () => {
+    it("Debounce – sets debounce time for input", async () => {
       vi.useFakeTimers();
 
       const debounceTime = 300;
@@ -175,7 +175,7 @@ describe("UInputSearch.vue", () => {
       vi.useRealTimers();
     });
 
-    it("LeftIcon - passes leftIcon to UInput", () => {
+    it("LeftIcon – passes leftIcon to UInput", () => {
       const leftIcon = "search";
       const component = mount(UInputSearch, {
         props: {
@@ -187,7 +187,7 @@ describe("UInputSearch.vue", () => {
       expect(component.getComponent(UIcon).props("name")).toBe(leftIcon);
     });
 
-    it("Right Icon - passes rightIcon to search icon component", () => {
+    it("Right Icon – passes rightIcon to search icon component", () => {
       const rightIcon = "close";
       const component = mount(UInputSearch, {
         props: {
@@ -198,7 +198,7 @@ describe("UInputSearch.vue", () => {
       expect(component.findComponent(UIcon).props("name")).toBe(rightIcon);
     });
 
-    it("Readonly - sets readonly state on UInput", () => {
+    it("Readonly – sets readonly state on UInput", () => {
       const component = mount(UInputSearch, {
         props: {
           modelValue: "Test input",
@@ -209,7 +209,7 @@ describe("UInputSearch.vue", () => {
       expect(component.get("input").attributes("readonly")).toBeDefined();
     });
 
-    it("Disabled - passes disabled state to UInput", () => {
+    it("Disabled – passes disabled state to UInput", () => {
       const component = mount(UInputSearch, {
         props: {
           modelValue: "Test input",
@@ -245,7 +245,7 @@ describe("UInputSearch.vue", () => {
   });
 
   describe("Slots", () => {
-    it("Left - renders left slot content", () => {
+    it("Left – renders left slot content", () => {
       const slotContent = "Left Slot Content";
       const component = mount(UInputSearch, {
         slots: {
@@ -256,7 +256,7 @@ describe("UInputSearch.vue", () => {
       expect(component.html()).toContain(slotContent);
     });
 
-    it("Right - renders right slot content", () => {
+    it("Right – renders right slot content", () => {
       const slotContent = "Right Slot Content";
       const component = mount(UInputSearch, {
         slots: {
@@ -267,7 +267,7 @@ describe("UInputSearch.vue", () => {
       expect(component.html()).toContain(slotContent);
     });
 
-    it("Right - exposes right icon name", () => {
+    it("Right – exposes right icon name", () => {
       const rightIcon = "close";
       const component = mount(UInputSearch, {
         props: {
@@ -278,7 +278,7 @@ describe("UInputSearch.vue", () => {
       expect(component.getComponent(UIcon).props("name")).toBe(rightIcon);
     });
 
-    it("Right - exposes Search Button Label", () => {
+    it("Right – exposes Search Button Label", () => {
       const searchButtonLabel = "Search";
       const component = mount(UInputSearch, {
         props: {
@@ -291,7 +291,7 @@ describe("UInputSearch.vue", () => {
   });
 
   describe("Events", () => {
-    it("Clear - emits clear event when clear icon is clicked", async () => {
+    it("Clear – emits clear event when clear icon is clicked", async () => {
       const component = mount(UInputSearch, {
         props: {
           modelValue: "Test input",
@@ -306,7 +306,7 @@ describe("UInputSearch.vue", () => {
       expect(component.emitted("update:modelValue")![0][0]).toBe("");
     });
 
-    it("Search - emits search event when search button is clicked", async () => {
+    it("Search – emits search event when search button is clicked", async () => {
       const component = mount(UInputSearch, {
         props: {
           modelValue: "Test input",
@@ -320,7 +320,7 @@ describe("UInputSearch.vue", () => {
       expect(component.emitted("search")![0][0]).toBe("Test input");
     });
 
-    it("Search - emits search event when search icon is clicked", async () => {
+    it("Search – emits search event when search icon is clicked", async () => {
       const component = mount(UInputSearch, {
         props: {
           modelValue: "Test input",
@@ -338,7 +338,7 @@ describe("UInputSearch.vue", () => {
   });
 
   describe("Exposed Properties", () => {
-    it("Input - exposes input element ref", () => {
+    it("Input – exposes input element ref", () => {
       const component = mount(UInputSearch, {
         props: {
           modelValue: "test search",

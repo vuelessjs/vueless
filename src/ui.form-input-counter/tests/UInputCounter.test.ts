@@ -17,7 +17,7 @@ describe("UInputCounter.vue", () => {
   });
 
   describe("props", () => {
-    it("ModelValue - sets initial value correctly", () => {
+    it("ModelValue – sets initial value correctly", () => {
       const initialValue = 5;
       const component = mount(UInputCounter, {
         props: {
@@ -28,7 +28,7 @@ describe("UInputCounter.vue", () => {
       expect(component.getComponent(UInputNumber).props("modelValue")).toBe(initialValue);
     });
 
-    it("ModelValue - updates value on input", async () => {
+    it("ModelValue – updates value on input", async () => {
       const component = mount(UInputCounter, {
         props: {
           modelValue: 5,
@@ -60,7 +60,7 @@ describe("UInputCounter.vue", () => {
       expect(component.emitted("update:modelValue")![2][0]).toBe(6);
     });
 
-    it("Step - updated value with provided step", async () => {
+    it("Step – updated value with provided step", async () => {
       const component = mount(UInputCounter, {
         props: {
           modelValue: 5,
@@ -86,7 +86,7 @@ describe("UInputCounter.vue", () => {
       expect(component.emitted("update:modelValue")![1][0]).toBe(5);
     });
 
-    it("Step - does not update value above max", async () => {
+    it("Step – does not update value above max", async () => {
       const component = mount(UInputCounter, {
         props: {
           modelValue: 5,
@@ -107,7 +107,7 @@ describe("UInputCounter.vue", () => {
       expect(addButton.props("disabled")).toBe(true);
     });
 
-    it("Step - does not update value below min", async () => {
+    it("Step – does not update value below min", async () => {
       const component = mount(UInputCounter, {
         props: {
           modelValue: 5,
@@ -128,7 +128,7 @@ describe("UInputCounter.vue", () => {
       expect(subtractButton.props("disabled")).toBe(true);
     });
 
-    it("Min - does not allow value below min", async () => {
+    it("Min – does not allow value below min", async () => {
       const component = mount(UInputCounter, {
         props: {
           modelValue: 5,
@@ -148,7 +148,7 @@ describe("UInputCounter.vue", () => {
       expect(subtractButton.props("disabled")).toBe(true);
     });
 
-    it("Max - does not allow value above max", async () => {
+    it("Max – does not allow value above max", async () => {
       const component = mount(UInputCounter, {
         props: {
           modelValue: 5,
@@ -168,7 +168,7 @@ describe("UInputCounter.vue", () => {
       expect(addButton.props("disabled")).toBe(true);
     });
 
-    it("Readonly - renders text instead of input when readonly set to true", async () => {
+    it("Readonly – renders text instead of input when readonly set to true", async () => {
       const component = mount(UInputCounter, {
         props: {
           modelValue: 5,
@@ -185,7 +185,7 @@ describe("UInputCounter.vue", () => {
       expect(counterText.text()).toBe("5");
     });
 
-    it("Size - passes correct size props to counter UInputNumber", () => {
+    it("Size – passes correct size props to counter UInputNumber", () => {
       const component = mount(UInputCounter, {
         props: {
           modelValue: 5,
@@ -199,7 +199,7 @@ describe("UInputCounter.vue", () => {
       expect(input.props("size")).toBe("lg");
     });
 
-    it("Size - applies correct class to counter text based on size prop", () => {
+    it("Size – applies correct class to counter text based on size prop", () => {
       const sizeClasses = {
         sm: "text-small px-1",
         md: "text-medium px-1.5",
@@ -221,7 +221,7 @@ describe("UInputCounter.vue", () => {
       });
     });
 
-    it("Disabled - disables buttons when disabled prop is true", async () => {
+    it("Disabled – disables buttons when disabled prop is true", async () => {
       const component = mount(UInputCounter, {
         props: {
           modelValue: 5,
@@ -235,7 +235,7 @@ describe("UInputCounter.vue", () => {
       expect(addButton.props("disabled")).toBe(true);
     });
 
-    it("Disabled - disables input when disabled prop is true", () => {
+    it("Disabled – disables input when disabled prop is true", () => {
       const component = mount(UInputCounter, {
         props: {
           modelValue: 5,
@@ -249,7 +249,7 @@ describe("UInputCounter.vue", () => {
       expect(input.props("disabled")).toBe(true);
     });
 
-    it("Data Test - applies correct data-test attributes", () => {
+    it("Data Test – applies correct data-test attributes", () => {
       const dataTestCases: string[] = ["subtract", "add"];
 
       dataTestCases.forEach((testCase) => {

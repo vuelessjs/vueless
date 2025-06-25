@@ -9,7 +9,7 @@ import type { Props } from "../types.ts";
 
 describe("UInput.vue", () => {
   describe("Props", () => {
-    it("ModelValue - set initial value correctly", () => {
+    it("ModelValue – set initial value correctly", () => {
       const initialValue = "Test input";
       const component = mount(UInput, {
         props: {
@@ -20,7 +20,7 @@ describe("UInput.vue", () => {
       expect(component.get("input").element.value).toBe(initialValue);
     });
 
-    it("ModelValue - updates value on input", async () => {
+    it("ModelValue – updates value on input", async () => {
       const updatedValue = "Test input 2";
 
       const component = mount(UInput, {
@@ -34,7 +34,7 @@ describe("UInput.vue", () => {
       expect(component.emitted("update:modelValue")![0][0]).toBe(updatedValue);
     });
 
-    it("Label - passes label to ULabel component", () => {
+    it("Label – passes label to ULabel component", () => {
       const labelText = "Test Label";
       const component = mount(UInput, {
         props: {
@@ -45,7 +45,7 @@ describe("UInput.vue", () => {
       expect(component.getComponent(ULabel).vm.$props.label).toBe(labelText);
     });
 
-    it("LabelAlign - passes labelAlign prop to ULabel component", () => {
+    it("LabelAlign – passes labelAlign prop to ULabel component", () => {
       const labelAlign = "left";
       const component = mount(UInput, {
         props: {
@@ -57,7 +57,7 @@ describe("UInput.vue", () => {
       expect(component.getComponent(ULabel).vm.$props.align).toBe(labelAlign);
     });
 
-    it("LabelAlign - applies correct class based on labelAlign prop", async () => {
+    it("LabelAlign – applies correct class based on labelAlign prop", async () => {
       const labelAlignCases = ["left", "right"];
       const labelAlignClass = "w-full";
 
@@ -73,7 +73,7 @@ describe("UInput.vue", () => {
       });
     });
 
-    it("Placeholder - sets placeholder text", () => {
+    it("Placeholder – sets placeholder text", () => {
       const placeholderText = "Enter text here";
       const component = mount(UInput, {
         props: {
@@ -84,7 +84,7 @@ describe("UInput.vue", () => {
       expect(component.get("input").attributes("placeholder")).toBe(placeholderText);
     });
 
-    it("Description - passes description to ULabel component", () => {
+    it("Description – passes description to ULabel component", () => {
       const descriptionText = "This is a description";
       const component = mount(UInput, {
         props: {
@@ -95,7 +95,7 @@ describe("UInput.vue", () => {
       expect(component.getComponent(ULabel).vm.$props.description).toBe(descriptionText);
     });
 
-    it("Error - passes error message to ULabel component", () => {
+    it("Error – passes error message to ULabel component", () => {
       const errorText = "This is an error";
       const component = mount(UInput, {
         props: {
@@ -106,7 +106,7 @@ describe("UInput.vue", () => {
       expect(component.getComponent(ULabel).vm.error).toBe(errorText);
     });
 
-    it("Error - applies error class when error prop is set", () => {
+    it("Error – applies error class when error prop is set", () => {
       const wrapperClasses = "!border-error focus-within:outline-error";
 
       const component = mount(UInput, {
@@ -118,7 +118,7 @@ describe("UInput.vue", () => {
       expect(component.get('[vl-key="wrapper"]').attributes("class")).toContain(wrapperClasses);
     });
 
-    it("Size - applies correct class based on size prop", () => {
+    it("Size – applies correct class based on size prop", () => {
       const sizeClasses = {
         sm: "text-small placeholder:text-small placeholder:font-normal",
         md: "text-medium placeholder:text-medium placeholder:font-normal",
@@ -166,7 +166,7 @@ describe("UInput.vue", () => {
       expect(iconComponent.props("name")).toBe(rightIcon);
     });
 
-    it("MaxLength - sets maxLength attribute on input", () => {
+    it("MaxLength – sets maxLength attribute on input", () => {
       const maxLengthValue = 10;
       const component = mount(UInput, {
         props: {
@@ -177,7 +177,7 @@ describe("UInput.vue", () => {
       expect(component.get("input").attributes("maxlength")).toBe(String(maxLengthValue));
     });
 
-    it("Type - sets correct type attribute on input", () => {
+    it("Type – sets correct type attribute on input", () => {
       const component = mount(UInput, {
         props: {
           type: "email",
@@ -187,7 +187,7 @@ describe("UInput.vue", () => {
       expect(component.get("input").attributes("type")).toBe("email");
     });
 
-    it("Type - applies typePassword classes when type is password and has value", () => {
+    it("Type – applies typePassword classes when type is password and has value", () => {
       const passwordClasses = "tracking-widest [-webkit-text-security:disc]";
 
       const component = mount(UInput, {
@@ -200,7 +200,7 @@ describe("UInput.vue", () => {
       expect(component.get("input").attributes("class")).toContain(passwordClasses);
     });
 
-    it("Inputmode - sets inputmode attribute on input", () => {
+    it("Inputmode – sets inputmode attribute on input", () => {
       const inputmode = "decimal";
       const component = mount(UInput, {
         props: {
@@ -211,7 +211,7 @@ describe("UInput.vue", () => {
       expect(component.get("input").attributes("inputmode")).toBe(inputmode);
     });
 
-    it("Readonly - sets readonly attribute on input", () => {
+    it("Readonly – sets readonly attribute on input", () => {
       const component = mount(UInput, {
         props: {
           readonly: true,
@@ -221,7 +221,7 @@ describe("UInput.vue", () => {
       expect(component.get("input").attributes("readonly")).toBeDefined();
     });
 
-    it("Disabled - sets disabled attribute on input", () => {
+    it("Disabled – sets disabled attribute on input", () => {
       const component = mount(UInput, {
         props: {
           disabled: true,
@@ -231,7 +231,7 @@ describe("UInput.vue", () => {
       expect(component.get("input").attributes("disabled")).toBeDefined();
     });
 
-    it("No Autocomplete - sets autocomplete to off and type to text", () => {
+    it("No Autocomplete – sets autocomplete to off and type to text", () => {
       const component = mount(UInput, {
         props: {
           noAutocomplete: true,
@@ -245,7 +245,7 @@ describe("UInput.vue", () => {
       expect(input.attributes("type")).toBe("text");
     });
 
-    it("No Autocomplete - sets autocomplete to on when false", () => {
+    it("No Autocomplete – sets autocomplete to on when false", () => {
       const component = mount(UInput, {
         props: {
           noAutocomplete: false,
@@ -259,7 +259,7 @@ describe("UInput.vue", () => {
       expect(input.attributes("type")).toBe("email");
     });
 
-    it("Id - sets id attribute on input", () => {
+    it("Id – sets id attribute on input", () => {
       const idValue = "test-input-id";
       const component = mount(UInput, {
         props: {
@@ -270,7 +270,7 @@ describe("UInput.vue", () => {
       expect(component.get("input").attributes("id")).toBe(idValue);
     });
 
-    it("DataTest - sets data-test attribute on input", () => {
+    it("DataTest – sets data-test attribute on input", () => {
       const dataTestValue = "test-input";
       const component = mount(UInput, {
         props: {
@@ -283,7 +283,7 @@ describe("UInput.vue", () => {
   });
 
   describe("Slots", () => {
-    it("Label - renders custom content from label slot", () => {
+    it("Label – renders custom content from label slot", () => {
       const customLabelContent = "Custom Label Content";
 
       const component = mount(UInput, {
@@ -301,7 +301,7 @@ describe("UInput.vue", () => {
       expect(labelElement.text()).toBe(customLabelContent);
     });
 
-    it("Label - exposes label prop to slot", () => {
+    it("Label – exposes label prop to slot", () => {
       const defaultLabel = "Test Label";
 
       const component = mount(UInput, {
@@ -319,7 +319,7 @@ describe("UInput.vue", () => {
       expect(labelElement.text()).toBe(`Modified ${defaultLabel}`);
     });
 
-    it("Left - renders custom content from left slot", () => {
+    it("Left – renders custom content from left slot", () => {
       const slotText = "Custom Left Content";
       const slotContent = `<span class="custom-left">${slotText}</span>`;
 
@@ -335,7 +335,7 @@ describe("UInput.vue", () => {
       expect(leftSlotElement.text()).toBe("Custom Left Content");
     });
 
-    it("Left - exposes icon-name to slot when leftIcon prop is provided", () => {
+    it("Left – exposes icon-name to slot when leftIcon prop is provided", () => {
       const leftIcon = "search";
       const component = mount(UInput, {
         props: {
@@ -349,7 +349,7 @@ describe("UInput.vue", () => {
       expect(component.find('[vl-key="leftSlot"]').text()).toBe(`Icon: ${leftIcon}`);
     });
 
-    it("Left - renders leftIcon when no slot content is provided", () => {
+    it("Left – renders leftIcon when no slot content is provided", () => {
       const leftIcon = "search";
       const component = mount(UInput, {
         props: {
@@ -363,7 +363,7 @@ describe("UInput.vue", () => {
       expect(iconComponent.props("name")).toBe(leftIcon);
     });
 
-    it("Left - slot content overrides leftIcon prop", () => {
+    it("Left – slot content overrides leftIcon prop", () => {
       const leftIcon = "search";
       const slotContent = '<span class="custom-icon">Custom Content</span>';
       const component = mount(UInput, {
@@ -379,7 +379,7 @@ describe("UInput.vue", () => {
       expect(component.findComponent(UIcon).exists()).toBe(false);
     });
 
-    it("Right - renders custom content from right slot", () => {
+    it("Right – renders custom content from right slot", () => {
       const slotText = "Custom Right Content";
       const slotContent = `<span class="custom-right">${slotText}</span>`;
 
@@ -395,7 +395,7 @@ describe("UInput.vue", () => {
       expect(rightSlotElement.text()).toBe(slotText);
     });
 
-    it("Right - exposes icon-name to slot when rightIcon prop is provided", () => {
+    it("Right – exposes icon-name to slot when rightIcon prop is provided", () => {
       const rightIcon = "close";
       const component = mount(UInput, {
         props: {
@@ -409,7 +409,7 @@ describe("UInput.vue", () => {
       expect(component.find('[vl-key="rightSlot"]').text()).toBe(`Icon: ${rightIcon}`);
     });
 
-    it("Right - renders rightIcon when no slot content is provided", () => {
+    it("Right – renders rightIcon when no slot content is provided", () => {
       const rightIcon = "close";
       const component = mount(UInput, {
         props: {
@@ -423,7 +423,7 @@ describe("UInput.vue", () => {
       expect(iconComponent.props("name")).toBe(rightIcon);
     });
 
-    it("Right - slot content overrides rightIcon prop", () => {
+    it("Right – slot content overrides rightIcon prop", () => {
       const rightIcon = "close";
       const slotContent = '<span class="custom-icon">Custom Content</span>';
       const component = mount(UInput, {
@@ -441,7 +441,7 @@ describe("UInput.vue", () => {
   });
 
   describe("Events", () => {
-    it("Input - emits when input event occurs", async () => {
+    it("Input – emits when input event occurs", async () => {
       const inputValue = "test input";
 
       const component = mount(UInput, {
@@ -459,7 +459,7 @@ describe("UInput.vue", () => {
       expect(component.emitted("input")![0]).toEqual([inputValue]);
     });
 
-    it("Change - emits when change event occurs", async () => {
+    it("Change – emits when change event occurs", async () => {
       const component = mount(UInput, {
         props: {
           modelValue: "initial",
@@ -472,7 +472,7 @@ describe("UInput.vue", () => {
       expect(component.emitted("change")![0][0]).toBeInstanceOf(Event);
     });
 
-    it("Focus - emits when input gains focus", async () => {
+    it("Focus – emits when input gains focus", async () => {
       const component = mount(UInput, {
         props: {
           modelValue: "",
@@ -485,7 +485,7 @@ describe("UInput.vue", () => {
       expect(component.emitted("focus")![0][0]).toBeInstanceOf(FocusEvent);
     });
 
-    it("Blur - emits when input loses focus", async () => {
+    it("Blur – emits when input loses focus", async () => {
       const component = mount(UInput, {
         props: {
           modelValue: "",
@@ -498,7 +498,7 @@ describe("UInput.vue", () => {
       expect(component.emitted("blur")![0][0]).toBeInstanceOf(FocusEvent);
     });
 
-    it("Click - emits when input is clicked", async () => {
+    it("Click – emits when input is clicked", async () => {
       const component = mount(UInput, {
         props: {
           modelValue: "",
@@ -511,7 +511,7 @@ describe("UInput.vue", () => {
       expect(component.emitted("click")![0][0]).toBeInstanceOf(MouseEvent);
     });
 
-    it("Mousedown - emits when mouse is pressed down on input", async () => {
+    it("Mousedown – emits when mouse is pressed down on input", async () => {
       const component = mount(UInput, {
         props: {
           modelValue: "",
@@ -524,7 +524,7 @@ describe("UInput.vue", () => {
       expect(component.emitted("mousedown")![0][0]).toBeInstanceOf(MouseEvent);
     });
 
-    it("Keydown - emits when key is pressed down", async () => {
+    it("Keydown – emits when key is pressed down", async () => {
       const component = mount(UInput, {
         props: {
           modelValue: "",
@@ -537,7 +537,7 @@ describe("UInput.vue", () => {
       expect(component.emitted("keydown")![0][0]).toBeInstanceOf(KeyboardEvent);
     });
 
-    it("Paste - emits when content is pasted", async () => {
+    it("Paste – emits when content is pasted", async () => {
       const component = mount(UInput, {
         props: {
           modelValue: "",
@@ -549,7 +549,7 @@ describe("UInput.vue", () => {
       expect(component.emitted("paste")).toBeTruthy();
     });
 
-    it("Copy - emits when content is copied", async () => {
+    it("Copy – emits when content is copied", async () => {
       const component = mount(UInput, {
         props: {
           modelValue: "content to copy",
@@ -563,7 +563,7 @@ describe("UInput.vue", () => {
   });
 
   describe("Exposed Properties", () => {
-    it("InputRef - exposes input element ref", () => {
+    it("InputRef – exposes input element ref", () => {
       const component = mount(UInput, {
         props: {
           modelValue: "test",
