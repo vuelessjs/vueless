@@ -58,10 +58,15 @@ const emit = defineEmits([
   "searchChange",
 
   /**
-   * Triggers when the option is removed.
+   * Triggers when the option from multiple select is removed.
    * @property {string} option
    */
-  "remove",
+  "removeOption",
+
+  /**
+   * Triggers when the select is cleared.
+   */
+  "clear",
 
   /**
    * Triggers when an option is selected.
@@ -331,7 +336,7 @@ function onClickClearItem(event: MouseEvent, option: Option) {
 
   emit("update:modelValue", value);
   emit("change", { value, options: props.options });
-  emit("remove", option);
+  emit("removeOption", option);
 }
 
 function onClickClear() {
@@ -341,7 +346,7 @@ function onClickClear() {
 
   emit("update:modelValue", value);
   emit("change", { value, options: props.options });
-  emit("remove", props.options);
+  emit("clear");
 
   deactivate();
 }
