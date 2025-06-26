@@ -578,7 +578,7 @@ const {
             :name="config.defaults.clearIcon"
             v-bind="clearIconAttrs"
             :data-test="getDataTest('clear')"
-            @click="onClickClear"
+            @click.stop="onClickClear"
           />
         </slot>
       </div>
@@ -795,7 +795,7 @@ const {
                     :underlined="false"
                     v-bind="listClearAllAttrs"
                     :data-test="getDataTest('clear-all')"
-                    @click="onClickClear"
+                    @click.stop="onClickClear"
                   />
                 </div>
               </template>
