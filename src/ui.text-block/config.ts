@@ -32,18 +32,18 @@ export default /*tw*/ {
         center: "text-center",
         right: "text-right",
       },
-      line: {
-        true: "leading-none",
-      },
-      wrap: {
-        false: "text-nowrap",
-      },
       weight: {
         light: "font-light",
         normal: "font-normal",
         medium: "font-medium",
         semibold: "font-semibold",
         bold: "font-bold",
+      },
+      line: {
+        true: "leading-none",
+      },
+      wrap: {
+        false: "text-nowrap",
       },
     },
     compoundVariants: [
@@ -59,8 +59,8 @@ export default /*tw*/ {
     variant: "default",
     size: "md",
     align: "left",
+    weight: "normal",
     line: false,
     wrap: true,
-    weight: "normal",
   },
 };

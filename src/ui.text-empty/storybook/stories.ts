@@ -11,6 +11,8 @@ import UButton from "../../ui.button/UButton.vue";
 import UIcon from "../../ui.image-icon/UIcon.vue";
 import URow from "../../ui.container-row/URow.vue";
 import UBadge from "../../ui.text-badge/UBadge.vue";
+import ULink from "../../ui.button-link/ULink.vue";
+import UText from "../../ui.text-block/UText.vue";
 
 import emptyInbox from "./assets/empty-inbox.png";
 
@@ -40,7 +42,7 @@ export default {
 } as Meta;
 
 const DefaultTemplate: StoryFn<UEmptyArgs> = (args: UEmptyArgs) => ({
-  components: { UEmpty, UIcon, UButton, UBadge },
+  components: { UEmpty, UIcon, UButton, UBadge, ULink, UText },
   setup: () => ({ args, slots: getSlotNames(UEmpty.__name), emptyInbox }),
   template: `
     <UEmpty v-bind="args">
@@ -85,10 +87,10 @@ export const DefaultSlot = DefaultTemplate.bind({});
 DefaultSlot.args = {
   slotTemplate: `
     <template #default>
-      <span>
-        <i>Nothing to display here yet</i>. You can <a href="#" class="underline">add your own</a> <b>content</b>
+      <UText>
+        <i>Nothing to display here yet</i>. You can <ULink class="inline">add your own</ULink> <b>content</b>
         or include custom <b>components</b> to enhance the view.
-      </span>
+      </UText>
     </template>
   `,
 };

@@ -32,12 +32,6 @@ export default {
   },
   argTypes: {
     ...getArgTypes(UText.__name),
-    weight: {
-      ...getArgTypes(UText.__name)?.weight,
-      options: (getArgTypes(UText.__name)?.weight?.table?.type?.summary as string)
-        ?.split(" | ")
-        ?.filter((option) => option !== "light" && option !== "semibold"),
-    },
   },
   parameters: {
     docs: {
@@ -76,8 +70,19 @@ Default.args = {};
 export const Align = EnumTemplate.bind({});
 Align.args = { enum: "align", class: "w-full" };
 
-export const Weight = EnumTemplate.bind({});
-Weight.args = { enum: "weight" };
+export const Weight: StoryFn<UTextArgs> = (args: UTextArgs, { argTypes }) => ({
+  components: { UText, UCol },
+  setup: () => ({ args, argTypes, getArgs }),
+  template: `
+    <UCol>
+      <UText v-bind="args" weight="normal" />
+
+      <UText v-bind="args" weight="medium" />
+
+      <UText v-bind="args" weight="bold" />
+    </UCol>
+  `,
+});
 
 export const Sizes = EnumTemplate.bind({});
 Sizes.args = { enum: "size" };
