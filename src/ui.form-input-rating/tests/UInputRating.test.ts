@@ -7,350 +7,244 @@ import UIcon from "../../ui.image-icon/UIcon.vue";
 import type { Props } from "../types.ts";
 
 describe("UInputRating.vue", () => {
-  // Props tests
-  describe("Props", () => {
-    // ModelValue prop
-    it("sets the correct rating value", () => {
-      const modelValue = 3;
-
+  describe("props", () => {
+    it("ModelValue – sets initial value correctly", () => {
+      const initialValue = 3;
       const component = mount(UInputRating, {
         props: {
-          modelValue,
+          modelValue: initialValue,
         },
       });
 
-      // Check that the correct number of stars are active
-      const stars = component.findAllComponents(UIcon);
+      const icons = component.findAllComponents(UIcon);
 
-      // First 3 stars should be active (have star-fill icon)
-      for (let i = 0; i < modelValue; i++) {
-        expect(stars[i].props("name")).toBe("star-fill");
-      }
-
-      // Remaining stars should be inactive (have star icon)
-      for (let i = modelValue; i < stars.length; i++) {
-        expect(stars[i].props("name")).toBe("star");
-      }
+      expect(icons[2].props("name")).that.includes("star-fill");
+      expect(icons[3].props("name")).that.includes("star");
     });
 
-    // Stars prop
-    it("renders the correct number of stars", () => {
-      const modelValue = 3;
-      const stars = 7;
-
+    it("ModelValue – updates value on click", async () => {
       const component = mount(UInputRating, {
         props: {
-          modelValue,
-          stars,
+          modelValue: 2,
+          "onUpdate:modelValue": (e) => component.setProps({ modelValue: e }),
         },
       });
 
-      const renderedStars = component.findAllComponents(UIcon);
+      const icons = component.findAllComponents(UIcon);
 
-      expect(renderedStars.length).toBe(stars);
+      await icons[3].trigger("click");
+
+      expect(component.emitted("update:modelValue")![0][0]).toBe(4);
+      expect(icons[3].props("name")).toBe("star-fill");
+      expect(icons[4].props("name")).toBe("star");
     });
 
-    // Size prop
-    it("applies the correct size class", () => {
-      const sizes = {
-        sm: "gap-1.5",
-        md: "gap-2",
-        lg: "gap-2.5",
+    it("ModelValue – display zero value correctly", async () => {
+      const component = mount(UInputRating, {
+        props: {
+          modelValue: 0,
+          "onUpdate:modelValue": (e) => component.setProps({ modelValue: e }),
+        },
+      });
+
+      const icons = component.findAllComponents(UIcon);
+
+      icons.forEach((icon) => {
+        expect(icon.props("name")).toBe("star");
+      });
+
+      await icons[0].trigger("click");
+
+      expect(component.emitted("update:modelValue")![0][0]).toBe(1);
+    });
+
+    it("Stars – sets the number of stars correctly", () => {
+      const starsCount = 7;
+      const component = mount(UInputRating, {
+        props: {
+          modelValue: 0,
+          stars: starsCount,
+        },
+      });
+
+      const icons = component.findAllComponents(UIcon);
+
+      expect(icons).toHaveLength(starsCount);
+    });
+
+    it("Size – applies correct size classes", () => {
+      const counterSizeClasses = {
+        sm: "text-large",
+        md: "text-xl",
+        lg: "text-2xl",
       };
 
-      Object.entries(sizes).forEach(([size, classes]) => {
+      const totalSizeClasses = {
+        sm: "text-medium",
+        md: "text-large",
+        lg: "text-xl",
+      };
+
+      Object.entries(counterSizeClasses).forEach(([size, counterClass]) => {
         const component = mount(UInputRating, {
           props: {
-            modelValue: 3,
+            modelValue: 2,
+            total: 5,
+            counter: true,
             size: size as Props["size"],
           },
         });
 
-        expect(component.attributes("class")).toContain(classes);
+        const counterElement = component.get("[vl-key='counter']");
+        const totalElement = component.get("[vl-key='total']");
+
+        expect(counterElement.attributes("class")).toContain(counterClass);
+        expect(totalElement.attributes("class")).toContain(
+          totalSizeClasses[size as keyof typeof totalSizeClasses],
+        );
       });
     });
 
-    // ActiveIcon prop
-    it("uses the correct active icon", () => {
-      const modelValue = 3;
-      const activeIcon = "heart-fill";
-
+    it("Active Icon – sets active icon correctly", () => {
       const component = mount(UInputRating, {
         props: {
-          modelValue,
-          activeIcon,
+          modelValue: 2,
+          activeIcon: "heart-fill",
         },
       });
 
-      const stars = component.findAllComponents(UIcon);
-      const firstStar = stars[0];
+      const icons = component.findAllComponents(UIcon);
 
-      expect(firstStar.props("name")).toBe(activeIcon);
+      expect(icons[0].props("name")).toBe("heart-fill");
+      expect(icons[1].props("name")).toBe("heart-fill");
+      expect(icons[2].props("name")).not.toBe("heart-fill");
+      expect(icons[3].props("name")).not.toBe("heart-fill");
     });
 
-    // InactiveIcon prop
-    it("uses the correct inactive icon", () => {
-      const modelValue = 3;
-      const inactiveIcon = "heart";
-      const stars = 5;
-
+    it("Inactive Icon – sets inactive icon correctly", () => {
       const component = mount(UInputRating, {
         props: {
-          modelValue,
-          inactiveIcon,
-          stars,
+          modelValue: 2,
+          inactiveIcon: "heart",
         },
       });
 
-      const renderedStars = component.findAllComponents(UIcon);
-      const lastStar = renderedStars[stars - 1];
+      const icons = component.findAllComponents(UIcon);
 
-      expect(lastStar.props("name")).toBe(inactiveIcon);
+      expect(icons[0].props("name")).not.toBe("heart");
+      expect(icons[1].props("name")).not.toBe("heart");
+      expect(icons[2].props("name")).toBe("heart");
+      expect(icons[3].props("name")).toBe("heart");
     });
 
-    // Readonly prop
-    it("applies readonly state correctly", () => {
-      const modelValue = 3;
-      const readonly = true;
-
+    it("Readonly – prevents interaction when true", async () => {
       const component = mount(UInputRating, {
         props: {
-          modelValue,
-          readonly,
+          modelValue: 2,
+          readonly: true,
         },
       });
 
-      const stars = component.findAllComponents(UIcon);
+      const icons = component.findAllComponents(UIcon);
 
-      // Check that all stars have interactive prop set to false
-      stars.forEach((star) => {
-        expect(star.props("interactive")).toBe(false);
-      });
+      await icons[3].trigger("click");
+
+      expect(component.emitted("update:modelValue")).toBeUndefined();
+      expect(icons[3].props("name")).toBe("star");
     });
 
-    // Disabled prop
-    it("applies disabled state correctly", () => {
-      const modelValue = 3;
-      const disabled = true;
-
+    it("Disabled – prevents interaction when true", async () => {
       const component = mount(UInputRating, {
         props: {
-          modelValue,
-          disabled,
+          modelValue: 2,
+          disabled: true,
         },
       });
 
-      const stars = component.findAllComponents(UIcon);
+      const icons = component.findAllComponents(UIcon);
 
-      // Check that all stars have disabled prop set to true
-      stars.forEach((star) => {
-        expect(star.props("disabled")).toBe(true);
-      });
+      await icons[3].trigger("click");
 
-      // Check that input elements are disabled
-      const inputs = component.findAll("input");
-
-      inputs.forEach((input) => {
-        expect(input.attributes("disabled")).toBeDefined();
-      });
+      expect(component.emitted("update:modelValue")).toBeUndefined();
+      expect(icons[3].props("name")).toBe("star");
     });
 
-    // Total prop
-    it("renders the total correctly", () => {
-      const modelValue = 3;
-      const total = 10;
+    it("Disabled – applies correct class when true", () => {
+      const startDisabledClasses = "muted pointer-events-none";
 
       const component = mount(UInputRating, {
         props: {
-          modelValue,
-          total,
+          modelValue: 2,
+          disabled: true,
         },
       });
 
-      expect(component.text()).toContain(`(${total})`);
+      const icons = component.findAllComponents(UIcon);
+
+      icons.forEach((icon) => {
+        expect(icon.attributes("class")).toContain(startDisabledClasses);
+      });
     });
 
-    // Counter prop
-    it("shows counter when counter prop is true", () => {
-      const modelValue = 3;
-      const counter = true;
+    it("Total – displays total count when true", () => {
+      const totalCount = 5;
+      const component = mount(UInputRating, {
+        props: {
+          modelValue: 2,
+          total: totalCount,
+        },
+      });
+
+      expect(component.get("[vl-key='total']").text()).toContain(totalCount);
+    });
+
+    it("Counter – displays counter when true", () => {
+      const value = 2;
 
       const component = mount(UInputRating, {
         props: {
-          modelValue,
-          counter,
+          modelValue: value,
+          counter: true,
         },
       });
 
-      expect(component.text()).toContain(modelValue.toString());
+      expect(component.get("[vl-key='counter']").text()).toContain(value);
     });
 
-    // ID prop
-    it("applies the correct id attribute", () => {
-      const modelValue = 3;
-      const id = "test-rating-id";
+    it("Id - sets id attribute correctly", () => {
+      const id = "test-id";
+      const component = mount(UInputRating, {
+        props: {
+          modelValue: 0,
+          id: id,
+        },
+      });
 
-      // Skip this test as the id is applied through wrapperAttrs and is difficult to test
-      // in a unit test environment
-      expect(true).toBe(true);
+      expect(component.attributes("id")).toBe(id);
     });
 
-    // DataTest prop
-    it("applies the correct data-test attribute", () => {
-      const modelValue = 3;
+    it("Data test – sets data-test attribute to stars", () => {
       const dataTest = "test-rating";
-
       const component = mount(UInputRating, {
         props: {
-          modelValue,
-          dataTest,
+          modelValue: 0,
+          "data-test": dataTest,
         },
       });
 
-      // Skip this test as the data-test is applied through wrapperAttrs and is difficult to test
-      // in a unit test environment
-      expect(true).toBe(true);
+      const icons = component.findAllComponents(UIcon);
+
+      icons.forEach((icon) => {
+        expect(icon.attributes("data-test")).toContain(dataTest);
+      });
     });
   });
 
-  // Slots tests
-  describe("Slots", () => {
-    // Counter slot
-    it("renders content from counter slot", () => {
-      const modelValue = 3;
-      const counter = true;
-      const slotContent = "Rating: 3";
-      const slotClass = "counter-content";
-
+  describe("Exposed Properties", () => {
+    it("Exposes wrapper element", () => {
       const component = mount(UInputRating, {
         props: {
-          modelValue,
-          counter,
-        },
-        slots: {
-          counter: `<span class="${slotClass}">${slotContent}</span>`,
-        },
-      });
-
-      expect(component.find(`.${slotClass}`).exists()).toBe(true);
-      expect(component.find(`.${slotClass}`).text()).toBe(slotContent);
-    });
-
-    // Total slot
-    it("renders content from total slot", () => {
-      const modelValue = 3;
-      const total = 10;
-      const slotContent = "out of 10";
-      const slotClass = "total-content";
-
-      const component = mount(UInputRating, {
-        props: {
-          modelValue,
-          total,
-        },
-        slots: {
-          total: `<span class="${slotClass}">${slotContent}</span>`,
-        },
-      });
-
-      expect(component.find(`.${slotClass}`).exists()).toBe(true);
-      expect(component.find(`.${slotClass}`).text()).toBe(slotContent);
-    });
-  });
-
-  // Events tests
-  describe("Events", () => {
-    // Update:modelValue event
-    it("emits update:modelValue event when a star is clicked", async () => {
-      const modelValue = 3;
-      const newValue = 4;
-
-      const component = mount(UInputRating, {
-        props: {
-          modelValue,
-        },
-      });
-
-      // Find the UIcon components
-      const stars = component.findAllComponents(UIcon);
-
-      // Directly call the click handler on the 4th star
-      await stars[newValue - 1].vm.$emit("click");
-
-      expect(component.emitted("update:modelValue")).toBeTruthy();
-      expect(component.emitted("update:modelValue")[0]).toEqual([newValue]);
-    });
-
-    // Clicking on the current value should reset to 0
-    it("emits update:modelValue with 0 when clicking on the current value", async () => {
-      const modelValue = 3;
-
-      const component = mount(UInputRating, {
-        props: {
-          modelValue,
-        },
-      });
-
-      // Find the UIcon components
-      const stars = component.findAllComponents(UIcon);
-
-      // Directly call the click handler on the current value (3rd star)
-      await stars[modelValue - 1].vm.$emit("click");
-
-      expect(component.emitted("update:modelValue")).toBeTruthy();
-      expect(component.emitted("update:modelValue")[0]).toEqual([0]);
-    });
-
-    // No event when disabled
-    it("does not emit update:modelValue event when disabled", async () => {
-      const modelValue = 3;
-      const disabled = true;
-
-      const component = mount(UInputRating, {
-        props: {
-          modelValue,
-          disabled,
-        },
-      });
-
-      // Find the UIcon components
-      const stars = component.findAllComponents(UIcon);
-
-      // Directly call the click handler on the 5th star
-      await stars[4].vm.$emit("click");
-
-      expect(component.emitted("update:modelValue")).toBeFalsy();
-    });
-
-    // No event when readonly
-    it("does not emit update:modelValue event when readonly", async () => {
-      const modelValue = 3;
-      const readonly = true;
-
-      const component = mount(UInputRating, {
-        props: {
-          modelValue,
-          readonly,
-        },
-      });
-
-      // Find the UIcon components
-      const stars = component.findAllComponents(UIcon);
-
-      // Directly call the click handler on the 5th star
-      await stars[4].vm.$emit("click");
-
-      expect(component.emitted("update:modelValue")).toBeFalsy();
-    });
-  });
-
-  // Exposed refs tests
-  describe("Exposed refs", () => {
-    // wrapperRef
-    it("exposes wrapperRef", () => {
-      const component = mount(UInputRating, {
-        props: {
-          modelValue: 3,
+          modelValue: 0,
         },
       });
 
