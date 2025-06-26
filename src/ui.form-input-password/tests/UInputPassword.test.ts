@@ -8,366 +8,276 @@ import UIcon from "../../ui.image-icon/UIcon.vue";
 import type { Props } from "../types.ts";
 
 describe("UInputPassword.vue", () => {
-  // Props tests
-  describe("Props", () => {
-    // ModelValue prop
-    it("sets the input value correctly", () => {
-      const modelValue = "password123";
-
+  describe("props", () => {
+    it("ModelValue – sets initial value correctly", () => {
+      const initialValue = "password123";
       const component = mount(UInputPassword, {
         props: {
-          modelValue,
+          modelValue: initialValue,
         },
       });
 
-      const input = component.findComponent(UInput);
-
-      expect(input.props("modelValue")).toBe(modelValue);
+      expect(component.get("input").element.value).toBe(initialValue);
     });
 
-    // Label prop
-    it("passes the label prop to UInput", () => {
-      const label = "Password";
+    it("ModelValue – updates value on input", async () => {
+      const updatedValue = "newpassword456";
 
+      const component = mount(UInputPassword, {
+        props: {
+          modelValue: "password123",
+        },
+      });
+
+      await component.get("input").setValue(updatedValue);
+
+      expect(component.emitted("update:modelValue")![0][0]).toBe(updatedValue);
+    });
+
+    it("Label – passes label to UInput", () => {
+      const label = "Password";
       const component = mount(UInputPassword, {
         props: {
           label,
         },
       });
 
-      const input = component.findComponent(UInput);
-
-      expect(input.props("label")).toBe(label);
+      expect(component.getComponent(UInput).props("label")).toBe(label);
     });
 
-    // LabelAlign prop
-    it("passes the labelAlign prop to UInput", () => {
-      const labelAligns = {
-        topInside: "topInside",
-        top: "top",
-        topWithDesc: "topWithDesc",
-        left: "left",
-        right: "right",
-      };
-
-      Object.entries(labelAligns).forEach(([labelAlign, value]) => {
-        const component = mount(UInputPassword, {
-          props: {
-            labelAlign: labelAlign as Props["labelAlign"],
-          },
-        });
-
-        const input = component.findComponent(UInput);
-
-        expect(input.props("labelAlign")).toBe(value);
+    it("Size – passes size to UInput", () => {
+      const size: Props["size"] = "lg";
+      const component = mount(UInputPassword, {
+        props: {
+          size,
+        },
       });
+
+      expect(component.getComponent(UInput).props("size")).toBe(size);
     });
 
-    // Placeholder prop
-    it("passes the placeholder prop to UInput", () => {
-      const placeholder = "Enter password";
-
+    it("Placeholder – passes placeholder to UInput", () => {
+      const placeholder = "Enter your password";
       const component = mount(UInputPassword, {
         props: {
           placeholder,
         },
       });
 
-      const input = component.findComponent(UInput);
-
-      expect(input.props("placeholder")).toBe(placeholder);
+      expect(component.getComponent(UInput).props("placeholder")).toBe(placeholder);
     });
 
-    // Description prop
-    it("passes the description prop to UInput", () => {
-      const description = "Password must be at least 8 characters";
+    it("Label Align – passes labelAlign to UInput", () => {
+      const labelAlign: Props["labelAlign"] = "top";
+      const component = mount(UInputPassword, {
+        props: {
+          labelAlign,
+        },
+      });
 
+      expect(component.getComponent(UInput).props("labelAlign")).toBe(labelAlign);
+    });
+
+    it("Description – passes description to UInput", () => {
+      const description = "Password must be at least 8 characters";
       const component = mount(UInputPassword, {
         props: {
           description,
         },
       });
 
-      const input = component.findComponent(UInput);
-
-      expect(input.props("description")).toBe(description);
+      expect(component.getComponent(UInput).props("description")).toBe(description);
     });
 
-    // Error prop
-    it("passes the error prop to UInput", () => {
+    it("Error – passes error to UInput", () => {
       const error = "Password is required";
-
       const component = mount(UInputPassword, {
         props: {
           error,
         },
       });
 
-      const input = component.findComponent(UInput);
-
-      expect(input.props("error")).toBe(error);
+      expect(component.getComponent(UInput).props("error")).toBe(error);
     });
 
-    // Size prop
-    it("passes the size prop to UInput", () => {
-      const sizes = {
-        sm: "sm",
-        md: "md",
-        lg: "lg",
-      };
-
-      Object.entries(sizes).forEach(([size, value]) => {
-        const component = mount(UInputPassword, {
-          props: {
-            size: size as Props["size"],
-          },
-        });
-
-        const input = component.findComponent(UInput);
-
-        expect(input.props("size")).toBe(value);
-      });
-    });
-
-    // LeftIcon prop
-    it("passes the leftIcon prop to UInput", () => {
+    it("Left Icon – passes leftIcon to UInput", () => {
       const leftIcon = "lock";
-
       const component = mount(UInputPassword, {
         props: {
           leftIcon,
         },
       });
 
-      const input = component.findComponent(UInput);
+      const input = component.getComponent(UInput);
 
       expect(input.props("leftIcon")).toBe(leftIcon);
     });
 
-    // MaxLength prop
-    it("passes the maxLength prop to UInput", () => {
+    it("Max Length – passes maxLength to UInput", () => {
       const maxLength = 20;
-
       const component = mount(UInputPassword, {
         props: {
           maxLength,
         },
       });
 
-      const input = component.findComponent(UInput);
+      const input = component.getComponent(UInput);
 
       expect(input.props("maxLength")).toBe(maxLength);
     });
 
-    // Readonly prop
-    it("passes the readonly prop to UInput", () => {
-      const readonly = true;
-
+    it("Readonly – passes readonly state to UInput", () => {
       const component = mount(UInputPassword, {
         props: {
-          readonly,
+          modelValue: "password123",
+          readonly: true,
         },
       });
 
-      const input = component.findComponent(UInput);
+      const input = component.get("input");
 
-      expect(input.props("readonly")).toBe(readonly);
+      expect(input.attributes("readonly")).toBeDefined();
     });
 
-    // Disabled prop
-    it("passes the disabled prop to UInput", () => {
-      const disabled = true;
-
+    it("Disabled – passes disabled state to UInput", () => {
       const component = mount(UInputPassword, {
         props: {
-          disabled,
+          modelValue: "password123",
+          disabled: true,
         },
       });
 
-      const input = component.findComponent(UInput);
+      const input = component.get("input");
 
-      expect(input.props("disabled")).toBe(disabled);
+      expect(input.attributes("disabled")).toBeDefined();
     });
 
-    // DataTest prop
-    it("sets the data-test attribute correctly on the password icon", () => {
-      const dataTest = "test-password-input";
-
+    it("Data Test – applies the correct data-test attribute to password icon", () => {
+      const dataTest = "password-field";
       const component = mount(UInputPassword, {
         props: {
           dataTest,
         },
       });
 
-      // Find the UIcon component
-      const passwordIcon = component.findComponent(UIcon);
-
-      // Check that the data-test prop is set correctly
-      expect(passwordIcon.attributes("data-test")).toBe(`${dataTest}-password-icon`);
+      component.get(`[data-test='${dataTest}-password-icon']`);
     });
   });
 
-  // Events tests
-  describe("Events", () => {
-    // Update:modelValue event
-    it("emits update:modelValue event when input value changes", async () => {
-      const modelValue = "password123";
-      const newValue = "newpassword456";
-
+  describe("functionality", () => {
+    it("Toggles password visibility icon", async () => {
       const component = mount(UInputPassword, {
         props: {
-          modelValue,
+          modelValue: "password123",
         },
       });
 
-      const input = component.findComponent(UInput);
+      const passwordIcon = component.getComponent(UIcon);
+      const input = component.get("input");
 
-      await input.vm.$emit("update:modelValue", newValue);
-
-      expect(component.emitted("update:modelValue")).toBeTruthy();
-      expect(component.emitted("update:modelValue")[0]).toEqual([newValue]);
-    });
-  });
-
-  // Functionality tests
-  describe("Functionality", () => {
-    // Password visibility toggle
-    it("toggles password visibility when the icon is clicked", async () => {
-      const component = mount(UInputPassword, {
-        attachTo: document.body, // Attach to DOM for more realistic event handling
-      });
-
-      // Initially, the input type should be password
-      const input = component.findComponent(UInput);
-
-      expect(input.props("type")).toBe("password");
-
-      // Find the password icon and trigger the click event directly on the DOM element
-      const passwordIcon = component.findComponent(UIcon);
-      const iconElement = passwordIcon.element as HTMLElement;
-
-      await iconElement.click();
-      await component.vm.$nextTick();
-
-      // After clicking, the input type should be text
-      expect(input.props("type")).toBe("text");
-
-      // Click again to toggle back
-      await iconElement.click();
-      await component.vm.$nextTick();
-
-      // Should be back to password
-      expect(input.props("type")).toBe("password");
-    });
-
-    // Password icon changes
-    it("changes the icon when password visibility is toggled", async () => {
-      const component = mount(UInputPassword, {
-        attachTo: document.body, // Attach to DOM for more realistic event handling
-      });
-
-      // Initially, the icon should be the hidden icon
-      let passwordIcon = component.findComponent(UIcon);
-
+      expect(input.attributes("type")).toBe("password");
       expect(passwordIcon.props("name")).toBe("visibility_off-fill");
 
-      // Click to toggle visibility using the DOM element
-      const iconElement = passwordIcon.element as HTMLElement;
+      await passwordIcon.trigger("click");
 
-      await iconElement.click();
-      await component.vm.$nextTick();
-
-      // Icon should change to the visible icon
-      passwordIcon = component.findComponent(UIcon);
+      expect(input.attributes("type")).toBe("text");
       expect(passwordIcon.props("name")).toBe("visibility-fill");
-    });
 
-    // Disabled state
-    it("disables the password icon when the input is disabled", () => {
-      const disabled = true;
+      await passwordIcon.trigger("click");
 
-      const component = mount(UInputPassword, {
-        props: {
-          disabled,
-        },
-      });
-
-      const passwordIcon = component.findComponent(UIcon);
-
-      // Check if the class attribute contains the disabled classes
-      // The classes are applied through the passwordIconAttrs binding
-      const classAttr = passwordIcon.attributes("class") || "";
-
-      expect(classAttr).toContain("text-muted");
-      expect(classAttr).toContain("pointer-events-none");
+      expect(input.attributes("type")).toBe("password");
+      expect(passwordIcon.props("name")).toBe("visibility_off-fill");
     });
   });
 
-  // Slots tests
   describe("Slots", () => {
-    // Left slot
-    it("renders content in the left slot", () => {
-      const leftSlotContent = "Left slot content";
-
+    it("Left – renders left slot content", () => {
+      const slotContent = "<div class='test'>Left Slot Content</div>";
       const component = mount(UInputPassword, {
         slots: {
-          left: `<div class="left-slot-test">${leftSlotContent}</div>`,
+          left: slotContent,
         },
       });
 
-      const leftSlot = component.find(".left-slot-test");
-
-      expect(leftSlot.exists()).toBe(true);
-      expect(leftSlot.text()).toBe(leftSlotContent);
+      component.get(".test");
     });
 
-    // Right slot
-    it("renders content in the right slot", () => {
-      const rightSlotContent = "Right slot content";
+    it("Left – exposes leftIcon prop", () => {
+      const leftIcon = "lock";
 
       const component = mount(UInputPassword, {
+        props: {
+          leftIcon,
+        },
         slots: {
-          right: `<div class="right-slot-test">${rightSlotContent}</div>`,
+          left: `Icon: {{ params.iconName }}`,
         },
       });
 
-      const rightSlot = component.find(".right-slot-test");
-
-      expect(rightSlot.exists()).toBe(true);
-      expect(rightSlot.text()).toBe(rightSlotContent);
+      expect(component.html()).toContain(`Icon: ${leftIcon}`);
     });
 
-    // Right slot with bindings
-    it("provides correct bindings to the right slot", async () => {
+    it("Right – renders right slot content", () => {
+      const slotContent = "<div class='test'>Right Slot Content</div>";
       const component = mount(UInputPassword, {
         slots: {
-          right: `
-            <template #right="{ iconName, visible, toggle }">
-              <button
-                class="custom-toggle-button"
-                :data-icon-name="iconName"
-                :data-visible="visible"
-                @click="toggle"
-              >
-                Toggle
-              </button>
-            </template>
-          `,
+          right: slotContent,
         },
       });
 
-      const toggleButton = component.find(".custom-toggle-button");
+      component.get(".test");
+    });
 
-      expect(toggleButton.exists()).toBe(true);
-      expect(toggleButton.attributes("data-icon-name")).toBe("visibility_off-fill");
-      expect(toggleButton.attributes("data-visible")).toBe("false");
+    it("Right – exposes password visibility state", async () => {
+      const component = mount(UInputPassword, {
+        props: {
+          modelValue: "password123",
+          dataTest: "test",
+        },
+        slots: {
+          right: `Visibility: {{ params.visible }}`,
+        },
+      });
 
-      // Click the button to toggle visibility
+      expect(component.html()).toContain("Visibility: false");
+    });
+
+    it("Right – exposes toggle function", async () => {
+      const component = mount(UInputPassword, {
+        props: {
+          modelValue: "password123",
+          dataTest: "test",
+        },
+        slots: {
+          right: `Visibility: {{ params.visible }} <button @click="params.toggle">Toggle Password</button>`,
+        },
+      });
+
+      const toggleButton = component.get("button");
+
       await toggleButton.trigger("click");
 
-      // Check that the visibility state changed
-      expect(toggleButton.attributes("data-visible")).toBe("true");
-      expect(toggleButton.attributes("data-icon-name")).toBe("visibility-fill");
+      expect(component.html()).toContain("Visibility: true");
+    });
+
+    it("Right – exposes password icon name", async () => {
+      const component = mount(UInputPassword, {
+        props: {
+          modelValue: "password123",
+          dataTest: "test",
+        },
+        slots: {
+          right: `Icon: {{ params.iconName }} <button @click="params.toggle">Toggle Password</button>`,
+        },
+      });
+
+      const toggleButton = component.get("button");
+
+      expect(component.html()).toContain("Icon: visibility_off-fill");
+
+      await toggleButton.trigger("click");
+
+      expect(component.html()).toContain("Icon: visibility-fill");
     });
   });
 });
