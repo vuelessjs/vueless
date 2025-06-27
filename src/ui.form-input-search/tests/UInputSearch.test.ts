@@ -10,8 +10,9 @@ import type { Props } from "../types.ts";
 
 describe("UInputSearch.vue", () => {
   describe("props", () => {
-    it("ModelValue – set initial value correctly", () => {
+    it("Mode lValue – set initial value correctly", () => {
       const initialValue = "Test input";
+
       const component = mount(UInputSearch, {
         props: {
           modelValue: initialValue,
@@ -21,7 +22,7 @@ describe("UInputSearch.vue", () => {
       expect(component.get("input").element.value).toBe(initialValue);
     });
 
-    it("ModelValue – updates value on input", async () => {
+    it("Model Value – updates value on input", async () => {
       vi.useFakeTimers();
 
       const updatedValue = "Test input 2";
@@ -46,6 +47,7 @@ describe("UInputSearch.vue", () => {
 
     it("Label – passes label to UInput", () => {
       const label = "Test Label";
+
       const component = mount(UInputSearch, {
         props: {
           label,
@@ -57,6 +59,7 @@ describe("UInputSearch.vue", () => {
 
     it("Size – passes size to UInput", () => {
       const size: Props["size"] = "lg";
+
       const component = mount(UInputSearch, {
         props: {
           size,
@@ -68,6 +71,7 @@ describe("UInputSearch.vue", () => {
 
     it("Placeholder – passes placeholder to UInput", () => {
       const placeholder = "Search here...";
+
       const component = mount(UInputSearch, {
         props: {
           placeholder,
@@ -90,6 +94,7 @@ describe("UInputSearch.vue", () => {
 
     it("Description – passes description to UInput", () => {
       const description = "This is a description";
+
       const component = mount(UInputSearch, {
         props: {
           description,
@@ -101,6 +106,7 @@ describe("UInputSearch.vue", () => {
 
     it("Error – passes error to UInput", () => {
       const error = "This is an error message";
+
       const component = mount(UInputSearch, {
         props: {
           error,
@@ -125,7 +131,6 @@ describe("UInputSearch.vue", () => {
       await component.get("input").setValue(shortValue);
       await flushPromises();
 
-      // Should not emit update:modelValue for short values
       expect(component.emitted("update:modelValue")).toBeUndefined();
     });
 
@@ -175,8 +180,9 @@ describe("UInputSearch.vue", () => {
       vi.useRealTimers();
     });
 
-    it("LeftIcon – passes leftIcon to UInput", () => {
+    it("Left Icon – passes leftIcon to UInput", () => {
       const leftIcon = "search";
+
       const component = mount(UInputSearch, {
         props: {
           leftIcon,
@@ -189,6 +195,7 @@ describe("UInputSearch.vue", () => {
 
     it("Right Icon – passes rightIcon to search icon component", () => {
       const rightIcon = "close";
+
       const component = mount(UInputSearch, {
         props: {
           rightIcon,
@@ -247,6 +254,7 @@ describe("UInputSearch.vue", () => {
   describe("Slots", () => {
     it("Left – renders left slot content", () => {
       const slotContent = "Left Slot Content";
+
       const component = mount(UInputSearch, {
         slots: {
           left: slotContent,
@@ -258,6 +266,7 @@ describe("UInputSearch.vue", () => {
 
     it("Right – renders right slot content", () => {
       const slotContent = "Right Slot Content";
+
       const component = mount(UInputSearch, {
         slots: {
           right: slotContent,
@@ -269,6 +278,7 @@ describe("UInputSearch.vue", () => {
 
     it("Right – exposes right icon name", () => {
       const rightIcon = "close";
+
       const component = mount(UInputSearch, {
         props: {
           rightIcon,
@@ -280,6 +290,7 @@ describe("UInputSearch.vue", () => {
 
     it("Right – exposes Search Button Label", () => {
       const searchButtonLabel = "Search";
+
       const component = mount(UInputSearch, {
         props: {
           searchButtonLabel,
@@ -299,7 +310,7 @@ describe("UInputSearch.vue", () => {
         },
       });
 
-      await component.get("[data-test='test-clear']").trigger("click");
+      await component.get("[vl-key='clearIcon']").trigger("click");
 
       expect(component.emitted("clear")).toBeDefined();
       expect(component.emitted("update:modelValue")).toBeDefined();
@@ -307,9 +318,11 @@ describe("UInputSearch.vue", () => {
     });
 
     it("Search – emits search event when search button is clicked", async () => {
+      const initialValue = "Test input";
+
       const component = mount(UInputSearch, {
         props: {
-          modelValue: "Test input",
+          modelValue: initialValue,
           searchButtonLabel: "Search",
         },
       });
@@ -317,14 +330,15 @@ describe("UInputSearch.vue", () => {
       await component.getComponent(UButton).trigger("click");
 
       expect(component.emitted("search")).toBeDefined();
-      expect(component.emitted("search")![0][0]).toBe("Test input");
+      expect(component.emitted("search")![0][0]).toBe(initialValue);
     });
 
     it("Search – emits search event when search icon is clicked", async () => {
+      const initialValue = "Test input";
+
       const component = mount(UInputSearch, {
         props: {
-          modelValue: "Test input",
-          dataTest: "test",
+          modelValue: initialValue,
         },
       });
 
@@ -333,7 +347,7 @@ describe("UInputSearch.vue", () => {
       await component.get("[vl-key='searchIcon']").trigger("click");
 
       expect(component.emitted("search")).toBeDefined();
-      expect(component.emitted("search")![0][0]).toBe("Test input");
+      expect(component.emitted("search")![0][0]).toBe(initialValue);
     });
   });
 
