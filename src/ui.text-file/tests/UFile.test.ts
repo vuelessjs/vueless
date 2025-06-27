@@ -247,11 +247,11 @@ describe("UFile.vue", () => {
 
   // Exposed refs tests
   describe("Exposed refs", () => {
-    // link ref
-    it("exposes link ref", () => {
+    // file ref
+    it("exposes file ref", () => {
       const component = mount(UFile, {});
 
-      expect(component.vm.link).toBeDefined();
+      expect(component.vm.fileRef).toBeDefined();
     });
   });
 });

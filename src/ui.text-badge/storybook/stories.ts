@@ -141,6 +141,7 @@ export const Slots: StoryFn<UBadgeArgs> = (args) => ({
             size="sm"
             currency="$"
             currency-space
+            color="inherit"
           />
         </template>
       </UBadge>

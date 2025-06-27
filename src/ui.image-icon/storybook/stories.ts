@@ -4,7 +4,6 @@ import {
   getSlotNames,
   getSlotsFragment,
   getDocsDescription,
-  getEnumVariantDescription,
 } from "../../utils/storybook.ts";
 
 import UIcon from "../../ui.image-icon/UIcon.vue";
@@ -99,15 +98,12 @@ import Beverage from "./src/assets/icons/beverage.svg?component";
 
 export const Colors = EnumTemplate.bind({});
 Colors.args = { enum: "color" };
-Colors.parameters = getEnumVariantDescription();
 
 export const Sizes = EnumTemplate.bind({});
 Sizes.args = { enum: "size" };
-Sizes.parameters = getEnumVariantDescription();
 
 export const Variants = EnumTemplate.bind({});
 Variants.args = { enum: "variant", color: "success" };
-Variants.parameters = getEnumVariantDescription();
 
 export const Interactive = DefaultTemplate.bind({});
 Interactive.args = { interactive: true };

@@ -4,6 +4,5 @@ export default /*tw*/ {
   item: "{UFile} flex",
   defaults: {
     size: "md",
-    labelAlign: "top",
   },
 };

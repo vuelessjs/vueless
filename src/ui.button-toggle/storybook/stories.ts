@@ -57,14 +57,14 @@ const DefaultTemplate: StoryFn<UToggleArgs> = (args: UToggleArgs) => ({
 
 const EnumTemplate: StoryFn<UToggleArgs> = (args: UToggleArgs, { argTypes }) => ({
   components: { UToggle, URow },
-  setup: () => ({ args, argTypes, getArgs, values: ref(argTypes.size?.options) }),
+  setup: () => ({ args, argTypes, getArgs }),
   template: `
     <URow>
       <UToggle
         v-for="option in argTypes?.[args.enum]?.options"
         v-bind="getArgs(args, option)"
         :key="option"
-        v-model="values[option]"
+        v-model="args.modelValue"
         class="w-auto"
       />
     </URow>
@@ -78,6 +78,7 @@ export const Sizes = EnumTemplate.bind({});
 Sizes.args = {
   name: "sizeTemplate",
   enum: "size",
+  modelValue: 1,
   options: [
     { value: 1, label: "{enumValue}" },
     { value: 2, label: "{enumValue}" },

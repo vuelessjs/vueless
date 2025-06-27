@@ -16,6 +16,7 @@ import UTextarea from "../../ui.form-textarea/UTextarea.vue";
 import URow from "../../ui.container-row/URow.vue";
 import UBadge from "../../ui.text-badge/UBadge.vue";
 import UCol from "../../ui.container-col/UCol.vue";
+import UText from "../../ui.text-block/UText.vue";
 
 import type { Meta, StoryFn } from "@storybook/vue3";
 import type { Props } from "../types.ts";
@@ -115,7 +116,7 @@ Description.args = {
 };
 
 export const Inner: StoryFn<UModalArgs> = (args: UModalArgs) => ({
-  components: { UModal, UButton },
+  components: { UModal, UButton, UCol, UText },
   setup() {
     const showMainModal = ref(false);
     const showInnerModal = ref(false);
@@ -133,11 +134,13 @@ export const Inner: StoryFn<UModalArgs> = (args: UModalArgs) => ({
   template: `
     <div>
       <UModal v-bind="args" v-model="showMainModal">
-        <p>
-          Are you sure you want to cancel your subscription?
-          This action will remove access to premium features and cannot be undone.
-        </p>
-        <UButton label="View Plan Details" @click="openInnerModal"/>
+        <UCol gap="sm">
+          <UText>
+            Are you sure you want to cancel your subscription?
+            This action will remove access to premium features and cannot be undone.
+          </UText>
+          <UButton label="View Plan Details" @click="openInnerModal"/>
+        </UCol>
 
         <UModal
           v-model="showInnerModal"

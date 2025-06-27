@@ -30,7 +30,7 @@ export default /*tw*/ {
         full: "rounded-full",
       },
       src: {
-        true: "bg-transparent",
+        true: "border-none bg-transparent",
       },
     },
   },

@@ -1,6 +1,6 @@
 export default /*tw*/ {
   wrapper: {
-    base: "p-4 border-box flex flex-col border rounded-medium",
+    base: "p-4 border-box flex flex-col border rounded-medium w-full",
     variants: {
       variant: {
         solid: "text-inverted bg-{color} border-transparent",

@@ -32,6 +32,13 @@ export default /*tw*/ {
         center: "text-center",
         right: "text-right",
       },
+      weight: {
+        light: "font-light",
+        normal: "font-normal",
+        medium: "font-medium",
+        semibold: "font-semibold",
+        bold: "font-bold",
+      },
       line: {
         true: "leading-none",
       },
@@ -52,6 +59,7 @@ export default /*tw*/ {
     variant: "default",
     size: "md",
     align: "left",
+    weight: "normal",
     line: false,
     wrap: true,
   },

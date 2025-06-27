@@ -12,7 +12,6 @@ import UCol from "../../ui.container-col/UCol.vue";
 import UIcon from "../../ui.image-icon/UIcon.vue";
 import UButton from "../../ui.button/UButton.vue";
 import UBadge from "../../ui.text-badge/UBadge.vue";
-import ULink from "../../ui.button-link/ULink.vue";
 import UText from "../../ui.text-block/UText.vue";
 
 import type { Meta, StoryFn } from "@storybook/vue3";
@@ -29,6 +28,10 @@ export default {
   component: UAlert,
   args: {
     title: "Scheduled Maintenance Notice",
+    description: `
+      Our website will be undergoing scheduled maintenance on March 15th from 2:00 AM to 4:00 AM UTC.
+      Some features may be temporarily unavailable during this time. We appreciate your patience!
+    `,
   },
   argTypes: {
     ...getArgTypes(UAlert.__name),
@@ -67,14 +70,6 @@ const EnumTemplate: StoryFn<UAlertArgs> = (args: UAlertArgs, { argTypes }) => ({
 export const Default = DefaultTemplate.bind({});
 Default.args = {};
 
-export const Description = DefaultTemplate.bind({});
-Description.args = {
-  description: `
-    Our website will be undergoing scheduled maintenance on March 15th from 2:00 AM to 4:00 AM UTC.
-    Some features may be temporarily unavailable during this time. We appreciate your patience!
-  `,
-};
-
 export const Variants = EnumTemplate.bind({});
 Variants.args = { enum: "variant" };
 
@@ -99,6 +94,7 @@ CloseSlot.args = {
         label="Close"
         variant="ghost"
         size="sm"
+        class="ml-2"
         @click="close"
       />
     </template>
@@ -106,7 +102,7 @@ CloseSlot.args = {
 };
 
 export const Slots: StoryFn<UAlertArgs> = (args) => ({
-  components: { UAlert, UIcon, URow, UCol, UButton, UBadge, ULink, UText },
+  components: { UAlert, URow, UCol, UButton, UBadge, UText, UIcon },
   setup() {
     return { args };
   },
@@ -118,30 +114,24 @@ export const Slots: StoryFn<UAlertArgs> = (args) => ({
           Try it out and let us know what you think!"
         color="success"
         icon="question_mark"
+        :config="{ contentWrapper: 'items-center' }"
       >
-        <template #left="{ iconName }">
-          <URow align="center" gap="none">
-            <ULink label="What's New" color="success" />
-            <UIcon :name="iconName" color="success" size="2xs" class="mb-1" />
-          </URow>
+        <template #left>
+          <UIcon name="celebration" color="success" size="lg" />
         </template>
       </UAlert>
 
       <UAlert
-        title="System Maintenance"
+        title="MAINTENANCE"
         description="Scheduled maintenance will begin in 30 minutes. Estimated downtime: 2 hours."
         color="warning"
       >
-        <template #title>
-          <URow align="center" gap="sm">
-            <UBadge
-              label="MAINTENANCE"
-              size="sm"
-              color="warning"
-              variant="outlined"
-            />
-            <UText label="System Maintenance" size="sm" />
-          </URow>
+        <template #title="{ title }">
+          <UBadge
+            :label="title"
+            color="warning"
+            variant="subtle"
+          />
         </template>
       </UAlert>
 
@@ -151,23 +141,20 @@ export const Slots: StoryFn<UAlertArgs> = (args) => ({
           Check out our documentation to get started with building beautiful interfaces."
         color="info"
       >
-        <template #description>
-          <UCol>
-            <p>
-              You've successfully joined our community. Check out our documentation
-              to get started with building beautiful interfaces.
-            </p>
+        <template #description="{ description }">
+          <UCol gap="xs">
+            <UText :label="description" color="inherit" />
             <URow gap="sm">
               <UButton
                 label="View Docs"
-                variant="ghost"
-                size="sm"
+                variant="subtle"
+                size="xs"
                 color="info"
               />
               <UButton
                 label="Join Discord"
-                variant="ghost"
-                size="sm"
+                variant="subtle"
+                size="xs"
                 color="info"
               />
             </URow>

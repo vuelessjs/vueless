@@ -25,6 +25,11 @@ export interface Props {
   variant?: "default" | "accented" | "lifted" | "muted";
 
   /**
+   * Font weight.
+   */
+  weight?: "light" | "normal" | "medium" | "semibold" | "bold";
+
+  /**
    * Text color.
    */
   color?:

@@ -1,6 +1,6 @@
 export default /*tw*/ {
   file: {
-    base: "{ULink} flex items-center",
+    base: "flex items-center",
     variants: {
       size: {
         sm: "gap-0.5",
@@ -12,7 +12,7 @@ export default /*tw*/ {
   body: "flex items-center gap-2",
   fileImage: "rounded-sm max-w-7",
   fileIcon: {
-    base: "{UIcon} -mr-1",
+    base: "{UIcon}",
     defaults: {
       size: {
         sm: "xs",

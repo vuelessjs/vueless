@@ -62,6 +62,27 @@ const EnumTemplate: StoryFn<UHeaderArgs> = (args: UHeaderArgs, { argTypes }) => 
 export const Default = DefaultTemplate.bind({});
 Default.args = {};
 
+export const Line: StoryFn<UHeaderArgs> = (args: UHeaderArgs) => ({
+  components: { UHeader, UCol },
+  setup: () => ({ args }),
+  template: `
+    <UCol>
+      <UHeader :line="false">
+        <div class="rounded-medium border border-primary border-dashed w-fit">
+          Text with default library line height.
+        </div>
+      </UHeader>
+
+      <UHeader line>
+        <div class="rounded-medium border border-primary border-dashed w-fit">
+          Text with line height equal to its font size.
+        </div>
+      </UHeader>
+    </UCol>
+  `,
+});
+Line.args = {};
+
 export const Sizes = EnumTemplate.bind({});
 Sizes.args = { enum: "size" };
 
