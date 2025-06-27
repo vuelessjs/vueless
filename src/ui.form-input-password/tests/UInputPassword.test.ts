@@ -9,8 +9,9 @@ import type { Props } from "../types.ts";
 
 describe("UInputPassword.vue", () => {
   describe("props", () => {
-    it("ModelValue – sets initial value correctly", () => {
+    it("Model Value – sets initial value correctly", () => {
       const initialValue = "password123";
+
       const component = mount(UInputPassword, {
         props: {
           modelValue: initialValue,
@@ -20,7 +21,7 @@ describe("UInputPassword.vue", () => {
       expect(component.get("input").element.value).toBe(initialValue);
     });
 
-    it("ModelValue – updates value on input", async () => {
+    it("Model Value – updates value on input", async () => {
       const updatedValue = "newpassword456";
 
       const component = mount(UInputPassword, {
@@ -36,6 +37,7 @@ describe("UInputPassword.vue", () => {
 
     it("Label – passes label to UInput", () => {
       const label = "Password";
+
       const component = mount(UInputPassword, {
         props: {
           label,
@@ -47,6 +49,7 @@ describe("UInputPassword.vue", () => {
 
     it("Size – passes size to UInput", () => {
       const size: Props["size"] = "lg";
+
       const component = mount(UInputPassword, {
         props: {
           size,
@@ -58,6 +61,7 @@ describe("UInputPassword.vue", () => {
 
     it("Placeholder – passes placeholder to UInput", () => {
       const placeholder = "Enter your password";
+
       const component = mount(UInputPassword, {
         props: {
           placeholder,
@@ -69,6 +73,7 @@ describe("UInputPassword.vue", () => {
 
     it("Label Align – passes labelAlign to UInput", () => {
       const labelAlign: Props["labelAlign"] = "top";
+
       const component = mount(UInputPassword, {
         props: {
           labelAlign,
@@ -80,6 +85,7 @@ describe("UInputPassword.vue", () => {
 
     it("Description – passes description to UInput", () => {
       const description = "Password must be at least 8 characters";
+
       const component = mount(UInputPassword, {
         props: {
           description,
@@ -91,6 +97,7 @@ describe("UInputPassword.vue", () => {
 
     it("Error – passes error to UInput", () => {
       const error = "Password is required";
+
       const component = mount(UInputPassword, {
         props: {
           error,
@@ -102,6 +109,7 @@ describe("UInputPassword.vue", () => {
 
     it("Left Icon – passes leftIcon to UInput", () => {
       const leftIcon = "lock";
+
       const component = mount(UInputPassword, {
         props: {
           leftIcon,
@@ -115,6 +123,7 @@ describe("UInputPassword.vue", () => {
 
     it("Max Length – passes maxLength to UInput", () => {
       const maxLength = 20;
+
       const component = mount(UInputPassword, {
         props: {
           maxLength,
@@ -154,6 +163,7 @@ describe("UInputPassword.vue", () => {
 
     it("Data Test – applies the correct data-test attribute to password icon", () => {
       const dataTest = "password-field";
+
       const component = mount(UInputPassword, {
         props: {
           dataTest,
@@ -164,7 +174,7 @@ describe("UInputPassword.vue", () => {
     });
   });
 
-  describe("functionality", () => {
+  describe("Functionality", () => {
     it("Toggles password visibility icon", async () => {
       const component = mount(UInputPassword, {
         props: {
@@ -192,14 +202,16 @@ describe("UInputPassword.vue", () => {
 
   describe("Slots", () => {
     it("Left – renders left slot content", () => {
-      const slotContent = "<div class='test'>Left Slot Content</div>";
+      const testClass = "test";
+      const slotContent = `<div class='${testClass}'>Left Slot Content</div>`;
+
       const component = mount(UInputPassword, {
         slots: {
           left: slotContent,
         },
       });
 
-      component.get(".test");
+      component.get(`.${testClass}`);
     });
 
     it("Left – exposes leftIcon prop", () => {
@@ -218,14 +230,16 @@ describe("UInputPassword.vue", () => {
     });
 
     it("Right – renders right slot content", () => {
-      const slotContent = "<div class='test'>Right Slot Content</div>";
+      const testClass = "test";
+      const slotContent = `<div class='${testClass}'>Right Slot Content</div`;
+
       const component = mount(UInputPassword, {
         slots: {
           right: slotContent,
         },
       });
 
-      component.get(".test");
+      component.get(`.${testClass}`);
     });
 
     it("Right – exposes password visibility state", async () => {
@@ -261,6 +275,9 @@ describe("UInputPassword.vue", () => {
     });
 
     it("Right – exposes password icon name", async () => {
+      const visibilityIcon = "visibility-fill";
+      const visibilityOffIcon = "visibility_off-fill";
+
       const component = mount(UInputPassword, {
         props: {
           modelValue: "password123",
@@ -273,11 +290,11 @@ describe("UInputPassword.vue", () => {
 
       const toggleButton = component.get("button");
 
-      expect(component.html()).toContain("Icon: visibility_off-fill");
+      expect(component.html()).toContain(`Icon: ${visibilityOffIcon}`);
 
       await toggleButton.trigger("click");
 
-      expect(component.html()).toContain("Icon: visibility-fill");
+      expect(component.html()).toContain(`Icon: ${visibilityIcon}`);
     });
   });
 });
