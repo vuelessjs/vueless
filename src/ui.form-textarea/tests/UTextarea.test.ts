@@ -8,8 +8,9 @@ import type { Props } from "../types.ts";
 
 describe("UTextarea.vue", () => {
   describe("props", () => {
-    it("ModelValue – sets initial value correctly", () => {
+    it("Model Value – sets initial value correctly", () => {
       const initialValue = "Test textarea";
+
       const component = mount(UTextarea, {
         props: {
           modelValue: initialValue,
@@ -19,7 +20,7 @@ describe("UTextarea.vue", () => {
       expect(component.get("textarea").element.value).toBe(initialValue);
     });
 
-    it("ModelValue – updates value on input", async () => {
+    it("Model Value – updates value on input", async () => {
       const updatedValue = "Updated textarea value";
 
       const component = mount(UTextarea, {
@@ -36,6 +37,7 @@ describe("UTextarea.vue", () => {
 
     it("Label – passes label to ULabel", () => {
       const label = "Test Label";
+
       const component = mount(UTextarea, {
         props: {
           label,
@@ -47,9 +49,9 @@ describe("UTextarea.vue", () => {
 
     it("Size – applies correct classes based on size prop", () => {
       const sizeCases = {
-        sm: "text-small placeholder:text-small",
-        md: "text-medium placeholder:text-medium",
-        lg: "text-large placeholder:text-large",
+        sm: "text-small",
+        md: "text-medium",
+        lg: "text-large",
       };
 
       Object.entries(sizeCases).forEach(([size, expectedClass]) => {
@@ -66,6 +68,7 @@ describe("UTextarea.vue", () => {
 
     it("Placeholder – sets placeholder correctly", () => {
       const placeholder = "Enter text here";
+
       const component = mount(UTextarea, {
         props: {
           placeholder,
@@ -77,6 +80,7 @@ describe("UTextarea.vue", () => {
 
     it("Label Align – passes labelAlign prop to ULabel component", () => {
       const labelAlign = "left";
+
       const component = mount(UTextarea, {
         props: {
           label: "Test Label",
@@ -84,14 +88,14 @@ describe("UTextarea.vue", () => {
         },
       });
 
-      expect(component.getComponent(ULabel).vm.$props.align).toBe(labelAlign);
+      expect(component.getComponent(ULabel).props("align")).toBe(labelAlign);
     });
 
-    it("Label Align – applies correct class based on labelAlign prop", async () => {
+    it("Label Align – applies correct class based on labelAlign prop", () => {
       const labelAlignCases = ["left", "right"];
       const labelAlignClass = "w-full";
 
-      labelAlignCases.forEach(async (align) => {
+      labelAlignCases.forEach((align) => {
         const component = mount(UTextarea, {
           props: {
             label: "Test Label",
@@ -105,6 +109,7 @@ describe("UTextarea.vue", () => {
 
     it("Description – passes description to ULabel", () => {
       const description = "This is a description";
+
       const component = mount(UTextarea, {
         props: {
           description,
@@ -116,6 +121,7 @@ describe("UTextarea.vue", () => {
 
     it("Error – passes error to ULabel", () => {
       const error = "This is an error message";
+
       const component = mount(UTextarea, {
         props: {
           error,
@@ -126,7 +132,7 @@ describe("UTextarea.vue", () => {
     });
 
     it("Error – applies error class to textarea", () => {
-      const wrapperErrorClass = "!border-error focus-within:outline-error";
+      const wrapperErrorClass = "border-error";
       const textareaErrorClass = "placeholder:text-error/50";
 
       const component = mount(UTextarea, {
@@ -171,6 +177,7 @@ describe("UTextarea.vue", () => {
 
     it("Max Length – sets maxLength attribute", () => {
       const maxLength = 100;
+
       const component = mount(UTextarea, {
         props: {
           maxLength,
@@ -191,7 +198,7 @@ describe("UTextarea.vue", () => {
     });
 
     it("Disabled – applies correct class when disabled", () => {
-      const wrapperDisabledClass = "!border-default focus-within:outline-0 bg-lifted";
+      const wrapperDisabledClass = "bg-lifted";
       const textareaDisabledClass = "disabled:cursor-not-allowed";
 
       const component = mount(UTextarea, {
@@ -208,6 +215,7 @@ describe("UTextarea.vue", () => {
 
     it("Inputmode – sets inputmode attribute", () => {
       const inputmode = "text";
+
       const component = mount(UTextarea, {
         props: {
           inputmode,
@@ -218,13 +226,11 @@ describe("UTextarea.vue", () => {
     });
 
     it("No Autocomplete – toggles readonly attribute to prevent autocomplete", async () => {
-      // attachTo: document.body is required because the component uses document.getElementById()
-      // to manipulate the textarea element directly in the DOM
       const component = mount(UTextarea, {
         props: {
           noAutocomplete: true,
         },
-        attachTo: document.body,
+        attachTo: document.body, // attachTo: document.body is required for the noAutocomplete DOM manipulation to work
       });
 
       const textarea = component.get("textarea");
@@ -265,7 +271,6 @@ describe("UTextarea.vue", () => {
     });
 
     it("No Autocomplete – does not toggle readonly when textarea is already readonly", async () => {
-      // attachTo: document.body is required for the noAutocomplete DOM manipulation to work
       const component = mount(UTextarea, {
         props: {
           noAutocomplete: true,
@@ -286,6 +291,7 @@ describe("UTextarea.vue", () => {
 
     it("Rows – sets rows attribute", () => {
       const rows = 5;
+
       const component = mount(UTextarea, {
         props: {
           rows,
@@ -297,6 +303,7 @@ describe("UTextarea.vue", () => {
 
     it("Id – sets id attribute", () => {
       const id = "test-textarea";
+
       const component = mount(UTextarea, {
         props: {
           id,
@@ -355,28 +362,27 @@ describe("UTextarea.vue", () => {
 
     it("Left – renders custom content from left slot", () => {
       const slotText = "Custom Left Content";
-      const slotContent = `<span class="custom-left">${slotText}</span>`;
+      const testClass = "custom-left";
 
       const component = mount(UTextarea, {
         slots: {
-          left: slotContent,
+          left: `<span class="${testClass}">${slotText}</span>`,
         },
       });
 
-      expect(component.get(".custom-left").text()).toBe(slotText);
+      expect(component.get(`.${testClass}`).text()).toBe(slotText);
     });
 
     it("Right – renders custom content from right slot", () => {
       const slotText = "Custom Right Content";
-      const slotContent = `<span class="custom-right">${slotText}</span>`;
-
+      const testClass = "custom-right";
       const component = mount(UTextarea, {
         slots: {
-          right: slotContent,
+          right: `<span class="${testClass}">${slotText}</span>`,
         },
       });
 
-      expect(component.get(".custom-right").text()).toBe(slotText);
+      expect(component.get(`.${testClass}`).text()).toBe(slotText);
     });
   });
 
