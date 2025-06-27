@@ -6,7 +6,6 @@ import ULink from "../ULink.vue";
 
 import type { Props } from "../types.ts";
 
-// Create a mock router for testing router-link functionality
 const router = createRouter({
   history: createWebHistory(),
   routes: [
@@ -16,10 +15,8 @@ const router = createRouter({
 });
 
 describe("ULink.vue", () => {
-  // Props tests
   describe("Props", () => {
-    // Size prop
-    it("applies the correct size class", async () => {
+    it("Size – applies the correct size class", async () => {
       const size = {
         sm: "text-small",
         md: "text-medium",
@@ -37,8 +34,7 @@ describe("ULink.vue", () => {
       });
     });
 
-    // Color prop
-    it("applies the correct color class", async () => {
+    it("Color – applies the correct color class", async () => {
       const colors = [
         "primary",
         "secondary",
@@ -63,8 +59,7 @@ describe("ULink.vue", () => {
       });
     });
 
-    // Label prop
-    it("renders the correct label text", () => {
+    it("Label – renders the correct label text", () => {
       const label = "Link Text";
 
       const component = mount(ULink, {
@@ -76,8 +71,7 @@ describe("ULink.vue", () => {
       expect(component.text()).toBe(label);
     });
 
-    // Href prop
-    it("renders the correct href attribute", () => {
+    it("Href – renders the correct href attribute", () => {
       const href = "https://example.com";
 
       const component = mount(ULink, {
@@ -89,8 +83,7 @@ describe("ULink.vue", () => {
       expect(component.attributes("href")).toBe(href);
     });
 
-    // Type prop
-    it("applies the correct href prefix based on type", () => {
+    it("Type – applies the correct href prefix based on type", () => {
       const types = {
         phone: { href: "1234567890", expected: "tel:1234567890" },
         email: { href: "test@example.com", expected: "mailto:test@example.com" },
@@ -109,8 +102,7 @@ describe("ULink.vue", () => {
       });
     });
 
-    // To prop
-    it("renders as router-link when to prop is provided", async () => {
+    it("To – renders as router-link when to prop is provided", async () => {
       const to = "/about";
 
       const component = mount(ULink, {
@@ -126,8 +118,7 @@ describe("ULink.vue", () => {
       expect(component.findComponent({ name: "RouterLink" }).exists()).toBe(true);
     });
 
-    // Target prop
-    it("applies the correct target attribute", () => {
+    it("Target – applies the correct target attribute", () => {
       const targets = ["_blank", "_self", "_parent", "_top"];
 
       targets.forEach((target) => {
@@ -142,8 +133,7 @@ describe("ULink.vue", () => {
       });
     });
 
-    // Rel prop
-    it("applies the correct rel attribute", () => {
+    it("Rel – applies the correct rel attribute", () => {
       const rel = "noopener noreferrer";
 
       const component = mount(ULink, {
@@ -156,8 +146,7 @@ describe("ULink.vue", () => {
       expect(component.attributes("rel")).toBe(rel);
     });
 
-    // Underlined prop
-    it("applies underlined class when underlined prop is true", () => {
+    it("Underlined – applies underlined class when underlined prop is true", () => {
       const underlined = {
         true: "underline",
         false: "no-underline",
@@ -175,8 +164,7 @@ describe("ULink.vue", () => {
       });
     });
 
-    // Dashed prop
-    it("applies dashed class when dashed prop is true", () => {
+    it("Dashed – applies dashed class when dashed prop is true", () => {
       const dashed = true;
       const dashedClass = "decoration-dashed";
 
@@ -189,8 +177,7 @@ describe("ULink.vue", () => {
       expect(component.attributes("class")).toContain(dashedClass);
     });
 
-    // Dotted prop
-    it("applies dotted class when dotted prop is true", () => {
+    it("Dotted – applies dotted class when dotted prop is true", () => {
       const dotted = true;
       const dottedClass = "decoration-dotted";
 
@@ -203,8 +190,7 @@ describe("ULink.vue", () => {
       expect(component.attributes("class")).toContain(dottedClass);
     });
 
-    // Disabled prop
-    it("applies disabled class when disabled prop is true", () => {
+    it("Disabled – applies disabled class when disabled prop is true", () => {
       const disabled = true;
 
       const component = mount(ULink, {
@@ -216,8 +202,7 @@ describe("ULink.vue", () => {
       expect(component.attributes("class")).toContain("cursor-not-allowed");
     });
 
-    // Block prop
-    it("applies block class when block prop is true", () => {
+    it("Block – applies block class when block prop is true", () => {
       const block = true;
       const blockClass = "w-full";
 
@@ -230,8 +215,7 @@ describe("ULink.vue", () => {
       expect(component.attributes("class")).toContain(blockClass);
     });
 
-    // DataTest prop
-    it("applies the correct data-test attribute", () => {
+    it("Data Test – applies the correct data-test attribute", () => {
       const dataTest = "test-link";
 
       const component = mount(ULink, {
@@ -244,10 +228,8 @@ describe("ULink.vue", () => {
     });
   });
 
-  // Slots tests
   describe("Slots", () => {
-    // Default slot
-    it("renders content from default slot", () => {
+    it("Default – renders content from default slot", () => {
       const slotContent = "Custom Content";
       const label = "Link";
 
@@ -264,8 +246,7 @@ describe("ULink.vue", () => {
       expect(component.text()).toContain(slotContent);
     });
 
-    // Default slot with router-link
-    it("renders content from default slot with router-link", () => {
+    it("Default – renders content from default slot with router-link", () => {
       const slotContent = "Custom Content";
       const label = "Link";
 
@@ -286,8 +267,7 @@ describe("ULink.vue", () => {
       expect(component.text()).toContain(slotContent);
     });
 
-    // Default slot with bindings
-    it("provides isActive and isExactActive bindings to default slot with router-link", () => {
+    it("Default – provides isActive and isExactActive bindings to default slot with router-link", () => {
       const component = mount(ULink, {
         props: {
           to: "/about",
@@ -310,42 +290,36 @@ describe("ULink.vue", () => {
     });
   });
 
-  // Events tests
   describe("Events", () => {
-    // Click event
-    it("emits click event when clicked", async () => {
+    it("Click – emits click event when clicked", async () => {
       const component = mount(ULink, {});
 
       await component.trigger("click");
       expect(component.emitted("click")).toBeTruthy();
     });
 
-    // Mouseover event
-    it("emits mouseover event when hovered", async () => {
+    it("Mouseover – emits mouseover event when hovered", async () => {
       const component = mount(ULink, {});
 
       await component.trigger("mouseover");
       expect(component.emitted("mouseover")).toBeTruthy();
     });
 
-    // Focus event
-    it("emits focus event when focused", async () => {
+    it("Focus – emits focus event when focused", async () => {
       const component = mount(ULink, {});
 
       await component.trigger("focus");
       expect(component.emitted("focus")).toBeTruthy();
     });
 
-    // Blur event
-    it("emits blur event when blurred", async () => {
+    it("Blur – emits blur event when blurred", async () => {
       const component = mount(ULink, {});
 
       await component.trigger("blur");
       expect(component.emitted("blur")).toBeTruthy();
     });
 
-    // Keydown event
-    it("emits keydown event when key is pressed", async () => {
+    it("Keydown – emits keydown event when key is pressed", async () => {
       const component = mount(ULink, {});
 
       await component.trigger("keydown");
@@ -353,10 +327,8 @@ describe("ULink.vue", () => {
     });
   });
 
-  // Exposed refs tests
   describe("Exposed refs", () => {
-    // linkRef
-    it("exposes linkRef", () => {
+    it("Link – exposes linkRef", () => {
       const component = mount(ULink, {});
 
       expect(component.vm.linkRef).toBeDefined();

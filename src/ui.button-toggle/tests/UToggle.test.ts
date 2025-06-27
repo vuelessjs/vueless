@@ -19,10 +19,8 @@ describe("UToggle.vue", () => {
     ];
   });
 
-  // Props tests
   describe("Props", () => {
-    // Size prop
-    it("applies the correct size class", async () => {
+    it("Size – applies the correct size class", async () => {
       const size = {
         "2xs": "text-small",
         xs: "text-small",
@@ -47,8 +45,7 @@ describe("UToggle.vue", () => {
       });
     });
 
-    // Options prop
-    it("renders the correct number of options", () => {
+    it("Options – renders the correct number of options", () => {
       const component = mount(UToggle, {
         props: {
           options,
@@ -61,114 +58,7 @@ describe("UToggle.vue", () => {
       expect(buttons.length).toBe(options.length);
     });
 
-    // ModelValue prop - Single selection
-    it("correctly selects option based on modelValue for single selection", async () => {
-      const selectedClass = "bg-primary";
-      const selectedValue = "option2";
-
-      const component = mount(UToggle, {
-        props: {
-          modelValue: selectedValue,
-          options,
-          name,
-        },
-      });
-
-      const buttons = component.findAllComponents(UButton);
-
-      expect(buttons[1].attributes("class")).toContain(selectedClass);
-    });
-
-    // ModelValue prop - Multiple selection
-    it("correctly selects options based on modelValue for multiple selection", async () => {
-      const selectedClass = "bg-primary";
-      const selectedValues = ["option1", "option3"];
-
-      const multiComponent = mount(UToggle, {
-        props: {
-          options,
-          modelValue: selectedValues,
-          multiple: true,
-          name,
-        },
-      });
-
-      const multiButtons = multiComponent.findAllComponents(UButton);
-
-      expect(multiButtons[0].attributes("class")).toContain(selectedClass);
-      expect(multiButtons[2].attributes("class")).toContain(selectedClass);
-    });
-
-    // Multiple prop
-    it("allows multiple selections when multiple prop is true", async () => {
-      const component = mount(UToggle, {
-        props: {
-          options,
-          modelValue: ["option1"],
-          multiple: true,
-          name,
-        },
-      });
-
-      await component.findAllComponents(UButton)[1].trigger("click");
-
-      const emittedValue = component.emitted("update:modelValue")?.[0][0];
-
-      // Verify both options are now selected (original + clicked)
-      expect(emittedValue).toEqual(["option1", "option2"]);
-    });
-
-    // Split prop - true
-    it("applies split class when split prop is true", () => {
-      const split = true;
-      const splitClasses = "flex-wrap";
-
-      const component = mount(UToggle, {
-        props: {
-          split,
-          name,
-        },
-      });
-
-      expect(component.attributes("class")).toContain(splitClasses);
-    });
-
-    // Split prop - false
-    it("applies split class when split prop is true", () => {
-      const split = false;
-      const unsplitClasses = "gap-px";
-
-      const component = mount(UToggle, {
-        props: {
-          split,
-          name,
-        },
-      });
-
-      expect(component.attributes("class")).toContain(unsplitClasses);
-    });
-
-    // Disabled prop
-    it("disables all options when disabled prop is true", () => {
-      const disabled = true;
-
-      const component = mount(UToggle, {
-        props: {
-          options,
-          disabled,
-          name,
-        },
-      });
-
-      const buttons = component.findAllComponents(UButton);
-
-      buttons.forEach((button) => {
-        expect(button.attributes("disabled")).toBeDefined();
-      });
-    });
-
-    // Individual option disabled
-    it("disables individual option when option disabled prop is true", () => {
+    it("Options – disables individual option when option disabled prop is true", () => {
       const customOptions: UToggleOption[] = [
         { value: "option1", label: "Option 1" },
         { value: "option2", label: "Option 2", disabled: true },
@@ -187,88 +77,7 @@ describe("UToggle.vue", () => {
       expect(buttons[1].attributes("disabled")).toBeDefined();
     });
 
-    // Block prop
-    it("applies block class when block prop is true", () => {
-      const block = true;
-      const blockClasses = "w-full";
-
-      const component = mount(UToggle, {
-        props: {
-          block,
-          options,
-          name,
-        },
-      });
-
-      expect(component.attributes("class")).toContain(blockClasses);
-    });
-
-    // Round prop
-    it("applies round class to buttons when round prop is true", () => {
-      const round = true;
-      const roundClasses = "rounded-full";
-
-      const component = mount(UToggle, {
-        props: {
-          round,
-          options,
-          name,
-        },
-      });
-
-      const button = component.findComponent(UButton);
-
-      expect(button.attributes("class")).toContain(roundClasses);
-    });
-
-    // Square prop
-    it("applies square class to buttons when square prop is true", () => {
-      const square = true;
-
-      const component = mount(UToggle, {
-        props: {
-          options,
-          square,
-          name,
-        },
-      });
-
-      const button = component.findComponent(UButton);
-
-      // Square buttons have equal padding on all sides
-      expect(button.attributes("class")).toContain("p-");
-    });
-
-    // ID prop
-    it("applies the correct id attribute", () => {
-      const id = "test-toggle-id";
-
-      const component = mount(UToggle, {
-        props: {
-          id,
-          name,
-        },
-      });
-
-      expect(component.attributes("id")).toBe(id);
-    });
-
-    // DataTest prop
-    it("applies the correct data-test attribute", () => {
-      const dataTest = "test-toggle";
-
-      const component = mount(UToggle, {
-        props: {
-          dataTest,
-          name,
-        },
-      });
-
-      expect(component.attributes("data-test")).toBe(dataTest);
-    });
-
-    // Icon, leftIcon, rightIcon props
-    it("passes icon props to UButton components", () => {
+    it("Options – set icon for individual options", () => {
       const iconOptions: UToggleOption[] = [
         { value: "option1", label: "Option 1", icon: "star" },
         { value: "option2", label: "Option 2", leftIcon: "check" },
@@ -288,12 +97,185 @@ describe("UToggle.vue", () => {
       expect(buttons[1].props("leftIcon")).toBe("check");
       expect(buttons[2].props("rightIcon")).toBe("close");
     });
+
+    it("Model Value – correctly selects option based on modelValue for single selection", async () => {
+      const selectedClass = "bg-primary";
+      const selectedValue = "option2";
+
+      const component = mount(UToggle, {
+        props: {
+          modelValue: selectedValue,
+          options,
+          name,
+        },
+      });
+
+      const buttons = component.findAllComponents(UButton);
+
+      expect(buttons[1].attributes("class")).toContain(selectedClass);
+    });
+
+    it("Model Value – correctly selects options based on modelValue for multiple selection", async () => {
+      const selectedClass = "bg-primary";
+      const selectedValues = ["option1", "option3"];
+
+      const multiComponent = mount(UToggle, {
+        props: {
+          options,
+          modelValue: selectedValues,
+          multiple: true,
+          name,
+        },
+      });
+
+      const multiButtons = multiComponent.findAllComponents(UButton);
+
+      expect(multiButtons[0].attributes("class")).toContain(selectedClass);
+      expect(multiButtons[2].attributes("class")).toContain(selectedClass);
+    });
+
+    it("Multiple – allows multiple selections when multiple prop is true", async () => {
+      const component = mount(UToggle, {
+        props: {
+          options,
+          modelValue: ["option1"],
+          multiple: true,
+          name,
+        },
+      });
+
+      await component.findAllComponents(UButton)[1].trigger("click");
+
+      const emittedValue = component.emitted("update:modelValue")?.[0][0];
+
+      // Verify both options are now selected (original + clicked)
+      expect(emittedValue).toEqual(["option1", "option2"]);
+    });
+
+    it("Split – applies split class when split prop is true", () => {
+      const split = true;
+      const splitClasses = "flex-wrap";
+
+      const component = mount(UToggle, {
+        props: {
+          split,
+          name,
+        },
+      });
+
+      expect(component.attributes("class")).toContain(splitClasses);
+    });
+
+    it("Split – applies unsplit class when split prop is false", () => {
+      const split = false;
+      const unsplitClasses = "gap-px";
+
+      const component = mount(UToggle, {
+        props: {
+          split,
+          name,
+        },
+      });
+
+      expect(component.attributes("class")).toContain(unsplitClasses);
+    });
+
+    it("Disabled – disables all options when disabled prop is true", () => {
+      const disabled = true;
+
+      const component = mount(UToggle, {
+        props: {
+          options,
+          disabled,
+          name,
+        },
+      });
+
+      const buttons = component.findAllComponents(UButton);
+
+      buttons.forEach((button) => {
+        expect(button.attributes("disabled")).toBeDefined();
+      });
+    });
+
+    it("Block – applies block class when block prop is true", () => {
+      const block = true;
+      const blockClasses = "w-full";
+
+      const component = mount(UToggle, {
+        props: {
+          block,
+          options,
+          name,
+        },
+      });
+
+      expect(component.attributes("class")).toContain(blockClasses);
+    });
+
+    it("Round – applies round class to buttons when round prop is true", () => {
+      const round = true;
+      const roundClasses = "rounded-full";
+
+      const component = mount(UToggle, {
+        props: {
+          round,
+          options,
+          name,
+        },
+      });
+
+      const button = component.findComponent(UButton);
+
+      expect(button.attributes("class")).toContain(roundClasses);
+    });
+
+    it("Square – applies square class to buttons when square prop is true", () => {
+      const square = true;
+
+      const component = mount(UToggle, {
+        props: {
+          options,
+          square,
+          name,
+        },
+      });
+
+      const button = component.findComponent(UButton);
+
+      // Square buttons have equal padding on all sides
+      expect(button.attributes("class")).toContain("p-");
+    });
+
+    it("Id – applies the correct id attribute", () => {
+      const id = "test-toggle-id";
+
+      const component = mount(UToggle, {
+        props: {
+          id,
+          name,
+        },
+      });
+
+      expect(component.attributes("id")).toBe(id);
+    });
+
+    it("Data Test – applies the correct data-test attribute", () => {
+      const dataTest = "test-toggle";
+
+      const component = mount(UToggle, {
+        props: {
+          dataTest,
+          name,
+        },
+      });
+
+      expect(component.attributes("data-test")).toBe(dataTest);
+    });
   });
 
-  // Slots tests
   describe("Slots", () => {
-    // Left slot
-    it("renders content from left slot", () => {
+    it("Left – renders content from left slot", () => {
       const slotText = "Left";
       const slotClass = "left-content";
 
@@ -310,8 +292,7 @@ describe("UToggle.vue", () => {
       expect(component.find(`.${slotClass}`).text()).toBe(slotText);
     });
 
-    // Option slot
-    it("renders content from option slot", () => {
+    it("Option – renders content from option slot", () => {
       const slotText = "Custom Option";
       const slotClass = "option-content";
 
@@ -328,26 +309,7 @@ describe("UToggle.vue", () => {
       expect(component.find(`.${slotClass}`).text()).toBe(slotText);
     });
 
-    // Right slot
-    it("renders content from right slot", () => {
-      const slotText = "Right";
-      const slotClass = "right-content";
-
-      const component = mount(UToggle, {
-        props: {
-          options,
-          name,
-        },
-        slots: {
-          right: `<span class='${slotClass}'>${slotText}</span>`,
-        },
-      });
-
-      expect(component.find(`.${slotClass}`).text()).toBe(slotText);
-    });
-
-    // Slot bindings
-    it("provides correct bindings to slots", () => {
+    it("Option – provides correct bindings to slots", () => {
       const optionIndex = "0";
       const bindingOptions: UToggleOption[] = [
         { value: "option1", label: "Option 1", icon: "star" },
@@ -380,12 +342,27 @@ describe("UToggle.vue", () => {
       expect(component.find(`.${iconClass}`).text()).toBe(bindingOptions[0].icon);
       expect(component.find(`.${indexClass}`).text()).toBe(optionIndex);
     });
+
+    it("Right – renders content from right slot", () => {
+      const slotText = "Right";
+      const slotClass = "right-content";
+
+      const component = mount(UToggle, {
+        props: {
+          options,
+          name,
+        },
+        slots: {
+          right: `<span class='${slotClass}'>${slotText}</span>`,
+        },
+      });
+
+      expect(component.find(`.${slotClass}`).text()).toBe(slotText);
+    });
   });
 
-  // Events tests
   describe("Events", () => {
-    // update:modelValue event
-    it("emits update:modelValue event when option is clicked", async () => {
+    it("Model Value – emits update:modelValue event when option is clicked", async () => {
       const component = mount(UToggle, {
         props: {
           options,
@@ -400,8 +377,7 @@ describe("UToggle.vue", () => {
       expect(emittedValue).toBe(options[0].value);
     });
 
-    // Option onClick callback
-    it("calls option onClick callback when option is clicked", async () => {
+    it("Option Click – calls option onClick callback when option is clicked", async () => {
       const onClick = vi.fn();
       const callbackOptions: UToggleOption[] = [{ value: "option1", label: "Option 1", onClick }];
 
@@ -421,10 +397,8 @@ describe("UToggle.vue", () => {
     });
   });
 
-  // Exposed refs tests
   describe("Exposed refs", () => {
-    // optionsRef
-    it("exposes optionsRef", () => {
+    it("Options – exposes optionsRef", () => {
       const component = mount(UToggle, {
         props: {
           name,
