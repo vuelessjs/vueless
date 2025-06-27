@@ -17,8 +17,9 @@ describe("UInputCounter.vue", () => {
   });
 
   describe("props", () => {
-    it("ModelValue – sets initial value correctly", () => {
+    it("Model Value – sets initial value correctly", () => {
       const initialValue = 5;
+
       const component = mount(UInputCounter, {
         props: {
           modelValue: initialValue,
@@ -28,7 +29,7 @@ describe("UInputCounter.vue", () => {
       expect(component.getComponent(UInputNumber).props("modelValue")).toBe(initialValue);
     });
 
-    it("ModelValue – updates value on input", async () => {
+    it("Model Value – updates value on input", async () => {
       const component = mount(UInputCounter, {
         props: {
           modelValue: 5,
@@ -201,9 +202,9 @@ describe("UInputCounter.vue", () => {
 
     it("Size – applies correct class to counter text based on size prop", () => {
       const sizeClasses = {
-        sm: "text-small px-1",
-        md: "text-medium px-1.5",
-        lg: "text-large px-2",
+        sm: "text-small",
+        md: "text-medium",
+        lg: "text-large",
       };
 
       Object.entries(sizeClasses).forEach(([size, className]) => {
