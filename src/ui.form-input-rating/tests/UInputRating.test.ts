@@ -8,7 +8,7 @@ import type { Props } from "../types.ts";
 
 describe("UInputRating.vue", () => {
   describe("props", () => {
-    it("ModelValue – sets initial value correctly", () => {
+    it("Model Value – sets initial value correctly", () => {
       const initialValue = 3;
       const component = mount(UInputRating, {
         props: {
@@ -22,7 +22,7 @@ describe("UInputRating.vue", () => {
       expect(icons[3].props("name")).that.includes("star");
     });
 
-    it("ModelValue – updates value on click", async () => {
+    it("Model Value – updates value on click", async () => {
       const component = mount(UInputRating, {
         props: {
           modelValue: 2,
@@ -39,7 +39,9 @@ describe("UInputRating.vue", () => {
       expect(icons[4].props("name")).toBe("star");
     });
 
-    it("ModelValue – display zero value correctly", async () => {
+    it("Model Value – display zero value correctly", async () => {
+      const emptyStarIcon = "star";
+
       const component = mount(UInputRating, {
         props: {
           modelValue: 0,
@@ -50,7 +52,7 @@ describe("UInputRating.vue", () => {
       const icons = component.findAllComponents(UIcon);
 
       icons.forEach((icon) => {
-        expect(icon.props("name")).toBe("star");
+        expect(icon.props("name")).toBe(emptyStarIcon);
       });
 
       await icons[0].trigger("click");
@@ -60,6 +62,7 @@ describe("UInputRating.vue", () => {
 
     it("Stars – sets the number of stars correctly", () => {
       const starsCount = 7;
+
       const component = mount(UInputRating, {
         props: {
           modelValue: 0,
@@ -86,6 +89,8 @@ describe("UInputRating.vue", () => {
       };
 
       Object.entries(counterSizeClasses).forEach(([size, counterClass]) => {
+        const totalSizeClass = totalSizeClasses[size as keyof typeof totalSizeClasses];
+
         const component = mount(UInputRating, {
           props: {
             modelValue: 2,
@@ -99,45 +104,49 @@ describe("UInputRating.vue", () => {
         const totalElement = component.get("[vl-key='total']");
 
         expect(counterElement.attributes("class")).toContain(counterClass);
-        expect(totalElement.attributes("class")).toContain(
-          totalSizeClasses[size as keyof typeof totalSizeClasses],
-        );
+        expect(totalElement.attributes("class")).toContain(totalSizeClass);
       });
     });
 
     it("Active Icon – sets active icon correctly", () => {
+      const activeIcon = "heart-fill";
+
       const component = mount(UInputRating, {
         props: {
           modelValue: 2,
-          activeIcon: "heart-fill",
+          activeIcon: activeIcon,
         },
       });
 
       const icons = component.findAllComponents(UIcon);
 
-      expect(icons[0].props("name")).toBe("heart-fill");
-      expect(icons[1].props("name")).toBe("heart-fill");
-      expect(icons[2].props("name")).not.toBe("heart-fill");
-      expect(icons[3].props("name")).not.toBe("heart-fill");
+      expect(icons[0].props("name")).toBe(activeIcon);
+      expect(icons[1].props("name")).toBe(activeIcon);
+      expect(icons[2].props("name")).not.toBe(activeIcon);
+      expect(icons[3].props("name")).not.toBe(activeIcon);
     });
 
     it("Inactive Icon – sets inactive icon correctly", () => {
+      const inactiveIcon = "heart";
+
       const component = mount(UInputRating, {
         props: {
           modelValue: 2,
-          inactiveIcon: "heart",
+          inactiveIcon: inactiveIcon,
         },
       });
 
       const icons = component.findAllComponents(UIcon);
 
-      expect(icons[0].props("name")).not.toBe("heart");
-      expect(icons[1].props("name")).not.toBe("heart");
-      expect(icons[2].props("name")).toBe("heart");
-      expect(icons[3].props("name")).toBe("heart");
+      expect(icons[0].props("name")).not.toBe(inactiveIcon);
+      expect(icons[1].props("name")).not.toBe(inactiveIcon);
+      expect(icons[2].props("name")).toBe(inactiveIcon);
+      expect(icons[3].props("name")).toBe(inactiveIcon);
     });
 
     it("Readonly – prevents interaction when true", async () => {
+      const emptyStarIcon = "star";
+
       const component = mount(UInputRating, {
         props: {
           modelValue: 2,
@@ -150,7 +159,7 @@ describe("UInputRating.vue", () => {
       await icons[3].trigger("click");
 
       expect(component.emitted("update:modelValue")).toBeUndefined();
-      expect(icons[3].props("name")).toBe("star");
+      expect(icons[3].props("name")).toBe(emptyStarIcon);
     });
 
     it("Disabled – prevents interaction when true", async () => {
@@ -188,6 +197,7 @@ describe("UInputRating.vue", () => {
 
     it("Total – displays total count when true", () => {
       const totalCount = 5;
+
       const component = mount(UInputRating, {
         props: {
           modelValue: 2,
@@ -213,6 +223,7 @@ describe("UInputRating.vue", () => {
 
     it("Id - sets id attribute correctly", () => {
       const id = "test-id";
+
       const component = mount(UInputRating, {
         props: {
           modelValue: 0,
@@ -225,6 +236,7 @@ describe("UInputRating.vue", () => {
 
     it("Data test – sets data-test attribute to stars", () => {
       const dataTest = "test-rating";
+
       const component = mount(UInputRating, {
         props: {
           modelValue: 0,
