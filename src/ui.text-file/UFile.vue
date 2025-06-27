@@ -27,15 +27,11 @@ const emit = defineEmits([
   "remove",
 ]);
 
-const fileRef = useTemplateRef<InstanceType<typeof ULink>>("file");
+const fileRef = useTemplateRef<HTMLDivElement>("file");
 
 const focus = ref(false);
 
 const fileId = props.id || useId();
-
-const link = computed(() => {
-  return fileRef.value?.linkRef || null;
-});
 
 function onRemove() {
   emit("remove", fileId);
@@ -51,10 +47,10 @@ function onBlur() {
 
 defineExpose({
   /**
-   * A reference to the ULink instance for direct DOM manipulation.
-   * @property {InstanceType<typeof ULink>}
+   * A reference to the file wrapper for direct DOM manipulation.
+   * @property {HTMLDivElement}
    */
-  link,
+  fileRef,
 });
 
 /**
@@ -78,7 +74,7 @@ const {
 </script>
 
 <template>
-  <ULink ref="file" :href="url" v-bind="fileAttrs" :data-test="getDataTest()">
+  <div ref="file" v-bind="fileAttrs" :data-test="getDataTest()">
     <!-- @slot Use it to add something before the file. -->
     <slot name="left">
       <UIcon
@@ -102,7 +98,14 @@ const {
       <div v-bind="bodyAttrs">
         <img v-if="imageUrl" :alt="label" :src="imageUrl" v-bind="fileImageAttrs" />
 
-        <ULink :label="label" :size="size" color="grayscale" dashed v-bind="fileLabelAttrs" />
+        <ULink
+          :href="url"
+          :label="label"
+          :size="size"
+          color="grayscale"
+          dashed
+          v-bind="fileLabelAttrs"
+        />
       </div>
     </slot>
 
@@ -118,5 +121,5 @@ const {
         @click.stop.prevent="onRemove"
       />
     </slot>
-  </ULink>
+  </div>
 </template>
