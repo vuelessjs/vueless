@@ -4,21 +4,24 @@ hidden: true
 
 # Vueless component anatomy
 
-All vueless component should contain this parts:
+## Component Anatomy
 
+Each Vueless component follows a consistent internal structure with these key elements:
 
+### 1. Script Setup with `inheritAttrs` Disabled
 
-```javascript
+All components disable attribute inheritance to prevent classes duplication:
+
+```typescript
 defineOptions({ inheritAttrs: false });
 ```
 
+### 2. Props Declaration with Defaults
 
-
-Props
+Components use TypeScript to define strongly-typed props with defaults from config:
 
 ```typescript
 import { getDefaults } from "../utils/ui.ts";
-
 import defaultConfig from "./config.ts";
 import { COMPONENT_NAME } from "./constants.ts";
 
@@ -29,9 +32,9 @@ const props = withDefaults(defineProps<Props>(), {
 });
 ```
 
+### 3. useUI Composable for Styling and Attributes
 
-
-Use UI
+The useUI composable handles styling, attribute management, and class generation:
 
 ```typescript
 import useUI from "../composables/useUI.ts";
@@ -46,8 +49,12 @@ const mutatedProps = computed(() => ({
   label: Boolean(props.label),
 }));
 
-const { getDataTest, buttonAttrs, loaderAttrs, leftIconAttrs, rightIconAttrs, centerIconAttrs } =
-  useUI<Config>(defaultConfig, mutatedProps);
+const { getDataTest, elementAttrs } = useUI<Config>(defaultConfig, mutatedProps);
 ```
 
-Usage
+
+
+
+
+
+

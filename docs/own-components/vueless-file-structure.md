@@ -9,6 +9,11 @@ U[component]/
 ├─ storybook/
 │  ├─ docs.mdx
 │  └─ stories.ts
+├─ tests/
+│  ├─ U[component].test.ts 
+│  ├─ util[service].test.ts 
+│  ├─ use[composable].test.ts
+│  └─ ... # rest tests
 ├─ config.ts
 ├─ constants.ts
 ├─ types.ts
@@ -53,8 +58,16 @@ Each component should be contained within a single folder, maintaining a flat fi
 
 Folder for Storybook-related files:
 
-* 📜 docs.mdx – custom component docs page.
+* 📜 docs.mdx – component docs page.
 * 📜 stories.ts – component stories.
+
+### 📁 tests/
+
+Folder for Storybook-related files:
+
+* 📜 U\[component].test.ts – component tests.
+* 📜 util\[service].test.ts – component utility service tests. <mark style="color:yellow;">(optional)</mark>
+* 📜 use\[composable].test.ts – component composable tests. <mark style="color:yellow;">(optional)</mark>
 
 ### 📜 config.ts
 
