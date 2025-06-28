@@ -1,0 +1,15 @@
+{
+  "$schema": "https://context7.com/schema/context7.json",
+  "projectTitle": "Vueless UI",
+  "description": "Vue Styleless UI Component Library, powered by Tailwind CSS \uD83D\uDC9A",
+  "folders": ["docs"],
+  "excludeFolders": [],
+  "excludeFiles": [],
+  "rules": [],
+  "previousVersions": [
+    {
+      "tag": "v1.0.1",
+      "title": "version 1.0.1"
+    }
+  ]
+}
