@@ -111,7 +111,7 @@ describe("UInput.vue", () => {
         },
       });
 
-      expect(component.getComponent(ULabel).vm.error).toBe(errorText);
+      expect(component.getComponent(ULabel).props("error")).toBe(errorText);
     });
 
     it("Error – applies error class when error prop is set", () => {
@@ -343,16 +343,15 @@ describe("UInput.vue", () => {
 
     it("Left – renders custom content from left slot", () => {
       const slotText = "Custom Left Content";
-      const customContentClass = "custom-left";
-      const slotContent = `<span class="${customContentClass}">${slotText}</span>`;
+      const slotClass = "custom-left";
 
       const component = mount(UInput, {
         slots: {
-          left: slotContent,
+          left: `<span class="${slotClass}">${slotText}</span>`,
         },
       });
 
-      const leftSlotElement = component.find(`.${customContentClass}`);
+      const leftSlotElement = component.find(`.${slotClass}`);
 
       expect(leftSlotElement.exists()).toBe(true);
       expect(leftSlotElement.text()).toBe(slotText);
@@ -390,30 +389,28 @@ describe("UInput.vue", () => {
 
     it("Left – slot content overrides leftIcon prop", () => {
       const leftIcon = "search";
-      const customContentClass = "custom-icon";
-      const slotContent = `<span class="${customContentClass}">Custom Content</span>`;
+      const slotClass = "custom-icon";
 
       const component = mount(UInput, {
         props: {
           leftIcon,
         },
         slots: {
-          left: slotContent,
+          left: `<span class="${slotClass}">Custom Content</span>`,
         },
       });
 
-      expect(component.find(`.${customContentClass}`).exists()).toBe(true);
+      expect(component.find(`.${slotClass}`).exists()).toBe(true);
       expect(component.findComponent(UIcon).exists()).toBe(false);
     });
 
     it("Right – renders custom content from right slot", () => {
       const slotText = "Custom Right Content";
       const slotContentClass = "custom-right";
-      const slotContent = `<span class="${slotContentClass}">${slotText}</span>`;
 
       const component = mount(UInput, {
         slots: {
-          right: slotContent,
+          right: `<span class="${slotContentClass}">${slotText}</span>`,
         },
       });
 
@@ -455,19 +452,18 @@ describe("UInput.vue", () => {
 
     it("Right – slot content overrides rightIcon prop", () => {
       const rightIcon = "close";
-      const customContentClass = "custom-icon";
-      const slotContent = `<span class="${customContentClass}">Custom Content</span>`;
+      const slotClass = "custom-icon";
 
       const component = mount(UInput, {
         props: {
           rightIcon,
         },
         slots: {
-          right: slotContent,
+          right: `<span class="${slotClass}">Custom Content</span>`,
         },
       });
 
-      expect(component.find(`.${customContentClass}`).exists()).toBe(true);
+      expect(component.find(`.${slotClass}`).exists()).toBe(true);
       expect(component.findComponent(UIcon).exists()).toBe(false);
     });
   });
