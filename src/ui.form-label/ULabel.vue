@@ -76,10 +76,8 @@ const mutatedProps = computed(() => ({
   label: Boolean(props.label) || hasSlotContent(slots["label"], { label: props.label }),
 }));
 
-const { getDataTest, wrapperAttrs, contentAttrs, labelAttrs, descriptionAttrs } = useUI<Config>(
-  defaultConfig,
-  mutatedProps,
-);
+const { getDataTest, wrapperAttrs, contentAttrs, labelAttrs, descriptionAttrs, errorAttrs } =
+  useUI<Config>(defaultConfig, mutatedProps);
 </script>
 
 <template>
@@ -155,12 +153,7 @@ const { getDataTest, wrapperAttrs, contentAttrs, labelAttrs, descriptionAttrs } 
       <slot />
     </div>
 
-    <div
-      v-if="isShownError"
-      v-bind="descriptionAttrs"
-      :data-test="getDataTest('error')"
-      v-text="error"
-    />
+    <div v-if="isShownError" v-bind="errorAttrs" :data-test="getDataTest('error')" v-text="error" />
 
     <div
       v-if="description && !isShownError"
