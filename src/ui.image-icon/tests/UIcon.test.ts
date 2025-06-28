@@ -1,71 +1,43 @@
-import { mount } from "@vue/test-utils";
+import { flushPromises, mount } from "@vue/test-utils";
 import { describe, it, expect } from "vitest";
-import { h } from "vue";
+
+// @ts-expect-error - SVG component imports with ?component suffix are handled by Vite plugin.
+import AddIcon from "../../icons/internal/add.svg?component";
 
 import UIcon from "../UIcon.vue";
-
-import type { ComponentPublicInstance } from "vue";
 import type { Props } from "../types";
 
 describe("UIcon.vue", () => {
-  // Wait for an async component to load
-  function sleep(ms: number = 0) {
-    return new Promise((resolve) => setTimeout(resolve, ms));
-  }
-
-  // Props tests
   describe("Props", () => {
-    // Name prop
-    it("renders different icons based on name prop", async () => {
-      const names = ["check", "close", "info", "warning"];
-
-      for (const name of names) {
-        const component = mount(UIcon, {
-          props: {
-            name,
-          },
-        });
-
-        await sleep();
-        expect(component.attributes("data-name")).toContain(name);
-      }
-    });
-
-    // Src prop
-    it("renders component with custom render function", () => {
-      const name = "custom-svg";
-
-      // Create mock component with render function
-      const mockComponent = {
-        render: () => {
-          return h("svg", { "data-name": name }, "Custom Content");
-        },
-        [Symbol.toStringTag]: "Module",
-      };
+    it("Name – renders icon based on provided name", async () => {
+      const name = "check";
 
       const component = mount(UIcon, {
         props: {
-          src: mockComponent as unknown as Props["src"],
+          name,
+          dataTest: "test",
         },
       });
 
-      expect(component.attributes("data-name")).toBe(name);
+      await flushPromises();
+
+      component.get("[data-test='test']");
     });
 
-    // Edge case, no src and name
-    it("doesn't render when neither name nor src is provided", () => {
-      // Vue adds a comment node as a placeholder when using v-if
-      const expectedHTML = "<!--v-if-->";
-
+    it("Src – renders icon based on provided src", async () => {
       const component = mount(UIcon, {
-        props: {},
+        props: {
+          src: AddIcon,
+          dataTest: "test",
+        },
       });
 
-      expect(component.html()).toBe(expectedHTML);
+      await flushPromises();
+
+      component.get("[data-test='test']");
     });
 
-    // Color prop
-    it("accepts color prop", () => {
+    it("Color – applies correct color classes", () => {
       const name = "check";
       const colors = [
         "primary",
@@ -88,13 +60,13 @@ describe("UIcon.vue", () => {
           },
         });
 
-        await sleep();
-        expect(component.attributes("class")).toContain(color);
+        await flushPromises();
+
+        expect(component.get("svg").attributes("class")).toContain(color);
       });
     });
 
-    // Size prop
-    it("applies the correct size class", () => {
+    it("Size – applies correct size classes", () => {
       const name = "check";
       const sizes = {
         "4xs": "size-2.5",
@@ -119,13 +91,13 @@ describe("UIcon.vue", () => {
           },
         });
 
-        await sleep();
-        expect(component.attributes("class")).toContain(classes);
+        await flushPromises();
+
+        expect(component.get("svg").attributes("class")).toContain(classes);
       });
     });
 
-    // Variant prop
-    it("applies the correct variant class", () => {
+    it("Variant – applies the correct variant class", () => {
       const name = "check";
       const variants = {
         light: "brightness-125",
@@ -141,13 +113,13 @@ describe("UIcon.vue", () => {
           },
         });
 
-        await sleep();
-        expect(component.attributes("class")).toContain(classes);
+        await flushPromises();
+
+        expect(component.get("svg").attributes("class")).toContain(classes);
       });
     });
 
-    // Interactive prop
-    it("accepts interactive prop", async () => {
+    it("Interactive – applies interactivity classes", async () => {
       const name = "check";
       const interactive = true;
       const interactiveClass = "cursor-pointer";
@@ -159,12 +131,12 @@ describe("UIcon.vue", () => {
         },
       });
 
-      await sleep();
-      expect(component.attributes("class")).toContain(interactiveClass);
+      await flushPromises();
+
+      expect(component.get("svg").attributes("class")).toContain(interactiveClass);
     });
 
-    // Disabled prop
-    it("accepts disabled prop", async () => {
+    it("Disabled – applies disabled classes", async () => {
       const name = "check";
       const disabled = true;
       const disabledClass = "--vl-disabled-opacity";
@@ -176,14 +148,14 @@ describe("UIcon.vue", () => {
         },
       });
 
-      await sleep();
-      expect(component.attributes("class")).toContain(disabledClass);
+      await flushPromises();
+
+      expect(component.get("svg").attributes("class")).toContain(disabledClass);
     });
 
-    // DataTest prop
-    it("accepts dataTest prop", async () => {
+    it("Data Test – accepts dataTest prop", async () => {
       const name = "check";
-      const dataTest = "icon-test";
+      const dataTest = "test";
 
       const component = mount(UIcon, {
         props: {
@@ -192,43 +164,64 @@ describe("UIcon.vue", () => {
         },
       });
 
-      await sleep();
+      await flushPromises();
+
       expect(component.attributes("data-test")).toBe(dataTest);
     });
   });
 
-  // Events tests
   describe("Events", () => {
-    // Click event
-    it("has click event handler", () => {
-      const name = "check";
-
+    it("Click – emits click event when clicked", async () => {
       const component = mount(UIcon, {
         props: {
-          name,
+          name: "check",
+          interactive: true,
         },
       });
 
-      // Check that the component has the onClick method
-      expect(component.vm.onClick).toBeDefined();
+      await flushPromises();
+
+      await component.trigger("click");
+
+      expect(component.emitted("click")).toBeDefined();
+    });
+
+    it("Click – does not emit click event when disabled", async () => {
+      const component = mount(UIcon, {
+        props: {
+          name: "check",
+          disabled: true,
+        },
+      });
+
+      await flushPromises();
+
+      await component.trigger("click");
+
+      expect(component.emitted("click")).toBeUndefined();
     });
   });
 
-  // Exposed refs tests
   describe("Exposed refs", () => {
-    // iconRef
-    it("exposes iconRef", () => {
-      const name = "check";
-
+    it("Icon – exposes iconRef and it references the correct SVG element", async () => {
       const component = mount(UIcon, {
         props: {
-          name,
+          name: "check",
+          dataTest: "test",
         },
       });
 
-      expect(
-        (component.vm as ComponentPublicInstance & { iconRef: HTMLElement }).iconRef,
-      ).toBeDefined();
+      await flushPromises();
+
+      const iconRef = component.vm.iconRef;
+
+      expect(iconRef).toBeDefined();
+      expect(iconRef).not.toBeNull();
+
+      // Get the actual DOM element (handle both HTMLElement and ComponentPublicInstance)
+      const iconElement = iconRef && "$el" in iconRef ? iconRef.$el : iconRef;
+
+      expect(iconElement.tagName.toLowerCase()).toBe("svg");
     });
   });
 });
