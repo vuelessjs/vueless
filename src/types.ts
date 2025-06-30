@@ -49,6 +49,7 @@ import ULabelConfig from "./ui.form-label/config.ts";
 import UColorPickerConfig from "./ui.other-theme-color-toggle/config.ts";
 import UInputConfig from "./ui.form-input/config.ts";
 import UInputCounterConfig from "./ui.form-input-counter/config.ts";
+import UInputOTPConfig from "./ui.form-input-otp/config.ts";
 import UInputPasswordConfig from "./ui.form-input-password/config.ts";
 import UInputRatingConfig from "./ui.form-input-rating/config.ts";
 import UInputSearchConfig from "./ui.form-input-search/config.ts";
@@ -276,6 +277,7 @@ export interface Components {
   UColorPicker: Partial<typeof UColorPickerConfig>;
   UInput: Partial<typeof UInputConfig>;
   UInputCounter: Partial<typeof UInputCounterConfig>;
+  UInputOTP: Partial<typeof UInputOTPConfig>;
   UInputPassword: Partial<typeof UInputPasswordConfig>;
   UInputRating: Partial<typeof UInputRatingConfig>;
   UInputSearch: Partial<typeof UInputSearchConfig>;

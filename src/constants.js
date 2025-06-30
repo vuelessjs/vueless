@@ -242,6 +242,7 @@ export const COMPONENTS = {
   UInputFile: "ui.form-input-file",
   UInputNumber: "ui.form-input-number",
   UInputCounter: "ui.form-input-counter",
+  UInputOTP: "ui.form-input-otp",
   UInputPassword: "ui.form-input-password",
   UInputRating: "ui.form-input-rating",
   UInputSearch: "ui.form-input-search",

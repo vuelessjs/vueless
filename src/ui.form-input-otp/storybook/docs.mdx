@@ -1,0 +1,16 @@
+import { Meta, Title, Subtitle, Description, Primary, Controls, Stories, Source } from "@storybook/addon-docs/blocks";
+import { getSource } from "../../utils/storybook.ts";
+
+import * as stories from "./stories.ts";
+import defaultConfig from "../config.ts?raw"
+
+<Meta of={stories} />
+<Title of={stories} />
+<Subtitle of={stories} />
+<Description of={stories} />
+<Primary of={stories}  />
+<Controls of={stories.Default} />
+<Stories of={stories} />
+
+## Default config
+<Source code={getSource(defaultConfig)} language="jsx" dark />
