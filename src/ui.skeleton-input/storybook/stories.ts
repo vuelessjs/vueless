@@ -1,16 +1,9 @@
 import type { Meta, StoryFn } from "@storybook/vue3";
-import {
-  getArgs,
-  getArgTypes,
-  getSlotsFragment,
-  getEnumVariantDescription,
-} from "../../utils/storybook.ts";
+import { getArgs, getArgTypes, getSlotNames, getSlotsFragment } from "../../utils/storybook.ts";
 
 import USkeletonInput from "../USkeletonInput.vue";
 import UCol from "../../ui.container-col/UCol.vue";
 import USkeleton from "../../ui.skeleton/USkeleton.vue";
-
-import tooltip from "../../directives/tooltip/vTooltip.ts";
 
 import type { Props } from "../types.ts";
 
@@ -31,7 +24,7 @@ export default {
 const DefaultTemplate: StoryFn<SkeletonInputArgs> = (args: SkeletonInputArgs) => ({
   components: { USkeletonInput },
   setup: () => {
-    return { args };
+    return { args, slots: getSlotNames(USkeletonInput.__name) };
   },
   template: `
     <USkeletonInput v-bind="args" class="!max-w-96">
@@ -42,7 +35,6 @@ const DefaultTemplate: StoryFn<SkeletonInputArgs> = (args: SkeletonInputArgs) =>
 
 const EnumTemplate: StoryFn<SkeletonInputArgs> = (args: SkeletonInputArgs, { argTypes }) => ({
   components: { USkeletonInput, UCol },
-  directives: { tooltip },
   setup: () => ({ args, argTypes, getArgs }),
   template: `
     <UCol>
@@ -50,9 +42,7 @@ const EnumTemplate: StoryFn<SkeletonInputArgs> = (args: SkeletonInputArgs, { arg
         v-for="option in argTypes?.[args.enum]?.options"
         v-bind="getArgs(args, option)"
         :key="option"
-        :[args.enum]="option"
         class="max-w-96 w-full"
-        v-tooltip="option"
       />
     </UCol>
   `,
@@ -61,18 +51,17 @@ const EnumTemplate: StoryFn<SkeletonInputArgs> = (args: SkeletonInputArgs, { arg
 export const Default = DefaultTemplate.bind({});
 Default.args = {};
 
-export const Label = DefaultTemplate.bind({});
-Label.args = { label: false };
+export const WithoutLabel = DefaultTemplate.bind({});
+WithoutLabel.args = { label: false };
 
-export const LabelPlacement = EnumTemplate.bind({});
-LabelPlacement.args = { enum: "labelAlign" };
+export const LabelAlign = EnumTemplate.bind({});
+LabelAlign.args = { enum: "labelAlign" };
 
 export const Type = EnumTemplate.bind({});
 Type.args = { enum: "type" };
 
 export const Sizes = EnumTemplate.bind({});
 Sizes.args = { enum: "size" };
-Sizes.parameters = getEnumVariantDescription();
 
 export const Variant = EnumTemplate.bind({});
 Variant.args = { enum: "variant" };

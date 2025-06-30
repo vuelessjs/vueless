@@ -73,23 +73,23 @@ export const UnderlineVariants: StoryFn<UBreadcrumbsArgs> = (args: UBreadcrumbsA
   components: { UBreadcrumbs, UText, UCol },
   setup: () => ({ args }),
   template: `
-    <UCol>
-      <UText>Default</UText>
+    <UCol gap="none" class="mb-5">
+      <UText label="Default" weight="semibold" variant="lifted" />
       <UBreadcrumbs :links="args.links" />
     </UCol>
 
-    <UCol>
-      <UText>Dashed</UText>
+    <UCol gap="none" class="mb-5">
+      <UText label="Dashed" weight="semibold" variant="lifted" />
       <UBreadcrumbs :links="args.links" dashed />
     </UCol>
 
-    <UCol>
-      <UText>Underlined</UText>
+    <UCol gap="none" class="mb-5">
+      <UText label="Underlined" weight="semibold" variant="lifted" />
       <UBreadcrumbs :links="args.links" underlined />
     </UCol>
 
-    <UCol>
-      <UText>Without Underline</UText>
+    <UCol gap="none" class="mb-5">
+      <UText label="Without Underline" weight="semibold" variant="lifted" />
       <UBreadcrumbs :links="args.links" :underlined="false" />
     </UCol>
   `,
@@ -106,15 +106,6 @@ LinkStates.args = {
       disabled: true,
     },
   ],
-};
-LinkStates.parameters = {
-  docs: {
-    description: {
-      story:
-        // eslint-disable-next-line vue/max-len
-        "A breadcrumb is automatically disabled, if: <br /> - it does not have both `route` and `href` properties; <br /> - it has `disabled` property set to `true`.",
-    },
-  },
 };
 
 export const LinkIcon = DefaultTemplate.bind({});
@@ -134,15 +125,24 @@ LinkIcon.parameters = {
   },
 };
 
-export const IconSlot = DefaultTemplate.bind({});
-IconSlot.args = {
+export const Slots = DefaultTemplate.bind({});
+Slots.args = {
   slotTemplate: `
-    <template #icon="{ index }">
+    <template #before-link="{ index }">
       <UBadge
         v-if="index === 1"
         label="Info"
         color="success"
         size="sm"
+      />
+    </template>
+
+    <template #after-link="{ index }">
+      <UIcon
+        v-if="index === 2"
+        name="brightness_1"
+        color="primary"
+        size="xs"
       />
     </template>
   `,
@@ -152,7 +152,7 @@ export const LabelSlot = DefaultTemplate.bind({});
 LabelSlot.args = {
   slotTemplate: `
     <template #label="{ label, index }">
-      <UButton v-if="index === 0" :label="label" size="2xs" />
+      <UButton v-if="index === 0" :label="label" size="2xs" variant="soft" />
     </template>
   `,
 };
@@ -160,8 +160,8 @@ LabelSlot.args = {
 export const DividerSlot = DefaultTemplate.bind({});
 DividerSlot.args = {
   slotTemplate: `
-    <template #divider="{ index }">
-      <UIcon v-if="index === 1" name="double_arrow" size="xs" />
+    <template #divider>
+      <UIcon name="double_arrow" size="xs" />
     </template>
   `,
 };

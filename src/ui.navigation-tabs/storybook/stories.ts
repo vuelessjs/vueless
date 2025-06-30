@@ -75,14 +75,7 @@ export const Default = DefaultTemplate.bind({});
 Default.args = {};
 
 export const Sizes = EnumTemplate.bind({});
-Sizes.args = {
-  enum: "size",
-  options: [
-    { label: "{enumValue}", value: "1" },
-    { label: "{enumValue}", value: "2" },
-    { label: "{enumValue}", value: "3" },
-  ],
-};
+Sizes.args = { enum: "size" };
 
 export const Scrollable = DefaultTemplate.bind({});
 Scrollable.args = {
@@ -105,16 +98,13 @@ Square.parameters = {
 
 export const Slots: StoryFn<UTabsArgs> = (args) => ({
   components: { UTabs },
-  setup() {
-    args.config = { next: "flex items-center", prev: "flex items-center" };
-
-    return { args, getOptionsArray };
-  },
+  setup: () => ({ args, getOptionsArray }),
   template: `
     <UTabs
       v-bind="args"
       :options="getOptionsArray()"
       scrollable
+      :config="{ next: 'flex items-center', prev: 'flex items-center' }"
     >
       <template #prev>
         <span class="cursor-pointer">◀️</span>

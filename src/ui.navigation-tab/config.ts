@@ -9,6 +9,9 @@ export default /*tw*/ {
       scrollable: {
         false: "-mb-px",
       },
+      disabled: {
+        true: "text-primary/(--vl-disabled-opacity)",
+      },
     },
     defaults: {
       color: "gray",

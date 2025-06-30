@@ -69,15 +69,15 @@ const EnumTemplate: StoryFn<ULoaderProgressArgs> = (args: ULoaderProgressArgs, {
   template: `
     <UCol>
       <URow gap="sm" class="pb-4">
-        <UButton label="On" size="sm" @click="loaderProgressOn('https://api.publicapis.org/images')" />
-        <UButton label="Off" size="sm" @click="loaderProgressOff('https://api.publicapis.org/images')" />
+        <UButton label="On" size="sm" @click="loaderProgressOn(args.resources)" />
+        <UButton label="Off" size="sm" @click="loaderProgressOff(args.resources)" />
       </URow>
 
       <ULoaderProgress
         v-for="option in argTypes?.[args.enum]?.options"
         :key="option"
         v-bind="getArgs(args, option)"
-        resources="https://api.publicapis.org/images"
+        :resources="args.resources"
         class="static"
       />
     </UCol>
@@ -107,10 +107,10 @@ export const Default = DefaultTemplate.bind({});
 Default.args = {};
 
 export const Sizes = EnumTemplate.bind({});
-Sizes.args = { enum: "size" };
+Sizes.args = { enum: "size", resources: "https://api.publicapis.org/images" };
 
 export const Colors = EnumTemplate.bind({});
-Colors.args = { enum: "color" };
+Colors.args = { enum: "color", resources: "https://api.publicapis.org/files" };
 
 export const Loading = LoadingTemplate.bind({});
 Loading.args = {};

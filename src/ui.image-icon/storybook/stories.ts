@@ -8,7 +8,6 @@ import {
 
 import UIcon from "../../ui.image-icon/UIcon.vue";
 import URow from "../../ui.container-row/URow.vue";
-import tooltip from "../../directives/tooltip/vTooltip.ts";
 
 import type { Meta, StoryFn } from "@storybook/vue3";
 import type { Props } from "../types.ts";
@@ -45,7 +44,6 @@ export default {
 
 const DefaultTemplate: StoryFn<UIconArgs> = (args: UIconArgs) => ({
   components: { UIcon },
-  directives: { tooltip },
   setup: () => ({ args, slots: getSlotNames(UIcon.__name) }),
   template: `
     <UIcon v-bind="args">
@@ -56,7 +54,6 @@ const DefaultTemplate: StoryFn<UIconArgs> = (args: UIconArgs) => ({
 
 const EnumTemplate: StoryFn<UIconArgs> = (args: UIconArgs, { argTypes }) => ({
   components: { UIcon, URow },
-  directives: { tooltip },
   setup: () => ({ args, argTypes, getArgs }),
   template: `
     <URow>
@@ -64,7 +61,6 @@ const EnumTemplate: StoryFn<UIconArgs> = (args: UIconArgs, { argTypes }) => ({
         v-for="option in argTypes?.[args.enum]?.options"
         v-bind="getArgs(args, option)"
         :key="option"
-        v-tooltip="option"
       />
     </URow>
   `,

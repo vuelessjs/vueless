@@ -5,14 +5,11 @@ import {
   getSlotNames,
   getSlotsFragment,
   getDocsDescription,
-  getEnumVariantDescription,
 } from "../../utils/storybook.ts";
 
 import ULoader from "../../ui.loader/ULoader.vue";
 import URow from "../../ui.container-row/URow.vue";
 import UButton from "../../ui.button/UButton.vue";
-
-import tooltip from "../../directives/tooltip/vTooltip.ts";
 
 import type { Meta, StoryFn } from "@storybook/vue3";
 import type { Props } from "../types.ts";
@@ -51,7 +48,6 @@ const DefaultTemplate: StoryFn<ULoaderArgs> = (args: ULoaderArgs) => ({
 
 const EnumTemplate: StoryFn<ULoaderArgs> = (args: ULoaderArgs, { argTypes }) => ({
   components: { ULoader, URow },
-  directives: { tooltip },
   setup: () => ({ args, argTypes, getArgs }),
   template: `
     <URow wrap>
@@ -59,7 +55,6 @@ const EnumTemplate: StoryFn<ULoaderArgs> = (args: ULoaderArgs, { argTypes }) => 
         v-for="option in argTypes?.[args.enum]?.options"
         v-bind="getArgs(args, option)"
         :key="option"
-        v-tooltip="option"
       />
     </URow>
   `,
@@ -89,11 +84,9 @@ Default.args = {};
 
 export const Sizes = EnumTemplate.bind({});
 Sizes.args = { enum: "size" };
-Sizes.parameters = getEnumVariantDescription();
 
 export const Colors = EnumTemplate.bind({});
 Colors.args = { enum: "color" };
-Colors.parameters = getEnumVariantDescription();
 
 export const Loading = LoadingTemplate.bind({});
 Loading.args = {};

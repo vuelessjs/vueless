@@ -150,6 +150,14 @@ function preFormat(templateSource, args, argTypes) {
       new RegExp(`v-model="args\\.modelValue"`, "g"),
       args["modelValue"] ? `v-model="${modelValue}"` : "",
     )
+    .replace(/v-model:(\w+)="args\.(\w+)"/g, (_, modelKey, argKey) => {
+      const val = args[argKey];
+
+      if (val === undefined) return "";
+      const formattedVal = isPrimitive(val) ? `${val}` : JSON.stringify(val).replaceAll('"', "'");
+
+      return `v-model:${modelKey}="${formattedVal}"`;
+    })
     .replace(
       /v-bind="args"/g,
       Object.keys(componentArgs)

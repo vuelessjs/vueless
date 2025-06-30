@@ -33,6 +33,6 @@ export default /*tw*/ {
     size: "md",
     variant: "default",
     headerLines: 0,
-    textLines: 4,
+    textLines: 3,
   },
 };
