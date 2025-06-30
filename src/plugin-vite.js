@@ -125,11 +125,12 @@ export const Vueless = function (options = {}) {
         await cacheMergedConfigs(vuelessSrcDir);
       }
 
+      await buildWebTypes(vuelessSrcDir);
+      await setCustomPropTypes(vuelessSrcDir);
+
       if (isInternalEnv || isStorybookEnv) {
-        await buildWebTypes(vuelessSrcDir);
         await showHiddenStories(vuelessSrcDir);
         await hideHiddenStories(vuelessSrcDir);
-        await setCustomPropTypes(vuelessSrcDir);
       }
 
       /* collect used in project colors for tailwind safelist */
