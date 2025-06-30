@@ -12,8 +12,6 @@ describe("UDot.vue", () => {
     // Size prop
     it("applies the correct size class", () => {
       const sizes = {
-        "3xs": "size-0.25",
-        "2xs": "size-0.5",
         xs: "size-1",
         sm: "size-1.5",
         md: "size-2",

@@ -303,21 +303,43 @@ describe("UBreadcrumbs.vue", () => {
 
   // Slots tests
   describe("Slots", () => {
-    // Icon slot
-    it("renders content from icon slot", () => {
+    // Before-link slot
+    it("renders content from before-link slot", () => {
       const links: UBreadcrumb[] = [
         { label: "Home", to: "/", icon: "home" },
         { label: "Products", to: "/products" },
       ];
-      const slotContent = "Custom Icon";
-      const slotClass = "icon-content";
+      const slotContent = "Custom Before Link";
+      const slotClass = "before-link-content";
 
       const component = mountWithRouter(UBreadcrumbs, {
         props: {
           links,
         },
         slots: {
-          icon: `<div class="${slotClass}">${slotContent}</div>`,
+          "before-link": `<div class="${slotClass}">${slotContent}</div>`,
+        },
+      });
+
+      expect(component.find(`.${slotClass}`).exists()).toBe(true);
+      expect(component.find(`.${slotClass}`).text()).toBe(slotContent);
+    });
+
+    // After-link slot
+    it("renders content from after-link slot", () => {
+      const links: UBreadcrumb[] = [
+        { label: "Home", to: "/", icon: "home" },
+        { label: "Products", to: "/products" },
+      ];
+      const slotContent = "Custom After Link";
+      const slotClass = "after-link-content";
+
+      const component = mountWithRouter(UBreadcrumbs, {
+        props: {
+          links,
+        },
+        slots: {
+          "after-link": `<div class="${slotClass}">${slotContent}</div>`,
         },
       });
 
