@@ -110,8 +110,8 @@ function onKeyup(event: KeyboardEvent) {
   emit("keyup", event);
 }
 
-function onBlur() {
-  emit("blur");
+function onBlur(event: FocusEvent) {
+  emit("blur", event);
 }
 
 function onInput(value: InputEvent) {
@@ -162,7 +162,7 @@ const { getDataTest, numberInputAttrs } = useUI<Config>(defaultConfig);
     :left-icon="leftIcon"
     :right-icon="rightIcon"
     v-bind="numberInputAttrs"
-    :data-test="getDataTest('base-currency')"
+    :data-test="getDataTest()"
     @keyup="onKeyup"
     @blur="onBlur"
     @input="onInput"
