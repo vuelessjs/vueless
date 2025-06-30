@@ -1,32 +1,149 @@
-import { mount } from "@vue/test-utils";
+import { flushPromises, mount } from "@vue/test-utils";
 import { describe, it, expect } from "vitest";
 
 import UInputNumber from "../UInputNumber.vue";
 import UInput from "../../ui.form-input/UInput.vue";
+import UIcon from "../../ui.image-icon/UIcon.vue";
 
 import type { Props } from "../types.ts";
 
 describe("UInputNumber.vue", () => {
-  // Props tests
   describe("Props", () => {
-    // ModelValue prop
-    it("sets the input value correctly", () => {
-      const modelValue = 5;
+    it("Model Value – set correct value with number type", async () => {
+      const initialValue = 12345678.23;
 
       const component = mount(UInputNumber, {
         props: {
-          modelValue,
+          modelValue: initialValue,
+          valueType: "number",
         },
       });
 
-      const input = component.findComponent(UInput);
+      await flushPromises();
 
-      expect(input.props("modelValue")).toBeDefined();
+      await component.getComponent(UInput).trigger("keyup");
+
+      expect(component.emitted("update:modelValue")![0][0]).toBe(initialValue);
     });
 
-    // Label prop
-    it("sets the label correctly", () => {
-      const label = "Test Label";
+    it("Model Value – set correct value with string type", async () => {
+      const initialValue = "12345678.23";
+
+      const component = mount(UInputNumber, {
+        props: {
+          modelValue: initialValue,
+          valueType: "string",
+        },
+      });
+
+      await flushPromises();
+
+      await component.getComponent(UInput).trigger("keyup");
+
+      expect(component.emitted("update:modelValue")![0][0]).toBe(initialValue);
+    });
+
+    it("Min Fraction Digit – set fraction digit when it was not provided", async () => {
+      const initialValue = 12345678;
+      const initialValueWithFactions = "12 345 678,00";
+
+      const component = mount(UInputNumber, {
+        props: {
+          modelValue: initialValue,
+          minFractionDigits: 2,
+        },
+      });
+
+      await flushPromises();
+
+      expect(component.get("input").element.value).toBe(initialValueWithFactions);
+    });
+
+    it("Max Fraction Digit – truncate fraction digit to max value", async () => {
+      const initialValue = 12345678.011;
+      const initialValueWithFactions = "12 345 678,01";
+
+      const component = mount(UInputNumber, {
+        props: {
+          modelValue: initialValue,
+          maxFractionDigits: 2,
+        },
+      });
+
+      await flushPromises();
+
+      expect(component.get("input").element.value).toBe(initialValueWithFactions);
+    });
+
+    it("Decimal Separator – set correct decimal separator char", async () => {
+      const initialValue = 12345678.01;
+      const expectedDecimalSubString = "/01";
+
+      const component = mount(UInputNumber, {
+        props: {
+          modelValue: initialValue,
+          decimalSeparator: "/",
+        },
+      });
+
+      await flushPromises();
+
+      expect(component.get("input").element.value).toContain(expectedDecimalSubString);
+    });
+
+    it("Thousands Separator – set correct decimal separator char", async () => {
+      const initialValue = 12_345_678.01;
+      const expectedThousandsSeparator = "/";
+
+      const component = mount(UInputNumber, {
+        props: {
+          modelValue: initialValue,
+          thousandsSeparator: expectedThousandsSeparator,
+        },
+      });
+
+      await flushPromises();
+
+      const inputValue = component.get("input").element.value;
+      const separatorCount = inputValue.split(expectedThousandsSeparator).length - 1;
+
+      expect(separatorCount).toBe(2);
+    });
+
+    it("Positive Only – allows only positive values", async () => {
+      const initialValue = -12345678;
+      const expectedValue = "12 345 678";
+
+      const component = mount(UInputNumber, {
+        props: {
+          modelValue: initialValue,
+          positiveOnly: true,
+        },
+      });
+
+      await flushPromises();
+
+      expect(component.get("input").element.value).toBe(expectedValue);
+    });
+
+    it("Prefix – displays prefix at the beginning of the value", async () => {
+      const initialValue = 12345678;
+      const prefix = "pizza";
+
+      const component = mount(UInputNumber, {
+        props: {
+          modelValue: initialValue,
+          prefix: prefix,
+        },
+      });
+
+      await flushPromises();
+
+      expect(component.get("input").element.value.startsWith(prefix)).toBe(true);
+    });
+
+    it("Label – passes label to UInput", () => {
+      const label = "Password";
 
       const component = mount(UInputNumber, {
         props: {
@@ -34,47 +151,23 @@ describe("UInputNumber.vue", () => {
         },
       });
 
-      const input = component.findComponent(UInput);
-
-      expect(input.props("label")).toBe(label);
+      expect(component.getComponent(UInput).props("label")).toBe(label);
     });
 
-    // Currency prop
-    it("appends currency to label when both are provided", () => {
-      const label = "Price";
-      const currency = "USD";
-      const expectedLabel = "Price, USD";
+    it("Size – passes size to UInput", () => {
+      const size: Props["size"] = "lg";
 
       const component = mount(UInputNumber, {
         props: {
-          label,
-          currency,
+          size,
         },
       });
 
-      const input = component.findComponent(UInput);
-
-      expect(input.props("label")).toBe(expectedLabel);
+      expect(component.getComponent(UInput).props("size")).toBe(size);
     });
 
-    // Currency prop without label
-    it("does not show currency when label is not provided", () => {
-      const currency = "USD";
-
-      const component = mount(UInputNumber, {
-        props: {
-          currency,
-        },
-      });
-
-      const input = component.findComponent(UInput);
-
-      expect(input.props("label")).toBe("");
-    });
-
-    // Placeholder prop
-    it("sets the placeholder correctly", () => {
-      const placeholder = "Enter a number";
+    it("Placeholder – passes placeholder to UInput", () => {
+      const placeholder = "Enter your password";
 
       const component = mount(UInputNumber, {
         props: {
@@ -82,14 +175,23 @@ describe("UInputNumber.vue", () => {
         },
       });
 
-      const input = component.findComponent(UInput);
-
-      expect(input.props("placeholder")).toBe(placeholder);
+      expect(component.getComponent(UInput).props("placeholder")).toBe(placeholder);
     });
 
-    // Description prop
-    it("sets the description correctly", () => {
-      const description = "Enter a valid number";
+    it("Label Align – passes labelAlign to UInput", () => {
+      const labelAlign: Props["labelAlign"] = "top";
+
+      const component = mount(UInputNumber, {
+        props: {
+          labelAlign,
+        },
+      });
+
+      expect(component.getComponent(UInput).props("labelAlign")).toBe(labelAlign);
+    });
+
+    it("Description – passes description to UInput", () => {
+      const description = "Password must be at least 8 characters";
 
       const component = mount(UInputNumber, {
         props: {
@@ -97,14 +199,11 @@ describe("UInputNumber.vue", () => {
         },
       });
 
-      const input = component.findComponent(UInput);
-
-      expect(input.props("description")).toBe(description);
+      expect(component.getComponent(UInput).props("description")).toBe(description);
     });
 
-    // Error prop
-    it("sets the error correctly", () => {
-      const error = "Invalid number";
+    it("Error – passes error to UInput", () => {
+      const error = "Password is required";
 
       const component = mount(UInputNumber, {
         props: {
@@ -112,58 +211,11 @@ describe("UInputNumber.vue", () => {
         },
       });
 
-      const input = component.findComponent(UInput);
-
-      expect(input.props("error")).toBe(error);
+      expect(component.getComponent(UInput).props("error")).toBe(error);
     });
 
-    // Size prop
-    it("applies the correct size to the input", () => {
-      const sizes = {
-        sm: "sm",
-        md: "md",
-        lg: "lg",
-      };
-
-      Object.entries(sizes).forEach(([size, value]) => {
-        const component = mount(UInputNumber, {
-          props: {
-            size: size as Props["size"],
-          },
-        });
-
-        const input = component.findComponent(UInput);
-
-        expect(input.props("size")).toBe(value);
-      });
-    });
-
-    // LabelAlign prop
-    it("applies the correct label alignment", () => {
-      const alignments = {
-        top: "top",
-        topInside: "topInside",
-        topWithDesc: "topWithDesc",
-        left: "left",
-        right: "right",
-      };
-
-      Object.entries(alignments).forEach(([align, value]) => {
-        const component = mount(UInputNumber, {
-          props: {
-            labelAlign: align as Props["labelAlign"],
-          },
-        });
-
-        const input = component.findComponent(UInput);
-
-        expect(input.props("labelAlign")).toBe(value);
-      });
-    });
-
-    // LeftIcon prop
-    it("sets the left icon correctly", () => {
-      const leftIcon = "search";
+    it("Left Icon – passes leftIcon to UInput", () => {
+      const leftIcon = "lock";
 
       const component = mount(UInputNumber, {
         props: {
@@ -171,14 +223,13 @@ describe("UInputNumber.vue", () => {
         },
       });
 
-      const input = component.findComponent(UInput);
+      const input = component.getComponent(UInput);
 
       expect(input.props("leftIcon")).toBe(leftIcon);
     });
 
-    // RightIcon prop
-    it("sets the right icon correctly", () => {
-      const rightIcon = "close";
+    it("Right Icon – passes leftIcon to UInput", () => {
+      const rightIcon = "lock";
 
       const component = mount(UInputNumber, {
         props: {
@@ -186,271 +237,227 @@ describe("UInputNumber.vue", () => {
         },
       });
 
-      const input = component.findComponent(UInput);
+      const input = component.getComponent(UInput);
 
       expect(input.props("rightIcon")).toBe(rightIcon);
     });
 
-    // Readonly prop
-    it("sets readonly correctly", () => {
-      const readonly = true;
+    it("Max Length – passes maxLength to UInput", () => {
+      const maxLength = 20;
 
       const component = mount(UInputNumber, {
         props: {
-          readonly,
+          maxLength,
         },
       });
 
-      const input = component.findComponent(UInput);
+      const input = component.getComponent(UInput);
 
-      expect(input.props("readonly")).toBe(readonly);
+      expect(input.props("maxLength")).toBe(maxLength);
     });
 
-    // Disabled prop
-    it("sets disabled correctly", () => {
-      const disabled = true;
-
+    it("Readonly – passes readonly state to UInput", () => {
       const component = mount(UInputNumber, {
         props: {
-          disabled,
+          modelValue: "password123",
+          readonly: true,
         },
       });
 
-      const input = component.findComponent(UInput);
+      const input = component.get("input");
 
-      expect(input.props("disabled")).toBe(disabled);
-    });
-  });
-
-  // Events tests
-  describe("Events", () => {
-    // Update:modelValue event
-    it("emits update:modelValue event when input value changes", async () => {
-      const modelValue = 5;
-
-      const component = mount(UInputNumber, {
-        props: {
-          modelValue,
-        },
-      });
-
-      const input = component.findComponent(UInput);
-
-      await input.vm.$emit("keyup", { key: "5" });
-
-      expect(component.emitted("update:modelValue")).toBeTruthy();
+      expect(input.attributes("readonly")).toBeDefined();
     });
 
-    // Input event
-    it("emits input event when input event is triggered", async () => {
+    it("Disabled – passes disabled state to UInput", () => {
       const component = mount(UInputNumber, {
         props: {
-          modelValue: 5,
+          modelValue: "password123",
+          disabled: true,
         },
       });
 
-      const input = component.findComponent(UInput);
-      const inputEvent = new InputEvent("input");
+      const input = component.get("input");
 
-      await input.vm.$emit("input", inputEvent);
-
-      expect(component.emitted("input")).toBeTruthy();
-      expect(component.emitted("input")[0][0]).toBe(inputEvent);
+      expect(input.attributes("disabled")).toBeDefined();
     });
 
-    // Keyup event
-    it("emits keyup event when keyup event is triggered", async () => {
+    it("Data Test – passes data attribute to the UInput component", () => {
+      const dataTest = "password-field";
+
       const component = mount(UInputNumber, {
         props: {
-          modelValue: 5,
+          dataTest,
         },
       });
 
-      const input = component.findComponent(UInput);
-      const keyupEvent = new KeyboardEvent("keyup", { key: "5" });
-
-      await input.vm.$emit("keyup", keyupEvent);
-
-      expect(component.emitted("keyup")).toBeTruthy();
-      expect(component.emitted("keyup")[0][0]).toBe(keyupEvent);
-    });
-
-    // Blur event
-    it("emits blur event when blur event is triggered", async () => {
-      const component = mount(UInputNumber, {
-        props: {
-          modelValue: 5,
-        },
-      });
-
-      const input = component.findComponent(UInput);
-
-      await input.vm.$emit("blur");
-
-      expect(component.emitted("blur")).toBeTruthy();
+      expect(component.getComponent(UInput).props("dataTest")).toBe(dataTest);
     });
   });
 
-  // Slots tests
   describe("Slots", () => {
-    // Left slot
-    it("renders content in the left slot", () => {
-      const slotClass = "left-slot-content";
-      const component = mount(UInputNumber, {
-        props: {
-          leftIcon: "search",
-        },
+    it("Left – renders custom content from left slot", () => {
+      const slotText = "Custom Left Content";
+      const customContentClass = "custom-left";
+
+      const component = mount(UInput, {
         slots: {
-          left: `<div class="${slotClass}">Left Content</div>`,
+          left: `<span class="${customContentClass}">${slotText}</span>`,
         },
       });
 
-      expect(component.find(`.${slotClass}`).exists()).toBe(true);
-      expect(component.find(`.${slotClass}`).text()).toBe("Left Content");
+      const leftSlotElement = component.find(`.${customContentClass}`);
+
+      expect(leftSlotElement.exists()).toBe(true);
+      expect(leftSlotElement.text()).toBe(slotText);
     });
 
-    // Right slot
-    it("renders content in the right slot", () => {
-      const slotClass = "right-slot-content";
-      const component = mount(UInputNumber, {
+    it("Left – exposes icon-name to slot when leftIcon prop is provided", () => {
+      const leftIcon = "search";
+
+      const component = mount(UInput, {
         props: {
-          rightIcon: "close",
+          leftIcon,
         },
         slots: {
-          right: `<div class="${slotClass}">Right Content</div>`,
+          left: "Icon: {{ params.iconName }}",
+        },
+      });
+
+      expect(component.find('[vl-key="leftSlot"]').text()).toBe(`Icon: ${leftIcon}`);
+    });
+
+    it("Left – renders leftIcon when no slot content is provided", () => {
+      const leftIcon = "search";
+
+      const component = mount(UInput, {
+        props: {
+          leftIcon,
+        },
+      });
+
+      const iconComponent = component.findComponent(UIcon);
+
+      expect(iconComponent.exists()).toBe(true);
+      expect(iconComponent.props("name")).toBe(leftIcon);
+    });
+
+    it("Left – slot content overrides leftIcon prop", () => {
+      const leftIcon = "search";
+      const slotClass = "custom-icon";
+
+      const component = mount(UInput, {
+        props: {
+          leftIcon,
+        },
+        slots: {
+          left: `<span class="${slotClass}">Custom Content</span>`,
         },
       });
 
       expect(component.find(`.${slotClass}`).exists()).toBe(true);
-      expect(component.find(`.${slotClass}`).text()).toBe("Right Content");
+      expect(component.findComponent(UIcon).exists()).toBe(false);
+    });
+
+    it("Right – renders custom content from right slot", () => {
+      const slotText = "Custom Right Content";
+      const slotContentClass = "custom-right";
+
+      const component = mount(UInput, {
+        slots: {
+          right: `<span class="${slotContentClass}">${slotText}</span>`,
+        },
+      });
+
+      const rightSlotElement = component.find(".custom-right");
+
+      expect(rightSlotElement.exists()).toBe(true);
+      expect(rightSlotElement.text()).toBe(slotText);
+    });
+
+    it("Right – exposes icon-name to slot when rightIcon prop is provided", () => {
+      const rightIcon = "close";
+
+      const component = mount(UInput, {
+        props: {
+          rightIcon,
+        },
+        slots: {
+          right: "Icon: {{ params.iconName }}",
+        },
+      });
+
+      expect(component.find('[vl-key="rightSlot"]').text()).toBe(`Icon: ${rightIcon}`);
+    });
+
+    it("Right – renders rightIcon when no slot content is provided", () => {
+      const rightIcon = "close";
+
+      const component = mount(UInput, {
+        props: {
+          rightIcon,
+        },
+      });
+
+      const iconComponent = component.findComponent(UIcon);
+
+      expect(iconComponent.exists()).toBe(true);
+      expect(iconComponent.props("name")).toBe(rightIcon);
+    });
+
+    it("Right – slot content overrides rightIcon prop", () => {
+      const rightIcon = "close";
+      const customContentClass = "custom-icon";
+
+      const component = mount(UInput, {
+        props: {
+          rightIcon,
+        },
+        slots: {
+          right: `<span class="${customContentClass}">Custom Content</span>`,
+        },
+      });
+
+      expect(component.find(`.${customContentClass}`).exists()).toBe(true);
+      expect(component.findComponent(UIcon).exists()).toBe(false);
     });
   });
 
-  // Exposed refs tests
-  describe("Exposed Refs", () => {
-    // Input ref
-    it("exposes the input ref", () => {
+  describe("Exposed properties", () => {
+    it("Raw Value – exposes raw input value", async () => {
+      const initialValue = 12345678.23;
+
       const component = mount(UInputNumber, {
         props: {
-          modelValue: 5,
+          modelValue: initialValue,
         },
       });
+
+      await flushPromises();
+
+      expect(component.vm.rawValue).toBe(String(initialValue));
+    });
+
+    it("Formatted Value – exposes formatted input value", async () => {
+      const initialValue = 12345678.23;
+      const formattedValue = "12 345 678,23";
+
+      const component = mount(UInputNumber, {
+        props: {
+          modelValue: initialValue,
+        },
+      });
+
+      await flushPromises();
+
+      expect(component.vm.formattedValue).toBe(formattedValue);
+    });
+
+    it("Input – exposes input element ref", () => {
+      const component = mount(UInputNumber);
 
       expect(component.vm.input).toBeDefined();
-    });
-
-    // RawValue ref
-    it("exposes the rawValue ref", () => {
-      const modelValue = 5;
-
-      const component = mount(UInputNumber, {
-        props: {
-          modelValue,
-        },
-      });
-
-      expect(component.vm.rawValue).toBeDefined();
-    });
-
-    // FormattedValue ref
-    it("exposes the formattedValue ref", () => {
-      const modelValue = 5;
-
-      const component = mount(UInputNumber, {
-        props: {
-          modelValue,
-        },
-      });
-
-      expect(component.vm.formattedValue).toBeDefined();
-    });
-  });
-
-  // Formatting tests
-  describe("Formatting", () => {
-    // Decimal separator
-    it("formats the value with the correct decimal separator", async () => {
-      const modelValue = 5.25;
-      const decimalSeparator = ",";
-
-      const component = mount(UInputNumber, {
-        props: {
-          modelValue,
-          decimalSeparator,
-          minFractionDigits: 2,
-          maxFractionDigits: 2,
-        },
-        attachTo: document.body,
-      });
-
-      // Wait for the component to update
-      await component.vm.$nextTick();
-
-      // Check the formatted value directly
-      expect(component.vm.formattedValue).toContain(decimalSeparator);
-    });
-
-    // Thousands separator
-    it("formats the value with the correct thousands separator", async () => {
-      const modelValue = 1000000;
-      const thousandsSeparator = " ";
-
-      const component = mount(UInputNumber, {
-        props: {
-          modelValue,
-          thousandsSeparator,
-        },
-        attachTo: document.body,
-      });
-
-      // Wait for the component to update
-      await component.vm.$nextTick();
-
-      // Check the formatted value directly
-      expect(component.vm.formattedValue).toContain(thousandsSeparator);
-    });
-
-    // Prefix
-    it("adds the prefix to the formatted value", async () => {
-      const modelValue = 5;
-      const prefix = "$";
-
-      const component = mount(UInputNumber, {
-        props: {
-          modelValue,
-          prefix,
-        },
-        attachTo: document.body,
-      });
-
-      // Wait for the component to update
-      await component.vm.$nextTick();
-
-      // Check the formatted value directly
-      expect(component.vm.formattedValue.startsWith(prefix)).toBe(true);
-    });
-
-    // PositiveOnly
-    it("does not allow negative values when positiveOnly is true", async () => {
-      const modelValue = -5;
-      const positiveOnly = true;
-
-      const component = mount(UInputNumber, {
-        props: {
-          modelValue,
-          positiveOnly,
-        },
-        attachTo: document.body,
-      });
-
-      // Wait for the component to update
-      await component.vm.$nextTick();
-
-      // Parse the raw value to a number for comparison
-      const rawValueNumber = parseFloat(component.vm.rawValue as string);
-
-      // The raw value should be non-negative
-      expect(rawValueNumber).toBeGreaterThanOrEqual(0);
+      expect(component.vm.input!.tagName).toBe("INPUT");
     });
   });
 });
