@@ -4,6 +4,7 @@ import { getArgs, getArgTypes, getSlotNames, getSlotsFragment } from "../../util
 import USkeletonInput from "../USkeletonInput.vue";
 import UCol from "../../ui.container-col/UCol.vue";
 import USkeleton from "../../ui.skeleton/USkeleton.vue";
+import ULabel from "../../ui.form-label/ULabel.vue";
 
 import type { Props } from "../types.ts";
 
@@ -57,8 +58,21 @@ WithoutLabel.args = { label: false };
 export const LabelAlign = EnumTemplate.bind({});
 LabelAlign.args = { enum: "labelAlign" };
 
-export const Types = EnumTemplate.bind({});
-Types.args = { enum: "type" };
+export const Types: StoryFn<SkeletonInputArgs> = (args: SkeletonInputArgs) => ({
+  components: { USkeletonInput, UCol, ULabel },
+  setup: () => ({ args }),
+  template: `
+    <UCol>
+      <ULabel label="Input">
+        <USkeletonInput type="input" class="max-w-96 w-full" />
+      </ULabel>
+
+      <ULabel label="Textarea">
+        <USkeletonInput type="textarea" class="max-w-96 w-full" />
+      </ULabel>
+    </UCol>
+  `,
+});
 
 export const Sizes = EnumTemplate.bind({});
 Sizes.args = { enum: "size" };

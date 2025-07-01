@@ -9,6 +9,7 @@ import {
 import UTabs from "../../ui.navigation-tabs/UTabs.vue";
 import URow from "../../ui.container-row/URow.vue";
 import ULabel from "../../ui.form-label/ULabel.vue";
+import UTab from "../../ui.navigation-tab/UTab.vue";
 
 import type { Meta, StoryFn } from "@storybook/vue3";
 import type { Props } from "../types.ts";
@@ -96,7 +97,19 @@ Square.parameters = {
   },
 };
 
-export const Slots: StoryFn<UTabsArgs> = (args) => ({
+export const DefaultSlot: StoryFn<UTabsArgs> = (args) => ({
+  components: { UTabs, UTab },
+  setup: () => ({ args, getOptionsArray }),
+  template: `
+    <UTabs v-model="args.modelValue">
+      <UTab label="Custom Tab 1" value="1" />
+      <UTab label="Custom Tab 2" value="2" disabled />
+      <UTab label="Custom Tab 3" value="3" />
+    </UTabs>
+  `,
+});
+
+export const PrevNextSlots: StoryFn<UTabsArgs> = (args) => ({
   components: { UTabs },
   setup: () => ({ args, getOptionsArray }),
   template: `
@@ -115,7 +128,7 @@ export const Slots: StoryFn<UTabsArgs> = (args) => ({
     </UTabs>
   `,
 });
-Slots.parameters = {
+PrevNextSlots.parameters = {
   docs: {
     description: {
       story:
