@@ -1,3 +1,5 @@
+import { ref } from "vue";
+
 import {
   getArgTypes,
   getSlotNames,
@@ -8,11 +10,13 @@ import {
 import UGroup from "../../ui.container-group/UGroup.vue";
 import UCol from "../../ui.container-col/UCol.vue";
 import UInput from "../../ui.form-input/UInput.vue";
+import UInputPassword from "../../ui.form-input-password/UInputPassword.vue";
 import UButton from "../../ui.button/UButton.vue";
 import UIcon from "../../ui.image-icon/UIcon.vue";
 import UBadge from "../../ui.text-badge/UBadge.vue";
 import URow from "../../ui.container-row/URow.vue";
 import UAlert from "../../ui.text-alert/UAlert.vue";
+import UHeader from "../../ui.text-header/UHeader.vue";
 
 import type { Meta, StoryFn } from "@storybook/vue3";
 import type { Props } from "../types.ts";
@@ -40,21 +44,26 @@ export default {
 
 const defaultTemplate = `
   <UCol>
-    <UInput label="First Name" placeholder="John" />
-    <UInput label="Last Name" placeholder="Doe" />
-    <UAlert
-      title="Attention!"
-      description="Please check your email for verification."
-      color="warning"
-      icon="mark_email_unread"
-      class="w-full"
-    />
+    <UAlert description="Please check your email for verification." color="info" />
+    <UInput v-model="email" label="Email" placeholder="john@email.com" type="email" />
+    <UInputPassword v-model="password" label="Password" placeholder="********" />
   </UCol>
 `;
 
 const DefaultTemplate: StoryFn<UGroupArgs> = (args: UGroupArgs) => ({
-  components: { UGroup, UCol, UInput, UAlert },
-  setup: () => ({ args, slots: getSlotNames(UGroup.__name) }),
+  components: {
+    UGroup,
+    UCol,
+    UInput,
+    UInputPassword,
+    UAlert,
+    UButton,
+    UIcon,
+    UBadge,
+    URow,
+    UHeader,
+  },
+  setup: () => ({ args, slots: getSlotNames(UGroup.__name), email: ref(""), password: ref("") }),
   template: `
     <UGroup v-bind="args">
       ${args.slotTemplate || getSlotsFragment(defaultTemplate)}
@@ -85,52 +94,45 @@ Underlined.parameters = {
   },
 };
 
-export const Slots: StoryFn<UGroupArgs> = (args) => ({
-  components: { UGroup, UIcon, UBadge, UButton, URow, UInput, UCol, UAlert },
-  setup() {
-    args.config = { wrapper: "mb-8" };
-
-    return { args };
-  },
-  template: `
-    <UGroup v-bind="args" title="Before Title Slot">
-      <template #before-title>
-        <UIcon name="account_circle" color="primary" class="mr-1" />
-      </template>
-      <UCol>
-        <UInput label="Username" placeholder="johndoe" />
-      </UCol>
-    </UGroup>
-
-    <UGroup v-bind="args" title="Title Slot" upperlined>
-      <template #title="{ title }">
-        <UBadge :label="title" size="lg" color="primary" variant="outlined" />
-      </template>
-      <UCol>
-        <UInput label="Access Level" placeholder="Superuser" />
-      </UCol>
-    </UGroup>
-
-    <UGroup v-bind="args" title="After Title Slot" upperlined>
-      <template #after-title>
-        <UIcon name="verified" color="success" />
-      </template>
-      <UCol>
-        <UInput label="Email" placeholder="john@email.com" />
-      </UCol>
-    </UGroup>
-
-    <UGroup v-bind="args" title="Actions Slot" upperlined>
-      <template #actions>
-        <URow class="max-w-fit">
-          <UButton size="sm" variant="outlined" label="Cancel" />
-          <UButton size="sm" label="Save Changes" />
-        </URow>
-      </template>
-      <UCol>
-        <UInput label="First Name" placeholder="John" />
-        <UInput label="Last Name" placeholder="Doe" />
-      </UCol>
-    </UGroup>
+export const BeforeTitleSlot = DefaultTemplate.bind({});
+BeforeTitleSlot.args = {
+  slotTemplate: `
+    <template #before-title>
+      <UIcon name="account_circle" color="primary" class="mr-1" />
+    </template>
+    ${defaultTemplate}
   `,
-});
+};
+
+export const TitleSlot = DefaultTemplate.bind({});
+TitleSlot.args = {
+  slotTemplate: `
+    <template #title="{ title }">
+      <UHeader :label="title" color="primary" />
+    </template>
+    ${defaultTemplate}
+  `,
+};
+
+export const AfterTitleSlot = DefaultTemplate.bind({});
+AfterTitleSlot.args = {
+  slotTemplate: `
+    <template #after-title>
+      <UIcon name="verified" color="success" />
+    </template>
+    ${defaultTemplate}
+  `,
+};
+
+export const ActionsSlot = DefaultTemplate.bind({});
+ActionsSlot.args = {
+  slotTemplate: `
+    <template #actions>
+      <URow class="max-w-fit">
+        <UButton size="xs" variant="outlined" label="Cancel" />
+        <UButton size="xs" label="Save Changes" />
+      </URow>
+    </template>
+    ${defaultTemplate}
+  `,
+};
