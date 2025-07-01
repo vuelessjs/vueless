@@ -4,10 +4,12 @@ import {
   getSlotNames,
   getSlotsFragment,
   getDocsDescription,
+  trimText,
 } from "../../utils/storybook.ts";
 
 import UAccordion from "../../ui.container-accordion/UAccordion.vue";
 import UButton from "../../ui.button/UButton.vue";
+import ULink from "../../ui.button-link/ULink.vue";
 
 import type { Meta, StoryFn } from "@storybook/vue3";
 import type { Props } from "../types.ts";
@@ -23,10 +25,10 @@ export default {
   component: UAccordion,
   args: {
     title: "Committed to Quality and Performance",
-    description: `
-      We take pride in delivering high-quality solutions tailored to your needs.
-      Our expertise ensures that your project is built with efficiency, scalability, and reliability in mind.
-    `,
+    description: trimText(
+      `We take pride in delivering high-quality solutions tailored to your needs.
+      Our expertise ensures that your project is built with efficiency, scalability, and reliability in mind.`,
+    ),
   },
   argTypes: {
     ...getArgTypes(UAccordion.__name),
@@ -39,7 +41,7 @@ export default {
 } as Meta;
 
 const DefaultTemplate: StoryFn<UAccordionArgs> = (args: UAccordionArgs) => ({
-  components: { UAccordion, UButton },
+  components: { UAccordion, ULink },
   setup: () => ({ args, slots: getSlotNames(UAccordion.__name) }),
   template: `
     <UAccordion v-bind="args">
@@ -115,12 +117,7 @@ export const ToggleSlot = DefaultTemplate.bind({});
 ToggleSlot.args = {
   slotTemplate: `
     <template #toggle="{ opened }">
-      <UButton
-        :label="opened ? 'Close' : 'Open'"
-        color="grayscale"
-        variant="outlined"
-        size="sm"
-      />
+      <ULink :label="opened ? 'Collapse' : 'Expand'" color="grayscale" />
     </template>
   `,
 };
