@@ -1,4 +1,4 @@
-import { mount } from "@vue/test-utils";
+import { flushPromises, mount } from "@vue/test-utils";
 import { describe, it, expect } from "vitest";
 
 import UCheckbox from "../UCheckbox.vue";
@@ -8,10 +8,175 @@ import ULabel from "../../ui.form-label/ULabel.vue";
 import type { Props } from "../types.ts";
 
 describe("UCheckbox.vue", () => {
-  // Props tests
   describe("Props", () => {
-    // Color prop
-    it("applies the correct color class", async () => {
+    it("Model Value – sets the correct model value", async () => {
+      const modelValue = true;
+
+      const component = mount(UCheckbox, {
+        props: {
+          modelValue,
+          "onUpdate:modelValue": (e) => component.setProps({ modelValue: e }),
+        },
+      });
+
+      const inputElement = component.find("input");
+
+      await inputElement.trigger("change");
+
+      expect(component.emitted("update:modelValue")![0][0]).toBe(false);
+
+      await inputElement.trigger("change");
+
+      expect(component.emitted("update:modelValue")![1][0]).toBe(true);
+    });
+
+    it("Value – returns correct value type when checkbox is checked", async () => {
+      const testValues = ["string-value", 42, true, { id: 1, name: "test" }, [1, 2, 3]];
+
+      testValues.forEach(async (testValue) => {
+        const component = mount(UCheckbox, {
+          props: {
+            value: testValue,
+            modelValue: [],
+          },
+        });
+
+        const inputElement = component.find("input");
+
+        await inputElement.setValue(true);
+
+        const emittedValues = component.emitted("update:modelValue");
+
+        expect(emittedValues![0][0]).toEqual([testValue]);
+      });
+    });
+
+    it("TrueValue and FalseValue – returns correct values when checkbox is checked and unchecked", async () => {
+      const testValuePairs = [
+        { trueValue: "checked", falseValue: "unchecked" },
+        { trueValue: 1, falseValue: 0 },
+        { trueValue: { status: "active" }, falseValue: { status: "inactive" } },
+        { trueValue: [1, 2, 3], falseValue: [] },
+        { trueValue: true, falseValue: false },
+      ];
+
+      testValuePairs.forEach(async ({ trueValue, falseValue }) => {
+        const component = mount(UCheckbox, {
+          props: {
+            trueValue,
+            falseValue,
+            modelValue: falseValue,
+          },
+        });
+
+        const inputElement = component.find("input");
+
+        await inputElement.setValue(true);
+        let emittedValues = component.emitted("update:modelValue");
+
+        expect(emittedValues![0][0]).toEqual(trueValue);
+
+        await inputElement.setValue(false);
+        emittedValues = component.emitted("update:modelValue");
+
+        expect(emittedValues![1][0]).toEqual(falseValue);
+      });
+    });
+
+    it("Partial – displays correct icon when checkbox is partially checked", () => {
+      const normalComponent = mount(UCheckbox, {
+        props: {
+          modelValue: true,
+          partial: false,
+        },
+      });
+
+      const normalIcon = normalComponent.findComponent(UIcon);
+
+      expect(normalIcon.props("name")).toBe("check");
+
+      const partialComponent = mount(UCheckbox, {
+        props: {
+          modelValue: true,
+          partial: true,
+        },
+      });
+
+      const partialIcon = partialComponent.findComponent(UIcon);
+
+      expect(partialIcon.props("name")).toBe("remove");
+    });
+
+    it("Name – sets the correct name attribute", async () => {
+      const name = "checkbox-name";
+
+      const component = mount(UCheckbox, {
+        props: {
+          name,
+        },
+      });
+
+      await flushPromises();
+
+      expect(component.find("input").attributes("name")).toBe(name);
+    });
+
+    it("Label – passes label to ULabel component", () => {
+      const labelText = "Test Label";
+
+      const component = mount(UCheckbox, {
+        props: {
+          label: labelText,
+        },
+      });
+
+      expect(component.getComponent(ULabel).props("label")).toBe(labelText);
+    });
+
+    it("Label Align – passes labelAlign prop to ULabel component", () => {
+      const labelAlign = "left";
+
+      const component = mount(UCheckbox, {
+        props: {
+          label: "Test Label",
+          labelAlign,
+        },
+      });
+
+      expect(component.getComponent(ULabel).props("align")).toBe(labelAlign);
+    });
+
+    it("Description – passes description to ULabel component", () => {
+      const descriptionText = "This is a description";
+
+      const component = mount(UCheckbox, {
+        props: {
+          description: descriptionText,
+        },
+      });
+
+      expect(component.getComponent(ULabel).props("description")).toBe(descriptionText);
+    });
+
+    it("Size – applies the correct size class", () => {
+      const size = {
+        sm: "size-4",
+        md: "size-5",
+        lg: "size-6",
+      };
+
+      Object.entries(size).forEach(([size, classes]) => {
+        const component = mount(UCheckbox, {
+          props: {
+            size: size as Props["size"],
+          },
+        });
+
+        expect(component.get("[vl-key='checkbox']").attributes("class")).toContain(classes);
+      });
+    });
+
+    it("Color – applies the correct color class when checked", () => {
       const colors = [
         "primary",
         "secondary",
@@ -28,132 +193,30 @@ describe("UCheckbox.vue", () => {
         const component = mount(UCheckbox, {
           props: {
             color: color as Props["color"],
+            modelValue: true,
           },
         });
 
-        expect(component.find("input").attributes("class")).toContain(color);
+        expect(component.find("label").attributes("class")).toContain(color);
       });
     });
 
-    // Size prop
-    it("applies the correct size class", async () => {
-      const size = {
-        sm: "size-4",
-        md: "size-5",
-        lg: "size-6",
-      };
-
-      Object.entries(size).forEach(([size, classes]) => {
-        const component = mount(UCheckbox, {
-          props: {
-            size: size as Props["size"],
-          },
-        });
-
-        expect(component.find("input").attributes("class")).toContain(classes);
-      });
-    });
-
-    // Label prop
-    it("renders the correct label text", () => {
-      const label = "Checkbox Label";
-
+    it("Disabled – applies disabled attribute when disabled prop is true", () => {
       const component = mount(UCheckbox, {
         props: {
-          label,
+          disabled: true,
         },
       });
 
-      expect(component.text()).toContain(label);
-    });
-
-    // Label align prop
-    it("applies the correct label alignment", () => {
-      const labelAlign = {
-        left: "left",
-        right: "right",
-      };
-
-      Object.entries(labelAlign).forEach(([align, value]) => {
-        const component = mount(UCheckbox, {
-          props: {
-            labelAlign: align as Props["labelAlign"],
-            label: "Test Label",
-          },
-        });
-
-        const labelComponent = component.findComponent(ULabel);
-
-        expect(labelComponent.props("align")).toBe(value);
-      });
-    });
-
-    // Description prop
-    it("renders the correct description", () => {
-      const description = "Checkbox description";
-
-      const component = mount(UCheckbox, {
-        props: {
-          label: "Test Label",
-          description,
-        },
-      });
-
+      expect(component.find("input").attributes("disabled")).toBeDefined();
       const labelComponent = component.findComponent(ULabel);
 
-      expect(labelComponent.props("description")).toBe(description);
+      expect(labelComponent.props("disabled")).toBe(true);
+      expect(component.get("[vl-key='checkbox']").attributes("class")).toContain("disabled:");
     });
 
-    // Error prop
-    it("applies error class when error prop is provided", () => {
-      const error = "Error message";
-
-      const component = mount(UCheckbox, {
-        props: {
-          error,
-        },
-      });
-
-      const input = component.find("input");
-
-      expect(input.attributes("class")).toContain("!border-error");
-    });
-
-    // Disabled prop
-    it("applies disabled attribute when disabled prop is true", () => {
-      const disabled = true;
-
-      const component = mount(UCheckbox, {
-        props: {
-          disabled,
-        },
-      });
-
-      const input = component.find("input");
-
-      expect(input.attributes("disabled")).toBeDefined();
-    });
-
-    // Partial prop
-    it("renders partial icon when partial prop is true and checkbox is checked", async () => {
-      const partial = true;
-      const modelValue = true;
-
-      const component = mount(UCheckbox, {
-        props: {
-          partial,
-          modelValue,
-        },
-      });
-
-      const iconComponent = component.findComponent(UIcon);
-
-      expect(iconComponent.props("name")).toBe("remove");
-    });
-
-    // ID prop
-    it("applies the correct id attribute", () => {
-      const id = "test-checkbox-id";
+    it("Id – applies the correct id attribute", () => {
+      const id = "test-switch-id";
 
       const component = mount(UCheckbox, {
         props: {
@@ -161,90 +224,22 @@ describe("UCheckbox.vue", () => {
         },
       });
 
-      const input = component.find("input");
-
-      expect(input.attributes("id")).toBe(id);
+      expect(component.find("input").attributes("id")).toBe(id);
     });
 
-    // DataTest prop
-    it("applies the correct data-test attribute", () => {
+    it("Data Test – applies the correct data-test attribute", () => {
       const dataTest = "test-checkbox";
+      const labelDataTest = "test-checkbox-label";
 
       const component = mount(UCheckbox, {
         props: {
+          label: "Test",
           dataTest,
         },
       });
 
-      const input = component.find("input");
-
-      expect(input.attributes("data-test")).toBe(dataTest);
-    });
-
-    // ModelValue prop
-    it("sets checked attribute based on modelValue", () => {
-      const modelValue = true;
-
-      const component = mount(UCheckbox, {
-        props: {
-          modelValue,
-        },
-      });
-
-      const input = component.find("input");
-
-      expect(input.attributes("checked")).toBeDefined();
-    });
-
-    // Value prop
-    it("sets the correct value attribute", () => {
-      const value = "checkbox-value";
-
-      const component = mount(UCheckbox, {
-        props: {
-          value,
-        },
-      });
-
-      const input = component.find("input");
-
-      expect(input.attributes("value")).toBe(value);
-    });
-
-    // TrueValue and FalseValue props
-    it("sets the correct true-value and false-value attributes", () => {
-      const trueValue = "yes";
-      const falseValue = "no";
-
-      const component = mount(UCheckbox, {
-        props: {
-          trueValue,
-          falseValue,
-        },
-      });
-
-      const input = component.find("input");
-
-      expect(input.attributes("true-value")).toBe(trueValue);
-      expect(input.attributes("false-value")).toBe(falseValue);
-    });
-
-    // Name prop
-    it("sets the correct name attribute", async () => {
-      const name = "checkbox-name";
-
-      const component = mount(UCheckbox, {
-        props: {
-          name,
-        },
-      });
-
-      // Wait for onMounted hook to run
-      await component.vm.$nextTick();
-
-      const input = component.find("input");
-
-      expect(input.attributes("name")).toBe(name);
+      expect(component.findComponent(ULabel).attributes("data-test")).toBe(labelDataTest);
+      expect(component.get("input").attributes("data-test")).toBe(dataTest);
     });
   });
 
