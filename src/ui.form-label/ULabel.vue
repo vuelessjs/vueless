@@ -74,6 +74,7 @@ defineExpose({
 const mutatedProps = computed(() => ({
   error: Boolean(props.error) && !props.disabled,
   label: Boolean(props.label) || hasSlotContent(slots["label"], { label: props.label }),
+  for: Boolean(props.for),
 }));
 
 const { getDataTest, wrapperAttrs, contentAttrs, labelAttrs, descriptionAttrs, errorAttrs } =
