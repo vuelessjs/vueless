@@ -94,6 +94,7 @@ describe("UInputNumber.vue", () => {
     it("Thousands Separator – set correct decimal separator char", async () => {
       const initialValue = 12_345_678.01;
       const expectedThousandsSeparator = "/";
+      const expectedThousandsSeparatorAmount = 2;
 
       const component = mount(UInputNumber, {
         props: {
@@ -107,7 +108,7 @@ describe("UInputNumber.vue", () => {
       const inputValue = component.get("input").element.value;
       const separatorCount = inputValue.split(expectedThousandsSeparator).length - 1;
 
-      expect(separatorCount).toBe(2);
+      expect(separatorCount).toBe(expectedThousandsSeparatorAmount);
     });
 
     it("Positive Only – allows only positive values", async () => {
@@ -155,11 +156,11 @@ describe("UInputNumber.vue", () => {
     });
 
     it("Size – passes size to UInput", () => {
-      const size: Props["size"] = "lg";
+      const size = "lg";
 
       const component = mount(UInputNumber, {
         props: {
-          size,
+          size: size as Props["size"],
         },
       });
 
@@ -179,11 +180,11 @@ describe("UInputNumber.vue", () => {
     });
 
     it("Label Align – passes labelAlign to UInput", () => {
-      const labelAlign: Props["labelAlign"] = "top";
+      const labelAlign = "top";
 
       const component = mount(UInputNumber, {
         props: {
-          labelAlign,
+          labelAlign: labelAlign as Props["labelAlign"],
         },
       });
 
@@ -223,9 +224,7 @@ describe("UInputNumber.vue", () => {
         },
       });
 
-      const input = component.getComponent(UInput);
-
-      expect(input.props("leftIcon")).toBe(leftIcon);
+      expect(component.getComponent(UInput).props("leftIcon")).toBe(leftIcon);
     });
 
     it("Right Icon – passes leftIcon to UInput", () => {
@@ -237,9 +236,7 @@ describe("UInputNumber.vue", () => {
         },
       });
 
-      const input = component.getComponent(UInput);
-
-      expect(input.props("rightIcon")).toBe(rightIcon);
+      expect(component.getComponent(UInput).props("rightIcon")).toBe(rightIcon);
     });
 
     it("Max Length – passes maxLength to UInput", () => {
@@ -251,9 +248,7 @@ describe("UInputNumber.vue", () => {
         },
       });
 
-      const input = component.getComponent(UInput);
-
-      expect(input.props("maxLength")).toBe(maxLength);
+      expect(component.getComponent(UInput).props("maxLength")).toBe(maxLength);
     });
 
     it("Readonly – passes readonly state to UInput", () => {
@@ -264,9 +259,7 @@ describe("UInputNumber.vue", () => {
         },
       });
 
-      const input = component.get("input");
-
-      expect(input.attributes("readonly")).toBeDefined();
+      expect(component.get("input").attributes("readonly")).toBeDefined();
     });
 
     it("Disabled – passes disabled state to UInput", () => {
@@ -277,9 +270,7 @@ describe("UInputNumber.vue", () => {
         },
       });
 
-      const input = component.get("input");
-
-      expect(input.attributes("disabled")).toBeDefined();
+      expect(component.get("input").attributes("disabled")).toBeDefined();
     });
 
     it("Data Test – passes data attribute to the UInput component", () => {
@@ -298,15 +289,15 @@ describe("UInputNumber.vue", () => {
   describe("Slots", () => {
     it("Left – renders custom content from left slot", () => {
       const slotText = "Custom Left Content";
-      const customContentClass = "custom-left";
+      const slotClass = "custom-left";
 
       const component = mount(UInput, {
         slots: {
-          left: `<span class="${customContentClass}">${slotText}</span>`,
+          left: `<span class="${slotClass}">${slotText}</span>`,
         },
       });
 
-      const leftSlotElement = component.find(`.${customContentClass}`);
+      const leftSlotElement = component.find(`.${slotClass}`);
 
       expect(leftSlotElement.exists()).toBe(true);
       expect(leftSlotElement.text()).toBe(slotText);
@@ -407,18 +398,18 @@ describe("UInputNumber.vue", () => {
 
     it("Right – slot content overrides rightIcon prop", () => {
       const rightIcon = "close";
-      const customContentClass = "custom-icon";
+      const slotClass = "custom-icon";
 
       const component = mount(UInput, {
         props: {
           rightIcon,
         },
         slots: {
-          right: `<span class="${customContentClass}">Custom Content</span>`,
+          right: `<span class="${slotClass}">Custom Content</span>`,
         },
       });
 
-      expect(component.find(`.${customContentClass}`).exists()).toBe(true);
+      expect(component.find(`.${slotClass}`).exists()).toBe(true);
       expect(component.findComponent(UIcon).exists()).toBe(false);
     });
   });
