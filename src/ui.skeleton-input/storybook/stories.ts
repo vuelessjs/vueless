@@ -57,14 +57,14 @@ WithoutLabel.args = { label: false };
 export const LabelAlign = EnumTemplate.bind({});
 LabelAlign.args = { enum: "labelAlign" };
 
-export const Type = EnumTemplate.bind({});
-Type.args = { enum: "type" };
+export const Types = EnumTemplate.bind({});
+Types.args = { enum: "type" };
 
 export const Sizes = EnumTemplate.bind({});
 Sizes.args = { enum: "size" };
 
-export const Variant = EnumTemplate.bind({});
-Variant.args = { enum: "variant" };
+export const Variants = EnumTemplate.bind({});
+Variants.args = { enum: "variant" };
 
 export const Slot: StoryFn<SkeletonInputArgs> = (args) => ({
   components: { USkeletonInput, USkeleton, UCol },

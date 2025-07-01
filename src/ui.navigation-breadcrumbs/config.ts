@@ -1,7 +1,7 @@
 export default /*tw*/ {
   breadcrumbs: "flex items-center gap-1 py-2",
   breadcrumbLink: "{ULink}",
-  breadcrumbLinkEmpty: "{>breadcrumbLink} !text-default/100 cursor-default",
+  breadcrumbLinkEmpty: "{>breadcrumbLink} !text-default cursor-default",
   breadcrumbIcon: {
     base: "{UIcon}",
     defaults: {

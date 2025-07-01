@@ -9,16 +9,18 @@ export default /*tw*/ {
       scrollable: {
         false: "-mb-px",
       },
-      disabled: {
-        true: "text-primary/(--vl-disabled-opacity)",
-      },
     },
     defaults: {
-      color: "gray",
+      color: "neutral",
     },
   },
   tabButtonActive: {
     base: "{>tabButton} border-primary",
+    variants: {
+      disabled: {
+        true: "border-primary/(--vl-disabled-opacity)",
+      },
+    },
     defaults: {
       color: "primary",
     },

@@ -34,7 +34,7 @@ const size = computed(() => toValue(getUTabsSize));
 const block = computed(() => toValue(getUTabsBlock));
 const square = computed(() => toValue(getUTabsSquare));
 const scrollable = computed(() => toValue(getUTabsScrollable));
-const isActive = computed(() => toValue(getUTabsSelectedItem) === props.value && !props.disabled);
+const isActive = computed(() => toValue(getUTabsSelectedItem) === props.value);
 
 async function onClickSetValue() {
   if (!props.disabled && setUTabsSelectedItem) {
