@@ -154,9 +154,12 @@ watch(
       let listboxInputHeight = 0;
 
       let listboxInputWrapperPaddingTop = 0;
+      let listboxInputBorderTop = 0;
+      let listboxInputBorderBottom = 0;
 
       if (inputEl) {
         const listboxInputStyle = getComputedStyle(inputEl);
+        const listboxInputLabelStyle = getComputedStyle(inputEl?.parentElement);
         const listboxInputWrapperStyle = getComputedStyle(
           inputEl.parentElement?.parentElement?.parentElement as Element,
         );
@@ -164,6 +167,9 @@ watch(
         listboxInputHeight = parseFloat(listboxInputStyle.height || "0");
 
         listboxInputWrapperPaddingTop = parseFloat(listboxInputWrapperStyle.paddingTop || "0");
+
+        listboxInputBorderTop = parseFloat(listboxInputLabelStyle.borderTop || "0");
+        listboxInputBorderBottom = parseFloat(listboxInputLabelStyle.borderBottom || "0");
       }
 
       wrapperMaxHeight.value = `${
@@ -174,7 +180,9 @@ watch(
         wrapperBorderTop +
         wrapperBorderBottom +
         listboxInputHeight +
-        (props.searchable ? listboxInputWrapperPaddingTop : 0)
+        listboxInputBorderTop +
+        listboxInputBorderBottom +
+        listboxInputWrapperPaddingTop
       }px`;
     });
   },
