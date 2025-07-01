@@ -47,7 +47,7 @@ export default /*tw*/ {
       },
     },
     compoundVariants: [
-      { interactive: true, disabled: false, class: "hover:cursor-pointer" },
+      { for: true, disabled: false, class: "hover:cursor-pointer" },
       { align: "topInside", size: "sm", class: "top-2 text-tiny" },
       { align: "topInside", size: "md", class: "top-2.5 text-small" },
       { align: "topInside", size: "lg", class: "top-2.5 text-medium" },

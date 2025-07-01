@@ -87,12 +87,12 @@ Error.args = { error: "Please enter a valid email address." };
 export const Disabled = DefaultTemplate.bind({});
 Disabled.args = { disabled: true };
 
-export const Interactive = DefaultTemplate.bind({});
-Interactive.args = { interactive: true };
-Interactive.parameters = {
+export const For = DefaultTemplate.bind({});
+For.args = { for: "input-id" };
+For.parameters = {
   docs: {
     description: {
-      story: "Make the label interactive (cursor pointer on hover).",
+      story: "Make the label interactive (cursor pointer on hover) and bind input to it.",
     },
   },
 };

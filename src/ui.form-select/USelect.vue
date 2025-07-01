@@ -470,7 +470,6 @@ const {
     :align="labelAlign"
     :disabled="disabled"
     centred
-    interactive
     v-bind="selectLabelAttrs"
     :data-test="getDataTest()"
     :tabindex="-1"

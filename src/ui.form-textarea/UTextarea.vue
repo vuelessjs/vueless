@@ -216,7 +216,6 @@ const {
     :size="size"
     :disabled="disabled"
     :align="labelAlign"
-    interactive
     v-bind="textareaLabelAttrs"
     :data-test="getDataTest('label')"
   >

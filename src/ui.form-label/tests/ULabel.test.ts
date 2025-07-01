@@ -32,6 +32,20 @@ describe("ULabel.vue", () => {
       expect(component.get("label").attributes("for")).toBe(forId);
     });
 
+    it("For – applies interactive classes when true", () => {
+      const interactiveClasses = "hover:cursor-pointer";
+
+      const component = mount(ULabel, {
+        props: {
+          interactive: true,
+          for: "some-id",
+          label: "Label",
+        },
+      });
+
+      expect(component.get("label").attributes("class")).toContain(interactiveClasses);
+    });
+
     it("Description – description is rendered with provided text", () => {
       const description = "This is a description";
 
@@ -81,32 +95,6 @@ describe("ULabel.vue", () => {
       expect(component.find("[vl-key='description']").exists()).toBe(false);
       expect(errorElement.attributes("class")).toContain(errorClasses);
       expect(errorElement.text()).toBe(error);
-    });
-
-    it("Interactive – applies cursor pointer class when true", () => {
-      const interactiveClasses = "hover:cursor-pointer";
-
-      const component = mount(ULabel, {
-        props: {
-          interactive: true,
-          label: "Label",
-        },
-      });
-
-      expect(component.get("label").attributes("class")).toContain(interactiveClasses);
-    });
-
-    it("Interactive – does not apply cursor pointer class when false", () => {
-      const interactiveClasses = "hover:cursor-pointer";
-
-      const component = mount(ULabel, {
-        props: {
-          interactive: false,
-          label: "Label",
-        },
-      });
-
-      expect(component.get("label").attributes("class")).not.toContain(interactiveClasses);
     });
 
     it("Align – applies correct classes for align prop", () => {
@@ -183,7 +171,7 @@ describe("ULabel.vue", () => {
       const component = mount(ULabel, {
         props: {
           disabled: true,
-          interactive: true,
+          for: "some-id",
           label: "Label",
         },
       });
@@ -330,11 +318,10 @@ describe("ULabel.vue", () => {
 
     it("Bottom – renders content from bottom slot", () => {
       const testClass = "custom-bottom";
-      const slotContent = `<div class="${testClass}">Bottom Slot Content</div>`;
 
       const component = mount(ULabel, {
         slots: {
-          bottom: slotContent,
+          bottom: `<div class="${testClass}">Bottom Slot Content</div>`,
         },
       });
 
