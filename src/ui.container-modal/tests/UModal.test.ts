@@ -200,12 +200,16 @@ describe("UModal", () => {
           },
         });
 
-        const innerWrapper = component.find("[vl-key='innerWrapper']");
+        const overlay = component.find('[vl-key="overlay"]');
 
-        await innerWrapper.trigger("click");
+        expect(overlay.exists()).toBe(true);
+
+        await overlay.trigger("click");
         await sleep(500);
 
-        expect(innerWrapper.exists()).toBe(!value);
+        const modal = component.find('[vl-key="modal"]');
+
+        expect(modal.exists()).toBe(!value);
       });
     });
 
@@ -226,7 +230,9 @@ describe("UModal", () => {
         await wrapper.trigger("keydown", { key: "Escape" });
         await sleep(500);
 
-        expect(component.exists()).toBe(!value);
+        const modal = component.find('[vl-key="modal"]');
+
+        expect(modal.exists()).toBe(!value);
       });
     });
 
