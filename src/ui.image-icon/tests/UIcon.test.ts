@@ -15,26 +15,24 @@ describe("UIcon.vue", () => {
       const component = mount(UIcon, {
         props: {
           name,
-          dataTest: "test",
         },
       });
 
       await flushPromises();
 
-      component.get("[data-test='test']");
+      component.get("[vl-key='icon']");
     });
 
     it("Src – renders icon based on provided src", async () => {
       const component = mount(UIcon, {
         props: {
           src: AddIcon,
-          dataTest: "test",
         },
       });
 
       await flushPromises();
 
-      component.get("[data-test='test']");
+      component.get("[vl-key='icon']");
     });
 
     it("Color – applies correct color classes", () => {
@@ -207,7 +205,6 @@ describe("UIcon.vue", () => {
       const component = mount(UIcon, {
         props: {
           name: "check",
-          dataTest: "test",
         },
       });
 
