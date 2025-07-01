@@ -73,24 +73,26 @@ export const UnderlineVariants: StoryFn<UBreadcrumbsArgs> = (args: UBreadcrumbsA
   components: { UBreadcrumbs, UText, UCol },
   setup: () => ({ args }),
   template: `
-    <UCol gap="none" class="mb-5">
-      <UText label="Default" weight="semibold" variant="lifted" />
-      <UBreadcrumbs :links="args.links" />
-    </UCol>
+    <UCol gap="lg">
+      <UCol gap="none">
+        <UText label="Default" weight="semibold" variant="lifted" />
+        <UBreadcrumbs :links="args.links" />
+      </UCol>
 
-    <UCol gap="none" class="mb-5">
-      <UText label="Dashed" weight="semibold" variant="lifted" />
-      <UBreadcrumbs :links="args.links" dashed />
-    </UCol>
+      <UCol gap="none">
+        <UText label="Dashed" weight="semibold" variant="lifted" />
+        <UBreadcrumbs :links="args.links" dashed />
+      </UCol>
 
-    <UCol gap="none" class="mb-5">
-      <UText label="Underlined" weight="semibold" variant="lifted" />
-      <UBreadcrumbs :links="args.links" underlined />
-    </UCol>
+      <UCol gap="none">
+        <UText label="Underlined" weight="semibold" variant="lifted" />
+        <UBreadcrumbs :links="args.links" underlined />
+      </UCol>
 
-    <UCol gap="none" class="mb-5">
-      <UText label="Without Underline" weight="semibold" variant="lifted" />
-      <UBreadcrumbs :links="args.links" :underlined="false" />
+      <UCol gap="none">
+        <UText label="Without Underline" weight="semibold" variant="lifted" />
+        <UBreadcrumbs :links="args.links" :underlined="false" />
+      </UCol>
     </UCol>
   `,
 });

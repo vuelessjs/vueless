@@ -8,7 +8,6 @@ export default /*tw*/ {
         md: "size-2",
         lg: "size-2.5",
         xl: "size-3",
-        "2xl": "size-3.5",
       },
     },
   },
