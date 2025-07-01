@@ -1,16 +1,87 @@
-import { mount } from "@vue/test-utils";
+import { flushPromises, mount } from "@vue/test-utils";
 import { describe, it, expect } from "vitest";
 
 import UCheckboxMultiState from "../UCheckboxMultiState.vue";
 import UCheckbox from "../../ui.form-checkbox/UCheckbox.vue";
+import UIcon from "../../ui.image-icon/UIcon.vue";
+import ULabel from "../../ui.form-label/ULabel.vue";
 
 import type { Props } from "../types.ts";
 
 describe("UCheckboxMultiState.vue", () => {
-  // Props tests
   describe("Props", () => {
-    // Color prop
-    it("applies the correct color class", async () => {
+    it("Name – sets the correct name attribute", async () => {
+      const name = "checkbox-name";
+
+      const component = mount(UCheckboxMultiState, {
+        props: {
+          name,
+        },
+      });
+
+      await flushPromises();
+
+      expect(component.find("input").attributes("name")).toBe(name);
+    });
+
+    it("Label – passes label to ULabel component", () => {
+      const labelText = "Test Label";
+
+      const component = mount(UCheckboxMultiState, {
+        props: {
+          label: labelText,
+        },
+      });
+
+      expect(component.getComponent(ULabel).props("label")).toBe(labelText);
+    });
+
+    it("Label Align – passes labelAlign prop to ULabel component", () => {
+      const labelAlign = "left";
+
+      const component = mount(UCheckboxMultiState, {
+        props: {
+          label: "Test Label",
+          labelAlign,
+        },
+      });
+
+      expect(component.getComponent(ULabel).props("align")).toBe(labelAlign);
+    });
+
+    it("Description – passes description to ULabel component", () => {
+      const descriptionText = "This is a description";
+
+      const component = mount(UCheckboxMultiState, {
+        props: {
+          description: descriptionText,
+        },
+      });
+
+      expect(component.getComponent(ULabel).props("description")).toBe(descriptionText);
+    });
+
+    it("Size – applies the correct size class", () => {
+      const size = {
+        sm: "size-4",
+        md: "size-5",
+        lg: "size-6",
+      };
+
+      Object.entries(size).forEach(([size, classes]) => {
+        const component = mount(UCheckboxMultiState, {
+          props: {
+            size: size as Props["size"],
+          },
+        });
+
+        const checkboxInput = component.getComponent(UCheckbox).get("input");
+
+        expect(checkboxInput.attributes("class")).toContain(classes);
+      });
+    });
+
+    it("Color – applies the correct color class when checked", () => {
       const colors = [
         "primary",
         "secondary",
@@ -27,202 +98,149 @@ describe("UCheckboxMultiState.vue", () => {
         const component = mount(UCheckboxMultiState, {
           props: {
             color: color as Props["color"],
+            modelValue: true,
           },
         });
 
-        const checkbox = component.findComponent(UCheckbox);
+        const checkboxInput = component.getComponent(UCheckbox).get("input");
 
-        expect(checkbox.props("color")).toBe(color);
+        expect(checkboxInput.attributes("class")).toContain(color);
       });
     });
 
-    // Size prop
-    it("applies the correct size class", async () => {
-      const sizes = ["sm", "md", "lg"];
-
-      sizes.forEach((size) => {
-        const component = mount(UCheckboxMultiState, {
-          props: {
-            size: size as Props["size"],
-          },
-        });
-
-        const checkbox = component.findComponent(UCheckbox);
-
-        expect(checkbox.props("size")).toBe(size);
-      });
-    });
-
-    // LabelAlign prop
-    it("applies the correct label alignment", () => {
-      const labelAlign = {
-        left: "left",
-        right: "right",
-      };
-
-      Object.entries(labelAlign).forEach(([align, value]) => {
-        const component = mount(UCheckboxMultiState, {
-          props: {
-            labelAlign: align as Props["labelAlign"],
-          },
-        });
-
-        const checkbox = component.findComponent(UCheckbox);
-
-        expect(checkbox.props("labelAlign")).toBe(value);
-      });
-    });
-
-    // Disabled prop
-    it("applies disabled attribute when disabled prop is true", () => {
-      const disabled = true;
-
+    it("Disabled – applies disabled attribute when disabled prop is true", () => {
       const component = mount(UCheckboxMultiState, {
         props: {
-          disabled,
+          disabled: true,
         },
       });
 
-      const checkbox = component.findComponent(UCheckbox);
+      const checkboxInput = component.getComponent(UCheckbox).get("input");
 
-      expect(checkbox.props("disabled")).toBe(true);
+      expect(component.find("input").attributes("disabled")).toBeDefined();
+      expect(component.findComponent(ULabel).props("disabled")).toBe(true);
+      expect(checkboxInput.attributes("class")).toContain("disabled:");
     });
 
-    // Options prop
-    it("renders checkbox with options", () => {
-      const options = [
-        { label: "Option 1", value: "option1", icon: "check" },
-        { label: "Option 2", value: "option2", icon: "close" },
-      ];
+    it("Id – applies the correct id attribute", () => {
+      const id = "test-switch-id";
 
       const component = mount(UCheckboxMultiState, {
         props: {
-          options,
+          id,
         },
       });
 
-      const checkbox = component.findComponent(UCheckbox);
-
-      expect(checkbox.exists()).toBe(true);
-      expect(checkbox.props("label")).toBe(options[0].label);
+      expect(component.find("input").attributes("id")).toBe(id);
     });
 
-    // ModelValue prop
-    it("sets the correct option based on modelValue", async () => {
-      const options = [
-        { label: "Option 1", value: "option1", icon: "check" },
-        { label: "Option 2", value: "option2", icon: "close" },
-      ];
-      const modelValue = "option1";
+    it("Data Test – applies the correct data-test attribute", () => {
+      const dataTest = "test-checkbox";
+      const labelDataTest = "test-checkbox-label";
 
       const component = mount(UCheckboxMultiState, {
         props: {
-          options,
-          modelValue,
-        },
-      });
-
-      // Wait for the setTimeout in setChecked to run
-      await new Promise((resolve) => setTimeout(resolve, 10));
-
-      const checkbox = component.findComponent(UCheckbox);
-
-      // The checkbox should have the label of the selected option
-      expect(checkbox.props("label")).toBe(options[0].label);
-    });
-
-    // Name prop
-    it("sets the correct name attribute", () => {
-      const name = "checkbox-multi-state-name";
-
-      const component = mount(UCheckboxMultiState, {
-        props: {
-          name,
-        },
-      });
-
-      const checkbox = component.findComponent(UCheckbox);
-
-      expect(checkbox.props("name")).toBe(name);
-    });
-
-    // DataTest prop
-    it("applies the correct data-test attribute", () => {
-      const dataTest = "test-checkbox-multi-state";
-
-      const component = mount(UCheckboxMultiState, {
-        props: {
+          label: "Test",
           dataTest,
         },
       });
 
-      // Since dataTest is not directly passed to UCheckbox, we can't test it directly
-      // But we can verify the component doesn't throw errors
-      expect(component.findComponent(UCheckbox).exists()).toBe(true);
+      expect(component.getComponent(ULabel).attributes("data-test")).toBe(labelDataTest);
+      expect(component.get("input").attributes("data-test")).toBe(dataTest);
     });
-  });
 
-  // Events tests
-  describe("Events", () => {
-    // update:modelValue event
-    it("emits update:modelValue event when checkbox is toggled", async () => {
+    it("Options – applies correct icons from options", async () => {
       const options = [
-        { label: "Option 1", value: "option1", icon: "check" },
-        { label: "Option 2", value: "option2", icon: "close" },
+        { value: "option1", icon: "check" },
+        { value: "option2", icon: "close" },
+        { value: "option3", icon: "cross" },
       ];
 
       const component = mount(UCheckboxMultiState, {
         props: {
           options,
+          modelValue: "option1",
         },
       });
 
-      // Directly call the onClickCheckbox method
-      component.vm.onClickCheckbox();
-      await component.vm.$nextTick();
+      await flushPromises();
 
-      expect(component.emitted("update:modelValue")).toBeTruthy();
-      expect(component.emitted("update:modelValue")![0]).toEqual([options[1].value]);
+      const checkboxIcon = component.getComponent(UCheckbox).getComponent(UIcon);
+      const checkboxInput = component.get("input");
+
+      expect(checkboxIcon.props("name")).toBe("check");
+
+      await checkboxInput.trigger("change");
+
+      expect(checkboxIcon.props("name")).toBe("close");
+
+      await checkboxInput.trigger("change");
+
+      expect(checkboxIcon.props("name")).toBe("cross");
     });
 
-    // Cycles through options
-    it("cycles through options when clicked multiple times", async () => {
+    it("Options – applies correct labels and descriptions from options", async () => {
       const options = [
-        { label: "Option 1", value: "option1", icon: "check" },
-        { label: "Option 2", value: "option2", icon: "close" },
-        { label: "Option 3", value: "option3", icon: "star" },
+        { value: "option1", label: "First Label", description: "First Description" },
+        { value: "option2", label: "Second Label", description: "Second Description" },
+        { value: "option3", label: "Third Label", description: "Third Description" },
       ];
 
       const component = mount(UCheckboxMultiState, {
         props: {
           options,
+          modelValue: "option1",
         },
       });
 
-      // First click
-      component.vm.onClickCheckbox();
-      await component.vm.$nextTick();
+      await flushPromises();
 
-      expect(component.emitted("update:modelValue")).toBeTruthy();
-      expect(component.emitted("update:modelValue")![0]).toEqual([options[1].value]);
+      const label = component.getComponent(ULabel);
+      const checkboxInput = component.get("input");
 
-      // Update the component with the new modelValue
-      await component.setProps({ modelValue: options[1].value });
+      expect(label.props("label")).toBe("First Label");
+      expect(label.props("description")).toBe("First Description");
 
-      // Second click
-      component.vm.onClickCheckbox();
-      await component.vm.$nextTick();
+      await checkboxInput.trigger("change");
 
-      expect(component.emitted("update:modelValue")![1]).toEqual([options[2].value]);
+      expect(label.props("label")).toBe("Second Label");
+      expect(label.props("description")).toBe("Second Description");
 
-      // Update the component with the new modelValue
-      await component.setProps({ modelValue: options[2].value });
+      await checkboxInput.trigger("change");
 
-      // Third click (should cycle back to first option)
-      component.vm.onClickCheckbox();
-      await component.vm.$nextTick();
+      expect(label.props("label")).toBe("Third Label");
+      expect(label.props("description")).toBe("Third Description");
+    });
 
-      expect(component.emitted("update:modelValue")![2]).toEqual([options[0].value]);
+    it("Options – cycles through correct values from options", async () => {
+      const options = [
+        { value: "pending", label: "Pending" },
+        { value: "approved", label: "Approved" },
+        { value: "rejected", label: "Rejected" },
+      ];
+
+      const component = mount(UCheckboxMultiState, {
+        props: {
+          options,
+          modelValue: "pending",
+        },
+      });
+
+      await flushPromises();
+
+      const checkboxInput = component.get("input");
+
+      await checkboxInput.trigger("change");
+
+      expect(component.emitted("update:modelValue")![0]).toEqual(["approved"]);
+
+      await checkboxInput.trigger("change");
+
+      expect(component.emitted("update:modelValue")![1]).toEqual(["rejected"]);
+
+      await checkboxInput.trigger("change");
+
+      expect(component.emitted("update:modelValue")![2]).toEqual(["pending"]);
     });
   });
 });
