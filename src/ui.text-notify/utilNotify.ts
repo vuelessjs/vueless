@@ -71,10 +71,10 @@ export function notify({
     notifyId,
   };
 
-  const notifyStart: CustomEvent<typeof eventDetail> = new CustomEvent("notifyStart", {
+  const notifyStart: CustomEvent<NotifyEventDetail> = new CustomEvent("notifyStart", {
     detail: eventDetail,
   });
-  const notifyEnd: CustomEvent<typeof eventDetail> = new CustomEvent("notifyEnd", {
+  const notifyEnd: CustomEvent<NotifyEventDetail> = new CustomEvent("notifyEnd", {
     detail: eventDetail,
   });
 
