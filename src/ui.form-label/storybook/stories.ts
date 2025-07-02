@@ -91,7 +91,14 @@ export const Disabled = DefaultTemplate.bind({});
 Disabled.args = { disabled: true };
 
 export const For = DefaultTemplate.bind({});
-For.args = { for: "input-id" };
+For.args = {
+  for: "input-id",
+  slotTemplate: `
+    <template #default>
+      <input class="px-4 py-2 text-sm text-black rounded-small" id="input-id" />
+    </template>
+  `,
+};
 For.parameters = {
   docs: {
     description: {
