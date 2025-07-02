@@ -22,6 +22,7 @@ interface NotifyEventDetail {
   label: string;
   description: string;
   duration: number;
+  notifyId?: string;
 }
 
 interface VuelessNotifyConfig {
@@ -61,7 +62,7 @@ export function notify({
   lastMessageTime = new Date();
   lastMessage = description;
 
-  const eventDetail: NotifyEventDetail & { notifyId?: string } = {
+  const eventDetail: NotifyEventDetail = {
     type: type as NotificationType,
     id: getRandomId(),
     label,
