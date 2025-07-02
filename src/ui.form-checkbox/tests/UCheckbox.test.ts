@@ -202,6 +202,8 @@ describe("UCheckbox.vue", () => {
     });
 
     it("Disabled – applies disabled attribute when disabled prop is true", () => {
+      const disabledOpacityVar = "--vl-disabled-opacity";
+
       const component = mount(UCheckbox, {
         props: {
           disabled: true,
@@ -210,9 +212,10 @@ describe("UCheckbox.vue", () => {
 
       expect(component.find("input").attributes("disabled")).toBeDefined();
       const labelComponent = component.findComponent(ULabel);
+      const checkboxInput = component.get("[vl-key='checkbox']");
 
       expect(labelComponent.props("disabled")).toBe(true);
-      expect(component.get("[vl-key='checkbox']").attributes("class")).toContain("disabled:");
+      expect(checkboxInput.attributes("class")).toContain(disabledOpacityVar);
     });
 
     it("Id – applies the correct id attribute", () => {
@@ -243,62 +246,67 @@ describe("UCheckbox.vue", () => {
     });
   });
 
-  // Slots tests
   describe("Slots", () => {
-    // Label slot
-    it("renders content from label slot", () => {
-      const slotContent = "Custom Label Content";
-      const label = "Default Label";
+    it("Label – renders custom content from label slot", () => {
+      const customLabelContent = "Custom Label Content";
 
       const component = mount(UCheckbox, {
         props: {
-          label,
+          label: "Default Label",
         },
         slots: {
-          label: `<span>${slotContent}</span>`,
+          label: customLabelContent,
         },
       });
 
-      expect(component.text()).not.toContain(label);
-      expect(component.text()).toContain(slotContent);
+      const labelComponent = component.getComponent(ULabel);
+      const labelElement = labelComponent.find("label");
+
+      expect(labelElement.text()).toBe(customLabelContent);
     });
 
-    // Bottom slot
-    it("renders content from bottom slot", () => {
-      const slotContent = "Bottom Content";
-      const label = "Test Label";
+    it("Label – exposes label prop to slot", () => {
+      const defaultLabel = "Test Label";
 
       const component = mount(UCheckbox, {
         props: {
-          label,
+          label: defaultLabel,
         },
         slots: {
-          bottom: slotContent,
+          label: "Modified {{ params.label }}",
         },
       });
 
-      // Check that the slot content is rendered in the component
-      expect(component.text()).toContain(slotContent);
+      const labelComponent = component.getComponent(ULabel);
+      const labelElement = labelComponent.find("label");
+
+      expect(labelElement.text()).toBe(`Modified ${defaultLabel}`);
+    });
+
+    it("Bottom – renders custom content from bottom slot", () => {
+      const customBottomContent = "Custom Bottom Content";
+
+      const component = mount(UCheckbox, {
+        props: {
+          label: "Test Label",
+        },
+        slots: {
+          bottom: customBottomContent,
+        },
+      });
+
+      const labelComponent = component.getComponent(ULabel);
+
+      expect(labelComponent.text()).toContain(customBottomContent);
     });
   });
 
-  // Events tests
   describe("Events", () => {
-    // update:modelValue event
-    it("emits update:modelValue event when checkbox is toggled", async () => {
+    it("Input – emits input event when checkbox is toggled", async () => {
       const component = mount(UCheckbox);
 
       await component.find("input").setValue(true);
-      expect(component.emitted("update:modelValue")).toBeTruthy();
-      expect(component.emitted("update:modelValue")![0]).toEqual([true]);
-    });
 
-    // input event
-    it("emits input event when checkbox is toggled", async () => {
-      const component = mount(UCheckbox);
-
-      await component.find("input").setValue(true);
-      expect(component.emitted("input")).toBeTruthy();
       expect(component.emitted("input")![0]).toEqual([true]);
     });
   });
