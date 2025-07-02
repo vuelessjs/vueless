@@ -13,7 +13,7 @@ export type Notification = {
 };
 
 export interface NotifyEvent extends Event {
-  detail: Notification & { notifyId?: string };
+  detail: Notification;
 }
 
 export interface NotificationsWrapperRef {
