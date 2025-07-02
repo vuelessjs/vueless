@@ -58,11 +58,11 @@ describe("UInputSearch.vue", () => {
     });
 
     it("Size – passes size to UInput", () => {
-      const size: Props["size"] = "lg";
+      const size = "lg";
 
       const component = mount(UInputSearch, {
         props: {
-          size,
+          size: size as Props["size"],
         },
       });
 
@@ -82,10 +82,10 @@ describe("UInputSearch.vue", () => {
     });
 
     it("Label Align – passes labelAlign to UInput", () => {
-      const labelAlign: Props["labelAlign"] = "top";
+      const labelAlign = "top";
       const component = mount(UInputSearch, {
         props: {
-          labelAlign,
+          labelAlign: labelAlign as Props["labelAlign"],
         },
       });
 
