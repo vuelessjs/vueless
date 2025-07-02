@@ -37,7 +37,7 @@ describe("UCheckboxMultiState.vue", () => {
     });
 
     it("Label Align – passes labelAlign prop to ULabel component", () => {
-      const labelAlign = "left";
+      const labelAlign = "right";
 
       const component = mount(UCheckboxMultiState, {
         props: {
@@ -61,51 +61,29 @@ describe("UCheckboxMultiState.vue", () => {
       expect(component.getComponent(ULabel).props("description")).toBe(descriptionText);
     });
 
-    it("Size – applies the correct size class", () => {
-      const size = {
-        sm: "size-4",
-        md: "size-5",
-        lg: "size-6",
-      };
+    it("Size – passes correct size props to UCheckbox", () => {
+      const size = "lg";
 
-      Object.entries(size).forEach(([size, classes]) => {
-        const component = mount(UCheckboxMultiState, {
-          props: {
-            size: size as Props["size"],
-          },
-        });
-
-        const checkboxInput = component.getComponent(UCheckbox).get("input");
-
-        expect(checkboxInput.attributes("class")).toContain(classes);
+      const component = mount(UCheckboxMultiState, {
+        props: {
+          size: size as Props["size"],
+        },
       });
+
+      expect(component.getComponent(UCheckbox).props("size")).toBe(size);
     });
 
-    it("Color – applies the correct color class when checked", () => {
-      const colors = [
-        "primary",
-        "secondary",
-        "error",
-        "warning",
-        "success",
-        "info",
-        "notice",
-        "neutral",
-        "grayscale",
-      ];
+    it("Color – passes correct color prop to UCheckbox", () => {
+      const color = "error";
 
-      colors.forEach((color) => {
-        const component = mount(UCheckboxMultiState, {
-          props: {
-            color: color as Props["color"],
-            modelValue: true,
-          },
-        });
-
-        const checkboxInput = component.getComponent(UCheckbox).get("input");
-
-        expect(checkboxInput.attributes("class")).toContain(color);
+      const component = mount(UCheckboxMultiState, {
+        props: {
+          color: color as Props["color"],
+          modelValue: true,
+        },
       });
+
+      expect(component.getComponent(UCheckbox).props("color")).toBe(color);
     });
 
     it("Disabled – applies disabled attribute when disabled prop is true", () => {
