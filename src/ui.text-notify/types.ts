@@ -16,6 +16,12 @@ export interface NotifyEvent extends Event {
   detail: Notification;
 }
 
+export interface NotifyClearAllEvent extends Event {
+  detail: {
+    notifyId?: string;
+  };
+}
+
 export interface NotificationsWrapperRef {
   $el: HTMLElement;
 }
@@ -24,6 +30,7 @@ declare global {
   interface WindowEventMap {
     notifyStart: NotifyEvent;
     notifyEnd: NotifyEvent;
+    notifyClearAll: NotifyClearAllEvent;
   }
 }
 

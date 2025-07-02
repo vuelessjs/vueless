@@ -10,7 +10,14 @@ import { COMPONENT_NAME, NotificationType, NotificationPosition } from "./consta
 
 import UIcon from "../ui.image-icon/UIcon.vue";
 
-import type { Props, Config, NotifyEvent, Notification, NotificationsWrapperRef } from "./types.ts";
+import type {
+  Props,
+  Config,
+  NotifyEvent,
+  NotifyClearAllEvent,
+  Notification,
+  NotificationsWrapperRef,
+} from "./types.ts";
 
 defineOptions({ inheritAttrs: false });
 
@@ -61,8 +68,8 @@ function onNotifyEnd(event: NotifyEvent) {
   }
 }
 
-function onClearAll(event: Event) {
-  const eventNotifyId = (event as CustomEvent<{ notifyId?: string }>).detail?.notifyId;
+function onClearAll(event: NotifyClearAllEvent) {
+  const eventNotifyId = event.detail?.notifyId;
 
   if (eventNotifyId && props.notifyId !== eventNotifyId) return;
 
