@@ -48,11 +48,11 @@ describe("UInputPassword.vue", () => {
     });
 
     it("Size – passes size to UInput", () => {
-      const size: Props["size"] = "lg";
+      const size = "lg";
 
       const component = mount(UInputPassword, {
         props: {
-          size,
+          size: size as Props["size"],
         },
       });
 
@@ -72,11 +72,11 @@ describe("UInputPassword.vue", () => {
     });
 
     it("Label Align – passes labelAlign to UInput", () => {
-      const labelAlign: Props["labelAlign"] = "top";
+      const labelAlign = "top";
 
       const component = mount(UInputPassword, {
         props: {
-          labelAlign,
+          labelAlign: labelAlign as Props["labelAlign"],
         },
       });
 
@@ -231,11 +231,10 @@ describe("UInputPassword.vue", () => {
 
     it("Right – renders right slot content", () => {
       const testClass = "test";
-      const slotContent = `<div class='${testClass}'>Right Slot Content</div`;
 
       const component = mount(UInputPassword, {
         slots: {
-          right: slotContent,
+          right: `<div class='${testClass}'>Right Slot Content</div`,
         },
       });
 
