@@ -25,7 +25,6 @@ import type { Props } from "../types.ts";
 
 interface UNotifyArgs extends Props {
   slotTemplate?: string;
-  duration?: number;
 }
 
 export default {
