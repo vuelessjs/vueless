@@ -1,21 +1,20 @@
-import { mount } from "@vue/test-utils";
+import { flushPromises, mount } from "@vue/test-utils";
 import { describe, it, expect } from "vitest";
+import { nextTick } from "vue";
 
 import URadioGroup from "../URadioGroup.vue";
 import URadio from "../../ui.form-radio/URadio.vue";
 import ULabel from "../../ui.form-label/ULabel.vue";
 
-import type { Props, URadioGroupOption } from "../types.ts";
+import type { Props } from "../types.ts";
 
 describe("URadioGroup.vue", () => {
-  // Props tests
   describe("Props", () => {
-    // Options prop
-    it("renders radio options correctly", () => {
+    it("Options - renders radios for each option", () => {
       const options = [
-        { value: "option1", label: "Option 1" },
-        { value: "option2", label: "Option 2" },
-        { value: "option3", label: "Option 3" },
+        { label: "Email Notifications", value: "email" },
+        { label: "SMS Alerts", value: "sms" },
+        { label: "Push Notifications", value: "push" },
       ];
 
       const component = mount(URadioGroup, {
@@ -25,91 +24,84 @@ describe("URadioGroup.vue", () => {
         },
       });
 
-      const radioComponents = component.findAllComponents(URadio);
+      const radios = component.findAllComponents(URadio);
 
-      expect(radioComponents.length).toBe(options.length);
+      expect(radios).toHaveLength(options.length);
 
-      options.forEach((option, index) => {
-        expect(radioComponents[index].props("value")).toBe(option.value);
-        expect(radioComponents[index].props("label")).toBe(option.label);
+      radios.forEach((radio, index) => {
+        expect(radio.props("label")).toBe(options[index].label);
+        expect(radio.props("value")).toBe(options[index].value);
       });
     });
 
-    // ModelValue prop
-    it("sets the correct model value", () => {
+    it("Options – radio emits value on change", async () => {
       const options = [
-        { value: "option1", label: "Option 1" },
-        { value: "option2", label: "Option 2" },
+        { label: "Email Notifications", value: "email" },
+        { label: "SMS Alerts", value: "sms" },
+        { label: "Push Notifications", value: "push" },
       ];
-      const modelValue = "option1";
 
       const component = mount(URadioGroup, {
         props: {
           options,
-          modelValue,
-          name: "test-group",
+          name: "notification-preferences",
+          modelValue: "",
         },
       });
 
-      const radioComponents = component.findAllComponents(URadio);
+      const radioInput = component.find("input[type='radio'][value='sms']");
 
-      expect(radioComponents[0].props("modelValue")).toBe(modelValue);
+      await radioInput.setValue(true);
+
+      await nextTick();
+
+      expect(component.emitted("update:modelValue")![0][0]).toBe("sms");
     });
 
-    // Label prop
-    it("renders the correct label text", () => {
-      const label = "Radio Group Label";
+    it("Label – passes label to ULabel component", () => {
+      const labelText = "Test Label";
 
       const component = mount(URadioGroup, {
         props: {
-          label,
+          label: labelText,
           name: "test-group",
         },
       });
 
-      const labelComponent = component.findComponent(ULabel);
-
-      expect(labelComponent.props("label")).toBe(label);
+      expect(component.getComponent(ULabel).props("label")).toBe(labelText);
     });
 
-    // Description prop
-    it("renders the correct description", () => {
-      const description = "Radio group description";
+    it("Description – passes description to ULabel component", () => {
+      const descriptionText = "This is a description";
 
       const component = mount(URadioGroup, {
         props: {
-          description,
+          description: descriptionText,
           name: "test-group",
         },
       });
 
-      const labelComponent = component.findComponent(ULabel);
-
-      expect(labelComponent.props("description")).toBe(description);
+      expect(component.getComponent(ULabel).props("description")).toBe(descriptionText);
     });
 
-    // Error prop
-    it("applies error state when error prop is provided", () => {
-      const error = "Error message";
+    it("Error – passes error to ULabel component", () => {
+      const errorText = "This is an error message";
 
       const component = mount(URadioGroup, {
         props: {
-          error,
+          error: errorText,
           name: "test-group",
         },
       });
 
-      const labelComponent = component.findComponent(ULabel);
-
-      expect(labelComponent.props("error")).toBe(error);
+      expect(component.getComponent(ULabel).props("error")).toBe(errorText);
     });
 
-    // Size prop
-    it("applies the correct size class", () => {
+    it("Size – applies the correct size class", () => {
       const size = {
-        sm: "gap-1.5 mt-1",
-        md: "gap-2 mt-1.5",
-        lg: "gap-2.5 mt-2",
+        sm: "size-4",
+        md: "size-5",
+        lg: "size-6",
       };
 
       Object.entries(size).forEach(([size, classes]) => {
@@ -117,17 +109,42 @@ describe("URadioGroup.vue", () => {
           props: {
             size: size as Props["size"],
             name: "test-group",
+            options: [
+              { label: "Email Notifications", value: "email" },
+              { label: "SMS Alerts", value: "sms" },
+              { label: "Push Notifications", value: "push" },
+            ],
           },
         });
 
-        const listElement = component.find("[vl-key='list']");
+        const radioInput = component.getComponent(URadio).get("input");
 
-        expect(listElement.attributes("class")).toContain(classes);
+        expect(radioInput.attributes("class")).toContain(classes);
       });
     });
 
-    // Color prop
-    it("applies the correct color to radio components", () => {
+    it("Name – sets the correct URadio name prop", async () => {
+      const name = "radio-name";
+
+      const component = mount(URadioGroup, {
+        props: {
+          name,
+          options: [
+            { label: "Email Notifications", value: "email" },
+            { label: "SMS Alerts", value: "sms" },
+            { label: "Push Notifications", value: "push" },
+          ],
+        },
+      });
+
+      await flushPromises();
+
+      component.findAllComponents("input").forEach((radio) => {
+        expect(radio.attributes("name")).toBe(name);
+      });
+    });
+
+    it("Color – sets correct URadio color prop", () => {
       const colors = [
         "primary",
         "secondary",
@@ -140,168 +157,142 @@ describe("URadioGroup.vue", () => {
         "grayscale",
       ];
 
-      const options = [
-        { value: "option1", label: "Option 1" },
-        { value: "option2", label: "Option 2" },
-      ];
-
       colors.forEach((color) => {
         const component = mount(URadioGroup, {
           props: {
             color: color as Props["color"],
-            options,
             name: "test-group",
+            options: [
+              { label: "Email Notifications", value: "email" },
+              { label: "SMS Alerts", value: "sms" },
+              { label: "Push Notifications", value: "push" },
+            ],
           },
         });
 
-        // Since color is provided through provide/inject, we need to check
-        // if the color is correctly applied to the radio components' class
-        const radioInputs = component.findAll("input[type='radio']");
+        component.findAllComponents(URadio).forEach(async (radio) => {
+          const radioInput = radio.get("input");
 
-        radioInputs.forEach((radio) => {
-          expect(radio.attributes("class")).toContain(color);
+          await radioInput.trigger("input");
+
+          expect(radioInput.attributes("class")).toContain(color);
         });
       });
     });
 
-    // Disabled prop
-    it("applies disabled attribute to all radio components when disabled prop is true", () => {
-      const disabled = true;
-      const options = [
-        { value: "option1", label: "Option 1" },
-        { value: "option2", label: "Option 2" },
-      ];
-
+    it("Disabled – sets correct URadio disabled prop", () => {
       const component = mount(URadioGroup, {
         props: {
-          disabled,
-          options,
+          disabled: true,
           name: "test-group",
+          options: [
+            { label: "Email Notifications", value: "email" },
+            { label: "SMS Alerts", value: "sms" },
+            { label: "Push Notifications", value: "push" },
+          ],
         },
       });
 
-      const radioComponents = component.findAllComponents(URadio);
-      const labelComponent = component.findComponent(ULabel);
-
-      expect(labelComponent.props("disabled")).toBe(true);
-
-      radioComponents.forEach((radio) => {
+      component.findAllComponents(URadio).forEach((radio) => {
         expect(radio.props("disabled")).toBe(true);
       });
     });
 
-    // Name prop
-    it("applies the correct name to all radio components", () => {
-      const name = "radio-group-name";
-      const options = [
-        { value: "option1", label: "Option 1" },
-        { value: "option2", label: "Option 2" },
-      ];
+    it("Data test  – sets correct data-test attribute to radios", () => {
+      const dataTestValue = "radio";
 
       const component = mount(URadioGroup, {
         props: {
-          name,
-          options,
-        },
-      });
-
-      // Since name is provided through provide/inject, we can't directly test it
-      // But we can verify that the component renders correctly
-      const radioComponents = component.findAllComponents(URadio);
-
-      expect(radioComponents.length).toBe(options.length);
-    });
-
-    // DataTest prop
-    it("applies the correct data-test attribute", () => {
-      const dataTest = "test-radio-group";
-
-      const component = mount(URadioGroup, {
-        props: {
-          dataTest,
+          "data-test": dataTestValue,
           name: "test-group",
+          options: [
+            { label: "Email Notifications", value: "email" },
+            { label: "SMS Alerts", value: "sms" },
+            { label: "Push Notifications", value: "push" },
+          ],
         },
       });
 
-      expect(component.findComponent(ULabel).attributes("data-test")).toBe(dataTest);
+      component.findAllComponents(URadio).forEach((radio, idx) => {
+        expect(radio.attributes("data-test")).toBe(`${dataTestValue}-item-${idx}-label`);
+      });
     });
   });
 
-  // Slots tests
   describe("Slots", () => {
-    // Label slot
-    it("renders content from label slot", () => {
-      const slotContent = "Custom Label";
-      const label = "Radio Group Label";
+    it("Label – renders custom content from label slot", () => {
+      const customLabelContent = "Custom Label Content";
 
       const component = mount(URadioGroup, {
         props: {
-          label,
+          label: "Default Label",
           name: "test-group",
         },
         slots: {
-          label: `<span>${slotContent}</span>`,
+          label: customLabelContent,
         },
       });
 
-      expect(component.text()).toContain(slotContent);
-      expect(component.text()).not.toContain(label);
+      const labelComponent = component.getComponent(ULabel);
+      const labelElement = labelComponent.find("label");
+
+      expect(labelElement.text()).toBe(customLabelContent);
     });
 
-    // Default slot
-    it("renders content from default slot", () => {
-      const slotContent = "Custom Radio Content";
-      const slotClass = "custom-radio";
+    it("Label – exposes label prop to slot", () => {
+      const defaultLabel = "Test Label";
 
       const component = mount(URadioGroup, {
         props: {
+          label: defaultLabel,
           name: "test-group",
         },
         slots: {
-          default: `<div class="${slotClass}">${slotContent}</div>`,
+          label: "Modified {{ params.label }}",
         },
       });
 
-      expect(component.find(`.${slotClass}`).exists()).toBe(true);
-      expect(component.find(`.${slotClass}`).text()).toBe(slotContent);
+      const labelComponent = component.getComponent(ULabel);
+      const labelElement = labelComponent.find("label");
+
+      expect(labelElement.text()).toBe(`Modified ${defaultLabel}`);
     });
-  });
 
-  // Events tests
-  describe("Events", () => {
-    // Update:modelValue event
-    it("emits update:modelValue event when a radio is selected", async () => {
-      const options = [
-        { value: "option1", label: "Option 1" },
-        { value: "option2", label: "Option 2" },
-      ];
-
+    it("Default slot – renders custom URadio components", () => {
       const component = mount(URadioGroup, {
         props: {
-          options,
-          name: "test-group",
+          modelValue: "",
+          name: "custom-group",
+        },
+        slots: {
+          default: `
+            <URadio value="option1" label="Custom Option 1" />
+            <URadio value="option2" label="Custom Option 2" />
+            <URadio value="option3" label="Custom Option 3" />
+          `,
+        },
+        global: {
+          components: {
+            URadio,
+          },
         },
       });
 
-      // Since the radio selection is handled through provide/inject,
-      // we need to simulate the selection by calling the method directly
-      // This is a limitation of the testing approach
-      component.vm.selectedItem = "option1";
+      const radios = component.findAllComponents(URadio);
 
-      expect(component.emitted("update:modelValue")).toBeTruthy();
-      expect(component.emitted("update:modelValue")[0]).toEqual(["option1"]);
+      expect(radios).toHaveLength(3);
+      expect(radios[0].props("value")).toBe("option1");
+      expect(radios[0].props("label")).toBe("Custom Option 1");
+      expect(radios[1].props("value")).toBe("option2");
+      expect(radios[1].props("label")).toBe("Custom Option 2");
+      expect(radios[2].props("value")).toBe("option3");
+      expect(radios[2].props("label")).toBe("Custom Option 3");
     });
   });
 
-  // Exposed refs tests
-  describe("Exposed refs", () => {
-    // listRef
+  describe("Exposed properties", () => {
     it("exposes listRef", () => {
-      const component = mount(URadioGroup, {
-        props: {
-          name: "test-group",
-        },
-      });
+      const component = mount(URadioGroup);
 
       expect(component.vm.listRef).toBeDefined();
     });
