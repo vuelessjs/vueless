@@ -103,7 +103,9 @@ export const vue3SourceDecorator = makeDecorator({
 function getModelValue(value) {
   if (value === undefined) return "";
 
-  return isPrimitive(value) ? `${value}` : JSON.stringify(value).replaceAll('"', "'");
+  return isPrimitive(value)
+    ? JSON.stringify(value)?.replaceAll('"', "")
+    : JSON.stringify(value).replaceAll('"', "'");
 }
 
 function preFormat(templateSource, args, argTypes) {
