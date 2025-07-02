@@ -19,9 +19,9 @@ export default /*tw*/ {
       },
     },
     compoundVariants: [
-      { labelAlign: "topInside", size: "sm", class: "h-11" },
-      { labelAlign: "topInside", size: "md", class: "h-12.5" },
-      { labelAlign: "topInside", size: "lg", class: "h-14.25" },
+      { labelAlign: "topInside", size: "sm", label: true, class: "h-11" },
+      { labelAlign: "topInside", size: "md", label: true, class: "h-12.5" },
+      { labelAlign: "topInside", size: "lg", label: true, class: "h-14.25" },
     ],
   },
   textarea: {
@@ -34,9 +34,9 @@ export default /*tw*/ {
       },
     },
     compoundVariants: [
-      { size: "sm", labelAlign: "topInside", class: "h-15.75" },
-      { size: "md", labelAlign: "topInside", class: "h-18" },
-      { size: "lg", labelAlign: "topInside", class: "h-20.5" },
+      { size: "sm", labelAlign: "topInside", label: true, class: "h-15.75" },
+      { size: "md", labelAlign: "topInside", label: true, class: "h-18" },
+      { size: "lg", labelAlign: "topInside", label: true, class: "h-20.5" },
     ],
   },
   label: {

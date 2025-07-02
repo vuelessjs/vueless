@@ -20,7 +20,18 @@ export default /*tw*/ {
     ],
   },
   chipDot: "{UDot} outline-small outline-(--vl-bg)",
-  chipIcon: "{UIcon}",
+  chipIcon: {
+    base: "{UIcon}",
+    defaults: {
+      size: {
+        xs: "4xs",
+        sm: "3xs",
+        md: "2xs",
+        lg: "xs",
+        xl: "sm",
+      },
+    },
+  },
   defaults: {
     color: "primary",
     size: "md",

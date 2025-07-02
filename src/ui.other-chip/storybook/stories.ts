@@ -74,7 +74,7 @@ Default.args = {};
 export const Icon = DefaultTemplate.bind({});
 Icon.args = {
   icon: "arrow_outward",
-  size: "3xs",
+  size: "sm",
   slotTemplate: `
     <ULink label="Releases" class="mr-2" />
   `,
@@ -88,7 +88,7 @@ Text.args = {
     </template>
 
     <template #chip>
-      <UBadge label="3" class="py-px px-1 outline-solid outline-small outline-(--vl-bg)" />
+      <UBadge label="3" class="py-px px-1" />
     </template>
   `,
 };
