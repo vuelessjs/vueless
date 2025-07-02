@@ -13,6 +13,7 @@ interface NotifyConfig {
   description?: string;
   duration?: number;
   ignoreDuplicates?: boolean;
+  notifyId?: string;
 }
 
 interface NotifyEventDetail {
@@ -32,7 +33,6 @@ interface VuelessNotifyConfig {
 }
 
 const globalNotifyDuration = (vuelessConfig.components?.UNotify as VuelessNotifyConfig)?.duration;
-const notifyClearAllEvent: Event = new Event("notifyClearAll");
 
 let lastMessageTime: Date | undefined = undefined;
 let lastMessage: string | undefined = undefined;
@@ -43,6 +43,7 @@ export function notify({
   description = "",
   duration,
   ignoreDuplicates,
+  notifyId,
 }: NotifyConfig = {}): void {
   const notifyDuration: number =
     duration || globalNotifyDuration?.short || NotificationDuration.Short;
@@ -60,18 +61,19 @@ export function notify({
   lastMessageTime = new Date();
   lastMessage = description;
 
-  const eventDetail: NotifyEventDetail = {
+  const eventDetail: NotifyEventDetail & { notifyId?: string } = {
     type: type as NotificationType,
     id: getRandomId(),
     label,
     description,
     duration: notifyDuration,
+    notifyId,
   };
 
-  const notifyStart: CustomEvent<NotifyEventDetail> = new CustomEvent("notifyStart", {
+  const notifyStart: CustomEvent<typeof eventDetail> = new CustomEvent("notifyStart", {
     detail: eventDetail,
   });
-  const notifyEnd: CustomEvent<NotifyEventDetail> = new CustomEvent("notifyEnd", {
+  const notifyEnd: CustomEvent<typeof eventDetail> = new CustomEvent("notifyEnd", {
     detail: eventDetail,
   });
 
@@ -85,6 +87,7 @@ export function notifySuccess({
   description,
   duration,
   ignoreDuplicates,
+  notifyId,
 }: Omit<NotifyConfig, "type"> = {}): void {
   notify({
     label,
@@ -92,6 +95,7 @@ export function notifySuccess({
     ignoreDuplicates,
     type: NotificationType.Success,
     duration: duration || globalNotifyDuration?.short || NotificationDuration.Short,
+    notifyId,
   });
 }
 
@@ -100,6 +104,7 @@ export function notifyWarning({
   description,
   duration,
   ignoreDuplicates,
+  notifyId,
 }: Omit<NotifyConfig, "type"> = {}): void {
   notify({
     label,
@@ -107,6 +112,7 @@ export function notifyWarning({
     ignoreDuplicates,
     type: NotificationType.Warning,
     duration: duration || globalNotifyDuration?.medium || NotificationDuration.Medium,
+    notifyId,
   });
 }
 
@@ -115,6 +121,7 @@ export function notifyError({
   description,
   duration,
   ignoreDuplicates,
+  notifyId,
 }: Omit<NotifyConfig, "type"> = {}): void {
   notify({
     label,
@@ -122,11 +129,12 @@ export function notifyError({
     ignoreDuplicates,
     type: NotificationType.Error,
     duration: duration || globalNotifyDuration?.long || NotificationDuration.Long,
+    notifyId,
   });
 }
 
-export function clearNotifications(): void {
-  window.dispatchEvent(notifyClearAllEvent);
+export function clearNotifications(notifyId?: string): void {
+  window.dispatchEvent(new CustomEvent("notifyClearAll", { detail: { notifyId } }));
 }
 
 export function setDelayedNotify(settings: NotifyConfig): void {
@@ -142,7 +150,7 @@ export function getDelayedNotify(): void {
     localStorage.getItem(LOCAL_STORAGE_ID) || "null",
   );
 
-  clearNotifications();
+  clearNotifications(notifyData?.notifyId);
 
   if (notifyData) {
     notify(notifyData);

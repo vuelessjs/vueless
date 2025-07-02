@@ -48,16 +48,24 @@ onBeforeUnmount(() => {
 });
 
 function onNotifyStart(event: NotifyEvent) {
-  notifications.value.push({ ...event.detail });
+  if (!props.notifyId || event.detail.notifyId === props.notifyId) {
+    notifications.value.push({ ...event.detail });
+  }
 }
 
 function onNotifyEnd(event: NotifyEvent) {
-  notifications.value = notifications.value.filter(
-    (notification) => notification.id !== event.detail.id,
-  );
+  if (!props.notifyId || event.detail.notifyId === props.notifyId) {
+    notifications.value = notifications.value.filter(
+      (notification) => notification.id !== event.detail.id,
+    );
+  }
 }
 
-function onClearAll() {
+function onClearAll(event: Event) {
+  const eventNotifyId = (event as CustomEvent<{ notifyId?: string }>).detail?.notifyId;
+
+  if (eventNotifyId && props.notifyId !== eventNotifyId) return;
+
   notifications.value = [];
 }
 
