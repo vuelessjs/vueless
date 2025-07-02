@@ -7,101 +7,81 @@ import ULabel from "../../ui.form-label/ULabel.vue";
 import type { Props } from "../types.ts";
 
 describe("URadio.vue", () => {
-  // Props tests
   describe("Props", () => {
-    // Value prop
-    it("sets the correct value", () => {
-      const value = "test-value";
+    it("Model Value – updates with correct value when radio is checked", async () => {
+      const testValue = "test-value";
 
       const component = mount(URadio, {
         props: {
-          value,
+          modelValue: false,
+          value: testValue,
         },
       });
 
-      expect(component.find("input").attributes("value")).toBe(value);
+      const inputElement = component.find("input");
+
+      await inputElement.setValue(true);
+
+      expect(component.emitted("update:modelValue")![0][0]).toBe(testValue);
     });
 
-    // Label prop
-    it("renders the correct label text", () => {
-      const label = "Radio Label";
+    it("Value – returns correct value type when radio is checked", async () => {
+      const testValues = ["string-value", 42, true, { id: 1, name: "test" }, [1, 2, 3]];
 
-      const component = mount(URadio, {
-        props: {
-          label,
-        },
-      });
-
-      expect(component.text()).toContain(label);
-    });
-
-    // LabelAlign prop
-    it("applies the correct label alignment", () => {
-      const labelAligns = ["left", "right"];
-
-      labelAligns.forEach((labelAlign) => {
+      testValues.forEach(async (testValue) => {
         const component = mount(URadio, {
           props: {
-            labelAlign: labelAlign as Props["labelAlign"],
-            label: "Test Label",
+            value: testValue,
+            modelValue: [],
           },
         });
 
-        const labelComponent = component.findComponent(ULabel);
+        const inputElement = component.find("input");
 
-        expect(labelComponent.props("align")).toBe(labelAlign);
+        await inputElement.setValue(true);
+
+        expect(component.emitted("update:modelValue")![0][0]).toEqual(testValue);
       });
     });
 
-    // Description prop
-    it("renders the correct description", () => {
-      const description = "Radio description";
+    it("Label – passes label to ULabel component", () => {
+      const labelText = "Test Label";
 
       const component = mount(URadio, {
         props: {
-          description,
+          label: labelText,
         },
       });
 
-      const labelComponent = component.findComponent(ULabel);
-
-      expect(labelComponent.props("description")).toBe(description);
+      expect(component.getComponent(ULabel).props("label")).toBe(labelText);
     });
 
-    // Error prop
-    it("applies error state when error prop is provided", () => {
-      const error = "Error message";
+    it("Label Align – passes labelAlign prop to ULabel component", () => {
+      const labelAlign = "left";
 
       const component = mount(URadio, {
         props: {
-          error,
+          label: "Test Label",
+          labelAlign,
         },
       });
 
-      const labelComponent = component.findComponent(ULabel);
-
-      expect(labelComponent.props("error")).toBe(error);
+      expect(component.getComponent(ULabel).props("align")).toBe(labelAlign);
     });
 
-    // Name prop
-    it("applies the correct name attribute", async () => {
-      const name = "radio-name";
+    it("Description – passes description to ULabel component", () => {
+      const descriptionText = "This is a description";
 
       const component = mount(URadio, {
         props: {
-          name,
+          description: descriptionText,
         },
-        attachTo: document.body, // Attach to DOM to trigger lifecycle hooks
       });
 
-      // Wait for the next tick to allow the onMounted hook to execute
-      await component.vm.$nextTick();
-
-      expect(component.find("input").attributes("name")).toBe(name);
+      expect(component.getComponent(ULabel).props("description")).toBe(descriptionText);
     });
 
-    // Size prop
-    it("applies the correct size class", () => {
+    it("Size – applies the correct size class", () => {
       const size = {
         sm: "size-4",
         md: "size-5",
@@ -115,12 +95,11 @@ describe("URadio.vue", () => {
           },
         });
 
-        expect(component.find("input").attributes("class")).toContain(classes);
+        expect(component.get("[vl-key='radio']").attributes("class")).toContain(classes);
       });
     });
 
-    // Color prop
-    it("applies the correct color class", () => {
+    it("Color – applies the correct color class when checked", () => {
       const colors = [
         "primary",
         "secondary",
@@ -137,45 +116,33 @@ describe("URadio.vue", () => {
         const component = mount(URadio, {
           props: {
             color: color as Props["color"],
+            modelValue: true,
           },
         });
 
-        expect(component.find("input").attributes("class")).toContain(color);
+        expect(component.get("[vl-key='radio']").attributes("class")).toContain(color);
       });
     });
 
-    // Disabled prop
-    it("applies disabled attribute when disabled prop is true", () => {
-      const disabled = true;
+    it("Disabled – applies disabled attribute when disabled prop is true", () => {
+      const disabledOpacityVar = "--vl-disabled-opacity";
 
       const component = mount(URadio, {
         props: {
-          disabled,
+          disabled: true,
         },
       });
 
       expect(component.find("input").attributes("disabled")).toBeDefined();
       const labelComponent = component.findComponent(ULabel);
+      const radioInput = component.get("[vl-key='radio']");
 
       expect(labelComponent.props("disabled")).toBe(true);
+      expect(radioInput.attributes("class")).toContain(disabledOpacityVar);
     });
 
-    // Checked prop
-    it("applies checked attribute when checked prop is true", () => {
-      const checked = true;
-
-      const component = mount(URadio, {
-        props: {
-          checked,
-        },
-      });
-
-      expect(component.find("input").attributes("checked")).toBeDefined();
-    });
-
-    // ID prop
-    it("applies the correct id attribute", () => {
-      const id = "test-radio-id";
+    it("Id – applies the correct id attribute", () => {
+      const id = "test-switch-id";
 
       const component = mount(URadio, {
         props: {
@@ -186,79 +153,74 @@ describe("URadio.vue", () => {
       expect(component.find("input").attributes("id")).toBe(id);
     });
 
-    // DataTest prop
-    it("applies the correct data-test attribute", () => {
+    it("Data Test – applies the correct data-test attribute", () => {
       const dataTest = "test-radio";
+      const labelDataTest = "test-radio-label";
 
       const component = mount(URadio, {
         props: {
+          label: "Test",
           dataTest,
         },
       });
 
-      expect(component.find("input").attributes("data-test")).toBe(dataTest);
+      expect(component.findComponent(ULabel).attributes("data-test")).toBe(labelDataTest);
+      expect(component.get("input").attributes("data-test")).toBe(dataTest);
     });
   });
 
-  // Slots tests
   describe("Slots", () => {
-    // Label slot
-    it("renders content from label slot", () => {
-      const slotContent = "Custom Label";
-      const label = "Radio Label";
+    it("Label – renders custom content from label slot", () => {
+      const customLabelContent = "Custom Label Content";
 
       const component = mount(URadio, {
         props: {
-          label,
+          label: "Default Label",
         },
         slots: {
-          label: `<span>${slotContent}</span>`,
+          label: customLabelContent,
         },
       });
 
-      expect(component.text()).not.toContain(label);
-      expect(component.text()).toContain(slotContent);
+      const labelComponent = component.getComponent(ULabel);
+      const labelElement = labelComponent.find("label");
+
+      expect(labelElement.text()).toBe(customLabelContent);
     });
 
-    // Bottom slot
-    it("renders content from bottom slot", () => {
-      const slotContent = "Bottom Content";
-      const slotClass = "bottom-content";
-      const label = "Test Label"; // Add a label to make the bottom slot visible
+    it("Label – exposes label prop to slot", () => {
+      const defaultLabel = "Test Label";
 
       const component = mount(URadio, {
         props: {
-          label, // Provide a label to make the condition true
+          label: defaultLabel,
         },
         slots: {
-          bottom: `<div class="${slotClass}">${slotContent}</div>`,
+          label: "Modified {{ params.label }}",
         },
       });
 
-      // The bottom slot is rendered within the ULabel component
-      const labelComponent = component.findComponent(ULabel);
+      const labelComponent = component.getComponent(ULabel);
+      const labelElement = labelComponent.find("label");
 
-      // Check if the slot content is passed to the ULabel component
-      expect(labelComponent.html()).toContain(slotClass);
-      expect(labelComponent.html()).toContain(slotContent);
+      expect(labelElement.text()).toBe(`Modified ${defaultLabel}`);
     });
-  });
 
-  // Events tests
-  describe("Events", () => {
-    // Update:modelValue event
-    it("emits update:modelValue event when changed", async () => {
-      const value = "test-value";
+    it("Bottom – renders custom content from bottom slot", () => {
+      const customBottomContent = "Custom Bottom Content";
 
       const component = mount(URadio, {
         props: {
-          value,
+          label: "Test Label",
+        },
+        slots: {
+          bottom: customBottomContent,
         },
       });
 
-      await component.find("input").setValue(true);
-      expect(component.emitted("update:modelValue")).toBeTruthy();
-      expect(component.emitted("update:modelValue")[0]).toEqual([value]);
+      const labelComponent = component.getComponent(ULabel);
+
+      expect(labelComponent.text()).toContain(customBottomContent);
     });
   });
 });
