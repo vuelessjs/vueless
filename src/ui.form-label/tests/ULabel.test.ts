@@ -37,7 +37,6 @@ describe("ULabel.vue", () => {
 
       const component = mount(ULabel, {
         props: {
-          interactive: true,
           for: "some-id",
           label: "Label",
         },
@@ -48,6 +47,7 @@ describe("ULabel.vue", () => {
 
     it("Description – description is rendered with provided text", () => {
       const description = "This is a description";
+      const errorClasses = "text-error";
 
       const component = mount(ULabel, {
         props: {
@@ -57,7 +57,7 @@ describe("ULabel.vue", () => {
 
       const descriptionElement = component.find("[vl-key='description']");
 
-      expect(descriptionElement.attributes("class")).not.toContain("text-error");
+      expect(descriptionElement.attributes("class")).not.toContain(errorClasses);
       expect(descriptionElement.text()).toBe(description);
     });
 
