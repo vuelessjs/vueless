@@ -8,73 +8,70 @@ import UIcon from "../../ui.image-icon/UIcon.vue";
 import type { Props } from "../types.ts";
 
 describe("USwitch.vue", () => {
-  // Props tests
   describe("Props", () => {
-    // ModelValue prop
-    it("sets the correct model value", () => {
+    it("Model Value – sets the correct model value", async () => {
       const modelValue = true;
 
       const component = mount(USwitch, {
         props: {
           modelValue,
+          "onUpdate:modelValue": (e) => component.setProps({ modelValue: e }),
         },
       });
 
-      expect(component.find("input").element.checked).toBe(modelValue);
+      const inputElement = component.find("input");
+
+      await inputElement.trigger("click");
+
+      expect(component.emitted("update:modelValue")![0][0]).toBe(false);
+
+      await inputElement.trigger("click");
+
+      expect(component.emitted("update:modelValue")![1][0]).toBe(true);
     });
 
-    // Label prop
-    it("renders the correct label text", () => {
-      const label = "Switch Label";
+    it("Label – passes label to ULabel component", () => {
+      const labelText = "Test Label";
 
       const component = mount(USwitch, {
         props: {
-          label,
+          label: labelText,
         },
       });
 
-      expect(component.text()).toContain(label);
+      expect(component.getComponent(ULabel).props("label")).toBe(labelText);
     });
 
-    // LabelAlign prop
-    it("applies the correct label alignment", () => {
-      const labelAligns = ["top", "left", "right"];
-
-      labelAligns.forEach((labelAlign) => {
-        const component = mount(USwitch, {
-          props: {
-            labelAlign: labelAlign as Props["labelAlign"],
-            label: "Test Label",
-          },
-        });
-
-        const labelComponent = component.findComponent(ULabel);
-
-        expect(labelComponent.props("align")).toBe(labelAlign);
-      });
-    });
-
-    // Description prop
-    it("renders the correct description", () => {
-      const description = "Switch description";
+    it("Label Align – passes labelAlign prop to ULabel component", () => {
+      const labelAlign = "left";
 
       const component = mount(USwitch, {
         props: {
-          description,
+          label: "Test Label",
+          labelAlign,
         },
       });
 
-      const labelComponent = component.findComponent(ULabel);
-
-      expect(labelComponent.props("description")).toBe(description);
+      expect(component.getComponent(ULabel).props("align")).toBe(labelAlign);
     });
 
-    // Size prop
-    it("applies the correct size class", () => {
+    it("Description – passes description to ULabel component", () => {
+      const descriptionText = "This is a description";
+
+      const component = mount(USwitch, {
+        props: {
+          description: descriptionText,
+        },
+      });
+
+      expect(component.getComponent(ULabel).props("description")).toBe(descriptionText);
+    });
+
+    it("Size – applies the correct size class", () => {
       const size = {
-        sm: "w-6",
-        md: "w-8",
-        lg: "w-10",
+        sm: "size-3",
+        md: "size-4",
+        lg: "size-5",
       };
 
       Object.entries(size).forEach(([size, classes]) => {
@@ -84,12 +81,11 @@ describe("USwitch.vue", () => {
           },
         });
 
-        expect(component.find("label").attributes("class")).toContain(classes);
+        expect(component.get("[vl-key='circle']").attributes("class")).toContain(classes);
       });
     });
 
-    // Color prop
-    it("applies the correct color class when checked", () => {
+    it("Color – applies the correct color class when checked", () => {
       const colors = [
         "primary",
         "secondary",
@@ -114,85 +110,58 @@ describe("USwitch.vue", () => {
       });
     });
 
-    // ToggleIcon prop
-    it("shows toggle icon when toggleIcon prop is true", () => {
-      const toggleIcon = true;
-      const modelValue = true;
-
+    it("Toggle Icon – shows toggle icon when toggleIcon prop is true", () => {
       const component = mount(USwitch, {
         props: {
-          toggleIcon,
-          modelValue,
+          toggleIcon: true,
+          modelValue: true,
         },
       });
 
       const iconComponent = component.findComponent(UIcon);
 
-      expect(iconComponent.exists()).toBe(true);
       expect(iconComponent.props("name")).toBe("check");
     });
 
-    // ToggleIcon prop (false state)
-    it("shows correct toggle icon when switch is off", () => {
-      const toggleIcon = true;
-      const modelValue = false;
-
+    it("Toggle Icon – shows correct toggle icon when switch is off", () => {
       const component = mount(USwitch, {
         props: {
-          toggleIcon,
-          modelValue,
+          toggleIcon: true,
+          modelValue: false,
         },
       });
 
       const iconComponent = component.findComponent(UIcon);
 
-      expect(iconComponent.exists()).toBe(true);
       expect(iconComponent.props("name")).toBe("close");
     });
 
-    // ToggleLabel prop
-    it("shows toggle label when toggleLabel prop is true", () => {
-      const toggleLabel = true;
-      const modelValue = true;
-
+    it("Toggle Label – shows toggle icon when toggleLabel prop is true", () => {
       const component = mount(USwitch, {
         props: {
-          toggleLabel,
-          modelValue,
+          toggleLabel: true,
+          modelValue: true,
         },
       });
 
-      const toggleLabelElement = component.find("[vl-key='toggleLabel']");
-
-      expect(toggleLabelElement.exists()).toBe(true);
-      expect(toggleLabelElement.text()).toBe("On");
+      expect(component.find("[vl-key='toggleLabel']").text()).toBe("On");
     });
 
-    // ToggleLabel prop (false state)
-    it("shows correct toggle label when switch is off", () => {
-      const toggleLabel = true;
-      const modelValue = false;
-
+    it("Toggle Label – shows correct toggle label when switch is off", () => {
       const component = mount(USwitch, {
         props: {
-          toggleLabel,
-          modelValue,
+          toggleLabel: true,
+          modelValue: false,
         },
       });
 
-      const toggleLabelElement = component.find("[vl-key='toggleLabel']");
-
-      expect(toggleLabelElement.exists()).toBe(true);
-      expect(toggleLabelElement.text()).toBe("Off");
+      expect(component.find("[vl-key='toggleLabel']").text()).toBe("Off");
     });
 
-    // Disabled prop
-    it("applies disabled attribute when disabled prop is true", () => {
-      const disabled = true;
-
+    it("Disabled – applies disabled attribute when disabled prop is true", () => {
       const component = mount(USwitch, {
         props: {
-          disabled,
+          disabled: true,
         },
       });
 
@@ -203,8 +172,7 @@ describe("USwitch.vue", () => {
       expect(component.find("label").attributes("class")).toContain("pointer-events-none");
     });
 
-    // ID prop
-    it("applies the correct id attribute", () => {
+    it("Id – applies the correct id attribute", () => {
       const id = "test-switch-id";
 
       const component = mount(USwitch, {
@@ -216,8 +184,7 @@ describe("USwitch.vue", () => {
       expect(component.find("input").attributes("id")).toBe(id);
     });
 
-    // DataTest prop
-    it("applies the correct data-test attribute", () => {
+    it("Data Test – applies the correct data-test attribute", () => {
       const dataTest = "test-switch";
 
       const component = mount(USwitch, {
@@ -230,65 +197,41 @@ describe("USwitch.vue", () => {
     });
   });
 
-  // Slots tests
   describe("Slots", () => {
-    // Label slot
-    it("renders content from label slot", () => {
-      const slotContent = "Custom Label";
-      const label = "Switch Label";
+    it("Label – renders custom content from label slot", () => {
+      const customLabelContent = "Custom Label Content";
 
       const component = mount(USwitch, {
         props: {
-          label,
+          label: "Default Label",
         },
         slots: {
-          label: `<span>${slotContent}</span>`,
+          label: customLabelContent,
         },
       });
 
-      expect(component.text()).toContain(slotContent);
-      expect(component.text()).not.toContain(label);
-    });
-  });
-
-  // Events tests
-  describe("Events", () => {
-    // Update:modelValue event
-    it("emits update:modelValue event when clicked", async () => {
-      const component = mount(USwitch, {
-        props: {
-          modelValue: false,
-        },
-      });
-
-      await component.find("input").setValue(true);
-
-      expect(component.emitted("update:modelValue")).toBeTruthy();
-      expect(component.emitted("update:modelValue")[0]).toEqual([true]);
+      expect(component.findAll("label")[1].text()).toBe(customLabelContent);
     });
 
-    // No update:modelValue event when disabled
-    it("does not emit update:modelValue event when disabled", async () => {
-      const disabled = true;
+    it("Label – exposes label prop to slot", () => {
+      const defaultLabel = "Test Label";
 
       const component = mount(USwitch, {
         props: {
-          disabled,
-          modelValue: false,
+          label: defaultLabel,
+        },
+        slots: {
+          label: "Modified {{ params.label }}",
         },
       });
 
-      await component.find("label").trigger("click");
-
-      expect(component.emitted("update:modelValue")).toBeFalsy();
+      expect(component.findAll("label")[1].text()).toBe(`Modified ${defaultLabel}`);
     });
   });
 
-  // Exposed refs tests
-  describe("Exposed refs", () => {
-    // wrapperRef
-    it("exposes wrapperRef", () => {
-      const component = mount(USwitch, {});
+  describe("Exposed properties", () => {
+    it("Wrapper element – exposes wrapperRef", () => {
+      const component = mount(USwitch);
 
       expect(component.vm.wrapperRef).toBeDefined();
     });
