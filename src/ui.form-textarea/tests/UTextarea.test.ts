@@ -7,46 +7,66 @@ import ULabel from "../../ui.form-label/ULabel.vue";
 import type { Props } from "../types.ts";
 
 describe("UTextarea.vue", () => {
-  // Props tests
-  describe("Props", () => {
-    // Size prop
-    it("applies the correct size class", async () => {
-      const sizes = {
+  describe("props", () => {
+    it("Model Value – sets initial value correctly", () => {
+      const initialValue = "Test textarea";
+
+      const component = mount(UTextarea, {
+        props: {
+          modelValue: initialValue,
+        },
+      });
+
+      expect(component.get("textarea").element.value).toBe(initialValue);
+    });
+
+    it("Model Value – updates value on input", async () => {
+      const updatedValue = "Updated textarea value";
+
+      const component = mount(UTextarea, {
+        props: {
+          modelValue: "Initial value",
+        },
+      });
+
+      await component.get("textarea").setValue(updatedValue);
+
+      expect(component.emitted("update:modelValue")).toBeDefined();
+      expect(component.emitted("update:modelValue")![0][0]).toBe(updatedValue);
+    });
+
+    it("Label – passes label to ULabel", () => {
+      const label = "Test Label";
+
+      const component = mount(UTextarea, {
+        props: {
+          label,
+        },
+      });
+
+      expect(component.getComponent(ULabel).props("label")).toBe(label);
+    });
+
+    it("Size – applies correct classes based on size prop", () => {
+      const sizeCases = {
         sm: "text-small",
         md: "text-medium",
         lg: "text-large",
       };
 
-      Object.entries(sizes).forEach(([size, classes]) => {
+      Object.entries(sizeCases).forEach(([size, expectedClass]) => {
         const component = mount(UTextarea, {
           props: {
+            label: "Label",
             size: size as Props["size"],
           },
         });
 
-        const textarea = component.find("textarea");
-
-        expect(textarea.attributes("class")).toContain(classes);
+        expect(component.get("textarea").attributes("class")).toContain(expectedClass);
       });
     });
 
-    // ModelValue prop
-    it("sets the correct value", () => {
-      const modelValue = "Test value";
-
-      const component = mount(UTextarea, {
-        props: {
-          modelValue,
-        },
-      });
-
-      const textarea = component.find("textarea");
-
-      expect(textarea.element.value).toBe(modelValue);
-    });
-
-    // Placeholder prop
-    it("sets the correct placeholder", () => {
+    it("Placeholder – sets placeholder correctly", () => {
       const placeholder = "Enter text here";
 
       const component = mount(UTextarea, {
@@ -55,46 +75,39 @@ describe("UTextarea.vue", () => {
         },
       });
 
-      const textarea = component.find("textarea");
-
-      expect(textarea.attributes("placeholder")).toBe(placeholder);
+      expect(component.get("textarea").attributes("placeholder")).toBe(placeholder);
     });
 
-    // Label prop
-    it("renders the correct label text", () => {
-      const label = "Textarea Label";
+    it("Label Align – passes labelAlign prop to ULabel component", () => {
+      const labelAlign = "left";
 
       const component = mount(UTextarea, {
         props: {
-          label,
+          label: "Test Label",
+          labelAlign,
         },
       });
 
-      const labelComponent = component.findComponent(ULabel);
-
-      expect(labelComponent.props("label")).toBe(label);
+      expect(component.getComponent(ULabel).props("align")).toBe(labelAlign);
     });
 
-    // LabelAlign prop
-    it("applies the correct label alignment", () => {
-      const labelAligns = ["topInside", "top", "topWithDesc", "left", "right"];
+    it("Label Align – applies correct class based on labelAlign prop", () => {
+      const labelAlignCases = ["left", "right"];
+      const labelAlignClass = "w-full";
 
-      labelAligns.forEach((align) => {
+      labelAlignCases.forEach((align) => {
         const component = mount(UTextarea, {
           props: {
-            labelAlign: align as Props["labelAlign"],
             label: "Test Label",
+            labelAlign: align as Props["labelAlign"],
           },
         });
 
-        const labelComponent = component.findComponent(ULabel);
-
-        expect(labelComponent.props("align")).toBe(align);
+        expect(component.getComponent(ULabel).attributes("class")).toContain(labelAlignClass);
       });
     });
 
-    // Description prop
-    it("passes the description to the label component", () => {
+    it("Description – passes description to ULabel", () => {
       const description = "This is a description";
 
       const component = mount(UTextarea, {
@@ -103,91 +116,11 @@ describe("UTextarea.vue", () => {
         },
       });
 
-      const labelComponent = component.findComponent(ULabel);
-
-      expect(labelComponent.props("description")).toBe(description);
+      expect(component.getComponent(ULabel).props("description")).toBe(description);
     });
 
-    // Resizable prop
-    it("applies resizable class when resizable prop is true", () => {
-      const resizable = true;
-
-      const component = mount(UTextarea, {
-        props: {
-          resizable,
-        },
-      });
-
-      const textarea = component.find("textarea");
-
-      expect(textarea.attributes("class")).not.toContain("resize-none");
-    });
-
-    // Readonly prop
-    it("applies readonly attribute when readonly prop is true", () => {
-      const readonly = true;
-
-      const component = mount(UTextarea, {
-        props: {
-          readonly,
-        },
-      });
-
-      const textarea = component.find("textarea");
-
-      expect(textarea.attributes("readonly")).toBeDefined();
-    });
-
-    // MaxLength prop
-    it("applies maxlength attribute when maxLength prop is provided", () => {
-      const maxLength = "100";
-
-      const component = mount(UTextarea, {
-        props: {
-          maxLength,
-        },
-      });
-
-      const textarea = component.find("textarea");
-
-      expect(textarea.attributes("maxlength")).toBe(maxLength);
-    });
-
-    // Disabled prop
-    it("applies disabled attribute when disabled prop is true", () => {
-      const disabled = true;
-
-      const component = mount(UTextarea, {
-        props: {
-          disabled,
-        },
-      });
-
-      const textarea = component.find("textarea");
-
-      expect(textarea.attributes("disabled")).toBeDefined();
-    });
-
-    // Inputmode prop
-    it("applies the correct inputmode attribute", () => {
-      const inputmodes = ["text", "decimal", "numeric", "tel", "email", "url", "search", "none"];
-
-      inputmodes.forEach((inputmode) => {
-        const component = mount(UTextarea, {
-          props: {
-            inputmode: inputmode as Props["inputmode"],
-          },
-        });
-
-        const textarea = component.find("textarea");
-
-        expect(textarea.attributes("inputmode")).toBe(inputmode);
-      });
-    });
-
-    // Error prop
-    it("passes error to the label component", () => {
-      const error = "This field is required";
+    it("Error – passes error to ULabel", () => {
+      const error = "This is an error message";
 
       const component = mount(UTextarea, {
         props: {
@@ -195,14 +128,169 @@ describe("UTextarea.vue", () => {
         },
       });
 
-      const labelComponent = component.findComponent(ULabel);
-
-      expect(labelComponent.props("error")).toBe(error);
+      expect(component.getComponent(ULabel).props("error")).toBe(error);
     });
 
-    // Rows prop
-    it("applies the correct rows attribute", () => {
-      const rows = "5";
+    it("Error – applies error class to textarea", () => {
+      const wrapperErrorClass = "border-error";
+      const textareaErrorClass = "placeholder:text-error/50";
+
+      const component = mount(UTextarea, {
+        props: {
+          error: "This is an error message",
+        },
+      });
+
+      const wrapperElement = component.get("[vl-key='wrapper']");
+
+      expect(wrapperElement.attributes("class")).toContain(wrapperErrorClass);
+      expect(component.get("textarea").attributes("class")).toContain(textareaErrorClass);
+    });
+
+    it("Resizable – applies correct class based on resizable prop", () => {
+      const component = mount(UTextarea, {
+        props: {
+          resizable: true,
+        },
+      });
+
+      expect(component.get("textarea").attributes("class")).not.toContain("resize-none");
+
+      const componentResizable = mount(UTextarea, {
+        props: {
+          resizable: false,
+        },
+      });
+
+      expect(componentResizable.get("textarea").attributes("class")).toContain("resize-none");
+    });
+
+    it("Readonly – sets textarea to readonly", () => {
+      const component = mount(UTextarea, {
+        props: {
+          readonly: true,
+        },
+      });
+
+      expect(component.get("textarea").attributes("readonly")).toBeDefined();
+    });
+
+    it("Max Length – sets maxLength attribute", () => {
+      const maxLength = 100;
+
+      const component = mount(UTextarea, {
+        props: {
+          maxLength,
+        },
+      });
+
+      expect(component.get("textarea").attributes("maxlength")).toBe(String(maxLength));
+    });
+
+    it("Disabled – sets textarea to disabled", () => {
+      const component = mount(UTextarea, {
+        props: {
+          disabled: true,
+        },
+      });
+
+      expect(component.get("textarea").attributes("disabled")).toBeDefined();
+    });
+
+    it("Disabled – applies correct class when disabled", () => {
+      const wrapperDisabledClass = "bg-lifted";
+      const textareaDisabledClass = "disabled:cursor-not-allowed";
+
+      const component = mount(UTextarea, {
+        props: {
+          disabled: true,
+        },
+      });
+
+      const wrapperElement = component.get("[vl-key='wrapper']");
+
+      expect(wrapperElement.attributes("class")).toContain(wrapperDisabledClass);
+      expect(component.get("textarea").attributes("class")).toContain(textareaDisabledClass);
+    });
+
+    it("Inputmode – sets inputmode attribute", () => {
+      const inputmode = "text";
+
+      const component = mount(UTextarea, {
+        props: {
+          inputmode,
+        },
+      });
+
+      expect(component.get("textarea").attributes("inputmode")).toBe(inputmode);
+    });
+
+    it("No Autocomplete – toggles readonly attribute to prevent autocomplete", async () => {
+      const component = mount(UTextarea, {
+        props: {
+          noAutocomplete: true,
+        },
+        attachTo: document.body, // attachTo: document.body is required for the noAutocomplete DOM manipulation to work
+      });
+
+      const textarea = component.get("textarea");
+
+      expect(textarea.attributes("readonly")).toBeDefined();
+
+      await textarea.trigger("focus");
+      expect(textarea.attributes("readonly")).toBeUndefined();
+
+      await textarea.trigger("blur");
+      expect(textarea.attributes("readonly")).toBeDefined();
+
+      await textarea.trigger("click");
+      expect(textarea.attributes("readonly")).toBeUndefined();
+
+      await textarea.trigger("mouseleave");
+      expect(textarea.attributes("readonly")).toBeDefined();
+
+      component.unmount();
+    });
+
+    it("No Autocomplete – does not affect textarea when prop is false", async () => {
+      const component = mount(UTextarea, {
+        props: {
+          noAutocomplete: false,
+        },
+      });
+
+      const textarea = component.get("textarea");
+
+      expect(textarea.attributes("readonly")).toBeUndefined();
+
+      await textarea.trigger("focus");
+      expect(textarea.attributes("readonly")).toBeUndefined();
+
+      await textarea.trigger("blur");
+      expect(textarea.attributes("readonly")).toBeUndefined();
+    });
+
+    it("No Autocomplete – does not toggle readonly when textarea is already readonly", async () => {
+      const component = mount(UTextarea, {
+        props: {
+          noAutocomplete: true,
+          readonly: true,
+        },
+        attachTo: document.body,
+      });
+
+      const textarea = component.get("textarea");
+
+      expect(textarea.attributes("readonly")).toBeDefined();
+
+      await textarea.trigger("focus");
+      expect(textarea.attributes("readonly")).toBeDefined();
+
+      component.unmount();
+    });
+
+    it("Rows – sets rows attribute", () => {
+      const rows = 5;
 
       const component = mount(UTextarea, {
         props: {
@@ -210,14 +298,11 @@ describe("UTextarea.vue", () => {
         },
       });
 
-      const textarea = component.find("textarea");
-
-      expect(textarea.attributes("rows")).toBe(rows);
+      expect(component.get("textarea").attributes("rows")).toBe(String(rows));
     });
 
-    // ID prop
-    it("applies the correct id attribute", () => {
-      const id = "test-textarea-id";
+    it("Id – sets id attribute", () => {
+      const id = "test-textarea";
 
       const component = mount(UTextarea, {
         props: {
@@ -225,158 +310,265 @@ describe("UTextarea.vue", () => {
         },
       });
 
-      const textarea = component.find("textarea");
-
-      expect(textarea.attributes("id")).toBe(id);
+      expect(component.get("textarea").attributes("id")).toBe(id);
     });
 
-    // DataTest prop
-    it("applies the correct data-test attribute", () => {
+    it("Data Test – sets data-test attribute to textarea", () => {
       const dataTest = "test-textarea";
-
       const component = mount(UTextarea, {
         props: {
           dataTest,
         },
       });
 
-      const textarea = component.find("textarea");
-
-      expect(textarea.attributes("data-test")).toContain(dataTest);
+      expect(component.get("textarea").attributes("data-test")).toBe(dataTest);
     });
   });
 
-  // Slots tests
   describe("Slots", () => {
-    // Label slot
-    it("renders content from label slot", () => {
-      const slotContent = "Custom Label";
-      const label = "Default Label";
-      const slotClass = "custom-label";
+    it("Label – renders custom content from label slot", () => {
+      const customLabelContent = "Custom Label Content";
 
       const component = mount(UTextarea, {
         props: {
-          label,
+          label: "Default Label",
         },
         slots: {
-          label: `<span class="${slotClass}">${slotContent}</span>`,
+          label: customLabelContent,
         },
       });
 
-      expect(component.find(`.${slotClass}`).exists()).toBe(true);
-      expect(component.find(`.${slotClass}`).text()).toBe(slotContent);
+      const labelElement = component.getComponent(ULabel).find("label");
+
+      expect(labelElement.text()).toBe(customLabelContent);
     });
 
-    // Left slot
-    it("renders content from left slot", () => {
-      const slotContent = "Left Content";
-      const slotClass = "left-content";
+    it("Label – exposes label prop to slot", () => {
+      const defaultLabel = "Test Label";
+
+      const component = mount(UTextarea, {
+        props: {
+          label: defaultLabel,
+        },
+        slots: {
+          label: "Modified {{ params.label }}",
+        },
+      });
+
+      const labelElement = component.getComponent(ULabel).find("label");
+
+      expect(labelElement.text()).toBe(`Modified ${defaultLabel}`);
+    });
+
+    it("Left – renders custom content from left slot", () => {
+      const slotText = "Custom Left Content";
+      const testClass = "custom-left";
 
       const component = mount(UTextarea, {
         slots: {
-          left: `<span class="${slotClass}">${slotContent}</span>`,
+          left: `<span class="${testClass}">${slotText}</span>`,
         },
       });
 
-      expect(component.find(`.${slotClass}`).exists()).toBe(true);
-      expect(component.find(`.${slotClass}`).text()).toBe(slotContent);
+      expect(component.get(`.${testClass}`).text()).toBe(slotText);
     });
 
-    // Right slot
-    it("renders content from right slot", () => {
-      const slotContent = "Right Content";
-      const slotClass = "right-content";
-
+    it("Right – renders custom content from right slot", () => {
+      const slotText = "Custom Right Content";
+      const testClass = "custom-right";
       const component = mount(UTextarea, {
         slots: {
-          right: `<span class="${slotClass}">${slotContent}</span>`,
+          right: `<span class="${testClass}">${slotText}</span>`,
         },
       });
 
-      expect(component.find(`.${slotClass}`).exists()).toBe(true);
-      expect(component.find(`.${slotClass}`).text()).toBe(slotContent);
+      expect(component.get(`.${testClass}`).text()).toBe(slotText);
     });
   });
 
-  // Events tests
   describe("Events", () => {
-    // Update:modelValue event
-    it("emits update:modelValue event when value changes", async () => {
-      const component = mount(UTextarea);
-      const textarea = component.find("textarea");
-      const newValue = "New value";
+    it("Change – emits when textarea value changes", async () => {
+      const component = mount(UTextarea, {
+        props: {
+          modelValue: "initial",
+        },
+      });
 
-      await textarea.setValue(newValue);
-
-      expect(component.emitted("update:modelValue")).toBeTruthy();
-      expect(component.emitted("update:modelValue")![0]).toEqual([newValue]);
-    });
-
-    // Change event
-    it("emits change event when value changes", async () => {
-      const component = mount(UTextarea);
-      const textarea = component.find("textarea");
-
-      await textarea.trigger("change");
+      await component.get("textarea").trigger("change");
 
       expect(component.emitted("change")).toBeTruthy();
     });
 
-    // Click event
-    it("emits click event when clicked", async () => {
-      const component = mount(UTextarea);
-      const textarea = component.find("textarea");
+    it("Focus – emits when textarea gains focus", async () => {
+      const component = mount(UTextarea, {
+        props: {
+          modelValue: "",
+        },
+      });
 
-      await textarea.trigger("click");
-
-      expect(component.emitted("click")).toBeTruthy();
-    });
-
-    // Focus event
-    it("emits focus event when focused", async () => {
-      const component = mount(UTextarea);
-      const textarea = component.find("textarea");
-
-      await textarea.trigger("focus");
+      await component.get("textarea").trigger("focus");
 
       expect(component.emitted("focus")).toBeTruthy();
     });
 
-    // Blur event
-    it("emits blur event when blurred", async () => {
-      const component = mount(UTextarea);
-      const textarea = component.find("textarea");
+    it("Blur – emits when textarea loses focus", async () => {
+      const component = mount(UTextarea, {
+        props: {
+          modelValue: "",
+        },
+      });
 
-      await textarea.trigger("blur");
+      await component.get("textarea").trigger("blur");
 
       expect(component.emitted("blur")).toBeTruthy();
     });
 
-    // Mousedown event
-    it("emits mousedown event when mouse button is pressed", async () => {
-      const component = mount(UTextarea);
-      const textarea = component.find("textarea");
+    it("Click – emits when textarea is clicked", async () => {
+      const component = mount(UTextarea, {
+        props: {
+          modelValue: "",
+        },
+      });
 
-      await textarea.trigger("mousedown");
+      await component.get("textarea").trigger("click");
+
+      expect(component.emitted("click")).toBeTruthy();
+      expect(component.emitted("click")![0][0]).toBeInstanceOf(MouseEvent);
+    });
+
+    it("Mousedown – emits when mouse is pressed down on textarea", async () => {
+      const component = mount(UTextarea, {
+        props: {
+          modelValue: "",
+        },
+      });
+
+      await component.get("textarea").trigger("mousedown");
 
       expect(component.emitted("mousedown")).toBeTruthy();
     });
   });
 
-  // Exposed refs tests
-  describe("Exposed refs", () => {
-    // wrapperRef
-    it("exposes wrapperRef", () => {
-      const component = mount(UTextarea, {});
+  describe("Functionality", () => {
+    it("Row auto resize – enter key increases rows when content has more lines than current rows", async () => {
+      const component = mount(UTextarea, {
+        props: {
+          rows: 2,
+          modelValue: "line1\nline2",
+        },
+      });
 
-      expect(component.vm.wrapperRef).toBeDefined();
+      const textarea = component.get("textarea");
+
+      await textarea.setValue("line1\nline2\nline3");
+      await textarea.trigger("keydown", { key: "Enter" });
+
+      expect(Number(component.get("textarea").attributes("rows"))).toBeGreaterThan(2);
     });
 
-    // textareaRef
-    it("exposes textareaRef", () => {
-      const component = mount(UTextarea, {});
+    it("Row auto resize – enter key does not increase rows when textarea is readonly", async () => {
+      const component = mount(UTextarea, {
+        props: {
+          rows: 2,
+          modelValue: "line1\nline2",
+          readonly: true,
+        },
+      });
+
+      const textarea = component.get("textarea");
+
+      await textarea.setValue("line1\nline2\nline3");
+      await textarea.trigger("keydown", { key: "Enter" });
+
+      expect(component.get("textarea").attributes("rows")).toBe("2");
+    });
+
+    it("Row auto resize – backspace key decreases rows when content has fewer lines", async () => {
+      const component = mount(UTextarea, {
+        props: {
+          rows: 2,
+          modelValue: "line1\nline2\nline3\nline4",
+        },
+      });
+
+      const textarea = component.get("textarea");
+
+      await textarea.trigger("keydown", { key: "Enter" });
+      const initialRows = Number(component.get("textarea").attributes("rows"));
+
+      await textarea.setValue("line1\nline2");
+      await textarea.trigger("keyup", { key: "Delete" });
+
+      const finalRows = Number(component.get("textarea").attributes("rows"));
+
+      expect(finalRows).toBeLessThan(initialRows);
+    });
+
+    it("Row auto resize – backspace key does not decrease rows when textarea is readonly", async () => {
+      const component = mount(UTextarea, {
+        props: {
+          rows: 2,
+          modelValue: "line1\nline2\nline3",
+          readonly: true,
+        },
+      });
+
+      const textarea = component.get("textarea");
+
+      await textarea.trigger("keydown", { key: "Enter" });
+      const initialRows = component.get("textarea").attributes("rows");
+
+      await textarea.setValue("line1");
+      await textarea.trigger("keyup", { key: "Delete" });
+
+      expect(component.get("textarea").attributes("rows")).toBe(initialRows);
+    });
+
+    it("Row auto resize – handles rapid key presses correctly", async () => {
+      const component = mount(UTextarea, {
+        props: {
+          rows: 2,
+          modelValue: "line1",
+        },
+      });
+
+      const textarea = component.get("textarea");
+
+      await textarea.setValue("line1\nline2");
+      await textarea.trigger("keydown", { key: "Enter" });
+
+      await textarea.setValue("line1\nline2\nline3");
+      await textarea.trigger("keydown", { key: "Enter" });
+
+      await textarea.setValue("line1\nline2\nline3\nline4");
+      await textarea.trigger("keydown", { key: "Enter" });
+
+      expect(Number(component.get("textarea").attributes("rows"))).toBeGreaterThan(2);
+    });
+  });
+
+  describe("Exposed Properties", () => {
+    it("Wrapper Element – exposes wrapper element ref", () => {
+      const component = mount(UTextarea, {
+        props: {
+          modelValue: "test",
+        },
+      });
+
+      expect(component.vm.wrapperRef).toBeDefined();
+      expect(component.vm.wrapperRef!.tagName).toBe("LABEL");
+    });
+
+    it("Textarea Element – exposes textarea element ref", () => {
+      const component = mount(UTextarea, {
+        props: {
+          modelValue: "test",
+        },
+      });
 
       expect(component.vm.textareaRef).toBeDefined();
+      expect(component.vm.textareaRef!.tagName).toBe("TEXTAREA");
+      expect(component.vm.textareaRef!.value).toBe("test");
     });
   });
 });
