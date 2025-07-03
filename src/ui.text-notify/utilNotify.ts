@@ -49,15 +49,11 @@ export function notify({
 
   const notificationKey = getNotificationKey(description, notifyId);
 
-  if (ignoreDuplicates) {
-    if (!description) return;
+  const shouldSkip = ignoreDuplicates && (!description || activeNotifications.has(notificationKey));
 
-    if (activeNotifications.has(notificationKey)) {
-      return;
-    }
+  if (shouldSkip) return;
 
-    activeNotifications.add(notificationKey);
-  }
+  if (ignoreDuplicates) activeNotifications.add(notificationKey);
 
   const eventDetail: NotifyEventDetail = {
     type: type as NotificationType,
