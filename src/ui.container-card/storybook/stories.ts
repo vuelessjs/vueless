@@ -1,3 +1,5 @@
+import { ref } from "vue";
+
 import {
   getArgs,
   getArgTypes,
@@ -7,13 +9,14 @@ import {
 } from "../../utils/storybook.ts";
 
 import UCard from "../../ui.container-card/UCard.vue";
-import UInput from "../../ui.form-input/UInput.vue";
 import UButton from "../../ui.button/UButton.vue";
 import UIcon from "../../ui.image-icon/UIcon.vue";
 import UHeader from "../../ui.text-header/UHeader.vue";
+import UText from "../../ui.text-block/UText.vue";
 import URow from "../../ui.container-row/URow.vue";
 import UCol from "../../ui.container-col/UCol.vue";
-import UBadge from "../../ui.text-badge/UBadge.vue";
+import USwitch from "../../ui.form-switch/USwitch.vue";
+import ULink from "../../ui.button-link/ULink.vue";
 
 import type { Meta, StoryFn } from "@storybook/vue3";
 import type { Props } from "../types.ts";
@@ -21,6 +24,7 @@ import type { Props } from "../types.ts";
 interface UCardArgs extends Props {
   slotTemplate?: string;
   enum: "variant";
+  class?: string;
 }
 
 export default {
@@ -28,7 +32,7 @@ export default {
   title: "Containers / Card",
   component: UCard,
   args: {
-    title: "User Profile",
+    title: "Cookie Preferences",
   },
   argTypes: {
     ...getArgTypes(UCard.__name),
@@ -41,48 +45,80 @@ export default {
 } as Meta;
 
 const defaultTemplate = `
-  <UCol>
-    <p>
-      The <strong>Card</strong> component is a versatile UI element designed to present
-      structured content in an organized manner. It can be used for displaying
-      user profiles, product details, notifications, or any other grouped information.
-    </p>
-    <p>
-      With a clean layout that includes a title and content area, this component
-      is ideal for dashboards, settings pages, and interactive modals. You can
-      customize it further by adding buttons, images, icons, or additional
-      sections as needed.
-    </p>
-    <p>
-      Whether you're building a simple info box or a detailed summary card, this
-      component helps maintain a visually consistent and responsive design.
-    </p>
+  <UCol
+    justify="between"
+    class="h-full"
+  >
+    <URow
+      v-for="(cookie, index) in cookieSettings"
+      :key="cookie.label"
+      justify="between"
+      align="center"
+      block
+    >
+      <UCol gap="2xs">
+        <UHeader
+          :label="cookie.label"
+          class="text-sm"
+        />
+        <UText
+          :label="cookie.description"
+          size="sm"
+          variant="lifted"
+        />
+      </UCol>
+      <USwitch v-model="cookieValues[index]" />
+    </URow>
+
+    <UButton
+      label="Save preferences"
+      variant="outlined"
+      block
+    />
   </UCol>
 `;
 
+const cookieSettings = ref([
+  {
+    label: "Strictly Necessary",
+    description: "Essential cookies required for core website functionality.",
+  },
+  {
+    label: "Functional Cookies",
+    description: "Enable personalized features and enhance usability.",
+  },
+  {
+    label: "Performance Cookies",
+    description: "Help us analyze and optimize website performance.",
+  },
+]);
+
+const cookieValues = ref([true, false, false]);
+
 const DefaultTemplate: StoryFn<UCardArgs> = (args: UCardArgs) => ({
-  components: { UCard, UCol, UButton, UInput, UIcon, UHeader, URow },
-  setup: () => ({ args, slots: getSlotNames(UCard.__name) }),
+  components: { UCard, UCol, UButton, UIcon, UHeader, URow, USwitch, UText, ULink },
+  setup: () => ({ args, slots: getSlotNames(UCard.__name), cookieSettings, cookieValues }),
   template: `
-    <UCard v-bind="args">
+    <UCard v-bind="args" class="max-w-96">
       ${args.slotTemplate || getSlotsFragment(defaultTemplate)}
     </UCard>
   `,
 });
 
 const EnumTemplate: StoryFn<UCardArgs> = (args: UCardArgs, { argTypes }) => ({
-  components: { UCard, UCol, UButton, UInput, UIcon, UHeader, URow },
-  setup: () => ({ args, argTypes, getArgs }),
+  components: { UCard, UCol, UButton, UIcon, UHeader, URow, USwitch, UText },
+  setup: () => ({ args, argTypes, getArgs, cookieSettings, cookieValues }),
   template: `
-    <UCol gap="lg">
+    <URow wrap justify="center" class="p-4 bg-primary/5">
       <UCard
         v-for="option in argTypes?.[args.enum]?.options"
         v-bind="getArgs(args, option)"
         :key="option"
+        class="max-w-96"
       >
         ${defaultTemplate}
       </UCard>
-    </UCol>
+    </URow>
   `,
 });
 
@@ -90,62 +126,125 @@ export const Default = DefaultTemplate.bind({});
 Default.args = {};
 
 export const Description = DefaultTemplate.bind({});
-Description.args = { description: "Displays key details about a user, product, or feature." };
+Description.args = {
+  description: "Customize your cookie settings to enhance your browsing experience.",
+};
 
 export const Variant = EnumTemplate.bind({});
 Variant.args = { enum: "variant", title: "{enumValue}" };
 
-export const Slots: StoryFn<UCardArgs> = (args) => ({
-  components: { UCard, UIcon, URow, UCol, UButton, UBadge },
-  setup() {
-    return { args };
-  },
-  template: `
-    <UCol gap="lg">
-      <UCard v-bind="args" description="Before Title Slot">
-        <template #before-title>
-          <UIcon name="account_circle" color="success" />
-        </template>
-        ${defaultTemplate}
-      </UCard>
-
-      <UCard title="Title Slot">
-        <template #title="{ title }">
-          <UBadge :label="title" size="lg" color="primary" variant="outlined" />
-        </template>
-        ${defaultTemplate}
-      </UCard>
-
-      <UCard v-bind="args" description="After Title Slot">
-        <template #after-title>
-          <UIcon name="verified" color="success" />
-        </template>
-        ${defaultTemplate}
-      </UCard>
-
-      <UCard v-bind="args" description="Actions Slot">
-        <template #actions>
-          <URow class="max-w-fit">
-            <UButton size="sm" label="Follow" variant="subtle" />
-            <UButton size="sm" label="Message" />
-          </URow>
-        </template>
-        ${defaultTemplate}
-      </UCard>
-
-      <UCard v-bind="args" description="Footer Left Slot">
-        ${defaultTemplate}
-        <template #footer-left>
-          <UButton size="sm" label="Cancel" variant="outlined" />
-        </template>
-      </UCard>
-
-      <UCard v-bind="args" description="Footer Right Slot">
-        ${defaultTemplate}
-        <template #footer-right>
-          <UButton size="sm" label="Save Changes" />
-        </template>
-      </UCard>
-    </UCol>
+export const BeforeTitleSlot = DefaultTemplate.bind({});
+BeforeTitleSlot.args = {
+  slotTemplate: `
+    <template #before-title>
+      <UIcon name="cookie" color="success" size="sm" />
+    </template>
+    ${defaultTemplate}
   `,
-});
+};
+
+export const TitleSlot = DefaultTemplate.bind({});
+TitleSlot.args = {
+  slotTemplate: `
+    <template #title="{ title }">
+      <UHeader :label="title" color="primary" />
+    </template>
+    ${defaultTemplate}
+  `,
+};
+
+export const AfterTitleSlot = DefaultTemplate.bind({});
+AfterTitleSlot.args = {
+  slotTemplate: `
+    <template #after-title>
+      <UIcon name="cookie" color="success" size="sm" />
+    </template>
+    ${defaultTemplate}
+  `,
+};
+
+export const ActionsSlot = DefaultTemplate.bind({});
+ActionsSlot.args = {
+  class: "!max-w-[500px]",
+  slotTemplate: `
+    <template #actions>
+      <URow align="center" class="max-w-fit">
+        <ULink label="Learn more" />
+        <UButton size="sm" label="Manage" variant="subtle" />
+      </URow>
+    </template>
+    ${defaultTemplate}
+  `,
+};
+
+export const FooterLeftSlot = DefaultTemplate.bind({});
+FooterLeftSlot.args = {
+  slotTemplate: `
+    <UCol
+      justify="between"
+      class="h-full"
+    >
+      <URow
+        v-for="(cookie, index) in cookieSettings"
+        :key="cookie.label"
+        justify="between"
+        align="center"
+        block
+      >
+        <UCol gap="2xs">
+          <UHeader
+            :label="cookie.label"
+            class="text-sm"
+          />
+
+          <UText
+            :label="cookie.description"
+            size="sm"
+            variant="lifted"
+          />
+        </UCol>
+        <USwitch v-model="cookieValues[index]" />
+      </URow>
+    </UCol>
+
+    <template #footer-left>
+      <UButton size="sm" label="Cancel" variant="outlined" />
+    </template>
+  `,
+};
+
+export const FooterRightSlot = DefaultTemplate.bind({});
+FooterRightSlot.args = {
+  slotTemplate: `
+    <UCol
+        justify="between"
+        class="h-full"
+      >
+      <URow
+        v-for="(cookie, index) in cookieSettings"
+        :key="cookie.label"
+        justify="between"
+        align="center"
+        block
+      >
+        <UCol gap="2xs">
+          <UHeader
+            :label="cookie.label"
+            class="text-sm"
+          />
+
+          <UText
+            :label="cookie.description"
+            size="sm"
+            variant="lifted"
+          />
+        </UCol>
+        <USwitch v-model="cookieValues[index]" />
+      </URow>
+    </UCol>
+
+    <template #footer-right>
+      <UButton size="sm" label="Save preferences" />
+    </template>
+  `,
+};
