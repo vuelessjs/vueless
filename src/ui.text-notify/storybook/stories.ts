@@ -269,24 +269,54 @@ ClearNotifications.parameters = {
 };
 
 export const DelayedNotifications: StoryFn<UNotifyArgs> = (args: UNotifyArgs) => ({
-  components: { UNotify, UButton, UCol },
+  components: { UNotify, UButton, UCol, URow },
   setup: () => ({ args, setDelayedNotify, getDelayedNotify }),
   template: `
-    <UNotify class="m-4" v-bind="args" notify-id="delayed-notify" />
+    <UNotify
+      class="m-4"
+      v-bind="args"
+      notify-id="delayed-notify-1"
+      xPosition="left"
+      yPosition="bottom"
+    />
 
-    <UCol>
-      <UButton
-        label="Set notify"
-        @click="setDelayedNotify({
-          type: 'success',
-          label: 'Hurray!',
-          description: 'The file has been downloaded successfully.',
-          notifyId: 'delayed-notify',
-        })"
-      />
+    <UNotify
+      class="m-4"
+      v-bind="args"
+      notify-id="delayed-notify-2"
+      xPosition="right"
+      yPosition="bottom"
+    />
 
-      <UButton label="Get notify" color="neutral" @click="getDelayedNotify('delayed-notify')" />
-    </UCol>
+    <URow block justify="between">
+      <UCol>
+        <UButton
+          label="Set notify 1"
+          @click="setDelayedNotify({
+            type: 'success',
+            label: 'Hurray!',
+            description: 'Notification 1: The file has been downloaded successfully.',
+            notifyId: 'delayed-notify-1',
+          })"
+        />
+
+        <UButton label="Get notify 1" color="neutral" @click="getDelayedNotify('delayed-notify-1')" />
+      </UCol>
+
+      <UCol>
+        <UButton
+          label="Set notify 2"
+          @click="setDelayedNotify({
+            type: 'success',
+            label: 'Hurray!',
+            description: 'Notification 2: The file has been downloaded successfully.',
+            notifyId: 'delayed-notify-2',
+          })"
+        />
+
+        <UButton label="Get notify 2" color="neutral" @click="getDelayedNotify('delayed-notify-2')" />
+      </UCol>
+    </URow>
   `,
 });
 DelayedNotifications.parameters = {

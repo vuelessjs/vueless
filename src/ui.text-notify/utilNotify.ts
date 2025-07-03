@@ -141,23 +141,26 @@ export function clearNotifications(notifyId?: string): void {
   window.dispatchEvent(new CustomEvent("notifyClearAll", { detail: { notifyId } }));
 }
 
-export function setDelayedNotify(settings: NotifyConfig): void {
-  if (isSSR) return;
-
-  localStorage.setItem(LOCAL_STORAGE_ID, JSON.stringify(settings));
+function getNotifyStorageKey(notifyId?: string) {
+  return `${LOCAL_STORAGE_ID}__${notifyId || "default"}`;
 }
 
-export function getDelayedNotify(): void {
+export function setDelayedNotify(settings: NotifyConfig): void {
   if (isSSR) return;
+  const key = getNotifyStorageKey(settings.notifyId);
 
-  const notifyData: NotifyConfig | null = JSON.parse(
-    localStorage.getItem(LOCAL_STORAGE_ID) || "null",
-  );
+  localStorage.setItem(key, JSON.stringify(settings));
+}
+
+export function getDelayedNotify(notifyId?: string): void {
+  if (isSSR) return;
+  const key = getNotifyStorageKey(notifyId);
+  const notifyData: NotifyConfig | null = JSON.parse(localStorage.getItem(key) || "null");
 
   clearNotifications(notifyData?.notifyId);
 
   if (notifyData) {
     notify(notifyData);
-    localStorage.removeItem(LOCAL_STORAGE_ID);
+    localStorage.removeItem(key);
   }
 }
