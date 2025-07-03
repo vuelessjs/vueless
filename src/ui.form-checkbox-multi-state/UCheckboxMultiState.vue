@@ -92,6 +92,7 @@ const multiStateCheckboxAttrs = computed(() => {
     :color="color"
     :label-align="labelAlign"
     :disabled="disabled"
+    :data-test="dataTest"
     v-bind="multiStateCheckboxAttrs"
     @input="onClickCheckbox"
   />
