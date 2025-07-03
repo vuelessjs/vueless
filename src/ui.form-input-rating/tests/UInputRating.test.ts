@@ -1,4 +1,4 @@
-import { mount } from "@vue/test-utils";
+import { flushPromises, mount } from "@vue/test-utils";
 import { describe, it, expect } from "vitest";
 
 import UInputRating from "../UInputRating.vue";
@@ -32,6 +32,7 @@ describe("UInputRating.vue", () => {
 
       const icons = component.findAllComponents(UIcon);
 
+      await flushPromises();
       await icons[3].trigger("click");
 
       expect(component.emitted("update:modelValue")![0][0]).toBe(4);
@@ -55,6 +56,7 @@ describe("UInputRating.vue", () => {
         expect(icon.props("name")).toBe(emptyStarIcon);
       });
 
+      await flushPromises();
       await icons[0].trigger("click");
 
       expect(component.emitted("update:modelValue")![0][0]).toBe(1);
@@ -178,7 +180,7 @@ describe("UInputRating.vue", () => {
       expect(icons[3].props("name")).toBe("star");
     });
 
-    it("Disabled – applies correct class when true", () => {
+    it("Disabled – applies correct class when true", async () => {
       const startDisabledClasses = "muted pointer-events-none";
 
       const component = mount(UInputRating, {
@@ -189,6 +191,8 @@ describe("UInputRating.vue", () => {
       });
 
       const icons = component.findAllComponents(UIcon);
+
+      await flushPromises();
 
       icons.forEach((icon) => {
         expect(icon.attributes("class")).toContain(startDisabledClasses);
@@ -234,7 +238,7 @@ describe("UInputRating.vue", () => {
       expect(component.attributes("id")).toBe(id);
     });
 
-    it("Data test – sets data-test attribute to stars", () => {
+    it("Data test – sets data-test attribute to stars", async () => {
       const dataTest = "test-rating";
 
       const component = mount(UInputRating, {
@@ -246,8 +250,10 @@ describe("UInputRating.vue", () => {
 
       const icons = component.findAllComponents(UIcon);
 
-      icons.forEach((icon) => {
-        expect(icon.attributes("data-test")).toContain(dataTest);
+      icons.forEach(async (icon, idx) => {
+        await flushPromises();
+
+        expect(icon.attributes("data-test")).toBe(`${dataTest}-star-${idx + 1}`);
       });
     });
   });

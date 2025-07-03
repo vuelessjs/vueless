@@ -84,6 +84,5 @@ export default /*tw*/ {
     size: "md",
     centred: false,
     disabled: false,
-    interactive: false,
   },
 };

@@ -227,14 +227,14 @@ describe("UInputSearch.vue", () => {
       expect(component.get("input").attributes("disabled")).toBeDefined();
     });
 
-    it("Data Test – applies the correct data-test attribute", () => {
+    it("Data Test – applies the correct data-test attribute", async () => {
       const testCases = [
         { testCase: "search-icon" },
         { testCase: "clear" },
         { testCase: "search-button", searchButtonLabel: "Search" },
       ];
 
-      testCases.forEach(({ testCase, searchButtonLabel }) => {
+      testCases.forEach(async ({ testCase, searchButtonLabel }) => {
         const dataTest = "test";
         const resolvedDataTest = `test-${testCase}`;
 
@@ -245,6 +245,8 @@ describe("UInputSearch.vue", () => {
             searchButtonLabel,
           },
         });
+
+        await flushPromises();
 
         component.get(`[data-test='${resolvedDataTest}']`);
       });
@@ -309,6 +311,8 @@ describe("UInputSearch.vue", () => {
           dataTest: "test",
         },
       });
+
+      await flushPromises();
 
       await component.get("[vl-key='clearIcon']").trigger("click");
 

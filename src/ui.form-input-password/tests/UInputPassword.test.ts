@@ -1,4 +1,4 @@
-import { mount } from "@vue/test-utils";
+import { flushPromises, mount } from "@vue/test-utils";
 import { describe, it, expect } from "vitest";
 
 import UInputPassword from "../UInputPassword.vue";
@@ -161,7 +161,7 @@ describe("UInputPassword.vue", () => {
       expect(input.attributes("disabled")).toBeDefined();
     });
 
-    it("Data Test – applies the correct data-test attribute to password icon", () => {
+    it("Data Test – applies the correct data-test attribute to password icon", async () => {
       const dataTest = "password-field";
 
       const component = mount(UInputPassword, {
@@ -169,6 +169,8 @@ describe("UInputPassword.vue", () => {
           dataTest,
         },
       });
+
+      await flushPromises();
 
       component.get(`[data-test='${dataTest}-password-icon']`);
     });
@@ -188,11 +190,13 @@ describe("UInputPassword.vue", () => {
       expect(input.attributes("type")).toBe("password");
       expect(passwordIcon.props("name")).toBe("visibility_off-fill");
 
+      await flushPromises();
       await passwordIcon.trigger("click");
 
       expect(input.attributes("type")).toBe("text");
       expect(passwordIcon.props("name")).toBe("visibility-fill");
 
+      await flushPromises();
       await passwordIcon.trigger("click");
 
       expect(input.attributes("type")).toBe("password");
@@ -234,7 +238,7 @@ describe("UInputPassword.vue", () => {
 
       const component = mount(UInputPassword, {
         slots: {
-          right: `<div class='${testClass}'>Right Slot Content</div`,
+          right: `<div class='${testClass}'>Right Slot Content</div>`,
         },
       });
 

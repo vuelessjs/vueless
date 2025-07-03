@@ -420,7 +420,7 @@ describe("UInputFile.vue", () => {
           multiple: true,
         },
         slots: {
-          default: `<div ${testClass}>{{ params.label }}</div>`,
+          default: `<div class="${testClass}">{{ params.label }}</div>`,
         },
       });
 
