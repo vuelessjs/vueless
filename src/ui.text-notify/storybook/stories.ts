@@ -56,7 +56,6 @@ const DefaultTemplate: StoryFn<UNotifyArgs> = (args: UNotifyArgs) => ({
       @click="notify({
         type: 'success',
         label: 'Hurray!',
-        duration: args.duration,
         description: 'The file has been downloaded successfully.',
       })"
     />
