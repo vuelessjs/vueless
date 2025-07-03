@@ -1,11 +1,6 @@
 import { vuelessConfig } from "../utils/ui.ts";
 import { getRandomId, isSSR } from "../utils/helper.ts";
-import {
-  LOCAL_STORAGE_ID,
-  DELAY_BETWEEN_CLONES,
-  NotificationDuration,
-  NotificationType,
-} from "./constants.ts";
+import { LOCAL_STORAGE_ID, NotificationDuration, NotificationType } from "./constants.ts";
 
 interface NotifyConfig {
   type?: NotificationType;
@@ -35,8 +30,11 @@ interface VuelessNotifyConfig {
 
 const globalNotifyDuration = (vuelessConfig.components?.UNotify as VuelessNotifyConfig)?.duration;
 
-let lastMessageTime: Date | undefined = undefined;
-let lastMessage: string | undefined = undefined;
+const activeNotifications = new Set<string>();
+
+function getNotificationKey(description: string, notifyId?: string) {
+  return `${notifyId || "default"}::${description}`;
+}
 
 export function notify({
   type,
@@ -49,18 +47,17 @@ export function notify({
   const notifyDuration: number =
     duration || globalNotifyDuration?.short || NotificationDuration.Short;
 
-  const isSameMessage = Boolean(
-    lastMessage === description &&
-      lastMessageTime &&
-      new Date().getTime() - lastMessageTime.getTime() < DELAY_BETWEEN_CLONES,
-  );
+  const notificationKey = getNotificationKey(description, notifyId);
 
-  if ((isSameMessage || !description) && ignoreDuplicates) {
-    return;
+  if (ignoreDuplicates) {
+    if (!description) return;
+
+    if (activeNotifications.has(notificationKey)) {
+      return;
+    }
+
+    activeNotifications.add(notificationKey);
   }
-
-  lastMessageTime = new Date();
-  lastMessage = description;
 
   const eventDetail: NotifyEventDetail = {
     type: type as NotificationType,
@@ -80,7 +77,13 @@ export function notify({
 
   window.dispatchEvent(notifyStart);
 
-  setTimeout(() => window.dispatchEvent(notifyEnd), notifyDuration);
+  setTimeout(() => {
+    window.dispatchEvent(notifyEnd);
+
+    if (ignoreDuplicates && description) {
+      activeNotifications.delete(notificationKey);
+    }
+  }, notifyDuration);
 }
 
 export function notifySuccess({

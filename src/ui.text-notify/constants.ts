@@ -4,7 +4,6 @@
  */
 export const COMPONENT_NAME = "UNotify";
 export const LOCAL_STORAGE_ID = "vueless:notify";
-export const DELAY_BETWEEN_CLONES = 1000;
 
 export enum NotificationType {
   Success = "success",

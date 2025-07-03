@@ -48,7 +48,7 @@ const DefaultTemplate: StoryFn<UNotifyArgs> = (args: UNotifyArgs) => ({
   components: { UNotify, UButton },
   setup: () => ({ args, slots: getSlotNames(UNotify.__name), notify }),
   template: `
-    <UNotify class="m-4" v-bind="args" notify-id="default">
+    <UNotify class="m-4" v-bind="args">
       ${args.slotTemplate || getSlotsFragment("")}
     </UNotify>
     <UButton
@@ -58,7 +58,6 @@ const DefaultTemplate: StoryFn<UNotifyArgs> = (args: UNotifyArgs) => ({
         label: 'Hurray!',
         duration: args.duration,
         description: 'The file has been downloaded successfully.',
-        notifyId: 'default',
       })"
     />
   `,
@@ -117,8 +116,7 @@ export const Position: StoryFn<UNotifyArgs> = (args: UNotifyArgs) => ({
     <UCol justify="center" class="h-full">
       <URow justify="center" block>
         <UButton
-          label="Top left notify"
-          square
+          label="Top left"
           @click="notify({
             type: 'success',
             label: 'Hurray!',
@@ -128,8 +126,7 @@ export const Position: StoryFn<UNotifyArgs> = (args: UNotifyArgs) => ({
         />
 
         <UButton
-          label="Top right notify"
-          square
+          label="Top right"
           @click="notify({
             type: 'success',
             label: 'Hurray!',
@@ -141,8 +138,7 @@ export const Position: StoryFn<UNotifyArgs> = (args: UNotifyArgs) => ({
 
       <URow justify="center" block>
         <UButton
-          label="Bottom left notify"
-          square
+          label="Bottom left"
           @click="notify({
             type: 'success',
             label: 'Hurray!',
@@ -152,8 +148,7 @@ export const Position: StoryFn<UNotifyArgs> = (args: UNotifyArgs) => ({
         />
 
         <UButton
-          label="Bottom right notify"
-          square
+          label="Bottom right"
           @click="notify({
             type: 'success',
             label: 'Hurray!',
@@ -259,7 +254,7 @@ export const ClearNotifications: StoryFn<UNotifyArgs> = (args: UNotifyArgs) => (
         })"
       />
 
-      <UButton label="Clear notify" color="neutral" @click="clearNotifications()" />
+      <UButton label="Clear all" color="neutral" @click="clearNotifications('clear')" />
     </UCol>
   `,
 });
@@ -267,8 +262,7 @@ ClearNotifications.parameters = {
   docs: {
     description: {
       story: `
-\`clearNotifications\` method allows you to clear active notifications.
-To clear a specific notification, pass the \`notifyId\` parameter to the function.
+\`clearNotifications\` method allows you to clear active notifications of a specific instance.
       `,
     },
   },
@@ -291,7 +285,7 @@ export const DelayedNotifications: StoryFn<UNotifyArgs> = (args: UNotifyArgs) =>
         })"
       />
 
-      <UButton label="Get notify" color="neutral" @click="getDelayedNotify()" />
+      <UButton label="Get notify" color="neutral" @click="getDelayedNotify('delayed-notify')" />
     </UCol>
   `,
 });

@@ -55,23 +55,41 @@ onBeforeUnmount(() => {
 });
 
 function onNotifyStart(event: NotifyEvent) {
-  if (!props.notifyId || event.detail.notifyId === props.notifyId) {
-    notifications.value.push({ ...event.detail });
+  if (event.detail.notifyId) {
+    if (props.notifyId === event.detail.notifyId) {
+      notifications.value.push({ ...event.detail });
+    }
+  } else {
+    if (!props.notifyId) {
+      notifications.value.push({ ...event.detail });
+    }
   }
 }
 
 function onNotifyEnd(event: NotifyEvent) {
-  if (!props.notifyId || event.detail.notifyId === props.notifyId) {
-    notifications.value = notifications.value.filter(
-      (notification) => notification.id !== event.detail.id,
-    );
+  if (event.detail.notifyId) {
+    if (props.notifyId === event.detail.notifyId) {
+      notifications.value = notifications.value.filter(
+        (notification) => notification.id !== event.detail.id,
+      );
+    }
+  } else {
+    if (!props.notifyId) {
+      notifications.value = notifications.value.filter(
+        (notification) => notification.id !== event.detail.id,
+      );
+    }
   }
 }
 
 function onClearAll(event: NotifyClearAllEvent) {
   const eventNotifyId = event.detail?.notifyId;
 
-  if (eventNotifyId && props.notifyId !== eventNotifyId) return;
+  if (eventNotifyId) {
+    if (props.notifyId !== eventNotifyId) return;
+  } else {
+    if (props.notifyId) return;
+  }
 
   notifications.value = [];
 }
