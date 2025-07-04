@@ -117,8 +117,11 @@ const {
     </template>
 
     <template #title>
-      <!-- @slot Use it to add something to the left side of the header. -->
-      <slot name="title" />
+      <!--
+        @slot Use it to add something to the left side of the header.
+        @binding {string} title
+      -->
+      <slot name="title" :title="title" />
     </template>
 
     <template #after-title>

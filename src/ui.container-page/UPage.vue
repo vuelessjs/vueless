@@ -109,8 +109,11 @@ const {
           <!-- @slot Use it to add something before the header title. -->
           <slot name="before-title" />
 
-          <!-- @slot Use it to add something to the left side of the header. -->
-          <slot name="title">
+          <!--
+            @slot Use it to add something to the left side of the header.
+            @binding {string} title
+          -->
+          <slot name="title" :title="title">
             <div v-bind="titleFallbackAttrs">
               <div v-if="isShownArrowButton" v-bind="backLinkWrapperAttrs">
                 <UIcon
