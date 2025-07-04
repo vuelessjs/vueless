@@ -1,11 +1,6 @@
 import { vuelessConfig } from "../utils/ui.ts";
 import { getRandomId, isSSR } from "../utils/helper.ts";
-import {
-  LOCAL_STORAGE_ID,
-  DELAY_BETWEEN_CLONES,
-  NotificationDuration,
-  NotificationType,
-} from "./constants.ts";
+import { LOCAL_STORAGE_ID, NotificationDuration, NotificationType } from "./constants.ts";
 
 interface NotifyConfig {
   type?: NotificationType;
@@ -13,6 +8,7 @@ interface NotifyConfig {
   description?: string;
   duration?: number;
   ignoreDuplicates?: boolean;
+  notifyId?: string;
 }
 
 interface NotifyEventDetail {
@@ -21,6 +17,7 @@ interface NotifyEventDetail {
   label: string;
   description: string;
   duration: number;
+  notifyId?: string;
 }
 
 interface VuelessNotifyConfig {
@@ -32,10 +29,12 @@ interface VuelessNotifyConfig {
 }
 
 const globalNotifyDuration = (vuelessConfig.components?.UNotify as VuelessNotifyConfig)?.duration;
-const notifyClearAllEvent: Event = new Event("notifyClearAll");
 
-let lastMessageTime: Date | undefined = undefined;
-let lastMessage: string | undefined = undefined;
+const activeNotifications = new Set<string>();
+
+function getNotificationKey(description: string, notifyId?: string) {
+  return `${notifyId || "default"}::${description}`;
+}
 
 export function notify({
   type,
@@ -43,22 +42,18 @@ export function notify({
   description = "",
   duration,
   ignoreDuplicates,
+  notifyId,
 }: NotifyConfig = {}): void {
   const notifyDuration: number =
     duration || globalNotifyDuration?.short || NotificationDuration.Short;
 
-  const isSameMessage = Boolean(
-    lastMessage === description &&
-      lastMessageTime &&
-      new Date().getTime() - lastMessageTime.getTime() < DELAY_BETWEEN_CLONES,
-  );
+  const notificationKey = getNotificationKey(description, notifyId);
 
-  if ((isSameMessage || !description) && ignoreDuplicates) {
-    return;
-  }
+  const shouldSkip = ignoreDuplicates && (!description || activeNotifications.has(notificationKey));
 
-  lastMessageTime = new Date();
-  lastMessage = description;
+  if (shouldSkip) return;
+
+  if (ignoreDuplicates) activeNotifications.add(notificationKey);
 
   const eventDetail: NotifyEventDetail = {
     type: type as NotificationType,
@@ -66,6 +61,7 @@ export function notify({
     label,
     description,
     duration: notifyDuration,
+    notifyId,
   };
 
   const notifyStart: CustomEvent<NotifyEventDetail> = new CustomEvent("notifyStart", {
@@ -77,7 +73,13 @@ export function notify({
 
   window.dispatchEvent(notifyStart);
 
-  setTimeout(() => window.dispatchEvent(notifyEnd), notifyDuration);
+  setTimeout(() => {
+    window.dispatchEvent(notifyEnd);
+
+    if (ignoreDuplicates && description) {
+      activeNotifications.delete(notificationKey);
+    }
+  }, notifyDuration);
 }
 
 export function notifySuccess({
@@ -85,6 +87,7 @@ export function notifySuccess({
   description,
   duration,
   ignoreDuplicates,
+  notifyId,
 }: Omit<NotifyConfig, "type"> = {}): void {
   notify({
     label,
@@ -92,6 +95,7 @@ export function notifySuccess({
     ignoreDuplicates,
     type: NotificationType.Success,
     duration: duration || globalNotifyDuration?.short || NotificationDuration.Short,
+    notifyId,
   });
 }
 
@@ -100,6 +104,7 @@ export function notifyWarning({
   description,
   duration,
   ignoreDuplicates,
+  notifyId,
 }: Omit<NotifyConfig, "type"> = {}): void {
   notify({
     label,
@@ -107,6 +112,7 @@ export function notifyWarning({
     ignoreDuplicates,
     type: NotificationType.Warning,
     duration: duration || globalNotifyDuration?.medium || NotificationDuration.Medium,
+    notifyId,
   });
 }
 
@@ -115,6 +121,7 @@ export function notifyError({
   description,
   duration,
   ignoreDuplicates,
+  notifyId,
 }: Omit<NotifyConfig, "type"> = {}): void {
   notify({
     label,
@@ -122,30 +129,34 @@ export function notifyError({
     ignoreDuplicates,
     type: NotificationType.Error,
     duration: duration || globalNotifyDuration?.long || NotificationDuration.Long,
+    notifyId,
   });
 }
 
-export function clearNotifications(): void {
-  window.dispatchEvent(notifyClearAllEvent);
+export function clearNotifications(notifyId?: string): void {
+  window.dispatchEvent(new CustomEvent("notifyClearAll", { detail: { notifyId } }));
+}
+
+function getNotifyStorageKey(notifyId?: string) {
+  return `${LOCAL_STORAGE_ID}__${notifyId || "default"}`;
 }
 
 export function setDelayedNotify(settings: NotifyConfig): void {
   if (isSSR) return;
+  const key = getNotifyStorageKey(settings.notifyId);
 
-  localStorage.setItem(LOCAL_STORAGE_ID, JSON.stringify(settings));
+  localStorage.setItem(key, JSON.stringify(settings));
 }
 
-export function getDelayedNotify(): void {
+export function getDelayedNotify(notifyId?: string): void {
   if (isSSR) return;
+  const key = getNotifyStorageKey(notifyId);
+  const notifyData: NotifyConfig | null = JSON.parse(localStorage.getItem(key) || "null");
 
-  const notifyData: NotifyConfig | null = JSON.parse(
-    localStorage.getItem(LOCAL_STORAGE_ID) || "null",
-  );
-
-  clearNotifications();
+  clearNotifications(notifyData?.notifyId);
 
   if (notifyData) {
     notify(notifyData);
-    localStorage.removeItem(LOCAL_STORAGE_ID);
+    localStorage.removeItem(key);
   }
 }
