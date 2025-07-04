@@ -302,7 +302,6 @@ const {
     :align="labelAlign"
     :disabled="disabled"
     :description="description"
-    interactive
     v-bind="inputLabelAttrs"
   >
     <template #label>

@@ -44,6 +44,7 @@ export default function useFormatNumber(
   onBeforeUnmount(() => {
     if (inputElement) {
       inputElement.removeEventListener("input", onInput);
+      inputElement.addEventListener("keydown", onKeydown);
     }
   });
 

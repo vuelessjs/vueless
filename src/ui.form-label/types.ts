@@ -26,11 +26,6 @@ export interface Props {
   error?: string;
 
   /**
-   * Make the label interactive (cursor pointer on hover).
-   */
-  interactive?: boolean;
-
-  /**
    * Label align.
    */
   align?: "top" | "topInside" | "topWithDesc" | "left" | "right";
