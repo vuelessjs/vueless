@@ -115,7 +115,6 @@ const { getDataTest, radioLabelAttrs, radioAttrs } = useUI<Config>(defaultConfig
     :align="labelAlign"
     :disabled="radioDisabled"
     :description="description"
-    interactive
     v-bind="radioLabelAttrs"
     :data-test="getDataTest('label')"
   >

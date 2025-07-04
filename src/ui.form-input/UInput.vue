@@ -257,7 +257,6 @@ const {
     :size="size"
     :align="labelAlign"
     centred
-    interactive
     v-bind="inputLabelAttrs"
   >
     <template #label>

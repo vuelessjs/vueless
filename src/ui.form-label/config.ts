@@ -47,7 +47,7 @@ export default /*tw*/ {
       },
     },
     compoundVariants: [
-      { interactive: true, disabled: false, class: "hover:cursor-pointer" },
+      { for: true, disabled: false, class: "hover:cursor-pointer" },
       { align: "topInside", size: "sm", class: "top-2 text-tiny" },
       { align: "topInside", size: "md", class: "top-2.5 text-small" },
       { align: "topInside", size: "lg", class: "top-2.5 text-medium" },
@@ -76,16 +76,13 @@ export default /*tw*/ {
         left: "pt-0.5",
         right: "pt-0.5",
       },
-      error: {
-        true: "text-error",
-      },
     },
   },
+  error: "{>description} text-error",
   defaults: {
     align: "top",
     size: "md",
     centred: false,
     disabled: false,
-    interactive: false,
   },
 };

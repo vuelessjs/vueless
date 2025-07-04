@@ -74,12 +74,11 @@ defineExpose({
 const mutatedProps = computed(() => ({
   error: Boolean(props.error) && !props.disabled,
   label: Boolean(props.label) || hasSlotContent(slots["label"], { label: props.label }),
+  for: Boolean(props.for),
 }));
 
-const { getDataTest, wrapperAttrs, contentAttrs, labelAttrs, descriptionAttrs } = useUI<Config>(
-  defaultConfig,
-  mutatedProps,
-);
+const { getDataTest, wrapperAttrs, contentAttrs, labelAttrs, descriptionAttrs, errorAttrs } =
+  useUI<Config>(defaultConfig, mutatedProps);
 </script>
 
 <template>
@@ -155,12 +154,7 @@ const { getDataTest, wrapperAttrs, contentAttrs, labelAttrs, descriptionAttrs } 
       <slot />
     </div>
 
-    <div
-      v-if="isShownError"
-      v-bind="descriptionAttrs"
-      :data-test="getDataTest('error')"
-      v-text="error"
-    />
+    <div v-if="isShownError" v-bind="errorAttrs" :data-test="getDataTest('error')" v-text="error" />
 
     <div
       v-if="description && !isShownError"

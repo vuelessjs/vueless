@@ -106,7 +106,6 @@ const {
     :description="description"
     :align="labelAlign"
     :disabled="disabled"
-    interactive
     v-bind="switchLabelAttrs"
     :data-test="getDataTest()"
     @click="onClickToggle"
