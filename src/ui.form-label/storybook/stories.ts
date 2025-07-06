@@ -49,15 +49,16 @@ export default {
   },
 } as Meta;
 
-const defaultTemplate = "johndoe@example.com";
+const defaultTemplate = `
+  <UText label="johndoe@example.com" />
+`;
 
 const DefaultTemplate: StoryFn<ULabelArgs> = (args: ULabelArgs) => ({
   components: { ULabel, UText, UIcon, UBadge, URow, ULink, UChip },
   setup: () => ({ args, slots: getSlotNames(ULabel.__name) }),
   template: `
     <ULabel v-bind="args">
-      <UText v-bind="args">${getSlotsFragment(defaultTemplate)}</UText>
-      ${args.slotTemplate ? args.slotTemplate : ""}
+      ${args.slotTemplate || getSlotsFragment(defaultTemplate)}
     </ULabel>
   `,
 });
@@ -72,7 +73,7 @@ const EnumTemplate: StoryFn<ULabelArgs> = (args: ULabelArgs, { argTypes }) => ({
         v-bind="getArgs(args, option)"
         :key="option"
       >
-        <UText :[args.enum]="option">{{ option }}</UText>
+        ${defaultTemplate}
       </ULabel>
     </UCol>
   `,

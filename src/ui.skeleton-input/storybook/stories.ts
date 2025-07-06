@@ -38,7 +38,7 @@ const EnumTemplate: StoryFn<SkeletonInputArgs> = (args: SkeletonInputArgs, { arg
   components: { USkeletonInput, UCol },
   setup: () => ({ args, argTypes, getArgs }),
   template: `
-    <UCol>
+    <UCol gap="2xl">
       <USkeletonInput
         v-for="option in argTypes?.[args.enum]?.options"
         v-bind="getArgs(args, option)"

@@ -34,7 +34,7 @@ export default /*tw*/ {
         true: "bg-error/5",
       },
       disabled: {
-        true: "bg-lifted",
+        true: "bg-accented",
       },
     },
   },
@@ -68,7 +68,7 @@ export default /*tw*/ {
   chooseFileButtonError: {
     base: "{>chooseFileButton}",
     defaults: {
-      color: "red",
+      color: "error",
     },
   },
   clearButton: {

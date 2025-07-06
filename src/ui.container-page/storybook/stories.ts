@@ -47,7 +47,7 @@ const defaultTemplate = `
   <UCard title="Profile Information">
     <UCol align="stretch">
       <URow>
-        <UInput label="Full Name" placeholder="John Doe" />
+        <UInput label="Name" placeholder="John Doe" />
         <UInput label="Email Address" type="email" placeholder="john.doe@example.com" />
       </URow>
 

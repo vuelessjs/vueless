@@ -21,6 +21,7 @@ import type { Props } from "../types.ts";
 interface UInputNumberArgs extends Props {
   slotTemplate?: string;
   enum: "labelAlign" | "size";
+  gap?: string;
 }
 
 const argTypes = getArgTypes(UInputNumber.__name);
@@ -66,7 +67,7 @@ const EnumTemplate: StoryFn<UInputNumberArgs> = (args: UInputNumberArgs, { argTy
   components: { UInputNumber, UCol },
   setup: () => ({ args, argTypes, getArgs }),
   template: `
-    <UCol>
+    <UCol :class="args.gap">
       <UInputNumber
         v-for="option in argTypes?.[args.enum]?.options"
         v-bind="getArgs(args, option)"
@@ -87,11 +88,18 @@ Placeholder.args = { placeholder: "Enter amount in USD" };
 export const Description = DefaultTemplate.bind({});
 Description.args = { description: "Please enter the transaction amount." };
 
-export const Error = DefaultTemplate.bind({});
-Error.args = {
-  modelValue: -245000.42,
-  error: "Invalid amount. Please enter a positive number with up to two decimal places.",
-};
+export const Error: StoryFn<UInputNumberArgs> = (args: UInputNumberArgs) => ({
+  components: { UInputNumber },
+  setup: () => ({ args, modelValue: ref(null) }),
+  template: `
+    <UInputNumber
+      v-bind="args"
+      v-model="modelValue"
+      class="!max-w-96"
+      :error="modelValue ? '' : 'Invalid amount.'"
+    />
+  `,
+});
 
 export const ReadOnly = DefaultTemplate.bind({});
 ReadOnly.args = { readonly: true };
@@ -106,7 +114,12 @@ export const Sizes = EnumTemplate.bind({});
 Sizes.args = { enum: "size", label: "{enumValue}" };
 
 export const LabelAlign = EnumTemplate.bind({});
-LabelAlign.args = { enum: "labelAlign", label: "{enumValue}" };
+LabelAlign.args = {
+  enum: "labelAlign",
+  label: "{enumValue}",
+  description: "Please enter the transaction amount.",
+  gap: "gap-20",
+};
 
 export const LimitFractionDigits = DefaultTemplate.bind({});
 LimitFractionDigits.args = {
@@ -135,7 +148,7 @@ DecimalSeparator.parameters = {
 };
 
 export const ThousandsSeparator = DefaultTemplate.bind({});
-ThousandsSeparator.args = { thousandsSeparator: "-" };
+ThousandsSeparator.args = { thousandsSeparator: "." };
 ThousandsSeparator.parameters = {
   docs: {
     description: {
@@ -211,7 +224,7 @@ export const Slots: StoryFn<UInputNumberArgs> = (args) => ({
             v-model="currency"
             :options="currencies"
             size="sm"
-            variant="ghost"
+            variant="soft"
             class="rounded-r-none h-[49px]"
           />
         </template>

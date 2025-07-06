@@ -12,6 +12,7 @@ import UCol from "../../ui.container-col/UCol.vue";
 import URow from "../../ui.container-row/URow.vue";
 import UDropdownButton from "../../ui.dropdown-button/UDropdownButton.vue";
 import UText from "../../ui.text-block/UText.vue";
+import UChip from "../../ui.other-chip/UChip.vue";
 
 import type { Meta, StoryFn } from "@storybook/vue3";
 import type { Props } from "../types.ts";
@@ -21,6 +22,7 @@ interface UInputArgs extends Props {
   slotTemplate?: string;
   enum: "labelAlign" | "size" | "validationRule";
   gap?: string;
+  divClass?: string;
 }
 
 export default {
@@ -28,7 +30,7 @@ export default {
   title: "Form Inputs & Controls / Input",
   component: UInput,
   args: {
-    label: "Full Name",
+    label: "Name",
     modelValue: "John Doe",
   },
   argTypes: {
@@ -59,7 +61,7 @@ const EnumTemplate: StoryFn<UInputArgs> = (args: UInputArgs, { argTypes }) => ({
   components: { UInput, UCol },
   setup: () => ({ args, argTypes, getArgs }),
   template: `
-    <UCol :gap="args.gap">
+    <UCol :class="args.gap">
       <UInput
         v-for="option in argTypes?.[args.enum]?.options"
         v-bind="getArgs(args, option)"
@@ -77,10 +79,20 @@ export const Placeholder = DefaultTemplate.bind({});
 Placeholder.args = { modelValue: "", placeholder: "Type something here..." };
 
 export const Description = DefaultTemplate.bind({});
-Description.args = { description: "Provide additional details if necessary." };
+Description.args = { description: "Name of the person or entity." };
 
-export const Error = DefaultTemplate.bind({});
-Error.args = { error: "This field is required. Please enter a value.", modelValue: "" };
+export const Error: StoryFn<UInputArgs> = (args: UInputArgs) => ({
+  components: { UInput },
+  setup: () => ({ args, modelValue: ref("") }),
+  template: `
+    <UInput
+      v-bind="args"
+      v-model="modelValue"
+      class="!max-w-96"
+      :error="modelValue ? '' : 'This field is required. Please enter a value.'"
+    />
+  `,
+});
 
 export const Readonly = DefaultTemplate.bind({});
 Readonly.args = {
@@ -98,18 +110,18 @@ MaxLength.args = { maxLength: 8, modelValue: "", placeholder: "Max 8 characters"
 export const LabelAlign = EnumTemplate.bind({});
 LabelAlign.args = {
   enum: "labelAlign",
-  label: "Full Name",
-  description: "Provide additional details if necessary.",
+  label: "Name",
+  description: "Name of the person or entity.",
   modelValue: "",
   placeholder: "{enumValue}",
-  gap: "2xl",
+  gap: "gap-20",
 };
 
 export const Sizes = EnumTemplate.bind({});
 Sizes.args = { enum: "size", modelValue: "", placeholder: "{enumValue}" };
 
 export const ValidationRules: StoryFn<UInputArgs> = (args: UInputArgs, { argTypes }) => ({
-  components: { UInput, UCol },
+  components: { UInput, UCol, URow },
   setup() {
     function getDescription(option: string): string {
       const options: Record<string, string> = {
@@ -129,13 +141,14 @@ export const ValidationRules: StoryFn<UInputArgs> = (args: UInputArgs, { argType
     return { args, options, getDescription };
   },
   template: `
-    <UCol>
+    <UCol class="gap-20">
       <UInput
         v-for="(option, index) in options"
         :key="index"
         v-model="args.modelValue[option]"
         :validation-rule="option"
         :label="option"
+        label-align="topWithDesc"
         :description="getDescription(option)"
         class="max-w-96"
       />
@@ -145,6 +158,7 @@ export const ValidationRules: StoryFn<UInputArgs> = (args: UInputArgs, { argType
         validation-rule="^#([a-fA-F0-9]{0,6}|[a-fA-F0-9]{0,8})$"
         label="Custom RegExp"
         :description="getDescription('Custom RegExp')"
+        label-align="topWithDesc"
         class="max-w-96"
       />
     </UCol>
@@ -181,7 +195,7 @@ export const IconProps: StoryFn<UInputArgs> = (args) => ({
 });
 
 export const Slots: StoryFn<UInputArgs> = (args) => ({
-  components: { UInput, URow, UDropdownButton, UText },
+  components: { UInput, URow, UDropdownButton, UText, UChip },
   setup() {
     const countryCodes = [
       { label: "+33", id: "+33" },
@@ -200,19 +214,29 @@ export const Slots: StoryFn<UInputArgs> = (args) => ({
         placeholder="Enter your phone number"
         :config="{ leftSlot: 'pl-0' }"
       >
+        <template #label="{ label }">
+          {{ label }}
+          <span class="text-red-500">*</span>
+        </template>
+
         <template #left>
           <UDropdownButton
             v-model="countryCode"
             :options="countryCodes"
             square
             size="sm"
-            variant="ghost"
+            variant="soft"
             class="rounded-r-none h-[49px]"
           />
         </template>
       </UInput>
 
       <UInput label="Website" placeholder="Enter your website">
+        <template #label="{ label }">
+          {{ label }}
+          <span class="text-red-500">*</span>
+        </template>
+
         <template #right>
           <UText label=".com" variant="lifted" />
         </template>

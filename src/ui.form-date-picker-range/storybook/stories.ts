@@ -26,6 +26,7 @@ interface DefaultUDatePickerRangeArgs extends Props<unknown> {
 interface EnumUDatePickerRangeArgs extends Props<unknown> {
   slotTemplate?: string;
   enum: "size" | "variant" | "labelAlign";
+  gap?: string;
 }
 
 const currentDate = new Date();
@@ -82,7 +83,7 @@ const EnumTemplate: StoryFn<EnumUDatePickerRangeArgs> = (
   components: { UDatePickerRange, UCol },
   setup: () => ({ args, argTypes, getArgs }),
   template: `
-    <UCol>
+    <UCol :class="args.gap">
       <UDatePickerRange
         v-for="option in argTypes?.[args.enum]?.options"
         v-bind="getArgs(args, option)"
@@ -169,7 +170,8 @@ LabelAlign.args = {
   variant: "input",
   enum: "labelAlign",
   modelValue: { from: null, to: null },
-  placeholder: "{enumValue}",
+  description: "{enumValue}",
+  gap: "gap-20",
 };
 
 export const Sizes = EnumTemplate.bind({});
