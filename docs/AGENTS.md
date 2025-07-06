@@ -1,18 +1,598 @@
 # Vueless UI Component Usage Examples for AI Agents
 
-This document provides comprehensive use case examples of Vueless UI components based on real-world usage patterns from the Fine.my financial management application. Each example includes when to use the component, common props, events, and combinations.
+## Introduction
+Vueless UI is a Vue.js and Nuxt.js component library built with TypeScript and Tailwind CSS.
+
+This document provides comprehensive use case examples of Vueless UI components based on real-world usage patterns. 
+Each example includes when to use the component, common props, events, and combinations.
 
 Use `./node_modules/.cache/vueless/web-types.json` to get the actual and detailed specifications for each component's props, events, slots, and exposes.
-Use `./node_modules/vueless` to in details understand Vueless UI components.
+Use `./node_modules/vueless` to in details understand Vueless UI components logic.
 
 ## Table of Contents
 
-1. [Form Components](#form-components)
-2. [Layout Components](#layout-components)
+1. [Layout Components](#layout-components)
+2. [Form Components](#form-components)
 3. [Data Display Components](#data-display-components)
 4. [Feedback Components](#feedback-components)
 5. [Navigation Components](#navigation-components)
 6. [Complex Component Combinations](#complex-component-combinations)
+
+## Layout Components
+
+Layout components form the structural foundation of your UI. 
+They provide consistent spacing, alignment, and visual hierarchy while reducing the need for custom CSS or generic HTML elements.
+
+## Layout Component Hierarchy
+
+When building pages, follow this recommended hierarchy:
+
+1. **UPage** - Top-level page container (for routed pages)
+2. **UCard** - Content grouping and visual separation
+3. **UGroups/UGroup** - Logical content sections with labels
+4. **URow/UCol** - Flexible layout arrangement
+5. **UDivider** - Content separation and visual breaks
+6. **UModal/UModalConfirm** - Overlay containers for focused interactions
+7. **UAccordion** - Collapsible content sections
+
+## Best Practices
+
+- **Start with structure**: Begin with layout components before adding content components
+- **Minimize custom HTML**: Use Vueless layout components instead of generic `<div>` elements
+- **Consistent spacing**: Leverage the built-in `gap` props rather than custom margins
+- **Semantic grouping**: Use UGroup for labeled sections, UCard for visual grouping
+- **Responsive design**: URow and UCol handle responsive behavior automatically
+- **Progressive disclosure**: Use UAccordion for optional or secondary content
+
+### UPage - Page Container
+
+**When to use:** As the main container for top-level page content with navigation and actions. Use this component for:
+- Full page views that correspond to application routes (e.g., `/users`, `/settings`, `/dashboard`)
+- Pages that need a consistent header structure with title, back navigation, and action buttons
+- Main content areas that require standardized spacing and layout
+
+**When NOT to use:**
+- Inside modal dialogs or nested components
+- For partial page sections or reusable components
+- In components that don't represent a complete page view
+
+```vue
+<UPage
+    :back-to="backRouteParams"
+    :back-label="t('title.settings')"
+    :title="t('title.users')"
+    size="xl"
+    variant="soft"
+    data-cy="users-page"
+>
+   <template #actions>
+      <UButton :label="t('button.add')" @click="onAddUser" />
+   </template>
+
+   <!-- Page content -->
+   <UTable :rows="tableItems" :columns="tableHeaders" />
+</UPage>
+```
+
+### UCard - Content Card
+
+**When to use:** For grouping related content into visually distinct sections. Use this component for:
+- Form sections that need visual separation and optional headers/footers
+- Content blocks that require consistent spacing and borders
+- Dashboard widgets or information panels
+- Any content that benefits from being contained within a card-like structure
+
+**When NOT to use:**
+- For simple content that doesn't need visual grouping
+- When you need complex nested layouts (use URow/UCol instead)
+- For full-page containers (use UPage instead)
+
+```vue
+<UCard
+  :title="t('title.companyInfo')"
+  :description="t('description.companyText')"
+>
+   <UCol>
+      <UInput
+          v-model="form.companyName"
+          :label="t('label.companyName')"
+          :error="companyNameError"
+      />
+
+     <UInput
+       v-model="form.companyEmail"
+       :label="t('label.companyEmail')"
+       :error="companyEmailError"
+     />
+   </UCol>
+
+   <template #footer-right>
+      <UButton :label="t('button.continue')" @click="onSubmit" />
+   </template>
+</UCard>
+```
+
+### UGroups - Multiple Group Container
+
+**When to use:** As a wrapper when you need to use multiple UGroup components in one page or component. Use this component for:
+- Multi-section forms with multiple distinct groups that need proper spacing
+- Settings pages with several configuration categories
+- Complex layouts where multiple groups need consistent spacing between them
+- Pages where groups should be visually separated with larger gaps
+
+**When NOT to use:**
+- When you only have a single UGroup (use UGroup directly)
+- For simple content that doesn't need group-level organization
+- When custom spacing between groups is needed (use manual spacing instead)
+
+**Tip:**
+- Use `upperlined` prop for all nested UGroup exclude of first.
+
+```vue
+<UGroups data-cy="user-settings-form">
+   <UGroup :title="t('label.personalInfo')">
+      <UCol>
+         <UInput v-model="form.firstName" :label="t('label.firstName')" />
+         <UInput v-model="form.lastName" :label="t('label.lastName')" />
+         <UInput v-model="form.email" :label="t('label.email')" />
+      </UCol>
+   </UGroup>
+
+   <UGroup :title="t('label.preferences')" upperlined>
+      <UCol>
+         <USelect v-model="form.language" :label="t('label.language')" :options="languages" />
+         <USelect v-model="form.timezone" :label="t('label.timezone')" :options="timezones" />
+         <USwitch v-model="form.notifications" :label="t('label.enableNotifications')" />
+      </UCol>
+   </UGroup>
+
+   <UGroup :title="t('label.security')" upperlined>
+      <UCol>
+         <UInputPassword v-model="form.currentPassword" :label="t('label.currentPassword')" />
+         <UInputPassword v-model="form.newPassword" :label="t('label.newPassword')" />
+         <USwitch v-model="form.twoFactorAuth" :label="t('label.enable2FA')" />
+      </UCol>
+   </UGroup>
+</UGroups>
+```
+
+### UGroup - Single Content Group
+
+**When to use:** For organizing related form fields or content into a single logical, labeled section. Use this component for:
+- Individual sections within a form that need a title and visual grouping
+- Content blocks that benefit from having a header and optional controls
+- Sections that might need additional elements in the title area (icons, switches, etc.)
+- Single groups that don't require the spacing provided by UGroups
+
+**When NOT to use:**
+- For content that doesn't need a title or semantic grouping
+- When simple visual separation is sufficient (use UDivider instead)
+
+```vue
+<!-- Single group usage -->
+<UGroup :title="t('label.paymentMethod')">
+   <UCol>
+      <URadioGroup
+          v-model="form.paymentType"
+          :options="paymentTypes"
+          name="paymentType"
+      />
+      <UInput
+          v-if="form.paymentType === 'card'"
+          v-model="form.cardNumber"
+          :label="t('label.cardNumber')"
+      />
+   </UCol>
+</UGroup>
+
+<!-- Group with title controls -->
+<UGroup :title="t('label.advancedOptions')">
+   <template #after-title>
+      <USwitch v-model="showAdvanced" />
+   </template>
+
+   <UCol v-if="showAdvanced">
+      <UTextarea v-model="form.notes" :label="t('label.notes')" />
+      <USelect v-model="form.priority" :label="t('label.priority')" :options="priorities" />
+   </UCol>
+</UGroup>
+
+<!-- Group with upperline -->
+<UGroup :title="t('label.additionalInfo')" upperlined>
+   <UCol>
+      <UTextarea v-model="form.description" :label="t('label.description')" />
+      <UInputFile v-model="form.attachments" :label="t('label.attachments')" multiple />
+   </UCol>
+</UGroup>
+```
+
+### UCol - Column Layout
+
+**When to use:** For vertical stacking of blocks or components with consistent spacing and alignment. Use this component for:
+- Form layouts where fields should stack vertically
+- Content sections that need consistent vertical spacing
+- Mobile-first responsive layouts
+- Any vertical arrangement of blocks or components that benefits from controlled gaps and alignment
+
+**When NOT to use:**
+- When you need horizontal layouts (use URow instead)
+- For complex grid layouts (consider Tailwind CSS Grid)
+- When components don't need consistent spacing
+
+```vue
+<UCol gap="lg" align="stretch">
+   <UInput v-model="form.name" :label="t('label.name')" />
+   <UInput v-model="form.email" :label="t('label.email')" />
+   <USelect v-model="form.role" :label="t('label.role')" />
+</UCol>
+```
+
+### URow - Row Layout
+
+**When to use:** For horizontal arrangement of components with flexible alignment and spacing. Use this component for:
+- Action button groups (Save, Cancel, etc.)
+- Filter controls and search interfaces
+- Status indicators with icons and text
+- Navigation elements that should align horizontally
+- Desktop layouts where blocks or components should sit side-by-side
+
+**When NOT to use:**
+- When you need vertical stacking (use UCol instead)
+- For complex multi-row layouts (consider Tailwind CSS Grid)
+- On mobile when horizontal space is limited (components may wrap poorly)
+
+**Basic Row Layout:**
+```vue
+<URow gap="md" align="center">
+   <UButton :label="t('button.save')" />
+   <UButton :label="t('button.cancel')" variant="outlined" />
+</URow>
+```
+
+**Filter Row with Multiple Components:**
+```vue
+<URow gap="md" align="end">
+   <UDatePickerRange
+           v-model:from="filters.dateFrom"
+           v-model:to="filters.dateTo"
+   />
+   <USelect
+           v-model="filters.category"
+           :options="categories"
+           :placeholder="t('placeholder.allCategories')"
+   />
+   <UButton
+           :label="t('button.filter')"
+           @click="onApplyFilters"
+   />
+</URow>
+```
+
+**Row with Icons and Controls:**
+```vue
+<URow align="center" gap="sm">
+   <UIcon name="notifications" color="neutral" size="sm" />
+   <UText>{{ t('label.notifications') }}</UText>
+   <USwitch v-model="settings.notifications" />
+</URow>
+```
+
+**Row with Status Indicators:**
+```vue
+<URow align="center" gap="sm">
+   <UDot color="success" />
+   <UText>{{ t('status.active') }}</UText>
+</URow>
+```
+
+**Complex Row with Nested Components:**
+```vue
+<URow align="stretch" justify="between">
+   <URow align="center" gap="2xl" class="w-fit">
+      <URow>
+         <UDatePickerRange
+                 v-model="paymentDateRange"
+                 :custom-range-button="customRangeButton"
+         />
+         <FilterButton
+                 :filters="filtersForButton"
+                 @click="onClickFiltersButton"
+         />
+         <UButton
+                 icon="search"
+                 variant="soft"
+                 square
+                 @click="onShowSearch"
+         />
+      </URow>
+   </URow>
+</URow>
+```
+
+**Row in Data List Items:**
+```vue
+<URow gap="xs" align="center">
+   <UDot v-if="item.color" :color="item.color" size="md" />
+   <div>{{ item.name }}</div>
+</URow>
+```
+
+**Row with Justify Between:**
+```vue
+<URow justify="between" align="center">
+   <UCol>
+      <UNumber
+              :value="income.amount"
+              :currency="income.currency"
+              color="success"
+      />
+   </UCol>
+   <UCol>
+      <UNumber
+              :value="expense.amount"
+              :currency="expense.currency"
+              color="error"
+      />
+   </UCol>
+</URow>
+```
+
+### UAccordion - Collapsible Content
+
+**When to use:** For organizing content into collapsible sections to save space and improve content discoverability. Use this component for:
+- FAQ sections where questions can be expanded to show answers
+- Settings or configuration panels with optional advanced options
+- Help documentation with expandable topics
+- Content that users may want to selectively view
+- Long forms where sections can be collapsed after completion
+
+**When NOT to use:**
+- For critical information that should always be visible
+- When all content sections are typically needed simultaneously
+- For simple content that doesn't benefit from being hidden/shown
+
+**Basic Accordion:**
+```vue
+<UAccordion
+    :title="t('title.paymentMethods')"
+    :description="t('description.paymentMethodsInfo')"
+    size="md"
+    @click="onTogglePaymentMethodsAccordion"
+/>
+```
+
+**Multiple Accordions:**
+```vue
+<template>
+   <UAccordion
+       v-for="(faq, index) in faqs"
+       :key="index"
+       :title="faq.question"
+       :description="faq.answer"
+       size="lg"
+   />
+</template>
+```
+
+**Accordion with Custom Toggle:**
+```vue
+<UAccordion
+    :title="t('title.advancedSettings')"
+    :description="t('description.advancedSettingsInfo')"
+>
+   <template #toggle="{ opened }">
+      <UButton
+          :label="opened ? t('button.hide') : t('button.show')"
+          variant="outlined"
+          size="sm"
+      />
+   </template>
+</UAccordion>
+```
+
+### UDivider - Content Separator
+
+**When to use:** For visually separating content sections and creating clear breaks between different areas. Use this component for:
+- Separating distinct content sections within a page or form
+- Creating visual breaks in long content to improve readability
+- Adding labeled separators to indicate content transitions
+- Dividing content with semantic meaning (e.g., "Personal Info" vs "Contact Details")
+- Creating visual hierarchy in dense layouts
+
+**When NOT to use:**
+- When simple spacing (margins/padding) would suffice
+- Between every single component (can create visual noise)
+- In place of a proper semantic HTML structure
+
+**Basic Divider:**
+```vue
+<UDivider />
+```
+
+**Divider with Label:**
+```vue
+<UDivider :label="t('label.personalInfo')" />
+```
+
+**Divider with Icon:**
+```vue
+<UDivider icon="settings" />
+```
+
+**Styled Dividers:**
+```vue
+<!-- Dashed divider -->
+<UDivider dashed size="sm" />
+
+<!-- Dotted divider -->
+<UDivider dotted color="primary" />
+
+<!-- Vertical divider -->
+<UDivider vertical />
+```
+
+**Divider in Content Sections:**
+```vue
+<UCol>
+   <UText>{{ t('description.section1') }}</UText>
+
+   <UDivider :label="t('label.nextSection')" size="md" />
+
+   <UText>{{ t('description.section2') }}</UText>
+</UCol>
+```
+
+### UModal - Modal Dialogs
+
+**When to use:** For displaying content that requires user attention or interaction in an overlay container. Use this component for:
+- Forms that need to be completed without leaving the current page context
+- Detailed views of items (e.g., viewing transaction details, user profiles)
+- Complex interactions that require focus (e.g., multi-step wizards, advanced filters)
+- Content that should temporarily take over the interface
+- Workflows that need to be completed before returning to the main content
+
+**When NOT to use:**
+- For simple confirmations (use UModalConfirm instead)
+- For notifications or alerts (use UAlert or UNotify instead)
+- When the content could fit naturally in the page layout
+- For navigation between different pages (use routing instead)
+
+**Basic Modal:**
+```vue
+<UModal
+    v-model="isShownModal"
+    :title="t('title.addCounterparty')"
+    size="lg"
+>
+   <CounterpartyForm v-model="form" />
+
+   <template #footer-left>
+      <UButton :label="t('button.add')" @click="onSubmit" />
+      <UButton
+          :label="t('button.close')"
+          variant="outlined"
+          @click="onClose"
+      />
+   </template>
+</UModal>
+```
+
+**Modal with Complex Content:**
+```vue
+<UModal
+    v-model="isShownFilterModal"
+    :title="t('title.advancedFilters')"
+    size="xl"
+>
+   <UGroups>
+      <UGroup :title="t('label.general')">
+        <UDatePickerRange
+          v-model:from="filters.dateFrom"
+          v-model:to="filters.dateTo"
+        />
+        
+        <USelect
+          v-model="filters.accounts"
+          :options="accountOptions"
+        />
+        
+         <USelect
+             v-model="filters.categories"
+             :options="categoryOptions"
+             multiple
+             searchable
+         />
+      </UGroup>
+   </UGroups>
+
+   <template #footer-right>
+      <UButton :label="t('button.apply')" @click="onApplyFilters" />
+      <UButton
+          :label="t('button.reset')"
+          variant="outlined"
+          @click="onResetFilters"
+      />
+   </template>
+</UModal>
+```
+
+### UModalConfirm - Confirmation Dialog
+
+**When to use:** For confirming destructive or important actions that require explicit user consent. Use this component for:
+- Delete operations that cannot be undone (e.g., deleting users, transactions, or data)
+- Actions with significant consequences (e.g., publishing content, sending emails, financial transactions)
+- Operations that affect multiple items or other users
+- Critical workflow steps that need explicit confirmation
+- Actions that might result in data loss or irreversible changes
+
+**When NOT to use:**
+- For simple form submissions that can be undone
+- For navigation confirmations (unless data would be lost)
+- When the action is easily reversible
+- For complex forms or multi-step processes (use UModal instead)
+
+**Basic Confirmation:**
+```vue
+<UModalConfirm
+    v-model="isShownModal"
+    :title="t('title.deleteUser')"
+    :confirm-label="t('button.delete')"
+    color="error"
+    @confirm="onConfirmDelete"
+>
+   <UText :html="t('description.deleteConfirmation', { name: user.name })" />
+</UModalConfirm>
+```
+
+**Advanced Confirmation with Details:**
+```vue
+<UModalConfirm
+    v-model="isShownDeleteModal"
+    :title="t('title.deleteTransactions')"
+    :confirm-label="t('button.delete')"
+    :confirm-disabled="!isConfirmed"
+    color="error"
+    size="lg"
+    @confirm="onConfirmDelete"
+>
+   <!-- Warning Alert -->
+   <UAlert 
+     color="error" 
+     class="mb-4" 
+     icon="warning"
+     :title="$t('warning.irreversibleAction')"
+     :description="$t('description.deleteWarning')"
+   />
+
+   <!-- Summary Information -->
+   <UCard variant="soft" class="mb-4">
+      <UCol gap="sm">
+         <URow justify="between">
+            <UText>{{ t('label.itemsToDelete') }}:</UText>
+            <UText weight="medium">{{ selectedItems.length }}</UText>
+         </URow>
+         <URow justify="between">
+            <UText>{{ t('label.totalValue') }}:</UText>
+            <UNumber :value="totalValue" :currency="currency" />
+         </URow>
+      </UCol>
+   </UCard>
+
+   <!-- Confirmation Checkbox -->
+   <UCheckbox
+       v-model="isConfirmed"
+       :label="t('label.confirmDeletion')"
+   />
+
+   <template #footer-left>
+      <UButton
+          :label="t('button.exportFirst')"
+          variant="outlined"
+          @click="onExportBeforeDelete"
+      />
+   </template>
+</UModalConfirm>
+```
 
 ## Form Components
 
@@ -184,189 +764,7 @@ Use `./node_modules/vueless` to in details understand Vueless UI components.
 />
 ```
 
-## Layout Components
 
-### UPage - Page Container
-
-**When to use:** As the main container for page content with navigation and actions.
-
-```vue
-<UPage
-        :back-to="backRouteParams"
-        :back-label="t('title.settings')"
-        :title="t('title.users')"
-        size="xl"
-        variant="soft"
-        data-cy="users-page"
->
-   <template #actions>
-      <UButton :label="t('button.add')" @click="onAddUser" />
-   </template>
-
-   <!-- Page content -->
-   <UTable :rows="tableItems" :columns="tableHeaders" />
-</UPage>
-```
-
-### UCard - Content Card
-
-**When to use:** For grouping related content with optional header and footer.
-
-```vue
-<UCard>
-   <UCol>
-      <UHeader :label="t('title.companyInfo')" />
-      <UText>{{ t('description.companyText') }}</UText>
-
-      <UInput
-              v-model="form.companyName"
-              :label="t('label.companyName')"
-              :error="companyNameError"
-      />
-   </UCol>
-
-   <template #footer-right>
-      <UButton :label="t('button.continue')" @click="onSubmit" />
-   </template>
-</UCard>
-```
-
-### UGroups & UGroup - Form Grouping
-
-**When to use:** For organizing form fields into logical sections.
-
-```vue
-<UGroups data-cy="transaction-form">
-   <UGroup :title="t('label.main')">
-      <UCol>
-         <UInput v-model="form.amount" :label="t('label.amount')" />
-         <USelect v-model="form.category" :label="t('label.category')" />
-      </UCol>
-   </UGroup>
-
-   <UGroup :title="t('label.details')">
-      <template #after-title>
-         <USwitch v-model="isAdvancedMode" />
-      </template>
-
-      <UCol>
-         <UTextarea v-model="form.description" :label="t('label.description')" />
-      </UCol>
-   </UGroup>
-</UGroups>
-```
-
-### UCol - Column Layout
-
-**When to use:** For vertical stacking of components with consistent spacing.
-
-```vue
-<UCol gap="lg" align="stretch">
-   <UInput v-model="form.name" :label="t('label.name')" />
-   <UInput v-model="form.email" :label="t('label.email')" />
-   <USelect v-model="form.role" :label="t('label.role')" />
-</UCol>
-```
-
-### URow - Row Layout
-
-**When to use:** For horizontal arrangement of components with flexible alignment and spacing.
-
-**Basic Row Layout:**
-```vue
-<URow gap="md" align="center">
-   <UButton :label="t('button.save')" />
-   <UButton :label="t('button.cancel')" variant="outlined" />
-</URow>
-```
-
-**Filter Row with Multiple Components:**
-```vue
-<URow gap="md" align="end">
-   <UDatePickerRange
-           v-model:from="filters.dateFrom"
-           v-model:to="filters.dateTo"
-   />
-   <USelect
-           v-model="filters.category"
-           :options="categories"
-           :placeholder="t('placeholder.allCategories')"
-   />
-   <UButton
-           :label="t('button.filter')"
-           @click="onApplyFilters"
-   />
-</URow>
-```
-
-**Row with Icons and Controls:**
-```vue
-<URow align="center" gap="sm">
-   <UIcon name="notifications" color="neutral" size="sm" />
-   <UText>{{ t('label.notifications') }}</UText>
-   <USwitch v-model="settings.notifications" />
-</URow>
-```
-
-**Row with Status Indicators:**
-```vue
-<URow align="center" gap="sm">
-   <UDot color="success" />
-   <UText>{{ t('status.active') }}</UText>
-</URow>
-```
-
-**Complex Row with Nested Components:**
-```vue
-<URow align="stretch" justify="between">
-   <URow align="center" gap="2xl" class="w-fit">
-      <URow>
-         <UDatePickerRange
-                 v-model="paymentDateRange"
-                 :custom-range-button="customRangeButton"
-         />
-         <FilterButton
-                 :filters="filtersForButton"
-                 @click="onClickFiltersButton"
-         />
-         <UButton
-                 icon="search"
-                 variant="soft"
-                 square
-                 @click="onShowSearch"
-         />
-      </URow>
-   </URow>
-</URow>
-```
-
-**Row in Data List Items:**
-```vue
-<URow gap="xs" align="center">
-   <UDot v-if="item.color" :color="item.color" size="md" />
-   <div>{{ item.name }}</div>
-</URow>
-```
-
-**Row with Justify Between:**
-```vue
-<URow justify="between" align="center">
-   <UCol>
-      <UNumber
-              :value="income.amount"
-              :currency="income.currency"
-              color="success"
-      />
-   </UCol>
-   <UCol>
-      <UNumber
-              :value="expense.amount"
-              :currency="expense.currency"
-              color="error"
-      />
-   </UCol>
-</URow>
-```
 
 ## Data Display Components
 
@@ -488,45 +886,7 @@ Use `./node_modules/vueless` to in details understand Vueless UI components.
 </UAlert>
 ```
 
-### UModal - Modal Dialogs
 
-**When to use:** For displaying content that requires user attention or interaction.
-
-**Basic Modal:**
-```vue
-<UModal
-        v-model="isShownModal"
-        :title="t('title.addCounterparty')"
-        size="lg"
->
-   <CounterpartyForm v-model="form" />
-
-   <template #footer-left>
-      <UButton :label="t('button.add')" @click="onSubmit" />
-      <UButton
-              :label="t('button.close')"
-              variant="outlined"
-              @click="onClose"
-      />
-   </template>
-</UModal>
-```
-
-### UModalConfirm - Confirmation Dialog
-
-**When to use:** For confirming destructive or important actions.
-
-```vue
-<UModalConfirm
-        v-model="isShownModal"
-        :title="t('title.deleteUser')"
-        :confirm-label="t('button.delete')"
-        color="error"
-        @confirm="onConfirmDelete"
->
-   <UText :html="t('description.deleteConfirmation', { name: user.name })" />
-</UModalConfirm>
-```
 
 ### UNotify - Notifications
 
