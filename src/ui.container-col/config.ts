@@ -59,5 +59,6 @@ export default /*tw*/ {
     justify: "start",
     wrap: false,
     reverse: false,
+    block: false,
   },
 };

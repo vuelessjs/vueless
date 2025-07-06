@@ -48,15 +48,15 @@ const DefaultTemplate: StoryFn<VOnClickOutsideArgs> = (args: VOnClickOutsideArgs
 
     <UCalendar v-model="date" v-if="isShownCalendar" class="mt-2" />
 
-    <UAlert class="mt-4" variant="outlined">
-      <p>
-        Click on calendar itself will trigger directive callback, use ignore option to prevent this behavior.
-      </p>
-    </UAlert>
+    <UAlert
+      variant="soft"
+      description="Click on calendar itself will trigger directive callback."
+      class="mt-4"
+    />
   `,
 });
 
-const SettingsTemplate: StoryFn<VOnClickOutsideArgs> = (args: VOnClickOutsideArgs) => ({
+const IgnoreOptionsTemplate: StoryFn<VOnClickOutsideArgs> = (args: VOnClickOutsideArgs) => ({
   components: { UButton, UCalendar, UAlert },
   directives: { clickOutside },
   setup() {
@@ -98,25 +98,31 @@ const SettingsTemplate: StoryFn<VOnClickOutsideArgs> = (args: VOnClickOutsideArg
       <UCalendar v-model="date" v-if="isShownCalendar" class="mt-2" />
     </div>
 
-    <UAlert class="mt-4" variant="outlined">
-      <p>
-        Click on calendar will not trigger directive callback now.
-      </p>
-    </UAlert>
+    <UAlert class="mt-4" variant="soft" description="Click on calendar will not trigger directive callback now." />
   `,
 });
 
 export const Default = DefaultTemplate.bind({});
 Default.args = {};
 
-export const Settings = SettingsTemplate.bind({});
-Settings.args = {};
-
-Settings.parameters = {
+export const IgnoreOptions = IgnoreOptionsTemplate.bind({});
+IgnoreOptions.args = {};
+IgnoreOptions.parameters = {
   docs: {
+    description: {
+      story: `
+This story demonstrates the \`ignore\` option of v-click-outside,
+which prevents the callback when clicking inside specified elements (e.g., the calendar),
+allowing it to stay open during interaction.
+      `,
+    },
     source: {
       code: `
         <UButton @click="toggleCalendar" v-click-outside="[closeCalendar, { ignore: [calendarRef] }]" />
+
+        <div ref="calendar" class="w-fit">
+          <UCalendar v-model="date" v-if="isShownCalendar" class="mt-2" />
+        </div>
       `,
     },
   },

@@ -1,9 +1,10 @@
 import type { Meta, StoryFn } from "@storybook/vue3";
 
 import UIcon from "../../../ui.image-icon/UIcon.vue";
-import URow from "../../../ui.container-row/URow.vue";
+import UCol from "../../../ui.container-col/UCol.vue";
 import UAlert from "../../../ui.text-alert/UAlert.vue";
 import ULink from "../../../ui.button-link/ULink.vue";
+import UText from "../../../ui.text-block/UText.vue";
 import tooltip from "../vTooltip.ts";
 
 import type { Props } from "tippy.js";
@@ -33,30 +34,36 @@ const DefaultTemplate: StoryFn<VTooltipArgs> = (args: VTooltipArgs) => ({
   `,
 });
 
-const SettingsTemplate: StoryFn<VTooltipArgs> = (args: VTooltipArgs) => ({
-  components: { UIcon, URow, UAlert, ULink },
+const TooltipSettingsTemplate: StoryFn<VTooltipArgs> = (args: VTooltipArgs) => ({
+  components: { UIcon, UCol, UAlert, ULink, UText },
   directives: { tooltip },
   setup() {
     return { args };
   },
   template: `
-    <URow align="center">
-      <UAlert variant="outlined">
-        <p>
-          See all available settings in <ULink label="Tippy.js docs" href="https://atomiks.github.io/tippyjs/v6/all-props/" underlined />
-        </p>
-      </UAlert>
+    <UCol>
       <UIcon
         interactive
         name="sentiment_satisfied"
-        v-tooltip="{ content: '<b>Tooltip</b>', placement: 'bottom', allowHTML: true, zIndex: 42 }"
+        v-tooltip="{ content: '<b>Tooltip</b>', placement: 'bottom', allowHTML: true }"
       />
-    </URow>
+    </UCol>
   `,
 });
 
 export const Default = DefaultTemplate.bind({});
 Default.args = {};
 
-export const Settings = SettingsTemplate.bind({});
-Settings.args = {};
+export const TooltipSettings = TooltipSettingsTemplate.bind({});
+TooltipSettings.args = {};
+TooltipSettings.parameters = {
+  docs: {
+    description: {
+      story: `
+This story demonstrates how to pass custom options to the v-tooltip directive,
+including HTML content and tooltip placement. For more settings,
+refer to the <a href="https://atomiks.github.io/tippyjs/v6/all-props/" target="_blank" class="!no-underline">Tippy.js documentation</a>.
+      `,
+    },
+  },
+};

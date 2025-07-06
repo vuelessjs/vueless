@@ -56,7 +56,20 @@ vi.mock("virtual:vueless/icons", () => {
 
   // Create a map of common icon names to their mock modules
   const iconModules = new Map();
-  const commonIcons = ["check", "close", "info", "warning", "user", "home", "search"];
+  const commonIcons = [
+    "check",
+    "close",
+    "close_small",
+    "info",
+    "warning",
+    "user",
+    "home",
+    "search",
+    "star",
+    "star-fill",
+    "visibility-fill",
+    "visibility_off-fill",
+  ];
 
   commonIcons.forEach((iconName) => {
     const render = createIconRender(iconName);

@@ -42,7 +42,7 @@ const DefaultTemplate: StoryFn<URowArgs> = (args: URowArgs) => ({
   components: { URow, UInput, UButton },
   setup: () => ({ args, slots: getSlotNames(URow.__name) }),
   template: `
-    <URow v-bind="args" class="flex">
+    <URow v-bind="args" class="border border-primary border-dashed rounded-medium p-4">
       ${args.slotTemplate || getSlotsFragment(defaultTemplate)}
     </URow>
   `,
@@ -112,7 +112,8 @@ export const Content: StoryFn<URowArgs> = (args: URowArgs, { argTypes }) => ({
         align="normal"
         wrap
         gap="xs"
-        class="w-full h-[300px] border border-primary border-dashed rounded-medium p-4"
+        block
+        class="h-[250px] border border-primary border-dashed rounded-medium p-4"
       >
         <UButton label="content" class="w-[45%]" />
         <UButton :label="option" class="w-[45%]" />

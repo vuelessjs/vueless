@@ -36,6 +36,7 @@ export default /*tw*/ {
     color: "grayscale",
     size: "md",
     variant: "default",
+    disabled: false,
     interactive: false,
     /* icon library */
     library: "@material-symbols",

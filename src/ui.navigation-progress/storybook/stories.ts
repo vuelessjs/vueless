@@ -20,6 +20,7 @@ interface UProgressArgs extends Props {
   enum: "color" | "size";
   iterator?: number;
   progress?: number;
+  class?: string;
 }
 
 export default {
@@ -28,6 +29,7 @@ export default {
   component: UProgress,
   args: {
     progress: 10,
+    value: 0,
   },
   argTypes: {
     ...getArgTypes(UProgress.__name),
@@ -44,13 +46,12 @@ const DefaultTemplate: StoryFn<UProgressArgs> = (args: UProgressArgs) => ({
   setup() {
     const slots = getSlotNames(UProgress.__name);
 
-    args.value = args.max ? 0 : 10;
-    args.iterator = args.max ? 1 : 10;
+    const iterator = args.max ? 1 : 10;
 
     function updateProgress() {
       const maxValue = Array.isArray(args.max) ? args.max.length - 1 : 100;
 
-      args.value = args.value < maxValue ? args.value + (args.iterator || 0) : 0;
+      args.value = args.value < maxValue ? args.value + (iterator || 0) : 0;
     }
 
     return { slots, args, updateProgress };
@@ -106,6 +107,7 @@ export const VariantStepper = DefaultTemplate.bind({});
 VariantStepper.args = {
   variant: "stepper",
   max: ["Introduction", "Personal Information", "Shipment Address"],
+  class: "flex-row-reverse",
 };
 
 export const Indicator = DefaultTemplate.bind({});
@@ -129,7 +131,7 @@ IndicatorSlot.args = {
   indicator: true,
   slotTemplate: `
     <template #indicator="{ percent }">
-      <UBadge :label="'Current percent is: ' + percent" />
+      <UBadge :label="'Current percent is: ' + percent" variant="subtle" />
     </template>
   `,
 };

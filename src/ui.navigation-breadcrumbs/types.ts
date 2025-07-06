@@ -15,12 +15,12 @@ export interface Props {
   links?: UBreadcrumb[];
 
   /**
-   * Breadcrumbs' size.
+   * Breadcrumbs size.
    */
   size?: "sm" | "md" | "lg";
 
   /**
-   * Breadcrumbs' color.
+   * Breadcrumbs color.
    */
   color?:
     | "primary"
