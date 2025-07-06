@@ -33,6 +33,7 @@ export interface Props {
    * Text color.
    */
   color?:
+    | "text" // the default design system text color
     | "primary"
     | "secondary"
     | "error"
@@ -42,8 +43,7 @@ export interface Props {
     | "notice"
     | "neutral"
     | "grayscale"
-    | "inherit"
-    | "text"; // the default design system text color
+    | "inherit";
 
   /**
    * Removes text line height (useful for 1-line text).

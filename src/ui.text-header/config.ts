@@ -1,6 +1,5 @@
 export default /*tw*/ {
   header: {
-    base: "font-medium",
     variants: {
       variant: {
         default: "text-{color}",
@@ -19,6 +18,13 @@ export default /*tw*/ {
         xl: "text-4xl",
         "2xl": "text-5xl",
       },
+      weight: {
+        light: "font-light",
+        normal: "font-normal",
+        medium: "font-medium",
+        semibold: "font-semibold",
+        bold: "font-bold",
+      },
       line: {
         true: "!leading-none",
       },
@@ -33,6 +39,7 @@ export default /*tw*/ {
   defaults: {
     color: "text",
     variant: "default",
+    weight: "medium",
     size: "md",
     tag: "div",
     line: true,

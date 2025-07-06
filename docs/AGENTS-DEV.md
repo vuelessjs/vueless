@@ -2,7 +2,8 @@
 
 ## Introduction
 
-Vueless UI is a Vue.js component library built with TypeScript and Tailwind CSS that follows a specific architecture pattern. This guide explains how Vueless UI components work and provides guidelines for AI coding agents on how to create new components or modify existing ones correctly.
+Vueless UI is a Vue.js component library built with TypeScript and Tailwind CSS that follows a specific architecture pattern. 
+This guide explains how Vueless UI components work and provides guidelines for AI coding agents on how to create new components or modify existing ones correctly.
 
 ## Architecture Overview
 

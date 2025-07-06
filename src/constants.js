@@ -9,6 +9,7 @@ export const NEUTRAL_COLOR = "neutral";
 export const SECONDARY_COLOR = "secondary";
 export const GRAYSCALE_COLOR = "grayscale";
 export const INHERIT_COLOR = "inherit";
+export const TEXT_COLOR = "text"; // the default design system text color
 
 /* Vueless keys */
 export const TEXT = "text";
