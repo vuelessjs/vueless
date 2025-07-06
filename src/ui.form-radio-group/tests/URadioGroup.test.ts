@@ -9,53 +9,50 @@ import ULabel from "../../ui.form-label/ULabel.vue";
 import type { Props } from "../types.ts";
 
 describe("URadioGroup.vue", () => {
+  const defaultOptions = [
+    { label: "Email Notifications", value: "email" },
+    { label: "SMS Alerts", value: "sms" },
+    { label: "Push Notifications", value: "push" },
+  ];
+  const defaultName = "test-group";
+
   describe("Props", () => {
     it("Options - renders radios for each option", () => {
-      const options = [
-        { label: "Email Notifications", value: "email" },
-        { label: "SMS Alerts", value: "sms" },
-        { label: "Push Notifications", value: "push" },
-      ];
-
       const component = mount(URadioGroup, {
         props: {
-          options,
-          name: "test-group",
+          options: defaultOptions,
+          name: defaultName,
         },
       });
 
       const radios = component.findAllComponents(URadio);
 
-      expect(radios).toHaveLength(options.length);
+      expect(radios).toHaveLength(defaultOptions.length);
 
       radios.forEach((radio, index) => {
-        expect(radio.props("label")).toBe(options[index].label);
-        expect(radio.props("value")).toBe(options[index].value);
+        expect(radio.props("label")).toBe(defaultOptions[index].label);
+        expect(radio.props("value")).toBe(defaultOptions[index].value);
       });
     });
 
     it("Options – radio emits value on change", async () => {
-      const options = [
-        { label: "Email Notifications", value: "email" },
-        { label: "SMS Alerts", value: "sms" },
-        { label: "Push Notifications", value: "push" },
-      ];
+      const updatedValue = "sms";
 
       const component = mount(URadioGroup, {
         props: {
-          options,
+          options: defaultOptions,
           name: "notification-preferences",
           modelValue: "",
         },
       });
 
-      const radioInput = component.find("input[type='radio'][value='sms']");
+      const radioInput = component.find(`input[type='radio'][value='${updatedValue}']`);
 
       await radioInput.setValue(true);
 
       await nextTick();
 
-      expect(component.emitted("update:modelValue")![0][0]).toBe("sms");
+      expect(component.emitted("update:modelValue")![0][0]).toBe(updatedValue);
     });
 
     it("Label – passes label to ULabel component", () => {
@@ -64,7 +61,7 @@ describe("URadioGroup.vue", () => {
       const component = mount(URadioGroup, {
         props: {
           label: labelText,
-          name: "test-group",
+          name: defaultName,
         },
       });
 
@@ -77,7 +74,7 @@ describe("URadioGroup.vue", () => {
       const component = mount(URadioGroup, {
         props: {
           description: descriptionText,
-          name: "test-group",
+          name: defaultName,
         },
       });
 
@@ -90,7 +87,7 @@ describe("URadioGroup.vue", () => {
       const component = mount(URadioGroup, {
         props: {
           error: errorText,
-          name: "test-group",
+          name: defaultName,
         },
       });
 
@@ -108,12 +105,8 @@ describe("URadioGroup.vue", () => {
         const component = mount(URadioGroup, {
           props: {
             size: size as Props["size"],
-            name: "test-group",
-            options: [
-              { label: "Email Notifications", value: "email" },
-              { label: "SMS Alerts", value: "sms" },
-              { label: "Push Notifications", value: "push" },
-            ],
+            name: defaultName,
+            options: defaultOptions,
           },
         });
 
@@ -129,11 +122,7 @@ describe("URadioGroup.vue", () => {
       const component = mount(URadioGroup, {
         props: {
           name,
-          options: [
-            { label: "Email Notifications", value: "email" },
-            { label: "SMS Alerts", value: "sms" },
-            { label: "Push Notifications", value: "push" },
-          ],
+          options: defaultOptions,
         },
       });
 
@@ -161,12 +150,8 @@ describe("URadioGroup.vue", () => {
         const component = mount(URadioGroup, {
           props: {
             color: color as Props["color"],
-            name: "test-group",
-            options: [
-              { label: "Email Notifications", value: "email" },
-              { label: "SMS Alerts", value: "sms" },
-              { label: "Push Notifications", value: "push" },
-            ],
+            name: defaultName,
+            options: defaultOptions,
           },
         });
 
@@ -184,12 +169,8 @@ describe("URadioGroup.vue", () => {
       const component = mount(URadioGroup, {
         props: {
           disabled: true,
-          name: "test-group",
-          options: [
-            { label: "Email Notifications", value: "email" },
-            { label: "SMS Alerts", value: "sms" },
-            { label: "Push Notifications", value: "push" },
-          ],
+          name: defaultName,
+          options: defaultOptions,
         },
       });
 
@@ -204,12 +185,8 @@ describe("URadioGroup.vue", () => {
       const component = mount(URadioGroup, {
         props: {
           "data-test": dataTestValue,
-          name: "test-group",
-          options: [
-            { label: "Email Notifications", value: "email" },
-            { label: "SMS Alerts", value: "sms" },
-            { label: "Push Notifications", value: "push" },
-          ],
+          name: defaultName,
+          options: defaultOptions,
         },
       });
 
@@ -226,7 +203,7 @@ describe("URadioGroup.vue", () => {
       const component = mount(URadioGroup, {
         props: {
           label: "Default Label",
-          name: "test-group",
+          name: defaultName,
         },
         slots: {
           label: customLabelContent,
@@ -245,7 +222,7 @@ describe("URadioGroup.vue", () => {
       const component = mount(URadioGroup, {
         props: {
           label: defaultLabel,
-          name: "test-group",
+          name: defaultName,
         },
         slots: {
           label: "Modified {{ params.label }}",
@@ -292,7 +269,7 @@ describe("URadioGroup.vue", () => {
 
   describe("Exposed properties", () => {
     it("exposes listRef", () => {
-      const component = mount(URadioGroup);
+      const component = mount(URadioGroup, { name: defaultName });
 
       expect(component.vm.listRef).toBeDefined();
     });
