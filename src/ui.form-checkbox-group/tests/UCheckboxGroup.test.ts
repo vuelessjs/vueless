@@ -9,42 +9,36 @@ import ULabel from "../../ui.form-label/ULabel.vue";
 import type { Props } from "../types.ts";
 
 describe("UCheckboxGroup.vue", () => {
+  const defaultOptions = [
+    { label: "Email Notifications", value: "email" },
+    { label: "SMS Alerts", value: "sms" },
+    { label: "Push Notifications", value: "push" },
+  ];
+
   describe("Props", () => {
     it("Options - renders checkboxes for each option", () => {
-      const options = [
-        { label: "Email Notifications", value: "email" },
-        { label: "SMS Alerts", value: "sms" },
-        { label: "Push Notifications", value: "push" },
-      ];
-
       const component = mount(UCheckboxGroup, {
         props: {
-          options,
+          options: defaultOptions,
         },
       });
 
       const checkboxes = component.findAllComponents(UCheckbox);
 
-      expect(checkboxes).toHaveLength(options.length);
+      expect(checkboxes).toHaveLength(defaultOptions.length);
 
       checkboxes.forEach((checkbox, index) => {
-        expect(checkbox.props("label")).toBe(options[index].label);
-        expect(checkbox.props("value")).toBe(options[index].value);
+        expect(checkbox.props("label")).toBe(defaultOptions[index].label);
+        expect(checkbox.props("value")).toBe(defaultOptions[index].value);
       });
     });
 
     it("Options – checkbox emits value on change", async () => {
-      const options = [
-        { label: "Email Notifications", value: "email" },
-        { label: "SMS Alerts", value: "sms" },
-        { label: "Push Notifications", value: "push" },
-      ];
-
-      const expectedValues = options.map((option) => option.value);
+      const expectedValues = defaultOptions.map((option) => option.value);
 
       const component = mount(UCheckboxGroup, {
         props: {
-          options,
+          options: defaultOptions,
           name: "notification-preferences",
           modelValue: [],
         },
@@ -106,11 +100,7 @@ describe("UCheckboxGroup.vue", () => {
         const component = mount(UCheckboxGroup, {
           props: {
             size: size as Props["size"],
-            options: [
-              { label: "Email Notifications", value: "email" },
-              { label: "SMS Alerts", value: "sms" },
-              { label: "Push Notifications", value: "push" },
-            ],
+            options: defaultOptions,
           },
         });
 
@@ -126,11 +116,7 @@ describe("UCheckboxGroup.vue", () => {
       const component = mount(UCheckboxGroup, {
         props: {
           name,
-          options: [
-            { label: "Email Notifications", value: "email" },
-            { label: "SMS Alerts", value: "sms" },
-            { label: "Push Notifications", value: "push" },
-          ],
+          options: defaultOptions,
         },
       });
 
@@ -158,11 +144,7 @@ describe("UCheckboxGroup.vue", () => {
         const component = mount(UCheckboxGroup, {
           props: {
             color: color as Props["color"],
-            options: [
-              { label: "Email Notifications", value: "email" },
-              { label: "SMS Alerts", value: "sms" },
-              { label: "Push Notifications", value: "push" },
-            ],
+            options: defaultOptions,
           },
         });
 
@@ -180,11 +162,7 @@ describe("UCheckboxGroup.vue", () => {
       const component = mount(UCheckboxGroup, {
         props: {
           disabled: true,
-          options: [
-            { label: "Email Notifications", value: "email" },
-            { label: "SMS Alerts", value: "sms" },
-            { label: "Push Notifications", value: "push" },
-          ],
+          options: defaultOptions,
         },
       });
 
@@ -199,11 +177,7 @@ describe("UCheckboxGroup.vue", () => {
       const component = mount(UCheckboxGroup, {
         props: {
           "data-test": dataTestValue,
-          options: [
-            { label: "Email Notifications", value: "email" },
-            { label: "SMS Alerts", value: "sms" },
-            { label: "Push Notifications", value: "push" },
-          ],
+          options: defaultOptions,
         },
       });
 
