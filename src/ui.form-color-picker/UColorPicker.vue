@@ -71,6 +71,7 @@ const { listAttrs, colorButtonAttrs, circleAttrs, getDataTest } = useUI<Config>(
       color="grayscale"
       :variant="selectedItem === color ? 'soft' : 'ghost'"
       v-bind="colorButtonAttrs"
+      :data-test="getDataTest(`button-${color}`)"
       @click="onClickColor(color)"
     >
       <div :class="colorClass" v-bind="circleAttrs" />

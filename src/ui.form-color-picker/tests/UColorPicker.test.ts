@@ -101,15 +101,27 @@ describe("UColorPicker.vue", () => {
 
     it("Data Test – sets data test attributes", () => {
       const dataTest = "test-color-picker";
+      const colorTest = "test-color-picker-button";
+      const colors = {
+        primary: "bg-primary-500",
+        secondary: "bg-secondary-500",
+      };
 
       const component = mount(UColorPicker, {
         props: {
           modelValue: "",
           dataTest,
+          colors,
         },
       });
 
       expect(component.attributes("data-test")).toBe(dataTest);
+
+      const colorButtons = component.findAll("[vl-key='colorButton']");
+
+      Object.keys(colors).forEach((color, idx) => {
+        expect(colorButtons[idx].attributes("data-test")).toBe(`${colorTest}-${color}`);
+      });
     });
   });
 
