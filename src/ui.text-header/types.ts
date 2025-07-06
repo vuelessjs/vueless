@@ -20,6 +20,11 @@ export interface Props {
   variant?: "default" | "accented" | "lifted" | "muted";
 
   /**
+   * Font weight.
+   */
+  weight?: "light" | "normal" | "medium" | "semibold" | "bold";
+
+  /**
    * Header color.
    */
   color?:

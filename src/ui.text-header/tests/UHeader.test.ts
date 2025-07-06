@@ -79,6 +79,27 @@ describe("UHeader.vue", () => {
       });
     });
 
+    // Weight prop
+    it("applies the correct weight class", async () => {
+      const weights = {
+        light: "font-light",
+        normal: "font-normal",
+        medium: "font-medium",
+        semibold: "font-semibold",
+        bold: "font-bold",
+      };
+
+      Object.entries(weights).forEach(([weight, classes]) => {
+        const component = mount(UHeader, {
+          props: {
+            weight: weight as Props["weight"],
+          },
+        });
+
+        expect(component.attributes("class")).toContain(classes);
+      });
+    });
+
     // Label prop
     it("renders the correct label text", () => {
       const label = "Header Text";
