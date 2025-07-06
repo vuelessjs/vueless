@@ -28,6 +28,7 @@ export interface Props {
    * Header color.
    */
   color?:
+    | "text" // the default design system text color
     | "primary"
     | "secondary"
     | "error"
@@ -37,7 +38,7 @@ export interface Props {
     | "notice"
     | "neutral"
     | "grayscale"
-    | "text"; // the default design system text color
+    | "inherit";
 
   /**
    * Allows changing HTML tag.
