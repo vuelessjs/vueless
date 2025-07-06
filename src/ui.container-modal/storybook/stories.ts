@@ -363,11 +363,12 @@ ActionsSlot.args = {
 export const FooterLeftSlot = DefaultTemplate.bind({});
 FooterLeftSlot.args = {
   slotTemplate: `
-    <template #footer-left>
-      <UButton label="Back" variant="subtle" color="neutral" />
-    </template>
     <template #default>
       ${defaultTemplate}
+    </template>
+
+    <template #footer-left>
+      <UButton label="Back" variant="subtle" color="neutral" />
     </template>
   `,
 };
@@ -375,11 +376,12 @@ FooterLeftSlot.args = {
 export const FooterRightSlot = DefaultTemplate.bind({});
 FooterRightSlot.args = {
   slotTemplate: `
-    <template #footer-right>
-      <UButton label="Submit" variant="subtle" />
-    </template>
     <template #default>
       ${defaultTemplate}
+    </template>
+
+    <template #footer-right>
+      <UButton label="Submit" variant="subtle" />
     </template>
   `,
 };

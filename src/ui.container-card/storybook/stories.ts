@@ -69,12 +69,6 @@ const defaultTemplate = `
       </UCol>
       <USwitch v-model="cookieValues[index]" />
     </URow>
-
-    <UButton
-      label="Save preferences"
-      variant="outlined"
-      block
-    />
   </UCol>
 `;
 
@@ -180,33 +174,7 @@ ActionsSlot.args = {
 export const FooterLeftSlot = DefaultTemplate.bind({});
 FooterLeftSlot.args = {
   slotTemplate: `
-    <UCol
-      justify="between"
-      class="h-full"
-    >
-      <URow
-        v-for="(cookie, index) in cookieSettings"
-        :key="cookie.label"
-        justify="between"
-        align="center"
-        block
-      >
-        <UCol gap="2xs">
-          <UHeader
-            :label="cookie.label"
-            class="text-sm"
-          />
-
-          <UText
-            :label="cookie.description"
-            size="sm"
-            variant="lifted"
-          />
-        </UCol>
-        <USwitch v-model="cookieValues[index]" />
-      </URow>
-    </UCol>
-
+    ${defaultTemplate}
     <template #footer-left>
       <UButton size="sm" label="Cancel" variant="outlined" />
     </template>
@@ -216,33 +184,7 @@ FooterLeftSlot.args = {
 export const FooterRightSlot = DefaultTemplate.bind({});
 FooterRightSlot.args = {
   slotTemplate: `
-    <UCol
-        justify="between"
-        class="h-full"
-      >
-      <URow
-        v-for="(cookie, index) in cookieSettings"
-        :key="cookie.label"
-        justify="between"
-        align="center"
-        block
-      >
-        <UCol gap="2xs">
-          <UHeader
-            :label="cookie.label"
-            class="text-sm"
-          />
-
-          <UText
-            :label="cookie.description"
-            size="sm"
-            variant="lifted"
-          />
-        </UCol>
-        <USwitch v-model="cookieValues[index]" />
-      </URow>
-    </UCol>
-
+    ${defaultTemplate}
     <template #footer-right>
       <UButton size="sm" label="Save preferences" />
     </template>
