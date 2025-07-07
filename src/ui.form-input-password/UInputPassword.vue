@@ -88,6 +88,14 @@ const { getDataTest, config, passwordInputAttrs, passwordIconAttrs, passwordIcon
       <slot name="left" :icon-name="leftIcon" />
     </template>
 
+    <template #label>
+      <!--
+        @slot Use this to add custom content instead of the label.
+        @binding {string} label
+      -->
+      <slot name="label" :label="label" />
+    </template>
+
     <template #right>
       <label v-bind="passwordIconWrapperAttrs" :for="elementId">
         <!--

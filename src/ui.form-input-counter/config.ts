@@ -19,6 +19,7 @@ export default /*tw*/ {
   actionButton: {
     base: "{UButton}",
     defaults: {
+      color: "neutral",
       size: {
         sm: "2xs",
         md: "xs",
@@ -26,8 +27,8 @@ export default /*tw*/ {
       },
     },
   },
-  addButton: "{UButton} {>actionButton}",
-  subtractButton: "{UButton} {>actionButton}",
+  addButton: "{>actionButton}",
+  subtractButton: "{>actionButton}",
   addIcon: "{UIcon}",
   subtractIcon: "{UIcon}",
   defaults: {

@@ -9,6 +9,7 @@ import {
 import USwitch from "../../ui.form-switch/USwitch.vue";
 import UIcon from "../../ui.image-icon/UIcon.vue";
 import URow from "../../ui.container-row/URow.vue";
+import UCol from "../../ui.container-col/UCol.vue";
 import UText from "../../ui.text-block/UText.vue";
 import ULink from "../../ui.button-link/ULink.vue";
 
@@ -48,17 +49,18 @@ const DefaultTemplate: StoryFn<USwitchArgs> = (args: USwitchArgs) => ({
 });
 
 const EnumTemplate: StoryFn<USwitchArgs> = (args: USwitchArgs, { argTypes }) => ({
-  components: { USwitch, URow },
+  components: { USwitch, UCol },
   setup: () => ({ args, argTypes, getArgs }),
   template: `
-    <URow :class="{ '!flex-col max-w-fit': args.enum === 'labelAlign' }">
+    <UCol gap="2xl">
       <USwitch
         v-for="option in argTypes?.[args.enum]?.options"
         v-bind="getArgs(args, option)"
         :key="option"
         v-model="args.modelValue"
+        class="items-start"
       />
-    </URow>
+    </UCol>
   `,
 });
 

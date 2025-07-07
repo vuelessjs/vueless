@@ -167,7 +167,8 @@ function preFormat(templateSource, args, argTypes) {
       Object.keys(componentArgs)
         .map((key) => " " + propToSource(kebabCase(key), args[key], argTypes[key]))
         .join(""),
-    );
+    )
+    .replace(/:class="args\.wrapperClass"/g, `class="${args.wrapperClass}"`);
 
   return templateSource;
 }

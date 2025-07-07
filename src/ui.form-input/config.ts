@@ -73,6 +73,6 @@ export default /*tw*/ {
     validationRule: "",
     readonly: false,
     disabled: false,
-    noAutocomplete: false,
+    autocomplete: true,
   },
 };

@@ -212,7 +212,8 @@ describe("UInputFile.vue", () => {
     });
 
     it("Disabled – applies disabled styles to dropzone and content", () => {
-      const disabledClass = "bg-lifted";
+      const dropzoneDisabledClass = "bg-lifted";
+      const contentDisabledClass = "bg-accented";
 
       const component = mount(UInputFile, {
         props: {
@@ -223,8 +224,8 @@ describe("UInputFile.vue", () => {
       const dropzone = component.find('[vl-key="dropzone"]');
       const content = component.find('[vl-key="content"]');
 
-      expect(dropzone.classes()).toContain(disabledClass);
-      expect(content.classes()).toContain(disabledClass);
+      expect(dropzone.classes()).toContain(dropzoneDisabledClass);
+      expect(content.classes()).toContain(contentDisabledClass);
     });
 
     it("Data Test – sets data-test attributes", () => {
