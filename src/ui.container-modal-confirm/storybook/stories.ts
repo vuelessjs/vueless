@@ -34,7 +34,7 @@ export default {
   args: {
     title: "Confirm Subscription Upgrade",
     confirmLabel: "Confirm",
-    modelValue: false,
+    modelValue: true,
   },
   argTypes: {
     ...getArgTypes(UModalConfirm.__name),
@@ -58,6 +58,10 @@ const DefaultTemplate: StoryFn<UModalConfirmArgs> = (args: UModalConfirmArgs) =>
   setup() {
     function onClick() {
       args.modelValue = true;
+
+      setTimeout(() => {
+        document.body.style.overflow = "auto";
+      }, 500);
     }
 
     const slots = getSlotNames(UModalConfirm.__name);
@@ -70,7 +74,7 @@ const DefaultTemplate: StoryFn<UModalConfirmArgs> = (args: UModalConfirmArgs) =>
         ${args.slotTemplate || getSlotsFragment(defaultTemplate)}
       </UModalConfirm>
 
-      <UButton label="Show modal" @click="onClick"/>
+      <UButton label="Show modal" @click="onClick" />
     </div>
   `,
 });
@@ -102,15 +106,23 @@ ConfirmLabel.parameters = {
 export const Inner: StoryFn<UModalConfirmArgs> = (args: UModalConfirmArgs) => ({
   components: { UModalConfirm, UButton, UModal, UCol, UText },
   setup() {
-    const showMainModal = ref(false);
-    const showInnerModal = ref(false);
+    const showMainModal = ref(true);
+    const showInnerModal = ref(true);
 
     function openMainModal() {
       showMainModal.value = true;
+
+      setTimeout(() => {
+        document.body.style.overflow = "auto";
+      }, 500);
     }
 
     function openInnerModal() {
       showInnerModal.value = true;
+
+      setTimeout(() => {
+        document.body.style.overflow = "auto";
+      }, 500);
     }
 
     return { args, showMainModal, showInnerModal, openMainModal, openInnerModal };

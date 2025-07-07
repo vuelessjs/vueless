@@ -78,7 +78,7 @@ const defaultTemplate = `
 
     <UDivider label="OR CONTINUE WITH" />
 
-    <UCol gap="sm" class="w-full">
+    <UCol gap="sm" block>
       <UInput
         label="Email"
         placeholder="johndoe@example.com"
@@ -181,15 +181,23 @@ NoCloseOnEscAndOverlay.args = {
 export const Inner: StoryFn<UModalArgs> = (args: UModalArgs) => ({
   components: { UModal, UButton, UCol, UText, URow },
   setup() {
-    const showMainModal = ref(false);
-    const showInnerModal = ref(false);
+    const showMainModal = ref(true);
+    const showInnerModal = ref(true);
 
     function openMainModal() {
       showMainModal.value = true;
+
+      setTimeout(() => {
+        document.body.style.overflow = "auto";
+      }, 500);
     }
 
     function openInnerModal() {
       showInnerModal.value = true;
+
+      setTimeout(() => {
+        document.body.style.overflow = "auto";
+      }, 500);
     }
 
     return { args, showMainModal, showInnerModal, openMainModal, openInnerModal };
