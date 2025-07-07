@@ -20,7 +20,7 @@ import type { Props } from "../types.ts";
 interface UInputPasswordArgs extends Props {
   slotTemplate?: string;
   enum: "labelAlign" | "size";
-  gap?: string;
+  wrapperClass?: string;
 }
 
 export default {
@@ -58,7 +58,7 @@ const EnumTemplate: StoryFn<UInputPasswordArgs> = (args: UInputPasswordArgs, { a
   components: { UInputPassword, UCol },
   setup: () => ({ args, argTypes, getArgs }),
   template: `
-    <UCol :class="args.gap">
+    <UCol :class="args.wrapperClass">
       <UInputPassword
         v-for="option in argTypes?.[args.enum]?.options"
         v-bind="getArgs(args, option)"
@@ -112,7 +112,7 @@ LabelAlign.args = {
   enum: "labelAlign",
   label: "{enumValue}",
   description: "Use at least 8 characters, including a number and a symbol.",
-  gap: "gap-16",
+  wrapperClass: "gap-16",
 };
 
 export const IconProps: StoryFn<UInputPasswordArgs> = (args) => ({

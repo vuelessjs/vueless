@@ -21,7 +21,7 @@ import type { Props } from "../types.ts";
 interface UInputNumberArgs extends Props {
   slotTemplate?: string;
   enum: "labelAlign" | "size";
-  gap?: string;
+  wrapperClass?: string;
 }
 
 const argTypes = getArgTypes(UInputNumber.__name);
@@ -67,7 +67,7 @@ const EnumTemplate: StoryFn<UInputNumberArgs> = (args: UInputNumberArgs, { argTy
   components: { UInputNumber, UCol },
   setup: () => ({ args, argTypes, getArgs }),
   template: `
-    <UCol :class="args.gap">
+    <UCol :class="args.wrapperClass">
       <UInputNumber
         v-for="option in argTypes?.[args.enum]?.options"
         v-bind="getArgs(args, option)"
@@ -118,7 +118,7 @@ LabelAlign.args = {
   enum: "labelAlign",
   label: "{enumValue}",
   description: "Please enter the transaction amount.",
-  gap: "gap-16",
+  wrapperClass: "gap-16",
 };
 
 export const LimitFractionDigits = DefaultTemplate.bind({});

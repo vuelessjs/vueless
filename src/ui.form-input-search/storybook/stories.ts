@@ -21,7 +21,7 @@ import type { Props } from "../types.ts";
 interface UInputSearchArgs extends Props {
   slotTemplate?: string;
   enum: "size" | "labelAlign";
-  gap?: string;
+  wrapperClass?: string;
 }
 
 export default {
@@ -59,7 +59,7 @@ const EnumTemplate: StoryFn<UInputSearchArgs> = (args: UInputSearchArgs, { argTy
   components: { UInputSearch, UCol },
   setup: () => ({ args, argTypes, getArgs }),
   template: `
-    <UCol :class="args.gap">
+    <UCol :class="args.wrapperClass">
       <UInputSearch
         v-for="option in argTypes?.[args.enum]?.options"
         v-bind="getArgs(args, option)"
@@ -108,7 +108,7 @@ LabelAlign.args = {
   modelValue: "",
   label: "{enumValue}",
   description: "Search for additional details.",
-  gap: "gap-16",
+  wrapperClass: "gap-16",
 };
 
 export const SearchButton = DefaultTemplate.bind({});
