@@ -119,8 +119,16 @@ const mutatedProps = computed(() => ({
   error: Boolean(props.error),
 }));
 
-const { getDataTest, config, checkboxAttrs, checkedAttrs, checkboxLabelAttrs, checkedIconAttrs } =
-  useUI<Config>(defaultConfig, mutatedProps);
+const {
+  getDataTest,
+  config,
+  checkboxAttrs,
+  checkedAttrs,
+  partiallyCheckedAttrs,
+  checkboxLabelAttrs,
+  checkedIconAttrs,
+  partiallyCheckedIconAttrs,
+} = useUI<Config>(defaultConfig, mutatedProps);
 </script>
 
 <template>
@@ -158,11 +166,15 @@ const { getDataTest, config, checkboxAttrs, checkedAttrs, checkboxLabelAttrs, ch
       @change="onChange"
     />
 
-    <label v-if="isChecked" v-bind="checkedAttrs" :for="elementId">
+    <label
+      v-if="isChecked"
+      v-bind="partial ? partiallyCheckedAttrs : checkedAttrs"
+      :for="elementId"
+    >
       <UIcon
         :name="partial ? config.defaults.partiallyCheckedIcon : config.defaults.checkedIcon"
         color="inherit"
-        v-bind="checkedIconAttrs"
+        v-bind="partial ? partiallyCheckedIconAttrs : checkedIconAttrs"
       />
     </label>
 
