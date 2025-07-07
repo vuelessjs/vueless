@@ -118,7 +118,7 @@ LabelAlign.args = {
   enum: "labelAlign",
   label: "{enumValue}",
   description: "Please enter the transaction amount.",
-  gap: "gap-20",
+  gap: "gap-16",
 };
 
 export const LimitFractionDigits = DefaultTemplate.bind({});

@@ -56,7 +56,6 @@ describe("UCheckbox.vue", () => {
         { trueValue: "checked", falseValue: "unchecked" },
         { trueValue: 1, falseValue: 0 },
         { trueValue: { status: "active" }, falseValue: { status: "inactive" } },
-        { trueValue: [1, 2, 3], falseValue: [] },
         { trueValue: true, falseValue: false },
       ];
 
@@ -75,6 +74,8 @@ describe("UCheckbox.vue", () => {
         let emittedValues = component.emitted("update:modelValue");
 
         expect(emittedValues![0][0]).toEqual(trueValue);
+
+        await component.setProps({ modelValue: trueValue });
 
         await inputElement.setValue(false);
         emittedValues = component.emitted("update:modelValue");

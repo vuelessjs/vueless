@@ -90,7 +90,7 @@ export const LabelAlign = EnumTemplate.bind({});
 LabelAlign.args = {
   enum: "labelAlign",
   description: "{enumValue}",
-  gap: "gap-20",
+  gap: "gap-16",
 };
 
 export const Sizes = EnumTemplate.bind({});

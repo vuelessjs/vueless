@@ -21,7 +21,7 @@ import { ref } from "vue";
 interface UInputArgs extends Props {
   slotTemplate?: string;
   enum: "labelAlign" | "size" | "validationRule";
-  gap?: string;
+  wrapperClass?: string;
 }
 
 export default {
@@ -60,7 +60,7 @@ const EnumTemplate: StoryFn<UInputArgs> = (args: UInputArgs, { argTypes }) => ({
   components: { UInput, UCol },
   setup: () => ({ args, argTypes, getArgs }),
   template: `
-    <UCol :class="args.gap">
+    <UCol :class="args.wrapperClass">
       <UInput
         v-for="option in argTypes?.[args.enum]?.options"
         v-bind="getArgs(args, option)"
@@ -113,7 +113,7 @@ LabelAlign.args = {
   description: "Name of the person or entity.",
   modelValue: "",
   placeholder: "{enumValue}",
-  gap: "gap-20",
+  wrapperClass: "gap-16",
 };
 
 export const Sizes = EnumTemplate.bind({});

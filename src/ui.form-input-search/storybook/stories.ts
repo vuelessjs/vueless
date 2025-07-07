@@ -108,7 +108,7 @@ LabelAlign.args = {
   modelValue: "",
   label: "{enumValue}",
   description: "Search for additional details.",
-  gap: "gap-20",
+  gap: "gap-16",
 };
 
 export const SearchButton = DefaultTemplate.bind({});

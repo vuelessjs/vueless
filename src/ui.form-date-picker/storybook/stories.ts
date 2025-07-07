@@ -144,7 +144,7 @@ export const Disabled = DefaultTemplate.bind({});
 Disabled.args = { disabled: true };
 
 export const LabelAlign = EnumTemplate.bind({});
-LabelAlign.args = { enum: "labelAlign", description: "{enumValue}", gap: "gap-20" };
+LabelAlign.args = { enum: "labelAlign", description: "{enumValue}", gap: "gap-16" };
 
 export const Sizes = EnumTemplate.bind({});
 Sizes.args = { enum: "size", placeholder: "{enumValue}" };

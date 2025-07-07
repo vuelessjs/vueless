@@ -171,7 +171,7 @@ LabelAlign.args = {
   enum: "labelAlign",
   modelValue: { from: null, to: null },
   description: "{enumValue}",
-  gap: "gap-20",
+  gap: "gap-16",
 };
 
 export const Sizes = EnumTemplate.bind({});

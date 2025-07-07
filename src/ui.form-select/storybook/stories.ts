@@ -141,7 +141,7 @@ LabelAlign.args = {
   enum: "labelAlign",
   label: "{enumValue}",
   description: "Select a city from the list.",
-  gap: "gap-20",
+  gap: "gap-16",
 };
 
 export const Sizes = EnumTemplate.bind({});

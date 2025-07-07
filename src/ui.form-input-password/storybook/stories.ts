@@ -112,7 +112,7 @@ LabelAlign.args = {
   enum: "labelAlign",
   label: "{enumValue}",
   description: "Use at least 8 characters, including a number and a symbol.",
-  gap: "gap-20",
+  gap: "gap-16",
 };
 
 export const IconProps: StoryFn<UInputPasswordArgs> = (args) => ({
