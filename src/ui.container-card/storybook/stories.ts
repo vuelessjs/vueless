@@ -67,6 +67,7 @@ const defaultTemplate = `
           variant="lifted"
         />
       </UCol>
+
       <USwitch v-model="cookieValues[index]" />
     </URow>
   </UCol>
@@ -186,7 +187,7 @@ FooterRightSlot.args = {
   slotTemplate: `
     ${defaultTemplate}
     <template #footer-right>
-      <UButton size="sm" label="Save preferences" />
+      <UButton size="sm" label="Save" />
     </template>
   `,
 };

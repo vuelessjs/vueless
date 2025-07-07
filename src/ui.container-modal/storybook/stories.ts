@@ -35,7 +35,7 @@ export default {
   component: UModal,
   args: {
     title: "Sign Up",
-    modelValue: false,
+    modelValue: true,
   },
   argTypes: {
     ...getArgTypes(UModal.__name),
@@ -88,14 +88,11 @@ const defaultTemplate = `
       <UInputPassword v-model="password" label="Password" />
     </UCol>
 
-    <UCheckbox v-model="remember" label="Remember me" />
-
-    <UButton label="Create account" block />
+    <UButton label="Create account" block class="mt-4" />
   </UCol>
 `;
 
 const password = ref("");
-const remember = ref(false);
 
 const DefaultTemplate: StoryFn<UModalArgs> = (args: UModalArgs) => ({
   components: {
@@ -113,11 +110,15 @@ const DefaultTemplate: StoryFn<UModalArgs> = (args: UModalArgs) => ({
   setup() {
     function onClick() {
       args.modelValue = true;
+
+      setTimeout(() => {
+        document.body.style.overflow = "auto";
+      }, 500);
     }
 
     const slots = getSlotNames(UModal.__name);
 
-    return { args, slots, onClick, password, remember };
+    return { args, slots, onClick, password };
   },
   template: `
     <div>
@@ -125,7 +126,7 @@ const DefaultTemplate: StoryFn<UModalArgs> = (args: UModalArgs) => ({
         ${args.slotTemplate || getSlotsFragment(defaultTemplate)}
       </UModal>
 
-      <UButton label="Show modal" @click="onClick"/>
+      <UButton label="Show modal" @click="onClick" />
     </div>
   `,
 });
@@ -141,7 +142,7 @@ const EnumTemplate: StoryFn<UModalArgs> = (args: UModalArgs, { argTypes }) => ({
     UInputPassword,
     UDivider,
   },
-  setup: () => ({ args, argTypes, getArgs, password, remember }),
+  setup: () => ({ args, argTypes, getArgs, password }),
   template: `
     <URow>
       <UButton
@@ -277,7 +278,7 @@ export const BackLink: StoryFn<UModalArgs> = (args: UModalArgs) => ({
 
     const showAlert = () => alert("You clicked on a back link!");
 
-    return { args, onClick, password, remember, showAlert };
+    return { args, onClick, password, showAlert };
   },
   template: `
     <div>
