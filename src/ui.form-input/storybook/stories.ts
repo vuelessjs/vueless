@@ -22,7 +22,6 @@ interface UInputArgs extends Props {
   slotTemplate?: string;
   enum: "labelAlign" | "size" | "validationRule";
   gap?: string;
-  divClass?: string;
 }
 
 export default {
