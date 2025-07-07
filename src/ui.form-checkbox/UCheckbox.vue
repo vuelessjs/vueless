@@ -172,10 +172,13 @@ const {
       :for="elementId"
     >
       <UIcon
-        :name="partial ? config.defaults.partiallyCheckedIcon : config.defaults.checkedIcon"
+        v-if="partial"
+        :name="config.defaults.partiallyCheckedIcon"
         color="inherit"
-        v-bind="partial ? partiallyCheckedIconAttrs : checkedIconAttrs"
+        v-bind="partiallyCheckedIconAttrs"
       />
+
+      <UIcon v-else :name="config.defaults.checkedIcon" color="inherit" v-bind="checkedIconAttrs" />
     </label>
 
     <template #bottom>
