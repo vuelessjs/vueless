@@ -46,7 +46,7 @@ provide<() => string>("getCheckboxGroupName", () => props.name);
 provide("getCheckboxGroupColor", () => props.color);
 provide("getCheckboxSize", () => props.size);
 
-watch(() => checkedItems.value.length, onChangeCheckedItems);
+watch(checkedItems, onChangeCheckedItems, { deep: true });
 watch(
   () => props?.modelValue?.length,
   (newValue, oldValue) => {
@@ -97,7 +97,7 @@ const { getDataTest, groupLabelAttrs, groupCheckboxAttrs, listAttrs } =
     </template>
 
     <div ref="list" v-bind="listAttrs">
-      <!-- @slot Use it to add URadio directly. -->
+      <!-- @slot Use it to add UCheckbox directly. -->
       <slot>
         <UCheckbox
           v-for="(option, index) in options"
