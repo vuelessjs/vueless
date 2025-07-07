@@ -53,15 +53,19 @@ const defaultTemplate = `
   You are about to complete the subscription upgrade. Any unsaved changes or unfinished processes will be lost.
 `;
 
+function resetBodyOverflow(delay = 500) {
+  setTimeout(() => {
+    document.body.style.overflow = "auto";
+  }, delay);
+}
+
 const DefaultTemplate: StoryFn<UModalConfirmArgs> = (args: UModalConfirmArgs) => ({
   components: { UModalConfirm, UButton, UHeader, UIcon, UModal },
   setup() {
     function onClick() {
       args.modelValue = true;
 
-      setTimeout(() => {
-        document.body.style.overflow = "auto";
-      }, 500);
+      resetBodyOverflow();
     }
 
     const slots = getSlotNames(UModalConfirm.__name);
@@ -112,17 +116,13 @@ export const Inner: StoryFn<UModalConfirmArgs> = (args: UModalConfirmArgs) => ({
     function openMainModal() {
       showMainModal.value = true;
 
-      setTimeout(() => {
-        document.body.style.overflow = "auto";
-      }, 500);
+      resetBodyOverflow();
     }
 
     function openInnerModal() {
       showInnerModal.value = true;
 
-      setTimeout(() => {
-        document.body.style.overflow = "auto";
-      }, 500);
+      resetBodyOverflow();
     }
 
     return { args, showMainModal, showInnerModal, openMainModal, openInnerModal };

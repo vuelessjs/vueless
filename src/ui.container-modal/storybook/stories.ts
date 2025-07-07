@@ -94,6 +94,12 @@ const defaultTemplate = `
 
 const password = ref("");
 
+function resetBodyOverflow(delay = 500) {
+  setTimeout(() => {
+    document.body.style.overflow = "auto";
+  }, delay);
+}
+
 const DefaultTemplate: StoryFn<UModalArgs> = (args: UModalArgs) => ({
   components: {
     UModal,
@@ -111,9 +117,7 @@ const DefaultTemplate: StoryFn<UModalArgs> = (args: UModalArgs) => ({
     function onClick() {
       args.modelValue = true;
 
-      setTimeout(() => {
-        document.body.style.overflow = "auto";
-      }, 500);
+      resetBodyOverflow();
     }
 
     const slots = getSlotNames(UModal.__name);
@@ -187,17 +191,13 @@ export const Inner: StoryFn<UModalArgs> = (args: UModalArgs) => ({
     function openMainModal() {
       showMainModal.value = true;
 
-      setTimeout(() => {
-        document.body.style.overflow = "auto";
-      }, 500);
+      resetBodyOverflow();
     }
 
     function openInnerModal() {
       showInnerModal.value = true;
 
-      setTimeout(() => {
-        document.body.style.overflow = "auto";
-      }, 500);
+      resetBodyOverflow();
     }
 
     return { args, showMainModal, showInnerModal, openMainModal, openInnerModal };
@@ -270,6 +270,9 @@ WithoutDivider.parameters = {
   docs: {
     description: {
       story: "Hide divider between content and footer.",
+    },
+    story: {
+      height: "550px",
     },
   },
 };
@@ -381,6 +384,13 @@ FooterLeftSlot.args = {
     </template>
   `,
 };
+FooterLeftSlot.parameters = {
+  docs: {
+    story: {
+      height: "600px",
+    },
+  },
+};
 
 export const FooterRightSlot = DefaultTemplate.bind({});
 FooterRightSlot.args = {
@@ -393,4 +403,11 @@ FooterRightSlot.args = {
       <UButton label="Submit" variant="subtle" />
     </template>
   `,
+};
+FooterRightSlot.parameters = {
+  docs: {
+    story: {
+      height: "600px",
+    },
+  },
 };
