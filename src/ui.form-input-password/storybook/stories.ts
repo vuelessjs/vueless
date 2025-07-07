@@ -1,3 +1,5 @@
+import { ref } from "vue";
+
 import {
   getArgs,
   getArgTypes,
@@ -18,6 +20,7 @@ import type { Props } from "../types.ts";
 interface UInputPasswordArgs extends Props {
   slotTemplate?: string;
   enum: "labelAlign" | "size";
+  wrapperClass?: string;
 }
 
 export default {
@@ -55,7 +58,7 @@ const EnumTemplate: StoryFn<UInputPasswordArgs> = (args: UInputPasswordArgs, { a
   components: { UInputPassword, UCol },
   setup: () => ({ args, argTypes, getArgs }),
   template: `
-    <UCol>
+    <UCol :class="args.wrapperClass">
       <UInputPassword
         v-for="option in argTypes?.[args.enum]?.options"
         v-bind="getArgs(args, option)"
@@ -79,11 +82,18 @@ Placeholder.args = { placeholder: "Enter your password" };
 export const Description = DefaultTemplate.bind({});
 Description.args = { description: "Use at least 8 characters, including a number and a symbol." };
 
-export const Error = DefaultTemplate.bind({});
-Error.args = {
-  modelValue: "1234",
-  error: "Password is too weak. Try adding a symbol or more characters.",
-};
+export const Error: StoryFn<UInputPasswordArgs> = (args: UInputPasswordArgs) => ({
+  components: { UInputPassword },
+  setup: () => ({ args, modelValue: ref("") }),
+  template: `
+    <UInputPassword
+      v-bind="args"
+      v-model="modelValue"
+      class="!max-w-96"
+      :error="modelValue ? '' : 'Invalid password.'"
+    />
+  `,
+});
 
 export const ReadOnly = DefaultTemplate.bind({});
 ReadOnly.args = { readonly: true, modelValue: "VuelessUI" };
@@ -98,7 +108,12 @@ export const Sizes = EnumTemplate.bind({});
 Sizes.args = { enum: "size", label: "{enumValue}" };
 
 export const LabelAlign = EnumTemplate.bind({});
-LabelAlign.args = { enum: "labelAlign", label: "{enumValue}" };
+LabelAlign.args = {
+  enum: "labelAlign",
+  label: "{enumValue}",
+  description: "Use at least 8 characters, including a number and a symbol.",
+  wrapperClass: "gap-16",
+};
 
 export const IconProps: StoryFn<UInputPasswordArgs> = (args) => ({
   components: { UInputPassword, URow },
@@ -140,16 +155,21 @@ export const Slots: StoryFn<UInputPasswordArgs> = (args) => ({
       <UInputPassword
         v-bind="args"
         v-model="args.modelValue"
-        placeholder="Enter your password"
+        label="Enter your password"
         :config="{ passwordInput: { leftSlot: 'pl-0' } }"
       >
+        <template #label="{ label }">
+          {{ label }}
+          <span class="text-red-500">*</span>
+        </template>
+
         <template #left>
           <UDropdownButton
             v-model="args.wifiType"
             :options="wifiTypes"
             label="Wifi type"
             size="sm"
-            variant="ghost"
+            variant="soft"
             class="rounded-r-none h-[49px]"
           />
         </template>
@@ -158,9 +178,14 @@ export const Slots: StoryFn<UInputPasswordArgs> = (args) => ({
       <UInputPassword
         v-bind="args"
         v-model="args.modelValue"
-        placeholder="Enter your password"
+        label="Enter your password"
         :config="{ passwordInput: { rightSlot: 'pr-0' } }"
       >
+        <template #label="{ label }">
+          {{ label }}
+          <span class="text-red-500">*</span>
+        </template>
+
         <template #right="{ visible, toggle }">
           <UButton
             :label="visible ? 'Hide' : 'Show'"

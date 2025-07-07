@@ -27,7 +27,6 @@ export default {
   component: UInputFile,
   args: {
     label: "Choose a file to upload",
-    files: [],
   },
   argTypes: {
     ...getArgTypes(UInputFile.__name),
@@ -40,10 +39,10 @@ export default {
 } as Meta;
 
 const DefaultTemplate: StoryFn<UInputFileArgs> = (args: UInputFileArgs) => ({
-  components: { UInputFile, UBadge },
-  setup: () => ({ args, slots: getSlotNames(UInputFile.__name) }),
+  components: { UInputFile },
+  setup: () => ({ args, slots: getSlotNames(UInputFile.__name), files: [] }),
   template: `
-    <UInputFile v-bind="args" v-model="args.files">
+    <UInputFile v-bind="args" v-model="files">
       ${args.slotTemplate || getSlotsFragment("")}
     </UInputFile>
   `,
@@ -53,7 +52,7 @@ const EnumTemplate: StoryFn<UInputFileArgs> = (args: UInputFileArgs, { argTypes 
   components: { UInputFile, UCol },
   setup: () => ({ args, argTypes, getArgs }),
   template: `
-    <UCol gap="xl">
+    <UCol gap="2xl">
       <UInputFile
         v-for="option in argTypes?.[args.enum]?.options"
         v-bind="getArgs(args, option)"
@@ -91,16 +90,17 @@ AllowedFileTypes.args = {
 };
 
 export const Sizes = EnumTemplate.bind({});
-Sizes.args = { enum: "size", label: "{enumValue}" };
+Sizes.args = { enum: "size" };
 
 export const LabelAlign = EnumTemplate.bind({});
-LabelAlign.args = { enum: "labelAlign", label: "{enumValue}" };
+LabelAlign.args = { enum: "labelAlign", description: "{enumValue}" };
 
 export const LabelSlot = DefaultTemplate.bind({});
 LabelSlot.args = {
   slotTemplate: `
     <template #label="{ label }">
-      <UBadge :label="label" />
+      {{ label }}
+      <span class="text-red-500">*</span>
     </template>
   `,
 };
@@ -120,8 +120,8 @@ export const Slots: StoryFn<UInputFileArgs> = (args) => ({
         :maxFileSize="2"
       >
         <template #top>
-          <URow align="center" gap="xs">
-            <UIcon name="info" size="sm" />
+          <URow align="center" gap="2xs">
+            <UIcon name="info" size="xs" color="neutral" />
             <UText variant="lifted">Recommended size: 400x400px, max 2MB</UText>
           </URow>
         </template>
@@ -134,8 +134,8 @@ export const Slots: StoryFn<UInputFileArgs> = (args) => ({
         :allowedFileTypes="['.pdf', '.doc', '.docx']"
       >
         <template #left>
-          <URow align="center" gap="xs">
-            <UIcon name="description" size="sm" />
+          <URow align="center" gap="2xs">
+            <UIcon name="description" size="xs" color="neutral" />
             <UText label="PDF, DOC, DOCX" variant="lifted" size="xs" :wrap="false" />
           </URow>
         </template>
@@ -149,8 +149,8 @@ export const Slots: StoryFn<UInputFileArgs> = (args) => ({
         :allowedFileTypes="['.png', '.jpeg']"
       >
         <template #bottom>
-          <URow align="center" gap="xs">
-            <UIcon name="schedule" size="sm" />
+          <URow align="center" gap="2xs">
+            <UIcon name="schedule" size="xs" color="neutral" />
             <UText label="Processing may take a few moments for multiple files" variant="lifted" />
           </URow>
         </template>

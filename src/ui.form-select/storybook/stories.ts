@@ -27,13 +27,7 @@ import type { Props } from "../types.ts";
 interface USelectArgs extends Props {
   slotTemplate?: string;
   enum: "size" | "openDirection" | "labelAlign";
-  gap?: string;
-}
-
-interface SelectOption {
-  id: string | number;
-  label: string;
-  badge?: string;
+  wrapperClass?: string;
 }
 
 export default {
@@ -66,22 +60,12 @@ export default {
 
 const DefaultTemplate: StoryFn<USelectArgs> = (args: USelectArgs) => ({
   components: { USelect, UIcon, ULink, UText },
-  setup() {
-    function getSelectedBadge(options: SelectOption[], currentValue: string | number) {
-      return options?.find((option) => option.id === currentValue);
-    }
-
-    const slots = getSlotNames(USelect.__name);
-    const showAlert = (message: string) => alert(message);
-
-    return { args, slots, getSelectedBadge, showAlert }; // move to separate template - add option
-  },
+  setup: () => ({ args, slots: getSlotNames(USelect.__name) }),
   template: `
     <USelect
       v-bind="args"
       v-model="args.modelValue"
       class="max-w-96"
-      @add="showAlert('You triggered the add action!')"
     >
       ${args.slotTemplate || getSlotsFragment("")}
     </USelect>
@@ -92,7 +76,7 @@ const EnumTemplate: StoryFn<USelectArgs> = (args: USelectArgs, { argTypes }) => 
   components: { USelect, UCol },
   setup: () => ({ args, argTypes, getArgs }),
   template: `
-    <UCol :gap="args.gap">
+    <UCol :class="args.wrapperClass">
       <USelect
         v-for="option in argTypes?.[args.enum]?.options"
         v-bind="getArgs(args, option)"
@@ -157,7 +141,7 @@ LabelAlign.args = {
   enum: "labelAlign",
   label: "{enumValue}",
   description: "Select a city from the list.",
-  gap: "2xl",
+  wrapperClass: "gap-16",
 };
 
 export const Sizes = EnumTemplate.bind({});
@@ -236,8 +220,19 @@ VisibleOptions.parameters = {
   },
 };
 
-export const AddOption = DefaultTemplate.bind({});
-AddOption.args = { addOption: true };
+export const AddOption: StoryFn<USelectArgs> = (args: USelectArgs) => ({
+  components: { USelect },
+  setup: () => ({ args, showAlert: (message: string) => alert(message) }),
+  template: `
+    <USelect
+      v-bind="args"
+      v-model="args.modelValue"
+      class="max-w-96"
+      add-option
+      @add="showAlert('You triggered the add action!')"
+    />
+  `,
+});
 AddOption.parameters = {
   docs: {
     description: {

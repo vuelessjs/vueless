@@ -19,7 +19,7 @@ import type { Props } from "../types.ts";
 interface UTextareaArgs extends Props {
   slotTemplate?: string;
   enum: "size" | "labelAlign";
-  gap?: string;
+  wrapperClass?: string;
 }
 
 export default {
@@ -59,7 +59,7 @@ const EnumTemplate: StoryFn<UTextareaArgs> = (args: UTextareaArgs, { argTypes })
   components: { UTextarea, UCol },
   setup: () => ({ args, argTypes, getArgs }),
   template: `
-    <UCol :gap="args.gap">
+    <UCol :class="args.wrapperClass">
       <UTextarea
         v-for="option in argTypes?.[args.enum]?.options"
         v-bind="getArgs(args, option)"
@@ -90,11 +90,11 @@ export const LabelAlign = EnumTemplate.bind({});
 LabelAlign.args = {
   enum: "labelAlign",
   description: "{enumValue}",
-  gap: "2xl",
+  wrapperClass: "gap-16",
 };
 
 export const Sizes = EnumTemplate.bind({});
-Sizes.args = { enum: "size", description: "{enumValue}" };
+Sizes.args = { enum: "size" };
 
 export const Resizable = DefaultTemplate.bind({});
 Resizable.args = { resizable: true };

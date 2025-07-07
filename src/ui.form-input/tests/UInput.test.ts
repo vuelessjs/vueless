@@ -251,7 +251,7 @@ describe("UInput.vue", () => {
 
       const component = mount(UInput, {
         props: {
-          noAutocomplete: true,
+          autocomplete: false,
           type: "email",
         },
       });
@@ -268,7 +268,7 @@ describe("UInput.vue", () => {
 
       const component = mount(UInput, {
         props: {
-          noAutocomplete: false,
+          autocomplete: true,
           type: "email",
         },
       });

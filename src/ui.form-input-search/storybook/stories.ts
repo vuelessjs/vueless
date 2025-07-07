@@ -1,3 +1,5 @@
+import { ref } from "vue";
+
 import {
   getArgs,
   getArgTypes,
@@ -19,6 +21,7 @@ import type { Props } from "../types.ts";
 interface UInputSearchArgs extends Props {
   slotTemplate?: string;
   enum: "size" | "labelAlign";
+  wrapperClass?: string;
 }
 
 export default {
@@ -56,7 +59,7 @@ const EnumTemplate: StoryFn<UInputSearchArgs> = (args: UInputSearchArgs, { argTy
   components: { UInputSearch, UCol },
   setup: () => ({ args, argTypes, getArgs }),
   template: `
-    <UCol>
+    <UCol :class="args.wrapperClass">
       <UInputSearch
         v-for="option in argTypes?.[args.enum]?.options"
         v-bind="getArgs(args, option)"
@@ -80,8 +83,18 @@ Placeholder.args = { modelValue: "", placeholder: "Type to search..." };
 export const Description = DefaultTemplate.bind({});
 Description.args = { description: "Search for additional details." };
 
-export const Error = DefaultTemplate.bind({});
-Error.args = { error: "This field is required. Please enter a value.", modelValue: "" };
+export const Error: StoryFn<UInputSearchArgs> = (args: UInputSearchArgs) => ({
+  components: { UInputSearch },
+  setup: () => ({ args, modelValue: ref("") }),
+  template: `
+    <UInputSearch
+      v-bind="args"
+      v-model="modelValue"
+      class="!max-w-96"
+      :error="modelValue ? '' : 'This field is required. Please enter a value.'"
+    />
+  `,
+});
 
 export const Disabled = DefaultTemplate.bind({});
 Disabled.args = { disabled: true };
@@ -90,7 +103,13 @@ export const Sizes = EnumTemplate.bind({});
 Sizes.args = { enum: "size", modelValue: "", placeholder: "{enumValue}" };
 
 export const LabelAlign = EnumTemplate.bind({});
-LabelAlign.args = { enum: "labelAlign", modelValue: "", label: "{enumValue}" };
+LabelAlign.args = {
+  enum: "labelAlign",
+  modelValue: "",
+  label: "{enumValue}",
+  description: "Search for additional details.",
+  wrapperClass: "gap-16",
+};
 
 export const SearchButton = DefaultTemplate.bind({});
 SearchButton.args = { searchButtonLabel: "Search" };
@@ -166,7 +185,7 @@ export const Slots: StoryFn<UInputSearchArgs> = (args) => ({
             :options="aiVersions"
             label="AI Version"
             size="sm"
-            variant="ghost"
+            variant="soft"
             class="rounded-r-none"
           />
         </template>

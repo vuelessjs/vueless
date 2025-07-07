@@ -103,7 +103,7 @@ const inputValue = computed({
 const elementId = props.id || useId();
 
 const inputType = computed(() => {
-  return props.noAutocomplete ? "text" : props.type;
+  return props.autocomplete ? props.type : "text";
 });
 
 onMounted(() => {
@@ -178,7 +178,7 @@ function onKeydown(event: KeyboardEvent) {
  * @param toggleState { boolean }
  */
 function toggleReadonlyToPreventAutocomplete(toggleState: boolean) {
-  if (props.noAutocomplete && !props.readonly && inputRef.value) {
+  if (!props.autocomplete && !props.readonly && inputRef.value) {
     toggleState
       ? inputRef.value.setAttribute("readonly", "readonly")
       : inputRef.value.removeAttribute("readonly");
@@ -292,7 +292,7 @@ const {
         :disabled="disabled"
         :maxlength="maxLength"
         :inputmode="inputmode"
-        :autocomplete="noAutocomplete ? 'off' : 'on'"
+        :autocomplete="autocomplete ? 'on' : 'off'"
         v-bind="inputAttrs"
         :data-test="getDataTest()"
         @focus="onFocus"
