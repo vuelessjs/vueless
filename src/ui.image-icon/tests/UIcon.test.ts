@@ -2,7 +2,7 @@ import { flushPromises, mount } from "@vue/test-utils";
 import { describe, it, expect } from "vitest";
 
 // @ts-expect-error - SVG component imports with ?component suffix are handled by Vite plugin.
-import AddIcon from "./assets/add.svg?component";
+import testIcon from "./assets/test-icon.svg?component";
 
 import UIcon from "../UIcon.vue";
 import type { Props } from "../types";
@@ -26,7 +26,7 @@ describe("UIcon.vue", () => {
     it("Src – renders icon based on provided src", async () => {
       const component = mount(UIcon, {
         props: {
-          src: AddIcon,
+          src: testIcon,
         },
       });
 

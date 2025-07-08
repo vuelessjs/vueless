@@ -239,7 +239,7 @@ describe("UModal", () => {
     // Inner prop
     it("applies inner class when inner prop is true", () => {
       const inner = true;
-      const expectedClass = "!my-[4.5rem]";
+      const expectedClass = "mt-4";
 
       const component = mount(UModal, {
         props: {

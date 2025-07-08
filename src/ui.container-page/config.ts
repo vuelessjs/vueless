@@ -55,7 +55,7 @@ export default /*tw*/ {
     },
   },
   header: "flex items-start justify-between mb-4 md:mb-6",
-  beforeTitle: "flex items-center gap-4",
+  beforeTitle: "flex items-center gap-3",
   titleFallback: "flex flex-col gap-0.5",
   backLinkWrapper: "flex items-center gap-0.5",
   backLink: "{ULink}",
