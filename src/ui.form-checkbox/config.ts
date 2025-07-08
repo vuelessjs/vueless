@@ -39,6 +39,7 @@ export default /*tw*/ {
       },
     },
   },
+  partiallyChecked: "{>checked}",
   checkedIcon: {
     base: "{UIcon} text-inverted",
     defaults: {
@@ -49,6 +50,7 @@ export default /*tw*/ {
       },
     },
   },
+  partiallyCheckedIcon: "{>checkedIcon}",
   defaults: {
     color: "primary",
     size: "md",
