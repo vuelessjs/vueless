@@ -96,10 +96,7 @@ For.args = {
   for: "input-id",
   slotTemplate: `
     <template #default>
-      <input
-      id="input-id"
-        class="py-2px-3 bg-transparent border-lifted rounded-medium"
-      />
+      <input id="input-id" class="py-2px-3 bg-transparent border-lifted rounded-medium" />
     </template>
   `,
 };

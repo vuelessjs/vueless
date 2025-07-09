@@ -162,7 +162,7 @@ useMutationObserver(leftSlotWrapperRef, (mutations) => mutations.forEach(setLabe
 
 function setLabelPosition() {
   if (props.labelAlign === "top" || !hasSlotContent(slots["left"])) {
-    if (labelComponentRef.value && labelComponentRef.value.labelElement) {
+    if (labelComponentRef.value?.labelElement) {
       labelComponentRef.value.labelElement.style.left = "";
     }
 
