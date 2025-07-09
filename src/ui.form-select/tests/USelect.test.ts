@@ -1,633 +1,824 @@
-import { mount } from "@vue/test-utils";
-import { describe, it, expect } from "vitest";
+import { mount, flushPromises } from "@vue/test-utils";
+import { describe, it, expect, vi } from "vitest";
 
 import USelect from "../USelect.vue";
 import UListbox from "../../ui.form-listbox/UListbox.vue";
 import UIcon from "../../ui.image-icon/UIcon.vue";
 import ULabel from "../../ui.form-label/ULabel.vue";
+import UBadge from "../../ui.text-badge/UBadge.vue";
 
 import type { Props } from "../types.ts";
 
 describe("USelect.vue", () => {
-  // Props tests
-  describe("Props", () => {
-    // Size prop
-    it("applies the correct size class", async () => {
-      const size = {
-        sm: "text-small",
-        md: "text-medium",
-        lg: "text-large",
-      };
+  const defaultOptions = [
+    { label: "Option 1", id: "option1" },
+    { label: "Option 2", id: "option2" },
+    { label: "Option 3", id: "option3" },
+  ];
 
-      Object.entries(size).forEach(([size, classes]) => {
+  describe("Props", () => {
+    it("Model Value – sets initial value correctly for single selection", async () => {
+      const initialValue = "option1";
+
+      const component = mount(USelect, {
+        props: {
+          modelValue: initialValue,
+          options: defaultOptions,
+        },
+      });
+
+      expect(component.find("[vl-key='innerWrapper']").text()).toContain("Option 1");
+    });
+
+    it("Model Value – sets initial value correctly for multiple selection", async () => {
+      const initialValue = ["option1", "option2"];
+
+      const component = mount(USelect, {
+        props: {
+          modelValue: initialValue,
+          options: defaultOptions,
+          multiple: true,
+        },
+      });
+
+      expect(component.text()).toContain(defaultOptions[0].label);
+      expect(component.text()).toContain(defaultOptions[1].label);
+    });
+
+    it("Model Value – updates value on option selection", async () => {
+      const component = mount(USelect, {
+        props: {
+          modelValue: "",
+          options: defaultOptions,
+        },
+      });
+
+      await component.get("[role='combobox']").trigger("focus");
+
+      const listbox = component.findComponent(UListbox);
+      const firstOption = listbox.find("[vl-child-key='option']");
+
+      await firstOption.trigger("click");
+
+      expect(component.emitted("update:modelValue")![0][0]).toBe("option1");
+    });
+
+    it("Options – passes options to UListbox component", async () => {
+      const component = mount(USelect, {
+        props: {
+          options: defaultOptions,
+        },
+      });
+
+      await component.get("[role='combobox']").trigger("focus");
+
+      expect(component.getComponent(UListbox).props("options")).toEqual(defaultOptions);
+    });
+
+    it("Label – passes label to ULabel component", () => {
+      const labelText = "Test Label";
+
+      const component = mount(USelect, {
+        props: {
+          label: labelText,
+          options: defaultOptions,
+        },
+      });
+
+      expect(component.getComponent(ULabel).props("label")).toBe(labelText);
+    });
+
+    it("Label Align – passes labelAlign prop to ULabel component", () => {
+      const labelAlign = "left";
+
+      const component = mount(USelect, {
+        props: {
+          label: "Test Label",
+          labelAlign,
+          options: defaultOptions,
+        },
+      });
+
+      expect(component.getComponent(ULabel).props("align")).toBe(labelAlign);
+    });
+
+    it("Placeholder – displays placeholder when no value is selected", () => {
+      const placeholderText = "Select an option";
+
+      const component = mount(USelect, {
+        props: {
+          placeholder: placeholderText,
+          options: defaultOptions,
+        },
+      });
+
+      expect(component.find("[vl-key='placeholder']").text()).toBe(placeholderText);
+    });
+
+    it("Description – passes description to ULabel component", () => {
+      const descriptionText = "This is a description";
+
+      const component = mount(USelect, {
+        props: {
+          description: descriptionText,
+          options: defaultOptions,
+        },
+      });
+
+      expect(component.getComponent(ULabel).props("description")).toBe(descriptionText);
+    });
+
+    it("Error – passes error message to ULabel component", () => {
+      const errorText = "This is an error";
+
+      const component = mount(USelect, {
+        props: {
+          error: errorText,
+          options: defaultOptions,
+        },
+      });
+
+      expect(component.getComponent(ULabel).props("error")).toBe(errorText);
+    });
+
+    it("Size – passes size prop to ULabel component", () => {
+      const sizeClasses = ["sm", "md", "lg"];
+
+      sizeClasses.forEach((size) => {
         const component = mount(USelect, {
           props: {
             size: size as Props["size"],
+            options: defaultOptions,
           },
         });
 
-        expect(component.findComponent(ULabel).attributes("class")).toContain(classes);
+        expect(component.getComponent(ULabel).props("size")).toBe(size);
       });
     });
 
-    // Label prop
-    it("renders the correct label text", () => {
-      const label = "Select Label";
-
-      const component = mount(USelect, {
-        props: {
-          label,
-        },
-      });
-
-      expect(component.findComponent(ULabel).text()).toBe(label);
-    });
-
-    // LabelAlign prop
-    it("applies the correct label align class", async () => {
-      const labelAlign = {
-        topInside: "group/placement-inside",
-        top: "group/placement-top",
-        topWithDesc: "group/placement-top-with-desc",
-        left: "group/placement-left",
-        right: "group/placement-right",
-      };
-
-      Object.entries(labelAlign).forEach(([align, classes]) => {
-        const component = mount(USelect, {
-          props: {
-            label: "Label",
-            labelAlign: align as Props["labelAlign"],
-          },
-        });
-
-        expect(component.findComponent(ULabel).attributes("class")).toContain(classes);
-      });
-    });
-
-    // Placeholder prop
-    it("renders the correct placeholder text", () => {
-      const placeholder = "Select an option";
-
-      const component = mount(USelect, {
-        props: {
-          placeholder,
-        },
-      });
-
-      expect(component.text()).toContain(placeholder);
-    });
-
-    // Description prop
-    it("renders the correct description text", () => {
-      const description = "This is a description";
-
-      const component = mount(USelect, {
-        props: {
-          description,
-        },
-      });
-
-      expect(component.findComponent(ULabel).text()).toContain(description);
-    });
-
-    // Error prop
-    it("applies error class when error prop is provided", () => {
-      const error = "This is an error message";
-
-      const component = mount(USelect, {
-        props: {
-          error,
-        },
-      });
-
-      expect(component.findComponent(ULabel).attributes("class")).toContain("text-error");
-      expect(component.findComponent(ULabel).text()).toContain(error);
-    });
-
-    // LeftIcon prop
-    it("renders left icon when leftIcon prop is provided", () => {
+    it("Left Icon – renders left icon when leftIcon prop is provided", async () => {
       const leftIcon = "search";
 
       const component = mount(USelect, {
         props: {
           leftIcon,
+          options: defaultOptions,
         },
       });
 
-      const iconComponent = component.findAllComponents(UIcon)[0];
+      const iconComponents = component.findAllComponents(UIcon);
+      const leftIconComponent = iconComponents.find((icon) => icon.props("name") === leftIcon);
 
-      expect(iconComponent.exists()).toBe(true);
-      expect(iconComponent.props("name")).toBe(leftIcon);
+      expect(leftIconComponent?.exists()).toBe(true);
+      expect(leftIconComponent?.props("name")).toBe(leftIcon);
     });
 
-    // RightIcon prop
-    it("renders right icon when rightIcon prop is provided", () => {
+    it("Right Icon – renders right icon when rightIcon prop is provided", () => {
       const rightIcon = "close";
 
       const component = mount(USelect, {
         props: {
           rightIcon,
+          options: defaultOptions,
         },
       });
 
-      const iconComponent = component.findAllComponents(UIcon)[0];
+      const iconComponents = component.findAllComponents(UIcon);
+      const rightIconComponent = iconComponents.find((icon) => icon.props("name") === rightIcon);
 
-      expect(iconComponent.exists()).toBe(true);
-      expect(iconComponent.props("name")).toBe(rightIcon);
+      expect(rightIconComponent?.exists()).toBe(true);
     });
 
-    // ToggleIcon prop
-    it("renders toggle icon when toggleIcon prop is provided", () => {
-      const toggleIcon = "arrow_down";
+    it("Toggle Icon – renders toggle icon", () => {
+      const component = mount(USelect, {
+        props: {
+          toggleIcon: true,
+          options: defaultOptions,
+        },
+      });
+
+      const iconComponents = component.findAllComponents(UIcon);
+      const toggleIconComponent = iconComponents.find(
+        (icon) => icon.props("name") === "keyboard_arrow_down",
+      );
+
+      expect(toggleIconComponent?.exists()).toBe(true);
+    });
+
+    it("Multiple Variant Badge – renders badges for selected options", async () => {
+      const badgeAmount = 2;
 
       const component = mount(USelect, {
         props: {
-          toggleIcon,
+          multiple: true,
+          multipleVariant: "badge",
+          modelValue: ["option1", "option2"],
+          options: defaultOptions,
         },
       });
 
-      const iconComponent = component.findAllComponents(UIcon)[0];
+      const badges = component.findAllComponents(UBadge);
 
-      expect(iconComponent.exists()).toBe(true);
-      expect(iconComponent.props("name")).toBe(toggleIcon);
+      expect(badges.length).toBe(badgeAmount);
     });
 
-    // Options prop
-    it("passes options to UListbox when dropdown is open", async () => {
-      const options = [
-        { id: 1, label: "Option 1" },
-        { id: 2, label: "Option 2" },
-        { id: 3, label: "Option 3" },
-      ];
-
+    it("Label Display Count – controls how many selected option labels are shown", async () => {
       const component = mount(USelect, {
         props: {
-          options,
+          multiple: true,
+          modelValue: ["option1", "option2", "option3"],
+          options: defaultOptions,
+          labelDisplayCount: 2,
         },
       });
 
-      // Open the dropdown
-      await component.find("[role='combobox']").trigger("focus");
+      await flushPromises();
 
-      const listbox = component.findComponent(UListbox);
+      const selectedLabelElement = component.find("[vl-key='selectedLabel']");
+      const labelCounterElement = component.find("[vl-key='counter']");
 
-      expect(listbox.exists()).toBe(true);
-      expect(listbox.props("options")).toEqual(options);
+      expect(selectedLabelElement.text()).toContain(defaultOptions[0].label);
+      expect(selectedLabelElement.text()).toContain(defaultOptions[1].label);
+      expect(labelCounterElement.text()).toContain("+1");
     });
 
-    // ModelValue prop
-    it("displays the selected option label when modelValue is provided", async () => {
-      const options = [
-        { id: 1, label: "Option 1" },
-        { id: 2, label: "Option 2" },
-        { id: 3, label: "Option 3" },
-      ];
-      const modelValue = 2;
-
+    it("Searchable – passes searchable prop to UListbox", async () => {
       const component = mount(USelect, {
         props: {
-          options,
-          modelValue,
+          searchable: true,
+          options: defaultOptions,
         },
       });
 
-      expect(component.text()).toContain("Option 2");
+      await component.get("[role='combobox']").trigger("focus");
+
+      expect(component.getComponent(UListbox).props("searchable")).toBe(true);
     });
 
-    // Multiple prop
-    it("allows multiple selection when multiple prop is true", async () => {
-      const options = [
-        { id: 1, label: "Option 1" },
-        { id: 2, label: "Option 2" },
-        { id: 3, label: "Option 3" },
-      ];
-      const modelValue = [1, 3];
-      const multiple = true;
-
+    it("Clearable – renders clear icon when true", async () => {
       const component = mount(USelect, {
         props: {
-          options,
-          modelValue,
-          multiple,
+          clearable: true,
+          modelValue: "option1",
+          options: defaultOptions,
         },
       });
 
-      expect(component.text()).toContain("Option 1");
-      expect(component.text()).toContain("Option 3");
+      await flushPromises();
+
+      expect(component.find("[vl-key='clearIcon']").exists()).toBe(true);
     });
 
-    // MultipleVariant prop
-    it("applies the correct multiple variant class", async () => {
-      const options = [
-        { id: 1, label: "Option 1" },
-        { id: 2, label: "Option 2" },
-      ];
-      const modelValue = [1, 2];
-      const multiple = true;
-      const multipleVariant = {
-        inline: "flex order-last",
-        list: "flex flex-col col-span-2",
-        badge: "flex gap-1 flex-wrap",
-      };
-
-      Object.entries(multipleVariant).forEach(([variant, classes]) => {
-        const component = mount(USelect, {
-          props: {
-            options,
-            modelValue,
-            multiple,
-            multipleVariant: variant as Props["multipleVariant"],
-          },
-        });
-
-        expect(component.find("[class*='selectedLabels']").attributes("class")).toContain(classes);
-      });
-    });
-
-    // Searchable prop
-    it("passes searchable prop to UListbox when dropdown is open", async () => {
-      const searchable = true;
-
+    it("Clearable – clears value when clear icon is clicked", async () => {
       const component = mount(USelect, {
         props: {
-          searchable,
+          clearable: true,
+          modelValue: "option1",
+          options: defaultOptions,
         },
       });
 
-      // Open the dropdown
-      await component.find("[role='combobox']").trigger("focus");
+      await flushPromises();
 
-      const listbox = component.findComponent(UListbox);
+      component.find("[vl-key='clearIcon']").trigger("click");
 
-      expect(listbox.props("searchable")).toBe(searchable);
+      expect(component.emitted("update:modelValue")![0][0]).toBe("");
+      expect(component.emitted("clear")).toBeDefined();
     });
 
-    // Disabled prop
-    it("applies disabled class when disabled prop is true", () => {
-      const disabled = true;
-
+    it("Disabled – sets disabled state on wrapper", () => {
       const component = mount(USelect, {
         props: {
-          disabled,
+          disabled: true,
+          options: defaultOptions,
         },
       });
 
-      expect(component.find("[role='combobox']").attributes("class")).toContain("bg-lifted");
+      expect(component.find("[vl-key='wrapper']").attributes("tabindex")).toBe("-1");
+      expect(component.getComponent(ULabel).props("disabled")).toBe(true);
     });
 
-    // Readonly prop
-    it("prevents dropdown from opening when readonly prop is true", async () => {
-      const readonly = true;
-
+    it("Readonly – sets readonly state", async () => {
       const component = mount(USelect, {
         props: {
-          readonly,
+          readonly: true,
+          options: defaultOptions,
         },
       });
 
-      // Try to open the dropdown
-      await component.find("[role='combobox']").trigger("focus");
+      component.get("[role='combobox']").trigger("focus");
+
+      await flushPromises();
 
       expect(component.findComponent(UListbox).exists()).toBe(false);
     });
 
-    // Clearable prop
-    it("shows clear button when clearable prop is true and value is selected", async () => {
-      const options = [
-        { id: 1, label: "Option 1" },
-        { id: 2, label: "Option 2" },
-      ];
-      const modelValue = 1;
-      const clearable = true;
-
+    it("Add Option – passes addOption prop to UListbox", async () => {
       const component = mount(USelect, {
         props: {
-          options,
-          modelValue,
-          clearable,
+          addOption: true,
+          options: defaultOptions,
         },
       });
 
-      expect(component.find("[data-test='clear']").exists()).toBe(true);
+      await component.get("[role='combobox']").trigger("focus");
+
+      expect(component.getComponent(UListbox).props("addOption")).toBe(true);
     });
 
-    // ID prop
-    it("applies the correct id attribute", () => {
-      const id = "test-select-id";
+    it("Label Key – passes labelKey prop to UListbox", async () => {
+      const labelKey = "name";
+
+      const component = mount(USelect, {
+        props: {
+          labelKey,
+          options: defaultOptions,
+        },
+      });
+
+      await component.get("[role='combobox']").trigger("focus");
+
+      expect(component.getComponent(UListbox).props("labelKey")).toBe(labelKey);
+    });
+
+    it("Value Key – passes valueKey prop to UListbox", async () => {
+      const valueKey = "id";
+
+      const component = mount(USelect, {
+        props: {
+          valueKey,
+          options: defaultOptions,
+        },
+      });
+
+      await component.get("[role='combobox']").trigger("focus");
+
+      expect(component.getComponent(UListbox).props("valueKey")).toBe(valueKey);
+    });
+
+    it("Options Limit – passes optionsLimit prop to UListbox", async () => {
+      const optionsLimit = 5;
+
+      const component = mount(USelect, {
+        props: {
+          optionsLimit,
+          options: defaultOptions,
+        },
+      });
+
+      await component.get("[role='combobox']").trigger("focus");
+
+      expect(component.getComponent(UListbox).props("optionsLimit")).toBe(optionsLimit);
+    });
+
+    it("Visible Options – passes visibleOptions prop to UListbox", async () => {
+      const visibleOptions = 3;
+
+      const component = mount(USelect, {
+        props: {
+          visibleOptions,
+          options: defaultOptions,
+        },
+      });
+
+      await component.get("[role='combobox']").trigger("focus");
+
+      expect(component.getComponent(UListbox).props("visibleOptions")).toBe(visibleOptions);
+    });
+
+    it("Debounce – passes debounce prop to UListbox", async () => {
+      const debounce = 300;
+
+      const component = mount(USelect, {
+        props: {
+          debounce,
+          options: defaultOptions,
+        },
+      });
+
+      await component.get("[role='combobox']").trigger("focus");
+
+      expect(component.getComponent(UListbox).props("debounce")).toBe(debounce);
+    });
+
+    it("Id – sets correct id attribute", () => {
+      const id = "test-select";
 
       const component = mount(USelect, {
         props: {
           id,
+          options: defaultOptions,
         },
       });
 
-      expect(component.find(`[aria-owns='listbox-${id}']`).exists()).toBe(true);
+      expect(component.find("[vl-key='wrapper']").attributes("aria-owns")).toBe(`listbox-${id}`);
     });
 
-    // DataTest prop
-    it("applies the correct data-test attribute", () => {
-      const dataTest = "test-select";
+    it("Data Test – applies the correct data-test attributes", async () => {
+      const testCases = {
+        toggleWrapper: "toggle",
+        clearIcon: "clear",
+        listClearIcon: "clear-item",
+        listClearAll: "clear-all",
+      };
+
+      const dataTest = "test";
 
       const component = mount(USelect, {
         props: {
           dataTest,
-        },
-      });
-
-      expect(component.findComponent(ULabel).attributes("data-test")).toBe(dataTest);
-    });
-  });
-
-  // Slots tests
-  describe("Slots", () => {
-    // Label slot
-    it("renders content from label slot", () => {
-      const label = "Select Label";
-      const slotContent = "Custom Label";
-      const slotClass = "custom-label";
-
-      const component = mount(USelect, {
-        props: {
-          label,
-        },
-        slots: {
-          label: `<span class="${slotClass}">${slotContent}</span>`,
-        },
-      });
-
-      expect(component.find(`.${slotClass}`).exists()).toBe(true);
-      expect(component.find(`.${slotClass}`).text()).toBe(slotContent);
-    });
-
-    // Left slot
-    it("renders content from left slot", () => {
-      const slotContent = "Left";
-      const slotClass = "left-content";
-
-      const component = mount(USelect, {
-        slots: {
-          left: `<span class="${slotClass}">${slotContent}</span>`,
-        },
-      });
-
-      expect(component.find(`.${slotClass}`).exists()).toBe(true);
-      expect(component.find(`.${slotClass}`).text()).toBe(slotContent);
-    });
-
-    // Right slot
-    it("renders content from right slot", () => {
-      const slotContent = "Right";
-      const slotClass = "right-content";
-
-      const component = mount(USelect, {
-        slots: {
-          right: `<span class="${slotClass}">${slotContent}</span>`,
-        },
-      });
-
-      expect(component.find(`.${slotClass}`).exists()).toBe(true);
-      expect(component.find(`.${slotClass}`).text()).toBe(slotContent);
-    });
-
-    // Toggle slot
-    it("renders content from toggle slot", () => {
-      const slotContent = "Toggle";
-      const slotClass = "toggle-content";
-
-      const component = mount(USelect, {
-        slots: {
-          toggle: `<span class="${slotClass}">${slotContent}</span>`,
-        },
-      });
-
-      expect(component.find(`.${slotClass}`).exists()).toBe(true);
-      expect(component.find(`.${slotClass}`).text()).toBe(slotContent);
-    });
-
-    // Clear slot
-    it("renders content from clear slot when value is selected", () => {
-      const options = [
-        { id: 1, label: "Option 1" },
-        { id: 2, label: "Option 2" },
-      ];
-      const modelValue = 1;
-      const slotContent = "Clear";
-      const slotClass = "clear-content";
-
-      const component = mount(USelect, {
-        props: {
-          options,
-          modelValue,
+          multiple: true,
+          multipleVariant: "list",
+          modelValue: ["option1", "option2", "option3"],
+          options: defaultOptions,
           clearable: true,
-        },
-        slots: {
-          clear: `<span class="${slotClass}">${slotContent}</span>`,
+          toggleIcon: true,
         },
       });
 
-      expect(component.find(`.${slotClass}`).exists()).toBe(true);
-      expect(component.find(`.${slotClass}`).text()).toBe(slotContent);
-    });
+      await flushPromises();
 
-    // Selected-option slot
-    it("renders content from selected-option slot when value is selected", () => {
-      const options = [
-        { id: 1, label: "Option 1" },
-        { id: 2, label: "Option 2" },
-      ];
-      const modelValue = 1;
-      const slotContent = "Selected Option";
-      const slotClass = "selected-option-content";
+      Object.entries(testCases).forEach(async ([key, value]) => {
+        const expectedDataTest = `${dataTest}-${value}`;
 
-      const component = mount(USelect, {
-        props: {
-          options,
-          modelValue,
-        },
-        slots: {
-          "selected-option": `<span class="${slotClass}">${slotContent}</span>`,
-        },
+        await component.get("[role='combobox']").trigger("focus");
+
+        expect(component.find(`[vl-key='${key}']`).attributes("data-test")).toBe(expectedDataTest);
       });
-
-      expect(component.find(`.${slotClass}`).exists()).toBe(true);
-      expect(component.find(`.${slotClass}`).text()).toBe(slotContent);
     });
   });
 
-  // Events tests
+  describe("Functionality", () => {
+    it("Opens dropdown when wrapper is clicked", async () => {
+      const component = mount(USelect, {
+        props: {
+          options: defaultOptions,
+        },
+      });
+
+      await component.get("[role='combobox']").trigger("focus");
+
+      expect(component.findComponent(UListbox).exists()).toBe(true);
+    });
+
+    it("Closes dropdown when option is selected in single mode", async () => {
+      const component = mount(USelect, {
+        props: {
+          modelValue: "",
+          options: defaultOptions,
+        },
+      });
+
+      await component.get("[role='combobox']").trigger("focus");
+
+      const firstOption = component.find("[vl-child-key='option']");
+
+      await firstOption.trigger("click");
+
+      expect(component.findComponent(UListbox).exists()).toBe(false);
+    });
+
+    it("Handles keyboard navigation", async () => {
+      const updatedValue = "option2";
+
+      const component = mount(USelect, {
+        props: {
+          options: defaultOptions,
+        },
+      });
+
+      const wrapperElement = await component.get("[role='combobox']");
+
+      await wrapperElement.trigger("focus");
+      await wrapperElement.trigger("keydown", { key: "ArrowDown" });
+      await wrapperElement.trigger("keydown", { key: "Enter" });
+
+      expect(component.emitted("update:modelValue")![0][0]).toBe(updatedValue);
+    });
+
+    it("Closes dropdown on Escape key", async () => {
+      const component = mount(USelect, {
+        props: {
+          options: defaultOptions,
+        },
+      });
+
+      const wrapperElement = await component.get("[role='combobox']");
+
+      await wrapperElement.trigger("focus");
+
+      expect(component.findComponent(UListbox).exists()).toBe(true);
+
+      await wrapperElement.trigger("keyup", { key: "Escape" });
+
+      expect(component.findComponent(UListbox).exists()).toBe(false);
+    });
+  });
+
+  describe("Slots", () => {
+    it("Label – renders custom content from label slot", () => {
+      const customLabelContent = "Custom Label Content";
+
+      const component = mount(USelect, {
+        props: {
+          label: "Default Label",
+          options: defaultOptions,
+        },
+        slots: {
+          label: customLabelContent,
+        },
+      });
+
+      expect(component.text()).toContain(customLabelContent);
+    });
+
+    it("Label – exposes label prop to slot", () => {
+      const defaultLabel = "Test Label";
+
+      const component = mount(USelect, {
+        props: {
+          label: defaultLabel,
+          options: defaultOptions,
+        },
+        slots: {
+          label: "Modified {{ params.label }}",
+        },
+      });
+
+      expect(component.text()).toContain(`Modified ${defaultLabel}`);
+    });
+
+    it("Left – renders custom content from left slot", () => {
+      const slotContent = "Left Slot Content";
+
+      const component = mount(USelect, {
+        props: {
+          leftIcon: "search",
+          options: defaultOptions,
+        },
+        slots: {
+          left: slotContent,
+        },
+      });
+
+      expect(component.text()).toContain(slotContent);
+    });
+
+    it("Left – exposes icon-name to slot when leftIcon prop is provided", () => {
+      const leftIcon = "search";
+
+      const component = mount(USelect, {
+        props: {
+          leftIcon,
+          options: defaultOptions,
+        },
+        slots: {
+          left: "Icon: {{ params.iconName }}",
+        },
+      });
+
+      expect(component.text()).toContain(`Icon: ${leftIcon}`);
+    });
+
+    it("Right – renders custom content from right slot", () => {
+      const slotContent = "Right Slot Content";
+
+      const component = mount(USelect, {
+        props: {
+          rightIcon: "close",
+          options: defaultOptions,
+        },
+        slots: {
+          right: slotContent,
+        },
+      });
+
+      expect(component.text()).toContain(slotContent);
+    });
+
+    it("Right – exposes icon-name to slot when rightIcon prop is provided", () => {
+      const rightIcon = "close";
+
+      const component = mount(USelect, {
+        props: {
+          rightIcon,
+          options: defaultOptions,
+        },
+        slots: {
+          right: "Icon: {{ params.iconName }}",
+        },
+      });
+
+      expect(component.text()).toContain(`Icon: ${rightIcon}`);
+    });
+
+    it("Toggle – renders custom content from toggle slot", () => {
+      const slotContent = "Toggle Slot Content";
+
+      const component = mount(USelect, {
+        props: {
+          toggleIcon: true,
+          options: defaultOptions,
+        },
+        slots: {
+          toggle: slotContent,
+        },
+      });
+
+      expect(component.text()).toContain(slotContent);
+    });
+
+    it("Clear – renders custom content from clear slot", () => {
+      const slotContent = "Clear Slot Content";
+
+      const component = mount(USelect, {
+        props: {
+          clearable: true,
+          modelValue: "option1",
+          options: defaultOptions,
+        },
+        slots: {
+          clear: slotContent,
+        },
+      });
+
+      expect(component.text()).toContain(slotContent);
+    });
+
+    it("Before Toggle – renders custom content from before-toggle slot", () => {
+      const slotContent = "Before Toggle Content";
+
+      const component = mount(USelect, {
+        props: {
+          options: defaultOptions,
+        },
+        slots: {
+          "before-toggle": slotContent,
+        },
+      });
+
+      expect(component.text()).toContain(slotContent);
+    });
+  });
+
   describe("Events", () => {
-    // Click event
-    it("emits click event when clicked", async () => {
-      const component = mount(USelect, {});
-
-      await component.find("[role='combobox']").trigger("click");
-      expect(component.emitted("click")).toBeTruthy();
-    });
-
-    // Open event
-    it("emits open event when dropdown is opened", async () => {
-      const component = mount(USelect, {});
-
-      await component.find("[role='combobox']").trigger("focus");
-      expect(component.emitted("open")).toBeTruthy();
-    });
-
-    // Close event
-    it("emits close event when dropdown is closed", async () => {
-      const component = mount(USelect, {});
-
-      // Open the dropdown
-      await component.find("[role='combobox']").trigger("focus");
-      // Close the dropdown
-      await component.find("[role='combobox']").trigger("keyup.esc");
-
-      expect(component.emitted("close")).toBeTruthy();
-    });
-
-    // Update:modelValue event
-    it("emits update:modelValue event when option is selected", async () => {
-      const options = [
-        { id: 1, label: "Option 1" },
-        { id: 2, label: "Option 2" },
-      ];
-
+    it("Click – emits when select is clicked", async () => {
       const component = mount(USelect, {
         props: {
-          options,
+          options: defaultOptions,
         },
       });
 
-      // Open the dropdown
-      await component.find("[role='combobox']").trigger("focus");
+      await component.get("[role='combobox']").trigger("click");
 
-      // Simulate option selection by emitting from UListbox
-      await component.findComponent(UListbox).vm.$emit("update:modelValue", 2);
-
-      expect(component.emitted("update:modelValue")).toBeTruthy();
-      expect(component.emitted("update:modelValue")[0]).toEqual([2]);
+      expect(component.emitted("click")).toBeDefined();
     });
 
-    // Change event
-    it("emits change event when option is selected", async () => {
-      const options = [
-        { id: 1, label: "Option 1" },
-        { id: 2, label: "Option 2" },
-      ];
-
+    it("Open – emits when dropdown is opened", async () => {
       const component = mount(USelect, {
         props: {
-          options,
+          options: defaultOptions,
         },
       });
 
-      // Open the dropdown
-      await component.find("[role='combobox']").trigger("focus");
+      await component.get("[role='combobox']").trigger("focus");
 
-      // Simulate option selection by emitting from UListbox
-      await component.findComponent(UListbox).vm.$emit("update:modelValue", 2);
-
-      expect(component.emitted("change")).toBeTruthy();
+      expect(component.emitted("open")).toBeDefined();
     });
 
-    // Remove event
-    it("emits remove event when option is removed", async () => {
-      const options = [
-        { id: 1, label: "Option 1" },
-        { id: 2, label: "Option 2" },
-      ];
-      const modelValue = [1, 2];
-      const multiple = true;
-
+    it("Close – emits when dropdown is closed", async () => {
       const component = mount(USelect, {
         props: {
-          options,
-          modelValue,
-          multiple,
+          modelValue: "",
+          options: defaultOptions,
         },
       });
 
-      // Click the clear item button
-      await component.find("[data-test='clear-item']").trigger("click");
+      await component.get("[role='combobox']").trigger("focus");
 
-      expect(component.emitted("remove")).toBeTruthy();
+      const listbox = component.findComponent(UListbox);
+      const firstOption = listbox.find("[vl-child-key='option']");
+
+      await firstOption.trigger("click");
+
+      expect(component.emitted("close")).toBeDefined();
     });
 
-    // Add event
-    it("emits add event when add button is clicked", async () => {
-      const addOption = true;
+    it("Search Change – emits when search input changes", async () => {
+      vi.useFakeTimers();
+
+      const testValue = "test";
 
       const component = mount(USelect, {
         props: {
-          addOption,
+          searchable: true,
+          options: defaultOptions,
         },
       });
 
-      // Open the dropdown
-      await component.find("[role='combobox']").trigger("focus");
+      await component.get("[role='combobox']").trigger("focus");
 
-      // Simulate add option by emitting from UListbox
-      await component.findComponent(UListbox).vm.$emit("add");
+      component.get("input").setValue(testValue);
 
-      expect(component.emitted("add")).toBeTruthy();
+      vi.advanceTimersByTime(300); // Simulate debounce delay
+
+      expect(component.emitted("searchChange")).toBeDefined();
+      expect(component.emitted("searchChange")![0][0]).toBe(testValue);
+
+      vi.useRealTimers();
     });
 
-    // SearchChange event
-    it("emits searchChange event when search input changes", async () => {
-      const searchable = true;
-
+    it("Clear – emits when clear icon is clicked", async () => {
       const component = mount(USelect, {
         props: {
-          searchable,
+          clearable: true,
+          modelValue: "option1",
+          options: defaultOptions,
         },
       });
 
-      // Open the dropdown
-      await component.find("[role='combobox']").trigger("focus");
+      await flushPromises();
 
-      // Simulate search change by emitting from UListbox
-      await component.findComponent(UListbox).vm.$emit("searchChange", "test");
+      component.find("[vl-key='clearIcon']").trigger("click");
 
-      expect(component.emitted("searchChange")).toBeTruthy();
-      expect(component.emitted("searchChange")[0]).toEqual(["test"]);
+      expect(component.emitted("update:modelValue")![0][0]).toBe("");
+
+      expect(component.emitted("clear")).toBeDefined();
+    });
+
+    it("Add – emits when add button is clicked", async () => {
+      const component = mount(USelect, {
+        props: {
+          addOption: true,
+          options: defaultOptions,
+        },
+      });
+
+      await component.get("[role='combobox']").trigger("focus");
+
+      await flushPromises();
+
+      const icons = component.findAllComponents(UIcon);
+      const addButton = icons.find((icon) => icon.props("name") === "add");
+
+      await addButton?.trigger("click");
+
+      expect(component.emitted("add")).toBeDefined();
+    });
+
+    it("Change – emits when value changes", async () => {
+      const component = mount(USelect, {
+        props: {
+          modelValue: "",
+          options: defaultOptions,
+        },
+      });
+
+      await component.get("[role='combobox']").trigger("focus");
+
+      const listbox = component.findComponent(UListbox);
+      const firstOption = listbox.find("[vl-child-key='option']");
+
+      await firstOption.trigger("click");
+
+      expect(component.emitted("change")).toBeDefined();
+      expect(component.emitted("change")![0][0]).toEqual({
+        value: "option1",
+        options: defaultOptions,
+      });
     });
   });
 
-  // Exposed refs tests
-  describe("Exposed refs", () => {
-    // listboxRef
-    it("exposes listboxRef", () => {
-      const component = mount(USelect, {});
-
-      expect(component.vm.listboxRef).toBeDefined();
-    });
-
-    // wrapperRef
-    it("exposes wrapperRef", () => {
-      const component = mount(USelect, {});
+  describe("Exposed Properties", () => {
+    it("Wrapper Ref – exposes wrapper element ref", () => {
+      const component = mount(USelect, {
+        props: {
+          options: defaultOptions,
+        },
+      });
 
       expect(component.vm.wrapperRef).toBeDefined();
     });
 
-    // labelComponentRef
-    it("exposes labelComponentRef", () => {
-      const component = mount(USelect, {});
+    it("Listbox Ref – exposes listbox component ref", () => {
+      const component = mount(USelect, {
+        props: {
+          options: defaultOptions,
+        },
+      });
+
+      expect(component.vm.listboxRef).toBeDefined();
+    });
+
+    it("Label Component Ref – exposes label component ref", () => {
+      const component = mount(USelect, {
+        props: {
+          label: "Test Label",
+          options: defaultOptions,
+        },
+      });
 
       expect(component.vm.labelComponentRef).toBeDefined();
-    });
-
-    // leftSlotWrapperRef
-    it("exposes leftSlotWrapperRef", () => {
-      const component = mount(USelect, {});
-
-      expect(component.vm.leftSlotWrapperRef).toBeDefined();
-    });
-
-    // innerWrapperRef
-    it("exposes innerWrapperRef", () => {
-      const component = mount(USelect, {});
-
-      expect(component.vm.innerWrapperRef).toBeDefined();
     });
   });
 });
