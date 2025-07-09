@@ -32,7 +32,8 @@ export default {
     ...getArgTypes(UInputSearch.__name),
   },
   args: {
-    modelValue: "Which UI library is the best?",
+    modelValue: "Wireless headphones",
+    label: "Search for products, brands, or categories",
   },
   parameters: {
     docs: {
@@ -74,14 +75,11 @@ const EnumTemplate: StoryFn<UInputSearchArgs> = (args: UInputSearchArgs, { argTy
 export const Default = DefaultTemplate.bind({});
 Default.args = {};
 
-export const Label = DefaultTemplate.bind({});
-Label.args = { label: "Search for product or primary" };
-
 export const Placeholder = DefaultTemplate.bind({});
 Placeholder.args = { modelValue: "", placeholder: "Type to search..." };
 
 export const Description = DefaultTemplate.bind({});
-Description.args = { description: "Search for additional details." };
+Description.args = { description: "Find exactly what you're looking for with a quick search." };
 
 export const Error: StoryFn<UInputSearchArgs> = (args: UInputSearchArgs) => ({
   components: { UInputSearch },

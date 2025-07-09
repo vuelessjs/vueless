@@ -99,21 +99,7 @@ export default /*tw*/ {
       },
     },
   },
-  afterToggle: {
-    base: "{>toggle} mr-2.5 items-start cursor-auto",
-    variants: {
-      size: {
-        sm: "pt-0.5",
-        md: "pt-1",
-        lg: "pt-1.5",
-      },
-    },
-    compoundVariants: [
-      { labelAlign: "topInside", size: "sm", class: "pt-2" },
-      { labelAlign: "topInside", size: "md", class: "pt-3" },
-      { labelAlign: "topInside", size: "lg", class: "pt-4" },
-    ],
-  },
+  afterToggle: "{>toggle} mr-2.5 items-center cursor-auto",
   toggle: {
     base: "flex items-center",
     compoundVariants: [

@@ -11,6 +11,7 @@ import UBadge from "../../ui.text-badge/UBadge.vue";
 import URow from "../../ui.container-row/URow.vue";
 import UText from "../../ui.text-block/UText.vue";
 import ULink from "../../ui.button-link/ULink.vue";
+import UIcon from "../../ui.image-icon/UIcon.vue";
 
 import type { Meta, StoryFn } from "@storybook/vue3";
 import type { Props } from "../types.ts";
@@ -25,7 +26,6 @@ export default {
   title: "Form Inputs & Controls / Radio",
   component: URadio,
   args: {
-    name: "radio1",
     label: "Payment Method",
     value: "1",
     color: "primary",
@@ -41,7 +41,7 @@ export default {
 } as Meta;
 
 const DefaultTemplate: StoryFn<URadioArgs> = (args: URadioArgs) => ({
-  components: { URadio, UBadge, UText, ULink, URow },
+  components: { URadio, UBadge, UText, ULink, URow, UIcon },
   setup: () => ({ args, slots: getSlotNames(URadio.__name) }),
   template: `
     <URadio v-bind="args">
@@ -54,58 +54,69 @@ const EnumTemplate: StoryFn<URadioArgs> = (args: URadioArgs, { argTypes }) => ({
   components: { URadio, URow },
   setup: () => ({ args, argTypes, getArgs }),
   template: `
-    <URow>
+    <URow gap="xl">
       <URadio
-        v-for="option in argTypes?.[args.enum]?.options"
+        v-for="(option, index) in argTypes?.[args.enum]?.options"
         v-bind="getArgs(args, option)"
         :key="option"
+        v-model="args.modelValue"
+        :value="index + 1"
       />
     </URow>
   `,
 });
 
 export const Default = DefaultTemplate.bind({});
-Default.args = {};
+Default.args = { name: "Default" };
 
 export const Description = DefaultTemplate.bind({});
 Description.args = {
-  name: "radio3",
+  name: "Description",
   label: "Subscription Plan",
   description: "Choose your preferred plan. You can change it anytime.",
 };
 
-export const Error = DefaultTemplate.bind({});
+export const Error: StoryFn<URadioArgs> = (args: URadioArgs) => ({
+  components: { URadio },
+  setup: () => ({ args }),
+  template: `
+    <URadio
+      v-bind="args"
+      name="Error"
+      v-model="args.modelValue"
+      :error="args.modelValue ? '' : 'This field is required. Please make a selection.'"
+    />
+  `,
+});
 Error.args = {
-  description: "Please select a payment method.",
-  error: "This field is required. Please make a selection.",
+  modelValue: "",
 };
 
 export const Disabled = DefaultTemplate.bind({});
-Disabled.args = { disabled: true, name: "radio2" };
+Disabled.args = { disabled: true, name: "Disabled" };
 
 export const Checked = DefaultTemplate.bind({});
-Checked.args = { checked: true, name: "radio4" };
+Checked.args = { checked: true, name: "Checked" };
 
 export const LabelAlign = EnumTemplate.bind({});
-LabelAlign.args = { enum: "labelAlign", label: "{enumValue}" };
+LabelAlign.args = { name: "LabelAlign", enum: "labelAlign", label: "{enumValue}", modelValue: 1 };
 
 export const Sizes = EnumTemplate.bind({});
-Sizes.args = { enum: "size", label: "{enumValue}" };
+Sizes.args = { name: "Sizes", enum: "size", label: "{enumValue}", modelValue: 1 };
 
 export const Colors = EnumTemplate.bind({});
-Colors.args = { enum: "color", label: "{enumValue}" };
+Colors.args = { name: "Colors", enum: "color", label: "{enumValue}", modelValue: 1 };
 
 export const LabelSlot = DefaultTemplate.bind({});
 LabelSlot.args = {
-  name: "delivery-method",
-  label: "Courier Delivery",
+  name: "LabelSlot",
   value: "courier",
   color: "primary",
   slotTemplate: `
-    <template #label="{ label }">
-      <URow gap="xs" align="center">
-        <UText :label="label" />
-        <UBadge label="Recommended" color="success" size="sm" variant="soft" />
+    <template #label>
+      <URow gap="2xs" align="center">
+        <UText>I agree to the <ULink label="Privacy Policy" /></UText>
+        <UIcon name="contract" size="xs" />
       </URow>
     </template>
   `,

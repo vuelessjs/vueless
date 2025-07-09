@@ -150,6 +150,8 @@ watch(
       const wrapperBorderBottom = parseFloat(wrapperStyle.borderBottomWidth || "0");
       const wrapperGap = parseFloat(wrapperStyle.gap || "0");
 
+      const addOptionHeight = addOptionRef.value?.getBoundingClientRect().height || 0;
+
       const inputEl = listboxInputRef.value?.input as HTMLInputElement | undefined;
       let listboxInputHeight = 0;
 
@@ -174,6 +176,7 @@ watch(
 
       wrapperMaxHeight.value = `${
         maxHeight +
+        addOptionHeight +
         (props.searchable ? wrapperGap : 0) +
         wrapperPaddingTop +
         wrapperPaddingBottom +

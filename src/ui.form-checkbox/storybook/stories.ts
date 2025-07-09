@@ -8,7 +8,6 @@ import {
 
 import UCheckbox from "../../ui.form-checkbox/UCheckbox.vue";
 import UCheckboxGroup from "../../ui.form-checkbox-group/UCheckboxGroup.vue";
-import UBadge from "../../ui.text-badge/UBadge.vue";
 import UCol from "../../ui.container-col/UCol.vue";
 import UIcon from "../../ui.image-icon/UIcon.vue";
 import ULink from "../../ui.button-link/ULink.vue";
@@ -42,7 +41,7 @@ export default {
 } as Meta;
 
 const DefaultTemplate: StoryFn<UCheckboxArgs> = (args: UCheckboxArgs) => ({
-  components: { UCheckbox, UBadge, UIcon, ULink, UText, URow, UChip },
+  components: { UCheckbox, UIcon, ULink, UText, URow, UChip },
   setup: () => ({ args, slots: getSlotNames(UCheckbox.__name) }),
   template: `
     <UCheckbox v-bind="args" v-model="args.modelValue">
@@ -52,19 +51,11 @@ const DefaultTemplate: StoryFn<UCheckboxArgs> = (args: UCheckboxArgs) => ({
 });
 
 const ValueTypesTemplate: StoryFn<UCheckboxArgs> = (args: UCheckboxArgs) => ({
-  components: { UCheckbox, UCheckboxGroup, UCol },
-  setup() {
-    return { args };
-  },
-  data() {
-    return {
-      defaultValue: false,
-      arrayValue: [],
-      customValue: { vue: "less" },
-    };
-  },
+  components: { UCheckbox, UCheckboxGroup, URow },
+  setup: () => ({ args }),
+  data: () => ({ defaultValue: false, customValue: { vue: "less" } }),
   template: `
-    <UCol gap="xl">
+    <URow gap="xl">
       <UCheckbox
         v-bind="args"
         v-model="defaultValue"
@@ -80,28 +71,7 @@ const ValueTypesTemplate: StoryFn<UCheckboxArgs> = (args: UCheckboxArgs) => ({
         :description="JSON.stringify(customValue)"
         label="Custom"
       />
-
-      <div>
-        <UCheckboxGroup name="checkboxGroup" label="Checkbox group">
-          <UCheckbox
-            v-bind="args"
-            v-model="arrayValue"
-            :value="{ key: 'value' }"
-            label="Array with object value"
-          />
-          <UCheckbox
-            v-bind="args"
-            v-model="arrayValue"
-            value="someString"
-            label="Array with custom string value"
-          />
-        </UCheckboxGroup>
-
-        <span class="font-normal text-muted text-small pl-0 mt-1">
-          {{ arrayValue }}
-        </span>
-      </div>
-    </UCol>
+    </URow>
   `,
 });
 
@@ -126,8 +96,17 @@ Default.args = {};
 export const Description = DefaultTemplate.bind({});
 Description.args = { description: "Receive updates and exclusive offers directly to your inbox." };
 
-export const Error = DefaultTemplate.bind({});
-Error.args = { error: "Please agree to the Terms and Conditions before proceeding." };
+export const Error: StoryFn<UCheckboxArgs> = (args: UCheckboxArgs) => ({
+  components: { UCheckbox },
+  setup: () => ({ args }),
+  template: `
+    <UCheckbox
+      v-bind="args"
+      v-model="args.modelValue"
+      :error="args.modelValue ? '' : 'Please agree to the Terms and Conditions before proceeding.'"
+    />
+  `,
+});
 
 export const Disabled = DefaultTemplate.bind({});
 Disabled.args = { disabled: true };
@@ -179,7 +158,7 @@ export const BottomSlot = DefaultTemplate.bind({});
 BottomSlot.args = {
   slotTemplate: `
     <template #bottom>
-      <UChip icon="arrow_outward" size="3xs" class="mt-2">
+      <UChip icon="arrow_outward" size="sm" class="mt-2">
         <ULink label="Learn more" size="sm" class="mr-1.5" />
       </UChip>
     </template>

@@ -202,6 +202,10 @@ function setLabelPosition() {
   const shouldAlignLabelOnTop = !hasSlotContent(slots["left"]) && !props.leftIcon;
 
   if (props.labelAlign === "top" || shouldAlignLabelOnTop) {
+    if (labelComponentRef.value && labelComponentRef.value.labelElement) {
+      labelComponentRef.value.labelElement.style.left = "";
+    }
+
     return;
   }
 

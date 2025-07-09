@@ -96,7 +96,10 @@ For.args = {
   for: "input-id",
   slotTemplate: `
     <template #default>
-      <input class="px-4 py-2 text-sm text-black rounded-small" id="input-id" />
+      <input
+      id="input-id"
+        class="py-2px-3 bg-transparent border-lifted rounded-medium"
+      />
     </template>
   `,
 };
@@ -107,9 +110,6 @@ For.parameters = {
     },
   },
 };
-
-export const Centred = DefaultTemplate.bind({});
-Centred.args = { centred: true };
 
 export const Sizes = EnumTemplate.bind({});
 Sizes.args = { enum: "size" };

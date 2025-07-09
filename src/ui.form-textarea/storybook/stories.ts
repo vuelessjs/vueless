@@ -80,8 +80,22 @@ Placeholder.args = { modelValue: "", placeholder: "Enter text here..." };
 export const Description = DefaultTemplate.bind({});
 Description.args = { description: "Provide additional details in this field." };
 
-export const Error = DefaultTemplate.bind({});
-Error.args = { modelValue: "", error: "This field is required. Please enter a value." };
+export const Error: StoryFn<UTextareaArgs> = (args: UTextareaArgs) => ({
+  components: { UTextarea, UIcon },
+  setup: () => ({ args }),
+  template: `
+    <UTextarea
+      v-bind="args"
+      v-model="args.modelValue"
+      class="max-w-96"
+      :error="args.modelValue ? '' : 'This field is required. Please enter a value.'"
+    />
+  `,
+});
+Error.args = { modelValue: "" };
+
+export const Readonly = DefaultTemplate.bind({});
+Readonly.args = { readonly: true, modelValue: "Meeting scheduled for Monday at 10 AM." };
 
 export const Disabled = DefaultTemplate.bind({});
 Disabled.args = { disabled: true };
@@ -108,9 +122,6 @@ RowsNumber.parameters = {
     },
   },
 };
-
-export const Readonly = DefaultTemplate.bind({});
-Readonly.args = { readonly: true, modelValue: "Meeting scheduled for Monday at 10 AM." };
 
 export const NoAutocomplete = DefaultTemplate.bind({});
 NoAutocomplete.args = {

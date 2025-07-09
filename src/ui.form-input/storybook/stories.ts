@@ -94,11 +94,7 @@ export const Error: StoryFn<UInputArgs> = (args: UInputArgs) => ({
 });
 
 export const Readonly = DefaultTemplate.bind({});
-Readonly.args = {
-  readonly: true,
-  label: "Readonly data",
-  modelValue: "Pre-filled content that cannot be changed",
-};
+Readonly.args = { readonly: true };
 
 export const Disabled = DefaultTemplate.bind({});
 Disabled.args = { disabled: true };

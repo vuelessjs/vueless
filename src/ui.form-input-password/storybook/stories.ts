@@ -28,7 +28,8 @@ export default {
   title: "Form Inputs & Controls / Input Password",
   component: UInputPassword,
   args: {
-    modelValue: "",
+    modelValue: "VuelessUI",
+    label: "Password",
   },
   argTypes: {
     ...getArgTypes(UInputPassword.__name),
@@ -73,11 +74,8 @@ const EnumTemplate: StoryFn<UInputPasswordArgs> = (args: UInputPasswordArgs, { a
 export const Default = DefaultTemplate.bind({});
 Default.args = {};
 
-export const Label = DefaultTemplate.bind({});
-Label.args = { label: "Password" };
-
 export const Placeholder = DefaultTemplate.bind({});
-Placeholder.args = { placeholder: "Enter your password" };
+Placeholder.args = { placeholder: "Enter your password", modelValue: "" };
 
 export const Description = DefaultTemplate.bind({});
 Description.args = { description: "Use at least 8 characters, including a number and a symbol." };

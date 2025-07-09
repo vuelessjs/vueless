@@ -114,7 +114,7 @@ const { getDataTest, wrapperAttrs, contentAttrs, labelAttrs, descriptionAttrs, e
 
       <div
         v-if="isShownError"
-        v-bind="descriptionAttrs"
+        v-bind="errorAttrs"
         :data-test="getDataTest('error')"
         v-text="error"
       />
