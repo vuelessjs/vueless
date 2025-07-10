@@ -26,7 +26,8 @@ export default {
   title: "Form Inputs & Controls / Switch",
   component: USwitch,
   args: {
-    modelValue: false,
+    modelValue: true,
+    label: "Enable Dark Mode",
   },
   argTypes: {
     ...getArgTypes(USwitch.__name),
@@ -67,20 +68,14 @@ const EnumTemplate: StoryFn<USwitchArgs> = (args: USwitchArgs, { argTypes }) => 
 export const Default = DefaultTemplate.bind({});
 Default.args = {};
 
-export const Label = DefaultTemplate.bind({});
-Label.args = { label: "Enable Notifications" };
-
 export const Description = DefaultTemplate.bind({});
-Description.args = {
-  label: "Enable Dark Mode",
-  description: "Switch to a darker color scheme to reduce eye strain.",
-};
+Description.args = { description: "Switch to a darker color scheme to reduce eye strain." };
 
 export const LabelAlign = EnumTemplate.bind({});
 LabelAlign.args = { enum: "labelAlign", label: "{enumValue}" };
 
 export const Sizes = EnumTemplate.bind({});
-Sizes.args = { enum: "size", color: "warning", label: "{enumValue}" };
+Sizes.args = { enum: "size", label: "{enumValue}" };
 
 export const Colors = EnumTemplate.bind({});
 Colors.args = { enum: "color", modelValue: true, label: "{enumValue}" };
@@ -89,7 +84,7 @@ export const ToggleLabel = DefaultTemplate.bind({});
 ToggleLabel.args = { toggleLabel: true };
 
 export const ToggleIcon = DefaultTemplate.bind({});
-ToggleIcon.args = { toggleIcon: true, color: "warning" };
+ToggleIcon.args = { toggleIcon: true };
 
 export const Disabled = DefaultTemplate.bind({});
 Disabled.args = { disabled: true };

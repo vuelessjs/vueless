@@ -1,3 +1,5 @@
+import { ref } from "vue";
+
 import {
   getArgs,
   getArgTypes,
@@ -40,7 +42,7 @@ export default {
 
 const DefaultTemplate: StoryFn<UInputFileArgs> = (args: UInputFileArgs) => ({
   components: { UInputFile },
-  setup: () => ({ args, slots: getSlotNames(UInputFile.__name), files: [] }),
+  setup: () => ({ args, slots: getSlotNames(UInputFile.__name), files: ref([]) }),
   template: `
     <UInputFile v-bind="args" v-model="files">
       ${args.slotTemplate || getSlotsFragment("")}
@@ -50,13 +52,14 @@ const DefaultTemplate: StoryFn<UInputFileArgs> = (args: UInputFileArgs) => ({
 
 const EnumTemplate: StoryFn<UInputFileArgs> = (args: UInputFileArgs, { argTypes }) => ({
   components: { UInputFile, UCol },
-  setup: () => ({ args, argTypes, getArgs }),
+  setup: () => ({ args, argTypes, getArgs, files: ref([]) }),
   template: `
     <UCol gap="2xl">
       <UInputFile
         v-for="option in argTypes?.[args.enum]?.options"
         v-bind="getArgs(args, option)"
         :key="option"
+        v-model="files"
       />
     </UCol>
   `,

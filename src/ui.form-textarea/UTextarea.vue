@@ -161,7 +161,13 @@ useMutationObserver(leftSlotWrapperRef, (mutations) => mutations.forEach(setLabe
 });
 
 function setLabelPosition() {
-  if (props.labelAlign === "top" || !hasSlotContent(slots["left"])) return;
+  if (props.labelAlign === "top" || !hasSlotContent(slots["left"])) {
+    if (labelComponentRef.value?.labelElement) {
+      labelComponentRef.value.labelElement.style.left = "";
+    }
+
+    return;
+  }
 
   if (leftSlotWrapperRef.value && textareaRef.value && labelComponentRef.value?.labelElement) {
     const leftSlotWidth = leftSlotWrapperRef.value.getBoundingClientRect().width;

@@ -137,8 +137,18 @@ Placeholder.args = { placeholder: "MM/DD/YYYY" };
 export const Description = DefaultTemplate.bind({});
 Description.args = { description: "Please choose a date from the calendar." };
 
-export const Error = DefaultTemplate.bind({});
-Error.args = { error: "Please select a valid date." };
+export const Error: StoryFn<DefaultUDatePickerArgs> = (args: DefaultUDatePickerArgs) => ({
+  components: { UDatePicker, UIcon },
+  setup: () => ({ args, slots: getSlotNames(COMPONENT_NAME) }),
+  template: `
+    <UDatePicker
+      open-direction-y="bottom"
+      v-bind="args"
+      v-model="args.modelValue"
+      :error="args.modelValue ? '' : 'Please select a valid date.'"
+    />
+  `,
+});
 
 export const Disabled = DefaultTemplate.bind({});
 Disabled.args = { disabled: true };

@@ -8,7 +8,6 @@ import {
 
 import URadioGroup from "../../ui.form-radio-group/URadioGroup.vue";
 import URadio from "../../ui.form-radio/URadio.vue";
-import UAlert from "../../ui.text-alert/UAlert.vue";
 import UCol from "../../ui.container-col/UCol.vue";
 import UBadge from "../../ui.text-badge/UBadge.vue";
 import UText from "../../ui.text-block/UText.vue";
@@ -45,18 +44,12 @@ export default {
 } as Meta;
 
 const DefaultTemplate: StoryFn<URadioGroupArgs> = (args: URadioGroupArgs) => ({
-  components: { URadioGroup, URadio, UAlert, UCol, UBadge, UText, URow },
+  components: { URadioGroup, URadio, UCol, UBadge, UText, URow },
   setup: () => ({ args, slots: getSlotNames(URadioGroup.__name) }),
   template: `
-    <UCol gap="2xl">
-      <URadioGroup v-bind="args" v-model="args.modelValue">
-        ${args.slotTemplate || getSlotsFragment("")}
-      </URadioGroup>
-
-      <UAlert size="sm" variant="ghost" color="success" bordered>
-        <p>Selected value: {{ args.modelValue }}</p>
-      </UAlert>
-    </UCol>
+    <URadioGroup v-bind="args" v-model="args.modelValue">
+      ${args.slotTemplate || getSlotsFragment("")}
+    </URadioGroup>
   `,
 });
 
@@ -85,8 +78,18 @@ Description.args = {
     "Select your preferred delivery method. Additional charges may apply for expedited shipping.",
 };
 
-export const Error = DefaultTemplate.bind({});
-Error.args = { name: "Error", error: "Please, select at least one option to proceed." };
+export const Error: StoryFn<URadioGroupArgs> = (args: URadioGroupArgs) => ({
+  components: { URadioGroup },
+  setup: () => ({ args }),
+  template: `
+    <URadioGroup
+      v-bind="args"
+      v-model="args.modelValue"
+      name="Error"
+      :error="args.modelValue ? '' : 'Please, select at least one option to proceed.'"
+    />
+  `,
+});
 
 export const Disabled = DefaultTemplate.bind({});
 Disabled.args = { name: "Disabled", disabled: true };
@@ -122,10 +125,8 @@ LabelSlot.args = {
   name: "LabelSlot",
   slotTemplate: `
     <template #label="{ label }">
-      <URow gap="xs" align="center">
-        <UBadge label="Cannot be changed" color="warning" size="sm" variant="outlined" />
-        <UText :label="label" />
-      </URow>
+      <span class="text-red-500">*</span>
+      {{ label }}
     </template>
   `,
 };

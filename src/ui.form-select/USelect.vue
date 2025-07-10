@@ -359,6 +359,10 @@ useMutationObserver(leftSlotWrapperRef, (mutations) => mutations.forEach(setLabe
 
 function setLabelPosition() {
   if (props.labelAlign === "top" || (!hasSlotContent(slots["left"]) && !props.leftIcon)) {
+    if (labelComponentRef.value?.labelElement) {
+      labelComponentRef.value.labelElement.style.left = "";
+    }
+
     return;
   }
 
@@ -651,13 +655,8 @@ const {
                 <!--
                   @slot Use it to customize selected options counter.
                   @binding {number} count
-                  @binding {string} hidden-options
                 -->
-                <slot
-                  name="selected-counter"
-                  :count="hiddenSelectedOptionsCount"
-                  :hidden-options="selectedOptionsLabel.hidden"
-                >
+                <slot name="selected-counter" :count="hiddenSelectedOptionsCount">
                   <span
                     v-if="hiddenSelectedOptionsCount"
                     v-bind="counterAttrs"
@@ -711,13 +710,8 @@ const {
                 <!--
                   @slot Use it to customize selected options counter.
                   @binding {number} count
-                  @binding {string} hidden-options
                 -->
-                <slot
-                  name="selected-counter"
-                  :count="hiddenSelectedOptionsCount"
-                  :hidden-options="selectedOptionsLabel.hidden"
-                >
+                <slot name="selected-counter" :count="hiddenSelectedOptionsCount">
                   <UBadge
                     v-if="hiddenSelectedOptionsCount"
                     :label="`+${hiddenSelectedOptionsCount}`"
@@ -769,13 +763,8 @@ const {
                     <!--
                       @slot Use it to customize selected options counter.
                       @binding {number} count
-                      @binding {string} hidden-options
                     -->
-                    <slot
-                      name="selected-counter"
-                      :count="hiddenSelectedOptionsCount"
-                      :hidden-options="selectedOptionsLabel.hidden"
-                    >
+                    <slot name="selected-counter" :count="hiddenSelectedOptionsCount">
                       <span
                         v-if="hiddenSelectedOptionsCount"
                         :title="selectedOptionsLabel.hidden"
@@ -808,6 +797,7 @@ const {
         ref="listbox"
         v-model="dropdownValue as string | number"
         :searchable="searchable"
+        :options-limit="optionsLimit"
         :multiple="multiple"
         :options="options"
         :disabled="disabled"

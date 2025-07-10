@@ -19,7 +19,7 @@ export default /*tw*/ {
         lg: "size-6",
       },
       error: {
-        true: "!border-error focus:outline-error",
+        true: "!border-error focus-visible:outline-error",
       },
     },
   },

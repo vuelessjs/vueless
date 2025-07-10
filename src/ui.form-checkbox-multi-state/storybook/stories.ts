@@ -94,4 +94,4 @@ export const Sizes = EnumTemplate.bind({});
 Sizes.args = { enum: "size" };
 
 export const Colors = EnumTemplate.bind({});
-Colors.args = { enum: "color" };
+Colors.args = { enum: "color", modelValue: true };

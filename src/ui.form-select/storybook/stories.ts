@@ -100,13 +100,15 @@ const GroupValuesTemplate: StoryFn<USelectArgs> = (args: USelectArgs) => ({
       v-bind="args"
       v-model="args.modelValue"
       label="Single"
+      class="max-w-96"
     />
+
     <USelect
-      class="mt-5"
       v-bind="args"
       v-model="args.modelValueMultiple"
       label="Multiple"
       multiple
+      class="mt-5 max-w-96"
     />
   `,
 });
@@ -127,19 +129,34 @@ Placeholder.args = { placeholder: "Start typing to search for a city..." };
 export const Description = DefaultTemplate.bind({});
 Description.args = { description: "You can only select a city from the list." };
 
-export const Error = DefaultTemplate.bind({});
-Error.args = { error: "Please select a city from the list" };
+export const Error: StoryFn<USelectArgs> = (args: USelectArgs) => ({
+  components: { USelect },
+  setup: () => ({ args }),
+  template: `
+    <USelect
+      v-bind="args"
+      v-model="args.modelValue"
+      class="max-w-96"
+      :error="args.modelValue ? '' : 'Please select a city from the list.'"
+    />
+  `,
+});
+
+export const NotClearable = DefaultTemplate.bind({});
+NotClearable.args = { clearable: false };
+
+export const Searchable = DefaultTemplate.bind({});
+Searchable.args = { searchable: true };
 
 export const Readonly = DefaultTemplate.bind({});
-Readonly.args = { readonly: true };
+Readonly.args = { readonly: true, modelValue: "1", clearable: false };
 
 export const Disabled = DefaultTemplate.bind({});
-Disabled.args = { disabled: true };
+Disabled.args = { disabled: true, modelValue: "2", clearable: false };
 
 export const LabelAlign = EnumTemplate.bind({});
 LabelAlign.args = {
   enum: "labelAlign",
-  label: "{enumValue}",
   description: "Select a city from the list.",
   wrapperClass: "gap-16",
 };
@@ -156,18 +173,6 @@ LargeItemList.args = {
 
 export const Multiple = DefaultTemplate.bind({});
 Multiple.args = { multiple: true, modelValue: [] };
-
-export const ClearableAndSearchable = DefaultTemplate.bind({});
-ClearableAndSearchable.args = { clearable: false, searchable: false };
-ClearableAndSearchable.parameters = {
-  docs: {
-    description: {
-      story:
-        // eslint-disable-next-line vue/max-len
-        "The `clearable` and `searchable` props control whether users can clear the selected value or search within the list. <br/> In this example, both are set to `false`, meaning the selection cannot be cleared, and searching is disabled.",
-    },
-  },
-};
 
 export const OpenDirection = EnumTemplate.bind({});
 OpenDirection.args = { enum: "openDirection", label: "{enumValue}" };
@@ -198,6 +203,13 @@ GroupValue.args = {
       libs: [{ name: "Laravel" }, { name: "Phoenix" }],
     },
   ],
+};
+GroupValue.parameters = {
+  docs: {
+    story: {
+      height: "500px",
+    },
+  },
 };
 
 export const OptionsLimit2 = DefaultTemplate.bind({});
@@ -309,11 +321,11 @@ export const IconProps: StoryFn<USelectArgs> = (args) => ({
 
 export const Slots: StoryFn<USelectArgs> = (args) => ({
   components: { USelect, URow, UIcon, UText },
-  setup: () => ({ args }),
+  setup: () => ({ args, leftSlotModel: ref("paypal"), rightSlotModel: ref("bank") }),
   template: `
     <URow>
       <USelect
-        v-model="args.leftSlotModel"
+        v-model="leftSlotModel"
         label="Select Payment Method"
         :options="[
           { label: 'Visa', id: 'visa', icon: 'credit_card', details: '•••• 4242' },
@@ -324,7 +336,7 @@ export const Slots: StoryFn<USelectArgs> = (args) => ({
       >
         <template #left="{ options }">
           <UIcon
-            v-if="args.leftSlotModel"
+            v-if="leftSlotModel"
             :name="options?.icon"
             color="primary"
             size="sm"
@@ -333,7 +345,7 @@ export const Slots: StoryFn<USelectArgs> = (args) => ({
       </USelect>
 
       <USelect
-        v-model="args.rightSlotModel"
+        v-model="rightSlotModel"
         label="Select Payment Method"
         :options="[
           { label: 'Visa', id: 'visa', icon: 'credit_card', details: '•••• 4242' },
@@ -344,7 +356,7 @@ export const Slots: StoryFn<USelectArgs> = (args) => ({
       >
         <template #right="{ options }">
           <UText
-            v-if="args.rightSlotModel"
+            v-if="rightSlotModel"
             size="sm"
             variant="lifted"
             class="text-nowrap"
@@ -378,7 +390,11 @@ export const ToggleSlots: StoryFn<USelectArgs> = (args) => ({
         ]"
       >
         <template #before-toggle>
-          <UIcon name="person" color="primary" />
+          <UIcon
+            name="person"
+            color="primary"
+            size="sm"
+          />
         </template>
       </USelect>
 
@@ -396,6 +412,7 @@ export const ToggleSlots: StoryFn<USelectArgs> = (args) => ({
             name="expand_circle_down"
             :class="{ 'rotate-180': opened }"
             color="primary"
+            size="sm"
           />
         </template>
       </USelect>
@@ -410,7 +427,11 @@ export const ToggleSlots: StoryFn<USelectArgs> = (args) => ({
         ]"
       >
         <template #after-toggle>
-          <UIcon name="info" color="primary" />
+          <UIcon
+            name="info"
+            color="primary"
+            size="sm"
+          />
         </template>
       </USelect>
     </URow>
@@ -503,8 +524,8 @@ export const SelectedCounterSlot = DefaultTemplate.bind({});
 SelectedCounterSlot.args = {
   multiple: true,
   slotTemplate: `
-    <template #selected-counter="{ count, hiddenOptions }">
-      <UText v-if="count" :title="hiddenOptions">, and {{ count }} more variant(s)</UText>
+    <template #selected-counter="{ count }">
+      <UText v-if="count">, and {{ count }} more variant(s)</UText>
     </template>
   `,
 };
