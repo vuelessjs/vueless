@@ -161,7 +161,9 @@ watch(
 
       if (inputEl) {
         const listboxInputStyle = getComputedStyle(inputEl);
-        const listboxInputLabelStyle = getComputedStyle(inputEl?.parentElement);
+        const listboxInputLabelStyle = inputEl.parentElement
+          ? getComputedStyle(inputEl.parentElement)
+          : undefined;
         const listboxInputWrapperStyle = getComputedStyle(
           inputEl.parentElement?.parentElement?.parentElement as Element,
         );
@@ -170,8 +172,8 @@ watch(
 
         listboxInputWrapperPaddingTop = parseFloat(listboxInputWrapperStyle.paddingTop || "0");
 
-        listboxInputBorderTop = parseFloat(listboxInputLabelStyle.borderTop || "0");
-        listboxInputBorderBottom = parseFloat(listboxInputLabelStyle.borderBottom || "0");
+        listboxInputBorderTop = parseFloat(listboxInputLabelStyle?.borderTop || "0");
+        listboxInputBorderBottom = parseFloat(listboxInputLabelStyle?.borderBottom || "0");
       }
 
       wrapperMaxHeight.value = `${
@@ -319,9 +321,7 @@ function onClickOption(rawOption: Option) {
 }
 
 function onInputSearchBlur(event: FocusEvent) {
-  if (props.searchable) {
-    emit("searchBlur", event);
-  }
+  emit("searchBlur", event);
 }
 
 defineExpose({
