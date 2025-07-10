@@ -715,7 +715,7 @@ describe("UListbox.vue", () => {
 
       const searchInput = component.getComponent(UInputSearch);
 
-      await searchInput.trigger("blur");
+      await searchInput.get("input").trigger("blur");
 
       expect(component.emitted("searchBlur")).toBeTruthy();
     });

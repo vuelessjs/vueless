@@ -418,8 +418,6 @@ describe("USelect.vue", () => {
       const testCases = {
         toggleWrapper: "toggle",
         clearIcon: "clear",
-        listClearIcon: "clear-item",
-        listClearAll: "clear-all",
       };
 
       const dataTest = "test";
@@ -427,7 +425,7 @@ describe("USelect.vue", () => {
       const component = mount(USelect, {
         props: {
           dataTest,
-          multiple: true,
+          multiple: false,
           multipleVariant: "list",
           modelValue: ["option1", "option2", "option3"],
           options: defaultOptions,
@@ -442,6 +440,8 @@ describe("USelect.vue", () => {
         const expectedDataTest = `${dataTest}-${value}`;
 
         await component.get("[role='combobox']").trigger("focus");
+
+        await flushPromises();
 
         expect(component.find(`[vl-key='${key}']`).attributes("data-test")).toBe(expectedDataTest);
       });

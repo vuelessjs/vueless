@@ -321,9 +321,7 @@ function onClickOption(rawOption: Option) {
 }
 
 function onInputSearchBlur(event: FocusEvent) {
-  if (props.searchable) {
-    emit("searchBlur", event);
-  }
+  emit("searchBlur", event);
 }
 
 defineExpose({

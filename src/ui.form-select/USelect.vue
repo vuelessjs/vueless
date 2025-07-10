@@ -810,7 +810,6 @@ const {
         :group-value-key="groupValueKey"
         :add-option="addOption"
         tabindex="-1"
-        :options-limit="optionsLimit"
         v-bind="listboxAttrs as KeyAttrsWithConfig<UListboxConfig>"
         :data-test="getDataTest()"
         @add="onAddOption"
