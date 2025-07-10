@@ -34,7 +34,7 @@ export default /*tw*/ {
   header:
     "border-b border-muted [&>tr:first-child>*]:first:rounded-tl-medium [&>tr:last-child>*]:last:rounded-tr-medium relative",
   headerRow: "",
-  beforeHeaderRow: "",
+  beforeHeaderRow: "border border-muted",
   beforeHeaderCell: "{>headerCellBase}",
   headerCellBase: {
     base: "p-4 text-medium font-normal text-lifted text-left text-nowrap",
@@ -46,7 +46,7 @@ export default /*tw*/ {
   },
   headerCellCheckbox: "{>headerCellBase} w-10 pr-2",
   headerCheckbox: "{UCheckbox}",
-  headerCounter: "{>stickyHeaderCounter} mt-px ml-px",
+  headerCounter: "{>stickyHeaderCounter} ml-px",
   headerLoader: "{ULoaderProgress} absolute top-auto bottom-0",
   body: "group/body divide-none",
   bodyRow: "hover:bg-muted",

@@ -22,17 +22,8 @@ interface UTableArgs extends Props {
   slotTemplate?: string;
   enum: "size";
   numberOfRows: number;
-  row: Row | typeof getRow | typeof getNestedRow | typeof getSlotNestedRow;
+  row: Row | typeof getRow;
 }
-
-const SHORT_STORY_PARAMETERS = {
-  docs: {
-    story: {
-      inline: false,
-      iframeHeight: 450,
-    },
-  },
-};
 
 export default {
   id: "7010",
@@ -45,9 +36,6 @@ export default {
         disable: true,
       },
     },
-    numberOfRows: {
-      description: "The number of table rows (not a component prop).",
-    },
   },
   args: {
     columns: [
@@ -56,8 +44,44 @@ export default {
       { key: "status", label: "Status" },
       { key: "totalPrice", label: "Total Price" },
     ],
-    row: getRow,
-    numberOfRows: 5,
+    rows: [
+      {
+        id: getRandomId(),
+        orderId: `ORD-${Math.floor(Math.random() * 10000)}`,
+        customerName: ["Alice Johnson", "Michael Smith", "Emma Brown", "James Wilson"][
+          Math.floor(Math.random() * 4)
+        ],
+        status: ["Pending", "Shipped", "Delivered", "Cancelled"][Math.floor(Math.random() * 4)],
+        totalPrice: `$${(Math.random() * 500).toFixed(2)}`,
+      },
+      {
+        id: getRandomId(),
+        orderId: `ORD-${Math.floor(Math.random() * 10000)}`,
+        customerName: ["Alice Johnson", "Michael Smith", "Emma Brown", "James Wilson"][
+          Math.floor(Math.random() * 4)
+        ],
+        status: ["Pending", "Shipped", "Delivered", "Cancelled"][Math.floor(Math.random() * 4)],
+        totalPrice: `$${(Math.random() * 500).toFixed(2)}`,
+      },
+      {
+        id: "row-3",
+        orderId: `ORD-${Math.floor(Math.random() * 10000)}`,
+        customerName: ["Alice Johnson", "Michael Smith", "Emma Brown", "James Wilson"][
+          Math.floor(Math.random() * 4)
+        ],
+        status: ["Pending", "Shipped", "Delivered", "Cancelled"][Math.floor(Math.random() * 4)],
+        totalPrice: `$${(Math.random() * 500).toFixed(2)}`,
+      },
+      {
+        id: getRandomId(),
+        orderId: `ORD-${Math.floor(Math.random() * 10000)}`,
+        customerName: ["Alice Johnson", "Michael Smith", "Emma Brown", "James Wilson"][
+          Math.floor(Math.random() * 4)
+        ],
+        status: ["Pending", "Shipped", "Delivered", "Cancelled"][Math.floor(Math.random() * 4)],
+        totalPrice: `$${(Math.random() * 500).toFixed(2)}`,
+      },
+    ],
   },
   parameters: {
     docs: {
@@ -93,8 +117,8 @@ function getDateDividerRow(rowAmount: number) {
     });
 }
 
-function getRow() {
-  return {
+function getRow(numberOfRows: number) {
+  return Array.from({ length: numberOfRows }, () => ({
     id: getRandomId(),
     orderId: `ORD-${Math.floor(Math.random() * 10000)}`,
     customerName: ["Alice Johnson", "Michael Smith", "Emma Brown", "James Wilson"][
@@ -102,155 +126,45 @@ function getRow() {
     ],
     status: ["Pending", "Shipped", "Delivered", "Cancelled"][Math.floor(Math.random() * 4)],
     totalPrice: `$${(Math.random() * 500).toFixed(2)}`,
-  };
-}
-
-function getNestedRow() {
-  return {
-    id: getRandomId(),
-    orderId: `ORD-${Math.floor(Math.random() * 10000)}`,
-    customerName: ["Alice Johnson", "Michael Smith", "Emma Brown", "James Wilson"][
-      Math.floor(Math.random() * 4)
-    ],
-    status: ["Processing", "Shipped", "Delivered", "Cancelled"][Math.floor(Math.random() * 4)],
-    totalPrice: `$${(Math.random() * 500).toFixed(2)}`,
-    row: [
-      {
-        id: getRandomId(),
-        orderId: "Suborder-1",
-        customerName: "",
-        status: "",
-        totalPrice: `$${(Math.random() * 500).toFixed(2)}`,
-        row: {
-          id: getRandomId(),
-          orderId: "Extra Services",
-          customerName: "",
-          status: "",
-          totalPrice: `$${(Math.random() * 500).toFixed(2)}`,
-        },
-      },
-      {
-        id: getRandomId(),
-        orderId: "Suborder-2",
-        customerName: "",
-        status: "",
-        totalPrice: `$${(Math.random() * 500).toFixed(2)}`,
-        row: {
-          id: getRandomId(),
-          orderId: "Extra Services",
-          customerName: "",
-          status: "",
-          totalPrice: `$${(Math.random() * 500).toFixed(2)}`,
-        },
-      },
-    ],
-  };
-}
-
-function getSlotNestedRow(index: number) {
-  if (index === 1) {
-    return {
-      id: getRandomId(),
-      orderId: `ORD-${Math.floor(Math.random() * 10000)}`,
-      customerName: "John Doe",
-      status: "Processing",
-      row: {
-        id: getRandomId(),
-        rows: [
-          {
-            id: getRandomId(),
-            category: "Gadgets",
-            itemName: "Ergonomic Mouse",
-            quantity: 2,
-          },
-          {
-            id: getRandomId(),
-            category: "Gadgets",
-            itemName: "Wireless Keyboard",
-            quantity: 1,
-          },
-          {
-            id: getRandomId(),
-            category: "Electronics",
-            itemName: "USB-C Hub",
-            quantity: 3,
-          },
-        ],
-      },
-    };
-  } else {
-    return {
-      id: getRandomId(),
-      orderId: `ORD-${Math.floor(Math.random() * 10000)}`,
-      customerName: ["Alice Johnson", "Michael Smith", "Emma Brown", "James Wilson"][
-        Math.floor(Math.random() * 4)
-      ],
-      status: ["Processing", "Shipped", "Delivered", "Cancelled"][Math.floor(Math.random() * 4)],
-      totalPrice: `$${(Math.random() * 500).toFixed(2)}`,
-    };
-  }
+  }));
 }
 
 const DefaultTemplate: StoryFn<UTableArgs> = (args: UTableArgs) => ({
   components: { UTable, UButton, ULink, UNumber, UBadge, URow, UIcon, ULoader },
-  setup() {
-    const slots = getSlotNames(UTable.__name);
-
-    return { args, slots };
-  },
+  setup: () => ({ args, slots: getSlotNames(UTable.__name) }),
   template: `
-    <UTable
-      v-bind="args"
-      :rows="args.rows || itemsData"
-    >
+    <UTable v-bind="args">
       ${args.slotTemplate || getSlotsFragment("")}
     </UTable>
   `,
-  computed: {
-    itemsData() {
-      const rows = [];
-
-      if (typeof args.row === "function") {
-        for (let i = 0; i < args.numberOfRows; i++) {
-          rows.push(args.row(i));
-        }
-      } else {
-        rows.push(args.row);
-      }
-
-      return rows;
-    },
-  },
 });
 
 export const Default = DefaultTemplate.bind({});
 Default.args = {};
 
-const LoadingTemplate: StoryFn<UTableArgs> = (args: UTableArgs) => ({
+export const Loading: StoryFn<UTableArgs> = (args: UTableArgs) => ({
   components: { UTable, UButton },
-  setup() {
-    const slots = getSlotNames(UTable.__name);
-
-    return { args, slots };
-  },
+  setup: () => ({ args }),
   template: `
     <UButton
       label="Toggle loading"
-      @click="args.loading = !args.loading"
+      size="sm"
       class="mb-4"
+      @click="args.loading = !args.loading"
     />
 
     <UTable
-      v-bind="args"
-      :rows="args.rows"
-    >
-      ${args.slotTemplate || getSlotsFragment("")}
-    </UTable>
+      :columns="[
+        { key: 'orderId', label: 'Order Id', thClass: 'w-2/5' },
+        { key: 'customerName', label: 'Customer Name' },
+        { key: 'status', label: 'Status' },
+        { key: 'totalPrice', label: 'Total Price' },
+      ]"
+      :rows="[]"
+      :loading="args.loading"
+    />
   `,
 });
-
-export const Loading = LoadingTemplate.bind({});
-Loading.args = {};
 Loading.parameters = {
   docs: {
     description: {
@@ -261,7 +175,7 @@ Loading.parameters = {
 
 export const EmptyCellLabel = DefaultTemplate.bind({});
 EmptyCellLabel.args = {
-  emptyCellLabel: "NO DATA FOUND",
+  emptyCellLabel: "---",
   rows: [
     {
       id: getRandomId(),
@@ -281,7 +195,58 @@ EmptyCellLabel.parameters = {
 };
 
 export const Nesting = DefaultTemplate.bind({});
-Nesting.args = { row: getNestedRow };
+Nesting.args = {
+  rows: [
+    {
+      id: getRandomId(),
+      orderId: `ORD-${Math.floor(Math.random() * 10000)}`,
+      customerName: ["Alice Johnson", "Michael Smith", "Emma Brown", "James Wilson"][
+        Math.floor(Math.random() * 4)
+      ],
+      status: ["Pending", "Shipped", "Delivered", "Cancelled"][Math.floor(Math.random() * 4)],
+      totalPrice: `$${(Math.random() * 500).toFixed(2)}`,
+    },
+    {
+      id: getRandomId(),
+      orderId: `ORD-${Math.floor(Math.random() * 10000)}`,
+      customerName: ["Alice Johnson", "Michael Smith", "Emma Brown", "James Wilson"][
+        Math.floor(Math.random() * 4)
+      ],
+      status: ["Processing", "Shipped", "Delivered", "Cancelled"][Math.floor(Math.random() * 4)],
+      totalPrice: `$${(Math.random() * 500).toFixed(2)}`,
+      row: [
+        {
+          id: getRandomId(),
+          orderId: "Suborder-1",
+          customerName: "",
+          status: "",
+          totalPrice: `$${(Math.random() * 500).toFixed(2)}`,
+          row: {
+            id: getRandomId(),
+            orderId: "Extra Services",
+            customerName: "",
+            status: "",
+            totalPrice: `$${(Math.random() * 500).toFixed(2)}`,
+          },
+        },
+        {
+          id: getRandomId(),
+          orderId: "Suborder-2",
+          customerName: "",
+          status: "",
+          totalPrice: `$${(Math.random() * 500).toFixed(2)}`,
+          row: {
+            id: getRandomId(),
+            orderId: "Extra Services",
+            customerName: "",
+            status: "",
+            totalPrice: `$${(Math.random() * 500).toFixed(2)}`,
+          },
+        },
+      ],
+    },
+  ],
+};
 Nesting.parameters = {
   docs: {
     description: {
@@ -296,9 +261,9 @@ CellClasses.args = {
   rows: [
     {
       id: getRandomId(),
-      orderId: `ORD-${Math.floor(Math.random() * 10000)}`,
+      orderId: { value: `ORD-${Math.floor(Math.random() * 10000)}`, class: "bg-error/25" },
       customerName: "John Doe",
-      status: { value: "Cancelled", class: "bg-error/25" },
+      status: "Cancelled",
       totalPrice: "$18.92",
     },
     {
@@ -311,9 +276,12 @@ CellClasses.args = {
     },
     {
       id: getRandomId(),
-      orderId: `ORD-${Math.floor(Math.random() * 10000)}`,
+      orderId: {
+        value: `ORD-${Math.floor(Math.random() * 10000)}`,
+        contentClasses: "text-green-300 line-through",
+      },
       customerName: "Helen Williams",
-      status: { value: "Delivered", contentClasses: "line-through" },
+      status: "Delivered",
       totalPrice: "$314.26",
     },
   ],
@@ -335,24 +303,130 @@ export const Selectable = DefaultTemplate.bind({});
 Selectable.args = { selectable: true };
 
 export const StickyHeader = DefaultTemplate.bind({});
-StickyHeader.parameters = SHORT_STORY_PARAMETERS;
-StickyHeader.args = { numberOfRows: 50, selectable: true, stickyHeader: true };
+StickyHeader.args = {
+  rows: getRow(10),
+  selectable: true,
+  stickyHeader: true,
+};
+StickyHeader.parameters = {
+  docs: {
+    story: {
+      inline: false,
+      iframeHeight: 450,
+    },
+    source: {
+      code: `
+        <UTable
+          sticky-header
+          selectable
+          :columns="[
+            {'key':'orderId','label':'Order Id','thClass':'w-2/5'},
+            {'key':'customerName','label':'Customer Name'},
+            {'key':'status','label':'Status'},
+            {'key':'totalPrice','label':'Total Price'}
+          ]"
+          :rows="[
+            {
+              'id': 'xsJCpznyamFLstB',
+              'orderId': 'ORD-2339',
+              'customerName': 'James Wilson',
+              'status': 'Pending',
+              'totalPrice': '$240.15'
+            },
+            {
+              'id': 'RMHWrRRYAfpmPtR',
+              'orderId': 'ORD-2927',
+              'customerName': 'James Wilson',
+              'status': 'Cancelled',
+              'totalPrice': '$350.40'
+            },
+            {
+              'id': 'HqCFkWgubiNvVhd',
+              'orderId': 'ORD-5975',
+              'customerName': 'Alice Johnson',
+              'status': 'Shipped',
+              'totalPrice': '$180.41'
+            },
+            {
+              'id': 'nQyrwynyqIRUTPM',
+              'orderId': 'ORD-8643',
+              'customerName': 'Michael Smith',
+              'status': 'Pending',
+              'totalPrice': '$318.30'
+            }
+          ]"
+        />
+      `,
+    },
+  },
+};
 
 export const StickyFooter = DefaultTemplate.bind({});
-StickyFooter.parameters = SHORT_STORY_PARAMETERS;
 StickyFooter.args = {
-  numberOfRows: 50,
+  rows: getRow(10),
   selectable: true,
   stickyFooter: true,
   slotTemplate: `
     <template #footer>
-      <td colspan="4">
+      <td colspan="4" class="p-4">
         <p class="font-semibold text-accented">
           📊 Summary: 50 transactions processed | Total Revenue: <strong>$12,345.67</strong>
         </p>
       </td>
     </template>
   `,
+};
+StickyFooter.parameters = {
+  docs: {
+    story: {
+      inline: false,
+      iframeHeight: 450,
+    },
+    source: {
+      code: `
+        <UTable
+          sticky-footer
+          selectable
+          :columns="[
+            {'key':'orderId','label':'Order Id','thClass':'w-2/5'},
+            {'key':'customerName','label':'Customer Name'},
+            {'key':'status','label':'Status'},
+            {'key':'totalPrice','label':'Total Price'}
+          ]"
+          :rows="[
+            {
+              'id': 'xsJCpznyamFLstB',
+              'orderId': 'ORD-2339',
+              'customerName': 'James Wilson',
+              'status': 'Pending',
+              'totalPrice': '$240.15'
+            },
+            {
+              'id': 'RMHWrRRYAfpmPtR',
+              'orderId': 'ORD-2927',
+              'customerName': 'James Wilson',
+              'status': 'Cancelled',
+              'totalPrice': '$350.40'
+            },
+            {
+              'id': 'HqCFkWgubiNvVhd',
+              'orderId': 'ORD-5975',
+              'customerName': 'Alice Johnson',
+              'status': 'Shipped',
+              'totalPrice': '$180.41'
+            },
+            {
+              'id': 'nQyrwynyqIRUTPM',
+              'orderId': 'ORD-8643',
+              'customerName': 'Michael Smith',
+              'status': 'Pending',
+              'totalPrice': '$318.30'
+            }
+          ]"
+        />
+      `,
+    },
+  },
 };
 
 export const Compact = DefaultTemplate.bind({});
@@ -381,7 +455,12 @@ DateDividerCustomLabel.args = {
   dateDivider: [
     {
       date: getDateDividerRow(4).at(2)!.rowDate,
-      label: "Custom label for specific date",
+      label: new Date().toLocaleDateString(undefined, {
+        weekday: "long",
+        day: "2-digit",
+        month: "long",
+        year: "numeric",
+      }),
       config: { label: "!text-orange-400", divider: "!border-orange-300" },
     },
   ],
@@ -405,11 +484,9 @@ HeaderKeySlot.args = {
 };
 
 export const HeaderActionsSlot = DefaultTemplate.bind({});
-HeaderActionsSlot.parameters = SHORT_STORY_PARAMETERS;
 HeaderActionsSlot.args = {
-  numberOfRows: 50,
-  stickyHeader: true,
   selectable: true,
+  selectedRows: [{ id: "row-3" }],
   slotTemplate: `
     <template #header-actions>
       <URow gap="2xs">
@@ -435,12 +512,7 @@ export const BeforeHeaderSlot = DefaultTemplate.bind({});
 BeforeHeaderSlot.args = {
   slotTemplate: `
     <template #before-header="{ colsCount, classes }">
-      <th :colspan="colsCount" :class="classes">
-        <p class="p-2">
-          📅 Latest data updated on {{ new Date().toLocaleDateString() }}.
-          Please verify all entries for accuracy before proceeding.
-        </p>
-      </th>
+      <th :colspan="colsCount" :class="classes">📊 Latest orders report.</th>
     </template>
   `,
 };
@@ -449,10 +521,7 @@ export const BeforeFirstRowSlot = DefaultTemplate.bind({});
 BeforeFirstRowSlot.args = {
   slotTemplate: `
     <template #before-first-row>
-      <p class="py-2">
-        📌 Showing the latest data as of {{ new Date().toLocaleDateString() }}.
-        Please ensure all entries are up to date.
-      </p>
+      <UButton label="Load planned" size="xs" class="my-3" />
     </template>
   `,
 };
@@ -464,8 +533,17 @@ CellSlots.args = {
       <ULink :label="value" color="success" />
     </template>
 
-    <template #cell-customerName="{ value }">
-      <UBadge :label="value" />
+    <template #cell-status="{ value }">
+      <UBadge
+        :label="value"
+        variant="soft"
+        :color="
+          value === 'Delivered' ? 'success' :
+          value === 'Cancelled' ? 'error' :
+          value === 'Pending' ? 'notice' :
+          value === 'Shipped' ? 'info' : ''
+        "
+      />
     </template>
 
     <template #cell-totalPrice="{ value }">
@@ -476,11 +554,64 @@ CellSlots.args = {
 
 export const ExpandSlot = DefaultTemplate.bind({});
 ExpandSlot.args = {
-  row: getNestedRow,
+  rows: [
+    {
+      id: getRandomId(),
+      orderId: `ORD-${Math.floor(Math.random() * 10000)}`,
+      customerName: ["Alice Johnson", "Michael Smith", "Emma Brown", "James Wilson"][
+        Math.floor(Math.random() * 4)
+      ],
+      status: ["Pending", "Shipped", "Delivered", "Cancelled"][Math.floor(Math.random() * 4)],
+      totalPrice: `$${(Math.random() * 500).toFixed(2)}`,
+    },
+    {
+      id: getRandomId(),
+      orderId: `ORD-${Math.floor(Math.random() * 10000)}`,
+      customerName: ["Alice Johnson", "Michael Smith", "Emma Brown", "James Wilson"][
+        Math.floor(Math.random() * 4)
+      ],
+      status: ["Processing", "Shipped", "Delivered", "Cancelled"][Math.floor(Math.random() * 4)],
+      totalPrice: `$${(Math.random() * 500).toFixed(2)}`,
+      row: [
+        {
+          id: getRandomId(),
+          orderId: "Suborder-1",
+          customerName: "",
+          status: "",
+          totalPrice: `$${(Math.random() * 500).toFixed(2)}`,
+          row: {
+            id: getRandomId(),
+            orderId: "Extra Services",
+            customerName: "",
+            status: "",
+            totalPrice: `$${(Math.random() * 500).toFixed(2)}`,
+          },
+        },
+        {
+          id: getRandomId(),
+          orderId: "Suborder-2",
+          customerName: "",
+          status: "",
+          totalPrice: `$${(Math.random() * 500).toFixed(2)}`,
+          row: {
+            id: getRandomId(),
+            orderId: "Extra Services",
+            customerName: "",
+            status: "",
+            totalPrice: `$${(Math.random() * 500).toFixed(2)}`,
+          },
+        },
+      ],
+    },
+  ],
   slotTemplate: `
-    <template #expand="{ row, expanded }">
-      <UBadge v-if="expanded && row.row" label="Collapse" class="cursor-pointer" />
-      <UBadge v-if="!expanded && row.row" label="Expand" class="cursor-pointer" />
+    <template #expand="{ expanded }">
+      <UButton
+        :icon="expanded ? 'remove' : 'add'"
+        variant="ghost"
+        size="xs"
+        square
+      />
     </template>
   `,
 };
@@ -492,7 +623,64 @@ NestedRowSlot.args = {
     { key: "customerName", label: "Customer Name" },
     { key: "status", label: "Status" },
   ],
-  row: getSlotNestedRow,
+  rows: [
+    {
+      id: getRandomId(),
+      orderId: `ORD-${Math.floor(Math.random() * 10000)}`,
+      customerName: ["Alice Johnson", "Michael Smith", "Emma Brown", "James Wilson"][
+        Math.floor(Math.random() * 4)
+      ],
+      status: ["Processing", "Shipped", "Delivered", "Cancelled"][Math.floor(Math.random() * 4)],
+      totalPrice: `$${(Math.random() * 500).toFixed(2)}`,
+    },
+    {
+      id: getRandomId(),
+      orderId: `ORD-${Math.floor(Math.random() * 10000)}`,
+      customerName: "John Doe",
+      status: "Processing",
+      row: {
+        id: getRandomId(),
+        rows: [
+          {
+            id: getRandomId(),
+            category: "Gadgets",
+            itemName: "Ergonomic Mouse",
+            quantity: 2,
+          },
+          {
+            id: getRandomId(),
+            category: "Gadgets",
+            itemName: "Wireless Keyboard",
+            quantity: 1,
+          },
+          {
+            id: getRandomId(),
+            category: "Electronics",
+            itemName: "USB-C Hub",
+            quantity: 3,
+          },
+        ],
+      },
+    },
+    {
+      id: getRandomId(),
+      orderId: `ORD-${Math.floor(Math.random() * 10000)}`,
+      customerName: ["Alice Johnson", "Michael Smith", "Emma Brown", "James Wilson"][
+        Math.floor(Math.random() * 4)
+      ],
+      status: ["Processing", "Shipped", "Delivered", "Cancelled"][Math.floor(Math.random() * 4)],
+      totalPrice: `$${(Math.random() * 500).toFixed(2)}`,
+    },
+    {
+      id: getRandomId(),
+      orderId: `ORD-${Math.floor(Math.random() * 10000)}`,
+      customerName: ["Alice Johnson", "Michael Smith", "Emma Brown", "James Wilson"][
+        Math.floor(Math.random() * 4)
+      ],
+      status: ["Processing", "Shipped", "Delivered", "Cancelled"][Math.floor(Math.random() * 4)],
+      totalPrice: `$${(Math.random() * 500).toFixed(2)}`,
+    },
+  ],
   slotTemplate: `
     <template #nested-row="{ row }">
       <div class="p-4 bg-lifted">
@@ -505,8 +693,7 @@ NestedRowSlot.args = {
             :rows="row.rows"
             compact
           />
-        <td>
-      </tr>
+      </div>
     </template>
   `,
 };
@@ -516,9 +703,14 @@ AfterLastRowSlot.args = {
   slotTemplate: `
     <template #after-last-row="{ colsCount, classes }">
       <td :colspan="colsCount" :class="classes">
-        <p>
-          ✅ End of results. If you need more data, try adjusting your filters or loading more entries.
-        </p>
+        <URow block justify="end">
+          Totals:
+          <UNumber
+            color="success"
+            :value="${Math.random() * 500}"
+            currency="$"
+          />
+        </URow>
       </td>
     </template>
   `,
