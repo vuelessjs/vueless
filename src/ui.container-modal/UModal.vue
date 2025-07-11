@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, useSlots, watch, useId, nextTick, useTemplateRef } from "vue";
+import { computed, useSlots, watch, useId, useTemplateRef } from "vue";
 
 import useUI from "../composables/useUI.ts";
 import { getDefaults } from "../utils/ui.ts";
@@ -71,40 +71,42 @@ const isExistFooter = computed(() => {
   return hasSlotContent(slots["footer-left"]) || hasSlotContent(slots["footer-right"]);
 });
 
-function getFocusableElements() {
-  if (!wrapperRef.value) return [];
+// TODO: Fix functions to avoid focusing elements under the overlay
 
-  return Array.from(
-    wrapperRef.value.querySelectorAll(
-      'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])',
-    ),
-  );
-}
+// function getFocusableElements() {
+//   if (!wrapperRef.value) return [];
 
-function trapFocus(e: KeyboardEvent) {
-  if (e.key !== "Tab") return;
+//   return Array.from(
+//     wrapperRef.value.querySelectorAll(
+//       'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])',
+//     ),
+//   );
+// }
 
-  const focusableElements = getFocusableElements();
+// function trapFocus(e: KeyboardEvent) {
+//   if (e.key !== "Tab") return;
 
-  if (!focusableElements.length) return;
+//   const focusableElements = getFocusableElements();
 
-  const firstElement = focusableElements.at(0) as HTMLElement;
-  const lastElement = focusableElements.at(-1) as HTMLElement;
+//   if (!focusableElements.length) return;
 
-  // Shift+Tab - if focused on first element, move to last
-  if (e.shiftKey && document.activeElement === firstElement) {
-    e.preventDefault();
-    lastElement.focus();
+//   const firstElement = focusableElements.at(0) as HTMLElement;
+//   const lastElement = focusableElements.at(-1) as HTMLElement;
 
-    return;
-  }
+//   // Shift+Tab - if focused on first element, move to last
+//   if (e.shiftKey && document.activeElement === firstElement) {
+//     e.preventDefault();
+//     lastElement.focus();
 
-  // Tab - if focused on last element, move to first
-  if (!e.shiftKey && document.activeElement === lastElement) {
-    e.preventDefault();
-    firstElement.focus();
-  }
-}
+//     return;
+//   }
+
+//   // Tab - if focused on last element, move to first
+//   if (!e.shiftKey && document.activeElement === lastElement) {
+//     e.preventDefault();
+//     firstElement.focus();
+//   }
+// }
 
 watch(isShownModal, onChangeShownModal);
 
@@ -113,15 +115,8 @@ function onChangeShownModal(newValue: boolean) {
   toggleOverflow();
 
   if (newValue) {
-    nextTick(focusModal);
+    // nextTick(() => wrapperRef.value?.focus());
   }
-}
-
-function focusModal() {
-  const focusableElements = getFocusableElements();
-  const firstFocusableElement = focusableElements.at(0) as HTMLElement;
-
-  focusableElements.length ? firstFocusableElement.focus() : wrapperRef.value?.focus();
 }
 
 function toggleOverflow() {
@@ -140,10 +135,10 @@ function toggleOverflow() {
 
 function toggleEventListeners() {
   if (isShownModal.value) {
-    document.addEventListener("keydown", trapFocus);
+    // document.addEventListener("keydown", trapFocus);
     document.addEventListener("keydown", onKeydownEsc);
   } else {
-    document.removeEventListener("keydown", trapFocus);
+    // document.removeEventListener("keydown", trapFocus);
     document.removeEventListener("keydown", onKeydownEsc);
   }
 }
