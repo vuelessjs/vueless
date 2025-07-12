@@ -21,17 +21,17 @@ const props = withDefaults(defineProps<Props>(), {
 
 const emit = defineEmits([
   /**
-   * Triggers when link is clicked.
+   * Triggers when a link is clicked.
    */
   "click",
 
   /**
-   * Triggers when cursor is on the link.
+   * Triggers when the cursor is on the link.
    */
   "mouseover",
 
   /**
-   * Triggers when link is focused.
+   * Triggers when a link is focused.
    */
   "focus",
 
@@ -41,7 +41,7 @@ const emit = defineEmits([
   "blur",
 
   /**
-   * Triggers when link is clicked.
+   * Triggers when a link is clicked.
    */
   "keydown",
 ]);
