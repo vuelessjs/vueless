@@ -217,7 +217,7 @@ export const Slots: StoryFn<UInputNumberArgs> = (args) => ({
       <UInputNumber
         label="Left slot"
         placeholder="Enter discount amount"
-        :config="{ numberInput: { leftSlot: 'pl-0' } }"
+        :config="{ numberInput: { wrapper: 'pl-0' } }"
       >
         <template #left>
           <UDropdownButton
