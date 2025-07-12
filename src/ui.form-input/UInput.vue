@@ -211,10 +211,18 @@ function setLabelPosition() {
 
   if (leftSlotWrapperRef.value && inputRef.value && labelComponentRef.value?.labelElement) {
     const leftSlotOrIconWidth = leftSlotWrapperRef.value.getBoundingClientRect().width;
-    const leftPaddingValue = parseFloat(getComputedStyle(inputRef.value).paddingLeft);
+    const wrapperElement = inputRef.value.parentElement;
+
+    let wrapperGap = 0;
+    let wrapperLeftPadding = 0;
+
+    if (wrapperElement) {
+      wrapperGap = parseFloat(getComputedStyle(wrapperElement).gap);
+      wrapperLeftPadding = parseFloat(getComputedStyle(wrapperElement).paddingLeft);
+    }
 
     if (labelComponentRef.value?.labelElement) {
-      labelComponentRef.value.labelElement.style.left = `${leftSlotOrIconWidth + leftPaddingValue}px`;
+      labelComponentRef.value.labelElement.style.left = `${leftSlotOrIconWidth + wrapperLeftPadding + wrapperGap}px`;
     }
   }
 }
@@ -310,7 +318,7 @@ const {
         @keydown="onKeydown"
       />
 
-      <div
+      <span
         v-if="hasSlotContent($slots['right'], { iconName: rightIcon }) || rightIcon"
         v-bind="rightSlotAttrs"
       >
@@ -321,7 +329,7 @@ const {
         <slot name="right" :icon-name="rightIcon">
           <UIcon v-if="rightIcon" color="neutral" :name="rightIcon" v-bind="rightIconAttrs" />
         </slot>
-      </div>
+      </span>
     </label>
   </ULabel>
 </template>
