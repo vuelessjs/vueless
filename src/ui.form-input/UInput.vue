@@ -199,7 +199,9 @@ useMutationObserver(wrapperRef, (mutations) => mutations.forEach(setLabelPositio
   subtree: true,
 });
 
-watch([() => props.leftIcon, () => props.labelAlign], setLabelPosition, { flush: "post" });
+watch([() => props.leftIcon, () => props.labelAlign, () => props.size], setLabelPosition, {
+  flush: "post",
+});
 
 function setLabelPosition() {
   const shouldAlignLabelOnTop = !hasSlotContent(slots["left"]) && !props.leftIcon;

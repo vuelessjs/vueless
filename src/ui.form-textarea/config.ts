@@ -10,11 +10,11 @@ export default /*tw*/ {
     },
   },
   slot: "flex items-center justify-center whitespace-nowrap gap-1 rounded-medium",
-  leftSlot: "{>slot} pl-2.5 rounded-r-none",
-  rightSlot: "{>slot} pr-2.5 rounded-l-none",
+  leftSlot: "{>slot} rounded-r-none",
+  rightSlot: "{>slot} rounded-l-none",
   wrapper: {
     base: `
-      flex w-full bg-default transition
+      flex px-3 gap-3 w-full bg-default transition
       rounded-medium border border-default outline-transparent
       hover:border-lifted hover:focus-within:border-primary focus-within:border-primary
       focus-within:outline focus-within:outline-small focus-within:outline-primary focus-within:transition
@@ -30,7 +30,7 @@ export default /*tw*/ {
   },
   textarea: {
     base: `
-      px-3 pt-2 pb-1.5 block w-full bg-transparent border-none font-normal
+      pt-2 pb-1.5 block w-full bg-transparent border-none font-normal
       placeholder:text-muted placeholder:font-normal placeholder:leading-none
       focus:outline-none disabled:cursor-not-allowed
     `,

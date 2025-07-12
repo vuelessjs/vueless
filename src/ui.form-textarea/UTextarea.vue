@@ -97,18 +97,30 @@ function getNewRowCount() {
 }
 
 function onEnter() {
+  if (props.readonly) return;
+
   const newRowCount = getNewRowCount();
 
-  if (newRowCount > currentRows.value && !props.readonly) {
+  if (newRowCount > currentRows.value) {
     currentRows.value = newRowCount;
+  }
+
+  if (newRowCount === currentRows.value) {
+    currentRows.value = newRowCount + 1;
   }
 }
 
 function onBackspace() {
+  if (props.readonly) return;
+
   const newRowCount = getNewRowCount() - 1;
 
-  if (newRowCount < currentRows.value && !props.readonly) {
+  if (newRowCount < currentRows.value) {
     currentRows.value = newRowCount;
+  }
+
+  if (newRowCount === currentRows.value) {
+    currentRows.value = newRowCount + 1;
   }
 }
 
@@ -154,11 +166,13 @@ function toggleReadonly(hasReadonly: boolean) {
   }
 }
 
-useMutationObserver(leftSlotWrapperRef, (mutations) => mutations.forEach(setLabelPosition), {
+useMutationObserver(wrapperRef, (mutations) => mutations.forEach(setLabelPosition), {
   childList: true,
   characterData: true,
   subtree: true,
 });
+
+watch([() => props.labelAlign, () => props.size], setLabelPosition, { flush: "post" });
 
 function setLabelPosition() {
   if (props.labelAlign === "top" || !hasSlotContent(slots["left"])) {
@@ -171,9 +185,19 @@ function setLabelPosition() {
 
   if (leftSlotWrapperRef.value && textareaRef.value && labelComponentRef.value?.labelElement) {
     const leftSlotWidth = leftSlotWrapperRef.value.getBoundingClientRect().width;
-    const textareaPaddingLeft = parseFloat(getComputedStyle(textareaRef.value).paddingLeft);
+    const wrapperElement = textareaRef.value.parentElement;
 
-    labelComponentRef.value.labelElement.style.left = `${leftSlotWidth + textareaPaddingLeft}px`;
+    let wrapperGap = 0;
+    let wrapperLeftPadding = 0;
+
+    if (wrapperElement) {
+      wrapperGap = parseFloat(getComputedStyle(wrapperElement).gap);
+      wrapperLeftPadding = parseFloat(getComputedStyle(wrapperElement).paddingLeft);
+    }
+
+    if (labelComponentRef.value?.labelElement) {
+      labelComponentRef.value.labelElement.style.left = `${leftSlotWidth + wrapperLeftPadding + wrapperGap}px`;
+    }
   }
 }
 
@@ -234,7 +258,7 @@ const {
     </template>
 
     <label ref="wrapper" :for="elementId" v-bind="wrapperAttrs">
-      <div
+      <span
         v-if="hasSlotContent($slots['left'])"
         ref="leftSlotWrapper"
         :for="elementId"
@@ -242,7 +266,7 @@ const {
       >
         <!-- @slot Use it to add something before the text. -->
         <slot name="left" />
-      </div>
+      </span>
 
       <textarea
         :id="elementId"
@@ -266,10 +290,10 @@ const {
         @keyup.delete="onBackspace"
       />
 
-      <div v-if="hasSlotContent($slots['right'])" :for="elementId" v-bind="rightSlotAttrs">
+      <span v-if="hasSlotContent($slots['right'])" :for="elementId" v-bind="rightSlotAttrs">
         <!-- @slot Use it to add something after the text. -->
         <slot name="right" />
-      </div>
+      </span>
     </label>
   </ULabel>
 </template>

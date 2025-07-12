@@ -11,17 +11,12 @@ export default /*tw*/ {
   },
   wrapper: {
     base: `
-      flex w-full px-3 relative bg-default transition
+      flex gap-3 w-full px-3 relative bg-default transition
       border rounded-medium border-default outline-transparent
       hover:border-lifted hover:focus-within:border-primary focus-within:border-primary
       focus-within:outline focus-within:outline-small focus-within:outline-primary focus-within:transition
     `,
     variants: {
-      size: {
-        sm: "gap-2",
-        md: "gap-2.5",
-        lg: "gap-3",
-      },
       error: {
         true: "!border-error focus-within:outline-error",
       },
@@ -40,8 +35,8 @@ export default /*tw*/ {
       },
     },
   },
-  leftIcon: "{UIcon} {>inputIcon}",
-  rightIcon: "{UIcon} {>inputIcon}",
+  leftIcon: "{UIcon} {>inputIcon} -mr-0.5",
+  rightIcon: "{UIcon} {>inputIcon} -ml-0.5",
   leftSlot: "flex items-center",
   rightSlot: "flex items-center",
   input: {
