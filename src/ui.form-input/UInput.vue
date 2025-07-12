@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, onMounted, useSlots, useId, useTemplateRef } from "vue";
+import { computed, onMounted, useSlots, useId, useTemplateRef, watch } from "vue";
 
 import useUI from "../composables/useUI.ts";
 import { getDefaults } from "../utils/ui.ts";
@@ -89,6 +89,7 @@ const VALIDATION_RULES_REG_EX = {
 
 const slots = useSlots();
 
+const wrapperRef = useTemplateRef<HTMLLabelElement>("wrapper");
 const inputRef = useTemplateRef<HTMLInputElement>("input");
 const leftSlotWrapperRef = useTemplateRef<HTMLSpanElement>("leftSlotWrapper");
 const labelComponentRef = useTemplateRef<InstanceType<typeof ULabel>>("labelComponent");
@@ -192,11 +193,13 @@ function transformValue(value: string | number, exp: string | RegExp) {
   return matches ? matches.join("") : "";
 }
 
-useMutationObserver(leftSlotWrapperRef, (mutations) => mutations.forEach(setLabelPosition), {
+useMutationObserver(wrapperRef, (mutations) => mutations.forEach(setLabelPosition), {
   childList: true,
   characterData: true,
   subtree: true,
 });
+
+watch([() => props.leftIcon, () => props.labelAlign], setLabelPosition, { flush: "post" });
 
 function setLabelPosition() {
   const shouldAlignLabelOnTop = !hasSlotContent(slots["left"]) && !props.leftIcon;
@@ -279,7 +282,7 @@ const {
       <slot name="label" :label="label" />
     </template>
 
-    <label :for="elementId" v-bind="wrapperAttrs">
+    <label ref="wrapper" :for="elementId" v-bind="wrapperAttrs">
       <span
         v-if="hasSlotContent($slots['left'], { iconName: leftIcon }) || leftIcon"
         v-bind="leftSlotAttrs"
