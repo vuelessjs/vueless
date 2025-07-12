@@ -207,7 +207,7 @@ export const Slots: StoryFn<UInputArgs> = (args) => ({
       <UInput
         label="Phone Number"
         placeholder="Enter your phone number"
-        :config="{ leftSlot: 'pl-0' }"
+        :config="{ wrapper: 'pl-0' }"
       >
         <template #label="{ label }">
           {{ label }}

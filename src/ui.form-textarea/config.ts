@@ -32,7 +32,7 @@ export default /*tw*/ {
     base: `
       px-3 pt-2 pb-1.5 block w-full bg-transparent border-none font-normal
       placeholder:text-muted placeholder:font-normal placeholder:leading-none
-      focus:ring-0 focus:outline-none disabled:cursor-not-allowed
+      focus:outline-none disabled:cursor-not-allowed
     `,
     variants: {
       size: {

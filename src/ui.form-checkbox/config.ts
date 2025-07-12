@@ -4,10 +4,10 @@ export default /*tw*/ {
     base: `
       bg-default cursor-pointer transition
       border border-default rounded-small outline-transparent
+      appearance-none p-0 print:color-adjust-exact inline-block align-middle bg-origin-border select-none shrink-0
       hover:border-lifted
       active:border-{color} active:bg-{color}/15
       checked:text-{color}
-      focus:ring-0 focus:ring-offset-0
       focus-visible:outline-{color} focus-visible:outline-medium focus-visible:outline-offset-2 focus-visible:transition
       disabled:border-default disabled:bg-lifted disabled:cursor-not-allowed
       disabled:checked:bg-{color}/(--vl-disabled-opacity) disabled:checked:border-transparent
