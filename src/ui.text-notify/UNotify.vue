@@ -182,7 +182,7 @@ const {
         size="md"
         :name="config.defaults.successIcon"
         v-bind="successIconAttrs"
-        data-test="type-notify"
+        :data-test="getDataTest('type-success')"
       />
 
       <UIcon
@@ -190,12 +190,12 @@ const {
         size="md"
         :name="config.defaults.warningIcon"
         v-bind="warningIconAttrs"
-        data-test="type-notify"
+        :data-test="getDataTest('type-warning')"
       />
 
       <UIcon
         v-else-if="notification.type === NotificationType.Error"
-        data-test="type-notify"
+        :data-test="getDataTest('type-error')"
         size="md"
         :name="config.defaults.errorIcon"
         v-bind="errorIconAttrs"

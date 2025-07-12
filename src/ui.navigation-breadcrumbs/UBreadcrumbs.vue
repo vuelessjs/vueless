@@ -68,7 +68,7 @@ const {
 </script>
 
 <template>
-  <div ref="breadcrumbs" v-bind="breadcrumbsAttrs">
+  <div ref="breadcrumbs" v-bind="breadcrumbsAttrs" :data-test="getDataTest()">
     <template v-for="(link, index) in links" :key="index">
       <!--
         @slot Use it to add something instead of a link icon.

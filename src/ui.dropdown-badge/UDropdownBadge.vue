@@ -160,7 +160,12 @@ const { getDataTest, config, wrapperAttrs, dropdownBadgeAttrs, listboxAttrs, tog
 </script>
 
 <template>
-  <div ref="wrapper" v-click-outside="hideOptions" v-bind="wrapperAttrs">
+  <div
+    ref="wrapper"
+    v-click-outside="hideOptions"
+    v-bind="wrapperAttrs"
+    :data-test="getDataTest('wrapper')"
+  >
     <UBadge
       :id="elementId"
       :label="badgeLabel"

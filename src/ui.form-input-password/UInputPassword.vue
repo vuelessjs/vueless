@@ -79,6 +79,7 @@ const { getDataTest, config, passwordInputAttrs, passwordIconAttrs, passwordIcon
     :readonly="readonly"
     :disabled="disabled"
     v-bind="passwordInputAttrs"
+    :data-test="getDataTest()"
   >
     <template #left>
       <!--

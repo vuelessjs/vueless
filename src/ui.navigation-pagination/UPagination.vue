@@ -132,7 +132,7 @@ const {
 </script>
 
 <template>
-  <div ref="pagination" v-bind="paginationAttrs">
+  <div ref="pagination" v-bind="paginationAttrs" :data-test="getDataTest()">
     <UButton
       v-if="showFirst"
       variant="ghost"

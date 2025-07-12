@@ -66,7 +66,7 @@ function onClickCheckbox() {
  * Get element / nested component attributes for each config token ✨
  * Applies: `class`, `config`, redefined default `props` and dev `vl-...` attributes.
  */
-const { multiStateCheckboxAttrs: checkboxAttrs } = useUI<Config>(defaultConfig);
+const { getDataTest, multiStateCheckboxAttrs: checkboxAttrs } = useUI<Config>(defaultConfig);
 
 const multiStateCheckboxAttrs = computed(() => {
   const clonedCheckboxAttrs = cloneDeep(checkboxAttrs.value) as KeyAttrsWithConfig<UCheckboxConfig>;
@@ -92,7 +92,7 @@ const multiStateCheckboxAttrs = computed(() => {
     :color="color"
     :label-align="labelAlign"
     :disabled="disabled"
-    :data-test="dataTest"
+    :data-test="getDataTest()"
     v-bind="multiStateCheckboxAttrs"
     @input="onClickCheckbox"
   />

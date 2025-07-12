@@ -169,6 +169,7 @@ const { config, getDataTest, wrapperAttrs, dropdownLinkAttrs, listboxAttrs, togg
     v-click-outside="hideOptions"
     tabindex="1"
     v-bind="wrapperAttrs"
+    :data-test="getDataTest('wrapper')"
     @keydown.enter="onClickLink"
     @keydown.space.prevent="onClickLink"
   >

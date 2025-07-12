@@ -303,6 +303,7 @@ const {
     :disabled="disabled"
     :description="description"
     v-bind="inputLabelAttrs"
+    :data-test="getDataTest()"
   >
     <template #label>
       <!--

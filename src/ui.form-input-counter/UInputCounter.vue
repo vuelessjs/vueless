@@ -156,7 +156,7 @@ const {
 </script>
 
 <template>
-  <div v-bind="wrapperAttrs">
+  <div v-bind="wrapperAttrs" :data-test="getDataTest()">
     <UButton
       round
       square

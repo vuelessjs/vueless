@@ -162,7 +162,12 @@ const { getDataTest, config, dropdownButtonAttrs, listboxAttrs, toggleIconAttrs,
 </script>
 
 <template>
-  <div ref="wrapper" v-click-outside="hideOptions" v-bind="wrapperAttrs">
+  <div
+    ref="wrapper"
+    v-click-outside="hideOptions"
+    v-bind="wrapperAttrs"
+    :data-test="getDataTest('wrapper')"
+  >
     <UButton
       :id="elementId"
       :label="buttonLabel"
