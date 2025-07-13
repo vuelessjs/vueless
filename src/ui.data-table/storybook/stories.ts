@@ -278,7 +278,7 @@ CellClasses.args = {
       id: getRandomId(),
       orderId: {
         value: `ORD-${Math.floor(Math.random() * 10000)}`,
-        contentClasses: "text-green-300 line-through",
+        contentClass: "text-green-300 line-through",
       },
       customerName: "Helen Williams",
       status: "Delivered",
@@ -291,7 +291,7 @@ CellClasses.parameters = {
     description: {
       story:
         // eslint-disable-next-line vue/max-len
-        "To apply classes to a table content, you may use different approaches: <br/> 1. Pass a string with classes to the `class` key in a row object (classes are applied to the whole row). <br/> 2. Pass a string with classes to the `class` key in a cell object (classes are applied to the table cell, while the value is passed via a `value` key). <br/> 3. Pass a string with classes to the `contentClasses` key in a cell object (classes are applied to the cell content, while the value is passed via a `value` key).",
+        "To apply classes to a table content, you may use different approaches: <br/> 1. Pass a string with classes to the `class` key in a row object (classes are applied to the whole row). <br/> 2. Pass a string with classes to the `class` key in a cell object (classes are applied to the table cell, while the value is passed via a `value` key). <br/> 3. Pass a string with classes to the `contentClass` key in a cell object (classes are applied to the cell content, while the value is passed via a `value` key).",
     },
   },
 };

@@ -1,4 +1,3 @@
-import { ref } from "vue";
 import {
   getArgs,
   getArgTypes,
@@ -11,7 +10,7 @@ import UDataList from "../../ui.data-list/UDataList.vue";
 import UIcon from "../../ui.image-icon/UIcon.vue";
 import UButton from "../../ui.button/UButton.vue";
 import URow from "../../ui.container-row/URow.vue";
-import UBadge from "../../ui.text-badge/UBadge.vue";
+import ULink from "../../ui.button-link/ULink.vue";
 import UAvatar from "../../ui.image-avatar/UAvatar.vue";
 import UHeader from "../../ui.text-header/UHeader.vue";
 import ULoader from "../../ui.loader/ULoader.vue";
@@ -74,46 +73,25 @@ export default {
 } as Meta;
 
 const DefaultTemplate: StoryFn<UDataListArgs> = (args: UDataListArgs) => ({
-  components: { UDataList, UIcon, URow, UButton, UBadge, UAvatar, ULoader, UHeader },
+  components: { UDataList, UIcon, URow, UButton, UAvatar, ULoader, UHeader, ULink },
   directives: { tooltip },
-  setup() {
-    const slots = getSlotNames(UDataList.__name);
-
-    const avatars = [
-      "https://cdn-icons-png.flaticon.com/128/1999/1999625.png",
-      "https://cdn-icons-png.flaticon.com/128/4140/4140057.png",
-      "https://cdn-icons-png.flaticon.com/128/4140/4140047.png",
-    ];
-
-    const list = ref(
-      args.list?.map((item, index) => ({
-        ...item,
-        id: item.id,
-        avatar: avatars[index % avatars.length],
-      })),
-    );
-
-    function removeItem(targetItem: DataListItem) {
-      list.value = list.value?.filter((listItem) => listItem.id !== targetItem.id);
-
-      return alert(`Removed item: ${JSON.stringify(targetItem, null, 2)}`);
-    }
-
-    function editItem(targetItem: DataListItem) {
-      alert(`Edit item: ${JSON.stringify(targetItem, null, 2)}`);
-    }
-
-    return { args, slots, removeItem, editItem, list };
-  },
+  setup: () => ({
+    args,
+    slots: getSlotNames(UDataList.__name),
+    removeItem: (targetItem: DataListItem) =>
+      alert(`Removed item: ${JSON.stringify(targetItem, null, 2)}`),
+    editItem: (targetItem: DataListItem) =>
+      alert(`Edit item: ${JSON.stringify(targetItem, null, 2)}`),
+  }),
   template: `
-    <UDataList v-bind="args" :list="args.slotTemplate ? list : args.list">
+    <UDataList v-bind="args">
       ${args.slotTemplate || getSlotsFragment("")}
     </UDataList>
   `,
 });
 
 const EnumTemplate: StoryFn<UDataListArgs> = (args: UDataListArgs, { argTypes }) => ({
-  components: { URow, UDataList, UHeader },
+  components: { URow, UDataList },
   setup: () => ({ args, argTypes, getArgs }),
   template: `
     <UDataList
@@ -141,7 +119,7 @@ export const LabelSlot = DefaultTemplate.bind({});
 LabelSlot.args = {
   slotTemplate: `
     <template #label="{ item }">
-      <UBadge :label="item.label" />
+      <ULink :label="item.label" />
     </template>
   `,
 };
@@ -176,9 +154,21 @@ EmptySlot.parameters = {
 export const DragSlot = DefaultTemplate.bind({});
 DragSlot.args = {
   list: [
-    { label: "John Doe (Engineering)", id: 1 },
-    { label: "Michael Johnson (Finance)", id: 2 },
-    { label: "Emma Smith (Marketing)", id: 3 },
+    {
+      label: "John Doe (Engineering)",
+      id: 1,
+      avatar: "https://cdn-icons-png.flaticon.com/128/1999/1999625.png",
+    },
+    {
+      label: "Michael Johnson (Finance)",
+      id: 2,
+      avatar: "https://cdn-icons-png.flaticon.com/128/4140/4140057.png",
+    },
+    {
+      label: "Emma Smith (Marketing)",
+      id: 3,
+      avatar: "https://cdn-icons-png.flaticon.com/128/4140/4140047.png",
+    },
   ],
   slotTemplate: `
     <template #drag="{ item }">
@@ -189,9 +179,32 @@ DragSlot.args = {
 
 export const ActionsSlot = DefaultTemplate.bind({});
 ActionsSlot.args = {
+  nesting: true,
+  list: [
+    {
+      label: "Expenses",
+      id: 1,
+    },
+    {
+      label: "Revenue Streams",
+      id: 2,
+      actions: false,
+      nesting: true,
+      children: [
+        { label: "Product Sales", id: 2.1 },
+        { label: "Subscription Services", id: 2.2 },
+        { label: "Consulting", id: 2.3 },
+      ],
+    },
+    {
+      label: "Departments",
+      id: 3,
+      crossed: true,
+    },
+  ],
   slotTemplate: `
     <template #actions="{ item }">
-      <UButton label="Export" size="xs" />
+      <UButton label="Export" variant="soft" size="xs" />
       <UIcon
         name="delete"
         size="sm"
@@ -210,4 +223,15 @@ ActionsSlot.args = {
       />
     </template>
   `,
+};
+ActionsSlot.parameters = {
+  docs: {
+    description: {
+      story: `
+You can use meta keys on list items such as \`crossed\` (for line-through style),
+\`actions\` (to toggle actions visibility), \`nesting\` (to enable nesting for the item),
+and \`children\` (for nested items). See the the docs below for more info.
+      `,
+    },
+  },
 };
