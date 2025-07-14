@@ -20,7 +20,7 @@ describe("UTableRow.vue", () => {
     name: "John Doe",
     email: "john@example.com",
     role: "Admin",
-    nestedLeveL: 0,
+    nestedLevel: 0,
   };
 
   const defaultAttrs: UTableRowAttrs = {
