@@ -341,7 +341,7 @@ onMounted(() => {
           locale.value,
         );
 
-    emit("update:modelValue", props.range ? formatted : formatted);
+    emit("update:modelValue", formatted);
     emit("userDateChange", userFormattedDate.value);
   }
 });
