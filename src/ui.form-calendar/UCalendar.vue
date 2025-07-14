@@ -63,24 +63,29 @@ const emit = defineEmits([
    * @property {object} modelValue
    */
   "update:modelValue",
+
   /**
    * Triggers when calendar view changes.
    * @property {string} view
    */
   "update:view",
+
   /**
    * Triggers when date value changes.
    * @property {object} value
    */
   "input",
+
   /**
    * Triggers when calendar date is selected by clicking "Enter".
    */
   "submit",
+
   /**
    * Triggers when arrow keys are used to change calendar date.
    */
   "keydown",
+
   /**
    * Triggers when the user changes the date input value.
    * @property {string} value
@@ -94,6 +99,7 @@ const minutesRef = useTemplateRef<HTMLInputElement>("minutes-input");
 const secondsRef = useTemplateRef<HTMLInputElement>("seconds-input");
 const okButton = useTemplateRef<ComponentExposed<typeof UButton>>("ok-button");
 const dayViewRef = useTemplateRef<ComponentExposed<typeof DayView>>("day-view");
+const yearViewRef = useTemplateRef<ComponentExposed<typeof YearView>>("year-view");
 
 const activeDate: Ref<Date | null> = ref(null);
 const activeMonth: Ref<Date | null> = ref(null);
@@ -298,6 +304,14 @@ const viewSwitchLabel = computed(() => {
 });
 
 const currentViewLabel = computed(() => {
+  if (isCurrentView.value.year && yearViewRef.value?.years?.length) {
+    const yearsArray = yearViewRef.value.years;
+    const from = yearsArray[0].getFullYear();
+    const to = yearsArray[yearsArray.length - 1].getFullYear();
+
+    return `${from} ${SEPARATOR} ${to}`;
+  }
+
   let label = "";
 
   if (isCurrentView.value.day) {
@@ -306,10 +320,6 @@ const currentViewLabel = computed(() => {
 
   if (isCurrentView.value.month) {
     label = viewSwitchLabel.value.year;
-  }
-
-  if (isCurrentView.value.year) {
-    label = viewSwitchLabel.value.yearsRange;
   }
 
   return label;
@@ -792,7 +802,6 @@ const {
   >
     <div v-bind="navigationAttrs" :data-test="getDataTest('navigation')">
       <UButton
-        v-if="range"
         square
         size="sm"
         color="grayscale"
@@ -818,6 +827,7 @@ const {
 
       <UButton
         block
+        square
         size="sm"
         color="grayscale"
         variant="ghost"
@@ -841,7 +851,6 @@ const {
       />
 
       <UButton
-        v-if="range"
         square
         size="sm"
         color="grayscale"
@@ -889,6 +898,7 @@ const {
 
     <YearView
       v-if="isCurrentView.year"
+      ref="year-view"
       :selected-date="selectedDate"
       :selected-date-to="selectedDateTo"
       :range="range"

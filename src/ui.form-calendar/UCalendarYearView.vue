@@ -141,6 +141,8 @@ function onClickYear(year: Date) {
   emit("input", year);
 }
 
+defineExpose({ years });
+
 /**
  * Get element / nested component attributes for each config token ✨
  * Applies: `class`, `config`, redefined default `props` and dev `vl-...` attributes.

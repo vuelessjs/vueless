@@ -1,3 +1,5 @@
+import { computed } from "vue";
+
 import type { Meta, StoryFn } from "@storybook/vue3";
 import {
   getArgs,
@@ -9,9 +11,10 @@ import {
 
 import UCalendar from "../../ui.form-calendar/UCalendar.vue";
 import URow from "../../ui.container-row/URow.vue";
-import UDatePicker from "../../ui.form-date-picker/UDatePicker.vue";
 
 import { COMPONENT_NAME } from "../constants.ts";
+import { formatDate } from "../utilCalendar.ts";
+import defaultConfig from "../config.ts";
 
 import type { DateValue, Props } from "../types.ts";
 
@@ -25,7 +28,7 @@ export default {
   title: "Form Inputs & Controls / Calendar",
   component: UCalendar,
   args: {
-    modelValue: null,
+    modelValue: new Date(new Date().getFullYear(), new Date().getMonth(), 10, 12, 35, 50),
   },
   argTypes: {
     ...getArgTypes(COMPONENT_NAME),
@@ -48,9 +51,7 @@ const DefaultTemplate: StoryFn<UCalendarArgs> = (args: UCalendarArgs) => ({
         ${args.slotTemplate || getSlotsFragment("")}
       </UCalendar>
 
-      <div class="mt-4">
-        {{ args.modelValue }}
-      </div>
+      <div class="text-neutral mt-4">{{ args.modelValue }}</div>
     `,
 });
 
@@ -66,19 +67,13 @@ const EnumTemplate: StoryFn<UCalendarArgs> = (args: UCalendarArgs, { argTypes })
         v-model="args.modelValue"
       />
     </URow>
+
+    <div class="text-neutral mt-4">{{ args.modelValue }}</div>
   `,
 });
 
-const UserDateFormatTemplate: StoryFn<UCalendarArgs> = (args: UCalendarArgs) => ({
-  components: { UDatePicker },
-  setup: () => ({ args, slots: getSlotNames(COMPONENT_NAME) }),
-  template: `
-      <UDatePicker v-bind="args" v-model="args.modelValue" />
-    `,
-});
-
 export const Default = DefaultTemplate.bind({});
-Default.args = { modelValue: null };
+Default.args = {};
 
 export const View = EnumTemplate.bind({});
 View.args = { enum: "view" };
@@ -102,8 +97,25 @@ Range.args = {
 export const Timepicker = DefaultTemplate.bind({});
 Timepicker.args = { modelValue: new Date(2024, 2, 14, 12, 24, 14), timepicker: true };
 
-export const DateFormat = DefaultTemplate.bind({});
-DateFormat.args = { dateFormat: "Y-m-d" };
+export const DateFormat: StoryFn<UCalendarArgs> = (args: UCalendarArgs) => ({
+  components: { UCalendar },
+  setup: () => {
+    const formattedValue = computed(() => {
+      if (args.modelValue instanceof Date) {
+        return formatDate(args.modelValue, "Y-m-d", defaultConfig.i18n);
+      }
+
+      return args.modelValue;
+    });
+
+    return { args, formattedValue };
+  },
+  template: `
+      <UCalendar v-model="args.modelValue" date-format="Y-m-d" />
+
+      <div class="text-neutral mt-4">{{ formattedValue }}</div>
+    `,
+});
 DateFormat.parameters = {
   docs: {
     description: {
@@ -112,32 +124,33 @@ DateFormat.parameters = {
   },
 };
 
-export const DateTimeFormat = DefaultTemplate.bind({});
-DateTimeFormat.args = { timepicker: true, dateTimeFormat: "Y-m-d H:i:S" };
+export const DateTimeFormat: StoryFn<UCalendarArgs> = (args: UCalendarArgs) => ({
+  components: { UCalendar },
+  setup: () => {
+    const formattedValue = computed(() => {
+      if (args.modelValue instanceof Date) {
+        return formatDate(args.modelValue, "Y-m-d H:i:S", defaultConfig.i18n);
+      }
+
+      return args.modelValue;
+    });
+
+    return { args, formattedValue };
+  },
+  template: `
+      <UCalendar
+        v-model="args.modelValue"
+        timepicker
+        date-time-format="Y-m-d H:i:S"
+      />
+
+      <div class="text-neutral mt-4">{{ formattedValue }}</div>
+    `,
+});
 DateTimeFormat.parameters = {
   docs: {
     description: {
       story: "Same as date format, but used when timepicker is enabled.",
-    },
-  },
-};
-
-export const UserDateFormat = UserDateFormatTemplate.bind({});
-UserDateFormat.args = { userDateFormat: "d/m/Y" };
-UserDateFormat.parameters = {
-  docs: {
-    description: {
-      story: "User-friendly date format (it will be shown in UI).",
-    },
-  },
-};
-
-export const UserDateTimeFormat = UserDateFormatTemplate.bind({});
-UserDateTimeFormat.args = { timepicker: true, userDateTimeFormat: "d/m/Y H:i:S" };
-UserDateTimeFormat.parameters = {
-  docs: {
-    description: {
-      story: "Same as user format, but used when timepicker is enabled.",
     },
   },
 };
