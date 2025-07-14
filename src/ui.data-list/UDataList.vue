@@ -13,7 +13,7 @@ import { COMPONENT_NAME } from "./constants.ts";
 import defaultConfig from "./config.ts";
 import { useComponentLocaleMessages } from "../composables/useComponentLocaleMassages.ts";
 
-import type { Props, DragMoveEvent, DataListItem, Config } from "./types.ts";
+import type { Props, DataListItem, Config } from "./types.ts";
 
 defineOptions({ inheritAttrs: false });
 
@@ -40,15 +40,6 @@ const { localeMessages } = useComponentLocaleMessages<typeof defaultConfig.i18n>
 
 function isCrossed(element: DataListItem) {
   return Boolean(element.crossed);
-}
-
-function onDragMove(event: DragMoveEvent): boolean | void {
-  const isDisabledNestingItem = !Boolean(event.draggedContext.element.nesting);
-  const isNestingAction = Boolean(event.relatedContext?.element?.nesting);
-
-  if (isDisabledNestingItem && isNestingAction) {
-    return false;
-  }
 }
 
 function onDragEnd() {
@@ -117,7 +108,7 @@ const {
       @binding {string} empty-description
     -->
     <slot
-      v-if="!hideEmptyStateForNesting && !list?.length"
+      v-if="!list?.length"
       name="empty"
       :empty-title="localeMessages.emptyTitle"
       :empty-description="localeMessages.emptyDescription"
@@ -140,7 +131,6 @@ const {
       :drag-class="config.draggableDrag"
       v-bind="draggableAttrs"
       :data-test="getDataTest()"
-      :move="onDragMove"
       @end="onDragEnd"
     >
       <template #item="{ element }">
@@ -188,9 +178,7 @@ const {
           </div>
 
           <UDataList
-            v-if="nesting && element.nesting"
-            :nesting="nesting"
-            hide-empty-state-for-nesting
+            v-if="element.children && element.children.length"
             :list="element.children"
             :group="group"
             v-bind="nestedAttrs"

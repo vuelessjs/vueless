@@ -51,17 +51,6 @@ export interface Props {
   animationDuration?: number;
 
   /**
-   * Enable nesting.
-   */
-  nesting?: boolean;
-
-  /**
-   * Disable empty state for nested elements if empty (internal props).
-   * @ignore
-   */
-  hideEmptyStateForNesting?: boolean;
-
-  /**
    * Component config object.
    */
   config?: ComponentConfig<Config>;
