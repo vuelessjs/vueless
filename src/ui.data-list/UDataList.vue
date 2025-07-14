@@ -108,7 +108,7 @@ const {
       @binding {string} empty-description
     -->
     <slot
-      v-if="!list?.length"
+      v-if="!hideEmptyStateForNesting && !list?.length"
       name="empty"
       :empty-title="localeMessages.emptyTitle"
       :empty-description="localeMessages.emptyDescription"
@@ -178,7 +178,8 @@ const {
           </div>
 
           <UDataList
-            v-if="element.children && element.children.length"
+            v-if="element.children?.length"
+            hide-empty-state-for-nesting
             :list="element.children"
             :group="group"
             v-bind="nestedAttrs"
