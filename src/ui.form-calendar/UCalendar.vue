@@ -99,7 +99,6 @@ const minutesRef = useTemplateRef<HTMLInputElement>("minutes-input");
 const secondsRef = useTemplateRef<HTMLInputElement>("seconds-input");
 const okButton = useTemplateRef<ComponentExposed<typeof UButton>>("ok-button");
 const dayViewRef = useTemplateRef<ComponentExposed<typeof DayView>>("day-view");
-const yearViewRef = useTemplateRef<ComponentExposed<typeof YearView>>("year-view");
 
 const activeDate: Ref<Date | null> = ref(null);
 const activeMonth: Ref<Date | null> = ref(null);
@@ -314,12 +313,8 @@ const currentViewLabel = computed(() => {
     label = viewSwitchLabel.value.year;
   }
 
-  if (isCurrentView.value.year && yearViewRef.value?.years?.length) {
-    const yearsArray = yearViewRef.value.years;
-    const from = yearsArray[0].getFullYear();
-    const to = yearsArray[yearsArray.length - 1].getFullYear();
-
-    return `${from} ${SEPARATOR} ${to}`;
+  if (isCurrentView.value.year) {
+    label = viewSwitchLabel.value.yearsRange;
   }
 
   return label;
@@ -898,7 +893,6 @@ const {
 
     <YearView
       v-if="isCurrentView.year"
-      ref="year-view"
       :selected-date="selectedDate"
       :selected-date-to="selectedDateTo"
       :range="range"

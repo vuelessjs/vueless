@@ -127,7 +127,11 @@ function getYearState(year: Date) {
     props.selectedDateTo &&
     props.selectedDate &&
     props.selectedDateTo.getFullYear() - props.selectedDate.getFullYear() >= 1;
-  const isActiveYear = props.activeMonth && isSameMonth(props.activeMonth, year) && !props.range;
+  const isActiveYear =
+    props.activeMonth &&
+    isSameMonth(props.activeMonth, year) &&
+    !props.range &&
+    !dateIsOutOfRange(year, props.minDate, props.maxDate, props.locale, props.dateFormat);
 
   return {
     isSelectedYear,
@@ -140,8 +144,6 @@ function getYearState(year: Date) {
 function onClickYear(year: Date) {
   emit("input", year);
 }
-
-defineExpose({ years });
 
 /**
  * Get element / nested component attributes for each config token ✨
