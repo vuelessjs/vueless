@@ -2,7 +2,7 @@ export default /*tw*/ {
   searchInput: "{UInput}",
   searchInputWithButton: {
     base: "{UInput} {>searchInput}",
-    rightSlot: "pr-0",
+    wrapper: "pr-0",
   },
   inputIcon: {
     base: "{UIcon}",

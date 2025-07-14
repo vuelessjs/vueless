@@ -277,7 +277,7 @@ export const Slots: StoryFn<DefaultUDatePickerRangeArgs> = (args) => ({
         v-model="args.modelValue"
         variant="input"
         class="w-full"
-        :config="{ datepickerInput: { leftSlot: 'pl-0' } }"
+        :config="{ datepickerInput: { wrapper: 'pl-0' } }"
       >
         <template #left>
           <UButton label="Export" size="xs" class="h-full rounded-r-none" />
@@ -288,7 +288,7 @@ export const Slots: StoryFn<DefaultUDatePickerRangeArgs> = (args) => ({
         v-model="args.modelValue"
         variant="input"
         class="w-full"
-        :config="{ datepickerInput: { rightSlot: 'pr-0' } }"
+        :config="{ datepickerInput: { wrapper: 'pr-0' } }"
       >
         <template #right>
           <UButton label="Schedule" size="xs" class="h-full rounded-l-none" />
