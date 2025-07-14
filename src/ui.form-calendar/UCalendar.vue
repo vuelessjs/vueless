@@ -304,14 +304,6 @@ const viewSwitchLabel = computed(() => {
 });
 
 const currentViewLabel = computed(() => {
-  if (isCurrentView.value.year && yearViewRef.value?.years?.length) {
-    const yearsArray = yearViewRef.value.years;
-    const from = yearsArray[0].getFullYear();
-    const to = yearsArray[yearsArray.length - 1].getFullYear();
-
-    return `${from} ${SEPARATOR} ${to}`;
-  }
-
   let label = "";
 
   if (isCurrentView.value.day) {
@@ -320,6 +312,14 @@ const currentViewLabel = computed(() => {
 
   if (isCurrentView.value.month) {
     label = viewSwitchLabel.value.year;
+  }
+
+  if (isCurrentView.value.year && yearViewRef.value?.years?.length) {
+    const yearsArray = yearViewRef.value.years;
+    const from = yearsArray[0].getFullYear();
+    const to = yearsArray[yearsArray.length - 1].getFullYear();
+
+    return `${from} ${SEPARATOR} ${to}`;
   }
 
   return label;
