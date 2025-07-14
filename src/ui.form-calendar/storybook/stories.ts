@@ -1,5 +1,3 @@
-import { computed } from "vue";
-
 import type { Meta, StoryFn } from "@storybook/vue3";
 import {
   getArgs,
@@ -11,10 +9,9 @@ import {
 
 import UCalendar from "../../ui.form-calendar/UCalendar.vue";
 import URow from "../../ui.container-row/URow.vue";
+import UText from "../../ui.text-block/UText.vue";
 
 import { COMPONENT_NAME } from "../constants.ts";
-import { formatDate } from "../utilCalendar.ts";
-import defaultConfig from "../config.ts";
 
 import type { DateValue, Props } from "../types.ts";
 
@@ -44,19 +41,19 @@ export default {
 } as Meta;
 
 const DefaultTemplate: StoryFn<UCalendarArgs> = (args: UCalendarArgs) => ({
-  components: { UCalendar },
+  components: { UCalendar, UText },
   setup: () => ({ args, slots: getSlotNames(COMPONENT_NAME) }),
   template: `
       <UCalendar v-bind="args" v-model="args.modelValue">
         ${args.slotTemplate || getSlotsFragment("")}
       </UCalendar>
 
-      <div class="text-neutral mt-4">{{ args.modelValue }}</div>
+      <UText color="neutral" class="mt-4">{{ args.modelValue }}</UText>
     `,
 });
 
 const EnumTemplate: StoryFn<UCalendarArgs> = (args: UCalendarArgs, { argTypes }) => ({
-  components: { UCalendar, URow },
+  components: { UCalendar, URow, UText },
   setup: () => ({ args, argTypes, getArgs }),
   template: `
     <URow>
@@ -68,7 +65,7 @@ const EnumTemplate: StoryFn<UCalendarArgs> = (args: UCalendarArgs, { argTypes })
       />
     </URow>
 
-    <div class="text-neutral mt-4">{{ args.modelValue }}</div>
+    <UText color="neutral" class="mt-4">{{ args.modelValue }}</UText>
   `,
 });
 
@@ -97,60 +94,39 @@ Range.args = {
 export const Timepicker = DefaultTemplate.bind({});
 Timepicker.args = { modelValue: new Date(2024, 2, 14, 12, 24, 14), timepicker: true };
 
-export const DateFormat: StoryFn<UCalendarArgs> = (args: UCalendarArgs) => ({
-  components: { UCalendar },
-  setup: () => {
-    const formattedValue = computed(() => {
-      if (args.modelValue instanceof Date) {
-        return formatDate(args.modelValue, "Y-m-d", defaultConfig.i18n);
-      }
-
-      return args.modelValue;
-    });
-
-    return { args, formattedValue };
-  },
-  template: `
-      <UCalendar v-model="args.modelValue" date-format="Y-m-d" />
-
-      <div class="text-neutral mt-4">{{ formattedValue }}</div>
-    `,
-});
+export const DateFormat = DefaultTemplate.bind({});
+DateFormat.args = { dateFormat: "Y-m-d" };
 DateFormat.parameters = {
+  docs: {
+    description: {
+      story: "Date string format.",
+    },
+    source: {
+      code: `
+        <UCalendar v-model="'2025-07-10T09:35:50.000Z'" date-format="Y-m-d" />
+      `,
+    },
+  },
+};
+
+export const DateTimeFormat = DefaultTemplate.bind({});
+DateTimeFormat.args = { timepicker: true, dateTimeFormat: "Y-m-d H:i:S" };
+DateTimeFormat.parameters = {
   docs: {
     description: {
       story: "Date string format.",
     },
   },
 };
-
-export const DateTimeFormat: StoryFn<UCalendarArgs> = (args: UCalendarArgs) => ({
-  components: { UCalendar },
-  setup: () => {
-    const formattedValue = computed(() => {
-      if (args.modelValue instanceof Date) {
-        return formatDate(args.modelValue, "Y-m-d H:i:S", defaultConfig.i18n);
-      }
-
-      return args.modelValue;
-    });
-
-    return { args, formattedValue };
-  },
-  template: `
-      <UCalendar
-        v-model="args.modelValue"
-        timepicker
-        date-time-format="Y-m-d H:i:S"
-      />
-
-      <div class="text-neutral mt-4">{{ formattedValue }}</div>
-    `,
-});
 DateTimeFormat.parameters = {
   docs: {
     description: {
       story: "Same as date format, but used when timepicker is enabled.",
+    },
+    source: {
+      code: `
+        <UCalendar v-model="'2025-07-10T09:35:50.000Z'" date-time-format="Y-m-d H:i:S" timepicker />
+      `,
     },
   },
 };

@@ -127,6 +127,7 @@ function getYearState(year: Date) {
     props.selectedDateTo &&
     props.selectedDate &&
     props.selectedDateTo.getFullYear() - props.selectedDate.getFullYear() >= 1;
+
   const isActiveYear =
     props.activeMonth &&
     isSameMonth(props.activeMonth, year) &&

@@ -1,5 +1,5 @@
 <script setup lang="ts" generic="TModelValue extends DateValue">
-import { computed, ref, watch, useTemplateRef, nextTick } from "vue";
+import { computed, ref, watch, useTemplateRef, nextTick, onMounted } from "vue";
 
 import useUI from "../composables/useUI.ts";
 import { getDefaults } from "../utils/ui.ts";
@@ -318,6 +318,32 @@ const currentViewLabel = computed(() => {
   }
 
   return label;
+});
+
+onMounted(() => {
+  if (props.modelValue && (props.dateFormat || props.dateTimeFormat)) {
+    const formatted = isRangeDate(props.modelValue)
+      ? {
+          from: formatDate(
+            parseDate(props.modelValue.from, actualDateFormat.value, locale.value),
+            actualDateFormat.value,
+            locale.value,
+          ),
+          to: formatDate(
+            parseDate(props.modelValue.to, actualDateFormat.value, locale.value),
+            actualDateFormat.value,
+            locale.value,
+          ),
+        }
+      : formatDate(
+          parseDate(props.modelValue, actualDateFormat.value, locale.value),
+          actualDateFormat.value,
+          locale.value,
+        );
+
+    emit("update:modelValue", props.range ? formatted : formatted);
+    emit("userDateChange", userFormattedDate.value);
+  }
 });
 
 watch(userFormattedDate, () => {

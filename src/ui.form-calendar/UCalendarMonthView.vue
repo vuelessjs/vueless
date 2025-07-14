@@ -55,6 +55,7 @@ function getMonthState(month: Date) {
     props.selectedDateTo &&
     props.selectedDate &&
     isMoreThanOneMonthDiff(props.selectedDate, props.selectedDateTo);
+
   const isActiveMonth =
     props.activeMonth &&
     isSameMonth(props.activeMonth, month) &&
