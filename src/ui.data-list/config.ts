@@ -55,7 +55,6 @@ export default /*tw*/ {
     labelKey: "label",
     valueKey: "id",
     animationDuration: 200,
-    nesting: false,
     /* icons */
     dragIcon: "drag_indicator",
   },
