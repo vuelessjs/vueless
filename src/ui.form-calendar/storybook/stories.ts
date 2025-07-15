@@ -94,8 +94,23 @@ Range.args = {
 export const Timepicker = DefaultTemplate.bind({});
 Timepicker.args = { modelValue: new Date(2024, 2, 14, 12, 24, 14), timepicker: true };
 
-export const DateFormat = DefaultTemplate.bind({});
-DateFormat.args = { dateFormat: "Y-m-d" };
+export const DateFormat: StoryFn<UCalendarArgs> = (args: UCalendarArgs) => ({
+  components: { UCalendar, UText, URow },
+  setup: () => ({ args }),
+  template: `
+    <URow block gap="2xl">
+      <UCalendar v-model="args.modelValue" date-format="Y-m-d" />
+
+      <UCalendar
+        v-model="args.modelValue"
+        date-time-format="Y-m-d H:i:S"
+        timepicker
+      />
+    </URow>
+
+    <UText color="neutral" class="mt-4">{{ args.modelValue }}</UText>
+  `,
+});
 DateFormat.parameters = {
   docs: {
     description: {
@@ -103,29 +118,17 @@ DateFormat.parameters = {
     },
     source: {
       code: `
-        <UCalendar v-model="'2025-07-10T09:35:50.000Z'" date-format="Y-m-d" />
-      `,
-    },
-  },
-};
+        <URow block gap="2xl">
+          <UCalendar v-model="args.modelValue" date-format="Y-m-d" />
 
-export const DateTimeFormat = DefaultTemplate.bind({});
-DateTimeFormat.args = { timepicker: true, dateTimeFormat: "Y-m-d H:i:S" };
-DateTimeFormat.parameters = {
-  docs: {
-    description: {
-      story: "Date string format.",
-    },
-  },
-};
-DateTimeFormat.parameters = {
-  docs: {
-    description: {
-      story: "Same as date format, but used when timepicker is enabled.",
-    },
-    source: {
-      code: `
-        <UCalendar v-model="'2025-07-10T09:35:50.000Z'" date-time-format="Y-m-d H:i:S" timepicker />
+          <UCalendar
+            v-model="args.modelValue"
+            date-time-format="Y-m-d H:i:S"
+            timepicker
+          />
+        </URow>
+
+        <UText color="neutral" class="mt-4">{{ args.modelValue }}</UText>
       `,
     },
   },
