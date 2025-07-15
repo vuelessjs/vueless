@@ -1,5 +1,5 @@
 import { mount } from "@vue/test-utils";
-import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
+import { describe, it, expect } from "vitest";
 import { nextTick } from "vue";
 
 import UTable from "../UTable.vue";
@@ -82,36 +82,6 @@ describe("UTable.vue", () => {
       ...options,
     });
   }
-
-  beforeEach(() => {
-    // Mock window properties
-    // Object.defineProperty(window, "innerHeight", {
-    //   writable: true,
-    //   configurable: true,
-    //   value: 1024,
-    // });
-    // Object.defineProperty(window, "scrollY", {
-    //   writable: true,
-    //   configurable: true,
-    //   value: 0,
-    // });
-    // Mock getBoundingClientRect
-    // Element.prototype.getBoundingClientRect = vi.fn(() => ({
-    //   top: 0,
-    //   bottom: 0,
-    //   left: 0,
-    //   right: 0,
-    //   width: 800,
-    //   height: 600,
-    //   x: 0,
-    //   y: 0,
-    //   toJSON: vi.fn(),
-    // }));
-  });
-
-  afterEach(() => {
-    vi.restoreAllMocks();
-  });
 
   describe("Props", () => {
     it("Columns – renders table headers correctly", () => {
