@@ -170,7 +170,9 @@ const localValue: WritableComputedRef<RangeDate> = computed({
     };
   },
   set: (value) => {
-    if (value.from && value.to && !props.dateFormat) {
+    if (!value.from && !value.to) {
+      emit("update:modelValue", { from: null, to: null });
+    } else if (value.from && value.to && !props.dateFormat) {
       emit("update:modelValue", value);
     }
 
@@ -230,6 +232,8 @@ watch(calendarValue, () => {
       from: calendarValue.value.from,
       to: calendarValue.value.to,
     };
+  } else if (!calendarValue.value.from && !calendarValue.value.to) {
+    localValue.value = { from: null, to: null };
   }
 });
 

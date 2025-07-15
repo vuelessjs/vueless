@@ -447,22 +447,21 @@ function onInputDate(newDate: Date | null) {
     return;
   }
 
-  const date = new Date(newDate.valueOf());
-
   if (props.range && isRangeDate(localValue.value)) {
     const isFullReset =
-      (localValue.value.from && date < localValue.value.from) ||
+      (localValue.value.from && newDate < localValue.value.from) ||
       (localValue.value.to && localValue.value.from);
 
-    const updatedValue = isFullReset
-      ? { from: date, to: null }
-      : { from: localValue.value.from, to: date };
+    const updatedValue =
+      isFullReset || !localValue.value.from
+        ? { from: newDate, to: null }
+        : { from: localValue.value.from, to: newDate };
 
     localValue.value = updatedValue;
 
     emit("input", updatedValue);
   } else {
-    localValue.value = date;
+    localValue.value = newDate;
 
     emit("input", localValue.value);
   }
