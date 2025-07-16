@@ -198,23 +198,20 @@ function onClickDay(day: Date) {
   const isSameDate = isSameDay(day, localSelectedDate.value) && props.selectedDate !== null;
 
   if (!props.range) {
-    if (isSameDate) {
-      emit("input", null);
-
-      return;
-    }
-
-    emit("input", day);
+    emit("input", isSameDate ? null : day);
 
     return;
   }
 
-  if (lastClickedDay && isSameDay(day, lastClickedDay)) {
-    sameDayClickCount += STEP;
-  } else {
-    lastClickedDay = day;
-    sameDayClickCount = STEP;
+  const isClickingPreviousDay = lastClickedDay && isSameDay(day, lastClickedDay);
+
+  sameDayClickCount = isClickingPreviousDay ? sameDayClickCount + STEP : STEP;
+
+  if (!props.selectedDateTo && sameDayClickCount === 3) {
+    sameDayClickCount = 2;
   }
+
+  lastClickedDay = day;
 
   if (sameDayClickCount === 3) {
     emit("input", null);
