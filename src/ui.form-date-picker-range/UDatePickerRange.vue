@@ -231,14 +231,10 @@ const { userFormatDate } = useUserFormat(
 );
 
 watch(calendarValue, () => {
-  if (calendarValue.value.from && calendarValue.value.to) {
-    localValue.value = {
-      from: calendarValue.value.from,
-      to: calendarValue.value.to,
-    };
-  } else if (!calendarValue.value.from && !calendarValue.value.to) {
-    localValue.value = { from: null, to: null };
-  }
+  localValue.value = {
+    from: calendarValue.value.from,
+    to: calendarValue.value.to,
+  };
 });
 
 watch(
