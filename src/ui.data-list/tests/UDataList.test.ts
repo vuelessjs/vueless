@@ -1,272 +1,398 @@
-import { mount } from "@vue/test-utils";
+import { mount, VueWrapper } from "@vue/test-utils";
 import { describe, it, expect } from "vitest";
 
 import UDataList from "../UDataList.vue";
 import UEmpty from "../../ui.text-empty/UEmpty.vue";
 import UIcon from "../../ui.image-icon/UIcon.vue";
+import draggable from "vuedraggable";
 
 import type { Props, DataListItem } from "../types.ts";
 
 describe("UDataList.vue", () => {
-  // Props tests
-  describe("Props", () => {
-    // List prop
-    it("renders the correct list items", () => {
-      const list: DataListItem[] = [
-        { id: 1, label: "Item 1" },
-        { id: 2, label: "Item 2" },
-      ];
+  const defaultList: DataListItem[] = [
+    { id: 1, label: "Item 1" },
+    { id: 2, label: "Item 2", crossed: true },
+    { id: 3, label: "Item 3", actions: false },
+  ];
 
+  const nestedList: DataListItem[] = [
+    {
+      id: 1,
+      label: "Parent 1",
+      nesting: true,
+      children: [
+        { id: 11, label: "Child 1.1" },
+        { id: 12, label: "Child 1.2" },
+      ],
+    },
+    { id: 2, label: "Parent 2" },
+  ];
+
+  describe("Props", () => {
+    it("List – renders all list items correctly", () => {
       const component = mount(UDataList, {
         props: {
-          list,
+          list: defaultList,
         },
       });
 
-      const items = component.findAll("[data-test^='vl-ui-data-list-item-']");
+      const items = component.findAll('[vl-key="itemWrapper"]');
 
-      expect(items.length).toBe(list.length);
-
-      list.forEach((item, index) => {
-        expect(items[index].text()).toContain(item.label);
-      });
+      expect(items).toHaveLength(defaultList.length);
+      expect(items[0].text()).toContain(defaultList[0].label);
+      expect(items[1].text()).toContain(defaultList[1].label);
+      expect(items[2].text()).toContain(defaultList[2].label);
     });
 
-    // Size prop
-    it("applies the correct size class", () => {
-      const sizes = {
-        sm: "text-small",
-        md: "text-medium",
-        lg: "text-large",
+    it("List – renders empty state when list is empty", () => {
+      const emptyText = "There is no data in the list.";
+
+      const component = mount(UDataList, {
+        props: {
+          list: [],
+        },
+      });
+
+      const emptyComponent = component.findComponent(UEmpty);
+
+      expect(emptyComponent.exists()).toBe(true);
+      expect(emptyComponent.text()).toContain(emptyText);
+    });
+
+    it("List – does not render empty state when hideEmptyStateForNesting is true", () => {
+      const component = mount(UDataList, {
+        props: {
+          list: [],
+          hideEmptyStateForNesting: true,
+        },
+      });
+
+      const emptyComponent = component.findComponent(UEmpty);
+
+      expect(emptyComponent.exists()).toBe(false);
+    });
+
+    it("Group – sets correct group name for draggable", async () => {
+      const groupName = "test-group";
+
+      const component = mount(UDataList, {
+        props: {
+          list: defaultList,
+          group: groupName,
+        },
+      });
+
+      const draggableComponent = component.findComponent(draggable);
+
+      expect(draggableComponent.vm.$attrs.group).toEqual({ name: groupName });
+    });
+
+    it("Size – applies correct size classes", () => {
+      const sizeClasses = {
+        sm: "gap-2.5 py-2.5",
+        md: "gap-3 py-3",
+        lg: "gap-3.5 py-3.5",
       };
 
-      Object.entries(sizes).forEach(([size, classes]) => {
+      Object.entries(sizeClasses).forEach(([size, classes]) => {
         const component = mount(UDataList, {
           props: {
+            list: defaultList,
             size: size as Props["size"],
-            list: [{ id: 1, label: "Item 1" }],
           },
         });
 
-        expect(component.html()).toContain(classes);
+        const itemElement = component.find('[vl-key="item"]');
+
+        expect(itemElement.attributes("class")).toContain(classes);
       });
     });
 
-    // LabelKey prop
-    it("uses the correct labelKey for displaying items", () => {
-      const labelKey = "title";
-      const list: DataListItem[] = [
-        { id: 1, [labelKey]: "Custom Title 1" },
-        { id: 2, [labelKey]: "Custom Title 2" },
+    it("Label Key – uses correct label key for display", () => {
+      const customList = [
+        { id: 1, title: "Custom Title 1" },
+        { id: 2, title: "Custom Title 2" },
       ];
 
       const component = mount(UDataList, {
         props: {
-          list,
-          labelKey,
+          list: customList,
+          labelKey: "title",
         },
       });
 
-      const items = component.findAll("[data-test^='vl-ui-data-list-item-']");
+      const items = component.findAll('[vl-key="item"]');
 
-      expect(items.length).toBe(list.length);
-
-      list.forEach((item, index) => {
-        expect(items[index].text()).toContain(item[labelKey]);
-      });
+      expect(items[0].text()).toContain(customList[0].title);
+      expect(items[1].text()).toContain(customList[1].title);
     });
 
-    // ValueKey prop
-    it("uses the correct valueKey for item identification", () => {
-      const valueKey = "code";
-      const list: DataListItem[] = [
-        { [valueKey]: "a1", label: "Item 1" },
-        { [valueKey]: "a2", label: "Item 2" },
+    it("Value Key – uses correct value key for item identification", () => {
+      const customList = [
+        { customId: "item-1", label: "Item 1" },
+        { customId: "item-2", label: "Item 2" },
       ];
+
+      const valueKey = "customId";
 
       const component = mount(UDataList, {
         props: {
-          list,
-          valueKey,
+          list: customList,
+          valueKey: valueKey,
         },
       });
 
-      const items = component.findAll("[data-test^='vl-ui-data-list-item-']");
+      const items = component.findAll('[vl-key="itemWrapper"]');
 
-      expect(items.length).toBe(list.length);
-
-      // Check if the items have the correct IDs based on valueKey
-      list.forEach((item, index) => {
-        const itemElement = component.find(`#${item[valueKey]}`);
-
-        expect(itemElement.exists()).toBe(true);
-      });
+      expect(items[0].attributes("id")).toBe(customList[0][valueKey]);
+      expect(items[1].attributes("id")).toBe(customList[1][valueKey]);
     });
 
-    // Nesting prop
-    it("renders nested items when nesting is true", () => {
-      const nesting = true;
-      const list: DataListItem[] = [
-        {
-          id: 1,
-          label: "Parent Item",
+    it("Animation Duration – sets correct animation duration", () => {
+      const animationDuration = 300;
+
+      const component = mount(UDataList, {
+        props: {
+          list: defaultList,
+          animationDuration,
+        },
+      });
+
+      const draggableComponent = component.findComponent(draggable);
+
+      expect(draggableComponent.vm.$attrs.animation).toBe(animationDuration);
+    });
+
+    it("Nesting – renders nested items when nesting is enabled", async () => {
+      const component = mount(UDataList, {
+        props: {
+          list: nestedList,
           nesting: true,
-          children: [
-            { id: 11, label: "Child Item 1" },
-            { id: 12, label: "Child Item 2" },
-          ]
-        },
-      ];
-
-      const component = mount(UDataList, {
-        props: {
-          list,
-          nesting,
         },
       });
 
-      // Check if the parent item is rendered
-      const parentItem = component.find("[data-test='vl-ui-data-list-item-1']");
+      const nestedComponent = component.getComponent("[vl-key='nested']") as VueWrapper<
+        typeof component.vm
+      >;
 
-      expect(parentItem.exists()).toBe(true);
-      expect(parentItem.text()).toContain("Parent Item");
-
-      // Check if nested UDataList component is rendered
-      const nestedList = component.findAllComponents(UDataList);
-
-      expect(nestedList.length).toBeGreaterThan(0);
+      expect(nestedComponent.props("list")).toEqual(nestedList[0].children);
     });
 
-    // DataTest prop
-    it("applies the correct data-test attribute", () => {
+    it("Nesting – does not render nested items when nesting is disabled", () => {
+      const component = mount(UDataList, {
+        props: {
+          list: nestedList,
+          nesting: false,
+        },
+      });
+
+      const nestedComponent = component.findComponent("[vl-key='nested']") as VueWrapper<
+        typeof component.vm
+      >;
+
+      expect(nestedComponent.exists()).toBe(false);
+    });
+
+    it("Data Test – applies correct data-test attribute", () => {
       const dataTest = "test-data-list";
 
       const component = mount(UDataList, {
         props: {
-          list: [],
+          list: defaultList,
           dataTest,
         },
       });
 
-      expect(component.attributes("data-test")).toBe(dataTest);
+      const draggableComponent = component.findComponent({ name: "draggable" });
+
+      expect(draggableComponent.attributes("data-test")).toBe(dataTest);
     });
   });
 
-  // Slots tests
+  describe("Functionality", () => {
+    it("Crossed Items – applies crossed styling to crossed items", () => {
+      const component = mount(UDataList, {
+        props: {
+          list: defaultList,
+        },
+      });
+
+      const crossedItem = component.findAll("[vl-key='item']")[1].find('[vl-key="labelCrossed"]');
+
+      expect(crossedItem.exists()).toBe(true);
+    });
+
+    it("Actions – hides actions when actions is false", () => {
+      const component = mount(UDataList, {
+        props: {
+          list: defaultList,
+        },
+        slots: {
+          actions: "<button>Delete</button>",
+        },
+      });
+
+      const itemWithActions = component.findAll("[vl-key='item']")[0];
+      const itemWithoutActions = component.findAll("[vl-key='item']")[2];
+
+      expect(itemWithActions.text()).toContain("Delete");
+      expect(itemWithoutActions.text()).not.toContain("Delete");
+    });
+  });
+
   describe("Slots", () => {
-    // Empty slot
-    it("renders content from empty slot", () => {
-      const slotContent = "Custom Empty State";
-      const slotClass = "custom-empty";
+    it("Empty – renders custom empty state content", () => {
+      const customEmptyContent = "Custom empty message";
 
       const component = mount(UDataList, {
         props: {
           list: [],
         },
         slots: {
-          empty: `<div class="${slotClass}">${slotContent}</div>`,
+          empty: customEmptyContent,
         },
       });
 
-      expect(component.find(`.${slotClass}`).exists()).toBe(true);
-      expect(component.find(`.${slotClass}`).text()).toBe(slotContent);
+      expect(component.text()).toContain(customEmptyContent);
+      expect(component.findComponent(UEmpty).exists()).toBe(false);
     });
 
-    // Label slot
-    it("renders content from label slot", () => {
-      const slotContent = "Custom Label";
-      const slotClass = "custom-label";
-      const list: DataListItem[] = [
-        { id: 1, label: "Item 1" },
-      ];
+    it("Empty – exposes empty title and description to slot", () => {
+      const emptyText = "There is no data in the list.";
+      const component = mount(UDataList, {
+        props: {
+          list: [],
+        },
+        slots: {
+          empty: "<div>{{ emptyTitle }} - {{ emptyDescription }}</div>",
+        },
+      });
+
+      expect(component.text()).toContain(emptyText);
+    });
+
+    it("Drag – renders custom drag content", () => {
+      const customDragContent = "Custom Drag";
 
       const component = mount(UDataList, {
         props: {
-          list,
+          list: defaultList,
         },
         slots: {
-          label: `<div class="${slotClass}">${slotContent}</div>`,
+          drag: customDragContent,
         },
       });
 
-      expect(component.find(`.${slotClass}`).exists()).toBe(true);
-      expect(component.find(`.${slotClass}`).text()).toBe(slotContent);
+      expect(component.text()).toContain(customDragContent);
     });
 
-    // Actions slot
-    it("renders content from actions slot", () => {
-      const slotContent = "Custom Action";
-      const slotClass = "custom-action";
-      const list: DataListItem[] = [
-        { id: 1, label: "Item 1" },
-      ];
+    it("Drag – exposes item and icon-name to slot", () => {
+      const component = mount(UDataList, {
+        props: {
+          list: defaultList,
+        },
+        slots: {
+          drag: "<div>{{ item.label }} - {{ iconName }}</div>",
+        },
+      });
+
+      expect(component.text()).toContain("Item 1 - drag_indicator");
+    });
+
+    it("Label – renders custom label content", () => {
+      const customLabelContent = "Custom Label";
 
       const component = mount(UDataList, {
         props: {
-          list,
+          list: defaultList,
         },
         slots: {
-          actions: `<div class="${slotClass}">${slotContent}</div>`,
+          label: customLabelContent,
         },
       });
 
-      expect(component.find(`.${slotClass}`).exists()).toBe(true);
-      expect(component.find(`.${slotClass}`).text()).toBe(slotContent);
+      expect(component.text()).toContain(customLabelContent);
     });
 
-    // Drag slot
-    it("renders content from drag slot", () => {
-      const slotContent = "Custom Drag";
-      const slotClass = "custom-drag";
-      const list: DataListItem[] = [
-        { id: 1, label: "Item 1" },
-      ];
+    it("Label – exposes item and crossed to slot", () => {
+      const component = mount(UDataList, {
+        props: {
+          list: defaultList,
+        },
+        slots: {
+          label: "<div>{{ item.label }} - Crossed: {{ crossed }}</div>",
+        },
+      });
+
+      expect(component.text()).toContain("Item 1 - Crossed: false");
+      expect(component.text()).toContain("Item 2 - Crossed: true");
+    });
+
+    it("Actions – renders custom actions content", () => {
+      const customActionsContent = "Custom Actions";
 
       const component = mount(UDataList, {
         props: {
-          list,
+          list: defaultList,
         },
         slots: {
-          drag: `<div class="${slotClass}">${slotContent}</div>`,
+          actions: customActionsContent,
         },
       });
 
-      expect(component.find(`.${slotClass}`).exists()).toBe(true);
-      expect(component.find(`.${slotClass}`).text()).toBe(slotContent);
+      expect(component.text()).toContain(customActionsContent);
+    });
+
+    it("Actions – exposes item to slot", () => {
+      const component = mount(UDataList, {
+        props: {
+          list: defaultList,
+        },
+        slots: {
+          actions: "<button>Delete {{ item.label }}</button>",
+        },
+      });
+
+      expect(component.text()).toContain(defaultList[0].label);
+      expect(component.text()).toContain(defaultList[1].label);
+    });
+
+    it("Actions – renders default drag icon when no drag slot provided", () => {
+      const component = mount(UDataList, {
+        props: {
+          list: defaultList,
+        },
+      });
+
+      const dragIcon = component.findComponent(UIcon);
+
+      expect(dragIcon.exists()).toBe(true);
+      expect(dragIcon.props("name")).toBe("drag_indicator");
     });
   });
 
-  // Events tests
   describe("Events", () => {
-    // DragSort event
-    it("emits dragSort event when items are sorted", async () => {
-      const list: DataListItem[] = [
-        { id: 1, label: "Item 1" },
-        { id: 2, label: "Item 2" },
-      ];
-
+    it("Drag Sort – emits when dragging ends", async () => {
       const component = mount(UDataList, {
         props: {
-          list,
+          list: defaultList,
         },
       });
 
-      // This is a simplified test since we can't easily trigger the drag-and-drop functionality
-      // In a real test, we might need to use a more specific approach to test drag-and-drop
-      component.vm.$emit("dragSort", list);
+      const draggableComponent = component.findComponent({ name: "draggable" });
+
+      await draggableComponent.vm.$emit("end");
 
       expect(component.emitted("dragSort")).toBeTruthy();
-      expect(component.emitted("dragSort")?.[0]).toEqual([list]);
+      expect(component.emitted("dragSort")![0][0]).toHaveLength(3);
     });
   });
 
-  // Exposed refs tests
-  describe("Exposed refs", () => {
-    // wrapperRef
-    it("exposes wrapperRef", () => {
+  describe("Exposed Properties", () => {
+    it("Wrapper Ref – exposes wrapper element ref", () => {
       const component = mount(UDataList, {
         props: {
-          list: [],
+          list: defaultList,
         },
       });
 
