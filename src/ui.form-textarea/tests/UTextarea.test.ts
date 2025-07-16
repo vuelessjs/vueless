@@ -7,7 +7,7 @@ import ULabel from "../../ui.form-label/ULabel.vue";
 import type { Props } from "../types.ts";
 
 describe("UTextarea.vue", () => {
-  describe("props", () => {
+  describe("Props", () => {
     it("Model Value – sets initial value correctly", () => {
       const initialValue = "Test textarea";
 
@@ -163,6 +163,76 @@ describe("UTextarea.vue", () => {
       });
 
       expect(componentResizable.get("textarea").attributes("class")).toContain("resize-none");
+    });
+
+    it("Auto Resize – applies correct classes when autoResize is enabled", () => {
+      const autoResize = true;
+      const expectedClasses = "resize-none overflow-hidden";
+
+      const component = mount(UTextarea, {
+        props: {
+          autoResize,
+        },
+      });
+
+      expect(component.props("autoResize")).toBe(autoResize);
+      expect(component.get("textarea").attributes("class")).toContain(expectedClasses);
+    });
+
+    it("Auto Resize – does not adjust height when disabled", async () => {
+      const component = mount(UTextarea, {
+        props: {
+          autoResize: false,
+          rows: 2,
+          modelValue: "",
+        },
+      });
+
+      const textarea = component.get("textarea");
+      const textareaElement = textarea.element;
+      const initialHeight = textareaElement.style.height;
+
+      await textarea.setValue("line1\nline2\nline3\nline4\nline5");
+      await textarea.trigger("input");
+
+      expect(textareaElement.style.height).toBe(initialHeight);
+    });
+
+    it("Auto Resize – does not adjust height when readonly", async () => {
+      const component = mount(UTextarea, {
+        props: {
+          autoResize: true,
+          readonly: true,
+          rows: 2,
+          modelValue: "",
+        },
+      });
+
+      const textarea = component.get("textarea");
+      const textareaElement = textarea.element;
+
+      const initialHeight = textareaElement.style.height;
+
+      await textarea.setValue("line1\nline2\nline3\nline4\nline5");
+      await textarea.trigger("input");
+
+      expect(textareaElement.style.height).toBe(initialHeight);
+    });
+
+    it("Auto Resize – respects minimum rows", async () => {
+      const component = mount(UTextarea, {
+        props: {
+          autoResize: true,
+          rows: 3,
+          modelValue: "short",
+        },
+      });
+
+      const textarea = component.get("textarea");
+
+      await textarea.trigger("input");
+
+      expect(textarea.attributes("rows")).toBe("3");
     });
 
     it("Readonly – sets textarea to readonly", () => {
@@ -446,104 +516,6 @@ describe("UTextarea.vue", () => {
       await component.get("textarea").trigger("mousedown");
 
       expect(component.emitted("mousedown")).toBeTruthy();
-    });
-  });
-
-  describe("Functionality", () => {
-    it("Row auto resize – enter key increases rows when content has more lines than current rows", async () => {
-      const component = mount(UTextarea, {
-        props: {
-          rows: 2,
-          modelValue: "line1\nline2",
-        },
-      });
-
-      const textarea = component.get("textarea");
-
-      await textarea.setValue("line1\nline2\nline3");
-      await textarea.trigger("keydown", { key: "Enter" });
-
-      expect(Number(component.get("textarea").attributes("rows"))).toBeGreaterThan(2);
-    });
-
-    it("Row auto resize – enter key does not increase rows when textarea is readonly", async () => {
-      const component = mount(UTextarea, {
-        props: {
-          rows: 2,
-          modelValue: "line1\nline2",
-          readonly: true,
-        },
-      });
-
-      const textarea = component.get("textarea");
-
-      await textarea.setValue("line1\nline2\nline3");
-      await textarea.trigger("keydown", { key: "Enter" });
-
-      expect(component.get("textarea").attributes("rows")).toBe("2");
-    });
-
-    it("Row auto resize – backspace key decreases rows when content has fewer lines", async () => {
-      const component = mount(UTextarea, {
-        props: {
-          rows: 2,
-          modelValue: "line1\nline2\nline3\nline4",
-        },
-      });
-
-      const textarea = component.get("textarea");
-
-      await textarea.trigger("keydown", { key: "Enter" });
-      const initialRows = Number(component.get("textarea").attributes("rows"));
-
-      await textarea.setValue("line1\nline2");
-      await textarea.trigger("keyup", { key: "Delete" });
-
-      const finalRows = Number(component.get("textarea").attributes("rows"));
-
-      expect(finalRows).toBeLessThan(initialRows);
-    });
-
-    it("Row auto resize – backspace key does not decrease rows when textarea is readonly", async () => {
-      const component = mount(UTextarea, {
-        props: {
-          rows: 2,
-          modelValue: "line1\nline2\nline3",
-          readonly: true,
-        },
-      });
-
-      const textarea = component.get("textarea");
-
-      await textarea.trigger("keydown", { key: "Enter" });
-      const initialRows = component.get("textarea").attributes("rows");
-
-      await textarea.setValue("line1");
-      await textarea.trigger("keyup", { key: "Delete" });
-
-      expect(component.get("textarea").attributes("rows")).toBe(initialRows);
-    });
-
-    it("Row auto resize – handles rapid key presses correctly", async () => {
-      const component = mount(UTextarea, {
-        props: {
-          rows: 2,
-          modelValue: "line1",
-        },
-      });
-
-      const textarea = component.get("textarea");
-
-      await textarea.setValue("line1\nline2");
-      await textarea.trigger("keydown", { key: "Enter" });
-
-      await textarea.setValue("line1\nline2\nline3");
-      await textarea.trigger("keydown", { key: "Enter" });
-
-      await textarea.setValue("line1\nline2\nline3\nline4");
-      await textarea.trigger("keydown", { key: "Enter" });
-
-      expect(Number(component.get("textarea").attributes("rows"))).toBeGreaterThan(2);
     });
   });
 
