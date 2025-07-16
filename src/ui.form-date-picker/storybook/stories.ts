@@ -12,6 +12,7 @@ import UIcon from "../../ui.image-icon/UIcon.vue";
 import URow from "../../ui.container-row/URow.vue";
 import UCol from "../../ui.container-col/UCol.vue";
 import UButton from "../../ui.button/UButton.vue";
+import UText from "../../ui.text-block/UText.vue";
 
 import { COMPONENT_NAME } from "../constants.ts";
 
@@ -38,8 +39,7 @@ export default {
   component: UDatePicker,
   args: {
     label: "Select a date",
-    modelValue: null,
-    openDirectionY: "bottom",
+    modelValue: new Date(),
   },
   argTypes: {
     ...getArgTypes(COMPONENT_NAME),
@@ -48,28 +48,26 @@ export default {
     docs: {
       ...getDocsDescription(COMPONENT_NAME),
       story: {
-        height: "480px",
+        height: "450px",
       },
     },
   },
 } as Meta;
 
 const DefaultTemplate: StoryFn<DefaultUDatePickerArgs> = (args: DefaultUDatePickerArgs) => ({
-  components: { UDatePicker, UIcon },
+  components: { UDatePicker, UIcon, UText },
   setup: () => ({ args, slots: getSlotNames(COMPONENT_NAME) }),
   template: `
-    <UDatePicker open-direction-y="bottom" v-bind="args" v-model="args.modelValue">
+    <UDatePicker v-bind="args" v-model="args.modelValue" class="max-w-96">
       ${args.slotTemplate || getSlotsFragment("")}
     </UDatePicker>
 
-    <div class="mt-4">
-      {{ args.modelValue }}
-    </div>
+    <UText color="neutral" class="mt-4">{{ args.modelValue }}</UText>
   `,
 });
 
 const EnumTemplate: StoryFn<EnumUDatePickerArgs> = (args: EnumUDatePickerArgs, { argTypes }) => ({
-  components: { UDatePicker, UCol },
+  components: { UDatePicker, UCol, UText },
   setup: () => ({ args, argTypes, getArgs }),
   template: `
     <UCol :class="args.wrapperClass">
@@ -77,54 +75,54 @@ const EnumTemplate: StoryFn<EnumUDatePickerArgs> = (args: EnumUDatePickerArgs, {
         v-for="option in argTypes?.[args.enum]?.options"
         v-bind="getArgs(args, option)"
         :key="option"
-        class="w-full"
+        class="w-full max-w-96"
       />
     </UCol>
+
+    <UText color="neutral" class="mt-4">{{ args.modelValue }}</UText>
   `,
 });
 
 const OpenDirectionTemplate: StoryFn<DefaultUDatePickerArgs> = (args: DefaultUDatePickerArgs) => ({
-  components: { UDatePicker, UCol },
-  setup() {
-    return {
-      args,
-    };
-  },
+  components: { UDatePicker, UCol, UText },
+  setup: () => ({ args }),
   template: `
     <UCol>
       <UDatePicker
-        class="w-full"
         open-direction-y="top"
         open-direction-x="left"
         v-bind="args"
         v-model="args.modelValue"
         label="Top Left"
+        class="w-full max-w-96"
       />
       <UDatePicker
-        class="w-full"
         open-direction-y="top"
         open-direction-x="right"
         v-bind="args"
         v-model="args.modelValue"
         label="Top Right"
+        class="w-full max-w-96"
       />
       <UDatePicker
-        class="w-full"
         open-direction-y="bottom"
         open-direction-x="left"
         v-bind="args"
         v-model="args.modelValue"
         label="Bottom Left"
+        class="w-full max-w-96"
       />
       <UDatePicker
-        class="w-full"
         open-direction-y="bottom"
         open-direction-x="right"
         v-bind="args"
         v-model="args.modelValue"
         label="Bottom Right"
+        class="w-full max-w-96"
       />
     </UCol>
+
+    <UText color="neutral" class="mt-4">{{ args.modelValue }}</UText>
   `,
 });
 
@@ -132,23 +130,27 @@ export const Default = DefaultTemplate.bind({});
 Default.args = { modelValue: dateValue };
 
 export const Placeholder = DefaultTemplate.bind({});
-Placeholder.args = { placeholder: "MM/DD/YYYY" };
+Placeholder.args = { placeholder: "MM/DD/YYYY", modelValue: null };
 
 export const Description = DefaultTemplate.bind({});
 Description.args = { description: "Please choose a date from the calendar." };
 
 export const Error: StoryFn<DefaultUDatePickerArgs> = (args: DefaultUDatePickerArgs) => ({
-  components: { UDatePicker, UIcon },
+  components: { UDatePicker, UIcon, UText },
   setup: () => ({ args, slots: getSlotNames(COMPONENT_NAME) }),
   template: `
     <UDatePicker
       open-direction-y="bottom"
       v-bind="args"
       v-model="args.modelValue"
+      class="max-w-96"
       :error="args.modelValue ? '' : 'Please select a valid date.'"
     />
+
+    <UText color="neutral" class="mt-4">{{ args.modelValue }}</UText>
   `,
 });
+Error.args = { modelValue: null };
 
 export const Disabled = DefaultTemplate.bind({});
 Disabled.args = { disabled: true };
@@ -156,8 +158,24 @@ Disabled.args = { disabled: true };
 export const LabelAlign = EnumTemplate.bind({});
 LabelAlign.args = { enum: "labelAlign", description: "{enumValue}", wrapperClass: "gap-16" };
 
-export const Sizes = EnumTemplate.bind({});
-Sizes.args = { enum: "size", placeholder: "{enumValue}" };
+export const Sizes: StoryFn<EnumUDatePickerArgs> = (args: EnumUDatePickerArgs, { argTypes }) => ({
+  components: { UDatePicker, URow, UText },
+  setup: () => ({ args, argTypes, getArgs }),
+  template: `
+    <URow block>
+      <UDatePicker
+        v-for="option in argTypes?.[args.enum]?.options"
+        v-bind="getArgs(args, option)"
+        :key="option"
+        v-model="args.modelValue"
+        class="w-full max-w-96"
+      />
+    </URow>
+
+    <UText color="neutral" class="mt-4">{{ args.modelValue }}</UText>
+  `,
+});
+Sizes.args = { enum: "size" };
 
 export const OpenDirection = OpenDirectionTemplate.bind({});
 OpenDirection.args = {};
@@ -183,43 +201,125 @@ Timepicker.args = {
     14,
   ),
 };
+Timepicker.parameters = {
+  docs: {
+    story: {
+      height: "500px",
+    },
+  },
+};
 
-export const DateFormat = DefaultTemplate.bind({});
-DateFormat.args = { dateFormat: "Y-m-d" };
+export const DateFormat: StoryFn<DefaultUDatePickerArgs> = (args: DefaultUDatePickerArgs) => ({
+  components: { UDatePicker, UText, URow },
+  setup: () => ({ args }),
+  template: `
+    <URow block>
+      <UDatePicker
+        v-model="args.modelValue"
+        label="Select a date"
+        date-format="Y-m-d"
+        class="w-full"
+      />
+
+      <UDatePicker
+        v-model="args.modelValue"
+        label="Select a date"
+        date-time-format="Y-m-d H:i:S"
+        timepicker
+        class="w-full"
+      />
+    </URow>
+
+    <UText color="neutral" class="mt-4">{{ args.modelValue }}</UText>
+  `,
+});
 DateFormat.parameters = {
   docs: {
     description: {
       story: "Date string format.",
     },
-  },
-};
+    source: {
+      code: `
+        <URow block>
+          <UDatePicker
+            v-model="args.modelValue"
+            label="Select a date"
+            date-format="Y-m-d"
+            class="w-full"
+          />
 
-export const DateTimeFormat = DefaultTemplate.bind({});
-DateTimeFormat.args = { timepicker: true, dateTimeFormat: "Y-m-d H:i:S" };
-DateTimeFormat.parameters = {
-  docs: {
-    description: {
-      story: "Same as date format, but used when timepicker is enabled.",
+          <UDatePicker
+            v-model="args.modelValue"
+            label="Select a date"
+            date-time-format="Y-m-d H:i:S"
+            timepicker
+            class="w-full"
+          />
+        </URow>
+
+        <UText color="neutral" class="mt-4">{{ args.modelValue }}</UText>
+      `,
     },
   },
 };
 
-export const UserDateFormat = DefaultTemplate.bind({});
-UserDateFormat.args = { userDateFormat: "d/m/Y" };
+export const UserDateFormat: StoryFn<DefaultUDatePickerArgs> = (args: DefaultUDatePickerArgs) => ({
+  components: { UDatePicker, UText, URow },
+  setup: () => ({ args }),
+  template: `
+    <URow block>
+      <UDatePicker
+        v-model="args.modelValue"
+        label="Select a date"
+        user-date-format="d/m/Y"
+        class="w-full"
+      />
+
+      <UDatePicker
+        v-model="args.modelValue"
+        label="Select a date"
+        user-date-time-format="d/m/Y H:i:S"
+        timepicker
+        class="w-full"
+      />
+    </URow>
+
+    <UText color="neutral" class="mt-4">{{ args.modelValue }}</UText>
+  `,
+});
+UserDateFormat.parameters = {
+  docs: {
+    description: {
+      story: "Date string format.",
+    },
+    source: {
+      code: `
+        <URow block>
+          <UDatePicker
+            v-model="args.modelValue"
+            label="Select a date"
+            user-date-format="d/m/Y"
+            class="w-full"
+          />
+
+          <UDatePicker
+            v-model="args.modelValue"
+            label="Select a date"
+            user-date-time-format="d/m/Y H:i:S"
+            timepicker
+            class="w-full"
+          />
+        </URow>
+
+        <UText color="neutral" class="mt-4">{{ args.modelValue }}</UText>
+      `,
+    },
+  },
+};
 UserDateFormat.parameters = {
   docs: {
     description: {
       story: "User-friendly date format (it will be shown in UI).",
-    },
-  },
-};
-
-export const UserDateTimeFormat = DefaultTemplate.bind({});
-UserDateTimeFormat.args = { timepicker: true, userDateTimeFormat: "d/m/Y H:i:S" };
-UserDateTimeFormat.parameters = {
-  docs: {
-    description: {
-      story: "Same as user format, but used when timepicker is enabled.",
     },
   },
 };
@@ -268,7 +368,7 @@ export const Slots: StoryFn<DefaultUDatePickerArgs> = (args) => ({
     <URow align="stretch">
       <UDatePicker
         v-bind="args"
-        v-model="args.modelValue"
+        v-model="args.leftModel"
         class="w-full"
         :config="{ datepickerInput: { wrapper: 'pl-0' } }"
       >
@@ -276,9 +376,9 @@ export const Slots: StoryFn<DefaultUDatePickerArgs> = (args) => ({
           <UButton
             label="Today"
             size="sm"
-            variant="ghost"
+            variant="soft"
             class="h-full rounded-r-none"
-            @click="args.modelValue = new Date()"
+            @click="args.leftModel = new Date()"
           />
         </template>
       </UDatePicker>

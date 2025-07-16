@@ -1,5 +1,5 @@
 <script setup lang="ts" generic="TModelValue extends DateValue">
-import { computed, ref, watch, useTemplateRef, nextTick } from "vue";
+import { computed, ref, watch, useTemplateRef, nextTick, onMounted } from "vue";
 
 import useUI from "../composables/useUI.ts";
 import { getDefaults } from "../utils/ui.ts";
@@ -63,24 +63,29 @@ const emit = defineEmits([
    * @property {object} modelValue
    */
   "update:modelValue",
+
   /**
    * Triggers when calendar view changes.
    * @property {string} view
    */
   "update:view",
+
   /**
    * Triggers when date value changes.
    * @property {object} value
    */
   "input",
+
   /**
    * Triggers when calendar date is selected by clicking "Enter".
    */
   "submit",
+
   /**
    * Triggers when arrow keys are used to change calendar date.
    */
   "keydown",
+
   /**
    * Triggers when the user changes the date input value.
    * @property {string} value
@@ -313,6 +318,32 @@ const currentViewLabel = computed(() => {
   }
 
   return label;
+});
+
+onMounted(() => {
+  if (props.modelValue && (props.dateFormat || props.dateTimeFormat)) {
+    const formatted = isRangeDate(props.modelValue)
+      ? {
+          from: formatDate(
+            parseDate(props.modelValue.from, actualDateFormat.value, locale.value),
+            actualDateFormat.value,
+            locale.value,
+          ),
+          to: formatDate(
+            parseDate(props.modelValue.to, actualDateFormat.value, locale.value),
+            actualDateFormat.value,
+            locale.value,
+          ),
+        }
+      : formatDate(
+          parseDate(props.modelValue, actualDateFormat.value, locale.value),
+          actualDateFormat.value,
+          locale.value,
+        );
+
+    emit("update:modelValue", formatted);
+    emit("userDateChange", userFormattedDate.value);
+  }
 });
 
 watch(userFormattedDate, () => {
@@ -792,7 +823,6 @@ const {
   >
     <div v-bind="navigationAttrs" :data-test="getDataTest('navigation')">
       <UButton
-        v-if="range"
         square
         size="sm"
         color="grayscale"
@@ -818,6 +848,7 @@ const {
 
       <UButton
         block
+        square
         size="sm"
         color="grayscale"
         variant="ghost"
@@ -841,7 +872,6 @@ const {
       />
 
       <UButton
-        v-if="range"
         square
         size="sm"
         color="grayscale"

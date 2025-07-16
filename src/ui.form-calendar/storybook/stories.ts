@@ -9,7 +9,7 @@ import {
 
 import UCalendar from "../../ui.form-calendar/UCalendar.vue";
 import URow from "../../ui.container-row/URow.vue";
-import UDatePicker from "../../ui.form-date-picker/UDatePicker.vue";
+import UText from "../../ui.text-block/UText.vue";
 
 import { COMPONENT_NAME } from "../constants.ts";
 
@@ -25,7 +25,7 @@ export default {
   title: "Form Inputs & Controls / Calendar",
   component: UCalendar,
   args: {
-    modelValue: null,
+    modelValue: new Date(new Date().getFullYear(), new Date().getMonth(), 10, 12, 35, 50),
   },
   argTypes: {
     ...getArgTypes(COMPONENT_NAME),
@@ -41,21 +41,19 @@ export default {
 } as Meta;
 
 const DefaultTemplate: StoryFn<UCalendarArgs> = (args: UCalendarArgs) => ({
-  components: { UCalendar },
+  components: { UCalendar, UText },
   setup: () => ({ args, slots: getSlotNames(COMPONENT_NAME) }),
   template: `
       <UCalendar v-bind="args" v-model="args.modelValue">
         ${args.slotTemplate || getSlotsFragment("")}
       </UCalendar>
 
-      <div class="mt-4">
-        {{ args.modelValue }}
-      </div>
+      <UText color="neutral" class="mt-4">{{ args.modelValue }}</UText>
     `,
 });
 
 const EnumTemplate: StoryFn<UCalendarArgs> = (args: UCalendarArgs, { argTypes }) => ({
-  components: { UCalendar, URow },
+  components: { UCalendar, URow, UText },
   setup: () => ({ args, argTypes, getArgs }),
   template: `
     <URow>
@@ -66,19 +64,13 @@ const EnumTemplate: StoryFn<UCalendarArgs> = (args: UCalendarArgs, { argTypes })
         v-model="args.modelValue"
       />
     </URow>
+
+    <UText color="neutral" class="mt-4">{{ args.modelValue }}</UText>
   `,
 });
 
-const UserDateFormatTemplate: StoryFn<UCalendarArgs> = (args: UCalendarArgs) => ({
-  components: { UDatePicker },
-  setup: () => ({ args, slots: getSlotNames(COMPONENT_NAME) }),
-  template: `
-      <UDatePicker v-bind="args" v-model="args.modelValue" />
-    `,
-});
-
 export const Default = DefaultTemplate.bind({});
-Default.args = { modelValue: null };
+Default.args = {};
 
 export const View = EnumTemplate.bind({});
 View.args = { enum: "view" };
@@ -102,42 +94,42 @@ Range.args = {
 export const Timepicker = DefaultTemplate.bind({});
 Timepicker.args = { modelValue: new Date(2024, 2, 14, 12, 24, 14), timepicker: true };
 
-export const DateFormat = DefaultTemplate.bind({});
-DateFormat.args = { dateFormat: "Y-m-d" };
+export const DateFormat: StoryFn<UCalendarArgs> = (args: UCalendarArgs) => ({
+  components: { UCalendar, UText, URow },
+  setup: () => ({ args }),
+  template: `
+    <URow block gap="2xl">
+      <UCalendar v-model="args.modelValue" date-format="Y-m-d" />
+
+      <UCalendar
+        v-model="args.modelValue"
+        date-time-format="Y-m-d H:i:S"
+        timepicker
+      />
+    </URow>
+
+    <UText color="neutral" class="mt-4">{{ args.modelValue }}</UText>
+  `,
+});
 DateFormat.parameters = {
   docs: {
     description: {
       story: "Date string format.",
     },
-  },
-};
+    source: {
+      code: `
+        <URow block gap="2xl">
+          <UCalendar v-model="args.modelValue" date-format="Y-m-d" />
 
-export const DateTimeFormat = DefaultTemplate.bind({});
-DateTimeFormat.args = { timepicker: true, dateTimeFormat: "Y-m-d H:i:S" };
-DateTimeFormat.parameters = {
-  docs: {
-    description: {
-      story: "Same as date format, but used when timepicker is enabled.",
-    },
-  },
-};
+          <UCalendar
+            v-model="args.modelValue"
+            date-time-format="Y-m-d H:i:S"
+            timepicker
+          />
+        </URow>
 
-export const UserDateFormat = UserDateFormatTemplate.bind({});
-UserDateFormat.args = { userDateFormat: "d/m/Y" };
-UserDateFormat.parameters = {
-  docs: {
-    description: {
-      story: "User-friendly date format (it will be shown in UI).",
-    },
-  },
-};
-
-export const UserDateTimeFormat = UserDateFormatTemplate.bind({});
-UserDateTimeFormat.args = { timepicker: true, userDateTimeFormat: "d/m/Y H:i:S" };
-UserDateTimeFormat.parameters = {
-  docs: {
-    description: {
-      story: "Same as user format, but used when timepicker is enabled.",
+        <UText color="neutral" class="mt-4">{{ args.modelValue }}</UText>
+      `,
     },
   },
 };
