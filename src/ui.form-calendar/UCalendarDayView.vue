@@ -13,7 +13,7 @@ import {
 } from "./utilDate.ts";
 
 import defaultConfig from "./config.ts";
-import { DAYS_IN_WEEK, START_WEEK } from "./constants.ts";
+import { DAYS_IN_WEEK, START_WEEK, DATE_CLICK_STEP } from "./constants.ts";
 
 import type { UCalendarViewProps, Config } from "./types.ts";
 
@@ -26,6 +26,9 @@ const props = defineProps<UCalendarViewProps>();
 const emit = defineEmits(["input"]);
 
 const hoveredDay = ref<Date | null>(null);
+
+let lastClickedDay: Date | null = null;
+let sameDayClickCount = 0;
 
 const localSelectedDate = computed(() => {
   return props.selectedDate === null ? getDateWithoutTime() : props.selectedDate;
@@ -151,7 +154,7 @@ function getDayState(day: Date) {
   const isCurrentDay = isToday(day);
   const isAnotherMonthDay = isAnotherMothDay(day, activeMonthDate.value);
   const isAnotherMonthDayInRange = isAnotherMonthDay && isDayInRange;
-  const isFirstDayInRange = props.range && isSameDay(day, localSelectedDate.value);
+  const isFirstDayInRange = props.selectedDate && props.range && isSameDay(day, props.selectedDate);
   const isRangeSameDay =
     props.selectedDateTo &&
     props.selectedDate &&
@@ -194,8 +197,26 @@ function getDayState(day: Date) {
 function onClickDay(day: Date) {
   const isSameDate = isSameDay(day, localSelectedDate.value) && props.selectedDate !== null;
 
-  if (isSameDate && !props.range) {
+  if (!props.range) {
+    emit("input", isSameDate ? null : day);
+
+    return;
+  }
+
+  const isClickingPreviousDay = lastClickedDay && isSameDay(day, lastClickedDay);
+
+  sameDayClickCount = isClickingPreviousDay ? sameDayClickCount + DATE_CLICK_STEP : DATE_CLICK_STEP;
+
+  if (!props.selectedDateTo && sameDayClickCount === 3) {
+    sameDayClickCount = 2;
+  }
+
+  lastClickedDay = day;
+
+  if (sameDayClickCount === 3) {
     emit("input", null);
+    sameDayClickCount = 0;
+    lastClickedDay = null;
 
     return;
   }

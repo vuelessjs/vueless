@@ -94,7 +94,7 @@ const OpenDirectionTemplate: StoryFn<DefaultUDatePickerArgs> = (args: DefaultUDa
         v-bind="args"
         v-model="args.modelValue"
         label="Top Left"
-        class="w-full max-w-96"
+        class="w-full"
       />
       <UDatePicker
         open-direction-y="top"
@@ -102,7 +102,7 @@ const OpenDirectionTemplate: StoryFn<DefaultUDatePickerArgs> = (args: DefaultUDa
         v-bind="args"
         v-model="args.modelValue"
         label="Top Right"
-        class="w-full max-w-96"
+        class="w-full"
       />
       <UDatePicker
         open-direction-y="bottom"
@@ -110,7 +110,7 @@ const OpenDirectionTemplate: StoryFn<DefaultUDatePickerArgs> = (args: DefaultUDa
         v-bind="args"
         v-model="args.modelValue"
         label="Bottom Left"
-        class="w-full max-w-96"
+        class="w-full"
       />
       <UDatePicker
         open-direction-y="bottom"
@@ -118,7 +118,7 @@ const OpenDirectionTemplate: StoryFn<DefaultUDatePickerArgs> = (args: DefaultUDa
         v-bind="args"
         v-model="args.modelValue"
         label="Bottom Right"
-        class="w-full max-w-96"
+        class="w-full"
       />
     </UCol>
 
@@ -136,11 +136,10 @@ export const Description = DefaultTemplate.bind({});
 Description.args = { description: "Please choose a date from the calendar." };
 
 export const Error: StoryFn<DefaultUDatePickerArgs> = (args: DefaultUDatePickerArgs) => ({
-  components: { UDatePicker, UIcon, UText },
-  setup: () => ({ args, slots: getSlotNames(COMPONENT_NAME) }),
+  components: { UDatePicker, UText },
+  setup: () => ({ args }),
   template: `
     <UDatePicker
-      open-direction-y="bottom"
       v-bind="args"
       v-model="args.modelValue"
       class="max-w-96"
@@ -185,6 +184,9 @@ OpenDirection.parameters = {
       story:
         // eslint-disable-next-line vue/max-len
         "Control the direction in which the datepicker opens along the x- and y-axes using the `openDirectionX` and `openDirectionY` props.",
+    },
+    story: {
+      height: "640px",
     },
   },
 };

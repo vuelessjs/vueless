@@ -170,10 +170,6 @@ const localValue: WritableComputedRef<RangeDate> = computed({
     };
   },
   set: (value) => {
-    if (value.from && value.to && !props.dateFormat) {
-      emit("update:modelValue", value);
-    }
-
     const parsedDateFrom = parseDate<SortedLocale>(
       value.from || null,
       props.dateFormat,
@@ -181,13 +177,25 @@ const localValue: WritableComputedRef<RangeDate> = computed({
     );
     const parsedDateTo = parseDate<SortedLocale>(value.to || null, props.dateFormat, locale.value);
 
-    if (value.from && value.to && props.dateFormat) {
-      const newValue = {
-        from: formatDate(parsedDateFrom, props.dateFormat, locale.value),
-        to: formatDate(parsedDateTo, props.dateFormat, locale.value),
-      };
+    if (!value.from && !value.to) {
+      emit("update:modelValue", { from: null, to: null });
+    } else {
+      let from = null;
+      let to = null;
 
-      emit("update:modelValue", newValue);
+      if (parsedDateFrom) {
+        from = props.dateFormat
+          ? formatDate(parsedDateFrom, props.dateFormat, locale.value)
+          : parsedDateFrom;
+      }
+
+      if (parsedDateTo) {
+        to = props.dateFormat
+          ? formatDate(parsedDateTo, props.dateFormat, locale.value)
+          : parsedDateTo;
+      }
+
+      emit("update:modelValue", { from, to });
     }
 
     activeDate.value = props.dateFormat ? parsedDateFrom || new Date() : value.from || new Date();
@@ -225,12 +233,10 @@ const { userFormatDate } = useUserFormat(
 );
 
 watch(calendarValue, () => {
-  if (calendarValue.value.from && calendarValue.value.to) {
-    localValue.value = {
-      from: calendarValue.value.from,
-      to: calendarValue.value.to,
-    };
-  }
+  localValue.value = {
+    from: calendarValue.value.from,
+    to: calendarValue.value.to,
+  };
 });
 
 watch(
