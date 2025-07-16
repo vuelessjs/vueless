@@ -180,20 +180,26 @@ const localValue: WritableComputedRef<RangeDate> = computed({
     if (!value.from && !value.to) {
       emit("update:modelValue", { from: null, to: null });
     } else {
-      const newValue = {
-        from: parsedDateFrom
-          ? props.dateFormat
-            ? formatDate(parsedDateFrom, props.dateFormat, locale.value)
-            : parsedDateFrom
-          : null,
-        to: parsedDateTo
-          ? props.dateFormat
-            ? formatDate(parsedDateTo, props.dateFormat, locale.value)
-            : parsedDateTo
-          : null,
-      };
+      let from = null;
+      let to = null;
 
-      emit("update:modelValue", newValue);
+      if (parsedDateFrom) {
+        if (props.dateFormat) {
+          from = formatDate(parsedDateFrom, props.dateFormat, locale.value);
+        } else {
+          from = parsedDateFrom;
+        }
+      }
+
+      if (parsedDateTo) {
+        if (props.dateFormat) {
+          to = formatDate(parsedDateTo, props.dateFormat, locale.value);
+        } else {
+          to = parsedDateTo;
+        }
+      }
+
+      emit("update:modelValue", { from, to });
     }
 
     activeDate.value = props.dateFormat ? parsedDateFrom || new Date() : value.from || new Date();

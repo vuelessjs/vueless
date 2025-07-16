@@ -13,7 +13,7 @@ import {
 } from "./utilDate.ts";
 
 import defaultConfig from "./config.ts";
-import { DAYS_IN_WEEK, START_WEEK, STEP } from "./constants.ts";
+import { DAYS_IN_WEEK, START_WEEK, DATE_CLICK_STEP } from "./constants.ts";
 
 import type { UCalendarViewProps, Config } from "./types.ts";
 
@@ -205,7 +205,7 @@ function onClickDay(day: Date) {
 
   const isClickingPreviousDay = lastClickedDay && isSameDay(day, lastClickedDay);
 
-  sameDayClickCount = isClickingPreviousDay ? sameDayClickCount + STEP : STEP;
+  sameDayClickCount = isClickingPreviousDay ? sameDayClickCount + DATE_CLICK_STEP : DATE_CLICK_STEP;
 
   if (!props.selectedDateTo && sameDayClickCount === 3) {
     sameDayClickCount = 2;
