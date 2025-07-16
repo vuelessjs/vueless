@@ -41,6 +41,11 @@ export interface Props {
   resizable?: boolean;
 
   /**
+   * Enable auto-resize functionality based on content.
+   */
+  autoResize?: boolean;
+
+  /**
    * Make textarea read only.
    */
   readonly?: boolean;

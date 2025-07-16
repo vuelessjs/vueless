@@ -14,7 +14,7 @@ export default /*tw*/ {
   rightSlot: "{>slot} rounded-l-none",
   wrapper: {
     base: `
-      flex px-3 gap-3 w-full bg-default transition
+      flex px-3 py-2 gap-3 w-full bg-default transition
       rounded-medium border border-default outline-transparent
       hover:border-lifted hover:focus-within:border-primary focus-within:border-primary
       focus-within:outline focus-within:outline-small focus-within:outline-primary focus-within:transition
@@ -30,7 +30,7 @@ export default /*tw*/ {
   },
   textarea: {
     base: `
-      pt-2 pb-1.5 block w-full bg-transparent border-none font-normal
+      block w-full bg-transparent border-none font-normal
       placeholder:text-muted placeholder:font-normal placeholder:leading-none
       focus:outline-none disabled:cursor-not-allowed
     `,
@@ -43,14 +43,17 @@ export default /*tw*/ {
       resizable: {
         false: "resize-none",
       },
+      autoResize: {
+        true: "resize-none overflow-hidden",
+      },
       error: {
         true: "placeholder:text-error/50",
       },
     },
     compoundVariants: [
-      { labelAlign: "topInside", label: true, size: "sm", class: "pt-[1.2rem]" },
-      { labelAlign: "topInside", label: true, size: "md", class: "pt-[1.4rem]" },
-      { labelAlign: "topInside", label: true, size: "lg", class: "pt-[1.6rem]" },
+      { labelAlign: "topInside", label: true, size: "sm", class: "mt-3" },
+      { labelAlign: "topInside", label: true, size: "md", class: "mt-4" },
+      { labelAlign: "topInside", label: true, size: "lg", class: "mt-5" },
     ],
   },
   defaults: {
@@ -59,6 +62,7 @@ export default /*tw*/ {
     inputmode: "text",
     labelAlign: "topInside",
     resizable: false,
+    autoResize: false,
     disabled: false,
     readonly: false,
     noAutocomplete: false,

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, onMounted, ref, watch, useSlots, useId, useTemplateRef } from "vue";
+import { computed, nextTick, onMounted, ref, watch, useSlots, useId, useTemplateRef } from "vue";
 
 import useUI from "../composables/useUI.ts";
 import { getDefaults } from "../utils/ui.ts";
@@ -67,6 +67,11 @@ const wrapperRef = useTemplateRef<HTMLLabelElement>("wrapper");
 
 const currentRows = ref(Number(props.rows));
 
+const localValue = computed({
+  get: () => props.modelValue,
+  set: (value) => emit("update:modelValue", value),
+});
+
 watch(
   () => props.rows,
   (newRows) => {
@@ -74,53 +79,86 @@ watch(
   },
 );
 
-const localValue = computed({
-  get() {
-    return props.modelValue;
-  },
-  set(value) {
-    emit("update:modelValue", value);
-  },
+watch(
+  () => [props.modelValue, props.autoResize],
+  () => props.autoResize && nextTick(autoResizeTextarea),
+);
+
+watch([() => props.labelAlign, () => props.size], setLabelPosition, { flush: "post" });
+
+onMounted(() => {
+  toggleReadonly(true);
+  setLabelPosition();
+
+  if (props.autoResize) {
+    nextTick(autoResizeTextarea);
+  }
 });
 
-onMounted(() => toggleReadonly(true));
+function autoResizeTextarea() {
+  if (!props.autoResize || props.readonly) return;
 
-function getNewRowCount() {
   const textarea = textareaRef.value;
 
-  if (!textarea) return 0;
+  if (!textarea) return;
 
-  const content = textarea.value;
-  const newlineCount = (content.match(/\n/g) || []).length;
+  textarea.style.height = "auto";
 
-  return Math.max(Number(props.rows), newlineCount + 2);
+  // Calculate the minimum height based on rows prop
+  const computedStyle = getComputedStyle(textarea);
+  const lineHeight = parseFloat(computedStyle.lineHeight);
+  const paddingTop = parseFloat(computedStyle.paddingTop);
+  const paddingBottom = parseFloat(computedStyle.paddingBottom);
+  const minHeight = lineHeight * Number(props.rows) + paddingTop + paddingBottom;
+
+  // Set height to the larger of scrollHeight or minimum height
+  const newHeight = Math.max(textarea.scrollHeight, minHeight);
+
+  textarea.style.height = `${newHeight}px`;
 }
 
-function onEnter() {
-  if (props.readonly) return;
+function toggleReadonly(hasReadonly: boolean) {
+  if (props.noAutocomplete && !props.readonly && elementId) {
+    const textarea = document.getElementById(elementId);
 
-  const newRowCount = getNewRowCount();
-
-  if (newRowCount > currentRows.value) {
-    currentRows.value = newRowCount;
-  }
-
-  if (newRowCount === currentRows.value) {
-    currentRows.value = newRowCount + 1;
+    if (textarea) {
+      hasReadonly
+        ? textarea.setAttribute("readonly", "readonly")
+        : textarea.removeAttribute("readonly");
+    }
   }
 }
 
-function onBackspace() {
-  if (props.readonly) return;
+useMutationObserver(wrapperRef, (mutations) => mutations.forEach(setLabelPosition), {
+  childList: true,
+  characterData: true,
+  subtree: true,
+});
 
-  const newRowCount = getNewRowCount() - 1;
+function setLabelPosition() {
+  if (props.labelAlign === "top" || !hasSlotContent(slots["left"])) {
+    if (labelComponentRef.value?.labelElement) {
+      labelComponentRef.value.labelElement.style.left = "";
+    }
 
-  if (newRowCount < currentRows.value) {
-    currentRows.value = newRowCount;
+    return;
   }
 
-  if (newRowCount === currentRows.value) {
-    currentRows.value = newRowCount + 1;
+  if (leftSlotWrapperRef.value && textareaRef.value && labelComponentRef.value?.labelElement) {
+    const leftSlotWidth = leftSlotWrapperRef.value.getBoundingClientRect().width;
+    const wrapperElement = textareaRef.value.parentElement;
+
+    let wrapperGap = 0;
+    let wrapperLeftPadding = 0;
+
+    if (wrapperElement) {
+      wrapperGap = parseFloat(getComputedStyle(wrapperElement).gap);
+      wrapperLeftPadding = parseFloat(getComputedStyle(wrapperElement).paddingLeft);
+    }
+
+    if (labelComponentRef.value?.labelElement) {
+      labelComponentRef.value.labelElement.style.left = `${leftSlotWidth + wrapperLeftPadding + wrapperGap}px`;
+    }
   }
 }
 
@@ -153,55 +191,6 @@ function onMouseleave() {
 function onMousedown() {
   emit("mousedown");
 }
-
-function toggleReadonly(hasReadonly: boolean) {
-  if (props.noAutocomplete && !props.readonly && elementId) {
-    const textarea = document.getElementById(elementId);
-
-    if (textarea) {
-      hasReadonly
-        ? textarea.setAttribute("readonly", "readonly")
-        : textarea.removeAttribute("readonly");
-    }
-  }
-}
-
-useMutationObserver(wrapperRef, (mutations) => mutations.forEach(setLabelPosition), {
-  childList: true,
-  characterData: true,
-  subtree: true,
-});
-
-watch([() => props.labelAlign, () => props.size], setLabelPosition, { flush: "post" });
-
-function setLabelPosition() {
-  if (props.labelAlign === "top" || !hasSlotContent(slots["left"])) {
-    if (labelComponentRef.value?.labelElement) {
-      labelComponentRef.value.labelElement.style.left = "";
-    }
-
-    return;
-  }
-
-  if (leftSlotWrapperRef.value && textareaRef.value && labelComponentRef.value?.labelElement) {
-    const leftSlotWidth = leftSlotWrapperRef.value.getBoundingClientRect().width;
-    const wrapperElement = textareaRef.value.parentElement;
-
-    let wrapperGap = 0;
-    let wrapperLeftPadding = 0;
-
-    if (wrapperElement) {
-      wrapperGap = parseFloat(getComputedStyle(wrapperElement).gap);
-      wrapperLeftPadding = parseFloat(getComputedStyle(wrapperElement).paddingLeft);
-    }
-
-    if (labelComponentRef.value?.labelElement) {
-      labelComponentRef.value.labelElement.style.left = `${leftSlotWidth + wrapperLeftPadding + wrapperGap}px`;
-    }
-  }
-}
-
-onMounted(() => setLabelPosition());
 
 defineExpose({
   /**
@@ -286,8 +275,6 @@ const {
         @mouseleave="onMouseleave"
         @mousedown="onMousedown"
         @click="onClick"
-        @keydown.enter="onEnter"
-        @keyup.delete="onBackspace"
       />
 
       <span v-if="hasSlotContent($slots['right'])" :for="elementId" v-bind="rightSlotAttrs">
