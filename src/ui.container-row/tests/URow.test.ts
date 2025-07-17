@@ -146,6 +146,21 @@ describe("URow.vue", () => {
       expect(component.attributes("class")).toContain(expectedClasses);
     });
 
+    // Tag prop
+    it("renders the correct HTML tag", () => {
+      const tags = ["div", "section", "article", "main", "aside", "nav", "span"];
+
+      tags.forEach((tag) => {
+        const component = mount(URow, {
+          props: {
+            tag,
+          },
+        });
+
+        expect(component.element.tagName.toLowerCase()).toBe(tag);
+      });
+    });
+
     // DataTest prop
     it("applies the correct data-test attribute", () => {
       const dataTest = "test-row";

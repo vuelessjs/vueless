@@ -57,6 +57,7 @@ export default /*tw*/ {
     align: "start",
     content: "start",
     justify: "start",
+    tag: "div",
     wrap: false,
     reverse: false,
     block: false,
