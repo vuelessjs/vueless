@@ -207,9 +207,7 @@ describe("UDataList.vue", () => {
 
       expect(draggableComponent.attributes("data-test")).toBe(dataTest);
     });
-  });
 
-  describe("Functionality", () => {
     it("Crossed Items – applies crossed styling to crossed items", () => {
       const component = mount(UDataList, {
         props: {
@@ -259,15 +257,23 @@ describe("UDataList.vue", () => {
 
     it("Empty – exposes empty title and description to slot", () => {
       const emptyText = "There is no data in the list.";
+      const emptyTitle = "No Items";
       const component = mount(UDataList, {
         props: {
           list: [],
+          config: {
+            i18n: {
+              emptyTitle: emptyTitle,
+              emptyDescription: emptyText,
+            },
+          },
         },
         slots: {
           empty: "<div>{{ emptyTitle }} - {{ emptyDescription }}</div>",
         },
       });
 
+      expect(component.text()).toContain(emptyTitle);
       expect(component.text()).toContain(emptyText);
     });
 
