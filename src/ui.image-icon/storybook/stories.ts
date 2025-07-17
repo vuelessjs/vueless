@@ -18,7 +18,7 @@ interface UIconArgs extends Props {
 }
 
 /*
- * This needs for icon auto-caching, please keep it,
+ * This is needed for icon auto-caching, please keep it,
  * an object key which contains the `icon` word is required.
  */
 const icons = {
