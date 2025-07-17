@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, useSlots, watch, useId, useTemplateRef, nextTick } from "vue";
+import { computed, useSlots, watch, useId, useTemplateRef, nextTick, ref } from "vue";
 
 import useUI from "../composables/useUI.ts";
 import { getDefaults } from "../utils/ui.ts";
@@ -47,6 +47,8 @@ const elementId = props.id || useId();
 const slots = useSlots();
 
 const wrapperRef = useTemplateRef<HTMLDivElement>("wrapper");
+
+const isWrapperTransitionComplete = ref(false);
 
 const isShownModal = computed({
   get: () => props.modelValue,
@@ -114,6 +116,8 @@ function onChangeShownModal(newValue: boolean) {
 
   if (newValue) {
     nextTick(() => wrapperRef.value?.focus());
+  } else {
+    isWrapperTransitionComplete.value = false;
   }
 }
 
@@ -173,6 +177,11 @@ defineExpose({
  * Get element / nested component attributes for each config token ✨
  * Applies: `class`, `config`, redefined default `props` and dev `vl-...` attributes.
  */
+const mutatedProps = computed(() => ({
+  /* component state, not a props */
+  wrapperTransitionCompleted: isWrapperTransitionComplete.value,
+}));
+
 const {
   getDataTest,
   config,
@@ -194,7 +203,7 @@ const {
   closeButtonAttrs,
   beforeTitleAttrs,
   titleFallbackAttrs,
-} = useUI<Config>(defaultConfig);
+} = useUI<Config>(defaultConfig, mutatedProps);
 </script>
 
 <template>
@@ -202,7 +211,11 @@ const {
     <div v-if="isShownModal" v-bind="overlayAttrs" />
   </Transition>
 
-  <Transition v-bind="config.wrapperTransition">
+  <Transition
+    v-bind="config.wrapperTransition"
+    @after-enter="isWrapperTransitionComplete = true"
+    @leave="isWrapperTransitionComplete = false"
+  >
     <div
       v-if="isShownModal"
       :id="elementId"

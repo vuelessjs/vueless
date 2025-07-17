@@ -17,7 +17,15 @@ export default /*tw*/ {
     leaveFromClass: "opacity-100",
     leaveToClass: "opacity-0",
   },
-  innerWrapper: "py-12 w-full h-full overflow-auto",
+  innerWrapper: {
+    base: "py-12 w-full h-screen scroll-container [scrollbar-gutter:stable]",
+    variants: {
+      wrapperTransitionCompleted: {
+        true: "overflow-y-auto",
+        false: "overflow-y-hidden",
+      },
+    },
+  },
   header: "flex justify-between px-4 md:px-6 py-6",
   beforeTitle: "flex items-center gap-3",
   titleFallback: "flex flex-col",
