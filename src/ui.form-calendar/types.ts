@@ -86,11 +86,11 @@ export interface Props<TModelValue extends DateValue> {
 export interface UCalendarViewProps {
   selectedDate: Date | null;
   selectedDateTo: Date | null;
-  activeDate: Date | null;
-  activeMonth: Date | null;
+  activeDate: Date;
   locale: DateLocale;
   dateFormat?: string;
   range: boolean;
+  isArrowKeyDirty: boolean;
   maxDate?: Date | string;
   minDate?: Date | string;
   config: Config;

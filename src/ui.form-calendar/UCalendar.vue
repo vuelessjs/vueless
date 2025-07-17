@@ -10,9 +10,9 @@ import UButton from "../ui.button/UButton.vue";
 import {
   parseDate,
   formatDate,
-  getYearsRange,
   dateIsOutOfRange,
   isNumeric,
+  getYearsRangeLabel,
 } from "./utilCalendar.ts";
 
 import { getDateWithoutTime, addMonths, addDays, addYears, getSortedLocale } from "./utilDate.ts";
@@ -39,7 +39,6 @@ import {
 import defaultConfig from "./config.ts";
 
 import type { Props, DateValue, RangeDate, Locale, Config } from "./types.ts";
-import type { Ref } from "vue";
 import type { DateLocale } from "./utilFormatting.ts";
 import type { ComponentExposed } from "../types.ts";
 
@@ -99,11 +98,12 @@ const minutesRef = useTemplateRef<HTMLInputElement>("minutes-input");
 const secondsRef = useTemplateRef<HTMLInputElement>("seconds-input");
 const okButton = useTemplateRef<ComponentExposed<typeof UButton>>("ok-button");
 const dayViewRef = useTemplateRef<ComponentExposed<typeof DayView>>("day-view");
+const yearViewRef = useTemplateRef<ComponentExposed<typeof YearView>>("year-view");
 
-const activeDate: Ref<Date | null> = ref(null);
-const activeMonth: Ref<Date | null> = ref(null);
+const activeDate = ref(getDateWithoutTime());
 
 const currentView = ref(props.view);
+const isArrowKeyDirty = ref(false);
 
 watch(
   () => props.view,
@@ -292,13 +292,10 @@ const userFormattedDate = computed(() => {
 });
 
 const viewSwitchLabel = computed(() => {
-  const localValue =
-    activeDate.value || activeMonth.value || selectedDate.value || getDateWithoutTime();
-
   return {
-    year: formatDate(localValue, "Y", locale.value),
-    month: formatDate(localValue, "F", locale.value),
-    yearsRange: getYearsRange(localValue || getDateWithoutTime()).join(` ${SEPARATOR} `),
+    year: formatDate(activeDate.value, "Y", locale.value),
+    month: formatDate(activeDate.value, "F", locale.value),
+    yearsRange: getYearsRangeLabel(yearViewRef.value?.years || []),
   };
 });
 
@@ -398,7 +395,7 @@ watch(
       );
 
       if (notInView) {
-        activeMonth.value = parsedNewDateTo;
+        activeDate.value = parsedNewDateTo;
       }
     }
 
@@ -412,7 +409,7 @@ watch(
       );
 
       if (notInView) {
-        activeMonth.value = parsedNewValueFrom;
+        activeDate.value = parsedNewValueFrom;
       }
     }
   },
@@ -439,8 +436,7 @@ function onInputDate(newDate: Date | null) {
   if (newDate === null) {
     localValue.value = newDate;
 
-    activeDate.value = null;
-    activeMonth.value = null;
+    activeDate.value = getDateWithoutTime();
 
     emit("input", localValue.value);
 
@@ -467,8 +463,7 @@ function onInputDate(newDate: Date | null) {
   }
 
   if (!props.range) {
-    activeDate.value = null;
-    activeMonth.value = null;
+    activeDate.value = newDate;
   }
 
   wrapperRef.value?.focus();
@@ -487,6 +482,8 @@ function onKeydown(event: KeyboardEvent) {
     minutesRef.value?.blur();
     hoursRef.value?.blur();
     secondsRef.value?.blur();
+
+    isArrowKeyDirty.value = true;
   }
 
   if (event.code === KeyCode.Enter) {
@@ -504,16 +501,14 @@ function onKeydown(event: KeyboardEvent) {
 }
 
 function onInput(date: Date | null): void {
-  activeDate.value = null;
-  activeMonth.value = date;
+  activeDate.value = date || getDateWithoutTime();
 
   if (isCurrentView.value.month) currentView.value = View.Day;
   if (isCurrentView.value.year) currentView.value = View.Month;
 }
 
 function arrowKeyHandler(event: KeyboardEvent) {
-  const currentActiveDate =
-    activeDate.value || activeMonth.value || selectedDate.value || getDateWithoutTime();
+  const currentActiveDate = activeDate.value || selectedDate.value || getDateWithoutTime();
 
   let newActiveDate;
 
@@ -561,56 +556,52 @@ function arrowKeyHandler(event: KeyboardEvent) {
 
   if (newActiveDate && !isOutOfRange) {
     activeDate.value = newActiveDate;
-    activeMonth.value = newActiveDate;
   }
 }
 
 function addActiveMonth(amount: number) {
-  const currentActiveMonth = activeMonth.value || selectedDate.value || getDateWithoutTime();
+  const currentActiveMonth = activeDate.value || selectedDate.value || getDateWithoutTime();
 
-  activeMonth.value = addMonths(currentActiveMonth, amount);
+  activeDate.value = addMonths(currentActiveMonth, amount);
 }
 
 function addActiveYear(amount: number) {
-  const currentActiveMonth = activeMonth.value || selectedDate.value || getDateWithoutTime();
+  const currentActiveMonth = activeDate.value || selectedDate.value || getDateWithoutTime();
 
-  activeMonth.value = addYears(currentActiveMonth, amount);
+  activeDate.value = addYears(currentActiveMonth, amount);
 }
 
 function onClickNextButton() {
-  activeDate.value = null;
-
   if (isCurrentView.value.day) addActiveMonth(1);
   if (isCurrentView.value.month) addActiveYear(1);
   if (isCurrentView.value.year) addActiveYear(YEARS_PER_VIEW);
+
+  isArrowKeyDirty.value = false;
 }
 
 function onClickNextYearButton() {
-  activeDate.value = null;
-
   addActiveYear(1);
+
+  isArrowKeyDirty.value = false;
 }
 
 function onClickPrevButton() {
-  activeDate.value = null;
-
   if (isCurrentView.value.day) addActiveMonth(-1);
   if (isCurrentView.value.month) addActiveYear(-1);
   if (isCurrentView.value.year) addActiveYear(YEARS_PER_VIEW * -1);
+
+  isArrowKeyDirty.value = false;
 }
 
 function onClickPrevYearButton() {
-  activeDate.value = null;
-
   addActiveYear(-1);
+
+  isArrowKeyDirty.value = false;
 }
 
 function enterKeyHandler() {
   if (activeDate.value !== null && isCurrentView.value.day) {
     localValue.value = activeDate.value;
-
-    activeDate.value = null;
-    activeMonth.value = null;
 
     emit("input", localValue.value);
     emit("submit");
@@ -625,9 +616,11 @@ function onClickViewSwitch() {
   const currentViewIndex = views.indexOf(currentView.value);
   const nextViewIndex = currentViewIndex + 1;
 
-  activeDate.value = null;
-
   currentView.value = (views[nextViewIndex] || views.at(0)) as View;
+
+  nextTick(() => {
+    wrapperRef.value!.focus();
+  });
 }
 
 let lastValidHourValue: string | number = "";
@@ -636,7 +629,7 @@ let lastValidSecondValue: string | number = "";
 
 function onTimeKeydown(event: KeyboardEvent) {
   if (ARROW_KEYS.includes(event.code)) {
-    wrapperRef.value?.focus();
+    wrapperRef.value!.focus();
 
     return;
   }
@@ -822,6 +815,7 @@ const {
   >
     <div v-bind="navigationAttrs" :data-test="getDataTest('navigation')">
       <UButton
+        v-if="isCurrentView.day"
         square
         size="sm"
         color="grayscale"
@@ -871,6 +865,7 @@ const {
       />
 
       <UButton
+        v-if="isCurrentView.day"
         square
         size="sm"
         color="grayscale"
@@ -889,13 +884,13 @@ const {
       :selected-date="selectedDate"
       :selected-date-to="selectedDateTo"
       :range="range"
-      :active-month="activeMonth"
       :active-date="activeDate"
       :min-date="minDate"
       :max-date="maxDate"
       :date-format="actualDateFormat"
       :locale="locale"
       :config="config"
+      :is-arrow-key-dirty="isArrowKeyDirty"
       :data-test="getDataTest('day-view')"
       @input="onInputDate"
     />
@@ -905,29 +900,30 @@ const {
       :selected-date="selectedDate"
       :selected-date-to="selectedDateTo"
       :range="range"
-      :active-month="activeMonth"
       :active-date="activeDate"
       :min-date="minDate"
       :max-date="maxDate"
       :date-format="actualDateFormat"
       :locale="locale"
       :config="config"
+      :is-arrow-key-dirty="isArrowKeyDirty"
       :data-test="getDataTest('month-view')"
       @input="onInput"
     />
 
     <YearView
       v-if="isCurrentView.year"
+      ref="year-view"
       :selected-date="selectedDate"
       :selected-date-to="selectedDateTo"
       :range="range"
-      :active-month="activeMonth"
       :active-date="activeDate"
       :min-date="minDate"
       :max-date="maxDate"
       :date-format="actualDateFormat"
       :locale="locale"
       :config="config"
+      :is-arrow-key-dirty="isArrowKeyDirty"
       :data-test="getDataTest('year-view')"
       @input="onInput"
     />

@@ -34,12 +34,8 @@ const localSelectedDate = computed(() => {
   return props.selectedDate === null ? getDateWithoutTime() : props.selectedDate;
 });
 
-const activeMonthDate = computed(() => {
-  return props.activeMonth || localSelectedDate.value;
-});
-
 const firstDayOfMonth = computed(() => {
-  const date = new Date(activeMonthDate.value.valueOf());
+  const date = new Date(props.activeDate.valueOf());
 
   date.setDate(1);
 
@@ -47,17 +43,17 @@ const firstDayOfMonth = computed(() => {
 });
 
 const lastDayOfMonth = computed(() => {
-  return getLastDayOfMonth(activeMonthDate.value);
+  return getLastDayOfMonth(props.activeDate);
 });
 
 const firstDayOfPrevMonth = computed(() => {
-  const prevMonth = activeMonthDate.value.getMonth() - 1;
+  const prevMonth = props.activeDate.getMonth() - 1;
 
-  return new Date(activeMonthDate.value.getFullYear(), prevMonth, 1);
+  return new Date(props.activeDate.getFullYear(), prevMonth, 1);
 });
 
 const lastDayOfPrevMonth = computed(() => {
-  const date = new Date(activeMonthDate.value.valueOf());
+  const date = new Date(props.activeDate.valueOf());
 
   date.setDate(0);
 
@@ -65,8 +61,8 @@ const lastDayOfPrevMonth = computed(() => {
 });
 
 const firstDayOfNextMonth = computed(() => {
-  const date = new Date(activeMonthDate.value.valueOf());
-  const nextMonth = activeMonthDate.value.getMonth() + 1;
+  const date = new Date(props.activeDate.valueOf());
+  const nextMonth = props.activeDate.getMonth() + 1;
 
   date.setDate(1);
   date.setMonth(nextMonth);
@@ -78,7 +74,7 @@ const monthDays = computed(() => {
   const dayNumber = lastDayOfMonth.value.getDate();
 
   return Array.from({ length: dayNumber }, (_, index) => dayNumber - index)
-    .map((day) => getDay(activeMonthDate.value, day))
+    .map((day) => getDay(props.activeDate, day))
     .reverse();
 });
 
@@ -152,7 +148,7 @@ function getDayState(day: Date) {
 
   const isSelectedDay = isSameDay(day, localSelectedDate.value) && props.selectedDate !== null;
   const isCurrentDay = isToday(day);
-  const isAnotherMonthDay = isAnotherMothDay(day, activeMonthDate.value);
+  const isAnotherMonthDay = isAnotherMothDay(day, props.activeDate);
   const isAnotherMonthDayInRange = isAnotherMonthDay && isDayInRange;
   const isFirstDayInRange = props.selectedDate && props.range && isSameDay(day, props.selectedDate);
   const isRangeSameDay =
@@ -164,7 +160,7 @@ function getDayState(day: Date) {
     props.selectedDateTo && props.range && isSameDay(day, props.selectedDateTo);
   const isAnotherMonthFirstDayInRange = isFirstDayInRange && isAnotherMonthDay;
   const isAnotherMonthLastDayInRange = isLastDayInRange && isAnotherMonthDay;
-  const isActiveDay = props.activeDate && isSameDay(props.activeDate, day) && !props.range;
+  const isActiveDay = props.isArrowKeyDirty && isSameDay(props.activeDate, day) && !props.range;
   const isInRangePreview =
     props.range &&
     props.selectedDate &&
