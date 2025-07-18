@@ -108,7 +108,11 @@ function trapFocus(e: KeyboardEvent) {
   }
 }
 
-watch(isShownModal, onChangeShownModal);
+watch(isShownModal, (newValue) => {
+  onChangeShownModal(newValue);
+
+  if (!newValue) emit("close");
+});
 
 function onChangeShownModal(newValue: boolean) {
   toggleEventListeners();
