@@ -1,7 +1,7 @@
 import { revFormat, formats } from "./utilFormatting.ts";
 import { getDateFromUnixTimestamp } from "./utilDate.ts";
 
-import { TOKEN_REG_EXP, YEARS_PER_VIEW } from "./constants.ts";
+import { SEPARATOR, TOKEN_REG_EXP } from "./constants.ts";
 
 import type { DateLocale } from "./utilFormatting.ts";
 
@@ -182,10 +182,6 @@ export function dateIsOutOfRange<TLocale extends DateLocale>(
   return false;
 }
 
-export function getYearsRange(date: Date) {
-  const currentYear = date.getFullYear();
-  const from = currentYear - Math.floor(currentYear % YEARS_PER_VIEW);
-  const to = from + YEARS_PER_VIEW - 1;
-
-  return [from, to];
+export function getYearsRangeLabel(years: Date[]) {
+  return `${years.at(0)?.getFullYear()} ${SEPARATOR} ${years.at(-1)?.getFullYear()}`;
 }
