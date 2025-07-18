@@ -1,350 +1,612 @@
 import { mount } from "@vue/test-utils";
 import { describe, it, expect } from "vitest";
+import { nextTick } from "vue";
 
 import UTable from "../UTable.vue";
+import UTableRow from "../UTableRow.vue";
 import UEmpty from "../../ui.text-empty/UEmpty.vue";
-import UCheckbox from "../../ui.form-checkbox/UCheckbox.vue";
 import ULoaderProgress from "../../ui.loader-progress/ULoaderProgress.vue";
+import UDivider from "../../ui.container-divider/UDivider.vue";
+import {
+  LoaderProgressSymbol,
+  createLoaderProgress,
+} from "../../ui.loader-progress/useLoaderProgress.ts";
 
-import { LoaderProgressSymbol, createLoaderProgress } from "../../ui.loader-progress/useLoaderProgress.ts";
-
-import type { Props, Row, Column } from "../types.ts";
-
-// Helper function to mount component with required providers
-function mountWithProviders(component: typeof UTable, options: Record<string, unknown> = {}) {
-  const loaderProgress = createLoaderProgress();
-
-  return mount(component, {
-    ...options,
-    global: {
-      ...options.global,
-      provide: {
-        ...options.global?.provide,
-        [LoaderProgressSymbol]: loaderProgress,
-      },
-    },
-  });
-}
+import type { Column, Row, Props, ColumnObject } from "../types.ts";
 
 describe("UTable.vue", () => {
-  // Props tests
+  const defaultColumns: ColumnObject[] = [
+    { key: "name", label: "Name" },
+    { key: "email", label: "Email" },
+    { key: "role", label: "Role" },
+  ];
+
+  const defaultRows: Row[] = [
+    {
+      id: "1",
+      name: "John Doe",
+      email: "john@example.com",
+      role: "Admin",
+    },
+    {
+      id: "2",
+      name: "Jane Smith",
+      email: "jane@example.com",
+      role: "User",
+    },
+    {
+      id: "3",
+      name: "Bob Johnson",
+      email: "bob@example.com",
+      role: "Manager",
+    },
+  ];
+
+  const rowsWithDates: Row[] = [
+    {
+      id: "1",
+      name: "John Doe",
+      email: "john@example.com",
+      role: "Admin",
+      rowDate: "2023-01-01",
+    },
+    {
+      id: "2",
+      name: "Jane Smith",
+      email: "jane@example.com",
+      role: "User",
+      rowDate: "2023-01-02",
+    },
+  ];
+
+  function getDefaultProps(overrides = {}): Props {
+    return {
+      columns: defaultColumns,
+      rows: defaultRows,
+      ...overrides,
+    };
+  }
+
+  function getGlobalOptions() {
+    return {
+      provide: {
+        [LoaderProgressSymbol]: createLoaderProgress(),
+      },
+    };
+  }
+
+  function mountUTable(props: Props, options = {}) {
+    return mount(UTable, {
+      props,
+      global: getGlobalOptions(),
+      ...options,
+    });
+  }
+
   describe("Props", () => {
-    // Columns prop
-    it("renders the correct columns", () => {
-      const columns: Column[] = [
-        { key: "name", label: "Name" },
-        { key: "age", label: "Age" },
+    it("Columns – renders table headers correctly", () => {
+      const component = mountUTable(getDefaultProps());
+
+      defaultColumns.forEach((column) => {
+        expect(component.text()).toContain(column.label);
+      });
+    });
+
+    it("Columns – handles string columns", () => {
+      const stringColumns: Column[] = ["name", "email", "role"];
+
+      const component = mountUTable(getDefaultProps({ columns: stringColumns }));
+
+      stringColumns.forEach((column) => {
+        expect(component.text()).toContain(column);
+      });
+    });
+
+    it("Columns – applies column thClass to header cells", () => {
+      const columnsWithClasses: ColumnObject[] = [
+        { key: "name", label: "Name", thClass: "name-header-class" },
+        { key: "email", label: "Email", thClass: "email-header-class" },
+        { key: "role", label: "Role" },
       ];
 
-      const component = mountWithProviders(UTable, {
-        props: {
-          columns,
-          rows: [],
-        },
-      });
+      const component = mountUTable(getDefaultProps({ columns: columnsWithClasses }));
 
       const headerCells = component.findAll("th");
-      // +1 for the checkbox column
 
-      expect(headerCells.length).toBe(columns.length + 1);
+      expect(headerCells[0].attributes("class")).toContain(columnsWithClasses[0].thClass);
+      expect(headerCells[1].attributes("class")).toContain(columnsWithClasses[1].thClass);
+    });
 
-      // Check column labels (skip first cell which is for checkbox)
-      columns.forEach((column, index) => {
-        expect(headerCells[index + 1].text()).toBe(column.label);
+    it("Columns – hides columns when isShown is false", async () => {
+      const columnsWithHidden: ColumnObject[] = [
+        { key: "name", label: "Name" },
+        { key: "email", label: "Email", isShown: false },
+        { key: "role", label: "Role" },
+      ];
+
+      const component = mountUTable(getDefaultProps({ columns: columnsWithHidden }));
+
+      const theadElement = component.get("thead");
+
+      expect(theadElement.text()).toContain(columnsWithHidden[0].label);
+      expect(theadElement.text()).not.toContain(columnsWithHidden[1].label);
+      expect(theadElement.text()).toContain(columnsWithHidden[2].label);
+    });
+
+    it("Rows – renders all table rows", () => {
+      const component = mountUTable(getDefaultProps());
+
+      const tableRows = component.findAllComponents(UTableRow);
+
+      expect(tableRows).toHaveLength(defaultRows.length);
+    });
+
+    it("Rows – renders empty state when no rows provided", () => {
+      const component = mountUTable(getDefaultProps({ rows: [] }));
+
+      const emptyComponent = component.findComponent(UEmpty);
+
+      expect(emptyComponent.exists()).toBe(true);
+    });
+
+    it("Selectable – renders select all checkbox when selectable is true", () => {
+      const component = mountUTable(getDefaultProps({ selectable: true }));
+
+      const selectAllCheckbox = component.get("thead").find("input");
+
+      expect(selectAllCheckbox.exists()).toBe(true);
+    });
+
+    it("Selectable – does not render select all checkbox when selectable is false", () => {
+      const component = mountUTable(getDefaultProps({ selectable: false }));
+
+      const selectAllCheckbox = component.get("thead").find("input");
+
+      expect(selectAllCheckbox.exists()).toBe(false);
+    });
+
+    it("Selected Rows – displays selection counter", async () => {
+      const selectedRows = [defaultRows[0], defaultRows[1]];
+
+      const component = mountUTable(getDefaultProps({ selectable: true, selectedRows }));
+
+      const theadElement = component.get("thead");
+
+      expect(theadElement.text()).toContain(selectedRows.length.toString());
+    });
+
+    it("Selected Rows – passes is checked state to row", async () => {
+      const selectedRows = [defaultRows[0], defaultRows[1]];
+
+      const component = mountUTable(getDefaultProps({ selectable: true, selectedRows }));
+
+      const tableRows = component.findAllComponents(UTableRow);
+
+      tableRows.forEach((row) => {
+        const currentRowId = row.props("row").id;
+        const isChecked = !!selectedRows.find((selectedRow) => selectedRow.id === currentRowId);
+
+        expect(row.props("isChecked")).toBe(isChecked);
       });
     });
 
-    // Rows prop
-    it("renders the correct rows", () => {
-      const columns: Column[] = [
-        { key: "name", label: "Name" },
-        { key: "age", label: "Age" },
-      ];
+    it("Expanded Rows – passes is expanded state to row", async () => {
+      const expandedRows = [defaultRows[0].id, defaultRows[2].id];
 
-      const rows: Row[] = [
-        { id: 1, name: "John", age: "30" },
-        { id: 2, name: "Jane", age: "25" },
-      ];
+      const component = mountUTable(getDefaultProps({ expandedRows }));
 
-      const component = mountWithProviders(UTable, {
-        props: {
-          columns,
-          rows,
-        },
+      const tableRows = component.findAllComponents(UTableRow);
+
+      tableRows.forEach((row) => {
+        const currentRowId = row.props("row").id;
+
+        expect(row.props("isExpanded")).toBe(expandedRows.includes(currentRowId));
       });
-
-      const tableRows = component.findAll("tbody tr");
-
-      expect(tableRows.length).toBe(rows.length);
     });
 
-    // EmptyCellLabel prop
-    it("applies the correct empty cell label", () => {
-      const emptyCellLabel = "N/A";
-      const columns: Column[] = [
-        { key: "name", label: "Name" },
-        { key: "age", label: "Age" },
-      ];
-
-      const rows: Row[] = [
-        { id: 1, name: "John" }, // age is missing
-      ];
-
-      const component = mountWithProviders(UTable, {
-        props: {
-          columns,
-          rows,
-          emptyCellLabel,
-        },
-      });
-
-      // This test is limited because we can't easily access the UTableRow component's internal rendering
-      // In a real test, we might need to use a more specific selector or test the UTableRow component separately
-      expect(component.html()).toContain(emptyCellLabel);
-    });
-
-    // Selectable prop
-    it("shows checkboxes when selectable is true", () => {
-      const selectable = true;
-      const columns: Column[] = [
-        { key: "name", label: "Name" },
-      ];
-
-      const rows: Row[] = [
-        { id: 1, name: "John" },
-      ];
-
-      const component = mountWithProviders(UTable, {
-        props: {
-          columns,
-          rows,
-          selectable,
-        },
-      });
-
-      const checkboxes = component.findAllComponents(UCheckbox);
-      // Should have at least one checkbox (header)
-
-      expect(checkboxes.length).toBeGreaterThan(0);
-    });
-
-    // Compact prop
-    it("applies compact classes when compact is true", () => {
-      const compact = true;
-      const columns: Column[] = [
-        { key: "name", label: "Name" },
-      ];
-
-      const component = mountWithProviders(UTable, {
-        props: {
-          columns,
-          rows: [],
-          compact,
-        },
-      });
-
-      // The compact class is applied through the useUI composable
-      // We can check if the component has the compact attribute set
-      expect(component.vm.config.defaults.compact).toBe(compact);
-    });
-
-    // StickyHeader prop
-    it("applies sticky header classes when stickyHeader is true", () => {
-      const stickyHeader = true;
-      const columns: Column[] = [
-        { key: "name", label: "Name" },
-      ];
-
-      const component = mount(UTable, {
-        props: {
-          columns,
-          rows: [],
-          stickyHeader,
-        },
-      });
-
-      // The stickyHeader class is applied through the useUI composable
-      // We can check if the component has the stickyHeader attribute set
-      expect(component.vm.config.defaults.stickyHeader).toBe(stickyHeader);
-    });
-
-    // StickyFooter prop
-    it("applies sticky footer classes when stickyFooter is true", () => {
-      const stickyFooter = true;
-      const columns: Column[] = [
-        { key: "name", label: "Name" },
-      ];
-
-      const component = mount(UTable, {
-        props: {
-          columns,
-          rows: [],
-          stickyFooter,
-        },
-      });
-
-      // The stickyFooter class is applied through the useUI composable
-      // We can check if the component has the stickyFooter attribute set
-      expect(component.vm.config.defaults.stickyFooter).toBe(stickyFooter);
-    });
-
-    // Loading prop
-    it("shows loader when loading is true", () => {
-      const loading = true;
-      const columns: Column[] = [
-        { key: "name", label: "Name" },
-      ];
-
-      const component = mount(UTable, {
-        props: {
-          columns,
-          rows: [],
-          loading,
-        },
-      });
+    it("Loading – shows loader when loading is true", () => {
+      const component = mountUTable(getDefaultProps({ loading: true }));
 
       const loader = component.findComponent(ULoaderProgress);
 
       expect(loader.exists()).toBe(true);
-      expect(loader.props("loading")).toBe(loading);
+      expect(loader.props("loading")).toBe(true);
     });
 
-    // DataTest prop
-    it("applies the correct data-test attribute", () => {
+    it("Loading – hides loader when loading is false", () => {
+      const component = mountUTable(getDefaultProps({ loading: false }));
+
+      const loader = component.findComponent(ULoaderProgress);
+
+      expect(loader.props("loading")).toBe(false);
+    });
+
+    it("Data Test – applies correct data-test attributes", () => {
       const dataTest = "test-table";
 
-      const component = mount(UTable, {
-        props: {
-          columns: [],
-          rows: [],
-          dataTest,
-        },
-      });
+      const component = mountUTable(getDefaultProps({ dataTest }));
 
       expect(component.attributes("data-test")).toBe(dataTest);
     });
+
+    it("Empty Cell Label – passes empty cell label to table rows", () => {
+      const emptyCellLabel = "No data available";
+
+      const component = mountUTable(getDefaultProps({ emptyCellLabel }));
+
+      const tableRow = component.getComponent(UTableRow);
+
+      expect(tableRow.props("emptyCellLabel")).toBe(emptyCellLabel);
+    });
+
+    it("Date Divider – renders date dividers when dateDivider is true", () => {
+      const component = mountUTable(
+        getDefaultProps({
+          rows: rowsWithDates,
+          dateDivider: true,
+        }),
+      );
+
+      const dividers = component.findAllComponents(UDivider);
+
+      expect(dividers.length).toBeGreaterThan(0);
+    });
+
+    it("Date Divider – renders custom date dividers", () => {
+      const customDividers = [
+        { date: "2023-01-01", label: "New Year" },
+        { date: "2023-01-02", label: "Day Two" },
+      ];
+
+      const component = mountUTable(
+        getDefaultProps({
+          rows: rowsWithDates,
+          dateDivider: customDividers,
+        }),
+      );
+
+      expect(component.text()).not.toContain("New Year"); // should not render above first item
+      expect(component.text()).toContain("Day Two");
+    });
+
+    it("Compact – applies compact classes from config", () => {
+      const compactClasses = "px-4 py-3";
+
+      const component = mountUTable(
+        getDefaultProps({
+          compact: true,
+          selectable: true,
+          selectedRows: [defaultRows[0]],
+        }),
+        {
+          slots: {
+            footer: "Footer content",
+          },
+        },
+      );
+
+      const headerCells = component.findAll("th");
+
+      headerCells.forEach((cell) => {
+        expect(cell.attributes("class")).toContain(compactClasses);
+      });
+    });
   });
 
-  // Slots tests
   describe("Slots", () => {
-    // Empty state slot
-    it("renders content from empty-state slot", () => {
-      const slotContent = "Custom Empty State";
-      const slotClass = "custom-empty";
+    it("Header Slot – renders custom header content", () => {
+      const customHeaderContent = "Custom Name Header";
 
-      const component = mount(UTable, {
-        props: {
-          columns: [],
-          rows: [],
-        },
+      const component = mountUTable(getDefaultProps(), {
         slots: {
-          "empty-state": `<div class="${slotClass}">${slotContent}</div>`,
+          "header-name": customHeaderContent,
         },
       });
 
-      expect(component.find(`.${slotClass}`).exists()).toBe(true);
-      expect(component.find(`.${slotClass}`).text()).toBe(slotContent);
+      expect(component.text()).toContain(customHeaderContent);
     });
 
-    // Footer slot
-    it("renders content from footer slot", () => {
-      const slotContent = "Footer Content";
-      const slotClass = "custom-footer";
-
-      const component = mount(UTable, {
-        props: {
-          columns: [],
-          rows: [],
-        },
+    it("Header Slot – exposes column and index to slot", () => {
+      const component = mountUTable(getDefaultProps(), {
         slots: {
-          footer: `<td class="${slotClass}">${slotContent}</td>`,
+          "header-name": "Column: {{ params.column?.label }}, Index: {{ params.index }}",
         },
       });
 
-      expect(component.find(`.${slotClass}`).exists()).toBe(true);
-      expect(component.find(`.${slotClass}`).text()).toBe(slotContent);
+      expect(component.text()).toContain("Column: Name");
+      expect(component.text()).toContain("Index: 0");
+    });
+
+    it("Cell Slot – renders custom cell content", () => {
+      const customCellContent = "Custom Cell Content";
+
+      const component = mountUTable(getDefaultProps(), {
+        slots: {
+          "cell-name": customCellContent,
+        },
+      });
+
+      expect(component.text()).toContain(customCellContent);
+    });
+
+    it("Cell Slot – exposes value, row, index, and cellIndex to slot", () => {
+      const component = mountUTable(getDefaultProps(), {
+        slots: {
+          "cell-name": `
+            Value: {{ params.value }}, Row: {{ params.row.id }}
+            Index: {{ params.index }}, Cell: {{ params.cellIndex }}
+          `,
+        },
+      });
+
+      expect(component.text()).toContain("Value: John Doe");
+      expect(component.text()).toContain("Row: 1");
+      expect(component.text()).toContain("Index: 0");
+      expect(component.text()).toContain("Cell: 0");
+    });
+
+    it("Expand Slot – renders custom expand content", () => {
+      const nestedRows: Row[] = [
+        {
+          id: "1",
+          name: "Parent Row",
+          email: "parent@example.com",
+          role: "Admin",
+          row: [{ id: "1-1", name: "Child", email: "child@example.com", role: "User" }],
+        },
+      ];
+
+      const customExpandContent = "Custom Expand Button";
+
+      const component = mountUTable(getDefaultProps({ rows: nestedRows }), {
+        slots: {
+          expand: customExpandContent,
+        },
+      });
+
+      expect(component.text()).toContain(customExpandContent);
+    });
+
+    it("Before First Row Slot – renders content before first row", () => {
+      const customContent = "Before First Row Content";
+
+      const component = mountUTable(getDefaultProps(), {
+        slots: {
+          "before-first-row": customContent,
+        },
+      });
+
+      expect(component.text()).toContain(customContent);
+    });
+
+    it("Header Actions Slot – renders header actions when rows are selected", async () => {
+      const customActions = "Custom Actions";
+
+      const component = mountUTable(
+        getDefaultProps({
+          selectable: true,
+          selectedRows: [defaultRows[0]],
+        }),
+        {
+          slots: {
+            "header-actions": customActions,
+          },
+        },
+      );
+
+      await nextTick();
+
+      expect(component.text()).toContain(customActions);
+    });
+
+    it("Footer Slot – renders custom footer content", () => {
+      const customFooterContent = "Custom Footer";
+
+      const component = mountUTable(getDefaultProps(), {
+        slots: {
+          footer: customFooterContent,
+        },
+      });
+
+      expect(component.text()).toContain(customFooterContent);
+    });
+
+    it("Nested Row Slot – renders custom nested row content", async () => {
+      const nestedRows: Row[] = [
+        {
+          id: "1",
+          name: "Parent Row",
+          email: "parent@example.com",
+          role: "Admin",
+          row: [{ id: "1-1", name: "Child", email: "child@example.com", role: "User" }],
+        },
+      ];
+
+      const customNestedContent = "Custom Nested Content";
+
+      const component = mountUTable(
+        getDefaultProps({
+          rows: nestedRows,
+          expandedRows: ["1"],
+        }),
+        {
+          slots: {
+            "nested-row": customNestedContent,
+          },
+        },
+      );
+
+      await nextTick();
+
+      expect(component.text()).toContain(customNestedContent);
     });
   });
 
-  // Events tests
   describe("Events", () => {
-    // ClickRow event
-    it("emits clickRow event when row is clicked", async () => {
-      const columns: Column[] = [
-        { key: "name", label: "Name" },
-      ];
+    it("Click Row – emits clickRow event when row is clicked", async () => {
+      const component = mountUTable(getDefaultProps());
 
-      const rows: Row[] = [
-        { id: 1, name: "John" },
-      ];
+      const firstRow = component.find("tbody tr");
 
-      const component = mount(UTable, {
-        props: {
-          columns,
-          rows,
-        },
-      });
-
-      // This is a simplified test since we can't easily trigger the click on the UTableRow component
-      // In a real test, we might need to use a more specific selector or test the UTableRow component separately
-      component.vm.$emit("clickRow", rows[0]);
+      await firstRow.trigger("click");
 
       expect(component.emitted("clickRow")).toBeTruthy();
-      expect(component.emitted("clickRow")?.[0]).toEqual([rows[0]]);
+      expect(component.emitted("clickRow")![0][0]).toEqual(defaultRows[0]);
     });
 
-    // Update:selectedRows event
-    it("emits update:selectedRows event when rows are selected", async () => {
-      const columns: Column[] = [
-        { key: "name", label: "Name" },
-      ];
+    it("Double Click Row – emits doubleClickRow event when row is double-clicked", async () => {
+      const component = mountUTable(getDefaultProps());
 
-      const rows: Row[] = [
-        { id: 1, name: "John" },
-      ];
+      const firstRow = component.find("tbody tr");
 
-      const component = mount(UTable, {
-        props: {
-          columns,
-          rows,
-          selectable: true,
-        },
-      });
+      await firstRow.trigger("dblclick");
 
-      // This is a simplified test since we can't easily trigger the selection on the UTableRow component
-      // In a real test, we might need to use a more specific selector or test the UTableRow component separately
-      component.vm.$emit("update:selectedRows", [rows[0]]);
+      expect(component.emitted("doubleClickRow")).toBeTruthy();
+      expect(component.emitted("doubleClickRow")![0][0]).toEqual(defaultRows[0]);
+    });
+
+    it("Click Cell – emits clickCell event when cell is clicked", async () => {
+      const component = mountUTable(getDefaultProps());
+
+      const firstCell = component.find("tbody tr td");
+
+      await firstCell.trigger("click");
+
+      expect(component.emitted("clickCell")).toBeTruthy();
+      expect(component.emitted("clickCell")![0]).toEqual([
+        defaultRows[0].name,
+        defaultRows[0],
+        "name",
+      ]);
+    });
+
+    it("Toggle Row Checkbox – emits update:selectedRows when row checkbox is clicked", async () => {
+      const component = mountUTable(getDefaultProps({ selectable: true }));
+
+      const rowCheckbox = component.find("tbody tr").find("input[type='checkbox']");
+
+      await rowCheckbox.trigger("change");
 
       expect(component.emitted("update:selectedRows")).toBeTruthy();
-      expect(component.emitted("update:selectedRows")?.[0]).toEqual([[rows[0]]]);
-    });
-  });
-
-  // Exposed refs tests
-  describe("Exposed refs", () => {
-    // wrapperRef
-    it("exposes wrapperRef", () => {
-      const component = mount(UTable, {
-        props: {
-          columns: [],
-          rows: [],
-        },
-      });
-
-      expect(component.vm.wrapperRef).toBeDefined();
+      expect(component.emitted("update:selectedRows")![0][0]).toEqual([defaultRows[0]]);
     });
 
-    // clearSelectedItems method
-    it("exposes clearSelectedItems method", () => {
-      const component = mount(UTable, {
-        props: {
-          columns: [],
-          rows: [],
-        },
-      });
+    it("Toggle Expand – emits row-expand and update:expandedRows when expand icon is clicked", async () => {
+      const expandableRow: Row = {
+        id: "1",
+        name: "Parent Row",
+        email: "parent@example.com",
+        role: "Admin",
+        row: [{ id: "1-1", name: "Child", email: "child@example.com", role: "User" }],
+      };
 
-      expect(component.vm.clearSelectedItems).toBeDefined();
-      expect(typeof component.vm.clearSelectedItems).toBe("function");
+      const component = mountUTable(getDefaultProps({ rows: [expandableRow] }));
+
+      const expandIcon = component.find("[data-row-toggle-icon='1']");
+
+      await expandIcon.trigger("click");
+
+      expect(component.emitted("row-expand")).toBeTruthy();
+      expect(component.emitted("row-expand")![0][0]).toEqual(expandableRow);
+      expect(component.emitted("update:expandedRows")).toBeTruthy();
+      expect(component.emitted("update:expandedRows")![0][0]).toEqual(["1"]);
+    });
+
+    it("Toggle Expand – emits row-collapse and update:expandedRows when collapse icon is clicked", async () => {
+      const expandableRow: Row = {
+        id: "1",
+        name: "Parent Row",
+        email: "parent@example.com",
+        role: "Admin",
+        row: [{ id: "1-1", name: "Child", email: "child@example.com", role: "User" }],
+      };
+
+      const component = mountUTable(
+        getDefaultProps({
+          rows: [expandableRow],
+          expandedRows: ["1"],
+        }),
+      );
+
+      const collapseIcon = component.find("[data-row-toggle-icon='1']");
+
+      await collapseIcon.trigger("click");
+
+      expect(component.emitted("row-collapse")).toBeTruthy();
+      expect(component.emitted("row-collapse")![0][0]).toEqual(expandableRow);
+      expect(component.emitted("update:expandedRows")).toBeTruthy();
+      expect(component.emitted("update:expandedRows")![0][0]).toEqual([]);
+    });
+
+    it("Multiple Row Selection – emits update:selectedRows with all selected rows", async () => {
+      const component = mountUTable(getDefaultProps({ selectable: true }));
+
+      const tableRows = component.findAll("tbody tr");
+
+      // Select first row
+      await tableRows[0].find("input[type='checkbox']").trigger("change");
+      // Select second row
+      await tableRows[1].find("input[type='checkbox']").trigger("change");
+
+      const emittedEvents = component.emitted("update:selectedRows");
+
+      expect(emittedEvents).toBeTruthy();
+      expect(emittedEvents![emittedEvents!.length - 1][0]).toEqual([
+        defaultRows[0],
+        defaultRows[1],
+      ]);
+    });
+
+    it("Nested Row Expansion – emits update:expandedRows for nested rows", async () => {
+      const nestedRows: Row[] = [
+        {
+          id: "1",
+          name: "Parent",
+          email: "parent@example.com",
+          role: "Admin",
+          row: [
+            {
+              id: "1-1",
+              name: "Child 1",
+              email: "child1@example.com",
+              role: "User",
+              row: [
+                { id: "1-1-1", name: "Grandchild", email: "grandchild@example.com", role: "Guest" },
+              ],
+            },
+          ],
+        },
+      ];
+
+      const component = mountUTable(getDefaultProps({ rows: nestedRows }));
+
+      const expandIcon = component.find("[data-row-toggle-icon='1']");
+
+      await expandIcon.trigger("click");
+
+      expect(component.emitted("update:expandedRows")).toBeTruthy();
+      expect(component.emitted("update:expandedRows")![0][0]).toEqual(["1"]);
+    });
+
+    it("Expand Icon – prevents row click events when expand icon is clicked", async () => {
+      const expandableRow: Row = {
+        id: "1",
+        name: "Parent Row",
+        email: "parent@example.com",
+        role: "Admin",
+        row: [{ id: "1-1", name: "Child", email: "child@example.com", role: "User" }],
+      };
+
+      const component = mountUTable(getDefaultProps({ rows: [expandableRow] }));
+
+      const expandIcon = component.find("[data-row-toggle-icon='1']");
+
+      await expandIcon.trigger("click");
+      await expandIcon.trigger("dblclick");
+
+      // Row click events should not be triggered when expand icon is clicked
+      expect(component.emitted("clickRow")).toBeFalsy();
+      expect(component.emitted("doubleClickRow")).toBeFalsy();
     });
   });
 });
