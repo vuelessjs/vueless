@@ -14,7 +14,6 @@ export interface DragMoveEvent extends DragEvent {
 export interface DataListItem {
   crossed?: boolean;
   actions?: boolean;
-  nesting?: boolean;
   children?: DataListItem[];
   [key: string]: UnknownType | DataListItem[];
 }

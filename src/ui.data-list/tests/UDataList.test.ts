@@ -19,7 +19,6 @@ describe("UDataList.vue", () => {
     {
       id: 1,
       label: "Parent 1",
-      nesting: true,
       children: [
         { id: 11, label: "Child 1.1" },
         { id: 12, label: "Child 1.2" },
@@ -163,11 +162,10 @@ describe("UDataList.vue", () => {
       expect(draggableComponent.vm.$attrs.animation).toBe(animationDuration);
     });
 
-    it("Nesting – renders nested items when nesting is enabled", async () => {
+    it("Nesting – renders nested items when children array is present", async () => {
       const component = mount(UDataList, {
         props: {
           list: nestedList,
-          nesting: true,
         },
       });
 
@@ -176,21 +174,6 @@ describe("UDataList.vue", () => {
       >;
 
       expect(nestedComponent.props("list")).toEqual(nestedList[0].children);
-    });
-
-    it("Nesting – does not render nested items when nesting is disabled", () => {
-      const component = mount(UDataList, {
-        props: {
-          list: nestedList,
-          nesting: false,
-        },
-      });
-
-      const nestedComponent = component.findComponent("[vl-key='nested']") as VueWrapper<
-        typeof component.vm
-      >;
-
-      expect(nestedComponent.exists()).toBe(false);
     });
 
     it("Data Test – applies correct data-test attribute", () => {

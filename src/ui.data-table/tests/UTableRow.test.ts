@@ -107,7 +107,7 @@ describe("UTableRow.vue", () => {
         name: {
           value: "John Doe",
           class: "custom-cell-class",
-          contentClasses: "custom-content-class",
+          contentClass: "custom-content-class",
         },
       };
 
@@ -127,7 +127,7 @@ describe("UTableRow.vue", () => {
         name: {
           value: "John Doe",
           class: (value, row) => `dynamic-${row.role}`,
-          contentClasses: (value: unknown) => `content-${value}`,
+          contentClass: (value: unknown) => `content-${value}`,
         },
       };
 
