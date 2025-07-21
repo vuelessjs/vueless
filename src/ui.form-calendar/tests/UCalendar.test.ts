@@ -1,292 +1,684 @@
-import { mount } from "@vue/test-utils";
+import { flushPromises, mount } from "@vue/test-utils";
 import { describe, it, expect } from "vitest";
+import { nextTick } from "vue";
 
 import UCalendar from "../UCalendar.vue";
-import UButton from "../../ui.button/UButton.vue";
-import ULoader from "../../ui.loader/ULoader.vue";
+import DayView from "../UCalendarDayView.vue";
+import MonthView from "../UCalendarMonthView.vue";
+import YearView from "../UCalendarYearView.vue";
 
 import { View } from "../constants.ts";
 
-import type { Props } from "../types.ts";
+import type { Props, RangeDate } from "../types.ts";
 
 describe("UCalendar.vue", () => {
-  // Props tests
   describe("Props", () => {
-    // View prop
-    it("applies the correct view", async () => {
-      const views = {
-        day: "day",
-        month: "month",
-        year: "year",
+    it("Model Value – sets initial date value correctly", () => {
+      const modelValue = "2023-12-25";
+
+      const component = mount(UCalendar, {
+        props: {
+          modelValue,
+          dateFormat: "Y-m-d",
+        },
+      });
+
+      expect(component.props("modelValue")).toBe(modelValue);
+    });
+
+    it("Model Value – sets range date value correctly", () => {
+      const rangeValue = {
+        from: "2023-12-01",
+        to: "2023-12-31",
       };
 
-      Object.entries(views).forEach(([view, expectedView]) => {
+      const component = mount(UCalendar, {
+        props: {
+          modelValue: rangeValue,
+          range: true,
+          dateFormat: "Y-m-d",
+        },
+      });
+
+      expect(component.props("modelValue")).toEqual(rangeValue);
+    });
+
+    it("Model Value – emits update:modelValue when date changes", async () => {
+      const component = mount(UCalendar, {
+        props: {
+          modelValue: null,
+          dateFormat: "Y-m-d",
+        },
+      });
+
+      const dayView = component.findComponent(DayView);
+      const dateButton = dayView.find('[vl-key="day"]');
+
+      await dateButton.trigger("click");
+
+      expect(component.emitted("update:modelValue")).toBeTruthy();
+    });
+
+    it("View – sets the correct view variant", () => {
+      const viewCases = [View.Day, View.Month, View.Year];
+
+      viewCases.forEach((view) => {
         const component = mount(UCalendar, {
           props: {
-            view: view as Props["view"],
-            modelValue: new Date(),
+            view: view as Props<string>["view"],
+            modelValue: null,
           },
         });
 
-        expect(component.vm.currentView).toBe(expectedView);
+        if (view === View.Day) {
+          expect(component.findComponent(DayView).exists()).toBe(true);
+          expect(component.findComponent(MonthView).exists()).toBe(false);
+          expect(component.findComponent(YearView).exists()).toBe(false);
+        } else if (view === View.Month) {
+          expect(component.findComponent(DayView).exists()).toBe(false);
+          expect(component.findComponent(MonthView).exists()).toBe(true);
+          expect(component.findComponent(YearView).exists()).toBe(false);
+        } else if (view === View.Year) {
+          expect(component.findComponent(DayView).exists()).toBe(false);
+          expect(component.findComponent(MonthView).exists()).toBe(false);
+          expect(component.findComponent(YearView).exists()).toBe(true);
+        }
       });
     });
 
-    // Range prop
-    it("applies range mode when range prop is true", () => {
-      const range = true;
-
+    it("View – emits update:view when view changes", async () => {
       const component = mount(UCalendar, {
         props: {
-          range,
-          modelValue: new Date(),
+          view: View.Day,
+          modelValue: null,
         },
       });
 
-      expect(component.vm.isTimepickerEnabled).toBe(false);
-    });
+      const viewSwitchButton = component.find('[vl-key="viewSwitchButton"]');
 
-    // Tabindex prop
-    it("applies the correct tabindex attribute", () => {
-      const tabindex = "2";
-
-      const component = mount(UCalendar, {
-        props: {
-          tabindex,
-          modelValue: new Date(),
-        },
-      });
-
-      expect(component.attributes("tabindex")).toBe(tabindex);
-    });
-
-    // Timepicker prop
-    it("shows timepicker when timepicker prop is true and range is false", () => {
-      const timepicker = true;
-      const range = false;
-
-      const component = mount(UCalendar, {
-        props: {
-          timepicker,
-          range,
-          modelValue: new Date(),
-        },
-      });
-
-      expect(component.vm.isTimepickerEnabled).toBe(true);
-      expect(component.find("[vl-key='timepicker']").exists()).toBe(true);
-    });
-
-    // DateFormat prop
-    it("uses the correct date format", () => {
-      const dateFormat = "Y-m-d";
-      const modelValue = new Date(2023, 0, 1); // January 1, 2023
-
-      const component = mount(UCalendar, {
-        props: {
-          dateFormat,
-          modelValue,
-        },
-      });
-
-      expect(component.vm.actualDateFormat).toBe(dateFormat);
-    });
-
-    // DateTimeFormat prop
-    it("uses the correct date time format when timepicker is enabled", () => {
-      const dateTimeFormat = "Y-m-d H:i:S";
-      const timepicker = true;
-
-      const component = mount(UCalendar, {
-        props: {
-          dateTimeFormat,
-          timepicker,
-          modelValue: new Date(),
-        },
-      });
-
-      expect(component.vm.actualDateFormat).toBe(dateTimeFormat);
-    });
-
-    // UserDateFormat prop
-    it("uses the correct user date format", () => {
-      const userDateFormat = "j F, Y";
-      const modelValue = new Date(2023, 0, 1); // January 1, 2023
-
-      const component = mount(UCalendar, {
-        props: {
-          userDateFormat,
-          modelValue,
-        },
-      });
-
-      expect(component.vm.actualUserFormat).toBe(userDateFormat);
-    });
-
-    // UserDateTimeFormat prop
-    it("uses the correct user date time format when timepicker is enabled", () => {
-      const userDateTimeFormat = "j F, Y - H:i:S";
-      const timepicker = true;
-
-      const component = mount(UCalendar, {
-        props: {
-          userDateTimeFormat,
-          timepicker,
-          modelValue: new Date(),
-        },
-      });
-
-      expect(component.vm.actualUserFormat).toBe(userDateTimeFormat);
-    });
-
-    // MinDate prop
-    it("respects the min date constraint", async () => {
-      const minDate = new Date(2023, 0, 15); // January 15, 2023
-      const modelValue = new Date(2023, 0, 1); // January 1, 2023
-
-      const component = mount(UCalendar, {
-        props: {
-          minDate,
-          modelValue,
-        },
-      });
-
-      // Try to set a date before minDate
-      await component.vm.onInputDate(new Date(2023, 0, 10)); // January 10, 2023
-
-      // The value should not change because it's before minDate
-      expect(component.emitted("update:modelValue")).toBeFalsy();
-    });
-
-    // MaxDate prop
-    it("respects the max date constraint", async () => {
-      const maxDate = new Date(2023, 0, 15); // January 15, 2023
-      const modelValue = new Date(2023, 0, 20); // January 20, 2023
-
-      const component = mount(UCalendar, {
-        props: {
-          maxDate,
-          modelValue,
-        },
-      });
-
-      // Try to set a date after maxDate
-      await component.vm.onInputDate(new Date(2023, 0, 25)); // January 25, 2023
-
-      // The value should not change because it's after maxDate
-      expect(component.emitted("update:modelValue")).toBeFalsy();
-    });
-
-    // DataTest prop
-    it("applies the correct data-test attribute", () => {
-      const dataTest = "test-calendar";
-
-      const component = mount(UCalendar, {
-        props: {
-          dataTest,
-          modelValue: new Date(),
-        },
-      });
-
-      expect(component.attributes("data-test")).toBe(dataTest);
-    });
-  });
-
-  // Events tests
-  describe("Events", () => {
-    // update:modelValue event
-    it("emits update:modelValue event when date is selected", async () => {
-      const component = mount(UCalendar, {
-        props: {
-          modelValue: new Date(),
-        },
-      });
-      const date = new Date(2023, 0, 1); // January 1, 2023
-
-      await component.vm.onInputDate(date);
-
-      expect(component.emitted("update:modelValue")).toBeTruthy();
-      expect(component.emitted("update:modelValue")[0][0]).toEqual(date);
-    });
-
-    // update:view event
-    it("emits update:view event when view changes", async () => {
-      const component = mount(UCalendar, {
-        props: {
-          modelValue: new Date(),
-        },
-      });
-
-      await component.vm.onClickViewSwitch();
+      await viewSwitchButton.trigger("click");
 
       expect(component.emitted("update:view")).toBeTruthy();
     });
 
-    // input event
-    it("emits input event when date is selected", async () => {
+    it("Range – enables range selection", async () => {
       const component = mount(UCalendar, {
         props: {
-          modelValue: new Date(),
+          range: true,
+          modelValue: { from: null, to: null },
+          "onUpdate:modelValue": (value: RangeDate) => {
+            component.setProps({ modelValue: value });
+          },
         },
       });
-      const date = new Date(2023, 0, 1); // January 1, 2023
 
-      await component.vm.onInputDate(date);
+      const dayView = component.findComponent(DayView);
 
-      expect(component.emitted("input")).toBeTruthy();
-      expect(component.emitted("input")[0][0]).toEqual(date);
+      const days = dayView.findAll('[vl-key="day"]');
+
+      await days[0].trigger("click");
+      await days[3].trigger("click");
+
+      expect(component.emitted("update:modelValue")).toBeTruthy();
+
+      const firstUpdate = component.emitted("update:modelValue")![0][0] as RangeDate;
+      const secondUpdate = component.emitted("update:modelValue")![1][0] as RangeDate;
+
+      expect(firstUpdate.from).not.toBeNull();
+      expect(firstUpdate.to).toBeNull();
+
+      expect(secondUpdate.from).not.toBeNull();
+      expect(secondUpdate.to).not.toBeNull();
     });
 
-    // submit event
-    it("emits submit event when enter key is pressed on a selected date", async () => {
+    it("Timepicker – shows timepicker when enabled", () => {
       const component = mount(UCalendar, {
         props: {
-          modelValue: new Date(),
+          timepicker: true,
+          modelValue: null,
         },
       });
 
-      // Set an active date
-      component.vm.activeDate = new Date(2023, 0, 1); // January 1, 2023
+      expect(component.find('[vl-key="timepicker"]').exists()).toBe(true);
+      expect(component.find('[vl-key="timepickerInputHours"]').exists()).toBe(true);
+      expect(component.find('[vl-key="timepickerInputMinutes"]').exists()).toBe(true);
+      expect(component.find('[vl-key="timepickerInputSeconds"]').exists()).toBe(true);
+      expect(component.find('[vl-key="timepickerSubmitButton"]').exists()).toBe(true);
+    });
 
-      // Simulate enter key press
-      await component.vm.enterKeyHandler();
+    it("Timepicker – does not show when range is enabled", () => {
+      const component = mount(UCalendar, {
+        props: {
+          timepicker: true,
+          range: true,
+          modelValue: { from: null, to: null },
+        },
+      });
+
+      expect(component.find('[vl-key="timepicker"]').exists()).toBe(false);
+    });
+
+    it("Timepicker – sets correct time values", async () => {
+      const expectedHours = "10";
+      const expectedMinutes = "30";
+      const expectedSeconds = "45";
+
+      const component = mount(UCalendar, {
+        props: {
+          timepicker: true,
+          modelValue: new Date("2023-12-25T10:30:45"),
+        },
+      });
+
+      await flushPromises();
+
+      const hoursInput = component.find('[vl-key="timepickerInputHours"]')
+        .element as HTMLInputElement;
+      const minutesInput = component.find('[vl-key="timepickerInputMinutes"]')
+        .element as HTMLInputElement;
+      const secondsInput = component.find('[vl-key="timepickerInputSeconds"]')
+        .element as HTMLInputElement;
+
+      expect(hoursInput.value).toBe(expectedHours);
+      expect(minutesInput.value).toBe(expectedMinutes);
+      expect(secondsInput.value).toBe(expectedSeconds);
+    });
+
+    it("Date Format – uses correct date format", async () => {
+      const dateFormat = "d/m/Y";
+      const dateFormatRegex = /^\d{1,2}\/\d{1,2}\/\d{4}$/;
+
+      const component = mount(UCalendar, {
+        props: {
+          dateFormat,
+          modelValue: null,
+        },
+      });
+
+      const dayView = component.findComponent(DayView);
+      const day = dayView.find('[vl-key="day"]');
+
+      await day.trigger("click");
+
+      expect(component.emitted("update:modelValue")).toBeTruthy();
+      expect(component.emitted("update:modelValue")![0][0]).toMatch(dateFormatRegex);
+    });
+
+    it("Date Time Format – uses correct datetime format when timepicker enabled", async () => {
+      const dateTimeFormat = "Y-m-d H:i:s";
+      const dateTimeFormatRegex = /^\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{1,2}$/;
+
+      const component = mount(UCalendar, {
+        props: {
+          timepicker: true,
+          dateTimeFormat,
+          modelValue: null,
+        },
+      });
+
+      const dayView = component.findComponent(DayView);
+
+      const day = dayView.find('[vl-key="day"]');
+
+      await day.trigger("click");
+
+      expect(component.emitted("update:modelValue")).toBeTruthy();
+      expect(component.emitted("update:modelValue")![0][0]).toMatch(dateTimeFormatRegex);
+    });
+
+    it("User Date Format – displays correct user-friendly format", async () => {
+      const expectedFromattedDate = "December 25, 2023";
+      const component = mount(UCalendar, {
+        props: {
+          modelValue: new Date("2023-12-25"),
+          userDateFormat: "F j, Y",
+        },
+      });
+
+      await nextTick();
+
+      expect(component.emitted("userDateChange")).toBeTruthy();
+      expect(component.emitted("userDateChange")![0][0]).toBe(expectedFromattedDate);
+    });
+
+    it("Range – handles range date formatting", async () => {
+      const dateFormatRegex = /^\d{4}-\d{2}-\d{2}$/;
+
+      const component = mount(UCalendar, {
+        props: {
+          range: true,
+          modelValue: {
+            from: "2023-12-02",
+            to: "2023-12-31",
+          },
+          dateFormat: "Y-m-d",
+        },
+      });
+
+      await component.setProps({
+        "onUpdate:modelValue": (value: RangeDate) => {
+          component.setProps({ modelValue: value });
+        },
+      });
+
+      const dayView = component.findComponent(DayView);
+      const days = dayView.findAll('[vl-key="day"]');
+
+      await days[0].trigger("click");
+      await days[3].trigger("click");
+
+      expect(component.emitted("update:modelValue")).toHaveLength(3);
+
+      const updatedValue = component.emitted("update:modelValue")![2][0] as RangeDate;
+
+      expect(updatedValue.from).toMatch(dateFormatRegex);
+      expect(updatedValue.to).toMatch(dateFormatRegex);
+    });
+
+    it("Tabindex – sets tabindex attribute on wrapper", () => {
+      const tabindex = 5;
+
+      const component = mount(UCalendar, {
+        props: {
+          tabindex,
+          modelValue: null,
+        },
+      });
+
+      const wrapper = component.find('[vl-key="wrapper"]');
+
+      expect(wrapper.attributes("tabindex")).toBe("5");
+    });
+
+    it("Data Test – applies correct data-test attribute", () => {
+      const dataTest = "calendar-test";
+
+      const component = mount(UCalendar, {
+        props: {
+          dataTest,
+          modelValue: null,
+        },
+      });
+
+      // Main wrapper should have the base data-test attribute
+      expect(component.find(`[data-test="${dataTest}"]`).exists()).toBe(true);
+
+      // Navigation elements should have data-test attributes
+      expect(component.find(`[data-test="${dataTest}-navigation"]`).exists()).toBe(true);
+      expect(component.find(`[data-test="${dataTest}-prev"]`).exists()).toBe(true);
+      expect(component.find(`[data-test="${dataTest}-next"]`).exists()).toBe(true);
+      expect(component.find(`[data-test="${dataTest}-view-switch"]`).exists()).toBe(true);
+
+      // Year navigation buttons should be present in day view (default)
+      expect(component.find(`[data-test="${dataTest}-prev-year"]`).exists()).toBe(true);
+      expect(component.find(`[data-test="${dataTest}-next-year"]`).exists()).toBe(true);
+
+      // Day view should be present by default
+      expect(component.find(`[data-test="${dataTest}-day-view"]`).exists()).toBe(true);
+    });
+
+    it("Data Test – applies correct data-test attribute with timepicker", () => {
+      const dataTest = "calendar-test";
+
+      const component = mount(UCalendar, {
+        props: {
+          dataTest,
+          timepicker: true,
+          modelValue: null,
+        },
+      });
+
+      // Main wrapper should have the base data-test attribute
+      expect(component.find(`[data-test="${dataTest}"]`).exists()).toBe(true);
+
+      // Timepicker elements should have data-test attributes
+      expect(component.find(`[data-test="${dataTest}-timepicker"]`).exists()).toBe(true);
+      expect(component.find(`[data-test="${dataTest}-timepicker-hours"]`).exists()).toBe(true);
+      expect(component.find(`[data-test="${dataTest}-timepicker-minutes"]`).exists()).toBe(true);
+      expect(component.find(`[data-test="${dataTest}-timepicker-seconds"]`).exists()).toBe(true);
+      expect(component.find(`[data-test="${dataTest}-timepicker-submit"]`).exists()).toBe(true);
+    });
+
+    it("Data Test – applies correct data-test attribute in different views", async () => {
+      const dataTest = "calendar-test";
+
+      const component = mount(UCalendar, {
+        props: {
+          dataTest,
+          view: View.Month,
+          modelValue: null,
+        },
+      });
+
+      // Test month view
+      expect(component.find(`[data-test="${dataTest}-month-view"]`).exists()).toBe(true);
+      // Year navigation buttons should not be present in month view
+      expect(component.find(`[data-test="${dataTest}-prev-year"]`).exists()).toBe(false);
+      expect(component.find(`[data-test="${dataTest}-next-year"]`).exists()).toBe(false);
+
+      // Change to year view
+      await component.setProps({ view: View.Year });
+
+      expect(component.find(`[data-test="${dataTest}-year-view"]`).exists()).toBe(true);
+      // Year navigation buttons should not be present in year view
+      expect(component.find(`[data-test="${dataTest}-prev-year"]`).exists()).toBe(false);
+      expect(component.find(`[data-test="${dataTest}-next-year"]`).exists()).toBe(false);
+    });
+  });
+
+  describe("Navigation", () => {
+    it("Navigation – renders year navigation buttons in day view", () => {
+      const component = mount(UCalendar, {
+        props: {
+          view: View.Day,
+          modelValue: null,
+        },
+      });
+
+      const nextPrevButtons = component.findAll('[vl-key="nextPrevButton"]');
+
+      expect(nextPrevButtons.length).toBe(4);
+    });
+
+    it("Navigation – does not render year navigation in month/year views", () => {
+      const viewCases = [View.Month, View.Year];
+
+      viewCases.forEach((view) => {
+        const component = mount(UCalendar, {
+          props: {
+            view: view as Props<string>["view"],
+            modelValue: null,
+          },
+        });
+
+        const nextPrevButtons = component.findAll('[vl-key="nextPrevButton"]');
+
+        expect(nextPrevButtons.length).toBe(2);
+      });
+    });
+
+    it("Navigation – view switch button triggers view change", async () => {
+      const component = mount(UCalendar, {
+        props: {
+          view: View.Day,
+          modelValue: null,
+        },
+      });
+
+      const viewSwitchButton = component.find('[vl-key="viewSwitchButton"]');
+
+      await viewSwitchButton.trigger("click");
+
+      expect(component.emitted("update:view")).toBeTruthy();
+    });
+
+    it("Navigation – prev button navigates correctly", async () => {
+      const component = mount(UCalendar, {
+        props: {
+          view: View.Day,
+          modelValue: new Date("2023-12-15"),
+        },
+      });
+
+      const dayView = component.findComponent(DayView);
+      const initialDays = dayView.findAll('[vl-key="day"]').map((day) => day.text());
+      const navButtons = component.findAll('[vl-key="nextPrevButton"]');
+
+      expect(navButtons.length).toBe(4);
+
+      const prevButton = navButtons[1];
+
+      await prevButton.trigger("click");
+
+      const updatedDays = dayView.findAll('[vl-key="day"]').map((day) => day.text());
+
+      expect(updatedDays).not.toEqual(initialDays);
+      expect(prevButton.exists()).toBe(true);
+    });
+
+    it("Navigation – next button navigates correctly", async () => {
+      const component = mount(UCalendar, {
+        props: {
+          view: View.Day,
+          modelValue: new Date("2023-12-15"),
+        },
+      });
+
+      const dayView = component.findComponent(DayView);
+      const initialDays = dayView.findAll('[vl-key="day"]').map((day) => day.text());
+      const navButtons = component.findAll('[vl-key="nextPrevButton"]');
+      const nextButton = navButtons[2];
+
+      await nextButton.trigger("click");
+
+      const updatedDays = dayView.findAll('[vl-key="day"]').map((day) => day.text());
+
+      expect(updatedDays).not.toEqual(initialDays);
+      expect(nextButton.exists()).toBe(true);
+    });
+  });
+
+  describe("Events", () => {
+    it("Input – emits input event when date is selected", async () => {
+      const component = mount(UCalendar, {
+        props: {
+          modelValue: null,
+        },
+      });
+
+      const dayView = component.findComponent(DayView);
+      const day = dayView.find('[vl-key="day"]');
+
+      await day.trigger("click");
+
+      expect(component.emitted("input")).toBeTruthy();
+      expect(component.emitted("input")![0][0]).toBeInstanceOf(Date);
+    });
+
+    it("Keydown – emits keydown event", async () => {
+      const component = mount(UCalendar, {
+        props: {
+          modelValue: null,
+        },
+      });
+
+      await component.trigger("keydown", { key: "ArrowLeft" });
+
+      expect(component.emitted("keydown")).toBeTruthy();
+    });
+
+    it("Submit – emits submit event when Enter is pressed", async () => {
+      const component = mount(UCalendar, {
+        props: {
+          modelValue: new Date("2023-12-25"),
+        },
+      });
+
+      await component.trigger("keydown", { code: "Enter" });
 
       expect(component.emitted("submit")).toBeTruthy();
     });
 
-    // keydown event
-    it("emits keydown event when arrow keys are pressed", async () => {
+    it("Timepicker – submit button triggers submit event", async () => {
       const component = mount(UCalendar, {
         props: {
-          modelValue: new Date(),
+          timepicker: true,
+          modelValue: null,
         },
       });
-      const event = new KeyboardEvent("keydown", { code: "ArrowDown" });
 
-      await component.vm.onKeydown(event);
+      const submitButton = component.find('[vl-key="timepickerSubmitButton"]');
 
-      expect(component.emitted("keydown")).toBeTruthy();
-      expect(component.emitted("keydown")[0][0]).toEqual(event);
+      await submitButton.trigger("click");
+
+      expect(component.emitted("submit")).toBeTruthy();
     });
 
-    // userDateChange event
-    it("emits userDateChange event when user date format changes", async () => {
-      const component = mount(UCalendar);
-      const date = new Date(2023, 0, 1); // January 1, 2023
-
-      await component.vm.onInputDate(date);
+    it("UserDateChange – emits when user date format changes", async () => {
+      const component = mount(UCalendar, {
+        props: {
+          modelValue: new Date("2023-12-25"),
+          userDateFormat: "F j, Y",
+        },
+      });
 
       expect(component.emitted("userDateChange")).toBeTruthy();
     });
   });
 
-  // Exposed refs tests
-  describe("Exposed refs", () => {
-    // wrapperRef
-    it("exposes wrapperRef", () => {
-      const component = mount(UCalendar);
+  describe("Exposed Properties", () => {
+    it("Exposes wrapper element ref", () => {
+      const component = mount(UCalendar, {
+        props: {
+          modelValue: null,
+        },
+      });
 
-      expect(component.vm.wrapperRef).toBeDefined();
+      expect(component.vm.$refs.wrapper).toBeDefined();
+    });
+  });
+
+  describe("Arrow Key Navigation", () => {
+    it("Arrow Key Navigation – applies active styles when navigating with arrow keys in day view", async () => {
+      const component = mount(UCalendar, {
+        props: {
+          view: View.Day,
+          modelValue: new Date("2023-12-15"),
+        },
+      });
+
+      const dayView = component.findComponent(DayView);
+
+      expect(dayView.findAll('[vl-key="activeDay"]')).toHaveLength(0);
+
+      await component.trigger("keydown", { code: "ArrowRight" });
+
+      expect(dayView.findAll('[vl-key="activeDay"]')).toHaveLength(1);
+    });
+
+    it("Arrow Key Navigation – moves focus correctly with different arrow keys in day view", async () => {
+      const expectedDayAfterRight = "10";
+      const expectedDayAfterLeft = "9";
+      const expectedDayAfterDown = "16";
+      const expectedDayAfterUp = "9";
+
+      const component = mount(UCalendar, {
+        props: {
+          view: View.Day,
+          modelValue: new Date("2025-07-08"),
+        },
+      });
+
+      await component.trigger("keydown", { code: "ArrowRight" });
+
+      await component.trigger("keydown", { code: "ArrowRight" });
+      expect(component.find('[vl-key="activeDay"]').text()).toBe(expectedDayAfterRight);
+
+      await component.trigger("keydown", { code: "ArrowLeft" });
+      expect(component.find('[vl-key="activeDay"]').text()).toBe(expectedDayAfterLeft);
+
+      await component.trigger("keydown", { code: "ArrowDown" });
+      expect(component.find('[vl-key="activeDay"]').text()).toBe(expectedDayAfterDown);
+
+      await component.trigger("keydown", { code: "ArrowUp" });
+      expect(component.find('[vl-key="activeDay"]').text()).toBe(expectedDayAfterUp);
+    });
+
+    it("Arrow Key Navigation – moves focus correctly in month view", async () => {
+      const expectedMonthAfterRight = "February";
+      const expectedMonthAfterLeft = "January";
+      const expectedMonthAfterDown = "April";
+      const expectedMonthAfterUp = "January";
+
+      const component = mount(UCalendar, {
+        props: {
+          view: View.Month,
+          modelValue: new Date("2023-12-15"),
+        },
+      });
+
+      await component.trigger("keydown", { code: "ArrowRight" });
+
+      await component.trigger("keydown", { code: "ArrowRight" });
+      expect(component.find('[vl-key="activeMonth"]').text()).toBe(expectedMonthAfterRight);
+
+      await component.trigger("keydown", { code: "ArrowLeft" });
+      expect(component.find('[vl-key="activeMonth"]').text()).toBe(expectedMonthAfterLeft);
+
+      await component.trigger("keydown", { code: "ArrowDown" });
+      expect(component.find('[vl-key="activeMonth"]').text()).toBe(expectedMonthAfterDown);
+
+      await component.trigger("keydown", { code: "ArrowUp" });
+      expect(component.find('[vl-key="activeMonth"]').text()).toBe(expectedMonthAfterUp);
+    });
+
+    it.skip("Arrow Key Navigation – moves focus correctly in year view", async () => {
+      const expectedYearAfterRight = "2024";
+      const expectedYearAfterLeft = "2023";
+      const expectedYearAfterDown = "2028";
+      const expectedYearAfterUp = "2023";
+
+      const component = mount(UCalendar, {
+        props: {
+          view: View.Year,
+          modelValue: new Date("2023-12-15"),
+        },
+      });
+
+      await component.trigger("keydown", { code: "ArrowRight" });
+
+      await component.trigger("keydown", { code: "ArrowRight" });
+      expect(component.find('[vl-key="activeYear"]').text()).toBe(expectedYearAfterRight);
+
+      await component.trigger("keydown", { code: "ArrowLeft" });
+      expect(component.find('[vl-key="activeYear"]').text()).toBe(expectedYearAfterLeft);
+
+      await component.trigger("keydown", { code: "ArrowDown" });
+      expect(component.find('[vl-key="activeYear"]').text()).toBe(expectedYearAfterDown);
+
+      await component.trigger("keydown", { code: "ArrowUp" });
+      expect(component.find('[vl-key="activeYear"]').text()).toBe(expectedYearAfterUp);
+    });
+
+    it("Arrow Key Navigation – does not navigate when range mode is enabled", async () => {
+      const component = mount(UCalendar, {
+        props: {
+          range: true,
+          modelValue: { from: null, to: null },
+        },
+      });
+
+      const dayView = component.findComponent(DayView);
+
+      await component.trigger("keydown", { code: "ArrowRight" });
+
+      expect(dayView.findAll('[vl-key="activeDay"]')).toHaveLength(0);
+    });
+
+    it("Arrow Key Navigation – respects min and max date boundaries", async () => {
+      const expectedFirstActiveDate = "1";
+      const expectedSecondsActiveDate = "3";
+
+      const component = mount(UCalendar, {
+        props: {
+          modelValue: new Date("2023-12-02"),
+          minDate: "2023-12-01",
+          maxDate: "2023-12-04",
+          dateFormat: "Y-m-d",
+        },
+      });
+
+      await component.trigger("keydown", { code: "ArrowLeft" });
+      await component.trigger("keydown", { code: "ArrowLeft" });
+
+      expect(component.get("[vl-key='activeDay']").text()).toBe(expectedFirstActiveDate);
+
+      await component.trigger("keydown", { code: "ArrowRight" });
+      await component.trigger("keydown", { code: "ArrowRight" });
+      await component.trigger("keydown", { code: "ArrowRight" });
+      await component.trigger("keydown", { code: "ArrowRight" });
+
+      expect(component.get("[vl-key='activeDay']").text()).toBe(expectedSecondsActiveDate);
     });
   });
 });

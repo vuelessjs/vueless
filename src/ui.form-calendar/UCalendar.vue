@@ -100,8 +100,6 @@ const okButton = useTemplateRef<ComponentExposed<typeof UButton>>("ok-button");
 const dayViewRef = useTemplateRef<ComponentExposed<typeof DayView>>("day-view");
 const yearViewRef = useTemplateRef<ComponentExposed<typeof YearView>>("year-view");
 
-const activeDate = ref(getDateWithoutTime());
-
 const currentView = ref(props.view);
 const isArrowKeyDirty = ref(false);
 
@@ -267,6 +265,14 @@ const localValue = computed({
     }
   },
 });
+
+const activeDate = ref();
+
+if (isRangeDate(localValue.value)) {
+  activeDate.value = localValue.value.from || getDateWithoutTime();
+} else {
+  activeDate.value = localValue.value || getDateWithoutTime();
+}
 
 const selectedDate = computed(() => {
   return parseDate(
@@ -459,7 +465,7 @@ function onInputDate(newDate: Date | null) {
   } else {
     localValue.value = newDate;
 
-    emit("input", localValue.value);
+    emit("input", newDate);
   }
 
   if (!props.range) {
