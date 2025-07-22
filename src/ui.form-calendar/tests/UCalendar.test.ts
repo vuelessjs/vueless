@@ -262,7 +262,7 @@ describe("UCalendar.vue", () => {
       });
 
       const dayView = component.findComponent(DayView);
-      const days = dayView.findAll('[vl-key="day"]');
+      const days = dayView.findAll("button");
 
       await days[0].trigger("click");
       await days[3].trigger("click");
@@ -610,34 +610,6 @@ describe("UCalendar.vue", () => {
 
       await component.trigger("keydown", { code: "ArrowUp" });
       expect(component.find('[vl-key="activeMonth"]').text()).toBe(expectedMonthAfterUp);
-    });
-
-    it.skip("Arrow Key Navigation – moves focus correctly in year view", async () => {
-      const expectedYearAfterRight = "2024";
-      const expectedYearAfterLeft = "2023";
-      const expectedYearAfterDown = "2028";
-      const expectedYearAfterUp = "2023";
-
-      const component = mount(UCalendar, {
-        props: {
-          view: View.Year,
-          modelValue: new Date("2023-12-15"),
-        },
-      });
-
-      await component.trigger("keydown", { code: "ArrowRight" });
-
-      await component.trigger("keydown", { code: "ArrowRight" });
-      expect(component.find('[vl-key="activeYear"]').text()).toBe(expectedYearAfterRight);
-
-      await component.trigger("keydown", { code: "ArrowLeft" });
-      expect(component.find('[vl-key="activeYear"]').text()).toBe(expectedYearAfterLeft);
-
-      await component.trigger("keydown", { code: "ArrowDown" });
-      expect(component.find('[vl-key="activeYear"]').text()).toBe(expectedYearAfterDown);
-
-      await component.trigger("keydown", { code: "ArrowUp" });
-      expect(component.find('[vl-key="activeYear"]').text()).toBe(expectedYearAfterUp);
     });
 
     it("Arrow Key Navigation – does not navigate when range mode is enabled", async () => {
