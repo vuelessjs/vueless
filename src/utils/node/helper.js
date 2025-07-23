@@ -14,6 +14,8 @@ import {
   VUELESS_MERGED_CONFIGS_CACHED_DIR,
 } from "../../constants.js";
 
+import { DEFAULT_CONFIG_INDEX_CONTENT } from "../../bin/constants.js";
+
 export async function getDirFiles(dirPath, ext, { recursive = true, exclude = [] } = {}) {
   let fileNames = [];
 
@@ -216,17 +218,7 @@ export async function autoImportUserConfigs() {
   });
 
   if (componentConfigFiles.length === 0) {
-    const indexContent = `/**
- * ⚠️ This file is auto-generated — do not edit it manually.
- * It gets updated automatically whenever the Vite server restarts.
- *
- * This file imports all component config files from the current directory.
- * Only files following the naming pattern "U[Component].config.[ts|js]" will be included.
- * Example: "UButton.config.ts"
- */
-
-export const components = {};
-`;
+    const indexContent = DEFAULT_CONFIG_INDEX_CONTENT;
 
     if (!existsSync(vuelessConfigDir)) {
       await mkdir(vuelessConfigDir, { recursive: true });
