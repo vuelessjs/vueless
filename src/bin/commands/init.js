@@ -66,8 +66,4 @@ export async function vuelessInit(options) {
   const destPath = path.join(vuelessDir, `${CONFIG_INDEX_FILE_NAME}${fileExt}`);
 
   await writeFile(destPath, DEFAULT_CONFIG_INDEX_CONTENT, "utf-8");
-
-  console.log(
-    styleText("green", `Config '${path.basename(destPath)}' created inside '.vueless' directory.`),
-  );
 }
