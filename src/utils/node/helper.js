@@ -218,13 +218,11 @@ export async function autoImportUserConfigs() {
   });
 
   if (componentConfigFiles.length === 0) {
-    const indexContent = DEFAULT_CONFIG_INDEX_CONTENT;
-
     if (!existsSync(vuelessConfigDir)) {
       await mkdir(vuelessConfigDir, { recursive: true });
     }
 
-    await writeFile(indexFilePath, indexContent, "utf-8");
+    await writeFile(indexFilePath, DEFAULT_CONFIG_INDEX_CONTENT, "utf-8");
 
     return;
   }
