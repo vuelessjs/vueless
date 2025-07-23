@@ -397,6 +397,7 @@ export const VUELESS_CONFIGS_CACHED_DIR = `${VUELESS_CACHE_DIR}/configs`;
 export const VUELESS_MERGED_CONFIGS_CACHED_DIR = `${VUELESS_CACHE_DIR}/mergedConfigs`;
 export const VUELESS_USER_CONFIGS_CACHED_DIR = `${VUELESS_CACHE_DIR}/userConfigs`;
 export const VUELESS_CONFIG_FILE_NAME = "vueless.config";
+export const CONFIG_INDEX_FILE_NAME = "index";
 
 /* System error codes */
 export const DEFAULT_EXIT_CODE = 0;
