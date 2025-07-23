@@ -2,7 +2,7 @@
 
 import { cwd } from "node:process";
 import path from "node:path";
-import { existsSync } from "node:fs";
+import { existsSync, mkdirSync } from "node:fs";
 import { writeFile, rename } from "node:fs/promises";
 import { styleText } from "node:util";
 
@@ -49,5 +49,37 @@ export async function vuelessInit(options) {
       "green",
       `The '${formattedDestPath.split(path.sep).at(-1)}' was created in the project root directory.`,
     ),
+  );
+
+  const vuelessDir = path.join(cwd(), ".vueless");
+
+  if (!existsSync(vuelessDir)) {
+    mkdirSync(vuelessDir);
+    console.log(styleText("cyan", "'.vueless' directory created."));
+  }
+
+  const destPath = path.join(vuelessDir, `${VUELESS_CONFIG_FILE_NAME}${fileExt}`);
+
+  if (existsSync(destPath)) {
+    const timestamp = new Date().valueOf();
+    const renamedTarget = path.join(
+      vuelessDir,
+      `${VUELESS_CONFIG_FILE_NAME}-backup-${timestamp}${fileExt}`,
+    );
+
+    await rename(destPath, renamedTarget);
+
+    console.warn(
+      styleText(
+        "yellow",
+        `Existing config backed up as '${path.basename(renamedTarget)}'. Remove it before commit if not needed.`,
+      ),
+    );
+  }
+
+  await writeFile(destPath, DEFAULT_VUELESS_CONFIG_CONTENT, "utf-8");
+
+  console.log(
+    styleText("green", `Config '${path.basename(destPath)}' created inside '.vueless' directory.`),
   );
 }

@@ -2,6 +2,8 @@ export const SRC_COMPONENTS_PATH = "/src/components";
 export const COMPONENTS_PATH = "/components";
 
 export const DEFAULT_VUELESS_CONFIG_CONTENT = `
+import { components } from "./.vueless";
+
 export default {
   /**
    * Global settings.
@@ -162,7 +164,9 @@ export default {
   /**
    * Component settings.
    */
-  components: /*tw*/ {},
+  components: /*tw*/ {
+    ...components,
+  },
 
   /**
    * TailwindMerge settings for custom Tailwind CSS classes.
