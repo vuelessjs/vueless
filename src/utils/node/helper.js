@@ -236,7 +236,7 @@ export async function autoImportUserConfigs() {
     const fileName = path.basename(configFilePath, path.extname(configFilePath));
     const componentName = fileName.replace(".config", "");
     const relativePath = path.relative(vuelessConfigDir, configFilePath);
-    const importPath = "./" + relativePath.replace(/\\/g, "/").replace(/\.(ts|js)$/, "");
+    const importPath = "./" + relativePath.replace(/\\/g, "/");
 
     imports.push(`import ${componentName} from "${importPath}";`);
     componentEntries.push(`  ${componentName},`);
