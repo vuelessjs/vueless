@@ -395,6 +395,7 @@ export const RESOLVED_ICONS_VIRTUAL_MODULE_ID = `\0${ICONS_VIRTUAL_MODULE_ID}`;
 export const VUELESS_TAILWIND_SAFELIST = `${VUELESS_CACHE_DIR}/tailwind/safelist.txt`;
 export const VUELESS_CONFIGS_CACHED_DIR = `${VUELESS_CACHE_DIR}/configs`;
 export const VUELESS_MERGED_CONFIGS_CACHED_DIR = `${VUELESS_CACHE_DIR}/mergedConfigs`;
+export const VUELESS_USER_CONFIGS_CACHED_DIR = `${VUELESS_CACHE_DIR}/userConfigs`;
 export const VUELESS_CONFIG_FILE_NAME = "vueless.config";
 
 /* System error codes */

@@ -26,6 +26,7 @@ import {
   getVueDirs,
   getVuelessConfigDirs,
   cacheMergedConfigs,
+  cacheUserConfigs,
 } from "./utils/node/helper.js";
 import {
   INTERNAL_ENV,
@@ -124,6 +125,8 @@ export const Vueless = function (options = {}) {
         /* merge and cache component configs. */
         await cacheMergedConfigs(vuelessSrcDir);
       }
+
+      await cacheUserConfigs();
 
       await buildWebTypes(vuelessSrcDir);
       await setCustomPropTypes(vuelessSrcDir);

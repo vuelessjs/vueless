@@ -10,6 +10,7 @@ import { vuelessConfig, getMergedConfig } from "./vuelessConfig.js";
 import {
   COMPONENTS,
   VUELESS_CONFIGS_CACHED_DIR,
+  VUELESS_USER_CONFIGS_CACHED_DIR,
   VUELESS_MERGED_CONFIGS_CACHED_DIR,
 } from "../../constants.js";
 
@@ -137,6 +138,52 @@ export async function cacheMergedConfigs(srcDir) {
   }
 }
 
+export async function cacheUserConfigs() {
+  const vuelessConfigDir = path.join(cwd(), ".vueless");
+  const destDirPath = path.join(cwd(), VUELESS_USER_CONFIGS_CACHED_DIR);
+
+  const configFiles = await getDirFiles(vuelessConfigDir, ".ts", {
+    recursive: true,
+    exclude: [],
+  });
+
+  const jsConfigFiles = await getDirFiles(vuelessConfigDir, ".js", {
+    recursive: true,
+    exclude: [],
+  });
+
+  const allConfigFiles = [...configFiles, ...jsConfigFiles];
+
+  const componentConfigFiles = allConfigFiles.filter((filePath) => {
+    const fileName = path.basename(filePath);
+
+    return fileName.match(/^U\w+\.config\.(ts|js)$/);
+  });
+
+  if (componentConfigFiles.length === 0) {
+    return;
+  }
+
+  if (!existsSync(destDirPath)) {
+    await mkdir(destDirPath, { recursive: true });
+  }
+
+  for (const configFilePath of componentConfigFiles) {
+    const fileName = path.basename(configFilePath, path.extname(configFilePath));
+    const componentName = fileName.replace(".config", "");
+    const outputPath = path.join(destDirPath, `${componentName}.mjs`);
+
+    try {
+      await buildTSFile(configFilePath, outputPath);
+    } catch (error) {
+      // eslint-disable-next-line no-console
+      console.error(`Failed to build config file ${configFilePath}:`, error);
+    }
+  }
+
+  await autoImportUserConfigs();
+}
+
 export async function buildTSFile(entryPath, configOutFile) {
   await esbuild.build({
     entryPoints: [entryPath],
@@ -147,4 +194,73 @@ export async function buildTSFile(entryPath, configOutFile) {
     target: "ESNext",
     loader: { ".ts": "ts" },
   });
+}
+
+export async function autoImportUserConfigs() {
+  const vuelessConfigDir = path.join(cwd(), ".vueless");
+
+  const indexTsPath = path.join(vuelessConfigDir, "index.ts");
+  const indexJsPath = path.join(vuelessConfigDir, "index.js");
+
+  const indexFilePath = existsSync(indexTsPath) ? indexTsPath : indexJsPath;
+
+  const configFiles = await getDirFiles(vuelessConfigDir, ".ts", {
+    recursive: true,
+    exclude: ["index.ts", "index.js"],
+  });
+
+  const componentConfigFiles = configFiles.filter((filePath) => {
+    const fileName = path.basename(filePath);
+
+    return /^U\w+\.config\.(ts|js)$/.test(fileName);
+  });
+
+  if (componentConfigFiles.length === 0) {
+    const indexContent = `// Auto-generated file - do not edit manually
+// This file is updated when component configs change
+
+const components = {};
+
+export { components };
+`;
+
+    if (!existsSync(vuelessConfigDir)) {
+      await mkdir(vuelessConfigDir, { recursive: true });
+    }
+
+    await writeFile(indexFilePath, indexContent, "utf-8");
+
+    return;
+  }
+
+  const imports = [];
+  const componentEntries = [];
+
+  for (const configFilePath of componentConfigFiles) {
+    const fileName = path.basename(configFilePath, path.extname(configFilePath));
+    const componentName = fileName.replace(".config", "");
+    const relativePath = path.relative(vuelessConfigDir, configFilePath);
+    const importPath = "./" + relativePath.replace(/\\/g, "/").replace(/\.(ts|js)$/, "");
+
+    imports.push(`import ${componentName} from "${importPath}";`);
+    componentEntries.push(`  ${componentName},`);
+  }
+
+  const indexContent = `// Auto-generated file - do not edit manually
+// This file is updated when component configs change
+
+${imports.join("\n")}
+
+const components = {
+${componentEntries.join("\n")}
+};
+
+export { components };
+`;
+
+  if (!existsSync(vuelessConfigDir)) {
+    await mkdir(vuelessConfigDir, { recursive: true });
+  }
+
+  await writeFile(indexFilePath, indexContent, "utf-8");
 }
