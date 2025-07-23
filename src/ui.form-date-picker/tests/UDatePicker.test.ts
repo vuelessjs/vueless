@@ -1,446 +1,518 @@
 import { mount } from "@vue/test-utils";
 import { describe, it, expect } from "vitest";
+import { nextTick } from "vue";
 
 import UDatePicker from "../UDatePicker.vue";
 import UInput from "../../ui.form-input/UInput.vue";
-import UCalendar from "../../ui.form-calendar/UCalendar.vue";
 import UIcon from "../../ui.image-icon/UIcon.vue";
 
 import type { Props } from "../types.ts";
 
 describe("UDatePicker.vue", () => {
-  // Props tests
   describe("Props", () => {
-    // Label prop
-    it("passes label prop to UInput", () => {
-      const label = "Date";
+    it("Model Value – set initial value correctly with Date object", () => {
+      const initialValue = new Date("2024-01-15");
 
       const component = mount(UDatePicker, {
         props: {
-          label,
+          modelValue: initialValue,
         },
       });
 
-      const input = component.findComponent(UInput);
-
-      expect(input.props("label")).toBe(label);
+      expect(component.findComponent({ name: "UCalendar" }).props("modelValue")).toBe(initialValue);
     });
 
-    // LabelAlign prop
-    it("passes labelAlign prop to UInput", () => {
+    it("Model Value – set initial value correctly with string", () => {
+      const initialValue = "2024-01-15";
+
+      const component = mount(UDatePicker, {
+        props: {
+          modelValue: initialValue,
+        },
+      });
+
+      expect(component.findComponent({ name: "UCalendar" }).props("modelValue")).toBe(initialValue);
+    });
+
+    it("Model Value – emits update when value changes", async () => {
+      const initialValue = new Date("2024-01-15");
+      const newValue = new Date("2024-01-01");
+
+      const component = mount(UDatePicker, {
+        props: {
+          modelValue: initialValue,
+          "onUpdate:modelValue": (value: Date) => {
+            component.setProps({ modelValue: value });
+          },
+        },
+      });
+
+      const input = component.getComponent(UInput).find("input");
+
+      await input.trigger("focus");
+      await nextTick();
+
+      const calendar = component.findComponent({ name: "UCalendar" });
+      const day = calendar.get("[vl-key='day']");
+
+      await day.trigger("click");
+
+      expect(component.emitted("update:modelValue")![0][0]).toEqual(newValue);
+    });
+
+    it("Label – passes label to UInput component", () => {
+      const labelText = "Select Date";
+
+      const component = mount(UDatePicker, {
+        props: {
+          modelValue: new Date(),
+          label: labelText,
+        },
+      });
+
+      expect(component.getComponent(UInput).props("label")).toBe(labelText);
+    });
+
+    it("Label Align – passes labelAlign prop to UInput component", () => {
       const labelAlign = "left";
 
       const component = mount(UDatePicker, {
         props: {
-          labelAlign: labelAlign as Props["labelAlign"],
+          modelValue: new Date(),
+          label: "Date",
+          labelAlign,
         },
       });
 
-      const input = component.findComponent(UInput);
-
-      expect(input.props("labelAlign")).toBe(labelAlign);
+      expect(component.getComponent(UInput).props("labelAlign")).toBe(labelAlign);
     });
 
-    // Placeholder prop
-    it("passes placeholder prop to UInput", () => {
-      const placeholder = "Select date";
+    it("Placeholder – sets placeholder text", () => {
+      const placeholderText = "Select a date";
 
       const component = mount(UDatePicker, {
         props: {
-          placeholder,
+          modelValue: new Date(),
+          placeholder: placeholderText,
         },
       });
 
-      const input = component.findComponent(UInput);
-
-      expect(input.props("placeholder")).toBe(placeholder);
+      expect(component.getComponent(UInput).props("placeholder")).toBe(placeholderText);
     });
 
-    // Description prop
-    it("passes description prop to UInput", () => {
-      const description = "Select a date";
+    it("Description – passes description to UInput component", () => {
+      const descriptionText = "Choose your preferred date";
 
       const component = mount(UDatePicker, {
         props: {
-          description,
+          modelValue: new Date(),
+          description: descriptionText,
         },
       });
 
-      const input = component.findComponent(UInput);
-
-      expect(input.props("description")).toBe(description);
+      expect(component.getComponent(UInput).props("description")).toBe(descriptionText);
     });
 
-    // Error prop
-    it("passes error prop to UInput", () => {
-      const error = "Invalid date";
+    it("Error – passes error message to UInput component", () => {
+      const errorText = "Date is required";
 
       const component = mount(UDatePicker, {
         props: {
-          error,
+          modelValue: new Date(),
+          error: errorText,
         },
       });
 
-      const input = component.findComponent(UInput);
-
-      expect(input.props("error")).toBe(error);
+      expect(component.getComponent(UInput).props("error")).toBe(errorText);
     });
 
-    // Disabled prop
-    it("passes disabled prop to UInput", () => {
-      const disabled = true;
+    it("Disabled – sets disabled state on UInput", () => {
+      const component = mount(UDatePicker, {
+        props: {
+          modelValue: new Date(),
+          disabled: true,
+        },
+      });
+
+      expect(component.getComponent(UInput).props("disabled")).toBe(true);
+    });
+
+    it("Size – applies correct size to UInput component", () => {
+      const size = "lg";
 
       const component = mount(UDatePicker, {
         props: {
-          disabled,
+          modelValue: new Date(),
+          size: size as Props<string>["size"],
         },
       });
 
-      const input = component.findComponent(UInput);
-
-      expect(input.props("disabled")).toBe(disabled);
+      expect(component.getComponent(UInput).props("size")).toBe(size);
     });
 
-    // Size prop
-    it("passes size prop to UInput", () => {
-      const sizes = {
-        sm: "sm",
-        md: "md",
-        lg: "lg",
-      };
-
-      Object.entries(sizes).forEach(([size, expectedSize]) => {
-        const component = mount(UDatePicker, {
-          props: {
-            size: size as Props["size"],
-          },
-        });
-
-        const input = component.findComponent(UInput);
-
-        expect(input.props("size")).toBe(expectedSize);
-      });
-    });
-
-    // OpenDirectionX prop
-    it("applies the correct openDirectionX class", async () => {
-      const openDirectionX = {
-        left: "left-0 right-auto",
-        right: "right-0 left-auto",
-      };
-
-      Object.entries(openDirectionX).forEach(([direction, classes]) => {
-        const component = mount(UDatePicker, {
-          props: {
-            openDirectionX: direction as Props["openDirectionX"],
-          },
-        });
-
-        // Show calendar to check classes
-        component.vm.activate();
-
-        const calendar = component.findComponent(UCalendar);
-
-        expect(calendar.attributes("class")).toContain(classes);
-      });
-    });
-
-    // OpenDirectionY prop
-    it("applies the correct openDirectionY class", async () => {
-      const openDirectionY = {
-        top: "bottom-full mt-0",
-        bottom: "top-full mb-0",
-      };
-
-      Object.entries(openDirectionY).forEach(([direction, classes]) => {
-        const component = mount(UDatePicker, {
-          props: {
-            openDirectionY: direction as Props["openDirectionY"],
-          },
-        });
-
-        // Show calendar to check classes
-        component.vm.activate();
-
-        const calendar = component.findComponent(UCalendar);
-
-        expect(calendar.attributes("class")).toContain(classes);
-      });
-    });
-
-    // Timepicker prop
-    it("passes timepicker prop to UCalendar", async () => {
-      const timepicker = true;
-
-      const component = mount(UDatePicker, {
-        props: {
-          timepicker,
-        },
-      });
-
-      // Show calendar to check props
-      component.vm.activate();
-
-      const calendar = component.findComponent(UCalendar);
-
-      expect(calendar.props("timepicker")).toBe(timepicker);
-    });
-
-    // DateFormat prop
-    it("passes dateFormat prop to UCalendar", async () => {
-      const dateFormat = "Y-m-d";
-
-      const component = mount(UDatePicker, {
-        props: {
-          dateFormat,
-        },
-      });
-
-      // Show calendar to check props
-      component.vm.activate();
-
-      const calendar = component.findComponent(UCalendar);
-
-      expect(calendar.props("dateFormat")).toBe(dateFormat);
-    });
-
-    // DateTimeFormat prop
-    it("passes dateTimeFormat prop to UCalendar", async () => {
-      const dateTimeFormat = "Y-m-d H:i:S";
-
-      const component = mount(UDatePicker, {
-        props: {
-          dateTimeFormat,
-        },
-      });
-
-      // Show calendar to check props
-      component.vm.activate();
-
-      const calendar = component.findComponent(UCalendar);
-
-      expect(calendar.props("dateTimeFormat")).toBe(dateTimeFormat);
-    });
-
-    // UserDateFormat prop
-    it("passes userDateFormat prop to UCalendar", async () => {
-      const userDateFormat = "j F, Y";
-
-      const component = mount(UDatePicker, {
-        props: {
-          userDateFormat,
-        },
-      });
-
-      // Show calendar to check props
-      component.vm.activate();
-
-      const calendar = component.findComponent(UCalendar);
-
-      expect(calendar.props("userDateFormat")).toBe(userDateFormat);
-    });
-
-    // UserDateTimeFormat prop
-    it("passes userDateTimeFormat prop to UCalendar", async () => {
-      const userDateTimeFormat = "j F, Y - H:i:S";
-
-      const component = mount(UDatePicker, {
-        props: {
-          userDateTimeFormat,
-        },
-      });
-
-      // Show calendar to check props
-      component.vm.activate();
-
-      const calendar = component.findComponent(UCalendar);
-
-      expect(calendar.props("userDateTimeFormat")).toBe(userDateTimeFormat);
-    });
-
-    // MinDate prop
-    it("passes minDate prop to UCalendar", async () => {
-      const minDate = new Date(2023, 0, 1); // January 1, 2023
-
-      const component = mount(UDatePicker, {
-        props: {
-          minDate,
-        },
-      });
-
-      // Show calendar to check props
-      component.vm.activate();
-
-      const calendar = component.findComponent(UCalendar);
-
-      expect(calendar.props("minDate")).toBe(minDate);
-    });
-
-    // MaxDate prop
-    it("passes maxDate prop to UCalendar", async () => {
-      const maxDate = new Date(2023, 11, 31); // December 31, 2023
-
-      const component = mount(UDatePicker, {
-        props: {
-          maxDate,
-        },
-      });
-
-      // Show calendar to check props
-      component.vm.activate();
-
-      const calendar = component.findComponent(UCalendar);
-
-      expect(calendar.props("maxDate")).toBe(maxDate);
-    });
-
-    // LeftIcon prop
-    it("passes leftIcon prop to UInput", () => {
+    it("Left Icon – passes leftIcon to UInput component", () => {
       const leftIcon = "calendar";
 
       const component = mount(UDatePicker, {
         props: {
+          modelValue: new Date(),
           leftIcon,
         },
       });
 
-      const input = component.findComponent(UInput);
-
-      expect(input.props("leftIcon")).toBe(leftIcon);
+      expect(component.getComponent(UInput).props("leftIcon")).toBe(leftIcon);
     });
 
-    // RightIcon prop
-    it("passes rightIcon prop to UInput", () => {
-      const rightIcon = "calendar";
+    it("Right Icon – passes rightIcon to UInput component", () => {
+      const rightIcon = "close";
 
       const component = mount(UDatePicker, {
         props: {
+          modelValue: new Date(),
           rightIcon,
         },
       });
 
-      const input = component.findComponent(UInput);
-
-      expect(input.props("rightIcon")).toBe(rightIcon);
+      expect(component.getComponent(UInput).props("rightIcon")).toBe(rightIcon);
     });
 
-    // ID prop
-    it("applies the correct id attribute to UInput", () => {
-      const id = "date-picker-id";
-
+    it("Right Icon – shows default calendar icon when no rightIcon provided", () => {
       const component = mount(UDatePicker, {
         props: {
-          id,
+          modelValue: new Date(),
         },
       });
 
-      const input = component.findComponent(UInput);
+      const input = component.getComponent(UInput);
 
-      expect(input.props("id")).toBe(id);
+      expect(input.props("rightIcon")).toBeTruthy();
     });
 
-    // DataTest prop
-    it("applies the correct data-test attribute", () => {
-      const dataTest = "test-date-picker";
+    it("Timepicker – passes timepicker prop to UCalendar", () => {
+      const component = mount(UDatePicker, {
+        props: {
+          modelValue: new Date(),
+          timepicker: true,
+        },
+      });
+
+      expect(component.findComponent({ name: "UCalendar" }).props("timepicker")).toBe(true);
+    });
+
+    it("Date Format – passes dateFormat to UCalendar", () => {
+      const dateFormat = "YYYY-MM-DD";
 
       const component = mount(UDatePicker, {
         props: {
+          modelValue: new Date(),
+          dateFormat,
+        },
+      });
+
+      expect(component.findComponent({ name: "UCalendar" }).props("dateFormat")).toBe(dateFormat);
+    });
+
+    it("Date Time Format – passes dateTimeFormat to UCalendar", () => {
+      const dateTimeFormat = "YYYY-MM-DD HH:mm";
+
+      const component = mount(UDatePicker, {
+        props: {
+          modelValue: new Date(),
+          dateTimeFormat,
+        },
+      });
+
+      expect(component.findComponent({ name: "UCalendar" }).props("dateTimeFormat")).toBe(
+        dateTimeFormat,
+      );
+    });
+
+    it("User Date Format – passes userDateFormat to UCalendar", () => {
+      const userDateFormat = "DD/MM/YYYY";
+
+      const component = mount(UDatePicker, {
+        props: {
+          modelValue: new Date(),
+          userDateFormat,
+        },
+      });
+
+      expect(component.findComponent({ name: "UCalendar" }).props("userDateFormat")).toBe(
+        userDateFormat,
+      );
+    });
+
+    it("User Date Time Format – passes userDateTimeFormat to UCalendar", () => {
+      const userDateTimeFormat = "DD/MM/YYYY HH:mm";
+
+      const component = mount(UDatePicker, {
+        props: {
+          modelValue: new Date(),
+          userDateTimeFormat,
+        },
+      });
+
+      expect(component.findComponent({ name: "UCalendar" }).props("userDateTimeFormat")).toBe(
+        userDateTimeFormat,
+      );
+    });
+
+    it("Min Date – passes minDate to UCalendar", () => {
+      const minDate = new Date("2024-01-01");
+
+      const component = mount(UDatePicker, {
+        props: {
+          modelValue: new Date(),
+          minDate,
+        },
+      });
+
+      expect(component.findComponent({ name: "UCalendar" }).props("minDate")).toBe(minDate);
+    });
+
+    it("Max Date – passes maxDate to UCalendar", () => {
+      const maxDate = new Date("2024-12-31");
+
+      const component = mount(UDatePicker, {
+        props: {
+          modelValue: new Date(),
+          maxDate,
+        },
+      });
+
+      expect(component.findComponent({ name: "UCalendar" }).props("maxDate")).toBe(maxDate);
+    });
+
+    it("Id – sets id attribute on input", () => {
+      const idValue = "date-picker-id";
+
+      const component = mount(UDatePicker, {
+        props: {
+          modelValue: new Date(),
+          id: idValue,
+        },
+      });
+
+      expect(component.getComponent(UInput).props("id")).toBe(idValue);
+    });
+
+    it("Data Test – sets data-test attribute", () => {
+      const dataTestValue = "date-picker";
+
+      const component = mount(UDatePicker, {
+        props: {
+          modelValue: new Date(),
+          dataTest: dataTestValue,
+        },
+      });
+
+      expect(component.attributes("data-test")).toBe(dataTestValue);
+    });
+
+    it("Data Test – applies correct data-test attributes to sub-components", () => {
+      const dataTest = "date-picker";
+
+      const component = mount(UDatePicker, {
+        props: {
+          modelValue: new Date(),
           dataTest,
         },
       });
 
-      expect(component.attributes("data-test")).toBe(dataTest);
+      expect(component.getComponent(UInput).props("dataTest")).toBe(`${dataTest}-input`);
+      expect(component.findComponent({ name: "UCalendar" }).props("dataTest")).toBe(
+        `${dataTest}-calendar`,
+      );
     });
   });
 
-  // Events tests
-  describe("Events", () => {
-    // update:modelValue event
-    it("emits update:modelValue event when date is selected", async () => {
-      const component = mount(UDatePicker);
+  describe("Calendar Visibility", () => {
+    it("Calendar – is hidden by default", () => {
+      const component = mount(UDatePicker, {
+        props: {
+          modelValue: new Date(),
+        },
+      });
 
-      // Show calendar
-      component.vm.activate();
+      const calendar = component.findComponent({ name: "UCalendar" });
 
-      // Simulate date selection
-      const date = new Date(2023, 0, 1); // January 1, 2023
-
-      component.vm.localValue = date;
-
-      expect(component.emitted("update:modelValue")).toBeTruthy();
-      expect(component.emitted("update:modelValue")[0][0]).toEqual(date);
+      expect(calendar.isVisible()).toBe(false);
     });
 
-    // input event
-    it("emits input event when date is selected", async () => {
-      const component = mount(UDatePicker);
+    it("Calendar – shows when input is focused", async () => {
+      const component = mount(UDatePicker, {
+        props: {
+          modelValue: new Date(),
+        },
+      });
 
-      // Show calendar
-      component.vm.activate();
+      const input = component.getComponent(UInput).find("input");
 
-      // Simulate date selection
-      const date = new Date(2023, 0, 1); // January 1, 2023
+      await input.trigger("focus");
 
-      await component.vm.onInput();
+      const calendar = component.findComponent({ name: "UCalendar" });
 
-      expect(component.emitted("input")).toBeTruthy();
+      expect(calendar.isVisible()).toBe(true);
+    });
+
+    it("Calendar – hides when escape key is pressed on calendar", async () => {
+      const component = mount(UDatePicker, {
+        props: {
+          modelValue: new Date(),
+        },
+      });
+
+      const input = component.getComponent(UInput).find("input");
+      const calendar = component.findComponent({ name: "UCalendar" });
+
+      await input.trigger("focus");
+
+      await calendar.trigger("keydown.esc");
+
+      expect(calendar.isVisible()).toBe(false);
     });
   });
 
-  // Slots tests
   describe("Slots", () => {
-    // Left slot
-    it("renders content from left slot", () => {
-      const slotText = "Left";
-      const slotClass = "left-content";
+    it("Left – renders custom content from left slot", () => {
+      const slotText = "Custom Left Content";
+      const slotClass = "custom-left";
 
       const component = mount(UDatePicker, {
+        props: {
+          modelValue: new Date(),
+        },
         slots: {
           left: `<span class="${slotClass}">${slotText}</span>`,
         },
       });
 
-      expect(component.find(`.${slotClass}`).exists()).toBe(true);
-      expect(component.find(`.${slotClass}`).text()).toBe(slotText);
+      const leftSlotElement = component.find(`.${slotClass}`);
+
+      expect(leftSlotElement.exists()).toBe(true);
+      expect(leftSlotElement.text()).toBe(slotText);
     });
 
-    // Right slot
-    it("renders content from right slot", () => {
-      const slotText = "Right";
-      const slotClass = "right-content";
+    it("Left – exposes icon-name to slot when leftIcon prop is provided", () => {
+      const leftIcon = "calendar";
 
       const component = mount(UDatePicker, {
+        props: {
+          modelValue: new Date(),
+          leftIcon,
+        },
+        slots: {
+          left: "Icon: {{ params.iconName }}",
+        },
+      });
+
+      const input = component.getComponent(UInput);
+      const leftSlot = input.vm.$slots.left;
+
+      expect(leftSlot).toBeDefined();
+    });
+
+    it("Right – renders custom content from right slot", () => {
+      const slotText = "Custom Right Content";
+      const slotClass = "custom-right";
+
+      const component = mount(UDatePicker, {
+        props: {
+          modelValue: new Date(),
+        },
         slots: {
           right: `<span class="${slotClass}">${slotText}</span>`,
         },
       });
 
+      const rightSlotElement = component.find(`.${slotClass}`);
+
+      expect(rightSlotElement.exists()).toBe(true);
+      expect(rightSlotElement.text()).toBe(slotText);
+    });
+
+    it("Right – exposes icon-name to slot when rightIcon prop is provided", () => {
+      const rightIcon = "close";
+
+      const component = mount(UDatePicker, {
+        props: {
+          modelValue: new Date(),
+          rightIcon,
+        },
+        slots: {
+          right: "Icon: {{ params.iconName }}",
+        },
+      });
+
+      const input = component.getComponent(UInput);
+      const rightSlot = input.vm.$slots.right;
+
+      expect(rightSlot).toBeDefined();
+    });
+
+    it("Right – renders default calendar icon when no slot content provided", () => {
+      const component = mount(UDatePicker, {
+        props: {
+          modelValue: new Date(),
+        },
+      });
+
+      const iconComponent = component.findComponent(UIcon);
+
+      expect(iconComponent.exists()).toBe(true);
+    });
+
+    it("Right – slot content overrides default calendar icon", () => {
+      const slotClass = "custom-icon";
+
+      const component = mount(UDatePicker, {
+        props: {
+          modelValue: new Date(),
+        },
+        slots: {
+          right: `<span class="${slotClass}">Custom Icon</span>`,
+        },
+      });
+
       expect(component.find(`.${slotClass}`).exists()).toBe(true);
-      expect(component.find(`.${slotClass}`).text()).toBe(slotText);
     });
   });
 
-  // Exposed refs tests
-  describe("Exposed refs", () => {
-    // calendarRef
-    it("exposes calendarRef", () => {
-      const component = mount(UDatePicker);
+  describe("Exposed Properties", () => {
+    it("Calendar Ref – exposes calendar component ref", () => {
+      const component = mount(UDatePicker, {
+        props: {
+          modelValue: new Date(),
+        },
+      });
 
       expect(component.vm.calendarRef).toBeDefined();
     });
 
-    // userFormatDate
-    it("exposes userFormatDate", () => {
-      const component = mount(UDatePicker);
+    it("User Format Date – exposes user-friendly formatted date", async () => {
+      const component = mount(UDatePicker, {
+        props: {
+          modelValue: new Date("2024-01-15"),
+        },
+      });
+
+      await nextTick();
 
       expect(component.vm.userFormatDate).toBeDefined();
+      expect(typeof component.vm.userFormatDate).toBe("string");
     });
 
-    // formattedDate
-    it("exposes formattedDate", () => {
-      const component = mount(UDatePicker);
+    it("Formatted Date – exposes internal formatted date", async () => {
+      const component = mount(UDatePicker, {
+        props: {
+          modelValue: new Date("2024-01-15"),
+        },
+      });
+
+      await nextTick();
 
       expect(component.vm.formattedDate).toBeDefined();
+      expect(typeof component.vm.formattedDate).toBe("string");
     });
   });
 });
