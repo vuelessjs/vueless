@@ -34,7 +34,7 @@ export async function vuelessInit(options) {
 
   if (existsSync(formattedDestPath)) {
     const timestamp = new Date().valueOf();
-    const renamedTarget = `${CONFIG_INDEX_FILE_NAME}-backup-${timestamp}${fileExt}`;
+    const renamedTarget = `${VUELESS_CONFIG_FILE_NAME}-backup-${timestamp}${fileExt}`;
 
     await rename(formattedDestPath, renamedTarget);
 
