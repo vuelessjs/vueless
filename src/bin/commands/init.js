@@ -6,7 +6,7 @@ import { existsSync, mkdirSync } from "node:fs";
 import { writeFile, rename } from "node:fs/promises";
 import { styleText } from "node:util";
 
-import { DEFAULT_VUELESS_CONFIG_CONTENT } from "../constants.js";
+import { DEFAULT_VUELESS_CONFIG_CONTENT, DEFAULT_CONFIG_INDEX_CONTENT } from "../constants.js";
 import {
   JAVASCRIPT_EXT,
   TYPESCRIPT_EXT,
@@ -65,24 +65,7 @@ export async function vuelessInit(options) {
 
   const destPath = path.join(vuelessDir, `${CONFIG_INDEX_FILE_NAME}${fileExt}`);
 
-  if (existsSync(destPath)) {
-    const timestamp = new Date().valueOf();
-    const renamedTarget = path.join(
-      vuelessDir,
-      `${CONFIG_INDEX_FILE_NAME}-backup-${timestamp}${fileExt}`,
-    );
-
-    await rename(destPath, renamedTarget);
-
-    console.warn(
-      styleText(
-        "yellow",
-        `Existing config backed up as '${path.basename(renamedTarget)}'. Remove it before commit if not needed.`,
-      ),
-    );
-  }
-
-  await writeFile(destPath, DEFAULT_VUELESS_CONFIG_CONTENT, "utf-8");
+  await writeFile(destPath, DEFAULT_CONFIG_INDEX_CONTENT, "utf-8");
 
   console.log(
     styleText("green", `Config '${path.basename(destPath)}' created inside '.vueless' directory.`),
