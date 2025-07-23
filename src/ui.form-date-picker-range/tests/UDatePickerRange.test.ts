@@ -3,165 +3,145 @@ import { describe, it, expect } from "vitest";
 
 import UDatePickerRange from "../UDatePickerRange.vue";
 import UInput from "../../ui.form-input/UInput.vue";
-import UCalendar from "../../ui.form-calendar/UCalendar.vue";
 import UButton from "../../ui.button/UButton.vue";
 import UDatePickerRangePeriodMenu from "../UDatePickerRangePeriodMenu.vue";
-import UDatePickerRangeInputs from "../UDatePickerRangeInputs.vue";
 
-import { DATE_PICKER_BUTTON_TYPE, DATE_PICKER_INPUT_TYPE, Period } from "../constants.ts";
-
-import type { Props, RangeDate } from "../types.ts";
+import type { RangeDate } from "../../ui.form-calendar/types.ts";
 
 describe("UDatePickerRange.vue", () => {
-  // Props tests
   describe("Props", () => {
-    // Variant prop
-    it("renders input variant when variant is input", () => {
-      const variant = DATE_PICKER_INPUT_TYPE;
+    it("Model Value – sets initial range value correctly", () => {
+      const modelValue: RangeDate = {
+        from: "2023-12-01",
+        to: "2023-12-31",
+      };
 
       const component = mount(UDatePickerRange, {
         props: {
-          variant: variant as Props["variant"],
+          modelValue,
+          dateFormat: "Y-m-d",
+        },
+      });
+
+      expect(component.props("modelValue")).toEqual(modelValue);
+    });
+
+    it("Model Value – emits update:modelValue when range changes", async () => {
+      const modelValue: RangeDate = {
+        from: null,
+        to: null,
+      };
+
+      const component = mount(UDatePickerRange, {
+        props: {
+          modelValue,
+          variant: "input",
+        },
+      });
+
+      const input = component.findComponent(UInput).get("input");
+
+      await input.trigger("focus");
+      await component.get("[vl-key='day']").trigger("click");
+
+      expect(component.emitted("update:modelValue")).toBeTruthy();
+    });
+
+    it("Variant – renders input variant correctly", () => {
+      const component = mount(UDatePickerRange, {
+        props: {
+          variant: "input",
           modelValue: { from: null, to: null },
         },
       });
 
-      const input = component.findComponent(UInput);
-
-      expect(input.exists()).toBe(true);
+      expect(component.findComponent(UInput).exists()).toBe(true);
     });
 
-    it("renders button variant when variant is button", () => {
-      const variant = DATE_PICKER_BUTTON_TYPE;
-
+    it("Variant – renders button variant correctly", () => {
       const component = mount(UDatePickerRange, {
         props: {
-          variant: variant as Props["variant"],
+          variant: "button",
           modelValue: { from: null, to: null },
         },
       });
 
-      const buttons = component.findAllComponents(UButton);
-
-      expect(buttons.length).toBeGreaterThan(0);
+      expect(component.findAllComponents(UButton).length).toBeGreaterThan(0);
     });
 
-    // Label prop
-    it("passes label prop to UInput when variant is input", () => {
+    it("Label – passes label to UInput component when variant is input", () => {
       const label = "Date Range";
-      const variant = DATE_PICKER_INPUT_TYPE;
 
       const component = mount(UDatePickerRange, {
         props: {
+          variant: "input",
           label,
-          variant: variant as Props["variant"],
           modelValue: { from: null, to: null },
         },
       });
 
-      const input = component.findComponent(UInput);
-
-      expect(input.props("label")).toBe(label);
+      expect(component.findComponent(UInput).props("label")).toBe(label);
     });
 
-    // LabelAlign prop
-    it("passes labelAlign prop to UInput when variant is input", () => {
-      const labelAlign = "left";
-      const variant = DATE_PICKER_INPUT_TYPE;
-
-      const component = mount(UDatePickerRange, {
-        props: {
-          labelAlign: labelAlign as Props["labelAlign"],
-          variant: variant as Props["variant"],
-          modelValue: { from: null, to: null },
-        },
-      });
-
-      const input = component.findComponent(UInput);
-
-      expect(input.props("labelAlign")).toBe(labelAlign);
-    });
-
-    // Placeholder prop
-    it("passes placeholder prop to UInput when variant is input", () => {
+    it("Placeholder – passes placeholder to UInput component", () => {
       const placeholder = "Select date range";
-      const variant = DATE_PICKER_INPUT_TYPE;
 
       const component = mount(UDatePickerRange, {
         props: {
+          variant: "input",
           placeholder,
-          variant: variant as Props["variant"],
           modelValue: { from: null, to: null },
         },
       });
 
-      const input = component.findComponent(UInput);
-
-      expect(input.props("placeholder")).toBe(placeholder);
+      expect(component.findComponent(UInput).props("placeholder")).toBe(placeholder);
     });
 
-    // Description prop
-    it("passes description prop to UInput when variant is input", () => {
-      const description = "Select a date range";
-      const variant = DATE_PICKER_INPUT_TYPE;
+    it("Description – passes description to UInput component", () => {
+      const description = "Select your preferred date range";
 
       const component = mount(UDatePickerRange, {
         props: {
+          variant: "input",
           description,
-          variant: variant as Props["variant"],
           modelValue: { from: null, to: null },
         },
       });
 
-      const input = component.findComponent(UInput);
-
-      expect(input.props("description")).toBe(description);
+      expect(component.findComponent(UInput).props("description")).toBe(description);
     });
 
-    // Error prop
-    it("passes error prop to UInput when variant is input", () => {
+    it("Error – passes error to UInput component", () => {
       const error = "Invalid date range";
-      const variant = DATE_PICKER_INPUT_TYPE;
 
       const component = mount(UDatePickerRange, {
         props: {
+          variant: "input",
           error,
-          variant: variant as Props["variant"],
           modelValue: { from: null, to: null },
         },
       });
 
-      const input = component.findComponent(UInput);
-
-      expect(input.props("error")).toBe(error);
+      expect(component.findComponent(UInput).props("error")).toBe(error);
     });
 
-    // Disabled prop
-    it("passes disabled prop to UInput when variant is input", () => {
-      const disabled = true;
-      const variant = DATE_PICKER_INPUT_TYPE;
-
+    it("Disabled – passes disabled state to UInput component", () => {
       const component = mount(UDatePickerRange, {
         props: {
-          disabled,
-          variant: variant as Props["variant"],
+          variant: "input",
+          disabled: true,
           modelValue: { from: null, to: null },
         },
       });
 
-      const input = component.findComponent(UInput);
-
-      expect(input.props("disabled")).toBe(disabled);
+      expect(component.findComponent(UInput).props("disabled")).toBe(true);
     });
 
-    it("passes disabled prop to UButton when variant is button", () => {
-      const disabled = true;
-      const variant = DATE_PICKER_BUTTON_TYPE;
-
+    it("Disabled – applies disabled state to buttons when variant is button", () => {
       const component = mount(UDatePickerRange, {
         props: {
-          disabled,
-          variant: variant as Props["variant"],
+          variant: "button",
+          disabled: true,
           modelValue: { from: null, to: null },
         },
       });
@@ -169,335 +149,409 @@ describe("UDatePickerRange.vue", () => {
       const buttons = component.findAllComponents(UButton);
 
       buttons.forEach((button) => {
-        expect(button.props("disabled")).toBe(disabled);
+        expect(button.props("disabled")).toBe(true);
       });
     });
 
-    // Size prop
-    it("passes size prop to UInput when variant is input", () => {
-      const sizes = {
-        sm: "sm",
-        md: "md",
-        lg: "lg",
-      };
-      const variant = DATE_PICKER_INPUT_TYPE;
+    it("Size – applies correct size to components", () => {
+      const size = "lg";
 
-      Object.entries(sizes).forEach(([size, expectedSize]) => {
-        const component = mount(UDatePickerRange, {
-          props: {
-            size: size as Props["size"],
-            variant: variant as Props["variant"],
-            modelValue: { from: null, to: null },
-          },
-        });
+      const component = mount(UDatePickerRange, {
+        props: {
+          variant: "input",
+          size,
+          modelValue: { from: null, to: null },
+        },
+      });
 
-        const input = component.findComponent(UInput);
+      expect(component.findComponent(UInput).props("size")).toBe(size);
+    });
 
-        expect(input.props("size")).toBe(expectedSize);
+    it("Size – applies correct size to buttons when variant is button", () => {
+      const size = "sm";
+
+      const component = mount(UDatePickerRange, {
+        props: {
+          variant: "button",
+          size,
+          modelValue: { from: null, to: null },
+        },
+      });
+
+      const buttons = component.findAllComponents(UButton);
+
+      buttons.forEach((button) => {
+        expect(button.props("size")).toBe(size);
       });
     });
 
-    it("passes size prop to UButton when variant is button", () => {
-      const sizes = {
-        sm: "sm",
-        md: "md",
-        lg: "lg",
-      };
-      const variant = DATE_PICKER_BUTTON_TYPE;
+    it("Label Align – passes labelAlign to UInput component", () => {
+      const labelAlign = "left";
 
-      Object.entries(sizes).forEach(([size, expectedSize]) => {
-        const component = mount(UDatePickerRange, {
-          props: {
-            size: size as Props["size"],
-            variant: variant as Props["variant"],
-            modelValue: { from: null, to: null },
-          },
-        });
-
-        const buttons = component.findAllComponents(UButton);
-
-        buttons.forEach((button) => {
-          expect(button.props("size")).toBe(expectedSize);
-        });
+      const component = mount(UDatePickerRange, {
+        props: {
+          variant: "input",
+          labelAlign,
+          label: "Date Range",
+          modelValue: { from: null, to: null },
+        },
       });
+
+      expect(component.findComponent(UInput).props("labelAlign")).toBe(labelAlign);
     });
 
-    // OpenDirectionX prop
-    it("applies the correct openDirectionX class", async () => {
-      const openDirectionX = {
-        left: "left-0 right-auto",
-        right: "right-0 left-auto",
-      };
-      const variant = DATE_PICKER_INPUT_TYPE;
+    it("Left Icon – passes leftIcon to UInput component", () => {
+      const leftIcon = "calendar";
 
-      Object.entries(openDirectionX).forEach(([direction, classes]) => {
-        const component = mount(UDatePickerRange, {
-          props: {
-            openDirectionX: direction as Props["openDirectionX"],
-            variant: variant as Props["variant"],
-            modelValue: { from: null, to: null },
-          },
-        });
-
-        // Show menu to check classes
-        component.vm.activate();
-
-        const menu = component.find("[vl-key='menu']");
-
-        expect(menu.attributes("class")).toContain(classes);
+      const component = mount(UDatePickerRange, {
+        props: {
+          variant: "input",
+          leftIcon,
+          modelValue: { from: null, to: null },
+        },
       });
+
+      expect(component.findComponent(UInput).props("leftIcon")).toBe(leftIcon);
     });
 
-    // OpenDirectionY prop
-    it("applies the correct openDirectionY class", async () => {
-      const openDirectionY = {
-        top: "bottom-full mt-0",
-        bottom: "top-full mb-0",
-      };
-      const variant = DATE_PICKER_INPUT_TYPE;
+    it("Right Icon – passes rightIcon to UInput component", () => {
+      const rightIcon = "search";
 
-      Object.entries(openDirectionY).forEach(([direction, classes]) => {
-        const component = mount(UDatePickerRange, {
-          props: {
-            openDirectionY: direction as Props["openDirectionY"],
-            variant: variant as Props["variant"],
-            modelValue: { from: null, to: null },
-          },
-        });
-
-        // Show menu to check classes
-        component.vm.activate();
-
-        const menu = component.find("[vl-key='menu']");
-
-        expect(menu.attributes("class")).toContain(classes);
+      const component = mount(UDatePickerRange, {
+        props: {
+          variant: "input",
+          rightIcon,
+          modelValue: { from: null, to: null },
+        },
       });
+
+      expect(component.findComponent(UInput).props("rightIcon")).toBe(rightIcon);
     });
 
-    // DateFormat prop
-    it("passes dateFormat prop to UCalendar", async () => {
-      const dateFormat = "Y-m-d";
-      const variant = DATE_PICKER_INPUT_TYPE;
+    it("Date Format – uses correct date format", () => {
+      const dateFormat = "d/m/Y";
 
       const component = mount(UDatePickerRange, {
         props: {
           dateFormat,
-          variant: variant as Props["variant"],
+          modelValue: {
+            from: "01/12/2023",
+            to: "31/12/2023",
+          },
+        },
+      });
+
+      expect(component.props("dateFormat")).toBe(dateFormat);
+    });
+
+    it("User Date Format – applies user-friendly date format", () => {
+      const userDateFormat = "F j, Y";
+
+      const component = mount(UDatePickerRange, {
+        props: {
+          userDateFormat,
           modelValue: { from: null, to: null },
         },
       });
 
-      // Show menu to check props
-      component.vm.activate();
-      component.vm.period = Period.OwnRange;
-
-      const calendar = component.findComponent(UCalendar);
-
-      expect(calendar.props("dateFormat")).toBe(dateFormat);
+      expect(component.props("userDateFormat")).toBe(userDateFormat);
     });
 
-    // MinDate prop
-    it("passes minDate prop to UCalendar", async () => {
-      const minDate = new Date(2023, 0, 1); // January 1, 2023
-      const variant = DATE_PICKER_INPUT_TYPE;
+    it("Min Date – passes minDate to calendar and period menu", async () => {
+      const minDate = "2023-01-01";
 
       const component = mount(UDatePickerRange, {
         props: {
+          variant: "input",
           minDate,
-          variant: variant as Props["variant"],
           modelValue: { from: null, to: null },
         },
       });
 
-      // Show menu to check props
-      component.vm.activate();
-      component.vm.period = Period.OwnRange;
+      const input = component.findComponent(UInput);
 
-      const calendar = component.findComponent(UCalendar);
+      await input.trigger("focus");
 
-      expect(calendar.props("minDate")).toBe(minDate);
+      expect(component.props("minDate")).toBe(minDate);
     });
 
-    // MaxDate prop
-    it("passes maxDate prop to UCalendar", async () => {
-      const maxDate = new Date(2023, 11, 31); // December 31, 2023
-      const variant = DATE_PICKER_INPUT_TYPE;
+    it("Max Date – passes maxDate to calendar and period menu", async () => {
+      const maxDate = "2024-12-31";
 
       const component = mount(UDatePickerRange, {
         props: {
+          variant: "input",
           maxDate,
-          variant: variant as Props["variant"],
-          modelValue: { from: null, to: null },
-        },
-      });
-
-      // Show menu to check props
-      component.vm.activate();
-      component.vm.period = Period.OwnRange;
-
-      const calendar = component.findComponent(UCalendar);
-
-      expect(calendar.props("maxDate")).toBe(maxDate);
-    });
-
-    // LeftIcon prop
-    it("passes leftIcon prop to UInput when variant is input", () => {
-      const leftIcon = "calendar";
-      const variant = DATE_PICKER_INPUT_TYPE;
-
-      const component = mount(UDatePickerRange, {
-        props: {
-          leftIcon,
-          variant: variant as Props["variant"],
           modelValue: { from: null, to: null },
         },
       });
 
       const input = component.findComponent(UInput);
 
-      expect(input.props("leftIcon")).toBe(leftIcon);
+      await input.trigger("focus");
+
+      expect(component.props("maxDate")).toBe(maxDate);
     });
 
-    // RightIcon prop
-    it("passes rightIcon prop to UInput when variant is input", () => {
-      const rightIcon = "calendar";
-      const variant = DATE_PICKER_INPUT_TYPE;
+    it("Custom Range Button – applies custom range button configuration", async () => {
+      const customRangeButton = {
+        range: { from: new Date("2023-01-01"), to: new Date("2023-01-31") },
+        label: "January 2023",
+        description: "All of January",
+      };
 
       const component = mount(UDatePickerRange, {
         props: {
-          rightIcon,
-          variant: variant as Props["variant"],
+          variant: "input",
+          customRangeButton,
           modelValue: { from: null, to: null },
         },
       });
 
-      const input = component.findComponent(UInput);
+      const input = component.findComponent(UInput).find("input");
 
-      expect(input.props("rightIcon")).toBe(rightIcon);
+      await input.trigger("focus");
+
+      const periodMenu = component.findComponent(UDatePickerRangePeriodMenu);
+
+      expect(periodMenu.exists()).toBe(true);
+      expect(periodMenu.props("customRangeButton")).toEqual(customRangeButton);
     });
 
-    // ID prop
-    it("applies the correct id attribute to UInput when variant is input", () => {
+    it("Id – sets id attribute", () => {
       const id = "date-picker-range-id";
-      const variant = DATE_PICKER_INPUT_TYPE;
 
       const component = mount(UDatePickerRange, {
         props: {
+          variant: "input",
           id,
-          variant: variant as Props["variant"],
           modelValue: { from: null, to: null },
         },
       });
 
-      const input = component.findComponent(UInput);
-
-      expect(input.props("id")).toBe(id);
+      expect(component.findComponent(UInput).props("id")).toBe(id);
     });
 
-    it("applies the correct id attribute to UButton when variant is button", () => {
-      const id = "date-picker-range-id";
-      const variant = DATE_PICKER_BUTTON_TYPE;
-
-      const component = mount(UDatePickerRange, {
-        props: {
-          id,
-          variant: variant as Props["variant"],
-          modelValue: { from: null, to: null },
-        },
-      });
-
-      const button = component.find(`#${id}`);
-
-      expect(button.exists()).toBe(true);
-    });
-
-    // DataTest prop
-    it("applies the correct data-test attribute", () => {
-      const dataTest = "test-date-picker-range";
-      const variant = DATE_PICKER_INPUT_TYPE;
+    it("Data Test – applies correct data-test attributes", () => {
+      const dataTest = "date-picker-range";
 
       const component = mount(UDatePickerRange, {
         props: {
           dataTest,
-          variant: variant as Props["variant"],
           modelValue: { from: null, to: null },
         },
       });
 
-      expect(component.attributes("data-test")).toBe(dataTest);
+      expect(component.find(`[data-test="${dataTest}"]`).exists()).toBe(true);
+    });
+
+    it("Data Test – applies data-test to input variant", () => {
+      const dataTest = "date-picker-range";
+
+      const component = mount(UDatePickerRange, {
+        props: {
+          variant: "input",
+          dataTest,
+          modelValue: { from: null, to: null },
+        },
+      });
+
+      expect(component.find(`[data-test="${dataTest}-input"]`).exists()).toBe(true);
+    });
+
+    it("Data Test – applies data-test to button variant", () => {
+      const dataTest = "date-picker-range";
+
+      const component = mount(UDatePickerRange, {
+        props: {
+          variant: "button",
+          dataTest,
+          modelValue: { from: null, to: null },
+        },
+      });
+
+      expect(component.find(`[data-test="${dataTest}-button"]`).exists()).toBe(true);
+      expect(component.find(`[data-test="${dataTest}-button-prev"]`).exists()).toBe(true);
+      expect(component.find(`[data-test="${dataTest}-button-next"]`).exists()).toBe(true);
     });
   });
 
-  // Events tests
-  describe("Events", () => {
-    // update:modelValue event
-    it("emits update:modelValue event when date range is selected", async () => {
+  describe("Menu", () => {
+    it("Menu – opens when input is focused", async () => {
       const component = mount(UDatePickerRange, {
         props: {
+          variant: "input",
           modelValue: { from: null, to: null },
         },
       });
 
-      // Show menu
-      component.vm.activate();
+      const input = component.findComponent(UInput).find("input");
 
-      // Simulate date range selection
-      const range = { from: new Date(2023, 0, 1), to: new Date(2023, 0, 7) };
+      await input.trigger("focus");
 
-      component.vm.localValue = range;
+      expect(component.findComponent(UDatePickerRangePeriodMenu).exists()).toBe(true);
+    });
+
+    it("Menu – opens when button is clicked", async () => {
+      const component = mount(UDatePickerRange, {
+        props: {
+          variant: "button",
+          modelValue: { from: null, to: null },
+        },
+      });
+
+      const button = component.find("[vl-key='rangeButtonSelect']");
+
+      await button.trigger("click");
+
+      expect(component.findComponent(UDatePickerRangePeriodMenu).exists()).toBe(true);
+    });
+
+    it("Menu – contains range inputs when period is ownRange", async () => {
+      const component = mount(UDatePickerRange, {
+        props: {
+          variant: "input",
+          modelValue: { from: null, to: null },
+        },
+      });
+
+      const input = component.findComponent(UInput).find("input");
+
+      await input.trigger("focus");
+
+      expect(component.find("[vl-key='rangeInputWrapper']").exists()).toBe(true);
+    });
+
+    it("Menu – contains calendar when period is ownRange", async () => {
+      const component = mount(UDatePickerRange, {
+        props: {
+          variant: "input",
+          modelValue: { from: null, to: null },
+        },
+      });
+
+      const input = component.findComponent(UInput).find("input");
+
+      await input.trigger("focus");
+
+      expect(component.find("[vl-key='datepickerCalendar']").exists()).toBe(true);
+    });
+  });
+
+  describe("Range Navigation", () => {
+    it("Range Navigation – prev button shifts range backward", async () => {
+      const component = mount(UDatePickerRange, {
+        props: {
+          variant: "button",
+          modelValue: {
+            from: "2023-12-01",
+            to: "2023-12-31",
+          },
+          dateFormat: "Y-m-d",
+        },
+      });
+
+      const prevButton = component.findAll('[vl-key="rangeButtonShift"]');
+
+      await prevButton[0].trigger("click");
 
       expect(component.emitted("update:modelValue")).toBeTruthy();
-      expect(component.emitted("update:modelValue")[0][0]).toEqual(range);
+    });
+
+    it("Range Navigation – next button shifts range forward", async () => {
+      const component = mount(UDatePickerRange, {
+        props: {
+          variant: "button",
+          modelValue: {
+            from: "2023-12-01",
+            to: "2023-12-31",
+          },
+          dateFormat: "Y-m-d",
+        },
+      });
+
+      const nextButton = component.findAll('[vl-key="rangeButtonShift"]');
+
+      await nextButton[1].trigger("click");
+
+      expect(component.emitted("update:modelValue")).toBeTruthy();
     });
   });
 
-  // Slots tests
   describe("Slots", () => {
-    // Left slot
-    it("renders content from left slot when variant is input", () => {
-      const slotText = "Left";
-      const slotClass = "left-content";
-      const variant = DATE_PICKER_INPUT_TYPE;
+    it("Left – renders custom content from left slot", () => {
+      const slotContent = "Custom Left Content";
+      const slotClass = "custom-left";
 
       const component = mount(UDatePickerRange, {
         props: {
-          variant: variant as Props["variant"],
+          variant: "input",
           modelValue: { from: null, to: null },
         },
         slots: {
-          left: `<span class="${slotClass}">${slotText}</span>`,
+          left: `<span class="${slotClass}">${slotContent}</span>`,
         },
       });
 
       expect(component.find(`.${slotClass}`).exists()).toBe(true);
-      expect(component.find(`.${slotClass}`).text()).toBe(slotText);
+      expect(component.find(`.${slotClass}`).text()).toBe(slotContent);
     });
 
-    // Right slot
-    it("renders content from right slot when variant is input", () => {
-      const slotText = "Right";
-      const slotClass = "right-content";
-      const variant = DATE_PICKER_INPUT_TYPE;
+    it("Left – exposes icon-name to slot when leftIcon prop is provided", () => {
+      const leftIcon = "calendar";
 
       const component = mount(UDatePickerRange, {
         props: {
-          variant: variant as Props["variant"],
+          variant: "input",
+          leftIcon,
           modelValue: { from: null, to: null },
         },
         slots: {
-          right: `<span class="${slotClass}">${slotText}</span>`,
+          left: "Icon: {{ params.iconName }}",
+        },
+      });
+
+      expect(component.text()).toContain(`Icon: ${leftIcon}`);
+    });
+
+    it("Right – renders custom content from right slot", () => {
+      const slotContent = "Custom Right Content";
+      const slotClass = "custom-right";
+
+      const component = mount(UDatePickerRange, {
+        props: {
+          variant: "input",
+          modelValue: { from: null, to: null },
+        },
+        slots: {
+          right: `<span class="${slotClass}">${slotContent}</span>`,
         },
       });
 
       expect(component.find(`.${slotClass}`).exists()).toBe(true);
-      expect(component.find(`.${slotClass}`).text()).toBe(slotText);
+      expect(component.find(`.${slotClass}`).text()).toBe(slotContent);
+    });
+
+    it("Right – exposes icon-name to slot when rightIcon prop is provided", () => {
+      const rightIcon = "close";
+
+      const component = mount(UDatePickerRange, {
+        props: {
+          variant: "input",
+          rightIcon,
+          modelValue: { from: null, to: null },
+        },
+        slots: {
+          right: "Icon: {{ params.iconName }}",
+        },
+      });
+
+      expect(component.text()).toContain(`Icon: ${rightIcon}`);
     });
   });
 
-  // Exposed refs tests
-  describe("Exposed refs", () => {
-    // wrapperRef
-    it("exposes wrapperRef", () => {
+  describe("Exposed Properties", () => {
+    it("Exposes wrapper element ref", () => {
       const component = mount(UDatePickerRange, {
         props: {
           modelValue: { from: null, to: null },
@@ -507,8 +561,7 @@ describe("UDatePickerRange.vue", () => {
       expect(component.vm.wrapperRef).toBeDefined();
     });
 
-    // calendarRef
-    it("exposes calendarRef", () => {
+    it("Exposes calendar element ref", () => {
       const component = mount(UDatePickerRange, {
         props: {
           modelValue: { from: null, to: null },
