@@ -421,7 +421,7 @@ describe("useUI", () => {
         body: { base: "styled-class" },
       };
 
-      const result = useUI(defaultConfig);
+      useUI(defaultConfig);
 
       expect(uiUtils.getMergedConfig).toHaveBeenCalledWith(
         expect.objectContaining({
