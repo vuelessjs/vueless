@@ -302,7 +302,9 @@ defineExpose({
         />
 
         <UButton
-          v-else-if="getDayState(day).isFirstDayInRange"
+          v-else-if="
+            getDayState(day).isFirstDayInRange && !getDayState(day).isAnotherMonthFirstDayInRange
+          "
           tabindex="-1"
           variant="solid"
           color="primary"
@@ -317,7 +319,9 @@ defineExpose({
         />
 
         <UButton
-          v-else-if="getDayState(day).isLastDayInRange"
+          v-else-if="
+            getDayState(day).isLastDayInRange && !getDayState(day).isAnotherMonthLastDayInRange
+          "
           tabindex="-1"
           variant="solid"
           color="primary"
@@ -334,7 +338,7 @@ defineExpose({
         <UButton
           v-else-if="getDayState(day).isAnotherMonthFirstDayInRange"
           tabindex="-1"
-          variant="soft"
+          variant="solid"
           color="primary"
           size="md"
           square
@@ -349,7 +353,7 @@ defineExpose({
         <UButton
           v-else-if="getDayState(day).isAnotherMonthLastDayInRange"
           tabindex="-1"
-          variant="soft"
+          variant="solid"
           color="primary"
           size="md"
           square
