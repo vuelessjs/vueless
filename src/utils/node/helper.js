@@ -9,6 +9,8 @@ import { vuelessConfig, getMergedConfig } from "./vuelessConfig.js";
 
 import {
   COMPONENTS,
+  JAVASCRIPT_EXT,
+  TYPESCRIPT_EXT,
   VUELESS_CONFIGS_CACHED_DIR,
   VUELESS_MERGED_CONFIGS_CACHED_DIR,
 } from "../../constants.js";
@@ -163,8 +165,9 @@ export async function autoImportUserConfigs() {
 
   const hasTsIndex = existsSync(indexTsPath);
   const indexFilePath = hasTsIndex ? indexTsPath : indexJsPath;
+  const fileExt = hasTsIndex ? TYPESCRIPT_EXT : JAVASCRIPT_EXT;
 
-  const configFiles = await getDirFiles(vuelessConfigDir, ".ts", {
+  const configFiles = await getDirFiles(vuelessConfigDir, fileExt, {
     recursive: true,
     exclude: ["index.ts", "index.js"],
   });
