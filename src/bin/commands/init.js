@@ -6,7 +6,12 @@ import { existsSync, mkdirSync } from "node:fs";
 import { writeFile, rename } from "node:fs/promises";
 import { styleText } from "node:util";
 
-import { DEFAULT_VUELESS_CONFIG_CONTENT, DEFAULT_CONFIG_INDEX_CONTENT } from "../constants.js";
+import {
+  COMPONENTS_INDEX_COMMENT,
+  COMPONENTS_INDEX_EXPORT,
+  DEFAULT_VUELESS_CONFIG_CONTENT,
+} from "../constants.js";
+
 import {
   JAVASCRIPT_EXT,
   TYPESCRIPT_EXT,
@@ -64,8 +69,10 @@ export async function vuelessInit(options) {
 
   if (!existsSync(vuelessDir)) {
     mkdirSync(vuelessDir);
-    console.log(styleText("green", "'.vueless' directory created."));
+    console.log(
+      styleText("green", "The '.vueless' directory was created in the project root directory."),
+    );
   }
 
-  await writeFile(destPath, DEFAULT_CONFIG_INDEX_CONTENT, "utf-8");
+  await writeFile(destPath, `${COMPONENTS_INDEX_COMMENT}\n${COMPONENTS_INDEX_EXPORT}\n`, "utf-8");
 }
