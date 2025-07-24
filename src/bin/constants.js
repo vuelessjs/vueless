@@ -1,8 +1,7 @@
 export const SRC_COMPONENTS_PATH = "/src/components";
 export const COMPONENTS_PATH = "/components";
 
-export const DEFAULT_VUELESS_CONFIG_CONTENT = `
-import { componentConfigs } from "./.vueless";
+export const DEFAULT_VUELESS_CONFIG_CONTENT = `import { componentConfigs } from "./.vueless";
 
 export default {
   /**
@@ -15,6 +14,18 @@ export default {
   rounding: 8,
   disabledOpacity: 50,
   colorMode: "auto",
+
+  /**
+   * Component settings.
+   */
+  components: /*tw*/ {
+    ...componentConfigs,
+  },
+
+  /**
+   * Directive settings.
+   */
+  directives: {},
 
   /**
    * Light theme CSS variable settings.
@@ -155,20 +166,11 @@ export default {
     "--vl-bg-accented": "--vl-neutral-700",
     "--vl-bg-inverted": "--vl-neutral-100",
   },
-
-  /**
-   * Directive settings.
-   */
-  directives: {},
-
-  /**
-   * Component settings.
-   */
-  components: /*tw*/ {
-    ...componentConfigs,
-  },
 };
 `;
+
+export const SUPPRESS_TS_CHECK = `// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-nocheck`;
 
 export const COMPONENTS_INDEX_COMMENT = `/**
  * ⚠️ This file is auto-generated — do not edit it manually.

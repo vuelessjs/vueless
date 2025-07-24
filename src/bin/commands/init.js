@@ -3,24 +3,31 @@
 import { cwd } from "node:process";
 import path from "node:path";
 import { existsSync, mkdirSync } from "node:fs";
-import { writeFile, rename } from "node:fs/promises";
+import { writeFile, rename, readFile } from "node:fs/promises";
 import { styleText } from "node:util";
 
 import {
-  COMPONENTS_INDEX_COMMENT,
+  SUPPRESS_TS_CHECK,
   COMPONENTS_INDEX_EXPORT,
+  COMPONENTS_INDEX_COMMENT,
   DEFAULT_VUELESS_CONFIG_CONTENT,
 } from "../constants.js";
 
 import {
   JAVASCRIPT_EXT,
   TYPESCRIPT_EXT,
-  VUELESS_CONFIG_FILE_NAME,
   CONFIG_INDEX_FILE_NAME,
+  VUELESS_CONFIG_FILE_NAME,
 } from "../../constants.js";
 
 const vuelessInitOptions = ["--ts", "--js"];
 
+/**
+ * Initializes Vueless in the project by creating a default config file and .vueless directory.
+ * @param {string[]} options - The function options.
+ * @param {boolean} options.includes("--ts") - If true, creates a TypeScript config file.
+ * @param {boolean} options.includes("--js") - If true, creates a JavaScript config file.
+ */
 export async function vuelessInit(options) {
   const isValidOptions = options.every((option) => vuelessInitOptions.includes(option));
 
@@ -30,7 +37,9 @@ export async function vuelessInit(options) {
     return;
   }
 
-  const fileExt = options.includes("--ts") ? TYPESCRIPT_EXT : JAVASCRIPT_EXT;
+  const hasTypeScript = await detectTypeScript();
+  const fileExt = options.includes("--ts") || hasTypeScript ? TYPESCRIPT_EXT : JAVASCRIPT_EXT;
+
   const formattedDestPath = path.format({
     dir: cwd(),
     name: VUELESS_CONFIG_FILE_NAME,
@@ -74,5 +83,30 @@ export async function vuelessInit(options) {
     );
   }
 
-  await writeFile(destPath, `${COMPONENTS_INDEX_COMMENT}\n${COMPONENTS_INDEX_EXPORT}\n`, "utf-8");
+  const suppressTsCheck = fileExt === TYPESCRIPT_EXT ? `${SUPPRESS_TS_CHECK}\n` : "";
+
+  await writeFile(
+    destPath,
+    `${suppressTsCheck}${COMPONENTS_INDEX_COMMENT}\n${COMPONENTS_INDEX_EXPORT}\n`,
+    "utf-8",
+  );
+}
+
+/**
+ * Detects if TypeScript is a dependency in the project's package.json
+ * @returns {Promise<boolean>} True if TypeScript is found in dependencies or devDependencies
+ */
+async function detectTypeScript() {
+  try {
+    const packageJsonPath = path.join(cwd(), "package.json");
+    const packageJsonContent = await readFile(packageJsonPath, "utf-8");
+    const pkg = JSON.parse(packageJsonContent);
+    const deps = { ...pkg.dependencies, ...pkg.devDependencies };
+
+    return Boolean(deps.typescript);
+  } catch (error) {
+    console.error("Failed to detect TypeScript:", error);
+
+    return false;
+  }
 }

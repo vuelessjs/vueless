@@ -14,7 +14,11 @@ import {
   VUELESS_MERGED_CONFIGS_CACHED_DIR,
 } from "../../constants.js";
 
-import { COMPONENTS_INDEX_COMMENT, COMPONENTS_INDEX_EXPORT } from "../../bin/constants.js";
+import {
+  SUPPRESS_TS_CHECK,
+  COMPONENTS_INDEX_EXPORT,
+  COMPONENTS_INDEX_COMMENT,
+} from "../../bin/constants.js";
 
 export async function getDirFiles(dirPath, ext, { recursive = true, exclude = [] } = {}) {
   let fileNames = [];
@@ -203,8 +207,9 @@ export async function autoImportUserConfigs() {
 
   const indexTsPath = path.join(vuelessConfigDir, "index.ts");
   const indexJsPath = path.join(vuelessConfigDir, "index.js");
+  const hasTsIndex = existsSync(indexTsPath);
 
-  const indexFilePath = existsSync(indexTsPath) ? indexTsPath : indexJsPath;
+  const indexFilePath = hasTsIndex ? indexTsPath : indexJsPath;
 
   const configFiles = await getDirFiles(vuelessConfigDir, ".ts", {
     recursive: true,
@@ -240,7 +245,7 @@ export async function autoImportUserConfigs() {
     componentEntries.push(`  ${componentName},`);
   }
 
-  const indexContent = generateConfigIndexContent(imports, componentEntries);
+  const indexContent = generateConfigIndexContent(imports, componentEntries, hasTsIndex);
 
   if (!existsSync(vuelessConfigDir)) {
     await mkdir(vuelessConfigDir, { recursive: true });
@@ -249,11 +254,12 @@ export async function autoImportUserConfigs() {
   await writeFile(indexFilePath, indexContent, "utf-8");
 }
 
-function generateConfigIndexContent(imports = [], componentEntries = []) {
-  const importsSection = imports.length ? `\n${imports.join("\n")}\n` : "";
+function generateConfigIndexContent(imports = [], componentEntries = [], isTypeScript) {
+  const importsSection = imports.length ? `\n${imports.join("\n")}\n\n` : "";
   const entriesSection = componentEntries.length ? `\n${componentEntries.join("\n")}\n` : "";
+  const suppressTsCheck = isTypeScript ? `${SUPPRESS_TS_CHECK}\n` : "";
 
-  return `${COMPONENTS_INDEX_COMMENT}${importsSection}${COMPONENTS_INDEX_EXPORT.replace(
+  return `${suppressTsCheck}${COMPONENTS_INDEX_COMMENT}${importsSection}${COMPONENTS_INDEX_EXPORT.replace(
     "{}",
     `{${entriesSection}}`,
   )}
