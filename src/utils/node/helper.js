@@ -207,8 +207,8 @@ export async function autoImportUserConfigs() {
 
   const indexTsPath = path.join(vuelessConfigDir, "index.ts");
   const indexJsPath = path.join(vuelessConfigDir, "index.js");
-  const hasTsIndex = existsSync(indexTsPath);
 
+  const hasTsIndex = existsSync(indexTsPath);
   const indexFilePath = hasTsIndex ? indexTsPath : indexJsPath;
 
   const configFiles = await getDirFiles(vuelessConfigDir, ".ts", {
@@ -222,36 +222,30 @@ export async function autoImportUserConfigs() {
     return /^U\w+\.config\.(ts|js)$/.test(fileName);
   });
 
-  if (componentConfigFiles.length === 0) {
-    if (!existsSync(vuelessConfigDir)) {
-      await mkdir(vuelessConfigDir, { recursive: true });
-    }
-
-    await writeFile(indexFilePath, generateConfigIndexContent(), "utf-8");
-
-    return;
-  }
-
   const imports = [];
   const componentEntries = [];
 
-  for (const configFilePath of componentConfigFiles) {
-    const fileName = path.basename(configFilePath, path.extname(configFilePath));
-    const componentName = fileName.replace(".config", "");
-    const relativePath = path.relative(vuelessConfigDir, configFilePath);
-    const importPath = "./" + relativePath.replace(/\\/g, "/");
+  if (componentConfigFiles.length) {
+    for (const configFilePath of componentConfigFiles) {
+      const fileName = path.basename(configFilePath, path.extname(configFilePath));
+      const componentName = fileName.replace(".config", "");
+      const relativePath = path.relative(vuelessConfigDir, configFilePath);
+      const importPath = "./" + relativePath.replace(/\\/g, "/");
 
-    imports.push(`import ${componentName} from "${importPath}";`);
-    componentEntries.push(`  ${componentName},`);
+      imports.push(`import ${componentName} from "${importPath}";`);
+      componentEntries.push(`  ${componentName},`);
+    }
   }
-
-  const indexContent = generateConfigIndexContent(imports, componentEntries, hasTsIndex);
 
   if (!existsSync(vuelessConfigDir)) {
     await mkdir(vuelessConfigDir, { recursive: true });
   }
 
-  await writeFile(indexFilePath, indexContent, "utf-8");
+  await writeFile(
+    indexFilePath,
+    generateConfigIndexContent(imports, componentEntries, hasTsIndex),
+    "utf-8",
+  );
 }
 
 function generateConfigIndexContent(imports = [], componentEntries = [], isTypeScript) {
