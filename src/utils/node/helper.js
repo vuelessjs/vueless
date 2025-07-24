@@ -10,7 +10,6 @@ import { vuelessConfig, getMergedConfig } from "./vuelessConfig.js";
 import {
   COMPONENTS,
   VUELESS_CONFIGS_CACHED_DIR,
-  VUELESS_USER_CONFIGS_CACHED_DIR,
   VUELESS_MERGED_CONFIGS_CACHED_DIR,
 } from "../../constants.js";
 
@@ -144,52 +143,6 @@ export async function cacheMergedConfigs(srcDir) {
   }
 }
 
-export async function cacheUserConfigs() {
-  const vuelessConfigDir = path.join(cwd(), ".vueless");
-  const destDirPath = path.join(cwd(), VUELESS_USER_CONFIGS_CACHED_DIR);
-
-  const configFiles = await getDirFiles(vuelessConfigDir, ".ts", {
-    recursive: true,
-    exclude: [],
-  });
-
-  const jsConfigFiles = await getDirFiles(vuelessConfigDir, ".js", {
-    recursive: true,
-    exclude: [],
-  });
-
-  const allConfigFiles = [...configFiles, ...jsConfigFiles];
-
-  const componentConfigFiles = allConfigFiles.filter((filePath) => {
-    const fileName = path.basename(filePath);
-
-    return fileName.match(/^U\w+\.config\.(ts|js)$/);
-  });
-
-  if (componentConfigFiles.length === 0) {
-    return;
-  }
-
-  if (!existsSync(destDirPath)) {
-    await mkdir(destDirPath, { recursive: true });
-  }
-
-  for (const configFilePath of componentConfigFiles) {
-    const fileName = path.basename(configFilePath, path.extname(configFilePath));
-    const componentName = fileName.replace(".config", "");
-    const outputPath = path.join(destDirPath, `${componentName}.mjs`);
-
-    try {
-      await buildTSFile(configFilePath, outputPath);
-    } catch (error) {
-      // eslint-disable-next-line no-console
-      console.error(`Failed to build config file ${configFilePath}:`, error);
-    }
-  }
-
-  await autoImportUserConfigs();
-}
-
 export async function buildTSFile(entryPath, configOutFile) {
   await esbuild.build({
     entryPoints: [entryPath],
@@ -253,7 +206,7 @@ function generateConfigIndexContent(imports = [], componentEntries = [], isTypeS
   const entriesSection = componentEntries.length ? `\n${componentEntries.join("\n")}\n` : "";
   const suppressTsCheck = isTypeScript ? `${SUPPRESS_TS_CHECK}\n` : "";
 
-  return `${suppressTsCheck}${COMPONENTS_INDEX_COMMENT}${importsSection}${COMPONENTS_INDEX_EXPORT.replace(
+  return `${suppressTsCheck}${COMPONENTS_INDEX_COMMENT}\n${importsSection}${COMPONENTS_INDEX_EXPORT.replace(
     "{}",
     `{${entriesSection}}`,
   )}
