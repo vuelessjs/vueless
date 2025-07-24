@@ -1,7 +1,8 @@
 export const SRC_COMPONENTS_PATH = "/src/components";
 export const COMPONENTS_PATH = "/components";
 
-export const DEFAULT_VUELESS_CONFIG_CONTENT = `
+export const DEFAULT_VUELESS_CONFIG_CONTENT = `import { componentConfigs } from "./.vueless";
+
 export default {
   /**
    * Global settings.
@@ -13,6 +14,18 @@ export default {
   rounding: 8,
   disabledOpacity: 50,
   colorMode: "auto",
+
+  /**
+   * Component settings.
+   */
+  components: /*tw*/ {
+    ...componentConfigs,
+  },
+
+  /**
+   * Directive settings.
+   */
+  directives: {},
 
   /**
    * Light theme CSS variable settings.
@@ -153,22 +166,19 @@ export default {
     "--vl-bg-accented": "--vl-neutral-700",
     "--vl-bg-inverted": "--vl-neutral-100",
   },
-
-  /**
-   * Directive settings.
-   */
-  directives: {},
-
-  /**
-   * Component settings.
-   */
-  components: /*tw*/ {},
-
-  /**
-   * TailwindMerge settings for custom Tailwind CSS classes.
-   * All lists of rules available here:
-   * https://github.com/dcastil/tailwind-merge/blob/main/src/lib/default-config.ts
-   */
-  tailwindMerge: {},
 };
 `;
+
+export const SUPPRESS_TS_CHECK = `// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-nocheck`;
+
+export const COMPONENTS_INDEX_COMMENT = `/**
+ * ⚠️ This file is auto-generated — do not edit it manually.
+ * It gets updated automatically whenever the Vite server restarts.
+ *
+ * This file imports all component config files from the current directory.
+ * Only files following the naming pattern "U[Component].config.[ts|js]" will be included.
+ * Example: "UButton.config.ts"
+ */`;
+
+export const COMPONENTS_INDEX_EXPORT = `export const componentConfigs = {};`;
