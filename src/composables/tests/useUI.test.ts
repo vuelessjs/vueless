@@ -7,29 +7,39 @@ import { mount } from "@vue/test-utils";
 // Mock the ui utils
 vi.mock("../../utils/ui.ts", () => ({
   cx: vi.fn((classes) => (Array.isArray(classes) ? classes.filter(Boolean).join(" ") : classes)),
-  cva: vi.fn((config) => (props) => {
-    if (!config.variants) return config.base || "";
+  cva: vi.fn((config) => {
+    // Return a spy function that can be called and tracked
+    const cvaSpy = vi.fn((props) => {
+      if (!config.variants) return config.base || "";
 
-    let classes = config.base || "";
+      let classes = config.base || "";
 
-    // Apply variants
-    Object.entries(config.variants).forEach(([key, variants]) => {
-      const value = props[key];
+      // Apply variants
+      Object.entries(config.variants).forEach(([key, variants]) => {
+        const value = props[key];
 
-      if (value && variants[value]) {
-        classes += ` ${variants[value]}`;
-      }
+        if (value && variants[value]) {
+          classes += ` ${variants[value]}`;
+        }
+      });
+
+      return classes.trim();
     });
 
-    return classes.trim();
+    return cvaSpy;
   }),
   setColor: vi.fn((classes, color) => classes?.replace(/{color}/g, color)),
   vuelessConfig: { components: {}, unstyled: false },
-  getMergedConfig: vi.fn(({ defaultConfig, globalConfig, propsConfig }) => ({
-    ...defaultConfig,
-    ...globalConfig,
-    ...propsConfig,
-  })),
+  getMergedConfig: vi.fn((args) => {
+    // Create a spy function that returns the expected merged config
+    const { defaultConfig, globalConfig, propsConfig } = args;
+
+    return {
+      ...defaultConfig,
+      ...globalConfig,
+      ...propsConfig,
+    };
+  }),
 }));
 
 // Mock Vue functions
@@ -140,7 +150,8 @@ describe("useUI", () => {
         parent: null,
       });
 
-      const result = useUI(defaultConfig);
+      // Call useUI to trigger the config merging
+      useUI(defaultConfig);
 
       expect(uiUtils.getMergedConfig).toHaveBeenCalledWith({
         defaultConfig,
@@ -165,7 +176,8 @@ describe("useUI", () => {
         },
       };
 
-      const result = useUI(defaultConfig);
+      // Call useUI to trigger CVA usage
+      useUI(defaultConfig);
 
       expect(uiUtils.cva).toHaveBeenCalledWith(defaultConfig.body);
     });

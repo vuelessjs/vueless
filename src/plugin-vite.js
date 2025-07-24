@@ -126,7 +126,9 @@ export const Vueless = function (options = {}) {
         await cacheMergedConfigs(vuelessSrcDir);
       }
 
-      await autoImportUserConfigs();
+      if (!isInternalEnv) {
+        await autoImportUserConfigs();
+      }
 
       await buildWebTypes(vuelessSrcDir);
       await setCustomPropTypes(vuelessSrcDir);
