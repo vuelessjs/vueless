@@ -2,7 +2,7 @@ export const SRC_COMPONENTS_PATH = "/src/components";
 export const COMPONENTS_PATH = "/components";
 
 export const DEFAULT_VUELESS_CONFIG_CONTENT = `
-import { components } from "./.vueless";
+import { componentConfigs } from "./.vueless";
 
 export default {
   /**
@@ -165,15 +165,8 @@ export default {
    * Component settings.
    */
   components: /*tw*/ {
-    ...components,
+    ...componentConfigs,
   },
-
-  /**
-   * TailwindMerge settings for custom Tailwind CSS classes.
-   * All lists of rules available here:
-   * https://github.com/dcastil/tailwind-merge/blob/main/src/lib/default-config.ts
-   */
-  tailwindMerge: {},
 };
 `;
 
@@ -186,5 +179,5 @@ export const DEFAULT_CONFIG_INDEX_CONTENT = `/**
  * Example: "UButton.config.ts"
  */
 
-export const components = {};
+export const componentConfigs = {};
 `;

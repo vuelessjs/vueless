@@ -251,7 +251,7 @@ export async function autoImportUserConfigs() {
 
 ${imports.join("\n")}
 
-export const components = {
+export const componentConfigs = {
 ${componentEntries.join("\n")}
 };
 `;

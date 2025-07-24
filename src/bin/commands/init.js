@@ -32,6 +32,7 @@ export async function vuelessInit(options) {
     ext: fileExt,
   });
 
+  /* Backup existing config if it exists. */
   if (existsSync(formattedDestPath)) {
     const timestamp = new Date().valueOf();
     const renamedTarget = `${VUELESS_CONFIG_FILE_NAME}-backup-${timestamp}${fileExt}`;
@@ -47,6 +48,7 @@ export async function vuelessInit(options) {
     );
   }
 
+  /* Create a default config file. */
   await writeFile(formattedDestPath, DEFAULT_VUELESS_CONFIG_CONTENT, "utf-8");
 
   console.log(
@@ -56,14 +58,14 @@ export async function vuelessInit(options) {
     ),
   );
 
+  /* Create .vueless directory and index file. */
   const vuelessDir = path.join(cwd(), ".vueless");
+  const destPath = path.join(vuelessDir, `${CONFIG_INDEX_FILE_NAME}${fileExt}`);
 
   if (!existsSync(vuelessDir)) {
     mkdirSync(vuelessDir);
-    console.log(styleText("cyan", "'.vueless' directory created."));
+    console.log(styleText("green", "'.vueless' directory created."));
   }
-
-  const destPath = path.join(vuelessDir, `${CONFIG_INDEX_FILE_NAME}${fileExt}`);
 
   await writeFile(destPath, DEFAULT_CONFIG_INDEX_CONTENT, "utf-8");
 }
