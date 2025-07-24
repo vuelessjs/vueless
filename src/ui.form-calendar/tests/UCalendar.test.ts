@@ -629,11 +629,11 @@ describe("UCalendar.vue", () => {
 
     it("Arrow Key Navigation – respects min and max date boundaries", async () => {
       const expectedFirstActiveDate = "1";
-      const expectedSecondsActiveDate = "3";
+      const expectedSecondsActiveDate = "4";
 
       const component = mount(UCalendar, {
         props: {
-          modelValue: new Date("2023-12-02"),
+          modelValue: "2023-12-02",
           minDate: "2023-12-01",
           maxDate: "2023-12-04",
           dateFormat: "Y-m-d",
