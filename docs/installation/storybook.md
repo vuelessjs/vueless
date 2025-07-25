@@ -23,8 +23,8 @@ yarn @vueless/storybook
 
 {% tab title="pnpm" %}
 ```bash
-pnpm add -D @vueless/storybook --pnpm
-pnpm exec @vueless/storybook
+pnpm add -D @vueless/storybook
+pnpm exec @vueless/storybook --pnpm
 ```
 {% endtab %}
 
