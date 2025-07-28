@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, useTemplateRef } from "vue";
+import { computed, watch, useTemplateRef } from "vue";
 
 import useUI from "../composables/useUI.ts";
 import { getDefaults } from "../utils/ui.ts";
@@ -56,6 +56,10 @@ const { localeMessages } = useComponentLocaleMessages<typeof defaultConfig.i18n>
   defaultConfig.i18n,
   props?.config?.i18n,
 );
+
+watch(isShownModal, (newValue) => {
+  if (!newValue) emit("close");
+});
 
 function closeModal() {
   isShownModal.value = false;
@@ -117,8 +121,11 @@ const {
     </template>
 
     <template #title>
-      <!-- @slot Use it to add something to the left side of the header. -->
-      <slot name="title" />
+      <!--
+        @slot Use it to add something to the left side of the header.
+        @binding {string} title
+      -->
+      <slot name="title" :title="title" />
     </template>
 
     <template #after-title>

@@ -1,11 +1,9 @@
-import type { Meta, StoryFn } from "@storybook/vue3";
-import { getArgTypes, getEnumVariantDescription } from "../../utils/storybook.ts";
+import type { Meta, StoryFn } from "@storybook/vue3-vite";
+import { getArgs, getArgTypes } from "../../utils/storybook.ts";
 
 import USkeletonChoice from "../USkeletonChoice.vue";
 import UCol from "../../ui.container-col/UCol.vue";
 import USkeleton from "../../ui.skeleton/USkeleton.vue";
-
-import tooltip from "../../directives/tooltip/vTooltip.ts";
 
 import type { Props } from "../types.ts";
 
@@ -24,9 +22,7 @@ export default {
 
 const DefaultTemplate: StoryFn<SkeletonChoiceArgs> = (args: SkeletonChoiceArgs) => ({
   components: { USkeletonChoice },
-  setup: () => {
-    return { args };
-  },
+  setup: () => ({ args }),
   template: `
     <USkeletonChoice v-bind="args" />
   `,
@@ -37,19 +33,13 @@ const EnumVariantTemplate: StoryFn<SkeletonChoiceArgs> = (
   { argTypes },
 ) => ({
   components: { USkeletonChoice, UCol },
-  directives: { tooltip },
-  setup() {
-    const filteredOptions = argTypes?.[args.enum]?.options || [];
-
-    return { args, filteredOptions };
-  },
+  setup: () => ({ args, argTypes, getArgs }),
   template: `
     <UCol>
       <USkeletonChoice
-        v-for="(option, index) in filteredOptions"
-        :key="index"
-        v-bind="args"
-        :[args.enum]="option"
+        v-for="option in argTypes?.[args.enum]?.options"
+        v-bind="getArgs(args, option)"
+        :key="option"
       />
     </UCol>
   `,
@@ -61,15 +51,22 @@ Default.args = {};
 export const Type = EnumVariantTemplate.bind({});
 Type.args = { enum: "type" };
 
-export const Label = DefaultTemplate.bind({});
-Label.args = { label: false };
+export const WithoutLabel: StoryFn<SkeletonChoiceArgs> = (args: SkeletonChoiceArgs) => ({
+  components: { USkeletonChoice, UCol },
+  setup: () => ({ args }),
+  template: `
+    <UCol>
+      <USkeletonChoice type="checkbox" :label="false" />
+      <USkeletonChoice type="radio" :label="false" />
+    </UCol>
+  `,
+});
 
-export const LabelPlacement = EnumVariantTemplate.bind({});
-LabelPlacement.args = { enum: "labelAlign" };
+export const LabelAlign = EnumVariantTemplate.bind({});
+LabelAlign.args = { enum: "labelAlign" };
 
 export const Sizes = EnumVariantTemplate.bind({});
 Sizes.args = { enum: "size" };
-Sizes.parameters = getEnumVariantDescription();
 
 export const Variant = EnumVariantTemplate.bind({});
 Variant.args = { enum: "variant" };

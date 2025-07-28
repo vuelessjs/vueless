@@ -9,6 +9,7 @@ export const NEUTRAL_COLOR = "neutral";
 export const SECONDARY_COLOR = "secondary";
 export const GRAYSCALE_COLOR = "grayscale";
 export const INHERIT_COLOR = "inherit";
+export const TEXT_COLOR = "text"; // the default design system text color
 
 /* Vueless keys */
 export const TEXT = "text";
@@ -361,12 +362,15 @@ export const DEFAULT_SVGO_CONFIG = {
       name: "preset-default",
       params: {
         overrides: {
-          removeViewBox: false,
           convertColors: {
             currentColor: true,
           },
         },
       },
+    },
+    {
+      name: "removeViewBox",
+      active: false,
     },
   ],
 };
@@ -391,10 +395,11 @@ export const ICONS_CACHED_DIR = `${VUELESS_CACHE_DIR}/${ICONS_DIR}`;
 export const ICONS_VIRTUAL_MODULE_ID = "virtual:vueless/icons";
 export const RESOLVED_ICONS_VIRTUAL_MODULE_ID = `\0${ICONS_VIRTUAL_MODULE_ID}`;
 
-export const VUELESS_TAILWIND_SAFELIST = `${VUELESS_CACHE_DIR}/safelist.txt`;
+export const VUELESS_TAILWIND_SAFELIST = `${VUELESS_CACHE_DIR}/tailwind/safelist.txt`;
 export const VUELESS_CONFIGS_CACHED_DIR = `${VUELESS_CACHE_DIR}/configs`;
 export const VUELESS_MERGED_CONFIGS_CACHED_DIR = `${VUELESS_CACHE_DIR}/mergedConfigs`;
 export const VUELESS_CONFIG_FILE_NAME = "vueless.config";
+export const CONFIG_INDEX_FILE_NAME = "index";
 
 /* System error codes */
 export const DEFAULT_EXIT_CODE = 0;

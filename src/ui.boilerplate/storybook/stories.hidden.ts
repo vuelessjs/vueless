@@ -2,7 +2,7 @@ import { getArgTypes, getSlotNames, getSlotsFragment } from "../../utils/storybo
 
 import UBoilerplate from "../UBoilerplate.vue";
 
-import type { Meta, StoryFn } from "@storybook/vue3";
+import type { Meta, StoryFn } from "@storybook/vue3-vite";
 import type { Props } from "../types.ts";
 
 interface UBoilerplateArgs extends Props {

@@ -13,7 +13,7 @@ import UIcon from "../../ui.image-icon/UIcon.vue";
 import ULink from "../../ui.button-link/ULink.vue";
 import UAvatar from "../../ui.image-avatar/UAvatar.vue";
 
-import type { Meta, StoryFn } from "@storybook/vue3";
+import type { Meta, StoryFn } from "@storybook/vue3-vite";
 import type { Props } from "../types.ts";
 
 interface DefaultUDropdownButtonArgs extends Props {
@@ -197,9 +197,16 @@ DefaultSlot.args = {
   ],
   slotTemplate: `
     <template #default>
-      <UAvatar size="sm" rounded="full" src="https://avatar.iran.liara.run/public" />
+      <UAvatar size="sm" rounded="full" src="https://i.pravatar.cc/300" />
     </template>
   `,
+};
+DefaultSlot.parameters = {
+  docs: {
+    story: {
+      height: "250px",
+    },
+  },
 };
 
 export const LeftSlot = DefaultTemplate.bind({});

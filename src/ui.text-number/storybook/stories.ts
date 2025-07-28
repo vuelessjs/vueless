@@ -1,20 +1,11 @@
-import {
-  getArgs,
-  getArgTypes,
-  getSlotNames,
-  getSlotsFragment,
-  getEnumVariantDescription,
-} from "../../utils/storybook.ts";
+import { getArgs, getArgTypes, getSlotNames, getSlotsFragment } from "../../utils/storybook.ts";
 
 import UNumber from "../../ui.text-number/UNumber.vue";
 import UIcon from "../../ui.image-icon/UIcon.vue";
 import URow from "../../ui.container-row/URow.vue";
 import UCol from "../../ui.container-col/UCol.vue";
-import UBadge from "../../ui.text-badge/UBadge.vue";
 
-import tooltip from "../../directives/tooltip/vTooltip.ts";
-
-import type { Meta, StoryFn } from "@storybook/vue3";
+import type { Meta, StoryFn } from "@storybook/vue3-vite";
 import type { Props } from "../types.ts";
 
 interface UNumberArgs extends Props {
@@ -28,7 +19,6 @@ export default {
   component: UNumber,
   args: {
     value: -14.24,
-    sign: "auto",
   },
   argTypes: {
     ...getArgTypes(UNumber.__name),
@@ -36,7 +26,7 @@ export default {
 } as Meta;
 
 const DefaultTemplate: StoryFn<UNumberArgs> = (args: UNumberArgs) => ({
-  components: { UNumber, UIcon, UBadge },
+  components: { UNumber, UIcon },
   setup: () => ({ args, slots: getSlotNames(UNumber.__name) }),
   template: `
     <UNumber v-bind="args">
@@ -47,7 +37,6 @@ const DefaultTemplate: StoryFn<UNumberArgs> = (args: UNumberArgs) => ({
 
 const EnumTemplate: StoryFn<UNumberArgs> = (args: UNumberArgs, { argTypes }) => ({
   components: { UNumber, URow },
-  directives: { tooltip },
   setup: () => ({ args, argTypes, getArgs }),
   template: `
     <URow>
@@ -55,7 +44,6 @@ const EnumTemplate: StoryFn<UNumberArgs> = (args: UNumberArgs, { argTypes }) => 
         v-for="option in argTypes?.[args.enum]?.options"
         v-bind="getArgs(args, option)"
         :key="option"
-        v-tooltip="option"
       />
     </URow>
   `,
@@ -64,54 +52,45 @@ const EnumTemplate: StoryFn<UNumberArgs> = (args: UNumberArgs, { argTypes }) => 
 export const Default = DefaultTemplate.bind({});
 Default.args = {};
 
+export const Currency = DefaultTemplate.bind({});
+Currency.args = { currency: "$" };
+
+export const CurrencySpace = DefaultTemplate.bind({});
+CurrencySpace.args = { currency: "EUR", currencySpace: true };
+
 export const Sign = EnumTemplate.bind({});
 Sign.args = { enum: "sign" };
-Sign.parameters = getEnumVariantDescription();
 
 export const Align: StoryFn<UNumberArgs> = (args: UNumberArgs) => ({
   components: { UNumber, URow, UCol },
-  directives: { tooltip },
-  setup() {
-    const options = ["left", "right"];
-
-    return { args, options };
-  },
+  setup: () => ({ args }),
   template: `
-    <UCol>
-      <URow
-        :justify="option === 'right' ? 'end' : 'start'"
-        block
-        v-for="(option, index) in options"
-        :key="index"
-      >
-        <UNumber
-          v-bind="args"
-          :align="option"
-          v-tooltip="option"
-        />
-      </URow>
+    <UCol block align="stretch" class="p-2 rounded-medium border border-primary border-dashed">
+      <UNumber v-bind="args" align="left" />
+      <UNumber v-bind="args" align="right" />
     </UCol>
   `,
 });
-Align.parameters = getEnumVariantDescription();
 
 export const Colors = EnumTemplate.bind({});
-Colors.args = { enum: "color", sign: "auto" };
-Colors.parameters = getEnumVariantDescription();
+Colors.args = { enum: "color" };
 
 export const Sizes = EnumTemplate.bind({});
 Sizes.args = { enum: "size" };
-Sizes.parameters = getEnumVariantDescription();
 
 export const CurrencyAlign = EnumTemplate.bind({});
 CurrencyAlign.args = { enum: "currencyAlign", currency: "USD", currencySpace: true };
-CurrencyAlign.parameters = getEnumVariantDescription();
 
-export const LimitFractionDigits = DefaultTemplate.bind({});
-LimitFractionDigits.args = {
-  minFractionDigits: 4,
-  maxFractionDigits: 6,
-};
+export const LimitFractionDigits: StoryFn<UNumberArgs> = (args: UNumberArgs) => ({
+  components: { UNumber, UCol },
+  setup: () => ({ args }),
+  template: `
+    <UCol>
+      <UNumber :value="-14.24" :minFractionDigits="4" :maxFractionDigits="6" />
+      <UNumber :value="-14.123456789" :minFractionDigits="4" :maxFractionDigits="6" />
+    </UCol>
+  `,
+});
 LimitFractionDigits.parameters = {
   docs: {
     description: {
@@ -133,7 +112,7 @@ DecimalSeparator.parameters = {
 };
 
 export const ThousandsSeparator = DefaultTemplate.bind({});
-ThousandsSeparator.args = { value: -1400000.24, thousandsSeparator: "-" };
+ThousandsSeparator.args = { value: -1400000.24, thousandsSeparator: "." };
 ThousandsSeparator.parameters = {
   docs: {
     description: {
@@ -143,21 +122,21 @@ ThousandsSeparator.parameters = {
 };
 
 export const Slots: StoryFn<UNumberArgs> = (args) => ({
-  components: { UNumber, UIcon, URow, UBadge },
+  components: { UNumber, UIcon, URow },
   setup() {
     return { args };
   },
   template: `
-    <URow>
-      <UNumber v-bind="args">
+    <URow align="center">
+      <UNumber v-bind="args" value="29.99" currency="$">
         <template #left>
-          <UIcon name="payments" color="success" class="mr-1" />
+          <UIcon name="payments" color="success" size="sm" class="mr-1" />
         </template>
       </UNumber>
 
-      <UNumber v-bind="args">
+      <UNumber v-bind="args" value="156.78" currency="$">
         <template #right>
-          <UBadge label="Quantity" color="success" class="ml-1" />
+          <UIcon name="trending_up" color="success" size="sm" class="ml-1" />
         </template>
       </UNumber>
     </URow>

@@ -10,9 +10,7 @@ import ULoaderOverlay from "../ULoaderOverlay.vue";
 import UButton from "../../ui.button/UButton.vue";
 import USelect from "../../ui.form-select/USelect.vue";
 
-import { useLoaderOverlay } from "../useLoaderOverlay.ts";
-
-import type { Meta, StoryFn } from "@storybook/vue3";
+import type { Meta, StoryFn } from "@storybook/vue3-vite";
 import type { Props } from "../types.ts";
 
 interface ULoaderOverlayArgs extends Props {
@@ -83,7 +81,15 @@ const EnumTemplate: StoryFn<ULoaderOverlayArgs> = (args: ULoaderOverlayArgs, { a
 const LoadingTemplate: StoryFn<ULoaderOverlayArgs> = (args: ULoaderOverlayArgs) => ({
   components: { ULoaderOverlay, UButton },
   setup() {
-    const { isLoading, loaderOverlayOn, loaderOverlayOff } = useLoaderOverlay();
+    const isLoading = ref(true);
+
+    function loaderOverlayOn() {
+      isLoading.value = true;
+    }
+
+    function loaderOverlayOff() {
+      isLoading.value = false;
+    }
 
     return { args, isLoading, loaderOverlayOn, loaderOverlayOff };
   },

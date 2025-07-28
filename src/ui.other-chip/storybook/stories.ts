@@ -7,7 +7,7 @@ import URow from "../../ui.container-row/URow.vue";
 import UAvatar from "../../ui.image-avatar/UAvatar.vue";
 import UBadge from "../../ui.text-badge/UBadge.vue";
 
-import type { Meta, StoryFn } from "@storybook/vue3";
+import type { Meta, StoryFn } from "@storybook/vue3-vite";
 import type { Props } from "../types.ts";
 
 interface UChipArgs extends Props {
@@ -74,7 +74,7 @@ Default.args = {};
 export const Icon = DefaultTemplate.bind({});
 Icon.args = {
   icon: "arrow_outward",
-  size: "2xs",
+  size: "sm",
   slotTemplate: `
     <ULink label="Releases" class="mr-2" />
   `,
@@ -88,7 +88,7 @@ Text.args = {
     </template>
 
     <template #chip>
-      <UBadge label="3" class="py-px px-1 outline-solid outline-small outline-(--vl-bg)" />
+      <UBadge label="3" class="py-px px-1" />
     </template>
   `,
 };
@@ -96,7 +96,7 @@ Text.args = {
 export const Inset = DefaultTemplate.bind({});
 Inset.args = {
   inset: true,
-  slotTemplate: `<UAvatar src="https://avatar.iran.liara.run/public/11" rounded="full" />`,
+  slotTemplate: `<UAvatar src="https://i.pravatar.cc/300" rounded="full" />`,
 };
 
 export const Size = EnumTemplate.bind({});

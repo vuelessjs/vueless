@@ -21,7 +21,7 @@ export interface Props {
   modelValue?: boolean | string | number | UnknownArray | UnknownObject;
 
   /**
-   * Native value attribute.
+   * Value of the checkbox.
    */
   value?: boolean | string | number | UnknownArray | UnknownObject;
 

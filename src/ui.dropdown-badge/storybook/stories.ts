@@ -12,8 +12,9 @@ import UCol from "../../ui.container-col/UCol.vue";
 import UIcon from "../../ui.image-icon/UIcon.vue";
 import ULink from "../../ui.button-link/ULink.vue";
 import UAvatar from "../../ui.image-avatar/UAvatar.vue";
+import UText from "../../ui.text-block/UText.vue";
 
-import type { Meta, StoryFn } from "@storybook/vue3";
+import type { Meta, StoryFn } from "@storybook/vue3-vite";
 import type { Props } from "../types.ts";
 
 interface DefaultUDropdownBadgeArgs extends Props {
@@ -52,7 +53,7 @@ export default {
 } as Meta;
 
 const DefaultTemplate: StoryFn<DefaultUDropdownBadgeArgs> = (args: DefaultUDropdownBadgeArgs) => ({
-  components: { UDropdownBadge, UIcon, ULink, UAvatar, URow, UCol },
+  components: { UDropdownBadge, UIcon, ULink, UAvatar, URow, UCol, UText },
   setup: () => ({ args, slots: getSlotNames(UDropdownBadge.__name) }),
   template: `
     <UDropdownBadge v-bind="args">
@@ -186,8 +187,8 @@ DefaultSlot.args = {
   slotTemplate: `
     <template #default>
       <URow align="center" gap="xs">
-        <UAvatar size="3xs" src="https://avatar.iran.liara.run/public/boy" />
-        <span class="text-small font-semibold">John Doe</span>
+        <UAvatar size="3xs" src="https://i.pravatar.cc/300" />
+        <UText weight="semibold" size="sm" class="text-inverted">John Doe</UText>
       </URow>
     </template>
   `,

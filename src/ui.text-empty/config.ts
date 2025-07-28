@@ -41,7 +41,7 @@ export default /*tw*/ {
     },
   },
   description: {
-    base: "text-center",
+    base: "text-center mt-2",
     variants: {
       size: {
         sm: "text-small",
@@ -54,6 +54,6 @@ export default /*tw*/ {
   defaults: {
     size: "md",
     /* icons */
-    emptyIcon: "emoji_food_beverage",
+    placeholderIcon: "emoji_food_beverage",
   },
 };

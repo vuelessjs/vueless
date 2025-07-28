@@ -79,9 +79,14 @@ const {
 </script>
 
 <template>
-  <div ref="wrapper" v-bind="wrapperAttrs">
+  <div ref="wrapper" v-bind="wrapperAttrs" :data-test="getDataTest()">
     <template v-if="isVariant.progress">
-      <div v-if="indicator" v-bind="indicatorAttrs" :style="{ width: progressPercent }">
+      <div
+        v-if="indicator"
+        v-bind="indicatorAttrs"
+        :style="{ width: progressPercent }"
+        :data-test="getDataTest('indicator')"
+      >
         <!--
           @slot Use it to add something instead of the progress indicator.
           @binding {number} percent
@@ -96,7 +101,7 @@ const {
       <progress v-bind="progressAttrs" :max="realMax" :value="value" />
     </template>
 
-    <div v-if="isSteps" v-bind="stepAttrs">
+    <div v-if="isSteps" v-bind="stepAttrs" :data-test="getDataTest('step')">
       <template v-for="(step, index) in max" :key="index">
         <!--
           @slot Use it to add something instead of the progress step label.

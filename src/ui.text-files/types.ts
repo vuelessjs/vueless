@@ -15,11 +15,6 @@ export interface Props {
   label?: string;
 
   /**
-   * File list label placement.
-   */
-  labelAlign?: "top" | "topWithDesc";
-
-  /**
    * File list description.
    */
   description?: string;

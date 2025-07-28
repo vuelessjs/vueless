@@ -14,7 +14,7 @@ import UBadge from "../../ui.text-badge/UBadge.vue";
 import UDot from "../../ui.other-dot/UDot.vue";
 import ULabel from "../../ui.form-label/ULabel.vue";
 
-import type { Meta, StoryFn } from "@storybook/vue3";
+import type { Meta, StoryFn } from "@storybook/vue3-vite";
 import type { Props } from "../types.ts";
 
 interface UToggleArgs extends Props {
@@ -57,23 +57,14 @@ const DefaultTemplate: StoryFn<UToggleArgs> = (args: UToggleArgs) => ({
 
 const EnumTemplate: StoryFn<UToggleArgs> = (args: UToggleArgs, { argTypes }) => ({
   components: { UToggle, URow },
-  setup() {
-    const values = ref(argTypes.size?.options);
-
-    return {
-      args,
-      values,
-      argTypes,
-      getArgs,
-    };
-  },
+  setup: () => ({ args, argTypes, getArgs }),
   template: `
     <URow>
       <UToggle
         v-for="option in argTypes?.[args.enum]?.options"
         v-bind="getArgs(args, option)"
         :key="option"
-        v-model="values[option]"
+        v-model="args.modelValue"
         class="w-auto"
       />
     </URow>
@@ -87,6 +78,7 @@ export const Sizes = EnumTemplate.bind({});
 Sizes.args = {
   name: "sizeTemplate",
   enum: "size",
+  modelValue: 1,
   options: [
     { value: 1, label: "{enumValue}" },
     { value: 2, label: "{enumValue}" },
@@ -110,15 +102,10 @@ Square.args = {
   name: "square",
   square: true,
   options: [
-    { value: "11", label: "star" },
-    { value: "12", label: "add" },
-    { value: "13", label: "timer" },
+    { value: "11", icon: "star" },
+    { value: "12", icon: "add" },
+    { value: "13", icon: "timer" },
   ],
-  slotTemplate: `
-    <template #option="{ label, index }">
-      <UIcon :name="label" color="inherit" />
-    </template>
-  `,
 };
 
 export const Disabled = DefaultTemplate.bind({});

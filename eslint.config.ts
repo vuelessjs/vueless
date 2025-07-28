@@ -6,7 +6,7 @@ import prettierEslintConfig from "@vue/eslint-config-prettier";
 import pluginVue from "eslint-plugin-vue";
 import pluginVitest from "@vitest/eslint-plugin";
 import pluginStorybook from "eslint-plugin-storybook";
-// TODO: Install the plugin when it will supports TailwindCSS 4
+// TODO: Install the plugin when it will not be in beta for the TailwindCSS 4
 // import pluginTailwind from "eslint-plugin-tailwindcss";
 
 const languageOptions = {

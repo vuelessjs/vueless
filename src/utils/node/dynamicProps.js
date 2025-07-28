@@ -4,7 +4,13 @@ import path from "node:path";
 
 import { vuelessConfig } from "./vuelessConfig.js";
 
-import { COMPONENTS, GRAYSCALE_COLOR, INHERIT_COLOR, PRIMARY_COLOR } from "../../constants.js";
+import {
+  COMPONENTS,
+  GRAYSCALE_COLOR,
+  INHERIT_COLOR,
+  PRIMARY_COLOR,
+  TEXT_COLOR,
+} from "../../constants.js";
 
 const OPTIONAL_MARK = "?";
 const CLOSING_BRACKET = "}";
@@ -15,7 +21,7 @@ const PROPS_INTERFACE_REG_EXP = /export\s+interface\s+Props(?:<[^>]+>)?\s*{([^}]
 const UNION_SYMBOLS_REG_EXP = /[?|:"|;]/g;
 const WORD_IN_QUOTE_REG_EXP = /"([^"]+)"/g;
 
-const DEFAULT_SAFE_COLORS = [PRIMARY_COLOR, GRAYSCALE_COLOR, INHERIT_COLOR];
+const DEFAULT_SAFE_COLORS = [PRIMARY_COLOR, GRAYSCALE_COLOR, INHERIT_COLOR, TEXT_COLOR];
 
 export async function setCustomPropTypes(srcDir) {
   for await (const [componentName, componentDir] of Object.entries(COMPONENTS)) {

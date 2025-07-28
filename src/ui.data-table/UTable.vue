@@ -215,8 +215,8 @@ const tableRowAttrs = computed(() => ({
 }));
 
 watch(localSelectedRows, onChangeLocalSelectedRows, { deep: true });
-watch(() => props.selectedRows, onChangeSelectedRows, { deep: true });
-watch(() => props.expandedRows, onChangeExpandedRows, { deep: true });
+watch(() => props.selectedRows, onChangeSelectedRows, { deep: true, immediate: true });
+watch(() => props.expandedRows, onChangeExpandedRows, { deep: true, immediate: true });
 watch(selectAll, onChangeSelectAll);
 watch(isHeaderSticky, setHeaderCellWidth);
 watch(isFooterSticky, (newValue) =>

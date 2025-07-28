@@ -2,15 +2,32 @@
 
 import { cwd } from "node:process";
 import path from "node:path";
-import { existsSync } from "node:fs";
-import { writeFile, rename } from "node:fs/promises";
+import { existsSync, mkdirSync } from "node:fs";
+import { writeFile, rename, readFile } from "node:fs/promises";
 import { styleText } from "node:util";
 
-import { DEFAULT_VUELESS_CONFIG_CONTENT } from "../constants.js";
-import { JAVASCRIPT_EXT, TYPESCRIPT_EXT, VUELESS_CONFIG_FILE_NAME } from "../../constants.js";
+import {
+  SUPPRESS_TS_CHECK,
+  COMPONENTS_INDEX_EXPORT,
+  COMPONENTS_INDEX_COMMENT,
+  DEFAULT_VUELESS_CONFIG_CONTENT,
+} from "../constants.js";
+
+import {
+  JAVASCRIPT_EXT,
+  TYPESCRIPT_EXT,
+  CONFIG_INDEX_FILE_NAME,
+  VUELESS_CONFIG_FILE_NAME,
+} from "../../constants.js";
 
 const vuelessInitOptions = ["--ts", "--js"];
 
+/**
+ * Initializes Vueless in the project by creating a default config file and .vueless directory.
+ * @param {string[]} options - The function options.
+ * @param {boolean} options.includes("--ts") - If true, creates a TypeScript config file.
+ * @param {boolean} options.includes("--js") - If true, creates a JavaScript config file.
+ */
 export async function vuelessInit(options) {
   const isValidOptions = options.every((option) => vuelessInitOptions.includes(option));
 
@@ -20,13 +37,16 @@ export async function vuelessInit(options) {
     return;
   }
 
-  const fileExt = options.includes("--ts") ? TYPESCRIPT_EXT : JAVASCRIPT_EXT;
+  const hasTypeScript = await detectTypeScript();
+  const fileExt = options.includes("--ts") || hasTypeScript ? TYPESCRIPT_EXT : JAVASCRIPT_EXT;
+
   const formattedDestPath = path.format({
     dir: cwd(),
     name: VUELESS_CONFIG_FILE_NAME,
     ext: fileExt,
   });
 
+  /* Backup existing config if it exists. */
   if (existsSync(formattedDestPath)) {
     const timestamp = new Date().valueOf();
     const renamedTarget = `${VUELESS_CONFIG_FILE_NAME}-backup-${timestamp}${fileExt}`;
@@ -42,6 +62,7 @@ export async function vuelessInit(options) {
     );
   }
 
+  /* Create a default config file. */
   await writeFile(formattedDestPath, DEFAULT_VUELESS_CONFIG_CONTENT, "utf-8");
 
   console.log(
@@ -50,4 +71,42 @@ export async function vuelessInit(options) {
       `The '${formattedDestPath.split(path.sep).at(-1)}' was created in the project root directory.`,
     ),
   );
+
+  /* Create .vueless directory and index file. */
+  const vuelessDir = path.join(cwd(), ".vueless");
+  const destPath = path.join(vuelessDir, `${CONFIG_INDEX_FILE_NAME}${fileExt}`);
+
+  if (!existsSync(vuelessDir)) {
+    mkdirSync(vuelessDir);
+    console.log(
+      styleText("green", "The '.vueless' directory was created in the project root directory."),
+    );
+  }
+
+  const suppressTsCheck = fileExt === TYPESCRIPT_EXT ? `${SUPPRESS_TS_CHECK}\n` : "";
+
+  await writeFile(
+    destPath,
+    `${suppressTsCheck}${COMPONENTS_INDEX_COMMENT}\n${COMPONENTS_INDEX_EXPORT}\n`,
+    "utf-8",
+  );
+}
+
+/**
+ * Detects if TypeScript is a dependency in the project's package.json
+ * @returns {Promise<boolean>} True if TypeScript is found in dependencies or devDependencies
+ */
+async function detectTypeScript() {
+  try {
+    const packageJsonPath = path.join(cwd(), "package.json");
+    const packageJsonContent = await readFile(packageJsonPath, "utf-8");
+    const pkg = JSON.parse(packageJsonContent);
+    const deps = { ...pkg.dependencies, ...pkg.devDependencies };
+
+    return Boolean(deps.typescript);
+  } catch (error) {
+    console.error("Failed to detect TypeScript:", error);
+
+    return false;
+  }
 }

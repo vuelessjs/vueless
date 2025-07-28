@@ -92,7 +92,7 @@ const {
 </script>
 
 <template>
-  <div ref="wrapper" v-bind="wrapperAttrs">
+  <div v-bind="wrapperAttrs" :id="id" ref="wrapper" :data-test="getDataTest()">
     <div
       v-if="counter || hasSlotContent($slots['counter'], { counter: counterValue, total })"
       v-bind="counterAttrs"

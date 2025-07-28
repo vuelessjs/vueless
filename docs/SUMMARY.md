@@ -4,7 +4,7 @@
 
 ## Installation
 
-* [Quick start (Vue)](<README (1).md>)
+* [Quick start (Vue)](<installation/vue.md>)
 * [Quick start (Nuxt)](installation/nuxt.md)
 * [Class autocompletion](installation/class-autocompletion.md)
 * [Minimal requirements](installation/minimal-requirements.md)

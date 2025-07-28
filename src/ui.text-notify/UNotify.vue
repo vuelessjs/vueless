@@ -10,7 +10,14 @@ import { COMPONENT_NAME, NotificationType, NotificationPosition } from "./consta
 
 import UIcon from "../ui.image-icon/UIcon.vue";
 
-import type { Props, Config, NotifyEvent, Notification, NotificationsWrapperRef } from "./types.ts";
+import type {
+  Props,
+  Config,
+  NotifyEvent,
+  NotifyClearAllEvent,
+  Notification,
+  NotificationsWrapperRef,
+} from "./types.ts";
 
 defineOptions({ inheritAttrs: false });
 
@@ -48,16 +55,22 @@ onBeforeUnmount(() => {
 });
 
 function onNotifyStart(event: NotifyEvent) {
-  notifications.value.push({ ...event.detail });
+  if (event.detail.notifyId === props.notifyId || (!event.detail.notifyId && !props.notifyId)) {
+    notifications.value.push({ ...event.detail });
+  }
 }
 
 function onNotifyEnd(event: NotifyEvent) {
-  notifications.value = notifications.value.filter(
-    (notification) => notification.id !== event.detail.id,
-  );
+  if (event.detail.notifyId === props.notifyId || (!event.detail.notifyId && !props.notifyId)) {
+    notifications.value = notifications.value.filter(
+      (notification) => notification.id !== event.detail.id,
+    );
+  }
 }
 
-function onClearAll() {
+function onClearAll(event: NotifyClearAllEvent) {
+  if (event.detail?.notifyId !== props.notifyId) return;
+
   notifications.value = [];
 }
 
@@ -169,7 +182,7 @@ const {
         size="md"
         :name="config.defaults.successIcon"
         v-bind="successIconAttrs"
-        data-test="type-notify"
+        :data-test="getDataTest('type-success')"
       />
 
       <UIcon
@@ -177,12 +190,12 @@ const {
         size="md"
         :name="config.defaults.warningIcon"
         v-bind="warningIconAttrs"
-        data-test="type-notify"
+        :data-test="getDataTest('type-warning')"
       />
 
       <UIcon
         v-else-if="notification.type === NotificationType.Error"
-        data-test="type-notify"
+        :data-test="getDataTest('type-error')"
         size="md"
         :name="config.defaults.errorIcon"
         v-bind="errorIconAttrs"

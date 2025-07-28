@@ -1,10 +1,10 @@
 <script setup lang="ts">
-import { computed, ref, watch } from "vue";
+import { ref, watch } from "vue";
 
 import useUI from "../composables/useUI.ts";
 
-import { formatDate, getYearsRange, dateIsOutOfRange } from "./utilCalendar.ts";
-import { isSameMonth, getDateWithoutTime, isCurrentYear } from "./utilDate.ts";
+import { formatDate, dateIsOutOfRange } from "./utilCalendar.ts";
+import { isSameMonth, isCurrentYear } from "./utilDate.ts";
 
 import defaultConfig from "./config.ts";
 import { YEARS_PER_VIEW } from "./constants.ts";
@@ -19,32 +19,10 @@ const props = defineProps<UCalendarViewProps>();
 
 const emit = defineEmits(["input"]);
 
-const isFirstRender = ref(true);
 const years = ref<Date[]>([]);
 
-const localSelectedDate = computed(() => {
-  return props.selectedDate === null ? getDateWithoutTime() : props.selectedDate;
-});
-
-const localActiveMonth = computed(
-  () => props.activeMonth || props.activeDate || localSelectedDate.value,
-);
-
-// Initialize years on component creation
-updateYears();
-
 // Watch for changes to active month and update years when needed
-watch(
-  localActiveMonth,
-  () => {
-    if (isFirstRender.value) {
-      isFirstRender.value = false;
-    }
-
-    updateYears();
-  },
-  { deep: true },
-);
+watch(() => props.activeDate, updateYears, { deep: true, immediate: true });
 
 // Update years array based on active date;
 function updateYears() {
@@ -58,11 +36,11 @@ function updateYears() {
 }
 
 function isActiveDateWithinCurrentRange(): boolean {
-  if (isFirstRender.value || !years.value.length) {
+  if (!years.value.length) {
     return false;
   }
 
-  const activeYear = localActiveMonth.value.getFullYear();
+  const activeYear = props.activeDate.getFullYear();
   const firstYear = years.value.at(0)!.getFullYear();
   const lastYear = years.value.at(-1)!.getFullYear();
 
@@ -70,35 +48,25 @@ function isActiveDateWithinCurrentRange(): boolean {
 }
 
 function calculateInitialYear() {
-  const activeYear = localActiveMonth.value.getFullYear();
+  const activeYear = props.activeDate.getFullYear();
 
   // First render - position selected date as the 5th element
-  if (isFirstRender.value) {
+  if (!years.value.length) {
     const selectedYear = props.selectedDate?.getFullYear() || activeYear;
 
     return selectedYear - 4;
   }
 
   // If we have existing years, check if we need to adjust the range
-  if (years.value.length > 0) {
-    const firstYear = years.value.at(1)!.getFullYear();
-    const lastYear = years.value.at(1)!.getFullYear();
+  const firstYear = years.value.at(0)!.getFullYear();
+  const lastYear = years.value.at(-1)!.getFullYear();
 
-    // Active year before range - position at end
-    if (activeYear < firstYear) {
-      return activeYear - (YEARS_PER_VIEW - 1);
-    }
-
-    // Active year after range - position at beginning
-    if (activeYear > lastYear) {
-      return activeYear;
-    }
+  // Active year before range - position at end
+  if (activeYear < firstYear) {
+    return firstYear - YEARS_PER_VIEW;
+  } else {
+    return lastYear + 1;
   }
-
-  // Default calculation for initial render or when range is empty
-  const [standardInitialYear] = getYearsRange(localActiveMonth.value);
-
-  return standardInitialYear;
 }
 
 function getYears(initialYear: number): Date[] {
@@ -106,13 +74,13 @@ function getYears(initialYear: number): Date[] {
 }
 
 function getYear(year: number) {
-  let newDate = new Date(localActiveMonth.value.valueOf());
+  let newDate = new Date(props.activeDate.valueOf());
 
   newDate.setFullYear(year);
 
   // Means the current day has less days so the extra month is
   // in the following month
-  if (newDate.getDate() !== localActiveMonth.value.getDate()) {
+  if (newDate.getDate() !== props.activeDate.getDate()) {
     // Assign the last day of previous month
     newDate = new Date(newDate.getFullYear(), newDate.getMonth(), 0);
   }
@@ -121,13 +89,18 @@ function getYear(year: number) {
 }
 
 function getYearState(year: Date) {
-  const isSelectedYear = isSameMonth(year, localSelectedDate.value) && props.selectedDate !== null;
+  const isSelectedYear = props.selectedDate && isSameMonth(year, props.selectedDate);
   const isPresentYear = isCurrentYear(year);
   const isMoreThanOneYearRange =
     props.selectedDateTo &&
     props.selectedDate &&
     props.selectedDateTo.getFullYear() - props.selectedDate.getFullYear() >= 1;
-  const isActiveYear = props.activeMonth && isSameMonth(props.activeMonth, year) && !props.range;
+
+  const isActiveYear =
+    props.isArrowKeyDirty &&
+    isSameMonth(props.activeDate, year) &&
+    !props.range &&
+    !dateIsOutOfRange(year, props.minDate, props.maxDate, props.locale, props.dateFormat);
 
   return {
     isSelectedYear,
@@ -147,6 +120,14 @@ function onClickYear(year: Date) {
  */
 const { yearViewAttrs, yearAttrs, currentYearAttrs, selectedYearAttrs, activeYearAttrs } =
   useUI<Config>(defaultConfig);
+
+defineExpose({
+  /**
+   * List of years to display in the calendar view.
+   * @property {Date[]}
+   */
+  years,
+});
 </script>
 
 <template>

@@ -1,17 +1,11 @@
-/* ------ Tailwind plugins ------ */
-
-@plugin "@tailwindcss/forms" {
-  strategy: base;
-}
-
 /* ------ Development sources ------ */
 
-@source "../node_modules/.cache/vueless/safelist.txt";
+@source "../node_modules/.cache/vueless/tailwind";
 @source "../node_modules/.cache/vueless/mergedConfigs";
 
 /* ------ Production sources ------ */
 
-@source "../.cache/vueless/safelist.txt";
+@source "../.cache/vueless/tailwind";
 @source "../.cache/vueless/mergedConfigs";
 
 /* ------ Color mode settings ------ */

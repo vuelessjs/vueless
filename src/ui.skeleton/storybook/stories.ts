@@ -1,5 +1,5 @@
-import type { Meta, StoryFn } from "@storybook/vue3";
-import { getArgTypes } from "../../utils/storybook.ts";
+import type { Meta, StoryFn } from "@storybook/vue3-vite";
+import { getArgs, getArgTypes } from "../../utils/storybook.ts";
 
 import USkeleton from "../USkeleton.vue";
 import UCol from "../../ui.container-col/UCol.vue";
@@ -29,18 +29,13 @@ const DefaultTemplate: StoryFn<SkeletonArgs> = (args: SkeletonArgs) => ({
 
 const EnumVariantTemplate: StoryFn<SkeletonArgs> = (args: SkeletonArgs, { argTypes }) => ({
   components: { USkeleton, UCol },
-  setup() {
-    const filteredOptions = argTypes?.[args.enum]?.options || [];
-
-    return { args, filteredOptions };
-  },
+  setup: () => ({ args, argTypes, getArgs }),
   template: `
     <UCol>
       <USkeleton
-        v-for="(option, index) in filteredOptions"
-        :key="index"
-        v-bind="args"
-        :[args.enum]="option"
+        v-for="option in argTypes?.[args.enum]?.options"
+        v-bind="getArgs(args, option)"
+        :key="option"
       />
     </UCol>
   `,
@@ -59,7 +54,7 @@ export const Slot: StoryFn<SkeletonArgs> = (args) => ({
   },
   template: `
     <USkeleton v-bind="args" class="max-w-96 p-4">
-      <USkeleton class="w-15 h-10" class="rounded-small" variant="dark" />
+      <USkeleton class="w-15 h-10 rounded-small" variant="dark" />
     </USkeleton>
   `,
 });

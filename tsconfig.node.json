@@ -6,7 +6,8 @@
     "vueless.config.*",
     "cypress.config.*",
     "nightwatch.conf.*",
-    "playwright.config.*"
+    "playwright.config.*",
+    ".vueless/**/*"
   ],
   "compilerOptions": {
     "module": "ESNext",

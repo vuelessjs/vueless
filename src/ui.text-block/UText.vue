@@ -3,7 +3,6 @@ import { useTemplateRef } from "vue";
 
 import useUI from "../composables/useUI.ts";
 import { getDefaults } from "../utils/ui.ts";
-import { hasSlotContent } from "../utils/helper.ts";
 
 import { COMPONENT_NAME } from "./constants.ts";
 import defaultConfig from "./config.ts";
@@ -30,13 +29,14 @@ defineExpose({
  * Get element / nested component attributes for each config token ✨
  * Applies: `class`, `config`, redefined default `props` and dev `vl-...` attributes.
  */
-const { getDataTest, wrapperAttrs, htmlAttrs } = useUI<Config>(defaultConfig);
+const { getDataTest, wrapperAttrs, labelAttrs } = useUI<Config>(defaultConfig);
 </script>
 
 <template>
   <div ref="wrapper" v-bind="wrapperAttrs" :data-test="getDataTest()">
     <!-- @slot Use it to add something inside. -->
-    <div v-if="!hasSlotContent($slots['default'])" v-bind="htmlAttrs" v-html="html" />
-    <slot />
+    <slot>
+      <div v-bind="labelAttrs" v-text="label" />
+    </slot>
   </div>
 </template>

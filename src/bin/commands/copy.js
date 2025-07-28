@@ -7,8 +7,8 @@ import { cp, readFile, writeFile, rename } from "node:fs/promises";
 import { styleText } from "node:util";
 
 import { getDirFiles } from "../../utils/node/helper.js";
-import { replaceRelativeImports } from "../utils/formatUtil.js";
-import { getStorybookId, getStoryMetaKeyIndex } from "../utils/dataUtils.js";
+import { replaceRelativeImports } from "../utils/format.js";
+import { getStorybookId, getStoryMetaKeyIndex } from "../utils/data.js";
 
 import { SRC_COMPONENTS_PATH, COMPONENTS_PATH } from "../constants.js";
 import { COMPONENTS, VUELESS_PACKAGE_DIR, VUELESS_LOCAL_DIR } from "../../constants.js";

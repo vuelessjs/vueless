@@ -35,7 +35,7 @@ export default /*tw*/ {
   },
   dividerHidden: "{>divider} border-transparent",
   toggleButton: {
-    base: "{UButton} font-normal focus-visible:ring-offset-0",
+    base: "{UButton} font-normal",
     defaults: {
       variant: "ghost",
     },

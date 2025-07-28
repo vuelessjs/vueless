@@ -9,8 +9,8 @@ import type { Props } from "../types.ts";
 
 describe("UButton.vue", () => {
   describe("Props", () => {
-    // Variant prop
-    it("applies the correct variant class", async () => {
+    it("Variant – applies the correct variant class", async () => {
+      const color = "primary";
       const variants = {
         solid: "text-inverted bg-primary",
         outlined: "text-primary border-primary",
@@ -23,7 +23,7 @@ describe("UButton.vue", () => {
         const component = mount(UButton, {
           props: {
             variant: variant as Props["variant"],
-            color: "primary",
+            color,
           },
         });
 
@@ -31,8 +31,7 @@ describe("UButton.vue", () => {
       });
     });
 
-    // Color prop
-    it("applies the correct color class", async () => {
+    it("Color – applies the correct color class", async () => {
       const colors = [
         "primary",
         "secondary",
@@ -56,8 +55,7 @@ describe("UButton.vue", () => {
       });
     });
 
-    // Size prop
-    it("applies the correct size class", async () => {
+    it("Size – applies the correct size class", async () => {
       const size = {
         "2xs": "text-small",
         xs: "text-small",
@@ -78,8 +76,7 @@ describe("UButton.vue", () => {
       });
     });
 
-    // Label prop
-    it("renders the correct label text", () => {
+    it("Label – renders the correct label text", () => {
       const label = "Button";
 
       const component = mount(UButton, {
@@ -91,8 +88,7 @@ describe("UButton.vue", () => {
       expect(component.text()).toBe(label);
     });
 
-    // Tag prop
-    it("renders the correct HTML tag", () => {
+    it("Tag – renders the correct HTML tag", () => {
       const tags = ["button", "a", "div"];
 
       tags.forEach((tag) => {
@@ -106,8 +102,7 @@ describe("UButton.vue", () => {
       });
     });
 
-    // Icon prop
-    it("renders icon when icon prop is provided", () => {
+    it("Icon – renders icon when prop is provided", () => {
       const icon = "close";
       const label = "Button";
 
@@ -125,8 +120,7 @@ describe("UButton.vue", () => {
       expect(nestedUIconComponents[0].props("name")).toBe(icon);
     });
 
-    // Left Icon prop
-    it("renders left icon when leftIcon prop is provided", () => {
+    it("Left Icon – renders icon when prop is provided", () => {
       const leftIcon = "close";
       const label = "Button";
 
@@ -144,8 +138,7 @@ describe("UButton.vue", () => {
       expect(nestedUIconComponents[0].props("name")).toBe(leftIcon);
     });
 
-    // Right Icon prop
-    it("renders right icon when rightIcon prop is provided", () => {
+    it("Right Icon – renders icon when prop is provided", () => {
       const rightIcon = "close";
       const label = "Button";
 
@@ -163,8 +156,7 @@ describe("UButton.vue", () => {
       expect(nestedUIconComponents[0].props("name")).toBe(rightIcon);
     });
 
-    // Tabindex prop
-    it("applies the correct tabindex attribute", () => {
+    it("Tabindex – applies the correct attribute", () => {
       const tabindex = "2";
 
       const component = mount(UButton, {
@@ -176,8 +168,7 @@ describe("UButton.vue", () => {
       expect(component.attributes("tabindex")).toBe(tabindex);
     });
 
-    // Disabled prop
-    it("applies disabled attribute when disabled prop is true", () => {
+    it("Disabled – applies attribute when prop is true", () => {
       const disabled = true;
 
       const component = mount(UButton, {
@@ -189,9 +180,9 @@ describe("UButton.vue", () => {
       expect(component.attributes("disabled")).toBeDefined();
     });
 
-    // Block prop
-    it("applies block class when block prop is true", () => {
+    it("Block – applies class when prop is true", () => {
       const block = true;
+      const expectedClass = "w-full";
 
       const component = mount(UButton, {
         props: {
@@ -199,12 +190,12 @@ describe("UButton.vue", () => {
         },
       });
 
-      expect(component.attributes("class")).toContain("w-full");
+      expect(component.attributes("class")).toContain(expectedClass);
     });
 
-    // Round prop
-    it("applies round class when round prop is true", () => {
+    it("Round – applies class when prop is true", () => {
       const round = true;
+      const expectedClass = "rounded-full";
 
       const component = mount(UButton, {
         props: {
@@ -212,11 +203,10 @@ describe("UButton.vue", () => {
         },
       });
 
-      expect(component.attributes("class")).toContain("rounded-full");
+      expect(component.attributes("class")).toContain(expectedClass);
     });
 
-    // Square prop
-    it("applies square classes when square prop is true", () => {
+    it("Square – applies classes when prop is true", () => {
       const square = true;
       const size = {
         "2xs": "p-1",
@@ -239,10 +229,10 @@ describe("UButton.vue", () => {
       });
     });
 
-    // Loading prop
-    it("shows loader when loading prop is true", async () => {
+    it("Loading – shows loader when prop is true", async () => {
       const loading = true;
       const label = "Button with some long text";
+      const expectedClass = "pointer-events-none";
 
       const component = mount(UButton, {
         props: {
@@ -253,12 +243,11 @@ describe("UButton.vue", () => {
 
       expect(component.text()).not.toBe(label);
       expect(component.findComponent(ULoader).exists()).toBe(true);
-      expect(component.find("div.invisible").exists()).toBe(true);
-      expect(component.attributes("class")).toContain("pointer-events-none"); // Unclickable
+      expect(component.find("[vl-key='invisible']").exists()).toBe(true);
+      expect(component.attributes("class")).toContain(expectedClass); // Unclickable
     });
 
-    // ID prop
-    it("applies the correct id attribute", () => {
+    it("Id – applies the correct attribute", () => {
       const id = "test-button-id";
 
       const component = mount(UButton, {
@@ -270,8 +259,7 @@ describe("UButton.vue", () => {
       expect(component.attributes("id")).toBe(id);
     });
 
-    // DataTest prop
-    it("applies the correct data-test attribute", () => {
+    it("Data Test – applies the correct attribute", () => {
       const dataTest = "test-button";
 
       const component = mount(UButton, {
@@ -284,10 +272,8 @@ describe("UButton.vue", () => {
     });
   });
 
-  // Slots tests
   describe("Slots", () => {
-    // Default slot
-    it("renders content from default slot", () => {
+    it("Default – renders content", () => {
       const slotContent = "Custom Content";
       const label = "Button";
 
@@ -304,8 +290,7 @@ describe("UButton.vue", () => {
       expect(component.text()).toContain(slotContent);
     });
 
-    // Left slot
-    it("renders content from left slot", () => {
+    it("Left – renders content", () => {
       const label = "Button";
       const slotText = "Left";
       const slotClass = "left-content";
@@ -324,8 +309,7 @@ describe("UButton.vue", () => {
       expect(component.find(`.${slotClass}`).text()).toBe(slotText);
     });
 
-    // Right slot
-    it("renders content from right slot", () => {
+    it("Right – renders content", () => {
       const label = "Button";
       const slotText = "Right";
       const slotClass = "right-content";
@@ -345,18 +329,15 @@ describe("UButton.vue", () => {
     });
   });
 
-  // Events tests
   describe("Events", () => {
-    // Click event
-    it("emits click event when clicked", async () => {
+    it("Click – emits when clicked", async () => {
       const component = mount(UButton, {});
 
       await component.trigger("click");
       expect(component.emitted("click")).toBeTruthy();
     });
 
-    // No click event when disabled
-    it("does not emit click event when disabled", async () => {
+    it("Click – does not emit when disabled", async () => {
       const disabled = true;
 
       const component = mount(UButton, {
@@ -370,10 +351,8 @@ describe("UButton.vue", () => {
     });
   });
 
-  // Exposed refs tests
   describe("Exposed refs", () => {
-    // buttonRef
-    it("exposes buttonRef", () => {
+    it("Button – exposes ref", () => {
       const component = mount(UButton, {});
 
       expect(component.vm.buttonRef).toBeDefined();

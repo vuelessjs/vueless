@@ -50,6 +50,11 @@ export interface Props {
   block?: boolean;
 
   /**
+   * Allows changing HTML tag.
+   */
+  tag?: string;
+
+  /**
    * Component config object.
    */
   config?: ComponentConfig<Config>;

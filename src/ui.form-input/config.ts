@@ -1,8 +1,17 @@
 export default /*tw*/ {
-  inputLabel: "{ULabel}",
+  inputLabel: {
+    base: "{ULabel}",
+    content: "w-full",
+    variants: {
+      labelAlign: {
+        right: "w-full",
+        left: "w-full",
+      },
+    },
+  },
   wrapper: {
     base: `
-      flex w-full relative bg-default transition
+      flex gap-3 w-full px-3 relative bg-default transition
       border rounded-medium border-default outline-transparent
       hover:border-lifted hover:focus-within:border-primary focus-within:border-primary
       focus-within:outline focus-within:outline-small focus-within:outline-primary focus-within:transition
@@ -26,14 +35,14 @@ export default /*tw*/ {
       },
     },
   },
-  leftIcon: "{UIcon} {>inputIcon}",
-  rightIcon: "{UIcon} {>inputIcon}",
-  leftSlot: "pl-2.5 flex items-center",
-  rightSlot: "pr-2.5 flex items-center",
+  leftIcon: "{UIcon} {>inputIcon} -mr-0.5",
+  rightIcon: "{UIcon} {>inputIcon} -ml-0.5",
+  leftSlot: "flex items-center",
+  rightSlot: "flex items-center",
   input: {
     base: `
-      block w-full py-2 px-3 font-normal !leading-none bg-transparent
-      border-none rounded-inherit transition focus:ring-0 focus:outline-none
+      block w-full py-2 font-normal !leading-none bg-transparent
+      border-none rounded-inherit transition focus:outline-none
       placeholder:font-normal placeholder:text-muted
       disabled:text-accented disabled:cursor-not-allowed
     `,
@@ -64,6 +73,6 @@ export default /*tw*/ {
     validationRule: "",
     readonly: false,
     disabled: false,
-    noAutocomplete: false,
+    autocomplete: true,
   },
 };

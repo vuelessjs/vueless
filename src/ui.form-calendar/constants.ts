@@ -19,6 +19,8 @@ export const MAX_SECONDS = 59;
 export const MIN_SECONDS = 0;
 export const SEPARATOR = "—";
 
+export const DATE_CLICK_STEP = 1;
+
 export enum LocaleType {
   Day = "day",
   Month = "month",

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { useTemplateRef } from "vue";
+import { computed, useTemplateRef } from "vue";
 
 import useUI from "../composables/useUI.ts";
 import { getDefaults } from "../utils/ui.ts";
@@ -14,11 +14,19 @@ import type { Props, Config } from "./types.ts";
 
 defineOptions({ inheritAttrs: false });
 
-withDefaults(defineProps<Props>(), {
+const props = withDefaults(defineProps<Props>(), {
   ...getDefaults<Props, Config>(defaultConfig, COMPONENT_NAME),
 });
 
 const wrapperRef = useTemplateRef<HTMLDivElement>("wrapper");
+
+const iconName = computed(() => {
+  if (typeof props.placeholderIcon === "string") {
+    return props.placeholderIcon;
+  }
+
+  return props.placeholderIcon ? config.value.defaults.placeholderIcon : "";
+});
 
 defineExpose({
   /**
@@ -48,16 +56,23 @@ const {
 <template>
   <div ref="wrapper" v-bind="wrapperAttrs" :data-test="getDataTest()">
     <div v-bind="headerAttrs">
-      <!-- @slot Use it to add something to the header. -->
-      <slot name="header">
-        <div v-bind="emptyIconWrapperAttrs">
-          <UIcon :name="config.defaults.emptyIcon" color="neutral" v-bind="emptyIconAttrs" />
+      <!--
+        @slot Use it to add something to the header.
+        @binding {string} icon-name
+      -->
+      <slot name="header" :icon-name="iconName">
+        <div v-if="iconName" v-bind="emptyIconWrapperAttrs">
+          <UIcon :name="iconName" color="neutral" v-bind="emptyIconAttrs" />
         </div>
       </slot>
     </div>
 
-    <!-- @slot Use it to add something inside. -->
-    <slot>
+    <!--
+      @slot Use it to add something inside.
+      @binding {string} title
+      @binding {string} description
+    -->
+    <slot :title="title" :description="description">
       <UHeader v-if="title" :label="title" v-bind="titleAttrs" />
       <div v-if="description" v-bind="descriptionAttrs" v-text="description" />
     </slot>

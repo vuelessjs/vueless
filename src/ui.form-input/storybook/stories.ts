@@ -8,17 +8,20 @@ import {
 
 import UInput from "../../ui.form-input/UInput.vue";
 import UIcon from "../../ui.image-icon/UIcon.vue";
-import UButton from "../../ui.button/UButton.vue";
 import UCol from "../../ui.container-col/UCol.vue";
 import URow from "../../ui.container-row/URow.vue";
-import UAvatar from "../../ui.image-avatar/UAvatar.vue";
+import UDropdownButton from "../../ui.dropdown-button/UDropdownButton.vue";
+import UText from "../../ui.text-block/UText.vue";
+import UChip from "../../ui.other-chip/UChip.vue";
 
-import type { Meta, StoryFn } from "@storybook/vue3";
+import type { Meta, StoryFn } from "@storybook/vue3-vite";
 import type { Props } from "../types.ts";
+import { ref } from "vue";
 
 interface UInputArgs extends Props {
   slotTemplate?: string;
   enum: "labelAlign" | "size" | "validationRule";
+  wrapperClass?: string;
 }
 
 export default {
@@ -26,7 +29,7 @@ export default {
   title: "Form Inputs & Controls / Input",
   component: UInput,
   args: {
-    label: "Full Name",
+    label: "Name",
     modelValue: "John Doe",
   },
   argTypes: {
@@ -57,7 +60,7 @@ const EnumTemplate: StoryFn<UInputArgs> = (args: UInputArgs, { argTypes }) => ({
   components: { UInput, UCol },
   setup: () => ({ args, argTypes, getArgs }),
   template: `
-    <UCol>
+    <UCol :class="args.wrapperClass">
       <UInput
         v-for="option in argTypes?.[args.enum]?.options"
         v-bind="getArgs(args, option)"
@@ -75,17 +78,23 @@ export const Placeholder = DefaultTemplate.bind({});
 Placeholder.args = { modelValue: "", placeholder: "Type something here..." };
 
 export const Description = DefaultTemplate.bind({});
-Description.args = { description: "Provide additional details if necessary." };
+Description.args = { description: "Name of the person or entity." };
 
-export const Error = DefaultTemplate.bind({});
-Error.args = { error: "This field is required. Please enter a value.", modelValue: "" };
+export const Error: StoryFn<UInputArgs> = (args: UInputArgs) => ({
+  components: { UInput },
+  setup: () => ({ args, modelValue: ref("") }),
+  template: `
+    <UInput
+      v-bind="args"
+      v-model="modelValue"
+      class="!max-w-96"
+      :error="modelValue ? '' : 'This field is required. Please enter a value.'"
+    />
+  `,
+});
 
 export const Readonly = DefaultTemplate.bind({});
-Readonly.args = {
-  readonly: true,
-  label: "Readonly data",
-  modelValue: "Pre-filled content that cannot be changed",
-};
+Readonly.args = { readonly: true };
 
 export const Disabled = DefaultTemplate.bind({});
 Disabled.args = { disabled: true };
@@ -96,16 +105,18 @@ MaxLength.args = { maxLength: 8, modelValue: "", placeholder: "Max 8 characters"
 export const LabelAlign = EnumTemplate.bind({});
 LabelAlign.args = {
   enum: "labelAlign",
-  label: "Full Name",
+  label: "Name",
+  description: "Name of the person or entity.",
   modelValue: "",
   placeholder: "{enumValue}",
+  wrapperClass: "gap-16",
 };
 
 export const Sizes = EnumTemplate.bind({});
 Sizes.args = { enum: "size", modelValue: "", placeholder: "{enumValue}" };
 
 export const ValidationRules: StoryFn<UInputArgs> = (args: UInputArgs, { argTypes }) => ({
-  components: { UInput, UCol },
+  components: { UInput, UCol, URow },
   setup() {
     function getDescription(option: string): string {
       const options: Record<string, string> = {
@@ -125,13 +136,14 @@ export const ValidationRules: StoryFn<UInputArgs> = (args: UInputArgs, { argType
     return { args, options, getDescription };
   },
   template: `
-    <UCol>
+    <UCol class="gap-20">
       <UInput
         v-for="(option, index) in options"
         :key="index"
         v-model="args.modelValue[option]"
         :validation-rule="option"
         :label="option"
+        label-align="topWithDesc"
         :description="getDescription(option)"
         class="max-w-96"
       />
@@ -141,6 +153,7 @@ export const ValidationRules: StoryFn<UInputArgs> = (args: UInputArgs, { argType
         validation-rule="^#([a-fA-F0-9]{0,6}|[a-fA-F0-9]{0,8})$"
         label="Custom RegExp"
         :description="getDescription('Custom RegExp')"
+        label-align="topWithDesc"
         class="max-w-96"
       />
     </UCol>
@@ -177,23 +190,59 @@ export const IconProps: StoryFn<UInputArgs> = (args) => ({
 });
 
 export const Slots: StoryFn<UInputArgs> = (args) => ({
-  components: { UInput, URow, UButton, UAvatar },
+  components: { UInput, URow, UDropdownButton, UText, UChip },
   setup() {
-    return { args };
+    const countryCodes = [
+      { label: "+33", id: "+33" },
+      { label: "+44", id: "+44" },
+      { label: "+49", id: "+49" },
+    ];
+
+    const countryCode = ref("+33");
+
+    return { args, countryCode, countryCodes };
   },
   template: `
     <URow>
-      <UInput v-bind="args">
+      <UInput
+        label="Phone Number"
+        placeholder="Enter your phone number"
+        :config="{ wrapper: 'pl-0' }"
+      >
+        <template #label="{ label }">
+          {{ label }}
+          <span class="text-red-500">*</span>
+        </template>
+
         <template #left>
-          <UAvatar />
+          <UDropdownButton
+            v-model="countryCode"
+            :options="countryCodes"
+            square
+            size="sm"
+            variant="soft"
+            class="rounded-r-none h-[49px]"
+          />
         </template>
       </UInput>
 
-      <UInput v-bind="args" :config="{ rightSlot: 'pr-0' }">
+      <UInput label="Website" placeholder="Enter your website">
+        <template #label="{ label }">
+          {{ label }}
+          <span class="text-red-500">*</span>
+        </template>
+
         <template #right>
-          <UButton label="Search" size="sm" class="rounded-l-none h-full" />
+          <UText label=".com" variant="lifted" />
         </template>
       </UInput>
     </URow>
   `,
 });
+Slots.parameters = {
+  docs: {
+    story: {
+      height: "250px",
+    },
+  },
+};

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, useSlots, watch, useId, nextTick, useTemplateRef } from "vue";
+import { computed, useSlots, watch, useId, useTemplateRef, nextTick, ref } from "vue";
 
 import useUI from "../composables/useUI.ts";
 import { getDefaults } from "../utils/ui.ts";
@@ -47,6 +47,8 @@ const elementId = props.id || useId();
 const slots = useSlots();
 
 const wrapperRef = useTemplateRef<HTMLDivElement>("wrapper");
+
+const isWrapperTransitionComplete = ref(false);
 
 const isShownModal = computed({
   get: () => props.modelValue,
@@ -106,22 +108,21 @@ function trapFocus(e: KeyboardEvent) {
   }
 }
 
-watch(isShownModal, onChangeShownModal);
+watch(isShownModal, (newValue) => {
+  onChangeShownModal(newValue);
+
+  if (!newValue) emit("close");
+});
 
 function onChangeShownModal(newValue: boolean) {
   toggleEventListeners();
   toggleOverflow();
 
   if (newValue) {
-    nextTick(focusModal);
+    nextTick(() => wrapperRef.value?.focus());
+  } else {
+    isWrapperTransitionComplete.value = false;
   }
-}
-
-function focusModal() {
-  const focusableElements = getFocusableElements();
-  const firstFocusableElement = focusableElements.at(0) as HTMLElement;
-
-  focusableElements.length ? firstFocusableElement.focus() : wrapperRef.value?.focus();
 }
 
 function toggleOverflow() {
@@ -180,6 +181,11 @@ defineExpose({
  * Get element / nested component attributes for each config token ✨
  * Applies: `class`, `config`, redefined default `props` and dev `vl-...` attributes.
  */
+const mutatedProps = computed(() => ({
+  /* component state, not a props */
+  wrapperTransitionCompleted: isWrapperTransitionComplete.value,
+}));
+
 const {
   getDataTest,
   config,
@@ -201,7 +207,7 @@ const {
   closeButtonAttrs,
   beforeTitleAttrs,
   titleFallbackAttrs,
-} = useUI<Config>(defaultConfig);
+} = useUI<Config>(defaultConfig, mutatedProps);
 </script>
 
 <template>
@@ -209,7 +215,11 @@ const {
     <div v-if="isShownModal" v-bind="overlayAttrs" />
   </Transition>
 
-  <Transition v-bind="config.wrapperTransition">
+  <Transition
+    v-bind="config.wrapperTransition"
+    @after-enter="isWrapperTransitionComplete = true"
+    @leave="isWrapperTransitionComplete = false"
+  >
     <div
       v-if="isShownModal"
       :id="elementId"
@@ -225,8 +235,11 @@ const {
             <div v-bind="beforeTitleAttrs">
               <!-- @slot Use it to add something before the header title. -->
               <slot name="before-title" />
-              <!-- @slot Use it to add something to the left side of the header. -->
-              <slot name="title">
+              <!--
+                @slot Use it to add something to the left side of the header.
+                @binding {string} title
+              -->
+              <slot name="title" :title="title">
                 <div v-bind="titleFallbackAttrs">
                   <div v-if="isShownArrowButton" v-bind="backLinkWrapperAttrs">
                     <UIcon

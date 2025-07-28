@@ -9,8 +9,9 @@ import {
 import UTabs from "../../ui.navigation-tabs/UTabs.vue";
 import URow from "../../ui.container-row/URow.vue";
 import ULabel from "../../ui.form-label/ULabel.vue";
+import UTab from "../../ui.navigation-tab/UTab.vue";
 
-import type { Meta, StoryFn } from "@storybook/vue3";
+import type { Meta, StoryFn } from "@storybook/vue3-vite";
 import type { Props } from "../types.ts";
 
 interface UTabsArgs extends Props {
@@ -75,14 +76,7 @@ export const Default = DefaultTemplate.bind({});
 Default.args = {};
 
 export const Sizes = EnumTemplate.bind({});
-Sizes.args = {
-  enum: "size",
-  options: [
-    { label: "{enumValue}", value: "1" },
-    { label: "{enumValue}", value: "2" },
-    { label: "{enumValue}", value: "3" },
-  ],
-};
+Sizes.args = { enum: "size" };
 
 export const Scrollable = DefaultTemplate.bind({});
 Scrollable.args = {
@@ -103,18 +97,27 @@ Square.parameters = {
   },
 };
 
-export const Slots: StoryFn<UTabsArgs> = (args) => ({
-  components: { UTabs },
-  setup() {
-    args.config = { next: "flex items-center", prev: "flex items-center" };
+export const DefaultSlot: StoryFn<UTabsArgs> = (args) => ({
+  components: { UTabs, UTab },
+  setup: () => ({ args, getOptionsArray }),
+  template: `
+    <UTabs v-model="args.modelValue">
+      <UTab label="Custom Tab 1" value="1" />
+      <UTab label="Custom Tab 2" value="2" disabled />
+      <UTab label="Custom Tab 3" value="3" />
+    </UTabs>
+  `,
+});
 
-    return { args, getOptionsArray };
-  },
+export const PrevNextSlots: StoryFn<UTabsArgs> = (args) => ({
+  components: { UTabs },
+  setup: () => ({ args, getOptionsArray }),
   template: `
     <UTabs
       v-bind="args"
       :options="getOptionsArray()"
       scrollable
+      :config="{ next: 'flex items-center', prev: 'flex items-center' }"
     >
       <template #prev>
         <span class="cursor-pointer">◀️</span>
@@ -125,7 +128,7 @@ export const Slots: StoryFn<UTabsArgs> = (args) => ({
     </UTabs>
   `,
 });
-Slots.parameters = {
+PrevNextSlots.parameters = {
   docs: {
     description: {
       story:

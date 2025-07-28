@@ -7,8 +7,8 @@ import { readFile, writeFile, rename, mkdir, readdir, copyFile } from "node:fs/p
 import { styleText } from "node:util";
 
 import { getDirFiles } from "../../utils/node/helper.js";
-import { replaceRelativeImports } from "../utils/formatUtil.js";
-import { getStorybookId } from "../utils/dataUtils.js";
+import { replaceRelativeImports } from "../utils/format.js";
+import { getStorybookId } from "../utils/data.js";
 
 import { SRC_COMPONENTS_PATH, COMPONENTS_PATH } from "../constants.js";
 

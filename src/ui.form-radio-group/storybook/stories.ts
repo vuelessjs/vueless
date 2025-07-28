@@ -8,11 +8,12 @@ import {
 
 import URadioGroup from "../../ui.form-radio-group/URadioGroup.vue";
 import URadio from "../../ui.form-radio/URadio.vue";
-import UAlert from "../../ui.text-alert/UAlert.vue";
 import UCol from "../../ui.container-col/UCol.vue";
 import UBadge from "../../ui.text-badge/UBadge.vue";
+import UText from "../../ui.text-block/UText.vue";
+import URow from "../../ui.container-row/URow.vue";
 
-import type { Meta, StoryFn } from "@storybook/vue3";
+import type { Meta, StoryFn } from "@storybook/vue3-vite";
 import type { Props } from "../types.ts";
 
 interface URadioGroupArgs extends Props {
@@ -43,24 +44,12 @@ export default {
 } as Meta;
 
 const DefaultTemplate: StoryFn<URadioGroupArgs> = (args: URadioGroupArgs) => ({
-  components: { URadioGroup, URadio, UAlert, UCol, UBadge },
+  components: { URadioGroup, URadio, UCol, UBadge, UText, URow },
   setup: () => ({ args, slots: getSlotNames(URadioGroup.__name) }),
   template: `
-    <UCol gap="2xl">
-      <URadioGroup v-bind="args" v-model="args.modelValue">
-        <URadio
-          v-for="(radio, index) in args.options"
-          :key="index"
-          v-bind="radio"
-        >
-          ${args.slotTemplate || getSlotsFragment("")}
-        </URadio>
-      </URadioGroup>
-
-      <UAlert size="sm" variant="ghost" color="success" bordered>
-        <p>Selected value: {{ args.modelValue }}</p>
-      </UAlert>
-    </UCol>
+    <URadioGroup v-bind="args" v-model="args.modelValue">
+      ${args.slotTemplate || getSlotsFragment("")}
+    </URadioGroup>
   `,
 });
 
@@ -89,8 +78,18 @@ Description.args = {
     "Select your preferred delivery method. Additional charges may apply for expedited shipping.",
 };
 
-export const Error = DefaultTemplate.bind({});
-Error.args = { name: "Error", error: "Please, select at least one option to proceed." };
+export const Error: StoryFn<URadioGroupArgs> = (args: URadioGroupArgs) => ({
+  components: { URadioGroup },
+  setup: () => ({ args }),
+  template: `
+    <URadioGroup
+      v-bind="args"
+      v-model="args.modelValue"
+      name="Error"
+      :error="args.modelValue ? '' : 'Please, select at least one option to proceed.'"
+    />
+  `,
+});
 
 export const Disabled = DefaultTemplate.bind({});
 Disabled.args = { name: "Disabled", disabled: true };
@@ -126,7 +125,8 @@ LabelSlot.args = {
   name: "LabelSlot",
   slotTemplate: `
     <template #label="{ label }">
-      <UBadge :label="label" color="success" variant="soft" />
+      <span class="text-red-500">*</span>
+      {{ label }}
     </template>
   `,
 };

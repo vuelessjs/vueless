@@ -4,7 +4,6 @@ import {
   getSlotNames,
   getSlotsFragment,
   getDocsDescription,
-  getEnumVariantDescription,
 } from "../../utils/storybook.ts";
 
 import UFile from "../../ui.text-file/UFile.vue";
@@ -12,9 +11,9 @@ import URow from "../../ui.container-row/URow.vue";
 import UIcon from "../../ui.image-icon/UIcon.vue";
 import UBadge from "../../ui.text-badge/UBadge.vue";
 
-import tooltip from "../../directives/tooltip/vTooltip.ts";
+import imageURL from "./assets/imageURL.png";
 
-import type { Meta, StoryFn } from "@storybook/vue3";
+import type { Meta, StoryFn } from "@storybook/vue3-vite";
 import type { Props } from "../types.ts";
 
 interface UFileArgs extends Props {
@@ -28,7 +27,7 @@ export default {
   component: UFile,
   args: {
     label: "Invoice_123.pdf",
-    url: "https://storybook.js.org/",
+    url: "",
   },
   argTypes: {
     ...getArgTypes(UFile.__name),
@@ -60,7 +59,6 @@ const DefaultTemplate: StoryFn<UFileArgs> = (args: UFileArgs) => ({
 
 const EnumTemplate: StoryFn<UFileArgs> = (args: UFileArgs, { argTypes }) => ({
   components: { UFile, URow },
-  directives: { tooltip },
   setup: () => ({ args, argTypes, getArgs }),
   template: `
     <URow>
@@ -68,7 +66,6 @@ const EnumTemplate: StoryFn<UFileArgs> = (args: UFileArgs, { argTypes }) => ({
         v-for="option in argTypes?.[args.enum]?.options"
         v-bind="getArgs(args, option)"
         :key="option"
-        v-tooltip="option"
       />
     </URow>
   `,
@@ -78,14 +75,13 @@ export const Default = DefaultTemplate.bind({});
 Default.args = {};
 
 export const ImageURL = DefaultTemplate.bind({});
-ImageURL.args = { imageUrl: "https://picsum.photos/100" };
+ImageURL.args = { imageUrl: imageURL };
 
 export const Removable = DefaultTemplate.bind({});
 Removable.args = { removable: true };
 
 export const Sizes = EnumTemplate.bind({});
 Sizes.args = { enum: "size" };
-Sizes.parameters = getEnumVariantDescription();
 
 export const Slots: StoryFn<UFileArgs> = (args) => ({
   components: { UFile, URow, UBadge, UIcon },
@@ -93,16 +89,28 @@ export const Slots: StoryFn<UFileArgs> = (args) => ({
     return { args };
   },
   template: `
-    <URow>
+    <URow gap="lg">
       <UFile v-bind="args">
         <template #left>
-          <UIcon name="info" color="warning" size="xs" />
+          <UIcon
+            name="info"
+            color="warning"
+            size="xs"
+            class="hover:cursor-default"
+          />
         </template>
       </UFile>
 
       <UFile v-bind="args">
         <template #right>
-          <UBadge label="File uploaded" color="success" />
+          <UBadge
+            label="File uploaded"
+            color="success"
+            size="sm"
+            variant="soft"
+            right-icon="done_all"
+            class="hover:cursor-default"
+          />
         </template>
       </UFile>
     </URow>

@@ -82,14 +82,12 @@ watchEffect(() => {
   emit("update:modelValue", props.value);
 });
 
-function onChange(event: Event) {
-  const target = event.target as HTMLInputElement;
-
+function onChange() {
   if (setRadioGroupSelectedItem) {
     setRadioGroupSelectedItem(props.value ?? "");
   }
 
-  emit("update:modelValue", target.value);
+  emit("update:modelValue", props.value);
 }
 
 /**
@@ -115,7 +113,6 @@ const { getDataTest, radioLabelAttrs, radioAttrs } = useUI<Config>(defaultConfig
     :align="labelAlign"
     :disabled="radioDisabled"
     :description="description"
-    interactive
     v-bind="radioLabelAttrs"
     :data-test="getDataTest('label')"
   >

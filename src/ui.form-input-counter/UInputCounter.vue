@@ -131,7 +131,10 @@ function onInput() {
 
 function setInputSize() {
   if (inputComponentRef.value && !props.readonly) {
-    inputComponentRef.value.input.size = inputComponentRef?.value?.input?.value.length || 1;
+    inputComponentRef.value.inputRef?.setAttribute(
+      "size",
+      String(inputComponentRef.value.inputRef?.value?.length) || "1",
+    );
   }
 }
 
@@ -153,7 +156,7 @@ const {
 </script>
 
 <template>
-  <div v-bind="wrapperAttrs">
+  <div v-bind="wrapperAttrs" :data-test="getDataTest()">
     <UButton
       round
       square

@@ -31,9 +31,9 @@ const mutatedProps = computed(() => ({
   /* Add mutated props or non-props component state below */
 }));
 
-const { wrapperAttrs } = useUI<Config>(defaultConfig, mutatedProps);
+const { getDataTest, wrapperAttrs } = useUI<Config>(defaultConfig, mutatedProps);
 </script>
 
 <template>
-  <div v-bind="wrapperAttrs">Boilerplate</div>
+  <div v-bind="wrapperAttrs" :data-test="getDataTest()">Boilerplate</div>
 </template>

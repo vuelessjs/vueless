@@ -33,7 +33,9 @@ function isGraterThanTo(value: string) {
   const parsedValue = parseDate(value, INPUT_RANGE_FORMAT, props.locale);
   const parsedTo = parseDate(localValue.value.to, props.dateFormat, props.locale);
 
-  return parsedValue && parsedTo && parsedValue > parsedTo;
+  if (!parsedValue || !parsedTo) return false;
+
+  return parsedValue > parsedTo && !isSameDay(parsedValue, parsedTo);
 }
 
 function isSmallerThanFrom(value: string) {
@@ -42,7 +44,9 @@ function isSmallerThanFrom(value: string) {
   const parsedValue = parseDate(value, INPUT_RANGE_FORMAT, props.locale);
   const parsedFrom = parseDate(localValue.value.from, props.dateFormat, props.locale);
 
-  return parsedValue && parsedFrom && parsedValue < parsedFrom;
+  if (!parsedValue || !parsedFrom) return false;
+
+  return parsedValue < parsedFrom && !isSameDay(parsedValue, parsedFrom);
 }
 
 function validateInput(value: string, type: `${InputRangeType}`) {

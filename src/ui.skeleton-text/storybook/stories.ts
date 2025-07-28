@@ -1,10 +1,8 @@
-import type { Meta, StoryFn } from "@storybook/vue3";
-import { getArgTypes, getEnumVariantDescription } from "../../utils/storybook.ts";
+import type { Meta, StoryFn } from "@storybook/vue3-vite";
+import { getArgs, getArgTypes } from "../../utils/storybook.ts";
 
 import USkeletonText from "../USkeletonText.vue";
 import UCol from "../../ui.container-col/UCol.vue";
-
-import tooltip from "../../directives/tooltip/vTooltip.ts";
 
 import type { Props } from "../types.ts";
 
@@ -31,22 +29,16 @@ const DefaultTemplate: StoryFn<SkeletonTextArgs> = (args: SkeletonTextArgs) => (
   `,
 });
 
-const EnumVariantTemplate: StoryFn<SkeletonTextArgs> = (args: SkeletonTextArgs, { argTypes }) => ({
+const EnumTemplate: StoryFn<SkeletonTextArgs> = (args: SkeletonTextArgs, { argTypes }) => ({
   components: { USkeletonText, UCol },
-  directives: { tooltip },
-  setup() {
-    const filteredOptions = argTypes?.[args.enum]?.options || [];
-
-    return { args, filteredOptions };
-  },
+  setup: () => ({ args, argTypes, getArgs }),
   template: `
-    <UCol>
+    <UCol gap="lg">
       <USkeletonText
-        v-for="(option, index) in filteredOptions"
-        :key="index"
-        v-bind="args"
-        :[args.enum]="option"
-        v-tooltip="option"
+        v-for="option in argTypes?.[args.enum]?.options"
+        v-bind="getArgs(args, option)"
+        :key="option"
+        class="border border-dashed border-primary rounded-medium p-2"
       />
     </UCol>
   `,
@@ -55,13 +47,8 @@ const EnumVariantTemplate: StoryFn<SkeletonTextArgs> = (args: SkeletonTextArgs, 
 export const Default = DefaultTemplate.bind({});
 Default.args = {};
 
-export const HeaderSizes = EnumVariantTemplate.bind({});
-HeaderSizes.args = { enum: "size", headerLines: 2, textLines: 0 };
-HeaderSizes.parameters = getEnumVariantDescription();
+export const Sizes = EnumTemplate.bind({});
+Sizes.args = { enum: "size", headerLines: 1, textLines: 3 };
 
-export const TextSizes = EnumVariantTemplate.bind({});
-TextSizes.args = { enum: "size", headerLines: 0, textLines: 3 };
-TextSizes.parameters = getEnumVariantDescription();
-
-export const Variant = EnumVariantTemplate.bind({});
+export const Variant = EnumTemplate.bind({});
 Variant.args = { enum: "variant" };

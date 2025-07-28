@@ -25,10 +25,10 @@ const { getDataTest, wrapperAttrs, headerAttrs, textAttrs, headerWrapperAttrs, t
 
 <template>
   <div v-bind="wrapperAttrs" :data-test="getDataTest()">
-    <div v-bind="headerWrapperAttrs">
+    <div v-if="headerLines" v-bind="headerWrapperAttrs">
       <USkeleton v-for="line in headerLines" :key="line" :variant="variant" v-bind="headerAttrs" />
     </div>
-    <div v-bind="textWrapperAttrs">
+    <div v-if="textLines" v-bind="textWrapperAttrs">
       <USkeleton v-for="line in textLines" :key="line" :variant="variant" v-bind="textAttrs" />
     </div>
   </div>

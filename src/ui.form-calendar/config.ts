@@ -36,11 +36,9 @@ export default /*tw*/ {
   anotherMonthDay: "{>day} {>anotherMonthDate} font-normal",
   anotherMonthDayInRange: "{>day} {>dateInRange} {>anotherMonthDate} font-normal",
   firstDayInRange: "{>day} {>edgeDateInRange} {>firstDateInRange}",
-  anotherMonthFirstDayInRange: "{>day} {>anotherMonthDay} {>edgeDateInRange} {>firstDateInRange}",
+  anotherMonthFirstDayInRange: "{>day} {>edgeDateInRange} {>firstDateInRange}",
   lastDayInRange: "{>day} {>edgeDateInRange} {>lastDateInRange}",
-  currentLastDayInRange: "{>day} {>edgeDateInRange} {>lastDateInRange} {>currentDate}",
-  currentFirstDayInRange: "{>day} {>edgeDateInRange} {>firstDateInRange} {>currentDate}",
-  anotherMonthLastDayInRange: "{>day} {>anotherMonthDay} {>edgeDateInRange} {>lastDateInRange}",
+  anotherMonthLastDayInRange: "{>day} {>edgeDateInRange} {>lastDateInRange}",
   selectedDay: "{>day} {>selectedDate}",
   activeDay: "{>day} {>activeDate}",
   monthView: "grid grid-rows-1 grid-cols-3 justify-items-center gap-1",
@@ -60,7 +58,7 @@ export default /*tw*/ {
     hover:focus-within:border-primary focus-within:border-primary
     focus-within:outline focus-within:outline-small focus-within:outline-primary
   `,
-  timepickerInput: "w-10 border-none px-1.5 py-1.5 text-center text-medium focus:ring-0 focus:outline-none bg-default",
+  timepickerInput: "w-10 border-none px-1.5 py-1.5 text-center text-medium focus:outline-none bg-default",
   timepickerInputHours: "{>timepickerInput} rounded-l-medium",
   timepickerInputMinutes: "{>timepickerInput}",
   timepickerInputSeconds: "{>timepickerInput} rounded-r-medium",

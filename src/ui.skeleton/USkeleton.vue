@@ -22,6 +22,7 @@ const { getDataTest, bodyAttrs } = useUI<Config>(
 
 <template>
   <div :data-test="getDataTest()" v-bind="bodyAttrs">
+    <!-- @slot Use it to add custom content inside the skeleton. -->
     <slot />
   </div>
 </template>

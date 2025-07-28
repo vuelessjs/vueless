@@ -1,3 +1,5 @@
+import { ref } from "vue";
+
 import {
   getArgs,
   getArgTypes,
@@ -7,19 +9,19 @@ import {
 } from "../../utils/storybook.ts";
 
 import UInputSearch from "../../ui.form-input-search/UInputSearch.vue";
-import UButton from "../../ui.button/UButton.vue";
 import UIcon from "../../ui.image-icon/UIcon.vue";
 import UCol from "../../ui.container-col/UCol.vue";
 import URow from "../../ui.container-row/URow.vue";
-import UAvatar from "../../ui.image-avatar/UAvatar.vue";
-import UBadge from "../../ui.text-badge/UBadge.vue";
+import UDropdownButton from "../../ui.dropdown-button/UDropdownButton.vue";
+import UText from "../../ui.text-block/UText.vue";
 
-import type { Meta, StoryFn } from "@storybook/vue3";
+import type { Meta, StoryFn } from "@storybook/vue3-vite";
 import type { Props } from "../types.ts";
 
 interface UInputSearchArgs extends Props {
   slotTemplate?: string;
   enum: "size" | "labelAlign";
+  wrapperClass?: string;
 }
 
 export default {
@@ -30,7 +32,8 @@ export default {
     ...getArgTypes(UInputSearch.__name),
   },
   args: {
-    modelValue: "Which UI library is the best?",
+    modelValue: "Wireless headphones",
+    label: "Search for products, brands, or categories",
   },
   parameters: {
     docs: {
@@ -40,7 +43,7 @@ export default {
 } as Meta;
 
 const DefaultTemplate: StoryFn<UInputSearchArgs> = (args: UInputSearchArgs) => ({
-  components: { UInputSearch, UButton, UIcon },
+  components: { UInputSearch, UIcon },
   setup: () => ({ args, slots: getSlotNames(UInputSearch.__name) }),
   template: `
     <UInputSearch
@@ -57,7 +60,7 @@ const EnumTemplate: StoryFn<UInputSearchArgs> = (args: UInputSearchArgs, { argTy
   components: { UInputSearch, UCol },
   setup: () => ({ args, argTypes, getArgs }),
   template: `
-    <UCol>
+    <UCol :class="args.wrapperClass">
       <UInputSearch
         v-for="option in argTypes?.[args.enum]?.options"
         v-bind="getArgs(args, option)"
@@ -72,17 +75,24 @@ const EnumTemplate: StoryFn<UInputSearchArgs> = (args: UInputSearchArgs, { argTy
 export const Default = DefaultTemplate.bind({});
 Default.args = {};
 
-export const Label = DefaultTemplate.bind({});
-Label.args = { label: "Search for product or primary" };
-
 export const Placeholder = DefaultTemplate.bind({});
 Placeholder.args = { modelValue: "", placeholder: "Type to search..." };
 
 export const Description = DefaultTemplate.bind({});
-Description.args = { description: "Search for additional details." };
+Description.args = { description: "Find exactly what you're looking for with a quick search." };
 
-export const Error = DefaultTemplate.bind({});
-Error.args = { error: "This field is required. Please enter a value.", modelValue: "" };
+export const Error: StoryFn<UInputSearchArgs> = (args: UInputSearchArgs) => ({
+  components: { UInputSearch },
+  setup: () => ({ args, modelValue: ref("") }),
+  template: `
+    <UInputSearch
+      v-bind="args"
+      v-model="modelValue"
+      class="!max-w-96"
+      :error="modelValue ? '' : 'This field is required. Please enter a value.'"
+    />
+  `,
+});
 
 export const Disabled = DefaultTemplate.bind({});
 Disabled.args = { disabled: true };
@@ -91,7 +101,13 @@ export const Sizes = EnumTemplate.bind({});
 Sizes.args = { enum: "size", modelValue: "", placeholder: "{enumValue}" };
 
 export const LabelAlign = EnumTemplate.bind({});
-LabelAlign.args = { enum: "labelAlign", modelValue: "", label: "{enumValue}" };
+LabelAlign.args = {
+  enum: "labelAlign",
+  modelValue: "",
+  label: "{enumValue}",
+  description: "Search for additional details.",
+  wrapperClass: "gap-16",
+};
 
 export const SearchButton = DefaultTemplate.bind({});
 SearchButton.args = { searchButtonLabel: "Search" };
@@ -136,23 +152,49 @@ export const IconProps: StoryFn<UInputSearchArgs> = (args) => ({
 });
 
 export const Slots: StoryFn<UInputSearchArgs> = (args) => ({
-  components: { UInputSearch, URow, UButton, UAvatar, UBadge },
+  components: { UInputSearch, UCol, URow, UIcon, UDropdownButton, UText },
   setup() {
-    return { args };
+    const aiVersions = [
+      { label: "GPT-4o", id: "gpt-4o" },
+      { label: "GPT-4o-mini", id: "gpt-4o-mini" },
+      { label: "GPT-4", id: "gpt-4" },
+    ];
+
+    return { args, aiVersions };
   },
   template: `
-    <URow>
-      <UInputSearch v-bind="args" :config="{ searchInput: { leftSlot: 'pl-0' } }">
-        <template #left>
-          <UAvatar size="sm" />
+    <UCol>
+      <UInputSearch placeholder="Search by rental district...">
+        <template #right>
+          <URow align="center" gap="xs">
+            <UIcon name="straighten" size="sm" />
+            <UText label="+2km" variant="muted" />
+          </URow>
         </template>
       </UInputSearch>
 
-      <UInputSearch v-bind="args" :config="{ searchInput: { rightSlot: 'pr-0' } }">
-        <template #right>
-          <UBadge label="Search" size="sm" color="success" />
+      <UInputSearch
+        placeholder="Ask something..."
+        :config="{ searchInput: { wrapper: 'pl-0' } }"
+      >
+        <template #left>
+          <UDropdownButton
+            v-model="args.aiVersion"
+            :options="aiVersions"
+            label="AI Version"
+            size="sm"
+            variant="soft"
+            class="rounded-r-none"
+          />
         </template>
       </UInputSearch>
-    </URow>
+    </UCol>
   `,
 });
+Slots.parameters = {
+  docs: {
+    story: {
+      height: "270px",
+    },
+  },
+};

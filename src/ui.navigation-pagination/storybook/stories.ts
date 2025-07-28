@@ -7,12 +7,9 @@ import {
 } from "../../utils/storybook.ts";
 
 import UPagination from "../../ui.navigation-pagination/UPagination.vue";
-import UCol from "../../ui.container-col/UCol.vue";
-import URow from "../../ui.container-row/URow.vue";
-import UBadge from "../../ui.text-badge/UBadge.vue";
 import UIcon from "../../ui.image-icon/UIcon.vue";
 
-import type { Meta, StoryFn } from "@storybook/vue3";
+import type { Meta, StoryFn } from "@storybook/vue3-vite";
 import type { Props } from "../types.ts";
 
 interface UPaginationArgs extends Props {
@@ -94,10 +91,10 @@ Sizes.args = { enum: "size" };
 
 export const SetCustomNavigationLabel = DefaultTemplate.bind({});
 SetCustomNavigationLabel.args = {
-  prevLabel: "◀️",
-  nextLabel: "▶️",
-  lastLabel: "⏩",
-  firstLabel: "⏪",
+  prevLabel: "Prev",
+  nextLabel: "Next",
+  lastLabel: "Last",
+  firstLabel: "First",
 };
 SetCustomNavigationLabel.parameters = {
   docs: {
@@ -131,44 +128,31 @@ HideNavButtons.parameters = {
 };
 
 export const Slots: StoryFn<UPaginationArgs> = (args) => ({
-  components: { UPagination, UBadge, UCol, URow, UIcon },
+  components: { UPagination, UIcon },
   setup() {
     return { args };
   },
   template: `
-    <UCol>
-      <UPagination v-bind="args" v-model="args.modelValue">
-        <template #first>
-          <UBadge label="First Slot" size="sm" />
-        </template>
-      </UPagination>
+    <UPagination v-bind="args" v-model="args.modelValue">
+      <template #first>
+        <UIcon name="keyboard_tab_rtl" color="primary" size="xs" />
+      </template>
 
-      <UPagination v-bind="args" v-model="args.modelValue">
-        <template #prev>
-          <UBadge label="Prev Slot" size="sm" />
-        </template>
-      </UPagination>
+      <template #prev>
+        <UIcon name="arrow_back" color="primary" size="xs" />
+      </template>
 
-      <URow align="center">
-        <UPagination v-bind="args" v-model="args.modelValue">
-          <template #ellipsis>
-            <UIcon name="more_horiz" size="sm" />
-          </template>
-        </UPagination>
-        <span class="text-medium">Ellipsis Slot</span>
-      </URow>
+      <template #ellipsis>
+        <UIcon name="more_horiz" color="primary" size="xs" />
+      </template>
 
-      <UPagination v-bind="args" v-model="args.modelValue">
-        <template #next>
-          <UBadge label="Next Slot" size="sm" />
-        </template>
-      </UPagination>
+      <template #next>
+        <UIcon name="arrow_forward" color="primary" size="xs" />
+      </template>
 
-      <UPagination v-bind="args" v-model="args.modelValue">
-        <template #last>
-          <UBadge label="Last Slot" size="sm" />
-        </template>
-      </UPagination>
-    </UCol>
+      <template #last>
+        <UIcon name="keyboard_tab" color="primary" size="xs" />
+      </template>
+    </UPagination>
   `,
 });

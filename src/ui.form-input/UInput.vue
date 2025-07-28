@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, onMounted, useSlots, useId, useTemplateRef } from "vue";
+import { computed, onMounted, useSlots, useId, useTemplateRef, watch } from "vue";
 
 import useUI from "../composables/useUI.ts";
 import { getDefaults } from "../utils/ui.ts";
@@ -72,6 +72,11 @@ const emit = defineEmits([
    * Triggers when content pasted to the input.
    */
   "paste",
+
+  /**
+   * Triggers when a key is pressed down while the input is focused.
+   */
+  "keydown",
 ]);
 
 const VALIDATION_RULES_REG_EX = {
@@ -84,6 +89,7 @@ const VALIDATION_RULES_REG_EX = {
 
 const slots = useSlots();
 
+const wrapperRef = useTemplateRef<HTMLLabelElement>("wrapper");
 const inputRef = useTemplateRef<HTMLInputElement>("input");
 const leftSlotWrapperRef = useTemplateRef<HTMLSpanElement>("leftSlotWrapper");
 const labelComponentRef = useTemplateRef<InstanceType<typeof ULabel>>("labelComponent");
@@ -98,7 +104,7 @@ const inputValue = computed({
 const elementId = props.id || useId();
 
 const inputType = computed(() => {
-  return props.noAutocomplete ? "text" : props.type;
+  return props.autocomplete ? props.type : "text";
 });
 
 onMounted(() => {
@@ -164,12 +170,16 @@ function onCopy(event: ClipboardEvent) {
   emit("copy", event);
 }
 
+function onKeydown(event: KeyboardEvent) {
+  emit("keydown", event);
+}
+
 /**
  * This trick prevents default browser autocomplete behavior.
  * @param toggleState { boolean }
  */
 function toggleReadonlyToPreventAutocomplete(toggleState: boolean) {
-  if (props.noAutocomplete && !props.readonly && inputRef.value) {
+  if (!props.autocomplete && !props.readonly && inputRef.value) {
     toggleState
       ? inputRef.value.setAttribute("readonly", "readonly")
       : inputRef.value.removeAttribute("readonly");
@@ -183,25 +193,41 @@ function transformValue(value: string | number, exp: string | RegExp) {
   return matches ? matches.join("") : "";
 }
 
-useMutationObserver(leftSlotWrapperRef, (mutations) => mutations.forEach(setLabelPosition), {
+useMutationObserver(wrapperRef, (mutations) => mutations.forEach(setLabelPosition), {
   childList: true,
   characterData: true,
   subtree: true,
+});
+
+watch([() => props.leftIcon, () => props.labelAlign, () => props.size], setLabelPosition, {
+  flush: "post",
 });
 
 function setLabelPosition() {
   const shouldAlignLabelOnTop = !hasSlotContent(slots["left"]) && !props.leftIcon;
 
   if (props.labelAlign === "top" || shouldAlignLabelOnTop) {
+    if (labelComponentRef.value?.labelElement) {
+      labelComponentRef.value.labelElement.style.left = "";
+    }
+
     return;
   }
 
   if (leftSlotWrapperRef.value && inputRef.value && labelComponentRef.value?.labelElement) {
     const leftSlotOrIconWidth = leftSlotWrapperRef.value.getBoundingClientRect().width;
-    const leftPaddingValue = parseFloat(getComputedStyle(inputRef.value).paddingLeft);
+    const wrapperElement = inputRef.value.parentElement;
+
+    let wrapperGap = 0;
+    let wrapperLeftPadding = 0;
+
+    if (wrapperElement) {
+      wrapperGap = parseFloat(getComputedStyle(wrapperElement).gap);
+      wrapperLeftPadding = parseFloat(getComputedStyle(wrapperElement).paddingLeft);
+    }
 
     if (labelComponentRef.value?.labelElement) {
-      labelComponentRef.value.labelElement.style.left = `${leftSlotOrIconWidth + leftPaddingValue}px`;
+      labelComponentRef.value.labelElement.style.left = `${leftSlotOrIconWidth + wrapperLeftPadding + wrapperGap}px`;
     }
   }
 }
@@ -248,7 +274,6 @@ const {
     :size="size"
     :align="labelAlign"
     centred
-    interactive
     v-bind="inputLabelAttrs"
   >
     <template #label>
@@ -259,7 +284,7 @@ const {
       <slot name="label" :label="label" />
     </template>
 
-    <label :for="elementId" v-bind="wrapperAttrs">
+    <label ref="wrapper" :for="elementId" v-bind="wrapperAttrs">
       <span
         v-if="hasSlotContent($slots['left'], { iconName: leftIcon }) || leftIcon"
         v-bind="leftSlotAttrs"
@@ -284,7 +309,7 @@ const {
         :disabled="disabled"
         :maxlength="maxLength"
         :inputmode="inputmode"
-        :autocomplete="noAutocomplete ? 'off' : 'on'"
+        :autocomplete="autocomplete ? 'on' : 'off'"
         v-bind="inputAttrs"
         :data-test="getDataTest()"
         @focus="onFocus"
@@ -295,9 +320,10 @@ const {
         @click="onClick"
         @paste="onPaste"
         @copy="onCopy"
+        @keydown="onKeydown"
       />
 
-      <div
+      <span
         v-if="hasSlotContent($slots['right'], { iconName: rightIcon }) || rightIcon"
         v-bind="rightSlotAttrs"
       >
@@ -308,7 +334,7 @@ const {
         <slot name="right" :icon-name="rightIcon">
           <UIcon v-if="rightIcon" color="neutral" :name="rightIcon" v-bind="rightIconAttrs" />
         </slot>
-      </div>
+      </span>
     </label>
   </ULabel>
 </template>

@@ -128,6 +128,11 @@ export interface Props {
   searchable?: boolean;
 
   /**
+   * Make select read-only.
+   */
+  readonly?: boolean;
+
+  /**
    * Disable the select.
    */
   disabled?: boolean;

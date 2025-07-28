@@ -9,7 +9,7 @@ export type Config = typeof defaultConfig;
 type RowKeys = number | string | boolean | undefined | Date | Row | Row[] | ((row: Row) => string);
 
 export interface CellObject {
-  contentClasses?: string | ((value: unknown | string, row: Row) => string);
+  contentClass?: string | ((value: unknown | string, row: Row) => string);
   class?: string | ((value: unknown | string, row: Row) => string);
   [key: string]: unknown | string;
 }
@@ -37,7 +37,7 @@ export interface Row {
 
 export interface FlatRow extends Row {
   parentRowId?: RowId;
-  nestedLeveL: number;
+  nestedLevel: number;
 }
 
 export interface ColumnObject {

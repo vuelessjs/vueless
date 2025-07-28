@@ -6,24 +6,24 @@ export type Config = typeof defaultConfig;
 
 export interface Props {
   /**
-   * Set input size.
-   */
-  size?: "sm" | "md" | "lg";
-
-  /**
    * Set component value.
    */
   modelValue?: string;
 
   /**
-   * Set component placeholder.
-   */
-  placeholder?: string;
-
-  /**
    * Set input label.
    */
   label?: string;
+
+  /**
+   * Set input size.
+   */
+  size?: "sm" | "md" | "lg";
+
+  /**
+   * Set component placeholder.
+   */
+  placeholder?: string;
 
   /**
    * Label placement.
@@ -39,6 +39,11 @@ export interface Props {
    * Allow resizing of the textarea.
    */
   resizable?: boolean;
+
+  /**
+   * Enable auto-resize functionality based on content.
+   */
+  autoResize?: boolean;
 
   /**
    * Make textarea read only.

@@ -100,6 +100,14 @@ export const vue3SourceDecorator = makeDecorator({
   },
 });
 
+function getModelValue(value) {
+  if (value === undefined) return "";
+
+  return isPrimitive(value)
+    ? JSON.stringify(value)?.replaceAll('"', "")
+    : JSON.stringify(value).replaceAll('"', "'");
+}
+
 function preFormat(templateSource, args, argTypes) {
   templateSource = expandVueLoopFromTemplate(templateSource, args, argTypes);
 
@@ -137,9 +145,7 @@ function preFormat(templateSource, args, argTypes) {
     // eslint-disable-next-line vue/max-len
     `</template><template v-else-if="slot === 'default' && args['defaultSlot']">{{ args['defaultSlot'] }}</template><template v-else-if="args[slot + 'Slot']">{{ args[slot + 'Slot'] }}</template></template>`;
 
-  const modelValue = isPrimitive(args["modelValue"])
-    ? JSON.stringify(args["modelValue"])?.replaceAll('"', "")
-    : JSON.stringify(args["modelValue"])?.replaceAll('"', "'");
+  const modelValue = getModelValue(args["modelValue"]);
 
   templateSource = templateSource
     .replace(/>[\s]+</g, "><")
@@ -150,12 +156,19 @@ function preFormat(templateSource, args, argTypes) {
       new RegExp(`v-model="args\\.modelValue"`, "g"),
       args["modelValue"] ? `v-model="${modelValue}"` : "",
     )
+    .replace(/v-model:(\w+)="args\.(\w+)"/g, (_, modelKey, argKey) => {
+      const value = args[argKey];
+      const formattedVal = getModelValue(value);
+
+      return formattedVal ? `v-model:${modelKey}="${formattedVal}"` : "";
+    })
     .replace(
       /v-bind="args"/g,
       Object.keys(componentArgs)
         .map((key) => " " + propToSource(kebabCase(key), args[key], argTypes[key]))
         .join(""),
-    );
+    )
+    .replace(/:class="args\.wrapperClass"/g, `class="${args.wrapperClass}"`);
 
   return templateSource;
 }

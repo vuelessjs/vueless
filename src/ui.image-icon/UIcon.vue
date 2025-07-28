@@ -9,6 +9,8 @@ import { ICONS_CACHED_DIR, INTERNAL_ICONS_LIBRARY, STORYBOOK_ICONS_LIBRARY } fro
 import { COMPONENT_NAME } from "./constants.ts";
 import defaultConfig from "./config.ts";
 
+import USkeleton from "../ui.skeleton/USkeleton.vue";
+
 import type { AsyncComponentLoader, ComponentPublicInstance } from "vue";
 import type { Props, Config } from "./types.ts";
 
@@ -69,10 +71,17 @@ const dynamicComponent = computed(() => {
       path.includes(`${ICONS_CACHED_DIR}/${userLibrary}/${props.name}.svg`),
     ) || [];
 
-  return defineAsyncComponent(async () => (await component) as AsyncComponentLoader);
+  if (!component) return "";
+
+  return defineAsyncComponent({
+    loader: async () => (await component) as AsyncComponentLoader,
+    loadingComponent: USkeleton,
+  });
 });
 
 function onClick(event: MouseEvent) {
+  if (props.disabled) return;
+
   emit("click", event);
 }
 
@@ -94,6 +103,7 @@ const { getDataTest, config, iconAttrs } = useUI<Config>(defaultConfig);
 <template>
   <component
     :is="dynamicComponent"
+    v-if="dynamicComponent"
     ref="icon"
     tabindex="-1"
     v-bind="iconAttrs"

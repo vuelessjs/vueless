@@ -79,6 +79,7 @@ const { getDataTest, config, passwordInputAttrs, passwordIconAttrs, passwordIcon
     :readonly="readonly"
     :disabled="disabled"
     v-bind="passwordInputAttrs"
+    :data-test="getDataTest()"
   >
     <template #left>
       <!--
@@ -86,6 +87,14 @@ const { getDataTest, config, passwordInputAttrs, passwordIconAttrs, passwordIcon
         @binding {string} icon-name
       -->
       <slot name="left" :icon-name="leftIcon" />
+    </template>
+
+    <template #label>
+      <!--
+        @slot Use this to add custom content instead of the label.
+        @binding {string} label
+      -->
+      <slot name="label" :label="label" />
     </template>
 
     <template #right>

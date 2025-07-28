@@ -51,6 +51,11 @@ const emit = defineEmits([
    * Triggers when the search input value changes.
    */
   "searchChange",
+
+  /**
+   * Triggers when the search input loses focus.
+   */
+  "searchBlur",
 ]);
 
 const wrapperRef = useTemplateRef<HTMLDivElement>("wrapper");
@@ -134,22 +139,7 @@ watch(
           const marginTop = parseFloat(styles.marginTop || "0");
           const marginBottom = parseFloat(styles.marginBottom || "0");
 
-          const [childDiv] = el.getElementsByTagName("div");
-          const childStyles = childDiv && window.getComputedStyle(childDiv);
-          const childMarginTop = parseFloat(childStyles?.marginTop || "0");
-          const childMarginBottom = parseFloat(childStyles?.marginBottom || "0");
-          const childPaddingTop = parseFloat(childStyles?.paddingTop || "0");
-          const childPaddingBottom = parseFloat(childStyles?.paddingBottom || "0");
-
-          return (
-            elHeight +
-            marginTop +
-            marginBottom +
-            childMarginTop +
-            childMarginBottom +
-            childPaddingTop +
-            childPaddingBottom
-          );
+          return elHeight + marginTop + marginBottom;
         })
         .reduce((acc, cur) => acc + cur, 0);
 
@@ -160,29 +150,44 @@ watch(
       const wrapperBorderBottom = parseFloat(wrapperStyle.borderBottomWidth || "0");
       const wrapperGap = parseFloat(wrapperStyle.gap || "0");
 
+      const addOptionHeight = addOptionRef.value?.getBoundingClientRect().height || 0;
+
       const inputEl = listboxInputRef.value?.input as HTMLInputElement | undefined;
       let listboxInputHeight = 0;
-      let listboxInputPaddingTop = 0;
-      let listboxInputPaddingBottom = 0;
+
+      let listboxInputWrapperPaddingTop = 0;
+      let listboxInputBorderTop = 0;
+      let listboxInputBorderBottom = 0;
 
       if (inputEl) {
         const listboxInputStyle = getComputedStyle(inputEl);
+        const listboxInputLabelStyle = inputEl.parentElement
+          ? getComputedStyle(inputEl.parentElement)
+          : undefined;
+        const listboxInputWrapperStyle = getComputedStyle(
+          inputEl.parentElement?.parentElement?.parentElement as Element,
+        );
 
         listboxInputHeight = parseFloat(listboxInputStyle.height || "0");
-        listboxInputPaddingTop = parseFloat(listboxInputStyle.paddingTop || "0");
-        listboxInputPaddingBottom = parseFloat(listboxInputStyle.paddingBottom || "0");
+
+        listboxInputWrapperPaddingTop = parseFloat(listboxInputWrapperStyle.paddingTop || "0");
+
+        listboxInputBorderTop = parseFloat(listboxInputLabelStyle?.borderTop || "0");
+        listboxInputBorderBottom = parseFloat(listboxInputLabelStyle?.borderBottom || "0");
       }
 
       wrapperMaxHeight.value = `${
         maxHeight +
-        wrapperGap +
+        addOptionHeight +
+        (props.searchable ? wrapperGap : 0) +
         wrapperPaddingTop +
         wrapperPaddingBottom +
         wrapperBorderTop +
         wrapperBorderBottom +
         listboxInputHeight +
-        listboxInputPaddingTop +
-        listboxInputPaddingBottom
+        listboxInputBorderTop +
+        listboxInputBorderBottom +
+        listboxInputWrapperPaddingTop
       }px`;
     });
   },
@@ -218,6 +223,14 @@ function onClickAddOption() {
 
 function onSearchChange(value: string) {
   emit("searchChange", value);
+}
+
+function onKeydownUp() {
+  wrapperRef.value?.focus();
+}
+
+function onKeydownDown() {
+  wrapperRef.value?.focus();
 }
 
 function isMetaKey(key: string) {
@@ -307,6 +320,10 @@ function onClickOption(rawOption: Option) {
   emit("clickOption", option);
 }
 
+function onInputSearchBlur(event: FocusEvent) {
+  emit("searchBlur", event);
+}
+
 defineExpose({
   /**
    * Allows setting the pointer to a specific index.
@@ -366,7 +383,6 @@ const {
   config,
   wrapperAttrs,
   listboxInputAttrs,
-  searchAttrs,
   listAttrs,
   listItemAttrs,
   addOptionLabelWrapperAttrs,
@@ -398,19 +414,21 @@ const {
     @keydown.self.up.prevent="pointerBackward"
     @keydown.enter.stop.self="addPointerElement('Enter')"
   >
-    <div v-if="searchable" v-bind="searchAttrs">
-      <UInputSearch
-        :id="elementId"
-        ref="listbox-input"
-        v-model="search"
-        :placeholder="localeMessages.search"
-        :size="size"
-        :debounce="debounce"
-        v-bind="listboxInputAttrs"
-        :data-test="getDataTest('search')"
-        @update:model-value="onSearchChange"
-      />
-    </div>
+    <UInputSearch
+      v-if="searchable"
+      :id="elementId"
+      ref="listbox-input"
+      v-model="search"
+      :placeholder="localeMessages.search"
+      :size="size"
+      :debounce="debounce"
+      v-bind="listboxInputAttrs"
+      :data-test="getDataTest('search')"
+      @blur="onInputSearchBlur"
+      @keydown.self.down.prevent="onKeydownDown"
+      @keydown.self.up.prevent="onKeydownUp"
+      @update:model-value="onSearchChange"
+    />
 
     <ul :id="`listbox-${elementId}`" v-bind="listAttrs" role="listbox">
       <li

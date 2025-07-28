@@ -11,8 +11,11 @@ import UCol from "../../ui.container-col/UCol.vue";
 import UText from "../../ui.text-block/UText.vue";
 import UIcon from "../../ui.image-icon/UIcon.vue";
 import UBadge from "../../ui.text-badge/UBadge.vue";
+import URow from "../../ui.container-row/URow.vue";
+import ULink from "../../ui.button-link/ULink.vue";
+import UChip from "../../ui.other-chip/UChip.vue";
 
-import type { Meta, StoryFn } from "@storybook/vue3";
+import type { Meta, StoryFn } from "@storybook/vue3-vite";
 import type { Props } from "../types.ts";
 
 interface ULabelArgs extends Props {
@@ -46,15 +49,16 @@ export default {
   },
 } as Meta;
 
-const defaultTemplate = "johndoe@example.com";
+const defaultTemplate = `
+  <UText label="johndoe@example.com" />
+`;
 
 const DefaultTemplate: StoryFn<ULabelArgs> = (args: ULabelArgs) => ({
-  components: { ULabel, UText, UIcon, UBadge },
+  components: { ULabel, UText, UIcon, UBadge, URow, ULink, UChip },
   setup: () => ({ args, slots: getSlotNames(ULabel.__name) }),
   template: `
     <ULabel v-bind="args">
-      <UText v-bind="args">${getSlotsFragment(defaultTemplate)}</UText>
-      ${args.slotTemplate ? args.slotTemplate : ""}
+      ${args.slotTemplate || getSlotsFragment(defaultTemplate)}
     </ULabel>
   `,
 });
@@ -69,7 +73,7 @@ const EnumTemplate: StoryFn<ULabelArgs> = (args: ULabelArgs, { argTypes }) => ({
         v-bind="getArgs(args, option)"
         :key="option"
       >
-        <UText :[args.enum]="option">{{ option }}</UText>
+        ${defaultTemplate}
       </ULabel>
     </UCol>
   `,
@@ -87,18 +91,22 @@ Error.args = { error: "Please enter a valid email address." };
 export const Disabled = DefaultTemplate.bind({});
 Disabled.args = { disabled: true };
 
-export const Interactive = DefaultTemplate.bind({});
-Interactive.args = { interactive: true };
-Interactive.parameters = {
+export const For = DefaultTemplate.bind({});
+For.args = {
+  for: "input-id",
+  slotTemplate: `
+    <template #default>
+      <input id="input-id" class="py-2px-3 bg-transparent border-lifted rounded-medium" />
+    </template>
+  `,
+};
+For.parameters = {
   docs: {
     description: {
-      story: "Make the label interactive (cursor pointer on hover).",
+      story: "Make the label interactive (cursor pointer on hover) and bind input to it.",
     },
   },
 };
-
-export const Centred = DefaultTemplate.bind({});
-Centred.args = { centred: true };
 
 export const Sizes = EnumTemplate.bind({});
 Sizes.args = { enum: "size" };
@@ -111,7 +119,12 @@ LabelSlot.args = {
   label: "Email Address",
   slotTemplate: `
     <template #label="{ label }">
-      <UBadge :label="label" color="success" />
+      <URow align="center" gap="xs">
+        <UIcon name="mail" size="sm" class="text-primary" />
+        <UChip icon="asterisk" color="error" size="2xs">
+          <UText :label="label" class="mr-2" />
+        </UChip>
+      </URow>
     </template>
   `,
 };
@@ -120,7 +133,10 @@ export const BottomSlot = DefaultTemplate.bind({});
 BottomSlot.args = {
   slotTemplate: `
     <template #bottom>
-      <UBadge label="Your opinion is important for us!" color="success" class="max-w-fit" />
+      <URow align="center" gap="2xs" class="mt-1">
+        <UIcon name="error" size="xs" />
+        <UText>Invalid email address. <ULink label="Need help?" /></UText>
+      </URow>
     </template>
   `,
 };

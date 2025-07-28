@@ -12,19 +12,33 @@ import defaultConfig from "../config.ts?raw"
 <Controls of={stories.Default} />
 <Stories of={stories} />
 
-## Formatting tokens
-Each character in the table below can be used in `dateFormat` and `userDateFormat` / `userDateTimeFormat` options to achieve the format you need.
-
 ## Row meta keys
-Keys you have/may to provide to the component in row object.
+Keys you may/have to provide to the component in the row object.
 
 <Markdown>
 {`
-|  Key name         | Description                        | Type           |
-| ------------------| ---------------------------------- | ---------------|
-| id                | A unique identifier for row        | String, Number |
-| content           | Content to be rendered in the cell | Any            |
-| rowDate           | Row date for date divider          | String, Date   |
+| Key name      | Description                                         | Type                                    |
+| ------------- | --------------------------------------------------- | ----------------------------------------|
+| id            | Unique identifier for the row                       | String, Number                          |
+| rowDate       | Row date for date divider                           | String, Date                            |
+| row           | Nested row(s) for hierarchical tables               | Object, Array                           |
+| class         | Custom classes for the row                          | String                                  |
+
+`}
+</Markdown>
+
+## Cell meta keys
+- Any key matching a column's property (e.g. orderId, customerName, ...)
+- Value can be a string/number, or a CellObject:
+
+<Markdown>
+{`
+| CellObject key   | Description                                 | Type                                 |
+| ---------------- | ------------------------------------------- | ------------------------------------ |
+| value            | Cell value                                  | String, Number                       |
+| class            | Classes for the cell                        | String                               |
+| contentClass     | Classes for the cell content                | String                               |
+
 `}
 </Markdown>
 

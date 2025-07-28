@@ -20,3 +20,9 @@ pnpm-debug.log*
 *.sln
 *.sw?
 
+# AI codding agents
+.github/copilot-instructions.md
+.augment-guidelines
+.cursor
+.junie
+CLAUDE.md

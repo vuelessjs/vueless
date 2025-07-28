@@ -31,9 +31,10 @@ export default /*tw*/ {
   headerActionsCounter: "{>headerCounterBase} -ml-1.5",
   tableWrapper: "border border-muted rounded-medium bg-default",
   table: "min-w-full border-none text-medium w-full table-auto",
-  header: "border-b border-muted [&>tr:first-child>*]:first:rounded-tl-medium [&>tr:last-child>*]:last:rounded-tr-medium",
+  header:
+    "border-b border-muted [&>tr:first-child>*]:first:rounded-tl-medium [&>tr:last-child>*]:last:rounded-tr-medium relative",
   headerRow: "",
-  beforeHeaderRow: "",
+  beforeHeaderRow: "border border-muted",
   beforeHeaderCell: "{>headerCellBase}",
   headerCellBase: {
     base: "p-4 text-medium font-normal text-lifted text-left text-nowrap",
@@ -45,8 +46,8 @@ export default /*tw*/ {
   },
   headerCellCheckbox: "{>headerCellBase} w-10 pr-2",
   headerCheckbox: "{UCheckbox}",
-  headerCounter: "{>stickyHeaderCounter} mt-px ml-px",
-  headerLoader: "{ULoaderProgress} absolute !top-auto",
+  headerCounter: "{>stickyHeaderCounter} ml-px",
+  headerLoader: "{ULoaderProgress} absolute top-auto bottom-0",
   body: "group/body divide-none",
   bodyRow: "hover:bg-muted",
   bodyRowChecked: "bg-lifted transition",

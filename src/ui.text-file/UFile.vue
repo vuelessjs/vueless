@@ -21,21 +21,17 @@ const props = withDefaults(defineProps<Props>(), {
 
 const emit = defineEmits([
   /**
-   * Triggers when remove button is clicked.
+   * Triggers when the remove button is clicked.
    * @property {string} fileId
    */
   "remove",
 ]);
 
-const fileRef = useTemplateRef<InstanceType<typeof ULink>>("file");
+const fileRef = useTemplateRef<HTMLDivElement>("file");
 
 const focus = ref(false);
 
 const fileId = props.id || useId();
-
-const link = computed(() => {
-  return fileRef.value?.linkRef || null;
-});
 
 function onRemove() {
   emit("remove", fileId);
@@ -51,10 +47,10 @@ function onBlur() {
 
 defineExpose({
   /**
-   * A reference to the ULink instance for direct DOM manipulation.
-   * @property {InstanceType<typeof ULink>}
+   * A reference to the file wrapper for direct DOM manipulation.
+   * @property {HTMLDivElement}
    */
-  link,
+  fileRef,
 });
 
 /**
@@ -78,9 +74,18 @@ const {
 </script>
 
 <template>
-  <ULink ref="file" :href="url" v-bind="fileAttrs" :data-test="getDataTest()">
+  <div ref="file" v-bind="fileAttrs" :data-test="getDataTest()">
     <!-- @slot Use it to add something before the file. -->
-    <slot name="left" />
+    <slot name="left">
+      <UIcon
+        v-if="!imageUrl"
+        color="neutral"
+        :name="config.defaults.fileIcon"
+        v-bind="fileIconAttrs"
+        @focus="onFocus"
+        @blur="onBlur"
+      />
+    </slot>
 
     <!--
       @slot Use it to add a file directly.
@@ -93,17 +98,14 @@ const {
       <div v-bind="bodyAttrs">
         <img v-if="imageUrl" :alt="label" :src="imageUrl" v-bind="fileImageAttrs" />
 
-        <UIcon
-          v-else
-          interactive
-          color="neutral"
-          :name="config.defaults.fileIcon"
-          v-bind="fileIconAttrs"
-          @focus="onFocus"
-          @blur="onBlur"
+        <ULink
+          :href="url"
+          :label="label"
+          :size="size"
+          color="grayscale"
+          dashed
+          v-bind="fileLabelAttrs"
         />
-
-        <ULink :label="label" :size="size" color="grayscale" dashed v-bind="fileLabelAttrs" />
       </div>
     </slot>
 
@@ -119,5 +121,5 @@ const {
         @click.stop.prevent="onRemove"
       />
     </slot>
-  </ULink>
+  </div>
 </template>

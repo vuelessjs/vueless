@@ -83,13 +83,13 @@ function getCellClasses(row: Row, key: string) {
   return cellClasses instanceof Function ? cellClasses(cell.value, row) : cellClasses;
 }
 
-function getCellContentClasses(row: Row, key: string) {
+function getCellContentClass(row: Row, key: string) {
   const cell = row[key] as CellObject;
-  const cellContentClasses = cell?.contentClasses || "";
+  const cellContentClass = cell?.contentClass || "";
 
-  return cellContentClasses instanceof Function
-    ? cellContentClasses(cell.value, row)
-    : cellContentClasses;
+  return cellContentClass instanceof Function
+    ? cellContentClass(cell.value, row)
+    : cellContentClass;
 }
 
 function formatCellValue(value: Cell) {
@@ -234,7 +234,7 @@ const { getDataTest } = useUI<Config>(defaultConfig);
             ref="cell"
             v-bind="attrs.bodyCellContentAttrs.value"
             :class="
-              cx([attrs.bodyCellContentAttrs.value.class, getCellContentClasses(row, String(key))])
+              cx([attrs.bodyCellContentAttrs.value.class, getCellContentClass(row, String(key))])
             "
             :data-test="getDataTest(`${key}-cell`)"
           >
@@ -249,7 +249,7 @@ const { getDataTest } = useUI<Config>(defaultConfig);
             v-bind="attrs.bodyCellContentAttrs.value"
             ref="cell"
             :class="
-              cx([attrs.bodyCellContentAttrs.value.class, getCellContentClasses(row, String(key))])
+              cx([attrs.bodyCellContentAttrs.value.class, getCellContentClass(row, String(key))])
             "
             :data-test="getDataTest(`${key}-cell`)"
           >

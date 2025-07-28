@@ -1,5 +1,5 @@
 <script setup lang="ts" generic="TModelValue extends DateValue">
-import { computed, ref, watch, useTemplateRef, nextTick } from "vue";
+import { computed, ref, watch, useTemplateRef, nextTick, onMounted } from "vue";
 
 import useUI from "../composables/useUI.ts";
 import { getDefaults } from "../utils/ui.ts";
@@ -10,9 +10,9 @@ import UButton from "../ui.button/UButton.vue";
 import {
   parseDate,
   formatDate,
-  getYearsRange,
   dateIsOutOfRange,
   isNumeric,
+  getYearsRangeLabel,
 } from "./utilCalendar.ts";
 
 import { getDateWithoutTime, addMonths, addDays, addYears, getSortedLocale } from "./utilDate.ts";
@@ -39,7 +39,6 @@ import {
 import defaultConfig from "./config.ts";
 
 import type { Props, DateValue, RangeDate, Locale, Config } from "./types.ts";
-import type { Ref } from "vue";
 import type { DateLocale } from "./utilFormatting.ts";
 import type { ComponentExposed } from "../types.ts";
 
@@ -63,24 +62,29 @@ const emit = defineEmits([
    * @property {object} modelValue
    */
   "update:modelValue",
+
   /**
    * Triggers when calendar view changes.
    * @property {string} view
    */
   "update:view",
+
   /**
    * Triggers when date value changes.
    * @property {object} value
    */
   "input",
+
   /**
    * Triggers when calendar date is selected by clicking "Enter".
    */
   "submit",
+
   /**
    * Triggers when arrow keys are used to change calendar date.
    */
   "keydown",
+
   /**
    * Triggers when the user changes the date input value.
    * @property {string} value
@@ -94,11 +98,10 @@ const minutesRef = useTemplateRef<HTMLInputElement>("minutes-input");
 const secondsRef = useTemplateRef<HTMLInputElement>("seconds-input");
 const okButton = useTemplateRef<ComponentExposed<typeof UButton>>("ok-button");
 const dayViewRef = useTemplateRef<ComponentExposed<typeof DayView>>("day-view");
-
-const activeDate: Ref<Date | null> = ref(null);
-const activeMonth: Ref<Date | null> = ref(null);
+const yearViewRef = useTemplateRef<ComponentExposed<typeof YearView>>("year-view");
 
 const currentView = ref(props.view);
+const isArrowKeyDirty = ref(false);
 
 watch(
   () => props.view,
@@ -263,6 +266,14 @@ const localValue = computed({
   },
 });
 
+const activeDate = ref();
+
+if (isRangeDate(localValue.value)) {
+  activeDate.value = localValue.value.from || getDateWithoutTime();
+} else {
+  activeDate.value = localValue.value || getDateWithoutTime();
+}
+
 const selectedDate = computed(() => {
   return parseDate(
     isRangeDate(localValue.value) ? localValue.value.from : localValue.value,
@@ -287,13 +298,10 @@ const userFormattedDate = computed(() => {
 });
 
 const viewSwitchLabel = computed(() => {
-  const localValue =
-    activeDate.value || activeMonth.value || selectedDate.value || getDateWithoutTime();
-
   return {
-    year: formatDate(localValue, "Y", locale.value),
-    month: formatDate(localValue, "F", locale.value),
-    yearsRange: getYearsRange(localValue || getDateWithoutTime()).join(` ${SEPARATOR} `),
+    year: formatDate(activeDate.value, "Y", locale.value),
+    month: formatDate(activeDate.value, "F", locale.value),
+    yearsRange: getYearsRangeLabel(yearViewRef.value?.years || []),
   };
 });
 
@@ -313,6 +321,32 @@ const currentViewLabel = computed(() => {
   }
 
   return label;
+});
+
+onMounted(() => {
+  if (props.modelValue && (props.dateFormat || props.dateTimeFormat)) {
+    const formatted = isRangeDate(props.modelValue)
+      ? {
+          from: formatDate(
+            parseDate(props.modelValue.from, actualDateFormat.value, locale.value),
+            actualDateFormat.value,
+            locale.value,
+          ),
+          to: formatDate(
+            parseDate(props.modelValue.to, actualDateFormat.value, locale.value),
+            actualDateFormat.value,
+            locale.value,
+          ),
+        }
+      : formatDate(
+          parseDate(props.modelValue, actualDateFormat.value, locale.value),
+          actualDateFormat.value,
+          locale.value,
+        );
+
+    emit("update:modelValue", formatted);
+    emit("userDateChange", userFormattedDate.value);
+  }
 });
 
 watch(userFormattedDate, () => {
@@ -367,7 +401,7 @@ watch(
       );
 
       if (notInView) {
-        activeMonth.value = parsedNewDateTo;
+        activeDate.value = parsedNewDateTo;
       }
     }
 
@@ -381,7 +415,7 @@ watch(
       );
 
       if (notInView) {
-        activeMonth.value = parsedNewValueFrom;
+        activeDate.value = parsedNewValueFrom;
       }
     }
   },
@@ -408,37 +442,34 @@ function onInputDate(newDate: Date | null) {
   if (newDate === null) {
     localValue.value = newDate;
 
-    activeDate.value = null;
-    activeMonth.value = null;
+    activeDate.value = getDateWithoutTime();
 
     emit("input", localValue.value);
 
     return;
   }
 
-  const date = new Date(newDate.valueOf());
-
   if (props.range && isRangeDate(localValue.value)) {
     const isFullReset =
-      (localValue.value.from && date < localValue.value.from) ||
+      (localValue.value.from && newDate < localValue.value.from) ||
       (localValue.value.to && localValue.value.from);
 
-    const updatedValue = isFullReset
-      ? { from: date, to: null }
-      : { from: localValue.value.from, to: date };
+    const updatedValue =
+      isFullReset || !localValue.value.from
+        ? { from: newDate, to: null }
+        : { from: localValue.value.from, to: newDate };
 
     localValue.value = updatedValue;
 
     emit("input", updatedValue);
   } else {
-    localValue.value = date;
+    localValue.value = newDate;
 
-    emit("input", localValue.value);
+    emit("input", newDate);
   }
 
   if (!props.range) {
-    activeDate.value = null;
-    activeMonth.value = null;
+    activeDate.value = newDate;
   }
 
   wrapperRef.value?.focus();
@@ -457,6 +488,8 @@ function onKeydown(event: KeyboardEvent) {
     minutesRef.value?.blur();
     hoursRef.value?.blur();
     secondsRef.value?.blur();
+
+    isArrowKeyDirty.value = true;
   }
 
   if (event.code === KeyCode.Enter) {
@@ -474,16 +507,14 @@ function onKeydown(event: KeyboardEvent) {
 }
 
 function onInput(date: Date | null): void {
-  activeDate.value = null;
-  activeMonth.value = date;
+  activeDate.value = date || getDateWithoutTime();
 
   if (isCurrentView.value.month) currentView.value = View.Day;
   if (isCurrentView.value.year) currentView.value = View.Month;
 }
 
 function arrowKeyHandler(event: KeyboardEvent) {
-  const currentActiveDate =
-    activeDate.value || activeMonth.value || selectedDate.value || getDateWithoutTime();
+  const currentActiveDate = activeDate.value || selectedDate.value || getDateWithoutTime();
 
   let newActiveDate;
 
@@ -531,56 +562,52 @@ function arrowKeyHandler(event: KeyboardEvent) {
 
   if (newActiveDate && !isOutOfRange) {
     activeDate.value = newActiveDate;
-    activeMonth.value = newActiveDate;
   }
 }
 
 function addActiveMonth(amount: number) {
-  const currentActiveMonth = activeMonth.value || selectedDate.value || getDateWithoutTime();
+  const currentActiveMonth = activeDate.value || selectedDate.value || getDateWithoutTime();
 
-  activeMonth.value = addMonths(currentActiveMonth, amount);
+  activeDate.value = addMonths(currentActiveMonth, amount);
 }
 
 function addActiveYear(amount: number) {
-  const currentActiveMonth = activeMonth.value || selectedDate.value || getDateWithoutTime();
+  const currentActiveMonth = activeDate.value || selectedDate.value || getDateWithoutTime();
 
-  activeMonth.value = addYears(currentActiveMonth, amount);
+  activeDate.value = addYears(currentActiveMonth, amount);
 }
 
 function onClickNextButton() {
-  activeDate.value = null;
-
   if (isCurrentView.value.day) addActiveMonth(1);
   if (isCurrentView.value.month) addActiveYear(1);
   if (isCurrentView.value.year) addActiveYear(YEARS_PER_VIEW);
+
+  isArrowKeyDirty.value = false;
 }
 
 function onClickNextYearButton() {
-  activeDate.value = null;
-
   addActiveYear(1);
+
+  isArrowKeyDirty.value = false;
 }
 
 function onClickPrevButton() {
-  activeDate.value = null;
-
   if (isCurrentView.value.day) addActiveMonth(-1);
   if (isCurrentView.value.month) addActiveYear(-1);
   if (isCurrentView.value.year) addActiveYear(YEARS_PER_VIEW * -1);
+
+  isArrowKeyDirty.value = false;
 }
 
 function onClickPrevYearButton() {
-  activeDate.value = null;
-
   addActiveYear(-1);
+
+  isArrowKeyDirty.value = false;
 }
 
 function enterKeyHandler() {
   if (activeDate.value !== null && isCurrentView.value.day) {
     localValue.value = activeDate.value;
-
-    activeDate.value = null;
-    activeMonth.value = null;
 
     emit("input", localValue.value);
     emit("submit");
@@ -595,9 +622,11 @@ function onClickViewSwitch() {
   const currentViewIndex = views.indexOf(currentView.value);
   const nextViewIndex = currentViewIndex + 1;
 
-  activeDate.value = null;
-
   currentView.value = (views[nextViewIndex] || views.at(0)) as View;
+
+  nextTick(() => {
+    wrapperRef.value!.focus();
+  });
 }
 
 let lastValidHourValue: string | number = "";
@@ -606,7 +635,7 @@ let lastValidSecondValue: string | number = "";
 
 function onTimeKeydown(event: KeyboardEvent) {
   if (ARROW_KEYS.includes(event.code)) {
-    wrapperRef.value?.focus();
+    wrapperRef.value!.focus();
 
     return;
   }
@@ -766,6 +795,7 @@ defineExpose({
  * Applies: `class`, `config`, redefined default `props` and dev `vl-...` attributes.
  */
 const {
+  getDataTest,
   config,
   wrapperAttrs,
   navigationAttrs,
@@ -782,16 +812,23 @@ const {
 </script>
 
 <template>
-  <div ref="wrapper" :tabindex="tabindex" v-bind="wrapperAttrs" @keydown="onKeydown">
-    <div v-bind="navigationAttrs">
+  <div
+    ref="wrapper"
+    :tabindex="tabindex"
+    v-bind="wrapperAttrs"
+    :data-test="getDataTest()"
+    @keydown="onKeydown"
+  >
+    <div v-bind="navigationAttrs" :data-test="getDataTest('navigation')">
       <UButton
-        v-if="range"
+        v-if="isCurrentView.day"
         square
         size="sm"
         color="grayscale"
         variant="ghost"
         :icon="config.defaults.prevYearIcon"
         v-bind="nextPrevButtonAttrs"
+        :data-test="getDataTest('prev-year')"
         @mousedown.prevent.capture
         @click="onClickPrevYearButton"
       />
@@ -803,17 +840,20 @@ const {
         variant="ghost"
         :icon="config.defaults.prevIcon"
         v-bind="nextPrevButtonAttrs"
+        :data-test="getDataTest('prev')"
         @mousedown.prevent.capture
         @click="onClickPrevButton"
       />
 
       <UButton
         block
+        square
         size="sm"
         color="grayscale"
         variant="ghost"
         :label="currentViewLabel"
         v-bind="viewSwitchButtonAttrs"
+        :data-test="getDataTest('view-switch')"
         @mousedown.prevent.capture
         @click="onClickViewSwitch"
       />
@@ -825,18 +865,20 @@ const {
         variant="ghost"
         :icon="config.defaults.nextIcon"
         v-bind="nextPrevButtonAttrs"
+        :data-test="getDataTest('next')"
         @mousedown.prevent.capture
         @click="onClickNextButton"
       />
 
       <UButton
-        v-if="range"
+        v-if="isCurrentView.day"
         square
         size="sm"
         color="grayscale"
         variant="ghost"
         :icon="config.defaults.nextYearIcon"
         v-bind="nextPrevButtonAttrs"
+        :data-test="getDataTest('next-year')"
         @mousedown.prevent.capture
         @click="onClickNextYearButton"
       />
@@ -848,13 +890,14 @@ const {
       :selected-date="selectedDate"
       :selected-date-to="selectedDateTo"
       :range="range"
-      :active-month="activeMonth"
       :active-date="activeDate"
       :min-date="minDate"
       :max-date="maxDate"
       :date-format="actualDateFormat"
       :locale="locale"
       :config="config"
+      :is-arrow-key-dirty="isArrowKeyDirty"
+      :data-test="getDataTest('day-view')"
       @input="onInputDate"
     />
 
@@ -863,32 +906,35 @@ const {
       :selected-date="selectedDate"
       :selected-date-to="selectedDateTo"
       :range="range"
-      :active-month="activeMonth"
       :active-date="activeDate"
       :min-date="minDate"
       :max-date="maxDate"
       :date-format="actualDateFormat"
       :locale="locale"
       :config="config"
+      :is-arrow-key-dirty="isArrowKeyDirty"
+      :data-test="getDataTest('month-view')"
       @input="onInput"
     />
 
     <YearView
       v-if="isCurrentView.year"
+      ref="year-view"
       :selected-date="selectedDate"
       :selected-date-to="selectedDateTo"
       :range="range"
-      :active-month="activeMonth"
       :active-date="activeDate"
       :min-date="minDate"
       :max-date="maxDate"
       :date-format="actualDateFormat"
       :locale="locale"
       :config="config"
+      :is-arrow-key-dirty="isArrowKeyDirty"
+      :data-test="getDataTest('year-view')"
       @input="onInput"
     />
 
-    <div v-if="isTimepickerEnabled" v-bind="timepickerAttrs">
+    <div v-if="isTimepickerEnabled" v-bind="timepickerAttrs" :data-test="getDataTest('timepicker')">
       <span v-bind="timepickerLabelAttrs" v-text="localeMessages.timeLabel" />
 
       <div v-bind="timepickerInputWrapperAttrs">
@@ -897,6 +943,7 @@ const {
           placeholder="00"
           type="text"
           v-bind="timepickerInputHoursAttrs"
+          :data-test="getDataTest('timepicker-hours')"
           @input.prevent="onTimeInput($event as InputEvent, InputType.Hours)"
           @click.prevent="onClickTimeInput"
           @focus.prevent="onFocusTimeInput"
@@ -908,6 +955,7 @@ const {
           placeholder="00"
           type="text"
           v-bind="timepickerInputMinutesAttrs"
+          :data-test="getDataTest('timepicker-minutes')"
           @input.prevent="onTimeInput($event as InputEvent, InputType.Minutes)"
           @click.prevent="onClickTimeInput"
           @focus.prevent="onFocusTimeInput"
@@ -919,6 +967,7 @@ const {
           placeholder="00"
           type="text"
           v-bind="timepickerInputSecondsAttrs"
+          :data-test="getDataTest('timepicker-seconds')"
           @input.prevent="onTimeInput($event as InputEvent, InputType.Seconds)"
           @click.prevent="onClickTimeInput"
           @focus.prevent="onFocusTimeInput"
@@ -932,6 +981,7 @@ const {
         color="grayscale"
         variant="soft"
         v-bind="timepickerSubmitButtonAttrs"
+        :data-test="getDataTest('timepicker-submit')"
         @click="onClickSubmit"
       >
         {{ localeMessages.okLabel }}

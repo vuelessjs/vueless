@@ -13,7 +13,7 @@ import UBadge from "../../ui.text-badge/UBadge.vue";
 import ULink from "../../ui.button-link/ULink.vue";
 import UAvatar from "../../ui.image-avatar/UAvatar.vue";
 
-import type { Meta, StoryFn } from "@storybook/vue3";
+import type { Meta, StoryFn } from "@storybook/vue3-vite";
 import type { Props } from "../types.ts";
 
 interface DefaultUDropdownLinkArgs extends Props {
@@ -162,10 +162,21 @@ export const DefaultSlot = DefaultTemplate.bind({});
 DefaultSlot.args = {
   toggleIcon: false,
   slotTemplate: `
-    <template #default>
-      <UAvatar rounded="full" src="https://avatar.iran.liara.run/public" />
+    <template #default="{ opened }">
+      <UAvatar
+        rounded="full"
+        src="https://i.pravatar.cc/300"
+        :class="{ 'outline-medium outline-primary': opened }"
+      />
     </template>
   `,
+};
+DefaultSlot.parameters = {
+  docs: {
+    story: {
+      height: "220px",
+    },
+  },
 };
 
 export const LeftSlot = DefaultTemplate.bind({});
@@ -182,7 +193,7 @@ ToggleSlot.args = {
   slotTemplate: `
     <template #toggle="{ opened, toggle }">
       <UAvatar
-        src="https://avatar.iran.liara.run/public"
+        src="https://i.pravatar.cc/300"
         size="3xs"
         rounded="full"
         :class="{ 'outline-medium outline-primary': opened }"

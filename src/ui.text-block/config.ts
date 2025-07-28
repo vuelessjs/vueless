@@ -12,6 +12,15 @@ export default /*tw*/ {
       [&_ul]:ml-2 [&_ol]:ml-2
     `,
     variants: {
+      variant: {
+        default: "text-{color}",
+        lifted: "text-{color}-lifted",
+        accented: "text-{color}-accented",
+        muted: "text-{color}/(--vl-disabled-opacity)",
+      },
+      color: {
+        inherit: "text-inherit",
+      },
       size: {
         xs: "text-tiny space-y-1",
         sm: "text-small space-y-2",
@@ -23,15 +32,35 @@ export default /*tw*/ {
         center: "text-center",
         right: "text-right",
       },
+      weight: {
+        light: "font-light",
+        normal: "font-normal",
+        medium: "font-medium",
+        semibold: "font-semibold",
+        bold: "font-bold",
+      },
       line: {
         true: "leading-none",
       },
+      wrap: {
+        false: "text-nowrap",
+      },
     },
+    compoundVariants: [
+      { color: "text", variant: "default", class: "text-default" },
+      { color: "text", variant: "lifted", class: "text-lifted" },
+      { color: "text", variant: "accented", class: "text-accented" },
+      { color: "text", variant: "muted", class: "text-muted" },
+    ],
   },
-  html: "",
+  label: "",
   defaults: {
+    color: "text",
+    variant: "default",
     size: "md",
     align: "left",
+    weight: "normal",
     line: false,
+    wrap: true,
   },
 };

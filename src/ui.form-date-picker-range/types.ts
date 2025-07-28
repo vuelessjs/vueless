@@ -56,6 +56,7 @@ export interface UDatePickerRangePeriodMenuProps {
   maxDate: string | Date | undefined;
   minDate: string | Date | undefined;
   customRangeButton: CustomRangeButton;
+  dataTest?: string | null;
   config: Config;
   attrs: UDatePickerRangePeriodMenuAttrs;
 }

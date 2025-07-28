@@ -82,9 +82,9 @@ export interface Props {
   disabled?: boolean;
 
   /**
-   * Disable browsers autocomplete.
+   * Enable browsers autocomplete.
    */
-  noAutocomplete?: boolean;
+  autocomplete?: boolean;
 
   /**
    * Unique element id.

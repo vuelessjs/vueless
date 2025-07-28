@@ -7,8 +7,6 @@ import UListbox from "../ui.form-listbox/UListbox.vue";
 import UBadge from "../ui.text-badge/UBadge.vue";
 import ULink from "../ui.button-link/ULink.vue";
 
-import { vClickOutside } from "../directives";
-
 import useUI from "../composables/useUI.ts";
 import { hasSlotContent } from "../utils/helper.ts";
 import { getDefaults } from "../utils/ui.ts";
@@ -36,6 +34,12 @@ const props = withDefaults(defineProps<Props>(), {
 
 const emit = defineEmits([
   /**
+   * Triggers when the select is clicked.
+   * @property {object} clickEvent
+   */
+  "click",
+
+  /**
    * Triggers when a dropdown list is opened.
    * @property {string} elementId
    */
@@ -54,10 +58,15 @@ const emit = defineEmits([
   "searchChange",
 
   /**
-   * Triggers when the option is removed.
+   * Triggers when the option from multiple select is removed.
    * @property {string} option
    */
-  "remove",
+  "removeOption",
+
+  /**
+   * Triggers when the select is cleared.
+   */
+  "clear",
 
   /**
    * Triggers when an option is selected.
@@ -198,10 +207,6 @@ const toggleIconName = computed(() => {
   return props.toggleIcon ? config.value.defaults.toggleIcon : "";
 });
 
-const clickOutsideOptions = computed(() => ({
-  ignore: [labelComponentRef.value?.wrapperElement, labelComponentRef.value?.labelElement],
-}));
-
 watch(localValue, setLabelPosition, { deep: true });
 
 onMounted(() => {
@@ -214,16 +219,6 @@ onMounted(() => {
 
 function onSearchChange(query: string) {
   emit("searchChange", query);
-}
-
-function onListboxInteraction(event: MouseEvent) {
-  const target = event.target as HTMLElement;
-
-  if (target.closest("input")) {
-    return;
-  }
-
-  event.preventDefault();
 }
 
 function onKeydownAddOption(event: KeyboardEvent) {
@@ -253,11 +248,11 @@ function toggle() {
 }
 
 function deactivate() {
-  if (!isOpen.value || props.disabled) {
+  if (!isOpen.value || props.disabled || props.readonly) {
     return;
   }
 
-  if (props.searchable) wrapperRef.value?.blur();
+  wrapperRef.value?.blur();
 
   isOpen.value = false;
 
@@ -265,7 +260,7 @@ function deactivate() {
 }
 
 function activate() {
-  if (isOpen.value || props.disabled) {
+  if (isOpen.value || props.disabled || props.readonly) {
     return;
   }
 
@@ -283,9 +278,9 @@ function activate() {
 }
 
 function adjustPosition() {
-  if (typeof window === "undefined" || !listboxRef.value || !wrapperRef.value) return;
+  if (!wrapperRef.value) return;
 
-  const dropdownHeight = listboxRef.value.wrapperRef?.getBoundingClientRect().height || 0;
+  const dropdownHeight = listboxRef.value?.wrapperRef?.getBoundingClientRect().height || 0;
   const spaceAbove = wrapperRef.value.getBoundingClientRect().top;
   const spaceBelow = window.innerHeight - wrapperRef.value.getBoundingClientRect().bottom;
   const hasEnoughSpaceBelow = spaceBelow > dropdownHeight;
@@ -297,7 +292,7 @@ function adjustPosition() {
   }
 }
 
-function onWrapperBlur(event: FocusEvent) {
+function deactivateOnBlur(event: FocusEvent) {
   const related = event.relatedTarget as HTMLElement | null;
 
   const isInsideWrapper = related && wrapperRef.value?.contains(related);
@@ -312,7 +307,19 @@ function onWrapperBlur(event: FocusEvent) {
   deactivate();
 }
 
-function onMouseDownClearItem(event: MouseEvent, option: Option) {
+function onBlur(event: FocusEvent) {
+  deactivateOnBlur(event);
+}
+
+function onListboxBlur(event: FocusEvent) {
+  deactivateOnBlur(event);
+}
+
+function onListboxSearchBlur(event: FocusEvent) {
+  deactivateOnBlur(event);
+}
+
+function onClickClearItem(event: MouseEvent, option: Option) {
   if (props.disabled) return;
 
   const value = Array.isArray(props.modelValue)
@@ -325,25 +332,23 @@ function onMouseDownClearItem(event: MouseEvent, option: Option) {
       })
     : [];
 
+  if (isOpen.value) wrapperRef.value?.focus();
+
   emit("update:modelValue", value);
   emit("change", { value, options: props.options });
-  emit("remove", option);
+  emit("removeOption", option);
 }
 
-function onMouseDownClear() {
+function onClickClear() {
   if (props.disabled) return;
-
-  if (!props.clearable && !props.multiple) {
-    deactivate();
-
-    return;
-  }
 
   const value = props.multiple ? [] : "";
 
   emit("update:modelValue", value);
   emit("change", { value, options: props.options });
-  emit("remove", props.options);
+  emit("clear");
+
+  deactivate();
 }
 
 useMutationObserver(leftSlotWrapperRef, (mutations) => mutations.forEach(setLabelPosition), {
@@ -354,6 +359,10 @@ useMutationObserver(leftSlotWrapperRef, (mutations) => mutations.forEach(setLabe
 
 function setLabelPosition() {
   if (props.labelAlign === "top" || (!hasSlotContent(slots["left"]) && !props.leftIcon)) {
+    if (labelComponentRef.value?.labelElement) {
+      labelComponentRef.value.labelElement.style.left = "";
+    }
+
     return;
   }
 
@@ -463,7 +472,6 @@ const {
 <template>
   <ULabel
     ref="labelComponent"
-    :for="elementId"
     :size="size"
     :label="label"
     :error="error"
@@ -471,33 +479,39 @@ const {
     :align="labelAlign"
     :disabled="disabled"
     centred
-    interactive
     v-bind="selectLabelAttrs"
     :data-test="getDataTest()"
     :tabindex="-1"
-    @click="toggle"
   >
     <template #label>
-      <!--
-        @slot Use this to add custom content instead of the label.
-        @binding {string} label
-      -->
-      <slot name="label" :label="label" />
+      <div
+        v-if="label || hasSlotContent($slots['label'], { label })"
+        @click="(emit('click', $event), toggle())"
+        @mousedown.prevent
+      >
+        <!--
+          @slot Use this to add custom content instead of the label.
+          @binding {string} label
+        -->
+        <slot name="label" :label="label">
+          {{ label }}
+        </slot>
+      </div>
     </template>
 
     <div
       ref="wrapper"
-      v-click-outside="[deactivate, clickOutsideOptions]"
       :tabindex="searchable || disabled ? -1 : 0"
       role="combobox"
       :aria-owns="'listbox-' + elementId"
       v-bind="wrapperAttrs"
       @focus="activate"
-      @blur="onWrapperBlur"
+      @blur="onBlur"
       @keydown.self.down.prevent="listboxRef?.pointerForward"
       @keydown.self.up.prevent="listboxRef?.pointerBackward"
       @keydown.enter.tab.stop.self="listboxRef?.addPointerElement()"
       @keyup.esc="deactivate"
+      @click="emit('click', $event)"
     >
       <div
         v-if="hasSlotContent($slots['right'], { iconName: rightIcon }) || rightIcon"
@@ -506,8 +520,14 @@ const {
         <!--
             @slot Use it to add something to the right of input.
             @binding {string} icon-name
+            @binding {array} options
+            @binding {object} options
           -->
-        <slot name="right" :icon-name="rightIcon">
+        <slot
+          name="right"
+          :icon-name="rightIcon"
+          :options="multiple ? selectedOptions.full : selectedOption"
+        >
           <UIcon v-if="rightIcon" :name="rightIcon" v-bind="rightIconAttrs" />
         </slot>
       </div>
@@ -526,7 +546,7 @@ const {
         v-bind="toggleWrapperAttrs"
         :tabindex="-1"
         :data-test="getDataTest('toggle')"
-        @mousedown.prevent.stop="toggle"
+        @click="toggle"
       >
         <!--
           @slot Use it to add something instead of the toggle icon.
@@ -546,23 +566,22 @@ const {
         </slot>
       </div>
 
-      <div
-        v-if="!isMultipleListVariant && isLocalValue && clearable"
-        v-bind="clearAttrs"
-        :data-test="getDataTest('clear')"
-        @mousedown="onMouseDownClear"
-      >
+      <div v-if="!isMultipleListVariant && isLocalValue && clearable" v-bind="clearAttrs">
         <!--
           @slot Use it to add something instead of the clear icon.
           @binding {string} icon-name
+          @binding {function} clear
+          @binding {string} data-test
         -->
-        <slot name="clear" :icon-name="config.defaults.clearIcon">
+        <slot name="clear" :icon-name="config.defaults.clearIcon" :clear="onClickClear">
           <UIcon
             interactive
             color="neutral"
             :disabled="disabled"
             :name="config.defaults.clearIcon"
             v-bind="clearIconAttrs"
+            :data-test="getDataTest('clear')"
+            @click.stop="onClickClear"
           />
         </slot>
       </div>
@@ -588,7 +607,7 @@ const {
             @binding {object} options
           -->
           <slot name="selected-options" :options="multiple ? selectedOptions.full : selectedOption">
-            <span v-if="!multiple" v-bind="selectedLabelsAttrs" @mousedown.prevent="toggle">
+            <span v-if="!multiple" v-bind="selectedLabelsAttrs" @click="toggle" @mousedown.prevent>
               <!--
                 @slot Use it to customize selected option.
                 @binding {string} label
@@ -609,7 +628,7 @@ const {
               </slot>
             </span>
 
-            <div v-else v-bind="selectedLabelsAttrs">
+            <div v-else v-bind="selectedLabelsAttrs" @click="toggle" @mousedown.prevent>
               <template v-if="isMultipleInlineVariant">
                 <div :title="selectedOptionsLabel.full" v-bind="selectedLabelAttrs">
                   <template v-for="(option, index) in selectedOptions.visible" :key="index">
@@ -669,7 +688,6 @@ const {
                       :size="size"
                       variant="subtle"
                       v-bind="badgeLabelAttrs"
-                      @click="toggle"
                     >
                       <div v-bind="selectedLabelTextAttrs">
                         {{ option[labelKey] }}
@@ -682,7 +700,7 @@ const {
                           :disabled="disabled"
                           :name="config.defaults.badgeClearIcon"
                           v-bind="badgeClearIconAttrs"
-                          @click="onMouseDownClearItem($event, option)"
+                          @click="onClickClearItem($event, option)"
                         />
                       </template>
                     </UBadge>
@@ -735,9 +753,7 @@ const {
                       :name="config.defaults.listClearIcon"
                       :data-test="getDataTest('clear-item')"
                       v-bind="listClearIconAttrs"
-                      @mousedown.prevent.capture
-                      @click.prevent.capture
-                      @mousedown="onMouseDownClearItem($event, option)"
+                      @click.stop="onClickClearItem($event, option)"
                     />
                   </slot>
                 </div>
@@ -767,8 +783,7 @@ const {
                     :underlined="false"
                     v-bind="listClearAllAttrs"
                     :data-test="getDataTest('clear-all')"
-                    @mousedown.prevent.capture="onMouseDownClear"
-                    @click.prevent.capture
+                    @click.stop="onClickClear"
                   />
                 </div>
               </template>
@@ -782,23 +797,26 @@ const {
         ref="listbox"
         v-model="dropdownValue as string | number"
         :searchable="searchable"
+        :options-limit="optionsLimit"
         :multiple="multiple"
         :options="options"
         :disabled="disabled"
         :size="size"
         :debounce="debounce"
         :visible-options="visibleOptions"
-        :value-key="valueKey"
         :label-key="labelKey"
+        :value-key="valueKey"
+        :group-label-key="groupLabelKey"
+        :group-value-key="groupValueKey"
         :add-option="addOption"
         tabindex="-1"
         v-bind="listboxAttrs as KeyAttrsWithConfig<UListboxConfig>"
         :data-test="getDataTest()"
         @add="onAddOption"
         @focus="activate"
-        @update:model-value="onSearchChange"
-        @mousedown.capture="onListboxInteraction"
-        @click.capture="onListboxInteraction"
+        @blur="onListboxBlur"
+        @search-blur="onListboxSearchBlur"
+        @search-change="onSearchChange"
       >
         <template #before-option="{ option, index }">
           <!--
@@ -834,10 +852,16 @@ const {
         v-bind="leftSlotAttrs"
       >
         <!--
-            @slot Use it to add something to the left of input.
-            @binding {string} icon-name
-          -->
-        <slot name="left" :icon-name="leftIcon">
+          @slot Use it to add something to the left of input.
+          @binding {string} icon-name
+          @binding {array} options
+          @binding {object} options
+        -->
+        <slot
+          name="left"
+          :icon-name="leftIcon"
+          :options="multiple ? selectedOptions.full : selectedOption"
+        >
           <UIcon v-if="leftIcon" :name="leftIcon" v-bind="leftIconAttrs" />
         </slot>
       </div>

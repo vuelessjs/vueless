@@ -1,5 +1,14 @@
 export default /*tw*/ {
-  selectLabel: "{ULabel}",
+  selectLabel: {
+    base: "{ULabel}",
+    content: "w-full",
+    variants: {
+      labelAlign: {
+        right: "w-full",
+        left: "w-full",
+      },
+    },
+  },
   wrapper: {
     base: `
       flex flex-row-reverse justify-between w-full min-h-full box-border relative
@@ -90,21 +99,7 @@ export default /*tw*/ {
       },
     },
   },
-  afterToggle: {
-    base: "{>toggle} mr-2.5 items-start cursor-auto",
-    variants: {
-      size: {
-        sm: "pt-0.5",
-        md: "pt-1",
-        lg: "pt-1.5",
-      },
-    },
-    compoundVariants: [
-      { labelAlign: "topInside", size: "sm", class: "pt-2" },
-      { labelAlign: "topInside", size: "md", class: "pt-3" },
-      { labelAlign: "topInside", size: "lg", class: "pt-4" },
-    ],
-  },
+  afterToggle: "{>toggle} mr-2.5 items-center cursor-auto",
   toggle: {
     base: "flex items-center",
     compoundVariants: [
@@ -152,6 +147,7 @@ export default /*tw*/ {
     visibleOptions: 8,
     labelDisplayCount: 2,
     multiple: false,
+    readonly: false,
     disabled: false,
     searchable: false,
     clearable: true,
