@@ -3,9 +3,8 @@
     "env.d.ts",
     "src/**/*",
     "src/**/*.vue",
-    "test/**/*"
   ],
-  "exclude": ["src/**/__tests__/*", "dist/**/*"],
+  "exclude": ["dist/**/*"],
   "compilerOptions": {
     /* General */
     "module": "ESNext",
