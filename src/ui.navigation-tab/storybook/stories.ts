@@ -15,7 +15,7 @@ import UAvatar from "../../ui.image-avatar/UAvatar.vue";
 
 import johnDoe from "./assets/john-doe.png";
 
-import type { Meta, StoryFn } from "@storybook/vue3";
+import type { Meta, StoryFn } from "@storybook/vue3-vite";
 import type { Props } from "../types.ts";
 
 interface UTabArgs extends Props {

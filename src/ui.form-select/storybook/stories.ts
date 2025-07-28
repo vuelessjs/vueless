@@ -21,7 +21,7 @@ import emilyDavis from "./assets/images/emily-davis.png";
 import alexJohnson from "./assets/images/alex-johnson.png";
 import patMorgan from "./assets/images/pat-morgan.png";
 
-import type { Meta, StoryFn } from "@storybook/vue3";
+import type { Meta, StoryFn } from "@storybook/vue3-vite";
 import type { Props } from "../types.ts";
 
 interface USelectArgs extends Props {

@@ -18,7 +18,7 @@ import UCol from "../../ui.container-col/UCol.vue";
 import USwitch from "../../ui.form-switch/USwitch.vue";
 import ULink from "../../ui.button-link/ULink.vue";
 
-import type { Meta, StoryFn } from "@storybook/vue3";
+import type { Meta, StoryFn } from "@storybook/vue3-vite";
 import type { Props } from "../types.ts";
 
 interface UCardArgs extends Props {

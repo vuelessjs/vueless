@@ -15,7 +15,7 @@ import UInput from "../../ui.form-input/UInput.vue";
 import UInputPassword from "../../ui.form-input-password/UInputPassword.vue";
 import UAlert from "../../ui.text-alert/UAlert.vue";
 
-import type { Meta, StoryFn } from "@storybook/vue3";
+import type { Meta, StoryFn } from "@storybook/vue3-vite";
 import type { Props } from "../types.ts";
 
 interface UGroupsArgs extends Props {

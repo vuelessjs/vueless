@@ -9,7 +9,7 @@ import UCol from "../../ui.container-col/UCol.vue";
 import { useLoaderProgress } from "../useLoaderProgress.ts";
 import { loaderProgressOff, loaderProgressOn } from "../utilLoaderProgress.ts";
 
-import type { Meta, StoryFn } from "@storybook/vue3";
+import type { Meta, StoryFn } from "@storybook/vue3-vite";
 import type { Props } from "../types.ts";
 
 interface ULoaderProgressArgs extends Props {

@@ -16,7 +16,7 @@ import UText from "../../ui.text-block/UText.vue";
 
 import emptyInbox from "./assets/empty-inbox.png";
 
-import type { Meta, StoryFn } from "@storybook/vue3";
+import type { Meta, StoryFn } from "@storybook/vue3-vite";
 import type { Props } from "../types.ts";
 
 interface UEmptyArgs extends Props {

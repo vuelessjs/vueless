@@ -14,7 +14,7 @@ import UNumber from "../../ui.text-number/UNumber.vue";
 import UText from "../../ui.text-block/UText.vue";
 import UDot from "../../ui.other-dot/UDot.vue";
 
-import type { Meta, StoryFn } from "@storybook/vue3";
+import type { Meta, StoryFn } from "@storybook/vue3-vite";
 import type { Props } from "../types.ts";
 
 interface UBadgeArgs extends Props {

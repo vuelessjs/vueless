@@ -7,7 +7,7 @@ import URow from "../../ui.container-row/URow.vue";
 import UAvatar from "../../ui.image-avatar/UAvatar.vue";
 import UBadge from "../../ui.text-badge/UBadge.vue";
 
-import type { Meta, StoryFn } from "@storybook/vue3";
+import type { Meta, StoryFn } from "@storybook/vue3-vite";
 import type { Props } from "../types.ts";
 
 interface UChipArgs extends Props {

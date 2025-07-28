@@ -9,7 +9,7 @@ import {
 import UCheckboxMultiState from "../../ui.form-checkbox-multi-state/UCheckboxMultiState.vue";
 import UCol from "../../ui.container-col/UCol.vue";
 
-import type { Meta, StoryFn } from "@storybook/vue3";
+import type { Meta, StoryFn } from "@storybook/vue3-vite";
 import type { Props } from "../types.ts";
 
 interface UCheckboxMultiStateArgs extends Props {

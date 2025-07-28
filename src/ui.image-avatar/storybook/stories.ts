@@ -13,7 +13,7 @@ import tooltip from "../../directives/tooltip/vTooltip.ts";
 
 import johnDoeImg from "./assets/john-doe.png";
 
-import type { Meta, StoryFn } from "@storybook/vue3";
+import type { Meta, StoryFn } from "@storybook/vue3-vite";
 import type { Props } from "../types.ts";
 
 interface UAvatarArgs extends Props {

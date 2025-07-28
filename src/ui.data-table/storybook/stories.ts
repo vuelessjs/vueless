@@ -1,4 +1,4 @@
-import type { Meta, StoryFn } from "@storybook/vue3";
+import type { Meta, StoryFn } from "@storybook/vue3-vite";
 import {
   getArgTypes,
   getSlotNames,

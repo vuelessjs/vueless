@@ -14,7 +14,7 @@ import UBadge from "../../ui.text-badge/UBadge.vue";
 import UDot from "../../ui.other-dot/UDot.vue";
 import ULabel from "../../ui.form-label/ULabel.vue";
 
-import type { Meta, StoryFn } from "@storybook/vue3";
+import type { Meta, StoryFn } from "@storybook/vue3-vite";
 import type { Props } from "../types.ts";
 
 interface UToggleArgs extends Props {

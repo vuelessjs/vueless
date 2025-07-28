@@ -19,7 +19,7 @@ import UInputPassword from "../../ui.form-input-password/UInputPassword.vue";
 import UCheckbox from "../../ui.form-checkbox/UCheckbox.vue";
 import UDivider from "../../ui.container-divider/UDivider.vue";
 
-import type { Meta, StoryFn } from "@storybook/vue3";
+import type { Meta, StoryFn } from "@storybook/vue3-vite";
 import type { Props } from "../types.ts";
 import type { UnknownObject } from "../../types.ts";
 

@@ -13,7 +13,7 @@ import UBadge from "../../ui.text-badge/UBadge.vue";
 
 import imageURL from "./assets/imageURL.png";
 
-import type { Meta, StoryFn } from "@storybook/vue3";
+import type { Meta, StoryFn } from "@storybook/vue3-vite";
 import type { Props } from "../types.ts";
 
 interface UFileArgs extends Props {

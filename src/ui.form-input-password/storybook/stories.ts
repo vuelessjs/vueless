@@ -14,7 +14,7 @@ import URow from "../../ui.container-row/URow.vue";
 import UButton from "../../ui.button/UButton.vue";
 import UDropdownButton from "../../ui.dropdown-button/UDropdownButton.vue";
 
-import type { Meta, StoryFn } from "@storybook/vue3";
+import type { Meta, StoryFn } from "@storybook/vue3-vite";
 import type { Props } from "../types.ts";
 
 interface UInputPasswordArgs extends Props {

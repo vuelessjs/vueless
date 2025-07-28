@@ -15,7 +15,7 @@ import UText from "../../ui.text-block/UText.vue";
 import URow from "../../ui.container-row/URow.vue";
 import UChip from "../../ui.other-chip/UChip.vue";
 
-import type { Meta, StoryFn } from "@storybook/vue3";
+import type { Meta, StoryFn } from "@storybook/vue3-vite";
 import type { Props } from "../types.ts";
 
 interface UCheckboxArgs extends Props {

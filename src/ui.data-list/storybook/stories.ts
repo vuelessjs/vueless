@@ -16,7 +16,7 @@ import UHeader from "../../ui.text-header/UHeader.vue";
 import ULoader from "../../ui.loader/ULoader.vue";
 import tooltip from "../../directives/tooltip/vTooltip.ts";
 
-import type { Meta, StoryFn } from "@storybook/vue3";
+import type { Meta, StoryFn } from "@storybook/vue3-vite";
 import type { Props, DataListItem } from "../types.ts";
 
 interface UDataListArgs extends Props {

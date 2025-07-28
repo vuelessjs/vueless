@@ -13,7 +13,7 @@ import UBadge from "../../ui.text-badge/UBadge.vue";
 import UText from "../../ui.text-block/UText.vue";
 import URow from "../../ui.container-row/URow.vue";
 
-import type { Meta, StoryFn } from "@storybook/vue3";
+import type { Meta, StoryFn } from "@storybook/vue3-vite";
 import type { Props } from "../types.ts";
 
 interface URadioGroupArgs extends Props {

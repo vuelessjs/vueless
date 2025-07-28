@@ -18,7 +18,7 @@ import URow from "../../ui.container-row/URow.vue";
 import UAlert from "../../ui.text-alert/UAlert.vue";
 import UHeader from "../../ui.text-header/UHeader.vue";
 
-import type { Meta, StoryFn } from "@storybook/vue3";
+import type { Meta, StoryFn } from "@storybook/vue3-vite";
 import type { Props } from "../types.ts";
 
 interface UGroupArgs extends Props {
