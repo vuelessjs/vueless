@@ -362,12 +362,15 @@ export const DEFAULT_SVGO_CONFIG = {
       name: "preset-default",
       params: {
         overrides: {
-          removeViewBox: false,
           convertColors: {
             currentColor: true,
           },
         },
       },
+    },
+    {
+      name: "removeViewBox",
+      active: false,
     },
   ],
 };
