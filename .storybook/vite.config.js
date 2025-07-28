@@ -11,11 +11,11 @@ export default defineConfig({
     include: [
       "cva",
       "tailwind-merge",
-      "@tailwindcss/forms",
       "prettier2",
       "prettier2/parser-html",
       "@storybook/addon-docs/blocks",
       "storybook/theming/create",
+      "storybook/internal/docs-tools",
       "@storybook/addon-themes",
       "@storybook/vue3-vite",
     ],
