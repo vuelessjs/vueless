@@ -33,7 +33,7 @@ interface TableConfig {
 
 type ComponentNames = keyof typeof COMPONENTS;
 
-/* Load Web-Types from the project root. */
+/* Load Web-Types from cache. */
 const [webTypes]: WebTypes[] = Object.values(
   import.meta.glob("/node_modules/.cache/vueless/web-types.json", {
     eager: true,
