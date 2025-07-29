@@ -170,11 +170,39 @@ export function setTheme(config: ThemeConfig = {}, isCachedAutoMode?: boolean) {
         ? `--vl-grayscale-${shade}`
         : "--vl-grayscale";
 
-      if (!vuelessConfig.darkTheme?.[primaryShade] && !config.darkTheme?.[primaryShade]) {
+      /* Dark theme: if the primary color shade is not defined in global or runtime config, use the grayscale color. */
+
+      const hasGlobalDarkPrimaryColor = hasPrimaryColor(
+        vuelessConfig.darkTheme,
+        DEFAULT_DARK_THEME,
+        primaryShade,
+      );
+
+      const hasRuntimeDarkPrimaryColor = hasPrimaryColor(
+        config.darkTheme,
+        DEFAULT_DARK_THEME,
+        primaryShade,
+      );
+
+      if (!hasGlobalDarkPrimaryColor && !hasRuntimeDarkPrimaryColor) {
         darkTheme[primaryShade] = darkTheme[grayscaleShade];
       }
 
-      if (!vuelessConfig.lightTheme?.[primaryShade] && !config.lightTheme?.[primaryShade]) {
+      /* Light theme: if the primary color shade is not defined in global or runtime config, use the grayscale color. */
+
+      const hasGlobalLightPrimaryColor = hasPrimaryColor(
+        vuelessConfig.lightTheme,
+        DEFAULT_LIGHT_THEME,
+        primaryShade,
+      );
+
+      const hasRuntimeLightPrimaryColor = hasPrimaryColor(
+        config.lightTheme,
+        DEFAULT_LIGHT_THEME,
+        primaryShade,
+      );
+
+      if (!hasGlobalLightPrimaryColor && !hasRuntimeLightPrimaryColor) {
         lightTheme[primaryShade] = lightTheme[grayscaleShade];
       }
     });
@@ -190,6 +218,17 @@ export function setTheme(config: ThemeConfig = {}, isCachedAutoMode?: boolean) {
     lightTheme,
     darkTheme,
   });
+}
+
+function hasPrimaryColor(
+  colorModeConfig: Partial<VuelessCssVariables> | undefined,
+  defaultColorModeConfig: Partial<VuelessCssVariables>,
+  primaryShade: keyof VuelessCssVariables,
+) {
+  const shade = colorModeConfig?.[primaryShade];
+  const defaultShade = defaultColorModeConfig?.[primaryShade];
+
+  return shade && shade !== defaultShade;
 }
 
 /**
