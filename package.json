@@ -1,29 +1,13 @@
 {
   "name": "vueless",
   "version": "1.1.1-beta.0",
-  "license": "MIT",
   "description": "Vue Styleless UI Component Library, powered by Tailwind CSS.",
-  "keywords": [
-    "vueless",
-    "vue",
-    "vue.js",
-    "vue3",
-    "ui library",
-    "component library",
-    "vue framework",
-    "design system",
-    "tailwind",
-    "tailwindcss",
-    "unstyled",
-    "styleless",
-    "headlessui",
-    "ui"
-  ],
-  "homepage": "https://vueless.com",
   "author": "Johnny Grid <hello@vueless.com> (https://vueless.com)",
+  "homepage": "https://vueless.com",
   "style": "tailwind.css",
   "main": "index.ts",
   "type": "module",
+  "license": "MIT",
   "publishConfig": {
     "access": "public"
   },
@@ -74,7 +58,7 @@
     "@vue/eslint-config-typescript": "^14.6.0",
     "@vue/test-utils": "^2.4.6",
     "@vue/tsconfig": "^0.7.0",
-    "@vueless/storybook": "^1.1.0",
+    "@vueless/storybook": "^1.1.2",
     "eslint": "^9.32.0",
     "eslint-plugin-storybook": "^9.0.18",
     "eslint-plugin-vue": "^10.3.0",
@@ -102,5 +86,21 @@
   },
   "bugs": {
     "url": "https://github.com/vuelessjs/vueless/issues"
-  }
+  },
+  "keywords": [
+    "vueless",
+    "vue",
+    "vue.js",
+    "vue3",
+    "ui library",
+    "component library",
+    "vue framework",
+    "design system",
+    "tailwind",
+    "tailwindcss",
+    "unstyled",
+    "styleless",
+    "headlessui",
+    "ui"
+  ]
 }
