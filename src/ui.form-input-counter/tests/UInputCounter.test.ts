@@ -261,7 +261,7 @@ describe("UInputCounter.vue", () => {
           },
         });
 
-        component.get(`[data-test='test-${testCase}']`);
+        expect(component.get(`[data-test='test-${testCase}']`)).toBeTruthy();
       });
     });
   });

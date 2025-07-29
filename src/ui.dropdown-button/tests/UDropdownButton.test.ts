@@ -225,7 +225,7 @@ describe("UDropdownButton.vue", () => {
     });
 
     // ToggleIcon prop (boolean: false)
-    it("shows default toggle icon when toggleIcon is true", () => {
+    it("shows default toggle icon when toggleIcon is false", () => {
       const toggleIcon = false;
 
       const component = mount(UDropdownButton, {

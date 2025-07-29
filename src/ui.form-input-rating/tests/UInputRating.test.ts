@@ -18,8 +18,8 @@ describe("UInputRating.vue", () => {
 
       const icons = component.findAllComponents(UIcon);
 
-      expect(icons[2].props("name")).that.includes("star-fill");
-      expect(icons[3].props("name")).that.includes("star");
+      expect(icons[2].props("name")).toContain("star-fill");
+      expect(icons[3].props("name")).toContain("star");
     });
 
     it("Model Value – updates value on click", async () => {

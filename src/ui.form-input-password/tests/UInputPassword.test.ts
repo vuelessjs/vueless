@@ -172,7 +172,7 @@ describe("UInputPassword.vue", () => {
 
       await flushPromises();
 
-      component.get(`[data-test='${dataTest}-password-icon']`);
+      expect(component.get(`[data-test='${dataTest}-password-icon']`)).toBeTruthy();
     });
   });
 
@@ -215,7 +215,7 @@ describe("UInputPassword.vue", () => {
         },
       });
 
-      component.get(`.${testClass}`);
+      expect(component.get(`.${testClass}`)).toBeTruthy();
     });
 
     it("Left – exposes leftIcon prop", () => {
@@ -242,7 +242,7 @@ describe("UInputPassword.vue", () => {
         },
       });
 
-      component.get(`.${testClass}`);
+      expect(component.get(`.${testClass}`)).toBeTruthy();
     });
 
     it("Right – exposes password visibility state", async () => {

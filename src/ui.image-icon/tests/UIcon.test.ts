@@ -20,7 +20,7 @@ describe("UIcon.vue", () => {
 
       await flushPromises();
 
-      component.get("[vl-key='icon']");
+      expect(component.get("[vl-key='icon']")).toBeTruthy();
     });
 
     it("Src – renders icon based on provided src", async () => {
@@ -32,7 +32,7 @@ describe("UIcon.vue", () => {
 
       await flushPromises();
 
-      component.get("[vl-key='icon']");
+      expect(component.get("[vl-key='icon']")).toBeTruthy();
     });
 
     it("Color – applies correct color classes", () => {

@@ -291,7 +291,7 @@ describe("UInput.vue", () => {
       expect(component.get("input").attributes("id")).toBe(idValue);
     });
 
-    it("DataTest – sets data-test attribute on input", () => {
+    it("Data Test – sets data-test attribute on input", () => {
       const dataTestValue = "test-input";
 
       const component = mount(UInput, {

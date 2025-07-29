@@ -250,7 +250,7 @@ describe("UInputFile.vue", () => {
           },
         });
 
-        component.get(`[data-test="${dataTestValue}-${key}"]`);
+        expect(component.get(`[data-test="${dataTestValue}-${key}"]`)).toBeTruthy();
       });
     });
   });
