@@ -6,7 +6,7 @@ import UIcon from "../../ui.image-icon/UIcon.vue";
 
 import { NotificationType } from "../constants.ts";
 import { LocaleSymbol } from "../../composables/useLocale.ts";
-import createVuelessAdapter from "../../adapter.locale/vueless.ts";
+import { createVuelessAdapter } from "../../adapter.locale/vueless.ts";
 
 import type { Props, Notification } from "../types.ts";
 

@@ -1,10 +1,11 @@
 import type { I18n } from "vue-i18n";
+import type { LocaleInstance } from "../types.ts";
 
-export default function createVueI18nAdapter(i18n: I18n) {
+export function createVueI18nAdapter(i18n: I18n): LocaleInstance {
   return {
     name: "vue-i18n",
     locale: i18n.global.locale,
-    fallback: i18n.global.fallbackLocale,
+    fallback: i18n.global.fallbackLocale as string,
     messages: i18n.global.messages,
     // @ts-expect-error Type instantiation is excessively deep and possibly infinite
     t: (key: string, ...params: unknown[]) => i18n.global.t(key, params),

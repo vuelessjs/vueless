@@ -61,7 +61,6 @@ import UListboxConfig from "./ui.form-listbox/config.ts";
 import type { Props } from "tippy.js";
 import type { Config as TailwindConfig } from "tailwindcss";
 import type { ComputedRef, Ref, ComponentInternalInstance } from "vue";
-import type { LocaleOptions } from "./adapter.locale/vueless.ts";
 
 export enum ColorMode {
   Dark = "dark",
@@ -364,6 +363,27 @@ export interface VueAttrs {
 export interface CreateVuelessOptions extends Config {
   i18n?: LocaleOptions;
   config?: Config;
+}
+
+export interface LocaleOptions {
+  messages?: LocaleMessages;
+  locale?: string;
+  fallback?: string;
+  adapter?: LocaleInstance;
+}
+
+export interface LocaleInstance {
+  name: string;
+  messages: LocaleMessages | Ref<LocaleMessages>;
+  locale: string | Ref<string>;
+  fallback: string | Ref<string>;
+  t: (key: string, ...params: unknown[]) => string;
+  n: (value: number) => string;
+  tm: <TMassages>(key: string) => Partial<TMassages>;
+}
+
+export interface LocaleMessages {
+  [key: string]: LocaleMessages | string;
 }
 
 export interface VuelessCssVariables {

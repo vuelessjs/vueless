@@ -12,7 +12,8 @@ export {
 } from "./utils/helper.ts";
 export { getArgTypes, getSlotNames, getSlotsFragment, getSource } from "./utils/storybook.ts";
 export { isMac, isPWA, isIOS, isAndroid, isMobileApp, isWindows } from "./utils/platform.ts";
-export { default as createVueI18nAdapter } from "./adapter.locale/vue-i18n.ts";
+export { createVueI18nAdapter } from "./adapter.locale/vue-i18n.ts";
+export { createVuelessAdapter } from "./adapter.locale/vueless.ts";
 export { default as defaultEnLocale } from "./adapter.locale/locales/en.ts";
 export { default as useUI } from "./composables/useUI.ts";
 export { useLocale } from "./composables/useLocale.ts";

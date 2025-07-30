@@ -4,33 +4,12 @@ import { merge } from "lodash-es";
 import en from "./locales/en.ts";
 
 import type { Ref } from "vue";
-import type { UnknownObject } from "../types.ts";
 import type { VueMessageType } from "vue-i18n";
-
-export interface LocaleMessages {
-  [key: string]: LocaleMessages | string;
-}
-
-export interface LocaleOptions {
-  messages?: LocaleMessages;
-  locale?: string;
-  fallback?: string;
-  adapter?: LocaleInstance;
-}
-
-export interface LocaleInstance {
-  name: string;
-  messages: Ref<LocaleMessages>;
-  locale: Ref<string>;
-  fallback: Ref<string>;
-  t: (key: string, ...params: unknown[]) => string;
-  n: (value: number) => string;
-  tm: <TMassages>(key: string) => Partial<TMassages>;
-}
+import type { UnknownObject, LocaleOptions, LocaleMessages, LocaleInstance } from "../types.ts";
 
 const FALLBACK_LOCALE_CODE = "en";
 
-export default function createVuelessAdapter(options?: LocaleOptions): LocaleInstance {
+export function createVuelessAdapter(options?: LocaleOptions): LocaleInstance {
   const current = shallowRef(options?.locale ?? FALLBACK_LOCALE_CODE);
   const fallback = shallowRef(options?.fallback ?? FALLBACK_LOCALE_CODE);
 
