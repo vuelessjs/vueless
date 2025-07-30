@@ -368,10 +368,6 @@ export const DEFAULT_SVGO_CONFIG = {
         },
       },
     },
-    {
-      name: "removeViewBox",
-      active: false,
-    },
   ],
 };
 
