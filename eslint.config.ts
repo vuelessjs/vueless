@@ -19,21 +19,21 @@ const languageOptions = {
 export default defineConfigWithVueTs(
   {
     name: "global",
-    files: ["**/*.{ts,mts,vue}", "**/.storybook/**"],
+    files: ["**/*.{ts,vue}", "**/.storybook/**"],
     ignores: ["**/dist/**", "**/coverage/**", "**/storybook-static/**"],
     languageOptions,
   },
   pluginVue.configs["flat/recommended"],
   pluginStorybook.configs["flat/recommended"].map((item) => ({
     ...item,
-    ...(item.name.includes("stories-rules") ? { files: ["**/stories.{js,ts,jsx,tsx,mjs,cjs}"] } : {}),
+    ...(item.name.includes("stories-rules") ? { files: ["**/stories.{js,ts}"] } : {}),
   })),
   vueTsConfigs.recommended,
   prettierEslintConfig,
   {
     name: "common",
     languageOptions,
-    files: ["**/*.{js,ts,mjs,cjs,vue}"],
+    files: ["**/*.{js,ts,vue}"],
     rules: {
       "no-console": process.env.PROD ? "error" : "warn",
       "no-debugger": process.env.PROD ? "error" : "warn",
