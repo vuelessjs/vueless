@@ -232,13 +232,15 @@ const localValue = computed({
       parsedDate.setSeconds(Number(secondsRef.value?.value));
     }
 
-    const isOutOfRange = dateIsOutOfRange(
-      parsedDate || new Date(),
-      props.minDate,
-      props.maxDate,
-      locale.value,
-      actualDateFormat.value,
-    );
+    const isOutOfRange =
+      parsedDate !== null &&
+      dateIsOutOfRange(
+        parsedDate,
+        props.minDate,
+        props.maxDate,
+        locale.value,
+        actualDateFormat.value,
+      );
 
     if (isOutOfRange) {
       return;
