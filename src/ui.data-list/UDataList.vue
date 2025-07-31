@@ -186,6 +186,7 @@ const {
             :data-test="getDataTest('table')"
             @drag-sort="onDragEnd"
           >
+            <!-- @vue-ignore -->
             <template #label="slotProps: { item: DataListItem; crossed: boolean }">
               <!--
                 @slot Use it to modify label.
@@ -200,6 +201,7 @@ const {
               </slot>
             </template>
 
+            <!-- @vue-ignore -->
             <template #actions="slotProps: { item: DataListItem }">
               <!--
                 @slot Use it to add custom actions.

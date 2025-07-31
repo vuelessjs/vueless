@@ -17,9 +17,12 @@ export function useComponentLocaleMessages<TLocale>(
 
   const globalComponentMassages = ref(recursiveRt(tm(componentName) as VueMessageType));
 
-  watch(locale, () => {
-    globalComponentMassages.value = recursiveRt(tm(componentName) as VueMessageType);
-  });
+  watch(
+    () => locale,
+    () => {
+      globalComponentMassages.value = recursiveRt(tm(componentName) as VueMessageType);
+    },
+  );
 
   const localeMessages = computed(
     () => merge({}, defaultLocale, globalComponentMassages.value, propsLocale) as TLocale,
