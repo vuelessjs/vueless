@@ -17,9 +17,22 @@ jobs:
       - run: npm ci
       - run: npm run lint:ci
 
+  ts-check:
+    name: 'TS Check'
+    needs: lint
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: 'npm'
+      - run: npm ci
+      - run: npm run ts:check
+
   test:
     name: 'Test'
-    needs: lint
+    needs: ts-check
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
