@@ -378,9 +378,7 @@ function onChangeLocalSelectedRows(selectedRows: Row[]) {
 
   selectAll.value = !!selectedRows.length;
 
-  if (!isEqual(localSelectedRows.value, props.selectedRows)) {
-    emit("update:selectedRows", localSelectedRows.value);
-  }
+  emit("update:selectedRows", localSelectedRows.value);
 }
 
 function clearSelectedItems() {

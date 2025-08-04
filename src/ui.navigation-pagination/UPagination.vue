@@ -124,6 +124,7 @@ const {
   nextButtonAttrs,
   activeButtonAttrs,
   inactiveButtonAttrs,
+  ellipsisAttrs,
   lastIconAttrs,
   firstIconAttrs,
   prevIconAttrs,
@@ -181,13 +182,7 @@ const {
     </UButton>
 
     <template v-for="page in pageButtons" :key="page">
-      <UButton
-        v-if="!isFinite(page.number)"
-        square
-        disabled
-        variant="ghost"
-        v-bind="inactiveButtonAttrs"
-      >
+      <UButton v-if="!isFinite(page.number)" square disabled variant="ghost" v-bind="ellipsisAttrs">
         <!-- @slot Use it to add something instead of the ellipsis. -->
         <slot name="ellipsis">&hellip;</slot>
       </UButton>

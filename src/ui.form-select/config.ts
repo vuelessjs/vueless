@@ -118,7 +118,7 @@ export default /*tw*/ {
   clear: "{>toggle}",
   clearIcon: "{UIcon} {>selectIcon}",
   placeholder: {
-    base: "flex items-center text-muted !leading-none",
+    base: "flex items-center text-muted !leading-none shrink-0",
     variants: {
       size: {
         sm: "text-small",
