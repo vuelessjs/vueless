@@ -26,11 +26,11 @@ export default {
   component: UListbox,
   args: {
     options: [
-      { label: "New York", id: ["1"] },
-      { label: "Los Angeles", id: ["2"] },
-      { label: "Chicago", id: ["3"] },
-      { label: "Houston", id: ["4"] },
-      { label: "San Francisco", id: ["5"] },
+      { label: "New York", id: 1 },
+      { label: "Los Angeles", id: 2 },
+      { label: "Chicago", id: 3 },
+      { label: "Houston", id: 4 },
+      { label: "San Francisco", id: 5 },
     ],
   },
   argTypes: {

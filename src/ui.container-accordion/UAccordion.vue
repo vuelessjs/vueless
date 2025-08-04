@@ -67,6 +67,7 @@ const {
   descriptionAttrs,
   bodyAttrs,
   titleAttrs,
+  contentAttrs,
   toggleIconAttrs,
   accordionDividerAttrs,
 } = useUI<Config>(defaultConfig, mutatedProps);
@@ -94,6 +95,11 @@ const {
       </div>
 
       <div :id="`description-${elementId}`" v-bind="descriptionAttrs" v-text="description" />
+
+      <div v-if="isOpened" v-bind="contentAttrs">
+        <!-- @slot Use it to add accordion content. -->
+        <slot />
+      </div>
     </div>
 
     <UDivider v-bind="accordionDividerAttrs" />

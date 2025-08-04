@@ -12,7 +12,7 @@ describe("UPagination.vue", () => {
   describe("Props", () => {
     // Variant prop
     it("applies the correct variant to buttons", async () => {
-      const variants = ["solid", "outlined", "soft", "ghost"];
+      const variants = ["solid", "outlined", "subtle", "soft", "ghost"];
 
       variants.forEach((variant) => {
         const component = mount(UPagination, {

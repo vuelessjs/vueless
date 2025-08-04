@@ -24,6 +24,7 @@ export default /*tw*/ {
       },
     },
   },
+  content: "",
   toggleIcon: {
     base: "{UIcon} transition duration-300",
     variants: {
