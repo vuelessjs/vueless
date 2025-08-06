@@ -82,10 +82,12 @@ describe("UAccordion", () => {
     // ID prop
     it("uses provided id prop", () => {
       const id = "custom-id";
+      const description = "some text";
 
       const component = mount(UAccordion, {
         props: {
           id,
+          description,
         },
       });
 
