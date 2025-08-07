@@ -81,7 +81,8 @@ export const Vueless = function (options = {}) {
   /* if server stopped by developer (Ctrl+C) */
   process.on("SIGINT", async () => {
     if (isInternalEnv || isStorybookEnv) {
-      await showHiddenStories(vuelessSrcDir);
+      // TODO: Fix it later
+      // await showHiddenStories(vuelessSrcDir);
       await removeCustomPropTypes(vuelessSrcDir);
     }
 
