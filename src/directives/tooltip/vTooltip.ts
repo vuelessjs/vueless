@@ -15,12 +15,11 @@ let settings: Partial<DefaultProps> = {};
 
 if (isCSR) {
   import("tippy.js/dist/tippy.css");
-  import("tippy.js/themes/light.css");
   import("tippy.js/animations/shift-away.css");
 
   const defaultSettings = {
     arrow: true,
-    theme: "light",
+    theme: "vueless",
     animation: "shift-away",
   };
 
