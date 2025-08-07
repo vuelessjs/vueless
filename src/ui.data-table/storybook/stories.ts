@@ -474,6 +474,17 @@ DateDividerCustomLabel.parameters = {
   },
 };
 
+export const HeaderCounterSlot = DefaultTemplate.bind({});
+HeaderCounterSlot.args = {
+  selectable: true,
+  config: { headerCellCheckbox: "w-20" },
+  slotTemplate: `
+    <template #header-counter="{ total }">
+      Total: {{ total }}
+    </template>
+  `,
+};
+
 export const HeaderKeySlot = DefaultTemplate.bind({});
 HeaderKeySlot.args = {
   slotTemplate: `

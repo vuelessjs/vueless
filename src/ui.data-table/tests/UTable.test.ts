@@ -294,6 +294,24 @@ describe("UTable.vue", () => {
   });
 
   describe("Slots", () => {
+    it("Header Counter Slot – renders custom header counter content", () => {
+      const customHeaderCounterContent = "Custom Header Counter";
+
+      const component = mountUTable(
+        getDefaultProps({
+          selectable: true,
+          selectedRows: [defaultRows[0]],
+        }),
+        {
+          slots: {
+            "header-counter": customHeaderCounterContent,
+          },
+        },
+      );
+
+      expect(component.text()).toContain(customHeaderCounterContent);
+    });
+
     it("Header Slot – renders custom header content", () => {
       const customHeaderContent = "Custom Name Header";
 
