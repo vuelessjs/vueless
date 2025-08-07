@@ -116,7 +116,7 @@ export const Vueless = function (options = {}) {
         "process.env": {},
       },
       optimizeDeps: {
-        include: ["vueless/directives/**/*.ts"],
+        include: ["vueless/directives/**/*.ts", "vueless/constants.js"],
       },
     }),
 
