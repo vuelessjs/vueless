@@ -1,5 +1,12 @@
 export default /*tw*/ {
-  wrapper: "relative inline-block h-max",
+  wrapper: {
+    base: "relative inline-block h-max",
+    variants: {
+      block: {
+        true: "w-full",
+      },
+    },
+  },
   dropdownButton: "{UButton} justify-between",
   toggleIcon: {
     base: "{UIcon} transition duration-300 -mr-1",
@@ -48,6 +55,7 @@ export default /*tw*/ {
     xPosition: "left",
     searchable: false,
     round: false,
+    block: false,
     square: false,
     disabled: false,
     multiple: false,

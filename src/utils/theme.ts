@@ -314,10 +314,10 @@ function getText(text?: ThemeConfig["text"]) {
   };
 
   const mergedText = {
-    xs: runtimeText.xs === undefined ? textXs : definedText.xs,
-    sm: runtimeText.sm === undefined ? textSm : definedText.sm,
-    md: runtimeText.md === undefined ? textMd : definedText.md,
-    lg: runtimeText.lg === undefined ? textLg : definedText.lg,
+    xs: runtimeText.xs === undefined && globalText.xs === undefined ? textXs : definedText.xs,
+    sm: runtimeText.sm === undefined && globalText.sm === undefined ? textSm : definedText.sm,
+    md: runtimeText.md === undefined && globalText.md === undefined ? textMd : definedText.md,
+    lg: runtimeText.lg === undefined && globalText.lg === undefined ? textLg : definedText.lg,
   };
 
   if (isCSR && text) {
@@ -363,11 +363,13 @@ function getOutlines(outline?: ThemeConfig["outline"]) {
     lg: Math.max(0, Number(runtimeOutline.lg ?? getStored(storageKey.lg) ?? globalOutline.lg ?? 0)),
   };
 
+  /* eslint-disable prettier/prettier */
   const mergedOutline = {
-    sm: runtimeOutline.sm === undefined ? outlineSm : definedOutline.sm,
-    md: runtimeOutline.md === undefined ? outlineMd : definedOutline.md,
-    lg: runtimeOutline.lg === undefined ? outlineLg : definedOutline.lg,
+    sm: runtimeOutline.sm === undefined && globalOutline.sm === undefined ? outlineSm : definedOutline.sm,
+    md: runtimeOutline.md === undefined && globalOutline.md === undefined ? outlineMd : definedOutline.md,
+    lg: runtimeOutline.lg === undefined && globalOutline.lg === undefined ? outlineLg : definedOutline.lg,
   };
+  /* eslint-enable prettier/prettier */
 
   if (isCSR && outline) {
     setCookie(storageKey.sm, String(mergedOutline.sm));
@@ -419,13 +421,13 @@ function getRoundings(rounding?: ThemeConfig["rounding"]) {
     md: Math.max(0, Number(runtimeRounding.md ?? getStored(storageKey.md) ?? globalRounding.md ?? 0)),
     lg: Math.max(0, Number(runtimeRounding.lg ?? getStored(storageKey.lg) ?? globalRounding.lg ?? 0)),
   };
-  /* eslint-enable prettier/prettier */
 
   const mergedRounding = {
-    sm: runtimeRounding.sm === undefined ? roundingSm : definedRounding.sm,
-    md: runtimeRounding.md === undefined ? roundingMd : definedRounding.md,
-    lg: runtimeRounding.lg === undefined ? roundingLg : definedRounding.lg,
+    sm: runtimeRounding.sm === undefined && globalRounding.sm === undefined ? roundingSm : definedRounding.sm,
+    md: runtimeRounding.md === undefined && globalRounding.md === undefined ? roundingMd : definedRounding.md,
+    lg: runtimeRounding.lg === undefined && globalRounding.lg === undefined ? roundingLg : definedRounding.lg,
   };
+  /* eslint-enable prettier/prettier */
 
   if (isCSR && rounding) {
     setCookie(storageKey.sm, String(mergedRounding.sm));

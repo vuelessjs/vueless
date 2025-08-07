@@ -76,6 +76,11 @@ export interface Props {
   multiple?: boolean;
 
   /**
+   * Make the dropdown button expand to fill the entire width of its container.
+   */
+  block?: boolean;
+
+  /**
    * Set button corners rounded.
    */
   round?: boolean;

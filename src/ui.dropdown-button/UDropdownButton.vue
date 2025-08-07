@@ -173,6 +173,7 @@ const { getDataTest, config, dropdownButtonAttrs, listboxAttrs, toggleIconAttrs,
       :label="buttonLabel"
       :size="size"
       :color="color"
+      :block="block"
       :round="round"
       :square="square"
       :variant="variant"
