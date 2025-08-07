@@ -167,7 +167,7 @@ export const ListboxXPosition = EnumTemplate.bind({});
 ListboxXPosition.args = {
   enum: "xPosition",
   label: "{enumValue}",
-  class: "w-40",
+  block: true,
 };
 
 export const ListboxYPosition = EnumTemplate.bind({});

@@ -207,6 +207,22 @@ describe("UDropdownButton.vue", () => {
       expect(component.findComponent(UButton).props("disabled")).toBe(disabled);
     });
 
+    // Block prop
+    it("applies class when prop is true", () => {
+      const block = true;
+      const expectedClass = "w-full";
+
+      const component = mount(UDropdownButton, {
+        props: {
+          block,
+          options: defaultOptions,
+        },
+      });
+
+      expect(component.attributes("class")).toContain(expectedClass);
+      expect(component.findComponent(UButton).attributes("class")).toContain(expectedClass);
+    });
+
     // ToggleIcon prop (boolean: true)
     it("shows default toggle icon when toggleIcon is true", () => {
       const toggleIcon = true;
