@@ -46,7 +46,7 @@ const TooltipSettingsTemplate: StoryFn<VTooltipArgs> = (args: VTooltipArgs) => (
           content: '<b>Tooltip</b>',
           placement: 'bottom',
           allowHTML: true,
-          hideOnClick: false,
+          hideOnClick: true,
           trigger: 'click'
         }"
       />
