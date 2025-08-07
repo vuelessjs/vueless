@@ -531,11 +531,15 @@ const {
           :data-test="getDataTest('select-all')"
         />
 
-        <div
-          v-if="localSelectedRows.length"
-          v-bind="stickyHeaderCounterAttrs"
-          v-text="localSelectedRows.length"
-        />
+        <div v-if="localSelectedRows.length" v-bind="stickyHeaderCounterAttrs">
+          <!--
+            @slot Use it to customize header counter.
+            @binding {number} total
+          -->
+          <slot name="header-counter" :total="localSelectedRows.length">
+            {{ localSelectedRows.length }}
+          </slot>
+        </div>
       </div>
 
       <!-- TODO: Remove any when key attrs are typed-->
@@ -657,11 +661,15 @@ const {
                 :data-test="getDataTest('select-all')"
               />
 
-              <div
-                v-if="localSelectedRows.length"
-                v-bind="headerCounterAttrs"
-                v-text="localSelectedRows.length"
-              />
+              <div v-if="localSelectedRows.length" v-bind="headerCounterAttrs">
+                <!--
+                  @slot Use it to customize header counter.
+                  @binding {number} total
+                -->
+                <slot name="header-counter" :total="localSelectedRows.length">
+                  {{ localSelectedRows.length }}
+                </slot>
+              </div>
             </th>
 
             <th
