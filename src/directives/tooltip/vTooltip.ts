@@ -15,13 +15,13 @@ let settings: Partial<DefaultProps> = {};
 
 if (isCSR) {
   import("tippy.js/dist/tippy.css");
-  import("tippy.js/themes/light.css");
   import("tippy.js/animations/shift-away.css");
 
   const defaultSettings = {
     arrow: true,
-    theme: "light",
+    theme: "dark",
     animation: "shift-away",
+    hideOnClick: false,
   };
 
   settings = merge(defaultSettings, vuelessConfig.directives?.tooltip || {}) as DefaultProps;
@@ -63,27 +63,42 @@ function onUnmounted(el: TippyTargetElement) {
 }
 
 function setUpTippy(el: HTMLElement, props: string | TippyProps) {
+  const dynamicSettings = { ...settings, theme: getCurrentTheme() };
+
   if (typeof props === "string" && props.length) {
-    tippy(el, merge(settings, { content: props }));
+    tippy(el, merge(dynamicSettings, { content: props }));
 
     return;
   }
 
   if (typeof props !== "string" && props.content && String(props.content).length) {
-    tippy(el, merge(settings, props || {}));
+    tippy(el, merge(dynamicSettings, props || {}));
   }
 }
 
 function updateTippyProps(tippyInstance: TippyInstance | undefined, props: string | TippyProps) {
   if (!tippyInstance || isSSR) return;
 
+  const dynamicSettings = { ...settings, theme: getCurrentTheme() };
+
   if (typeof props === "string") {
-    tippyInstance.setProps(merge(settings, { content: props }));
+    tippyInstance.setProps(merge(dynamicSettings, { content: props }));
 
     return;
   }
 
-  tippyInstance.setProps(merge(settings, props || {}));
+  tippyInstance.setProps(merge(dynamicSettings, props || {}));
+}
+
+function getCurrentTheme(): string {
+  if (
+    document.documentElement.classList.contains("vl-dark") ||
+    document.body.classList.contains("vl-dark")
+  ) {
+    return "dark";
+  }
+
+  return "light";
 }
 
 export default {
