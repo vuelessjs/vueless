@@ -118,7 +118,6 @@ Sizes.args = { enum: "size", description: "{enumValue}" };
 
 export const DefaultSlot = DefaultTemplate.bind({});
 DefaultSlot.args = {
-  description: "",
   slotTemplate: `
     <template #default>
       <UCol gap="sm">

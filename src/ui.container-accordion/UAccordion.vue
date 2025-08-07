@@ -1,8 +1,9 @@
 <script setup lang="ts">
-import { computed, ref, useId, useTemplateRef } from "vue";
+import { computed, ref, useId, useSlots, useTemplateRef } from "vue";
 
 import useUI from "../composables/useUI.ts";
 import { getDefaults } from "../utils/ui.ts";
+import { hasSlotContent } from "../utils/helper.ts";
 
 import UIcon from "../ui.image-icon/UIcon.vue";
 import UDivider from "../ui.container-divider/UDivider.vue";
@@ -31,6 +32,7 @@ const wrapperRef = useTemplateRef<HTMLDivElement>("wrapper");
 
 const isOpened = ref(false);
 
+const slots = useSlots();
 const elementId = props.id || useId();
 
 const toggleIconName = computed(() => {
@@ -94,9 +96,14 @@ const {
         </slot>
       </div>
 
-      <div :id="`description-${elementId}`" v-bind="descriptionAttrs" v-text="description" />
+      <div
+        v-if="description"
+        :id="`description-${elementId}`"
+        v-bind="descriptionAttrs"
+        v-text="description"
+      />
 
-      <div v-if="isOpened" v-bind="contentAttrs">
+      <div v-if="isOpened && hasSlotContent(slots['default'])" v-bind="contentAttrs">
         <!-- @slot Use it to add accordion content. -->
         <slot />
       </div>
