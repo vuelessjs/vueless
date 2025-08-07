@@ -175,6 +175,50 @@ describe("UAccordion", () => {
 
       expect(toggleElement.attributes("data-opened")).toBe("true");
     });
+
+    // Default slot
+    it("renders default slot content when accordion is opened", async () => {
+      const slotContent = "Custom accordion content";
+      const slotClass = "custom-content";
+
+      const component = mount(UAccordion, {
+        slots: {
+          default: `<div class="${slotClass}">${slotContent}</div>`,
+        },
+      });
+
+      expect(component.find(`.${slotClass}`).exists()).toBe(false);
+
+      await component.trigger("click");
+
+      expect(component.find(`.${slotClass}`).exists()).toBe(true);
+      expect(component.find(`.${slotClass}`).text()).toBe(slotContent);
+
+      await component.trigger("click");
+
+      expect(component.find(`.${slotClass}`).exists()).toBe(false);
+    });
+
+    it("does not render default slot content when accordion is closed", () => {
+      const slotContent = "Custom accordion content";
+      const slotClass = "custom-content";
+
+      const component = mount(UAccordion, {
+        slots: {
+          default: `<div class="${slotClass}">${slotContent}</div>`,
+        },
+      });
+
+      expect(component.find(`.${slotClass}`).exists()).toBe(false);
+    });
+
+    it("does not render content wrapper when default slot is empty", async () => {
+      const component = mount(UAccordion);
+
+      await component.trigger("click");
+
+      expect(component.find("[vl-key='content']").exists()).toBe(false);
+    });
   });
 
   // Events
