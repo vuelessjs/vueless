@@ -74,7 +74,7 @@ For example, if you don’t plan to use `UPagination` and `UBadge` in your proje
 {% code title="vueless.config.{js,ts}" %}
 ```js
 export default {
-  component: {
+  components: {
     UPagination: {
       storybook: false,
     },
