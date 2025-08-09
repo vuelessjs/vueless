@@ -2,9 +2,11 @@ import fs from "node:fs/promises";
 import { existsSync } from "node:fs";
 import path from "node:path";
 
+import { removeFolderIfEmpty } from "./helper.js";
 import { vuelessConfig } from "./vuelessConfig.js";
 
 import {
+  CACHE_DIR,
   COMPONENTS,
   GRAYSCALE_COLOR,
   INHERIT_COLOR,
@@ -74,9 +76,8 @@ export async function setCustomPropTypes(srcDir) {
     }
 
     const isCustomProps = componentGlobalConfig && componentGlobalConfig.props;
-    const isHiddenStories = componentGlobalConfig && componentGlobalConfig.storybook === false;
 
-    if (isCustomProps && !isHiddenStories) {
+    if (isCustomProps) {
       await cacheComponentTypes(path.join(srcDir, componentDir));
       await modifyComponentTypes(path.join(srcDir, componentDir), componentGlobalConfig.props);
     }
@@ -91,26 +92,34 @@ export async function removeCustomPropTypes(srcDir) {
 }
 
 async function cacheComponentTypes(filePath) {
-  const cacheDir = path.join(filePath, ".cache");
+  const cacheDir = path.join(filePath, CACHE_DIR);
   const sourceFile = path.join(filePath, "types.ts");
   const destFile = path.join(cacheDir, "types.ts");
 
-  if (existsSync(cacheDir)) {
+  if (existsSync(destFile) || !existsSync(sourceFile)) {
     return;
   }
 
-  if (existsSync(sourceFile)) {
+  if (!existsSync(cacheDir)) {
     await fs.mkdir(cacheDir);
-    await fs.cp(sourceFile, destFile);
   }
+
+  await fs.cp(sourceFile, destFile);
 }
 
 async function clearComponentTypesCache(filePath) {
-  await fs.rm(path.join(filePath, ".cache"), { force: true, recursive: true });
+  const cacheDir = path.join(filePath, CACHE_DIR);
+  const sourceFile = path.join(cacheDir, "types.ts");
+
+  if (existsSync(sourceFile)) {
+    await fs.rm(sourceFile, { force: true });
+  }
+
+  await removeFolderIfEmpty(cacheDir);
 }
 
 async function restoreComponentTypes(filePath) {
-  const cacheDir = path.join(filePath, ".cache");
+  const cacheDir = path.join(filePath, CACHE_DIR);
   const sourceFile = path.join(cacheDir, "types.ts");
   const destFile = path.join(filePath, "types.ts");
 

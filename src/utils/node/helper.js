@@ -3,7 +3,7 @@ import path from "node:path";
 import { cwd } from "node:process";
 import { pathToFileURL } from "node:url";
 import { existsSync, statSync } from "node:fs";
-import { mkdir, readdir, readFile, writeFile } from "node:fs/promises";
+import { mkdir, readdir, rmdir, readFile, writeFile } from "node:fs/promises";
 
 import { vuelessConfig, getMergedConfig } from "./vuelessConfig.js";
 
@@ -155,6 +155,16 @@ export async function buildTSFile(entryPath, configOutFile) {
     target: "ESNext",
     loader: { ".ts": "ts" },
   });
+}
+
+export async function removeFolderIfEmpty(dirPath) {
+  if (existsSync(dirPath)) {
+    const files = await readdir(dirPath);
+
+    if (!files.length) {
+      await rmdir(dirPath);
+    }
+  }
 }
 
 export async function autoImportUserConfigs() {
