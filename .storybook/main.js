@@ -1,7 +1,7 @@
 /* eslint-disable storybook/no-uninstalled-addons */
 /** @type { import('@storybook/vue3-vite').StorybookConfig } */
 export default {
-  stories: ["../src/**/stories.{js,jsx,ts,tsx}", "../src/**/docs.mdx"],
+  stories: ["../src/**/storybook/stories.{js,jsx,ts,tsx}", "../src/**/storybook/docs.mdx"],
   addons: [
     "@storybook/addon-docs",
     "@storybook/addon-links",

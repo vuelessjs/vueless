@@ -380,9 +380,10 @@ export const VUELESS_LIBRARY = "vueless";
 export const INTERNAL_ICONS_LIBRARY = "internal";
 export const STORYBOOK_ICONS_LIBRARY = "storybook";
 
+export const CACHE_DIR = ".cache";
 export const NODE_MODULES_DIR = "node_modules";
 export const VUELESS_PACKAGE_DIR = `${NODE_MODULES_DIR}/vueless`;
-export const VUELESS_CACHE_DIR = `${NODE_MODULES_DIR}/.cache/vueless`;
+export const VUELESS_CACHE_DIR = `${NODE_MODULES_DIR}/${CACHE_DIR}/vueless`;
 export const VUELESS_LOCAL_DIR = "src";
 export const ICONS_DIR = "icons";
 export const ICONS_VUELESS_DIR = `${VUELESS_PACKAGE_DIR}/${ICONS_DIR}`;
