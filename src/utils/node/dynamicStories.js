@@ -14,7 +14,7 @@ const STORYBOOK_DIR = "storybook";
  * @return {Promise<void>}
  */
 export async function hideHiddenStories(srcDir) {
-  for await (const [componentName, componentDir] of Object.entries(COMPONENTS)) {
+  for (const [componentName, componentDir] of Object.entries(COMPONENTS)) {
     const componentGlobalConfig = vuelessConfig.components?.[componentName];
     const isHiddenStoriesByComponent = componentGlobalConfig === false;
     const isHiddenStoriesByKey = componentGlobalConfig?.storybook === false;
