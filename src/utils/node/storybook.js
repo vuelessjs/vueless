@@ -29,7 +29,7 @@ export async function getVuelessStoriesGlob(vuelessEnv) {
   const vuelessSrcDir = vuelessEnv === INTERNAL_ENV ? VUELESS_LOCAL_DIR : VUELESS_PACKAGE_DIR;
 
   const storiesGlob = [
-    `../${vuelessSrcDir}/directives/**/stories.{js,jsx,ts,tsx}`,
+    `../${vuelessSrcDir}/directives/**/stories.{js,ts}`,
     `../${vuelessSrcDir}/directives/**/docs.mdx`,
   ];
 
@@ -44,9 +44,11 @@ export async function getVuelessStoriesGlob(vuelessEnv) {
       continue;
     }
 
-    storiesGlob.push(`../${vuelessSrcDir}/${componentDir}/storybook/stories.{js,jsx,ts,tsx}`);
+    storiesGlob.push(`../${vuelessSrcDir}/${componentDir}/storybook/stories.{js,ts}`);
     storiesGlob.push(`../${vuelessSrcDir}/${componentDir}/storybook/docs.mdx`);
   }
+
+  console.log("storiesGlob", storiesGlob);
 
   return storiesGlob;
 }
