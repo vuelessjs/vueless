@@ -20,7 +20,7 @@ interface ULinkArgs extends Props {
 }
 
 export default {
-  id: "1060",
+  id: "1020",
   title: "Buttons & Links / Link",
   component: ULink,
   args: {

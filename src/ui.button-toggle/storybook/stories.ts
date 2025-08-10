@@ -23,9 +23,10 @@ interface UToggleArgs extends Props {
 }
 
 export default {
-  components: { UIcon },
+  id: "1030",
   title: "Buttons & Links / Toggle",
   component: UToggle,
+  components: { UIcon },
   args: {
     modelValue: "11",
     options: [
