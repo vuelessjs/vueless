@@ -20,7 +20,6 @@ import { createTailwindSafelist, clearTailwindSafelist } from "./utils/node/tail
 import { componentResolver, directiveResolver } from "./utils/node/vuelessResolver.js";
 import { setCustomPropTypes, removeCustomPropTypes } from "./utils/node/dynamicProps.js";
 import { buildWebTypes } from "./utils/node/webTypes.js";
-import { hideHiddenStories, showHiddenStories } from "./utils/node/dynamicStories.js";
 import {
   getNuxtDirs,
   getVueDirs,
@@ -81,8 +80,6 @@ export const Vueless = function (options = {}) {
   /* if server stopped by developer (Ctrl+C) */
   process.on("SIGINT", async () => {
     if (isInternalEnv || isStorybookEnv) {
-      // TODO: Prevents to hide stories in storybook, need to find a better way
-      // await showHiddenStories(vuelessSrcDir);
       await removeCustomPropTypes(vuelessSrcDir);
     }
 
@@ -133,11 +130,6 @@ export const Vueless = function (options = {}) {
 
       await buildWebTypes(vuelessSrcDir);
       await setCustomPropTypes(vuelessSrcDir);
-
-      if (isInternalEnv || isStorybookEnv) {
-        await showHiddenStories(vuelessSrcDir);
-        await hideHiddenStories(vuelessSrcDir);
-      }
 
       /* collect used in project colors for tailwind safelist */
       await createTailwindSafelist({ env, srcDir: vuelessSrcDir, targetFiles, debug });
