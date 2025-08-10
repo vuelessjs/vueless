@@ -15,32 +15,42 @@ import {
   NESTED_COMPONENT_PATTERN_REG_EXP,
 } from "../../constants.js";
 
+export let vuelessConfig = {};
+
 /**
  * Load Vueless config from the project root.
  * IIFE is used to prevent top level await issue.
  */
-export let vuelessConfig = {};
-
 (async () => {
+  vuelessConfig = getVuelessConfig();
+})();
+
+/**
+ * Retrieves the Vueless config from the project root.
+ *
+ * This method checks for the existence of a `vueless.config.{js,ts}` file in the project root.
+ * If the file exists, it reads the config and returns it as an object.
+ *
+ * @return {Promise<Object>} A promise that resolves to the Vueless configuration object.
+ */
+export async function getVuelessConfig() {
   const configPathJs = path.join(cwd(), `${VUELESS_CONFIG_FILE_NAME}.js`);
   const configPathTs = path.join(cwd(), `${VUELESS_CONFIG_FILE_NAME}.ts`);
   const configOutPath = path.join(cwd(), `${VUELESS_CACHE_DIR}/${VUELESS_CONFIG_FILE_NAME}.mjs`);
 
   if (!fs.existsSync(configPathJs) && !fs.existsSync(configPathTs)) {
-    vuelessConfig = {};
-
-    return;
+    return {};
   }
 
   fs.existsSync(configPathJs) && (await buildTSFile(configPathJs, configOutPath));
   fs.existsSync(configPathTs) && (await buildTSFile(configPathTs, configOutPath));
 
   if (fs.existsSync(configOutPath)) {
-    const module = await import(pathToFileURL(configOutPath));
+    const module = await import(/* @vite-ignore */ pathToFileURL(configOutPath));
 
-    vuelessConfig = module.default;
+    return module.default;
   }
-})();
+}
 
 const twMerge = extendTailwindMerge(merge(TAILWIND_MERGE_EXTENSION, vuelessConfig.tailwindMerge));
 
