@@ -22,7 +22,7 @@ export let vuelessConfig = {};
  * IIFE is used to prevent top level await issue.
  */
 (async () => {
-  vuelessConfig = getVuelessConfig();
+  vuelessConfig = await getVuelessConfig();
 })();
 
 /**
@@ -46,7 +46,7 @@ export async function getVuelessConfig() {
   fs.existsSync(configPathTs) && (await buildTSFile(configPathTs, configOutPath));
 
   if (fs.existsSync(configOutPath)) {
-    const module = await import(/* @vite-ignore */ pathToFileURL(configOutPath));
+    const module = await import(pathToFileURL(configOutPath));
 
     return module.default;
   }
