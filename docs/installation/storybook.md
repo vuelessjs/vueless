@@ -67,7 +67,7 @@ npm run sb:preview
 
 ## Hiding unused components in Storybook
 
-If you don’t plan to use certain Vueless components, you can hide them from Storybook by setting the `storybook` key to `false` in the specific component’s config.
+If you don’t plan to use certain Vueless components, you can hide them from Storybook by setting the component name key to `false` in the specific component’s config.
 
 For example, if you don’t plan to use `UPagination` and `UBadge` in your project, you can configure them as follows:
 
@@ -75,16 +75,28 @@ For example, if you don’t plan to use `UPagination` and `UBadge` in your proje
 ```js
 export default {
   components: {
-    UPagination: {
-      storybook: false,
-    },
-    UBadge: {
-      storybook: false,
-    },
+    UPagination: false,
+    UBadge: false,
   },
 };
 ```
 {% endcode %}
 
+Or, if you want to hide certain Vueless components while keeping their custom configs, set the `storybook` key to `false` in the specific component’s config.
 
-
+{% code title="vueless.config.{js,ts}" %}
+```js
+export default {
+  components: {
+    UPagination: {
+      storybook: false,
+      ...
+    },
+    UBadge: {
+      storybook: false,
+      ...
+    },
+  },
+};
+```
+{% endcode %}
