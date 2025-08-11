@@ -48,7 +48,5 @@ export async function getVuelessStoriesGlob(vuelessEnv) {
     storiesGlob.push(`../${vuelessSrcDir}/${componentDir}/storybook/docs.mdx`);
   }
 
-  console.log("storiesGlob", storiesGlob);
-
   return storiesGlob;
 }
