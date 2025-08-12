@@ -5,6 +5,7 @@
   "author": "Johnny Grid <hello@vueless.com> (https://vueless.com)",
   "homepage": "https://vueless.com",
   "style": "tailwind.css",
+  "types": "index.d.ts",
   "main": "index.ts",
   "type": "module",
   "license": "MIT",
