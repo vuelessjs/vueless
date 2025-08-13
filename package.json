@@ -80,21 +80,18 @@
       "types": "./types.ts",
       "style": "./tailwind.css"
     },
-    "./ui.*": {
-      "import": "./ui.*"
-    },
-    "./directives/*": {
-      "import": "./directives/*"
-    },
-    "./utils/": "./utils/",
-    "./utils/node/": "./utils/node/",
-    "./composables/": "./composables/",
-    "./directives/": "./directives/",
+    "./ui.*": "./ui.*",
+    "./utils/*": "./utils/*",
+    "./utils/node/*": "./utils/node/*",
+    "./composables/*": "./composables/*",
+    "./directives/*": "./directives/*",
     "./constants": "./constants.js",
     "./constants.js": "./constants.js",
     "./plugin-vite": "./plugin-vite.js",
     "./plugin-vite.js": "./plugin-vite.js",
-    "./modules": "./modules.d.ts"
+    "./tailwind.css": "./tailwind.css",
+    "./modules": "./modules.d.ts",
+    "./types": "./types.ts"
   },
   "resolutions": {
     "jackspeak": "2.3.6"
