@@ -74,6 +74,33 @@
     "vue-router": "^4.5.1",
     "vue-tsc": "^3.0.4"
   },
+  "exports": {
+    ".": {
+      "import": "./index.ts"
+    },
+    "./composables/*": {
+      "import": "./composables/*.ts"
+    },
+    "./utils/*": {
+      "import": "./utils/*.ts"
+    },
+    "./utils/node/*": {
+      "import": "./utils/node/*.js"
+    },
+    "./constants": {
+      "import": "./constants.js"
+    },
+    "./plugin-vite": {
+      "import": "./plugin-vite.js",
+      "types": "./plugin-vite.d.ts"
+    },
+    "./types": {
+      "types": "./types.ts"
+    },
+    "./modules": {
+      "types": "./modules.d.ts"
+    }
+  },
   "resolutions": {
     "jackspeak": "2.3.6"
   },
