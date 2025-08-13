@@ -4,10 +4,6 @@
   "description": "Vue Styleless UI Component Library, powered by Tailwind CSS.",
   "author": "Johnny Grid <hello@vueless.com> (https://vueless.com)",
   "homepage": "https://vueless.com",
-  "style": "tailwind.css",
-  "types": "index.d.ts",
-  "main": "index.ts",
-  "type": "module",
   "license": "MIT",
   "publishConfig": {
     "access": "public"
@@ -74,9 +70,15 @@
     "vue-router": "^4.5.1",
     "vue-tsc": "^3.0.4"
   },
+  "style": "tailwind.css",
+  "types": "index.d.ts",
+  "main": "index.ts",
+  "type": "module",
   "exports": {
     ".": {
-      "import": "./index.ts"
+      "import": "./index.ts",
+      "types": "./types.ts",
+      "style": "./tailwind.css"
     },
     "./composables/*": {
       "import": "./composables/*.ts"
@@ -94,8 +96,11 @@
       "import": "./plugin-vite.js",
       "types": "./plugin-vite.d.ts"
     },
-    "./types": {
-      "types": "./types.ts"
+    "./ui.*": {
+      "import": "./ui.*"
+    },
+    "./directives/*": {
+      "import": "./directives/*"
     },
     "./modules": {
       "types": "./modules.d.ts"
