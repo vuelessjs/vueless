@@ -92,6 +92,9 @@
     "./constants": {
       "import": "./constants.js"
     },
+    "./constants.js": {
+      "import": "./constants.js"
+    },
     "./plugin-vite": {
       "import": "./plugin-vite.js",
       "types": "./plugin-vite.d.ts"
