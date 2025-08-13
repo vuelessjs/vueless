@@ -4,11 +4,12 @@
 
 ## Installation
 
-* [Quick start (Vue)](<installation/vue.md>)
+* [Quick start (Vue)](installation/vue.md)
 * [Quick start (Nuxt)](installation/nuxt.md)
 * [Class autocompletion](installation/class-autocompletion.md)
 * [Minimal requirements](installation/minimal-requirements.md)
 * [Storybook docs](installation/storybook.md)
+* [TypeScript](installation/typescript.md)
 
 ## Global customization
 
