@@ -1,10 +1,12 @@
 /* eslint-disable no-console */
 
-import { cwd } from "node:process";
 import path from "node:path";
-import { existsSync, mkdirSync } from "node:fs";
-import { writeFile, rename, readFile } from "node:fs/promises";
+import { cwd } from "node:process";
 import { styleText } from "node:util";
+import { existsSync, mkdirSync } from "node:fs";
+import { writeFile, rename } from "node:fs/promises";
+
+import { detectTypeScript } from "../../utils/node/helper.js";
 
 import {
   SUPPRESS_TS_CHECK,
@@ -90,23 +92,4 @@ export async function vuelessInit(options) {
     `${suppressTsCheck}${COMPONENTS_INDEX_COMMENT}\n${COMPONENTS_INDEX_EXPORT}\n`,
     "utf-8",
   );
-}
-
-/**
- * Detects if TypeScript is a dependency in the project's package.json
- * @returns {Promise<boolean>} True if TypeScript is found in dependencies or devDependencies
- */
-async function detectTypeScript() {
-  try {
-    const packageJsonPath = path.join(cwd(), "package.json");
-    const packageJsonContent = await readFile(packageJsonPath, "utf-8");
-    const pkg = JSON.parse(packageJsonContent);
-    const deps = { ...pkg.dependencies, ...pkg.devDependencies };
-
-    return Boolean(deps.typescript);
-  } catch (error) {
-    console.error("Failed to detect TypeScript:", error);
-
-    return false;
-  }
 }

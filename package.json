@@ -1,12 +1,9 @@
 {
   "name": "vueless",
-  "version": "1.1.1-beta.23",
+  "version": "1.1.1-beta.31",
   "description": "Vue Styleless UI Component Library, powered by Tailwind CSS.",
   "author": "Johnny Grid <hello@vueless.com> (https://vueless.com)",
   "homepage": "https://vueless.com",
-  "style": "tailwind.css",
-  "main": "index.ts",
-  "type": "module",
   "license": "MIT",
   "publishConfig": {
     "access": "public"
@@ -72,6 +69,29 @@
     "vue-i18n": "^11.1.11",
     "vue-router": "^4.5.1",
     "vue-tsc": "^3.0.4"
+  },
+  "style": "tailwind.css",
+  "types": "index.d.ts",
+  "main": "index.ts",
+  "type": "module",
+  "exports": {
+    ".": {
+      "import": "./index.ts",
+      "types": "./types.ts",
+      "style": "./tailwind.css"
+    },
+    "./ui.*": "./ui.*",
+    "./utils/*": "./utils/*",
+    "./utils/node/*": "./utils/node/*",
+    "./composables/*": "./composables/*",
+    "./directives/*": "./directives/*",
+    "./constants": "./constants.js",
+    "./constants.js": "./constants.js",
+    "./plugin-vite": "./plugin-vite.js",
+    "./plugin-vite.js": "./plugin-vite.js",
+    "./tailwind.css": "./tailwind.css",
+    "./modules": "./modules.d.ts",
+    "./types": "./types.ts"
   },
   "resolutions": {
     "jackspeak": "2.3.6"

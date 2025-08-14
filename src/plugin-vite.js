@@ -114,7 +114,7 @@ export const Vueless = function (options = {}) {
         "process.env": {},
       },
       optimizeDeps: {
-        include: ["vueless/directives/**/*.ts", "vueless/constants.js"],
+        include: ["vueless/types", "vueless/constants", "vueless/constants.js"],
       },
     }),
 
@@ -124,7 +124,7 @@ export const Vueless = function (options = {}) {
         await cacheMergedConfigs(vuelessSrcDir);
       }
 
-      if (!isInternalEnv) {
+      if (!isInternalEnv && !isNuxtModuleEnv) {
         await autoImportUserConfigs();
       }
 

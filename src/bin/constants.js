@@ -169,7 +169,7 @@ export default {
 };
 `;
 
-export const SUPPRESS_TS_CHECK = `// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+export const SUPPRESS_TS_CHECK = `/* eslint-disable */
 // @ts-nocheck`;
 
 export const COMPONENTS_INDEX_COMMENT = `/**

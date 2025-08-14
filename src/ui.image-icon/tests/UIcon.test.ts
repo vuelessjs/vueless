@@ -1,7 +1,6 @@
 import { flushPromises, mount } from "@vue/test-utils";
 import { describe, it, expect } from "vitest";
 
-// @ts-expect-error - SVG component imports with ?component suffix are handled by Vite plugin.
 import testIcon from "./assets/test-icon.svg?component";
 
 import UIcon from "../UIcon.vue";

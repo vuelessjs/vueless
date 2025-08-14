@@ -13,7 +13,7 @@ import UDatePickerRangePeriodMenu from "./UDatePickerRangePeriodMenu.vue";
 import UDatePickerRangeInputs from "./UDatePickerRangeInputs.vue";
 import UButton from "../ui.button/UButton.vue";
 
-import { vClickOutside } from "../directives";
+import vClickOutside from "../directives/clickOutside/vClickOutside.ts";
 
 import {
   addDays,
