@@ -68,6 +68,7 @@ export async function getDirFiles(dirPath, ext, { recursive = true, exclude = []
 
 export function getNuxtDirs() {
   return [
+    path.join(cwd(), "app"),
     path.join(cwd(), "composables"),
     path.join(cwd(), "components"),
     path.join(cwd(), "layouts"),
