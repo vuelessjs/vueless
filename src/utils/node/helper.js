@@ -168,15 +168,34 @@ export async function removeFolderIfEmpty(dirPath) {
   }
 }
 
+/**
+ * Detects if TypeScript is a dependency in the project's package.json
+ * @returns {Promise<boolean>} True if TypeScript is found in dependencies or devDependencies
+ */
+export async function detectTypeScript() {
+  try {
+    const packageJsonPath = path.join(cwd(), "package.json");
+    const packageJsonContent = await readFile(packageJsonPath, "utf-8");
+    const pkg = JSON.parse(packageJsonContent);
+    const deps = { ...pkg.dependencies, ...pkg.devDependencies };
+
+    return Boolean(deps.typescript);
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  } catch (error) {
+    return false;
+  }
+}
+
 export async function autoImportUserConfigs() {
   const vuelessConfigDir = path.join(cwd(), ".vueless");
 
   const indexTsPath = path.join(vuelessConfigDir, "index.ts");
   const indexJsPath = path.join(vuelessConfigDir, "index.js");
 
-  const hasTsIndex = existsSync(indexTsPath);
-  const indexFilePath = hasTsIndex ? indexTsPath : indexJsPath;
-  const fileExt = hasTsIndex ? TYPESCRIPT_EXT : JAVASCRIPT_EXT;
+  const hasTypeScript = detectTypeScript();
+
+  const indexFilePath = hasTypeScript ? indexTsPath : indexJsPath;
+  const fileExt = hasTypeScript ? TYPESCRIPT_EXT : JAVASCRIPT_EXT;
 
   const configFiles = await getDirFiles(vuelessConfigDir, fileExt, {
     recursive: true,
@@ -210,7 +229,7 @@ export async function autoImportUserConfigs() {
 
   await writeFile(
     indexFilePath,
-    generateConfigIndexContent(imports, componentEntries, hasTsIndex),
+    generateConfigIndexContent(imports, componentEntries, hasTypeScript),
     "utf-8",
   );
 }
