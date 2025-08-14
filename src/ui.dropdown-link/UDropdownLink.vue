@@ -9,7 +9,7 @@ import UIcon from "../ui.image-icon/UIcon.vue";
 import ULink from "../ui.button-link/ULink.vue";
 import ULisbox from "../ui.form-listbox/UListbox.vue";
 
-import { vClickOutside } from "../directives";
+import vClickOutside from "../directives/clickOutside/vClickOutside.ts";
 
 import { COMPONENT_NAME } from "./constants.ts";
 import defaultConfig from "./config.ts";
