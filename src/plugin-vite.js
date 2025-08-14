@@ -124,7 +124,7 @@ export const Vueless = function (options = {}) {
         await cacheMergedConfigs(vuelessSrcDir);
       }
 
-      if (!isInternalEnv) {
+      if (!isInternalEnv && !isNuxtModuleEnv) {
         await autoImportUserConfigs();
       }
 
