@@ -269,7 +269,11 @@ describe("URadioGroup.vue", () => {
 
   describe("Exposed properties", () => {
     it("exposes listRef", () => {
-      const component = mount(URadioGroup, { name: defaultName });
+      const component = mount(URadioGroup, {
+        props: {
+          name: defaultName,
+        },
+      });
 
       expect(component.vm.listRef).toBeDefined();
     });
