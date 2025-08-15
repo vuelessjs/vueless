@@ -1,4 +1,10 @@
-import { getArgs, getArgTypes, getSlotNames, getSlotsFragment } from "../../utils/storybook.ts";
+import {
+  getArgs,
+  getArgTypes,
+  getSlotNames,
+  getSlotsFragment,
+  getDocsDescription,
+} from "../../utils/storybook.ts";
 
 import UBreadcrumbs from "../../ui.navigation-breadcrumbs/UBreadcrumbs.vue";
 import UCol from "../../ui.container-col/UCol.vue";
@@ -35,6 +41,11 @@ export default {
   },
   argTypes: {
     ...getArgTypes(UBreadcrumbs.__name),
+  },
+  parameters: {
+    docs: {
+      ...getDocsDescription(UBreadcrumbs.__name),
+    },
   },
 } as Meta;
 
