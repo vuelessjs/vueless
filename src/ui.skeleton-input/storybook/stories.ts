@@ -1,5 +1,11 @@
 import type { Meta, StoryFn } from "@storybook/vue3-vite";
-import { getArgs, getArgTypes, getSlotNames, getSlotsFragment } from "../../utils/storybook.ts";
+import {
+  getArgs,
+  getArgTypes,
+  getDocsDescription,
+  getSlotNames,
+  getSlotsFragment,
+} from "../../utils/storybook.ts";
 
 import USkeletonInput from "../USkeletonInput.vue";
 import UCol from "../../ui.container-col/UCol.vue";
@@ -19,6 +25,11 @@ export default {
   args: {},
   argTypes: {
     ...getArgTypes(USkeletonInput.__name),
+  },
+  parameters: {
+    docs: {
+      ...getDocsDescription(USkeletonInput.__name),
+    },
   },
 } as Meta;
 

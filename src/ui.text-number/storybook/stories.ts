@@ -1,4 +1,10 @@
-import { getArgs, getArgTypes, getSlotNames, getSlotsFragment } from "../../utils/storybook.ts";
+import {
+  getArgs,
+  getArgTypes,
+  getSlotNames,
+  getSlotsFragment,
+  getDocsDescription,
+} from "../../utils/storybook.ts";
 
 import UNumber from "../../ui.text-number/UNumber.vue";
 import UIcon from "../../ui.image-icon/UIcon.vue";
@@ -22,6 +28,11 @@ export default {
   },
   argTypes: {
     ...getArgTypes(UNumber.__name),
+  },
+  parameters: {
+    docs: {
+      ...getDocsDescription(UNumber.__name),
+    },
   },
 } as Meta;
 
