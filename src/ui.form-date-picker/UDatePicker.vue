@@ -20,7 +20,7 @@ import { useComponentLocaleMessages } from "../composables/useComponentLocaleMas
 import defaultConfig from "./config.ts";
 import { COMPONENT_NAME } from "./constants.ts";
 
-import { vClickOutside } from "../directives";
+import vClickOutside from "../directives/clickOutside/vClickOutside.ts";
 
 import type { Props, Config, Locale } from "./types.ts";
 import type { ComponentExposed } from "../types.ts";
