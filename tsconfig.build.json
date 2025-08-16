@@ -1,6 +1,6 @@
 {
   "extends": "./tsconfig.app.json",
-  "include": ["src/constants.js", "src/utils/node/*.js"],
+  "include": ["src/constants.js", "src/bin/constants.js", "src/utils/node/*.js"],
   "exclude": [],
   "compilerOptions": {
     "allowJs": true,
