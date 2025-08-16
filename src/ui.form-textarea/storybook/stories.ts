@@ -10,7 +10,7 @@ import UTextarea from "../../ui.form-textarea/UTextarea.vue";
 import UIcon from "../../ui.image-icon/UIcon.vue";
 import UCol from "../../ui.container-col/UCol.vue";
 import URow from "../../ui.container-row/URow.vue";
-import tooltip from "../../directives/tooltip/vTooltip.ts";
+import tooltip from "../../v.tooltip/vTooltip.ts";
 import UText from "../../ui.text-block/UText.vue";
 
 import type { Meta, StoryFn } from "@storybook/vue3-vite";

@@ -9,7 +9,7 @@ import {
 import UAvatar from "../../ui.image-avatar/UAvatar.vue";
 import URow from "../../ui.container-row/URow.vue";
 import ULoader from "../../ui.loader/ULoader.vue";
-import tooltip from "../../directives/tooltip/vTooltip.ts";
+import tooltip from "../../v.tooltip/vTooltip.ts";
 
 import johnDoeImg from "./assets/john-doe.png";
 

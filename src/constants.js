@@ -226,6 +226,12 @@ export const SYSTEM_CONFIG_KEY = {
 /* UIcon non-props defaults */
 export const ICON_NON_PROPS_DEFAULTS = ["library", "path", "style", "weight"];
 
+/* Directive to folder mapping. */
+export const DIRECTIVES = {
+  vTooltip: "v.tooltip",
+  vClickOutside: "v.click-outside",
+};
+
 /* Component to folder mapping. */
 export const COMPONENTS = {
   /* Buttons & Links */

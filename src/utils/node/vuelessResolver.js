@@ -8,8 +8,13 @@
  Docs: https://github.com/unplugin/unplugin-vue-components?tab=readme-ov-file#importing-from-ui-libraries
  */
 
-import { COMPONENTS } from "../../constants.js";
+import { COMPONENTS, DIRECTIVES } from "../../constants.js";
 
+/**
+ * Resolver for Vueless components.
+ * @param {string} componentName
+ * @return {Object} Component path
+ */
 export function componentResolver(componentName) {
   const folder = COMPONENTS[componentName];
 
@@ -20,13 +25,17 @@ export function componentResolver(componentName) {
   }
 }
 
-export const directiveResolver = {
-  type: "directive",
-  resolve(name) {
-    const folder = name[0].toLowerCase() + name.slice(1);
+/**
+ * Resolver for Vueless directives.
+ * @param {string} directiveName
+ * @return {Object} Directive path
+ */
+export function directiveResolver(directiveName) {
+  const folder = DIRECTIVES[directiveName];
 
+  if (folder) {
     return {
-      from: `vueless/directives/${folder}/v${name}.ts`,
+      from: `vueless/${folder}/${directiveName}.vue`,
     };
-  },
-};
+  }
+}

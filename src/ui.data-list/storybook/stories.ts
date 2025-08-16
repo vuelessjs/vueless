@@ -14,7 +14,7 @@ import ULink from "../../ui.button-link/ULink.vue";
 import UAvatar from "../../ui.image-avatar/UAvatar.vue";
 import UHeader from "../../ui.text-header/UHeader.vue";
 import ULoader from "../../ui.loader/ULoader.vue";
-import tooltip from "../../directives/tooltip/vTooltip.ts";
+import tooltip from "../../v.tooltip/vTooltip.ts";
 
 import type { Meta, StoryFn } from "@storybook/vue3-vite";
 import type { Props, DataListItem } from "../types.ts";

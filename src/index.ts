@@ -50,8 +50,8 @@ export {
 } from "./ui.text-notify/utilNotify.ts";
 export { NotificationType, NotificationPosition, NotificationDuration } from "./ui.text-notify/constants.ts";
 /* directives */
-export { default as vTooltip }  from "./directives/tooltip/vTooltip.ts";
-export { default as vClickOutside }  from "./directives/clickOutside/vClickOutside.ts";
+export { default as vTooltip }  from "./v.tooltip/vTooltip.ts";
+export { default as vClickOutside }  from "./v.click-outside/vClickOutside.ts";
 /* eslint-enable prettier/prettier */
 
 export function createVueless(options: CreateVuelessOptions = {}) {

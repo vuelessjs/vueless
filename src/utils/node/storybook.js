@@ -1,6 +1,7 @@
 import { getVuelessConfig } from "./vuelessConfig.js";
 import {
   COMPONENTS,
+  DIRECTIVES,
   INTERNAL_ENV,
   VUELESS_LOCAL_DIR,
   VUELESS_PACKAGE_DIR,
@@ -27,13 +28,21 @@ export function defineConfigWithVueless(config) {
  */
 export async function getVuelessStoriesGlob(vuelessEnv) {
   const vuelessSrcDir = vuelessEnv === INTERNAL_ENV ? VUELESS_LOCAL_DIR : VUELESS_PACKAGE_DIR;
-
-  const storiesGlob = [
-    `../${vuelessSrcDir}/directives/**/stories.{js,ts}`,
-    `../${vuelessSrcDir}/directives/**/docs.mdx`,
-  ];
-
   const vuelessConfig = await getVuelessConfig();
+  const storiesGlob = [];
+
+  for (const [directiveName, directiveDir] of Object.entries(DIRECTIVES)) {
+    const directiveGlobalConfig = vuelessConfig.directives?.[directiveName];
+    const isHiddenStoriesByDirective = directiveGlobalConfig === false;
+    const isHiddenStoriesByKey = directiveGlobalConfig?.storybook === false;
+
+    if (isHiddenStoriesByDirective || isHiddenStoriesByKey) {
+      continue;
+    }
+
+    storiesGlob.push(`../${vuelessSrcDir}/${directiveDir}/storybook/stories.{js,ts}`);
+    storiesGlob.push(`../${vuelessSrcDir}/${directiveDir}/storybook/docs.mdx`);
+  }
 
   for (const [componentName, componentDir] of Object.entries(COMPONENTS)) {
     const componentGlobalConfig = vuelessConfig.components?.[componentName];

@@ -4,7 +4,7 @@ import { ref, computed, useId, useTemplateRef } from "vue";
 import useUI from "../composables/useUI.ts";
 import { getDefaults } from "../utils/ui.ts";
 
-import vTooltip from "../directives/tooltip/vTooltip.ts";
+import vTooltip from "../v.tooltip/vTooltip.ts";
 import UButton from "../ui.button/UButton.vue";
 
 import { COMPONENT_NAME } from "./constants.ts";
