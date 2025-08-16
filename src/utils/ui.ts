@@ -7,7 +7,7 @@ import { createGetMergedConfig } from "./node/mergeConfigs.js";
 import { COMPONENT_NAME as U_ICON } from "../ui.image-icon/constants.ts";
 import { ICON_NON_PROPS_DEFAULTS, TAILWIND_MERGE_EXTENSION } from "../constants.js";
 
-import type { Config, Defaults, UnknownObject, ComponentNames } from "../types.ts";
+import type { Config, ComponentDefaults, UnknownObject, ComponentNames } from "../types.ts";
 
 interface MergedConfigOptions {
   defaultConfig: unknown;
@@ -79,7 +79,7 @@ export function getDefaults<Props, Config>(defaultConfig: Config, name: Componen
   const componentDefaults = (defaultConfig as UnknownObject).defaults || {};
   const globalDefaults = vuelessConfig.components?.[name]?.defaults || {};
 
-  const defaults = merge({}, componentDefaults, globalDefaults) as Props & Defaults;
+  const defaults = merge({}, componentDefaults, globalDefaults) as Props & ComponentDefaults;
 
   /* Remove non a props defaults. */
   for (const key in defaults) {

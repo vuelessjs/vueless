@@ -130,6 +130,47 @@ export { default as UChip } from "./ui.other-chip/UChip.vue";
 export { default as UThemeColorToggle } from "./ui.other-theme-color-toggle/UThemeColorToggle.vue";
 /* eslint-enable prettier/prettier */
 
+/* types */
+export type {
+  /* Core configuration types */
+  Config,
+  ThemeConfig,
+  ThemeConfigText,
+  ThemeConfigRounding,
+  ThemeConfigOutline,
+  NestedComponent,
+  ComponentConfig,
+  ComponentDefaults,
+  CreateVuelessOptions,
+  /* Color and theme types */
+  StateColors,
+  PrimaryColors,
+  NeutralColors,
+  VuelessCssVariables,
+  /* Component and Directive types */
+  Directives,
+  Components,
+  ComponentNames,
+  /* Utility types */
+  UnknownType,
+  UnknownArray,
+  UnknownObject,
+  CVACompoundVariants,
+  CVA,
+  /* Vue component utility types */
+  ComponentType,
+  ComponentProps,
+  ComponentSlots,
+  ComponentEmit,
+  ComponentExposed,
+  /* Locale types */
+  LocaleOptions,
+  LocaleInstance,
+  LocaleMessages,
+} from "./types.ts";
+/* Export enums directly (not as types) */
+export { ColorMode } from "./types.ts";
+
 export function createVueless(options: CreateVuelessOptions = {}) {
   const i18n = createLocale(options.i18n);
   const loaderOverlay = createLoaderOverlay();

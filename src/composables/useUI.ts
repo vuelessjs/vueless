@@ -13,7 +13,6 @@ import type { Ref, ComputedRef } from "vue";
 import type {
   CVA,
   UseUI,
-  Defaults,
   KeyAttrs,
   KeysAttrs,
   MutatedProps,
@@ -21,6 +20,7 @@ import type {
   PrimaryColors,
   ComponentNames,
   NestedComponent,
+  ComponentDefaults,
   ComponentConfigFull,
   VuelessComponentInstance,
 } from "../types.ts";
@@ -235,7 +235,7 @@ export default function useUI<T>(
      * Use an object where key = parent component prop value, value = nested component prop value.
      * */
     function getDefaults(defaultAttrs: NestedComponent["defaults"]) {
-      const defaults: Defaults = {};
+      const defaults: ComponentDefaults = {};
 
       for (const key in defaultAttrs) {
         defaults[key] =

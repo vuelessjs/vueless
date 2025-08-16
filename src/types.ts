@@ -60,7 +60,7 @@ import UListboxConfig from "./ui.form-listbox/config";
 
 import type { Props } from "tippy.js";
 import type { Config as TailwindConfig } from "tailwindcss";
-import type { ComputedRef, Ref, ComponentInternalInstance } from "vue";
+import type { ComputedRef, Ref, ComponentInternalInstance, TransitionProps } from "vue";
 
 export enum ColorMode {
   Dark = "dark",
@@ -220,6 +220,7 @@ export type PrimaryColors =
 
 export interface Directives {
   tooltip?: Partial<Props>;
+  clickOutside?: Partial<Props>;
 }
 
 export interface Components {
@@ -289,7 +290,7 @@ export interface Components {
 export type ComponentConfig<T> = Partial<{
   [K in keyof T]: K extends string
     ? K extends `${string}transition${string}` | `${string}Transition${string}`
-      ? Transition
+      ? TransitionProps
       : K extends "i18n"
         ? T[K]
         : T[K] | string | UnknownObject
@@ -304,19 +305,10 @@ export interface NestedComponent {
   [key: string]: Record<string, string | UnknownObject> | string | undefined;
 }
 
-export type Defaults = {
+export type ComponentDefaults = {
   color?: string;
   [key: string]: unknown | UnknownObject;
 };
-
-export interface Transition {
-  enterFromClass?: string;
-  enterActiveClass?: string;
-  enterToClass?: string;
-  leaveFromClass?: string;
-  leaveActiveClass?: string;
-  leaveToClass?: string;
-}
 
 export interface CVA {
   base?: string;
