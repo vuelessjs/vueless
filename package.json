@@ -71,6 +71,7 @@
     "vue-router": "^4.5.1",
     "vue-tsc": "^3.0.4"
   },
+  "sideEffects": false,
   "style": "tailwind.css",
   "types": "index.d.ts",
   "main": "index.ts",
