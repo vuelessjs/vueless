@@ -1,6 +1,6 @@
 {
   "name": "vueless",
-  "version": "1.1.1-beta.34",
+  "version": "1.1.1-beta.35",
   "description": "Vue Styleless UI Component Library, powered by Tailwind CSS.",
   "author": "Johnny Grid <hello@vueless.com> (https://vueless.com)",
   "homepage": "https://vueless.com",
@@ -9,7 +9,6 @@
     "access": "public"
   },
   "scripts": {
-
     "dev:docs": "storybook dev -p 6006 --docs --no-open",
     "dev": "storybook dev -p 6006 --no-open",
     "build": "storybook build --docs",
