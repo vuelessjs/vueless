@@ -29,7 +29,9 @@ export default {
     ...getArgTypes(UPagination.__name),
   },
   parameters: {
-    ...getDocsDescription(UPagination.__name),
+    docs: {
+      ...getDocsDescription(UPagination.__name),
+    },
   },
 } as Meta;
 

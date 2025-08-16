@@ -1,5 +1,5 @@
 import type { Meta, StoryFn } from "@storybook/vue3-vite";
-import { getArgs, getArgTypes } from "../../utils/storybook.ts";
+import { getArgs, getArgTypes, getDocsDescription } from "../../utils/storybook.ts";
 
 import USkeletonText from "../USkeletonText.vue";
 import UCol from "../../ui.container-col/UCol.vue";
@@ -16,6 +16,11 @@ export default {
   args: {},
   argTypes: {
     ...getArgTypes(USkeletonText.__name),
+  },
+  parameters: {
+    docs: {
+      ...getDocsDescription(USkeletonText.__name),
+    },
   },
 } as Meta;
 

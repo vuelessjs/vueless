@@ -1,4 +1,10 @@
-import { getArgs, getArgTypes, getSlotNames, getSlotsFragment } from "../../utils/storybook.ts";
+import {
+  getArgs,
+  getArgTypes,
+  getDocsDescription,
+  getSlotNames,
+  getSlotsFragment,
+} from "../../utils/storybook.ts";
 
 import UChip from "../UChip.vue";
 import UButton from "../../ui.button/UButton.vue";
@@ -24,6 +30,11 @@ export default {
   },
   argTypes: {
     ...getArgTypes(UChip.__name),
+  },
+  parameters: {
+    docs: {
+      ...getDocsDescription(UChip.__name),
+    },
   },
 } as Meta;
 
