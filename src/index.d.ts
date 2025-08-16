@@ -3,9 +3,19 @@ import type { CreateVuelessOptions } from "./types.ts";
 
 /* eslint-disable prettier/prettier */
 /* utils */
+export {
+  isSSR,
+  isCSR,
+  setTitle,
+  getRandomId,
+  getCookie,
+  setCookie,
+  deleteCookie,
+  createDebounce,
+  hasSlotContent
+} from "./utils/helper.ts";
 export { getStored, setTheme, cssVar } from "./utils/theme.ts";
 export { isMac, isPWA, isIOS, isAndroid, isMobileApp, isWindows } from "./utils/platform.ts";
-export { isSSR, isCSR, getRandomId, setTitle, createDebounce, hasSlotContent } from "./utils/helper.ts";
 export { cx, cva, compose, getDefaults, setVuelessConfig, setColor, vuelessConfig } from "./utils/ui.ts";
 export { getArgTypes, getSlotNames, getSlotsFragment, getSource, getDocsDescription } from "./utils/storybook.ts";
 /* adapters */
@@ -32,6 +42,7 @@ export {
   setDelayedNotify,
   getDelayedNotify,
 } from "./ui.text-notify/utilNotify.ts";
+export { NotificationType, NotificationPosition, NotificationDuration } from "./ui.text-notify/constants.ts";
 /* directives */
 export { default as vTooltip }  from "./directives/tooltip/vTooltip.ts";
 export { default as vClickOutside }  from "./directives/clickOutside/vClickOutside.ts";
