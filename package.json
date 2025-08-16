@@ -90,8 +90,12 @@
     "./plugin-vite": "./plugin-vite.js",
     "./plugin-vite.js": "./plugin-vite.js",
     "./tailwind.css": "./tailwind.css",
-    "./modules": "./modules.d.ts",
-    "./types": "./types.ts"
+    "./modules": {
+      "types": "./modules.d.ts"
+    },
+    "./types": {
+      "types": "./types.ts"
+    }
   },
   "resolutions": {
     "jackspeak": "2.3.6"
