@@ -4,7 +4,7 @@
     "src/**/*",
     "src/**/*.vue",
   ],
-  "exclude": ["dist/**/*"],
+  "exclude": ["dist/**/*.d.ts"],
   "compilerOptions": {
     /* General */
     "module": "ESNext",

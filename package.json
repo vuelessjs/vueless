@@ -9,13 +9,15 @@
     "access": "public"
   },
   "scripts": {
-    "pre:start": "npx node .scripts/icons",
+
     "dev:docs": "storybook dev -p 6006 --docs --no-open",
     "dev": "storybook dev -p 6006 --no-open",
     "build": "storybook build --docs",
     "preview": "vite preview --host --outDir=storybook-static",
     "ts:check": "vue-tsc --build --force",
-    "release:prepare": "npm run pre:start && rm -rf dist && mkdir -p dist && cp -r src/. package.json LICENSE README.md dist/ && npx node .scripts/writeLocales && npx tsc --project tsconfig.build.json",
+    "release:icons": "npx node .scripts/icons",
+    "release:types": "rm -f ./node_modules/.tmp/tsconfig.app.tsbuildinfo && npx tsc --project tsconfig.build.json",
+    "release:prepare": "npm run release:icons && rm -rf dist && mkdir -p dist && cp -r src/. package.json LICENSE README.md dist/ && npx node .scripts/writeLocales && npm run release:types",
     "release:beta": "release-it --ci --npm.publish --preRelease=beta --increment=prerelease",
     "release:patch": "release-it patch --ci --npm.publish --git.tag --github.release",
     "release:minor": "release-it minor --ci --npm.publish --git.tag --github.release",
