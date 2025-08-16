@@ -91,11 +91,9 @@
     "./plugin-vite": "./plugin-vite.js",
     "./plugin-vite.js": "./plugin-vite.js",
     "./tailwind.css": "./tailwind.css",
+    "./types": "./types.ts",
     "./modules": {
       "types": "./modules.d.ts"
-    },
-    "./types": {
-      "types": "./types.ts"
     }
   },
   "resolutions": {
