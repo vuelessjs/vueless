@@ -6,15 +6,9 @@ import { styleText } from "node:util";
 import { existsSync, mkdirSync } from "node:fs";
 import { writeFile, rename } from "node:fs/promises";
 
-import { detectTypeScript } from "../../utils/node/helper.js";
+import { detectTypeScript, generateConfigIndexContent } from "../../utils/node/helper.js";
 
-import {
-  SUPPRESS_TS_CHECK,
-  COMPONENTS_INDEX_EXPORT,
-  COMPONENTS_INDEX_COMMENT,
-  DEFAULT_VUELESS_CONFIG_CONTENT,
-} from "../constants.js";
-
+import { DEFAULT_VUELESS_CONFIG_CONTENT } from "../constants.js";
 import {
   JAVASCRIPT_EXT,
   TYPESCRIPT_EXT,
@@ -85,11 +79,7 @@ export async function vuelessInit(options) {
     );
   }
 
-  const suppressTsCheck = fileExt === TYPESCRIPT_EXT ? `${SUPPRESS_TS_CHECK}\n` : "";
+  const indexFileContent = generateConfigIndexContent();
 
-  await writeFile(
-    destPath,
-    `${suppressTsCheck}${COMPONENTS_INDEX_COMMENT}\n${COMPONENTS_INDEX_EXPORT}\n`,
-    "utf-8",
-  );
+  await writeFile(destPath, indexFileContent, "utf-8");
 }

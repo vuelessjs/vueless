@@ -11,15 +11,12 @@ import {
   COMPONENTS,
   JAVASCRIPT_EXT,
   TYPESCRIPT_EXT,
-  VUELESS_CONFIGS_CACHED_DIR,
-  VUELESS_MERGED_CONFIGS_CACHED_DIR,
-} from "../../constants.js";
-
-import {
   SUPPRESS_TS_CHECK,
   COMPONENTS_INDEX_EXPORT,
   COMPONENTS_INDEX_COMMENT,
-} from "../../bin/constants.js";
+  VUELESS_CONFIGS_CACHED_DIR,
+  VUELESS_MERGED_CONFIGS_CACHED_DIR,
+} from "../../constants.js";
 
 export async function getDirFiles(dirPath, ext, { recursive = true, exclude = [] } = {}) {
   let fileNames = [];
@@ -227,17 +224,15 @@ export async function autoImportUserConfigs() {
     await mkdir(vuelessConfigDir, { recursive: true });
   }
 
-  await writeFile(
-    indexFilePath,
-    generateConfigIndexContent(imports, componentEntries, hasTypeScript),
-    "utf-8",
-  );
+  await writeFile(indexFilePath, generateConfigIndexContent(imports, componentEntries), "utf-8");
 }
 
-function generateConfigIndexContent(imports = [], componentEntries = [], isTypeScript) {
+export function generateConfigIndexContent(imports = [], componentEntries = []) {
   const importsSection = imports.length ? `\n${imports.join("\n")}\n\n` : "";
   const entriesSection = componentEntries.length ? `\n${componentEntries.join("\n")}\n` : "";
-  const suppressTsCheck = isTypeScript ? `${SUPPRESS_TS_CHECK}\n` : "";
+
+  const hasTypeScript = detectTypeScript();
+  const suppressTsCheck = hasTypeScript ? `${SUPPRESS_TS_CHECK}\n` : "";
 
   return `${suppressTsCheck}${COMPONENTS_INDEX_COMMENT}\n${importsSection}${COMPONENTS_INDEX_EXPORT.replace(
     "{}",

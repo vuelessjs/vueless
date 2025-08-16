@@ -410,3 +410,17 @@ export const DYNAMIC_COLOR_PATTERN = "{color}";
 export const JAVASCRIPT_EXT = ".js";
 export const TYPESCRIPT_EXT = ".ts";
 export const VUE_EXT = ".vue";
+
+export const SUPPRESS_TS_CHECK = `/* eslint-disable */
+// @ts-nocheck`;
+
+export const COMPONENTS_INDEX_COMMENT = `/**
+ * ⚠️ This file is auto-generated — do not edit it manually.
+ * It gets updated automatically whenever the Vite server restarts.
+ *
+ * This file imports all component config files from the current directory.
+ * Only files following the naming pattern "U[Component].config.[ts|js]" will be included.
+ * Example: "UButton.config.ts"
+ */`;
+
+export const COMPONENTS_INDEX_EXPORT = `export const componentConfigs = {};`;
