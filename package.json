@@ -78,7 +78,7 @@
   "exports": {
     ".": {
       "import": "./index.ts",
-      "types": "./types.ts",
+      "types": "./index.d.ts",
       "style": "./tailwind.css"
     },
     "./ui.*": "./ui.*",
