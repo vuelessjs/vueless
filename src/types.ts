@@ -69,22 +69,22 @@ export enum ColorMode {
 }
 
 export interface ThemeConfigText {
-  xs: number;
-  sm: number;
-  md: number;
-  lg: number;
+  xs?: number;
+  sm?: number;
+  md?: number;
+  lg?: number;
 }
 
 export interface ThemeConfigRounding {
-  sm: number;
-  md: number;
-  lg: number;
+  sm?: number;
+  md?: number;
+  lg?: number;
 }
 
 export interface ThemeConfigOutline {
-  sm: number;
-  md: number;
-  lg: number;
+  sm?: number;
+  md?: number;
+  lg?: number;
 }
 
 export interface ThemeConfig {
