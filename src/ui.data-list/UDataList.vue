@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { useTemplateRef } from "vue";
-import draggable from "vuedraggable";
+import draggable from "vuedraggable/src/vuedraggable";
 
 import useUI from "../composables/useUI.ts";
 import { getDefaults } from "../utils/ui.ts";
