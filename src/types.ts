@@ -69,22 +69,22 @@ export enum ColorMode {
 }
 
 export interface ThemeConfigText {
-  xs?: number;
-  sm?: number;
-  md?: number;
-  lg?: number;
+  xs: number;
+  sm: number;
+  md: number;
+  lg: number;
 }
 
 export interface ThemeConfigRounding {
-  sm?: number;
-  md?: number;
-  lg?: number;
+  sm: number;
+  md: number;
+  lg: number;
 }
 
 export interface ThemeConfigOutline {
-  sm?: number;
-  md?: number;
-  lg?: number;
+  sm: number;
+  md: number;
+  lg: number;
 }
 
 export interface ThemeConfig {
@@ -101,17 +101,17 @@ export interface ThemeConfig {
   /**
    * Default components font size.
    */
-  text?: number | ThemeConfigText;
+  text?: number | Partial<ThemeConfigText>;
 
   /**
    * Default components rounding (border-radius).
    */
-  rounding?: number | ThemeConfigRounding;
+  rounding?: number | Partial<ThemeConfigRounding>;
 
   /**
    * Default components outline width.
    */
-  outline?: number | ThemeConfigOutline;
+  outline?: number | Partial<ThemeConfigOutline>;
 
   /**
    * Default components opacity for disabled state (in percents).
