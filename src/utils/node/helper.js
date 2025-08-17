@@ -5,7 +5,7 @@ import { pathToFileURL } from "node:url";
 import { existsSync, statSync } from "node:fs";
 import { mkdir, readdir, rmdir, readFile, writeFile } from "node:fs/promises";
 
-import { vuelessConfig, getMergedConfig } from "./vuelessConfig";
+import { vuelessConfig, getMergedConfig } from "./vuelessConfig.js";
 
 import {
   COMPONENTS,
@@ -16,7 +16,7 @@ import {
   COMPONENTS_INDEX_COMMENT,
   VUELESS_CONFIGS_CACHED_DIR,
   VUELESS_MERGED_CONFIGS_CACHED_DIR,
-} from "../../constants";
+} from "../../constants.js";
 
 export async function getDirFiles(dirPath, ext, { recursive = true, exclude = [] } = {}) {
   let fileNames = [];

@@ -4,8 +4,8 @@ import { existsSync } from "node:fs";
 import { readFile, unlink, writeFile, mkdir } from "node:fs/promises";
 import { merge } from "lodash-es";
 
-import { getDefaultComponentConfig, getMergedComponentConfig, getDirFiles } from "./helper";
-import { vuelessConfig } from "./vuelessConfig";
+import { getDefaultComponentConfig, getMergedComponentConfig, getDirFiles } from "./helper.js";
+import { vuelessConfig } from "./vuelessConfig.js";
 import {
   COMPONENTS,
   INTERNAL_ENV,
@@ -21,7 +21,7 @@ import {
   DEFAULT_DARK_THEME,
   DEFAULT_PRIMARY_COLOR,
   DEFAULT_NEUTRAL_COLOR,
-} from "../../constants";
+} from "../../constants.js";
 
 /**
  * Removes the Tailwind CSS safelist file if it exists.

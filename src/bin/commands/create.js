@@ -7,12 +7,12 @@ import { readFile, writeFile, rename, mkdir, readdir, copyFile } from "node:fs/p
 import { styleText } from "node:util";
 
 import { getDirFiles } from "../../utils/node/helper";
-import { replaceRelativeImports } from "../utils/format";
-import { getStorybookId } from "../utils/data";
+import { replaceRelativeImports } from "../utils/format.js";
+import { getStorybookId } from "../utils/data.js";
 
-import { SRC_COMPONENTS_PATH, COMPONENTS_PATH } from "../constants";
+import { SRC_COMPONENTS_PATH, COMPONENTS_PATH } from "../constants.js";
 
-import { COMPONENTS, VUELESS_PACKAGE_DIR, VUELESS_LOCAL_DIR } from "../../constants";
+import { COMPONENTS, VUELESS_PACKAGE_DIR, VUELESS_LOCAL_DIR } from "../../constants.js";
 
 const BOILERPLATE_NAME = "UBoilerplate";
 const BOILERPLATE_PATH = path.join(cwd(), VUELESS_PACKAGE_DIR, "ui.boilerplate");

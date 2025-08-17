@@ -6,15 +6,15 @@ import { styleText } from "node:util";
 import { existsSync, mkdirSync } from "node:fs";
 import { writeFile, rename } from "node:fs/promises";
 
-import { detectTypeScript, generateConfigIndexContent } from "../../utils/node/helper";
+import { detectTypeScript, generateConfigIndexContent } from "../../utils/node/helper.js";
 
-import { DEFAULT_VUELESS_CONFIG_CONTENT } from "../constants";
+import { DEFAULT_VUELESS_CONFIG_CONTENT } from "../constants.js";
 import {
   JAVASCRIPT_EXT,
   TYPESCRIPT_EXT,
   CONFIG_INDEX_FILE_NAME,
   VUELESS_CONFIG_FILE_NAME,
-} from "../../constants";
+} from "../../constants.js";
 
 const vuelessInitOptions = ["--ts", "--js"];
 

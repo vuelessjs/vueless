@@ -3,17 +3,17 @@ import path from "node:path";
 import { cwd } from "node:process";
 import { pathToFileURL } from "node:url";
 import { defineConfig } from "cva";
-import { createGetMergedConfig } from "./mergeConfigs";
+import { createGetMergedConfig } from "./mergeConfigs.js";
 import { merge } from "lodash-es";
 import { extendTailwindMerge } from "tailwind-merge";
 
-import { buildTSFile } from "./helper";
+import { buildTSFile } from "./helper.js";
 import {
   VUELESS_CACHE_DIR,
   VUELESS_CONFIG_FILE_NAME,
   TAILWIND_MERGE_EXTENSION,
   NESTED_COMPONENT_PATTERN_REG_EXP,
-} from "../../constants";
+} from "../../constants.js";
 
 export let vuelessConfig = {};
 

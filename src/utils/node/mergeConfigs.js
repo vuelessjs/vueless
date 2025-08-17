@@ -1,6 +1,6 @@
 import { cloneDeep } from "lodash-es";
 
-import { SYSTEM_CONFIG_KEY } from "../../constants";
+import { SYSTEM_CONFIG_KEY } from "../../constants.js";
 
 export function createMergeConfigs(cx) {
   /**

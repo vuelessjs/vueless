@@ -5,8 +5,8 @@ import { readFile } from "node:fs/promises";
 
 import { getDirFiles } from "../../utils/node/helper";
 
-import { SRC_COMPONENTS_PATH, COMPONENTS_PATH } from "../constants";
-import { VUELESS_PACKAGE_DIR } from "../../constants";
+import { SRC_COMPONENTS_PATH, COMPONENTS_PATH } from "../constants.js";
+import { VUELESS_PACKAGE_DIR } from "../../constants.js";
 
 const storiesName = "stories.ts";
 

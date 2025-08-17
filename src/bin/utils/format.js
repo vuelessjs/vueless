@@ -1,6 +1,6 @@
 import path from "node:path";
 
-import { VUELESS_LIBRARY } from "../../constants";
+import { VUELESS_LIBRARY } from "../../constants.js";
 
 export function replaceRelativeImports(componentName, filePath, fileContent) {
   const isTopLevelFile = path.dirname(filePath).endsWith(componentName);

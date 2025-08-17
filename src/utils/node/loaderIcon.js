@@ -11,8 +11,8 @@ import { cwd } from "node:process";
 import { rm, cp } from "node:fs/promises";
 import { createRequire } from "module";
 
-import { vuelessConfig } from "./vuelessConfig";
-import { getDirFiles, getMergedComponentConfig } from "./helper";
+import { vuelessConfig } from "./vuelessConfig.js";
+import { getDirFiles, getMergedComponentConfig } from "./helper.js";
 import {
   ICONS_DIR,
   INTERNAL_ENV,
@@ -24,7 +24,7 @@ import {
   STORYBOOK_ICONS_LIBRARY,
   RESOLVED_ICONS_VIRTUAL_MODULE_ID,
   VUELESS_MERGED_CONFIGS_CACHED_DIR,
-} from "../../constants";
+} from "../../constants.js";
 
 let uIconDefaults = {};
 
