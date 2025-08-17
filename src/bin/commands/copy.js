@@ -6,12 +6,12 @@ import { cwd } from "node:process";
 import { cp, readFile, writeFile, rename } from "node:fs/promises";
 import { styleText } from "node:util";
 
-import { getDirFiles } from "../../utils/node/helper.js";
-import { replaceRelativeImports } from "../utils/format.js";
-import { getStorybookId, getStoryMetaKeyIndex } from "../utils/data.js";
+import { getDirFiles } from "../../utils/node/helper";
+import { replaceRelativeImports } from "../utils/format";
+import { getStorybookId, getStoryMetaKeyIndex } from "../utils/data";
 
-import { SRC_COMPONENTS_PATH, COMPONENTS_PATH } from "../constants.js";
-import { COMPONENTS, VUELESS_PACKAGE_DIR, VUELESS_LOCAL_DIR } from "../../constants.js";
+import { SRC_COMPONENTS_PATH, COMPONENTS_PATH } from "../constants";
+import { COMPONENTS, VUELESS_PACKAGE_DIR, VUELESS_LOCAL_DIR } from "../../constants";
 
 function getSourcePath(componentName) {
   return path.join(cwd(), VUELESS_PACKAGE_DIR, COMPONENTS[componentName]);

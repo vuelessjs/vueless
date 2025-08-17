@@ -5,7 +5,7 @@ import {
   getSlotNames,
   getSlotsFragment,
   getDocsDescription,
-} from "../../utils/storybook.ts";
+} from "../../utils/storybook";
 
 import UDatePicker from "../../ui.form-date-picker/UDatePicker.vue";
 import UIcon from "../../ui.image-icon/UIcon.vue";
@@ -14,9 +14,9 @@ import UCol from "../../ui.container-col/UCol.vue";
 import UButton from "../../ui.button/UButton.vue";
 import UText from "../../ui.text-block/UText.vue";
 
-import { COMPONENT_NAME } from "../constants.ts";
+import { COMPONENT_NAME } from "../constants";
 
-import type { Props } from "../types.ts";
+import type { Props } from "../types";
 
 interface DefaultUDatePickerArgs extends Props<unknown> {
   slotTemplate?: string;

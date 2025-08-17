@@ -4,9 +4,9 @@
 
 import { styleText } from "node:util";
 
-import { commands } from "./commands/index.js";
+import { commands } from "./commands/index";
 
-import { DEFAULT_EXIT_CODE, FAILURE_CODE } from "../constants.js";
+import { DEFAULT_EXIT_CODE, FAILURE_CODE } from "../constants";
 
 const [command, ...options] = process.argv.slice(2);
 

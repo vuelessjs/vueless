@@ -1,7 +1,7 @@
 import { cloneDeep, merge } from "lodash-es";
 
-import { vuelessConfig } from "./ui.ts";
-import { isCSR, setCookie } from "./helper.ts";
+import { vuelessConfig } from "./ui";
+import { isCSR, setCookie } from "./helper";
 
 import {
   PX_IN_REM,
@@ -33,7 +33,7 @@ import {
   TEXT_DECREMENT,
   DISABLED_OPACITY,
   DEFAULT_DISABLED_OPACITY,
-} from "../constants.js";
+} from "../constants";
 
 import type {
   NeutralColors,
@@ -43,8 +43,8 @@ import type {
   ThemeConfigOutline,
   ThemeConfigRounding,
   VuelessCssVariables,
-} from "../types.ts";
-import { ColorMode } from "../types.ts";
+} from "../types";
+import { ColorMode } from "../types";
 
 declare interface RootCSSVariableOptions {
   primary: PrimaryColors | string;

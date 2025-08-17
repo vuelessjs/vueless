@@ -5,7 +5,7 @@ import UChip from "../UChip.vue";
 import UDot from "../../ui.other-dot/UDot.vue";
 import UIcon from "../../ui.image-icon/UIcon.vue";
 
-import type { Props } from "../types.ts";
+import type { Props } from "../types";
 
 describe("UChip.vue", () => {
   // Props tests

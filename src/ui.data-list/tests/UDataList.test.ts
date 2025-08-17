@@ -6,7 +6,7 @@ import UEmpty from "../../ui.text-empty/UEmpty.vue";
 import UIcon from "../../ui.image-icon/UIcon.vue";
 import draggable from "vuedraggable";
 
-import type { Props, DataListItem } from "../types.ts";
+import type { Props, DataListItem } from "../types";
 
 describe("UDataList.vue", () => {
   const defaultList: DataListItem[] = [

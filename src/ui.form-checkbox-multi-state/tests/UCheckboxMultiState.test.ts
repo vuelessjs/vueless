@@ -6,7 +6,7 @@ import UCheckbox from "../../ui.form-checkbox/UCheckbox.vue";
 import UIcon from "../../ui.image-icon/UIcon.vue";
 import ULabel from "../../ui.form-label/ULabel.vue";
 
-import type { Props } from "../types.ts";
+import type { Props } from "../types";
 
 describe("UCheckboxMultiState.vue", () => {
   describe("Props", () => {

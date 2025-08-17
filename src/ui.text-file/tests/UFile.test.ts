@@ -6,7 +6,7 @@ import ULink from "../../ui.button-link/ULink.vue";
 import UIcon from "../../ui.image-icon/UIcon.vue";
 
 import type { ComponentPublicInstance } from "vue";
-import type { Props } from "../types.ts";
+import type { Props } from "../types";
 
 describe("UFile.vue", () => {
   // Props tests

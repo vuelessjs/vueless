@@ -1,16 +1,16 @@
 import { ref } from "vue";
-import { getArgs, getArgTypes, getSlotNames, getDocsDescription } from "../../utils/storybook.ts";
+import { getArgs, getArgTypes, getSlotNames, getDocsDescription } from "../../utils/storybook";
 
 import ULoaderProgress from "../ULoaderProgress.vue";
 import UButton from "../../ui.button/UButton.vue";
 import URow from "../../ui.container-row/URow.vue";
 import UCol from "../../ui.container-col/UCol.vue";
 
-import { useLoaderProgress } from "../useLoaderProgress.ts";
-import { loaderProgressOff, loaderProgressOn } from "../utilLoaderProgress.ts";
+import { useLoaderProgress } from "../useLoaderProgress";
+import { loaderProgressOff, loaderProgressOn } from "../utilLoaderProgress";
 
 import type { Meta, StoryFn } from "@storybook/vue3-vite";
-import type { Props } from "../types.ts";
+import type { Props } from "../types";
 
 interface ULoaderProgressArgs extends Props {
   slotTemplate?: string;

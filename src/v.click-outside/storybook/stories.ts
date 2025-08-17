@@ -5,8 +5,8 @@ import { ref, computed, onMounted, useTemplateRef } from "vue";
 import UAlert from "../../ui.text-alert/UAlert.vue";
 import UButton from "../../ui.button/UButton.vue";
 import UCalendar from "../../ui.form-calendar/UCalendar.vue";
-import clickOutside from "../vClickOutside.ts";
-import type { ClickCallback } from "../types.ts";
+import clickOutside from "../vClickOutside";
+import type { ClickCallback } from "../types";
 
 /**
  * The `v-click-outside` directive. | [View on GitHub](https://github.com/vuelessjs/vueless/tree/main/src/directives/clickOutside)

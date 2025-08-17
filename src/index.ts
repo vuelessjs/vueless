@@ -1,9 +1,9 @@
 /* eslint-disable prettier/prettier */
-import { createLocale, LocaleSymbol } from "./composables/useLocale.ts";
-import { createLoaderOverlay, LoaderOverlaySymbol } from "./ui.loader-overlay/useLoaderOverlay.ts";
-import { createLoaderProgress, LoaderProgressSymbol } from "./ui.loader-progress/useLoaderProgress.ts";
-import { setTheme } from "./utils/theme.ts";
-import { setVuelessConfig } from "./utils/ui.ts";
+import { createLocale, LocaleSymbol } from "./composables/useLocale";
+import { createLoaderOverlay, LoaderOverlaySymbol } from "./ui.loader-overlay/useLoaderOverlay";
+import { createLoaderProgress, LoaderProgressSymbol } from "./ui.loader-progress/useLoaderProgress";
+import { setTheme } from "./utils/theme";
+import { setVuelessConfig } from "./utils/ui";
 
 import type { App } from "vue"
 import type { CreateVuelessOptions } from "./types.ts"
@@ -19,25 +19,25 @@ export {
   deleteCookie,
   createDebounce,
   hasSlotContent
-} from "./utils/helper.ts";
-export { getStored, setTheme, cssVar } from "./utils/theme.ts";
-export { isMac, isPWA, isIOS, isAndroid, isMobileApp, isWindows } from "./utils/platform.ts";
-export { cx, cva, compose, getDefaults, setVuelessConfig, setColor, vuelessConfig } from "./utils/ui.ts";
-export { getArgTypes, getSlotNames, getSlotsFragment, getSource, getDocsDescription } from "./utils/storybook.ts";
+} from "./utils/helper";
+export { getStored, setTheme, cssVar } from "./utils/theme";
+export { isMac, isPWA, isIOS, isAndroid, isMobileApp, isWindows } from "./utils/platform";
+export { cx, cva, compose, getDefaults, setVuelessConfig, setColor, vuelessConfig } from "./utils/ui";
+export { getArgTypes, getSlotNames, getSlotsFragment, getSource, getDocsDescription } from "./utils/storybook";
 /* adapters */
-export { default as defaultEnLocale } from "./adapter.locale/locales/en.ts";
-export { createVuelessAdapter } from "./adapter.locale/vueless.ts";
-export { createVueI18nAdapter } from "./adapter.locale/vue-i18n.ts";
+export { default as defaultEnLocale } from "./adapter.locale/locales/en";
+export { createVuelessAdapter } from "./adapter.locale/vueless";
+export { createVueI18nAdapter } from "./adapter.locale/vue-i18n";
 /* composables */
-export { useLocale } from "./composables/useLocale.ts";
-export { default as useUI } from "./composables/useUI.ts";
-export { useDarkMode } from "./composables/useDarkMode.ts";
-export { useLoaderProgress } from "./ui.loader-progress/useLoaderProgress.ts";
-export { useMutationObserver } from "./composables/useMutationObserver.ts";
+export { useLocale } from "./composables/useLocale";
+export { default as useUI } from "./composables/useUI";
+export { useDarkMode } from "./composables/useDarkMode";
+export { useLoaderProgress } from "./ui.loader-progress/useLoaderProgress";
+export { useMutationObserver } from "./composables/useMutationObserver";
 /* loaders */
-export { loaderProgressOn, loaderProgressOff } from "./ui.loader-progress/utilLoaderProgress.ts";
-export { useLoaderOverlay } from "./ui.loader-overlay/useLoaderOverlay.ts";
-export { loaderOverlayOn, loaderOverlayOff } from "./ui.loader-overlay/utilLoaderOverlay.ts";
+export { loaderProgressOn, loaderProgressOff } from "./ui.loader-progress/utilLoaderProgress";
+export { useLoaderOverlay } from "./ui.loader-overlay/useLoaderOverlay";
+export { loaderOverlayOn, loaderOverlayOff } from "./ui.loader-overlay/utilLoaderOverlay";
 /* notifications */
 export {
   notify,
@@ -47,11 +47,11 @@ export {
   clearNotifications,
   setDelayedNotify,
   getDelayedNotify,
-} from "./ui.text-notify/utilNotify.ts";
-export { NotificationType, NotificationPosition, NotificationDuration } from "./ui.text-notify/constants.ts";
+} from "./ui.text-notify/utilNotify";
+export { NotificationType, NotificationPosition, NotificationDuration } from "./ui.text-notify/constants";
 /* directives */
-export { default as vTooltip }  from "./v.tooltip/vTooltip.ts";
-export { default as vClickOutside }  from "./v.click-outside/vClickOutside.ts";
+export { default as vTooltip }  from "./v.tooltip/vTooltip";
+export { default as vClickOutside }  from "./v.click-outside/vClickOutside";
 /* components */
 /* Buttons & Links */
 export { default as UButton } from "./ui.button/UButton.vue";
@@ -167,9 +167,9 @@ export type {
   LocaleOptions,
   LocaleInstance,
   LocaleMessages,
-} from "./types.ts";
+} from "./types";
 /* Export enums directly (not as types) */
-export { ColorMode } from "./types.ts";
+export { ColorMode } from "./types";
 
 export function createVueless(options: CreateVuelessOptions = {}) {
   const i18n = createLocale(options.i18n);

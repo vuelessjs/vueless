@@ -6,7 +6,7 @@ import URadioGroup from "../URadioGroup.vue";
 import URadio from "../../ui.form-radio/URadio.vue";
 import ULabel from "../../ui.form-label/ULabel.vue";
 
-import type { Props } from "../types.ts";
+import type { Props } from "../types";
 
 describe("URadioGroup.vue", () => {
   const defaultOptions = [

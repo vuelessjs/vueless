@@ -1,4 +1,4 @@
-import { vuelessConfig } from "./vuelessConfig.js";
+import { vuelessConfig } from "./vuelessConfig";
 
 export async function buildWebTypes(srcDir) {
   try {

@@ -5,15 +5,15 @@ import {
   getSlotNames,
   getSlotsFragment,
   getDocsDescription,
-} from "../../utils/storybook.ts";
+} from "../../utils/storybook";
 
 import UCalendar from "../../ui.form-calendar/UCalendar.vue";
 import URow from "../../ui.container-row/URow.vue";
 import UText from "../../ui.text-block/UText.vue";
 
-import { COMPONENT_NAME } from "../constants.ts";
+import { COMPONENT_NAME } from "../constants";
 
-import type { DateValue, Props } from "../types.ts";
+import type { DateValue, Props } from "../types";
 
 interface UCalendarArgs extends Props<DateValue> {
   slotTemplate?: string;

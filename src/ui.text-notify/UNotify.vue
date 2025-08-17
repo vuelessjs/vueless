@@ -1,12 +1,12 @@
 <script setup lang="ts">
 import { onBeforeUnmount, onMounted, ref, useTemplateRef } from "vue";
 
-import useUI from "../composables/useUI.ts";
-import { getDefaults, vuelessConfig } from "../utils/ui.ts";
-import { useComponentLocaleMessages } from "../composables/useComponentLocaleMassages.ts";
+import useUI from "../composables/useUI";
+import { getDefaults, vuelessConfig } from "../utils/ui";
+import { useComponentLocaleMessages } from "../composables/useComponentLocaleMassages";
 
-import defaultConfig from "./config.ts";
-import { COMPONENT_NAME, NotificationType, NotificationPosition } from "./constants.ts";
+import defaultConfig from "./config";
+import { COMPONENT_NAME, NotificationType, NotificationPosition } from "./constants";
 
 import UIcon from "../ui.image-icon/UIcon.vue";
 
@@ -17,7 +17,7 @@ import type {
   NotifyClearAllEvent,
   Notification,
   NotificationsWrapperRef,
-} from "./types.ts";
+} from "./types";
 
 defineOptions({ inheritAttrs: false });
 

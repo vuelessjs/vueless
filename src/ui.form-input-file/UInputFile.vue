@@ -10,21 +10,21 @@ import {
   useTemplateRef,
 } from "vue";
 
-import useUI from "../composables/useUI.ts";
-import { getDefaults } from "../utils/ui.ts";
-import { hasSlotContent } from "../utils/helper.ts";
-import { getFileMbSize } from "./utilFileForm.ts";
-import { useComponentLocaleMessages } from "../composables/useComponentLocaleMassages.ts";
+import useUI from "../composables/useUI";
+import { getDefaults } from "../utils/ui";
+import { hasSlotContent } from "../utils/helper";
+import { getFileMbSize } from "./utilFileForm";
+import { useComponentLocaleMessages } from "../composables/useComponentLocaleMassages";
 
 import UText from "../ui.text-block/UText.vue";
 import ULabel from "../ui.form-label/ULabel.vue";
 import UButton from "../ui.button/UButton.vue";
 import UFiles from "../ui.text-files/UFiles.vue";
 
-import { COMPONENT_NAME, MIME_TYPES, COMMON_MIME_TYPES } from "./constants.ts";
-import defaultConfig from "./config.ts";
+import { COMPONENT_NAME, MIME_TYPES, COMMON_MIME_TYPES } from "./constants";
+import defaultConfig from "./config";
 
-import type { Props, Config } from "./types.ts";
+import type { Props, Config } from "./types";
 
 defineOptions({ inheritAttrs: false });
 

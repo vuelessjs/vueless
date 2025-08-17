@@ -3,7 +3,7 @@ import {
   getSlotNames,
   getSlotsFragment,
   getDocsDescription,
-} from "../../utils/storybook.ts";
+} from "../../utils/storybook";
 
 import UTab from "../../ui.navigation-tab/UTab.vue";
 import UIcon from "../../ui.image-icon/UIcon.vue";
@@ -16,7 +16,7 @@ import UAvatar from "../../ui.image-avatar/UAvatar.vue";
 import johnDoe from "./assets/john-doe.png";
 
 import type { Meta, StoryFn } from "@storybook/vue3-vite";
-import type { Props } from "../types.ts";
+import type { Props } from "../types";
 
 interface UTabArgs extends Props {
   slotTemplate?: string;

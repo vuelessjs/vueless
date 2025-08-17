@@ -2,12 +2,12 @@ import { merge } from "lodash-es";
 import { defineConfig } from "cva";
 import { extendTailwindMerge } from "tailwind-merge";
 
-import { isCSR } from "./helper.ts";
-import { createGetMergedConfig } from "./node/mergeConfigs.js";
-import { COMPONENT_NAME as U_ICON } from "../ui.image-icon/constants.ts";
-import { ICON_NON_PROPS_DEFAULTS, TAILWIND_MERGE_EXTENSION } from "../constants.js";
+import { isCSR } from "./helper";
+import { createGetMergedConfig } from "./node/mergeConfigs";
+import { COMPONENT_NAME as U_ICON } from "../ui.image-icon/constants";
+import { ICON_NON_PROPS_DEFAULTS, TAILWIND_MERGE_EXTENSION } from "../constants";
 
-import type { Config, ComponentDefaults, UnknownObject, ComponentNames } from "../types.ts";
+import type { Config, ComponentDefaults, UnknownObject, ComponentNames } from "../types";
 
 interface MergedConfigOptions {
   defaultConfig: unknown;

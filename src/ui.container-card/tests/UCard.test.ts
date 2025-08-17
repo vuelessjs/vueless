@@ -4,7 +4,7 @@ import { describe, it, expect } from "vitest";
 import UCard from "../UCard.vue";
 import UHeader from "../../ui.text-header/UHeader.vue";
 
-import type { Props } from "../types.ts";
+import type { Props } from "../types";
 
 describe("UCard", () => {
   // Props

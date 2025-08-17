@@ -5,7 +5,7 @@ import UCheckbox from "../UCheckbox.vue";
 import UIcon from "../../ui.image-icon/UIcon.vue";
 import ULabel from "../../ui.form-label/ULabel.vue";
 
-import type { Props } from "../types.ts";
+import type { Props } from "../types";
 
 describe("UCheckbox.vue", () => {
   describe("Props", () => {

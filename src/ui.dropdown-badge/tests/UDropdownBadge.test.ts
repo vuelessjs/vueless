@@ -6,7 +6,7 @@ import UBadge from "../../ui.text-badge/UBadge.vue";
 import UIcon from "../../ui.image-icon/UIcon.vue";
 import UListbox from "../../ui.form-listbox/UListbox.vue";
 
-import type { Props } from "../types.ts";
+import type { Props } from "../types";
 
 describe("UDropdownBadge.vue", () => {
   const defaultOptions = [

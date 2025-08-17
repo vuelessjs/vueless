@@ -5,7 +5,7 @@ import {
   getSlotsFragment,
   getDocsDescription,
   trimText,
-} from "../../utils/storybook.ts";
+} from "../../utils/storybook";
 
 import UAccordion from "../../ui.container-accordion/UAccordion.vue";
 import UButton from "../../ui.button/UButton.vue";
@@ -15,7 +15,7 @@ import URow from "../../ui.container-row/URow.vue";
 import UIcon from "../../ui.image-icon/UIcon.vue";
 
 import type { Meta, StoryFn } from "@storybook/vue3-vite";
-import type { Props } from "../types.ts";
+import type { Props } from "../types";
 
 interface UAccordionArgs extends Props {
   slotTemplate?: string;

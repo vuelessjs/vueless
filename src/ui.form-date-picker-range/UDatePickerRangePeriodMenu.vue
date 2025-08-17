@@ -6,19 +6,19 @@ import {
   getYearDateList,
   getQuartersDateList,
   getMonthsDateList,
-} from "./utilDateRange.ts";
-import { parseDate } from "../ui.form-calendar/utilCalendar.ts";
+} from "./utilDateRange";
+import { parseDate } from "../ui.form-calendar/utilCalendar";
 
 import UButton from "../ui.button/UButton.vue";
 
-import { Period } from "./constants.ts";
+import { Period } from "./constants";
 
 import type {
   UDatePickerRangePeriodMenuProps,
   IsDatePeriodOutOfRange,
   SortedLocale,
-} from "./types.ts";
-import type { DatePeriodRange } from "./utilDateRange.ts";
+} from "./types";
+import type { DatePeriodRange } from "./utilDateRange";
 
 defineOptions({ internal: true });
 

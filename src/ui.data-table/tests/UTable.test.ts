@@ -10,9 +10,9 @@ import UDivider from "../../ui.container-divider/UDivider.vue";
 import {
   LoaderProgressSymbol,
   createLoaderProgress,
-} from "../../ui.loader-progress/useLoaderProgress.ts";
+} from "../../ui.loader-progress/useLoaderProgress";
 
-import type { Column, Row, Props, ColumnObject } from "../types.ts";
+import type { Column, Row, Props, ColumnObject } from "../types";
 
 describe("UTable.vue", () => {
   const defaultColumns: ColumnObject[] = [

@@ -1,4 +1,4 @@
-import { isCSR } from "./helper.ts";
+import { isCSR } from "./helper";
 
 interface ModernNavigator extends Navigator {
   standalone: string;

@@ -4,7 +4,7 @@ import {
   getDocsDescription,
   getSlotNames,
   getSlotsFragment,
-} from "../../utils/storybook.ts";
+} from "../../utils/storybook";
 
 import UChip from "../UChip.vue";
 import UButton from "../../ui.button/UButton.vue";
@@ -14,7 +14,7 @@ import UAvatar from "../../ui.image-avatar/UAvatar.vue";
 import UBadge from "../../ui.text-badge/UBadge.vue";
 
 import type { Meta, StoryFn } from "@storybook/vue3-vite";
-import type { Props } from "../types.ts";
+import type { Props } from "../types";
 
 interface UChipArgs extends Props {
   slotTemplate?: string;

@@ -6,7 +6,7 @@ import UInputFile from "../UInputFile.vue";
 import ULabel from "../../ui.form-label/ULabel.vue";
 import UFiles from "../../ui.text-files/UFiles.vue";
 
-import type { Props } from "../types.ts";
+import type { Props } from "../types";
 
 global.URL.createObjectURL = vi.fn(() => "mock-url");
 

@@ -18,19 +18,19 @@ import ULoaderProgress from "../ui.loader-progress/ULoaderProgress.vue";
 import UTableRow from "./UTableRow.vue";
 import UDivider from "../ui.container-divider/UDivider.vue";
 
-import useUI from "../composables/useUI.ts";
-import { getDefaults, cx, getMergedConfig } from "../utils/ui.ts";
-import { hasSlotContent } from "../utils/helper.ts";
-import { useComponentLocaleMessages } from "../composables/useComponentLocaleMassages.ts";
+import useUI from "../composables/useUI";
+import { getDefaults, cx, getMergedConfig } from "../utils/ui";
+import { hasSlotContent } from "../utils/helper";
+import { useComponentLocaleMessages } from "../composables/useComponentLocaleMassages";
 
-import defaultConfig from "./config.ts";
-import { normalizeColumns, mapRowColumns, getFlatRows, getRowChildrenIds } from "./utilTable.ts";
+import defaultConfig from "./config";
+import { normalizeColumns, mapRowColumns, getFlatRows, getRowChildrenIds } from "./utilTable";
 
-import { PX_IN_REM } from "../constants.js";
-import { COMPONENT_NAME } from "./constants.ts";
+import { PX_IN_REM } from "../constants";
+import { COMPONENT_NAME } from "./constants";
 
 import type { ComputedRef } from "vue";
-import type { Config as UDividerConfig } from "../ui.container-divider/types.ts";
+import type { Config as UDividerConfig } from "../ui.container-divider/types";
 import type {
   Cell,
   Row,
@@ -40,7 +40,7 @@ import type {
   Config,
   DateDivider,
   FlatRow,
-} from "./types.ts";
+} from "./types";
 
 defineOptions({ inheritAttrs: false });
 

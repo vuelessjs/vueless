@@ -2,9 +2,9 @@ import { mount } from "@vue/test-utils";
 import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
 
 import ULoaderProgress from "../ULoaderProgress.vue";
-import { LoaderProgressSymbol, createLoaderProgress } from "../useLoaderProgress.ts";
+import { LoaderProgressSymbol, createLoaderProgress } from "../useLoaderProgress";
 
-import type { Props } from "../types.ts";
+import type { Props } from "../types";
 
 describe("ULoaderProgress.vue", () => {
   // Common test configuration

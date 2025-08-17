@@ -5,7 +5,7 @@ import USwitch from "../USwitch.vue";
 import ULabel from "../../ui.form-label/ULabel.vue";
 import UIcon from "../../ui.image-icon/UIcon.vue";
 
-import type { Props } from "../types.ts";
+import type { Props } from "../types";
 
 describe("USwitch.vue", () => {
   describe("Props", () => {

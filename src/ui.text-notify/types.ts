@@ -1,6 +1,6 @@
-import defaultConfig from "./config.ts";
-import type { ComponentConfig } from "../types.ts";
-import { NotificationType } from "./constants.ts";
+import defaultConfig from "./config";
+import type { ComponentConfig } from "../types";
+import { NotificationType } from "./constants";
 
 export type Config = typeof defaultConfig;
 

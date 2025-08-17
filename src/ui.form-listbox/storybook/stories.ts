@@ -4,13 +4,13 @@ import {
   getSlotNames,
   getSlotsFragment,
   getDocsDescription,
-} from "../../utils/storybook.ts";
+} from "../../utils/storybook";
 
 import UListbox from "../UListbox.vue";
 import URow from "../../ui.container-row/URow.vue";
 
 import type { Meta, StoryFn } from "@storybook/vue3-vite";
-import type { Option, Props } from "../types.ts";
+import type { Option, Props } from "../types";
 
 interface DefaultUListboxArgs extends Props {
   slotTemplate?: string;

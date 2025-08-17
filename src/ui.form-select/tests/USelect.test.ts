@@ -7,7 +7,7 @@ import UIcon from "../../ui.image-icon/UIcon.vue";
 import ULabel from "../../ui.form-label/ULabel.vue";
 import UBadge from "../../ui.text-badge/UBadge.vue";
 
-import type { Props } from "../types.ts";
+import type { Props } from "../types";
 
 describe("USelect.vue", () => {
   const defaultOptions = [

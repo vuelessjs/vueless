@@ -3,7 +3,7 @@ import { describe, it, expect } from "vitest";
 
 import UCol from "../UCol.vue";
 
-import type { Props } from "../types.ts";
+import type { Props } from "../types";
 
 describe("UCol.vue", () => {
   // Props tests

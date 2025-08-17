@@ -6,7 +6,7 @@ import UButton from "../../ui.button/UButton.vue";
 import UIcon from "../../ui.image-icon/UIcon.vue";
 import UListbox from "../../ui.form-listbox/UListbox.vue";
 
-import type { Props } from "../types.ts";
+import type { Props } from "../types";
 
 describe("UDropdownButton.vue", () => {
   const defaultOptions = [

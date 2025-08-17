@@ -2,8 +2,8 @@ import fs from "node:fs/promises";
 import { existsSync } from "node:fs";
 import path from "node:path";
 
-import { removeFolderIfEmpty } from "./helper.js";
-import { vuelessConfig } from "./vuelessConfig.js";
+import { removeFolderIfEmpty } from "./helper";
+import { vuelessConfig } from "./vuelessConfig";
 
 import {
   CACHE_DIR,
@@ -12,7 +12,7 @@ import {
   INHERIT_COLOR,
   PRIMARY_COLOR,
   TEXT_COLOR,
-} from "../../constants.js";
+} from "../../constants";
 
 const OPTIONAL_MARK = "?";
 const CLOSING_BRACKET = "}";

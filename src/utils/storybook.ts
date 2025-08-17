@@ -1,4 +1,4 @@
-import { COMPONENTS } from "../constants.js";
+import { COMPONENTS } from "../constants";
 
 import type {
   WebTypes,
@@ -8,7 +8,7 @@ import type {
   SlotBinding,
   ExposeProperty,
   UnknownObject,
-} from "../types.ts";
+} from "../types";
 
 interface Types {
   [key: string]: ArgType | undefined;

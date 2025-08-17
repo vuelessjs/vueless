@@ -2,7 +2,7 @@ import type { Meta, StoryFn } from "@storybook/vue3-vite";
 
 import UIcon from "../../ui.image-icon/UIcon.vue";
 import UCol from "../../ui.container-col/UCol.vue";
-import tooltip from "../vTooltip.ts";
+import tooltip from "../vTooltip";
 
 import type { Props } from "tippy.js";
 

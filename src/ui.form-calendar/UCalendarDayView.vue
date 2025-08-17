@@ -1,21 +1,21 @@
 <script setup lang="ts">
 import { computed, ref } from "vue";
 
-import useUI from "../composables/useUI.ts";
+import useUI from "../composables/useUI";
 
-import { formatDate, dateIsOutOfRange } from "./utilCalendar.ts";
+import { formatDate, dateIsOutOfRange } from "./utilCalendar";
 import {
   isToday,
   getDateWithoutTime,
   getLastDayOfMonth,
   isSameDay,
   isAnotherMothDay,
-} from "./utilDate.ts";
+} from "./utilDate";
 
-import defaultConfig from "./config.ts";
-import { DAYS_IN_WEEK, START_WEEK, DATE_CLICK_STEP } from "./constants.ts";
+import defaultConfig from "./config";
+import { DAYS_IN_WEEK, START_WEEK, DATE_CLICK_STEP } from "./constants";
 
-import type { UCalendarViewProps, Config } from "./types.ts";
+import type { UCalendarViewProps, Config } from "./types";
 
 import UButton from "../ui.button/UButton.vue";
 

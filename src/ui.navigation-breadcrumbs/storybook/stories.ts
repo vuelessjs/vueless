@@ -4,7 +4,7 @@ import {
   getSlotNames,
   getSlotsFragment,
   getDocsDescription,
-} from "../../utils/storybook.ts";
+} from "../../utils/storybook";
 
 import UBreadcrumbs from "../../ui.navigation-breadcrumbs/UBreadcrumbs.vue";
 import UCol from "../../ui.container-col/UCol.vue";
@@ -16,7 +16,7 @@ import ULabel from "../../ui.form-label/ULabel.vue";
 import UText from "../../ui.text-block/UText.vue";
 
 import type { Meta, StoryFn } from "@storybook/vue3-vite";
-import type { Props } from "../types.ts";
+import type { Props } from "../types";
 
 interface UBreadcrumbsArgs extends Props {
   slotTemplate?: string;

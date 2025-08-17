@@ -1,13 +1,13 @@
 import { computed } from "vue";
-import { useComponentLocaleMessages } from "../composables/useComponentLocaleMassages.ts";
+import { useComponentLocaleMessages } from "../composables/useComponentLocaleMassages";
 
-import { getSortedLocale } from "../ui.form-calendar/utilDate.ts";
-import { LocaleType } from "../ui.form-calendar/constants.ts";
-import { COMPONENT_NAME } from "./constants.ts";
+import { getSortedLocale } from "../ui.form-calendar/utilDate";
+import { LocaleType } from "../ui.form-calendar/constants";
+import { COMPONENT_NAME } from "./constants";
 
-import defaultConfig from "./config.ts";
+import defaultConfig from "./config";
 
-import type { Locale, Props } from "./types.ts";
+import type { Locale, Props } from "./types";
 
 export function useLocale(props: Props<unknown>) {
   const { localeMessages } = useComponentLocaleMessages<Locale>(

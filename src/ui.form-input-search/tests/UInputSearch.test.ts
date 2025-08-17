@@ -6,7 +6,7 @@ import UInput from "../../ui.form-input/UInput.vue";
 import UIcon from "../../ui.image-icon/UIcon.vue";
 import UButton from "../../ui.button/UButton.vue";
 
-import type { Props } from "../types.ts";
+import type { Props } from "../types";
 
 describe("UInputSearch.vue", () => {
   describe("props", () => {

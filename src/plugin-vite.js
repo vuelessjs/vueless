@@ -6,7 +6,7 @@ import TailwindVite from "@tailwindcss/vite";
 import TailwindPostcss from "@tailwindcss/postcss";
 import UnpluginVueComponents from "unplugin-vue-components/vite";
 
-import { loadSvg } from "./utils/node/loaderSvg.js";
+import { loadSvg } from "./utils/node/loaderSvg";
 import {
   createIconsCache,
   removeIconsCache,
@@ -15,18 +15,18 @@ import {
   reloadServerOnIconsCacheUpdate,
   extractIconLines,
   isIconChanged,
-} from "./utils/node/loaderIcon.js";
-import { createTailwindSafelist, clearTailwindSafelist } from "./utils/node/tailwindSafelist.js";
-import { componentResolver, directiveResolver } from "./utils/node/vuelessResolver.js";
-import { setCustomPropTypes, removeCustomPropTypes } from "./utils/node/dynamicProps.js";
-import { buildWebTypes } from "./utils/node/webTypes.js";
+} from "./utils/node/loaderIcon";
+import { createTailwindSafelist, clearTailwindSafelist } from "./utils/node/tailwindSafelist";
+import { componentResolver, directiveResolver } from "./utils/node/vuelessResolver";
+import { setCustomPropTypes, removeCustomPropTypes } from "./utils/node/dynamicProps";
+import { buildWebTypes } from "./utils/node/webTypes";
 import {
   getNuxtDirs,
   getVueDirs,
   getVuelessConfigDirs,
   cacheMergedConfigs,
   autoImportUserConfigs,
-} from "./utils/node/helper.js";
+} from "./utils/node/helper";
 import {
   INTERNAL_ENV,
   STORYBOOK_ENV,
@@ -39,7 +39,7 @@ import {
   JAVASCRIPT_EXT,
   TYPESCRIPT_EXT,
   VUE_EXT,
-} from "./constants.js";
+} from "./constants";
 
 /* TailwindCSS Vite plugins. */
 export const TailwindCSS = (options) => {

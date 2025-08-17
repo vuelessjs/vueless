@@ -1,13 +1,13 @@
 import { ref, watch, getCurrentInstance, toValue, useAttrs, computed } from "vue";
 import { isEqual } from "lodash-es";
 
-import { cx, cva, setColor, vuelessConfig, getMergedConfig } from "../utils/ui.ts";
+import { cx, cva, setColor, vuelessConfig, getMergedConfig } from "../utils/ui";
 import {
   CVA_CONFIG_KEY,
   SYSTEM_CONFIG_KEY,
   EXTENDS_PATTERN_REG_EXP,
   NESTED_COMPONENT_PATTERN_REG_EXP,
-} from "../constants.js";
+} from "../constants";
 
 import type { Ref, ComputedRef } from "vue";
 import type {
@@ -23,7 +23,7 @@ import type {
   ComponentDefaults,
   ComponentConfigFull,
   VuelessComponentInstance,
-} from "../types.ts";
+} from "../types";
 
 /**
  * Merging component configs in a given sequence (bigger number = bigger priority):

@@ -5,7 +5,7 @@ import UFiles from "../UFiles.vue";
 import UFile from "../../ui.text-file/UFile.vue";
 import ULabel from "../../ui.form-label/ULabel.vue";
 
-import type { Props } from "../types.ts";
+import type { Props } from "../types";
 
 // Mock URL.createObjectURL
 const originalCreateObjectURL = URL.createObjectURL;

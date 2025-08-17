@@ -4,7 +4,7 @@ import { describe, it, expect } from "vitest";
 import UProgress from "../UProgress.vue";
 import UStepperProgress from "../UStepperProgress.vue";
 
-import type { Props } from "../types.ts";
+import type { Props } from "../types";
 
 describe("UProgress.vue", () => {
   // Props tests

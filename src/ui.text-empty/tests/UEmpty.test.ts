@@ -5,7 +5,7 @@ import UEmpty from "../UEmpty.vue";
 import UIcon from "../../ui.image-icon/UIcon.vue";
 import UHeader from "../../ui.text-header/UHeader.vue";
 
-import type { Props } from "../types.ts";
+import type { Props } from "../types";
 
 describe("UEmpty.vue", () => {
   // Props tests

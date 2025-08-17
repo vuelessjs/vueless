@@ -1,11 +1,11 @@
-import { getVuelessConfig } from "./vuelessConfig.js";
+import { getVuelessConfig } from "./vuelessConfig";
 import {
   COMPONENTS,
   DIRECTIVES,
   INTERNAL_ENV,
   VUELESS_LOCAL_DIR,
   VUELESS_PACKAGE_DIR,
-} from "../../constants.js";
+} from "../../constants";
 
 /**
  * Defines the config for Storybook.

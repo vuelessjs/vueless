@@ -1,6 +1,6 @@
-import { RAW_DECIMAL_MARK } from "./constants.ts";
+import { RAW_DECIMAL_MARK } from "./constants";
 
-import type { FormatOptions } from "./types.ts";
+import type { FormatOptions } from "./types";
 
 export function getRawValue(
   value: string,

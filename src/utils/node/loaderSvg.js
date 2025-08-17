@@ -2,7 +2,7 @@ import fs from "node:fs";
 import { compileTemplate } from "vue/compiler-sfc";
 import { optimize as optimizeSvg } from "svgo";
 
-import { DEFAULT_SVGO_CONFIG } from "../../constants.js";
+import { DEFAULT_SVGO_CONFIG } from "../../constants";
 
 export async function loadSvg(id, options) {
   const {

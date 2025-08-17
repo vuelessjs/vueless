@@ -1,15 +1,15 @@
 <script setup lang="ts">
 import { computed } from "vue";
 
-import useUI from "../composables/useUI.ts";
+import useUI from "../composables/useUI";
 
-import { formatDate, dateIsOutOfRange } from "./utilCalendar.ts";
-import { isSameMonth, isCurrentMonth } from "./utilDate.ts";
+import { formatDate, dateIsOutOfRange } from "./utilCalendar";
+import { isSameMonth, isCurrentMonth } from "./utilDate";
 
-import defaultConfig from "./config.ts";
-import { MONTHS_PER_VIEW } from "./constants.ts";
+import defaultConfig from "./config";
+import { MONTHS_PER_VIEW } from "./constants";
 
-import type { UCalendarViewProps, Config } from "./types.ts";
+import type { UCalendarViewProps, Config } from "./types";
 
 import UButton from "../ui.button/UButton.vue";
 

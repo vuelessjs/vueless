@@ -3,8 +3,8 @@ import { computed, watch, ref, nextTick, provide, useId, useTemplateRef, watchEf
 
 import { merge } from "lodash-es";
 
-import useUI from "../composables/useUI.ts";
-import { getDefaults } from "../utils/ui.ts";
+import useUI from "../composables/useUI";
+import { getDefaults } from "../utils/ui";
 
 import UIcon from "../ui.image-icon/UIcon.vue";
 import UInput from "../ui.form-input/UInput.vue";
@@ -13,7 +13,7 @@ import UDatePickerRangePeriodMenu from "./UDatePickerRangePeriodMenu.vue";
 import UDatePickerRangeInputs from "./UDatePickerRangeInputs.vue";
 import UButton from "../ui.button/UButton.vue";
 
-import vClickOutside from "../v.click-outside/vClickOutside.ts";
+import vClickOutside from "../v.click-outside/vClickOutside";
 
 import {
   addDays,
@@ -29,9 +29,9 @@ import {
   getStartOfYear,
   getDatesDifference,
   isSameDay,
-} from "../ui.form-calendar/utilDate.ts";
+} from "../ui.form-calendar/utilDate";
 
-import { formatDate, parseDate, dateIsOutOfRange } from "../ui.form-calendar/utilCalendar.ts";
+import { formatDate, parseDate, dateIsOutOfRange } from "../ui.form-calendar/utilCalendar";
 
 import {
   getWeekDateList,
@@ -39,13 +39,13 @@ import {
   getQuartersDateList,
   getMonthsDateList,
   type DatePeriodRange,
-} from "./utilDateRange.ts";
+} from "./utilDateRange";
 
-import { Direction, useAutoPosition } from "../composables/useAutoPosition.ts";
-import { useLocale } from "./useLocale.ts";
-import { useUserFormat } from "./useUserFormat.ts";
+import { Direction, useAutoPosition } from "../composables/useAutoPosition";
+import { useLocale } from "./useLocale";
+import { useUserFormat } from "./useUserFormat";
 
-import defaultConfig from "./config.ts";
+import defaultConfig from "./config";
 import {
   COMPONENT_NAME,
   DATE_PICKER_BUTTON_TYPE,
@@ -53,7 +53,7 @@ import {
   INPUT_RANGE_FORMAT,
   ShiftAction,
   Period,
-} from "./constants.ts";
+} from "./constants";
 
 import type { Ref, WritableComputedRef } from "vue";
 import type {
@@ -64,9 +64,9 @@ import type {
   UDatePickerRangeInputsAttrs,
   UDatePickerRangePeriodMenuAttrs,
   Config,
-} from "./types.ts";
-import type { RangeDate, Config as UCalendarConfig } from "../ui.form-calendar/types.ts";
-import type { ComponentExposed, KeyAttrsWithConfig } from "../types.ts";
+} from "./types";
+import type { RangeDate, Config as UCalendarConfig } from "../ui.form-calendar/types";
+import type { ComponentExposed, KeyAttrsWithConfig } from "../types";
 
 defineOptions({ inheritAttrs: false });
 

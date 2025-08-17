@@ -8,7 +8,7 @@
  Docs: https://github.com/unplugin/unplugin-vue-components?tab=readme-ov-file#importing-from-ui-libraries
  */
 
-import { COMPONENTS, DIRECTIVES } from "../../constants.js";
+import { COMPONENTS, DIRECTIVES } from "../../constants";
 
 /**
  * Resolver for Vueless components.

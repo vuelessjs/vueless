@@ -4,7 +4,7 @@ import {
   getSlotNames,
   getSlotsFragment,
   getDocsDescription,
-} from "../../utils/storybook.ts";
+} from "../../utils/storybook";
 
 import UDataList from "../../ui.data-list/UDataList.vue";
 import UIcon from "../../ui.image-icon/UIcon.vue";
@@ -14,10 +14,10 @@ import ULink from "../../ui.button-link/ULink.vue";
 import UAvatar from "../../ui.image-avatar/UAvatar.vue";
 import UHeader from "../../ui.text-header/UHeader.vue";
 import ULoader from "../../ui.loader/ULoader.vue";
-import tooltip from "../../v.tooltip/vTooltip.ts";
+import tooltip from "../../v.tooltip/vTooltip";
 
 import type { Meta, StoryFn } from "@storybook/vue3-vite";
-import type { Props, DataListItem } from "../types.ts";
+import type { Props, DataListItem } from "../types";
 
 interface UDataListArgs extends Props {
   slotTemplate?: string;

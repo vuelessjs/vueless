@@ -1,16 +1,16 @@
 <script setup lang="ts">
 import { useTemplateRef, computed, useId, useSlots } from "vue";
 
-import useUI from "../composables/useUI.ts";
-import { hasSlotContent } from "../utils/helper.ts";
-import { getDefaults } from "../utils/ui.ts";
+import useUI from "../composables/useUI";
+import { hasSlotContent } from "../utils/helper";
+import { getDefaults } from "../utils/ui";
 
 import UIcon from "../ui.image-icon/UIcon.vue";
 
-import { COMPONENT_NAME } from "./constants.ts";
-import defaultConfig from "./config.ts";
+import { COMPONENT_NAME } from "./constants";
+import defaultConfig from "./config";
 
-import type { Props, Config } from "./types.ts";
+import type { Props, Config } from "./types";
 
 defineOptions({ inheritAttrs: false });
 

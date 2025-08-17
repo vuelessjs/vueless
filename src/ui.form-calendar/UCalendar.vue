@@ -1,9 +1,9 @@
 <script setup lang="ts" generic="TModelValue extends DateValue">
 import { computed, ref, watch, useTemplateRef, nextTick, onMounted } from "vue";
 
-import useUI from "../composables/useUI.ts";
-import { getDefaults } from "../utils/ui.ts";
-import { isRangeDate } from "./types.ts";
+import useUI from "../composables/useUI";
+import { getDefaults } from "../utils/ui";
+import { isRangeDate } from "./types";
 
 import UButton from "../ui.button/UButton.vue";
 
@@ -13,11 +13,11 @@ import {
   dateIsOutOfRange,
   isNumeric,
   getYearsRangeLabel,
-} from "./utilCalendar.ts";
+} from "./utilCalendar";
 
-import { getDateWithoutTime, addMonths, addDays, addYears, getSortedLocale } from "./utilDate.ts";
+import { getDateWithoutTime, addMonths, addDays, addYears, getSortedLocale } from "./utilDate";
 
-import { useComponentLocaleMessages } from "../composables/useComponentLocaleMassages.ts";
+import { useComponentLocaleMessages } from "../composables/useComponentLocaleMassages";
 
 import {
   COMPONENT_NAME,
@@ -34,13 +34,13 @@ import {
   LocaleType,
   View,
   InputType,
-} from "./constants.ts";
+} from "./constants";
 
-import defaultConfig from "./config.ts";
+import defaultConfig from "./config";
 
-import type { Props, DateValue, RangeDate, Locale, Config } from "./types.ts";
-import type { DateLocale } from "./utilFormatting.ts";
-import type { ComponentExposed } from "../types.ts";
+import type { Props, DateValue, RangeDate, Locale, Config } from "./types";
+import type { DateLocale } from "./utilFormatting";
+import type { ComponentExposed } from "../types";
 
 import DayView from "./UCalendarDayView.vue";
 import MonthView from "./UCalendarMonthView.vue";

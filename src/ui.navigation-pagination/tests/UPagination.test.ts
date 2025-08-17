@@ -5,7 +5,7 @@ import UPagination from "../UPagination.vue";
 import UButton from "../../ui.button/UButton.vue";
 import UIcon from "../../ui.image-icon/UIcon.vue";
 
-import type { Props } from "../types.ts";
+import type { Props } from "../types";
 
 describe("UPagination.vue", () => {
   // Props tests

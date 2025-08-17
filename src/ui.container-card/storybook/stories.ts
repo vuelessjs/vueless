@@ -6,7 +6,7 @@ import {
   getSlotNames,
   getSlotsFragment,
   getDocsDescription,
-} from "../../utils/storybook.ts";
+} from "../../utils/storybook";
 
 import UCard from "../../ui.container-card/UCard.vue";
 import UButton from "../../ui.button/UButton.vue";
@@ -19,7 +19,7 @@ import USwitch from "../../ui.form-switch/USwitch.vue";
 import ULink from "../../ui.button-link/ULink.vue";
 
 import type { Meta, StoryFn } from "@storybook/vue3-vite";
-import type { Props } from "../types.ts";
+import type { Props } from "../types";
 
 interface UCardArgs extends Props {
   slotTemplate?: string;

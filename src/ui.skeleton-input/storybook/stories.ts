@@ -5,14 +5,14 @@ import {
   getDocsDescription,
   getSlotNames,
   getSlotsFragment,
-} from "../../utils/storybook.ts";
+} from "../../utils/storybook";
 
 import USkeletonInput from "../USkeletonInput.vue";
 import UCol from "../../ui.container-col/UCol.vue";
 import USkeleton from "../../ui.skeleton/USkeleton.vue";
 import ULabel from "../../ui.form-label/ULabel.vue";
 
-import type { Props } from "../types.ts";
+import type { Props } from "../types";
 
 interface SkeletonInputArgs extends Props {
   slotTemplate?: string;

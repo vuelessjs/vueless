@@ -5,7 +5,7 @@ import UInput from "../UInput.vue";
 import UIcon from "../../ui.image-icon/UIcon.vue";
 import ULabel from "../../ui.form-label/ULabel.vue";
 
-import type { Props } from "../types.ts";
+import type { Props } from "../types";
 
 describe("UInput.vue", () => {
   describe("Props", () => {

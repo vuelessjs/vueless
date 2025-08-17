@@ -53,10 +53,10 @@ vi.mock("vue", async () => {
   };
 });
 
-import useUI from "../useUI.ts";
-import * as uiUtils from "../../utils/ui.ts";
+import useUI from "../useUI";
+import * as uiUtils from "../../utils/ui";
 import { getCurrentInstance, useAttrs } from "vue";
-import type { UnknownObject } from "../../types.ts";
+import type { UnknownObject } from "../../types";
 
 // Test component for integration testing
 const TestComponent = {

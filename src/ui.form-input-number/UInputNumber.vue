@@ -1,17 +1,17 @@
 <script setup lang="ts">
 import { computed, watch, onMounted, useId, useTemplateRef } from "vue";
 
-import useUI from "../composables/useUI.ts";
-import { getDefaults } from "../utils/ui.ts";
+import useUI from "../composables/useUI";
+import { getDefaults } from "../utils/ui";
 
 import UInput from "../ui.form-input/UInput.vue";
 
-import defaultConfig from "./config.ts";
-import useFormatNumber from "./useFormatNumber.ts";
-import { COMPONENT_NAME, RAW_DECIMAL_MARK } from "./constants.ts";
+import defaultConfig from "./config";
+import useFormatNumber from "./useFormatNumber";
+import { COMPONENT_NAME, RAW_DECIMAL_MARK } from "./constants";
 
-import type { Props, Config } from "./types.ts";
-import { getRawValue } from "./utilFormat.ts";
+import type { Props, Config } from "./types";
+import { getRawValue } from "./utilFormat";
 
 defineOptions({ inheritAttrs: false });
 

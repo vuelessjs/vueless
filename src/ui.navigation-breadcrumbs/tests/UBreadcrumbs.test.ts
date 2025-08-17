@@ -6,8 +6,8 @@ import UBreadcrumbs from "../UBreadcrumbs.vue";
 import ULink from "../../ui.button-link/ULink.vue";
 import UIcon from "../../ui.image-icon/UIcon.vue";
 
-import type { UnknownObject } from "../../types.ts";
-import type { Props, UBreadcrumb } from "../types.ts";
+import type { UnknownObject } from "../../types";
+import type { Props, UBreadcrumb } from "../types";
 
 // Create a mock router for testing router-link functionality
 const router = createRouter({

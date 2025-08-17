@@ -1,6 +1,6 @@
-import defaultConfig from "./config.ts";
+import defaultConfig from "./config";
 
-import type { PrimaryColors, NeutralColors, ComponentConfig } from "../types.ts";
+import type { PrimaryColors, NeutralColors, ComponentConfig } from "../types";
 
 export type Config = typeof defaultConfig;
 

@@ -6,7 +6,7 @@ import UIcon from "../../ui.image-icon/UIcon.vue";
 import UButton from "../../ui.button/UButton.vue";
 import UText from "../../ui.text-block/UText.vue";
 
-import type { Props } from "../types.ts";
+import type { Props } from "../types";
 
 describe("UAlert.vue", () => {
   // Props tests

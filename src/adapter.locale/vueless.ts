@@ -1,11 +1,11 @@
 import { shallowRef, ref } from "vue";
 import { merge } from "lodash-es";
 
-import en from "./locales/en.ts";
+import en from "./locales/en";
 
 import type { Ref } from "vue";
 import type { VueMessageType } from "vue-i18n";
-import type { UnknownObject, LocaleOptions, LocaleMessages, LocaleInstance } from "../types.ts";
+import type { UnknownObject, LocaleOptions, LocaleMessages, LocaleInstance } from "../types";
 
 const FALLBACK_LOCALE_CODE = "en";
 

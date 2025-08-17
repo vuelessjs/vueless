@@ -1,8 +1,8 @@
 import { computed, ref, watch } from "vue";
 import { merge } from "lodash-es";
-import { recursiveRt } from "../adapter.locale/vueless.ts";
+import { recursiveRt } from "../adapter.locale/vueless";
 
-import { useLocale } from "./useLocale.ts";
+import { useLocale } from "./useLocale";
 
 import { COMPONENTS } from "../constants";
 

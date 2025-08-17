@@ -1,6 +1,6 @@
-import { vuelessInit } from "./init.js";
-import { createVuelessComponent } from "./create.js";
-import { copyVuelessComponent } from "./copy.js";
+import { vuelessInit } from "./init";
+import { createVuelessComponent } from "./create";
+import { copyVuelessComponent } from "./copy";
 
 export const commands = {
   init: vuelessInit,

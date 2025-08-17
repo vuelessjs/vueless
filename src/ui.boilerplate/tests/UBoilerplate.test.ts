@@ -2,7 +2,7 @@ import { mount } from "@vue/test-utils";
 import { describe, it, expect } from "vitest";
 
 import UBoilerplate from "../UBoilerplate.vue";
-import defaultConfig from "../config.ts";
+import defaultConfig from "../config";
 
 describe("UBoilerplate.vue", () => {
   describe("Props", () => {

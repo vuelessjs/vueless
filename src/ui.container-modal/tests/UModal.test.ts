@@ -8,8 +8,8 @@ import UButton from "../../ui.button/UButton.vue";
 import ULink from "../../ui.button-link/ULink.vue";
 import UIcon from "../../ui.image-icon/UIcon.vue";
 
-import type { Props } from "../types.ts";
-import type { UnknownObject } from "../../types.ts";
+import type { Props } from "../types";
+import type { UnknownObject } from "../../types";
 
 // Create a mock router for testing router-link functionality
 const router = createRouter({

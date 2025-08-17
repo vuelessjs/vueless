@@ -4,7 +4,7 @@ import { describe, it, expect } from "vitest";
 import UDivider from "../UDivider.vue";
 import UIcon from "../../ui.image-icon/UIcon.vue";
 
-import type { Props } from "../types.ts";
+import type { Props } from "../types";
 
 describe("UDivider", () => {
   describe("Props", () => {

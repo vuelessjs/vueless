@@ -4,7 +4,7 @@ import { describe, it, expect, vi, beforeAll } from "vitest";
 import UToggle from "../UToggle.vue";
 import UButton from "../../ui.button/UButton.vue";
 
-import type { Props, UToggleOption } from "../types.ts";
+import type { Props, UToggleOption } from "../types";
 
 describe("UToggle.vue", () => {
   let name: string;

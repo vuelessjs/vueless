@@ -4,7 +4,7 @@ import {
   getSlotNames,
   getSlotsFragment,
   getDocsDescription,
-} from "../../utils/storybook.ts";
+} from "../../utils/storybook";
 
 import UTabs from "../../ui.navigation-tabs/UTabs.vue";
 import URow from "../../ui.container-row/URow.vue";
@@ -12,7 +12,7 @@ import ULabel from "../../ui.form-label/ULabel.vue";
 import UTab from "../../ui.navigation-tab/UTab.vue";
 
 import type { Meta, StoryFn } from "@storybook/vue3-vite";
-import type { Props } from "../types.ts";
+import type { Props } from "../types";
 
 interface UTabsArgs extends Props {
   slotTemplate?: string;

@@ -5,7 +5,7 @@ import UTabs from "../UTabs.vue";
 import UTab from "../../ui.navigation-tab/UTab.vue";
 import UButton from "../../ui.button/UButton.vue";
 
-import type { Props, UTabsOption } from "../types.ts";
+import type { Props, UTabsOption } from "../types";
 
 describe("UTabs.vue", () => {
   // Global options definition

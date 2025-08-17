@@ -1,12 +1,12 @@
 import { computed } from "vue";
 
-import { isSameDay, isSameMonth } from "../ui.form-calendar/utilDate.ts";
-import { formatDate, parseDate } from "../ui.form-calendar/utilCalendar.ts";
-import { getTokenIndexes } from "./utilDateRange.ts";
+import { isSameDay, isSameMonth } from "../ui.form-calendar/utilDate";
+import { formatDate, parseDate } from "../ui.form-calendar/utilCalendar";
+import { getTokenIndexes } from "./utilDateRange";
 
 import type { Ref } from "vue";
-import type { IsPeriod, SortedLocale } from "./types.ts";
-import type { RangeDate } from "../ui.form-calendar/types.ts";
+import type { IsPeriod, SortedLocale } from "./types";
+import type { RangeDate } from "../ui.form-calendar/types";
 
 export function useUserFormat(
   localValue: Ref<RangeDate>,

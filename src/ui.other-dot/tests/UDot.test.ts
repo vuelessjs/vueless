@@ -3,7 +3,7 @@ import { describe, it, expect } from "vitest";
 
 import UDot from "../UDot.vue";
 
-import type { Props } from "../types.ts";
+import type { Props } from "../types";
 import type { ComponentPublicInstance } from "vue";
 
 describe("UDot.vue", () => {

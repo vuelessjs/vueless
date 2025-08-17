@@ -5,7 +5,7 @@ import {
   getSlotNames,
   getSlotsFragment,
   getDocsDescription,
-} from "../../utils/storybook.ts";
+} from "../../utils/storybook";
 
 import UModal from "../../ui.container-modal/UModal.vue";
 import UButton from "../../ui.button/UButton.vue";
@@ -20,8 +20,8 @@ import UCheckbox from "../../ui.form-checkbox/UCheckbox.vue";
 import UDivider from "../../ui.container-divider/UDivider.vue";
 
 import type { Meta, StoryFn } from "@storybook/vue3-vite";
-import type { Props } from "../types.ts";
-import type { UnknownObject } from "../../types.ts";
+import type { Props } from "../types";
+import type { UnknownObject } from "../../types";
 
 interface UModalArgs extends Props {
   slotTemplate?: string;

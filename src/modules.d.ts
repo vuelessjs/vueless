@@ -21,6 +21,6 @@ declare module "*.svg?skipsvgo" {
 }
 
 declare module "virtual:vueless/icons" {
-  import type { UnknownArray } from "./types.ts";
+  import type { UnknownArray } from "./types";
   export const cachedIcons: UnknownArray;
 }

@@ -1,20 +1,20 @@
 <script setup lang="ts">
 import { computed, onMounted, useTemplateRef } from "vue";
-import { cx } from "../utils/ui.ts";
-import { hasSlotContent, isEmptyValue } from "../utils/helper.ts";
+import { cx } from "../utils/ui";
+import { hasSlotContent, isEmptyValue } from "../utils/helper";
 
-import { PX_IN_REM } from "../constants.js";
-import { mapRowColumns } from "./utilTable.ts";
+import { PX_IN_REM } from "../constants";
+import { mapRowColumns } from "./utilTable";
 
-import { useMutationObserver } from "../composables/useMutationObserver.ts";
-import useUI from "../composables/useUI.ts";
+import { useMutationObserver } from "../composables/useMutationObserver";
+import useUI from "../composables/useUI";
 
 import UIcon from "../ui.image-icon/UIcon.vue";
 import UCheckbox from "../ui.form-checkbox/UCheckbox.vue";
 
-import defaultConfig from "./config.ts";
+import defaultConfig from "./config";
 
-import type { Cell, CellObject, Row, UTableRowProps, Config } from "./types.ts";
+import type { Cell, CellObject, Row, UTableRowProps, Config } from "./types";
 
 const NESTED_ROW_SHIFT_REM = 1.5;
 const LAST_NESTED_ROW_SHIFT_REM = 1;

@@ -4,17 +4,17 @@ import {
   getSlotNames,
   getSlotsFragment,
   getDocsDescription,
-} from "../../utils/storybook.ts";
+} from "../../utils/storybook";
 
 import UAvatar from "../../ui.image-avatar/UAvatar.vue";
 import URow from "../../ui.container-row/URow.vue";
 import ULoader from "../../ui.loader/ULoader.vue";
-import tooltip from "../../v.tooltip/vTooltip.ts";
+import tooltip from "../../v.tooltip/vTooltip";
 
 import johnDoeImg from "./assets/john-doe.png";
 
 import type { Meta, StoryFn } from "@storybook/vue3-vite";
-import type { Props } from "../types.ts";
+import type { Props } from "../types";
 
 interface UAvatarArgs extends Props {
   slotTemplate?: string;

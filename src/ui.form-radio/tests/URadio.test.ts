@@ -4,7 +4,7 @@ import { describe, it, expect } from "vitest";
 import URadio from "../URadio.vue";
 import ULabel from "../../ui.form-label/ULabel.vue";
 
-import type { Props } from "../types.ts";
+import type { Props } from "../types";
 
 describe("URadio.vue", () => {
   describe("Props", () => {

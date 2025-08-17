@@ -2,14 +2,14 @@
 import { computed, useSlots, useTemplateRef } from "vue";
 import { RouterLink } from "vue-router";
 
-import useUI from "../composables/useUI.ts";
-import { hasSlotContent } from "../utils/helper.ts";
-import { getDefaults } from "../utils/ui.ts";
+import useUI from "../composables/useUI";
+import { hasSlotContent } from "../utils/helper";
+import { getDefaults } from "../utils/ui";
 
-import defaultConfig from "./config.ts";
-import { COMPONENT_NAME } from "./constants.ts";
+import defaultConfig from "./config";
+import { COMPONENT_NAME } from "./constants";
 
-import type { Props, Config, ULinkSlotProps } from "./types.ts";
+import type { Props, Config, ULinkSlotProps } from "./types";
 
 defineOptions({ inheritAttrs: false });
 

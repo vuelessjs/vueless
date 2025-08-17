@@ -6,7 +6,7 @@ import UInput from "../../ui.form-input/UInput.vue";
 import UButton from "../../ui.button/UButton.vue";
 import UDatePickerRangePeriodMenu from "../UDatePickerRangePeriodMenu.vue";
 
-import type { RangeDate } from "../../ui.form-calendar/types.ts";
+import type { RangeDate } from "../../ui.form-calendar/types";
 
 describe("UDatePickerRange.vue", () => {
   describe("Props", () => {

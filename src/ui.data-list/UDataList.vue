@@ -2,18 +2,18 @@
 import { useTemplateRef } from "vue";
 import draggable from "vuedraggable/src/vuedraggable";
 
-import useUI from "../composables/useUI.ts";
-import { getDefaults } from "../utils/ui.ts";
-import { hasSlotContent } from "../utils/helper.ts";
+import useUI from "../composables/useUI";
+import { getDefaults } from "../utils/ui";
+import { hasSlotContent } from "../utils/helper";
 
 import UIcon from "../ui.image-icon/UIcon.vue";
 import UEmpty from "../ui.text-empty/UEmpty.vue";
 
-import { COMPONENT_NAME } from "./constants.ts";
-import defaultConfig from "./config.ts";
-import { useComponentLocaleMessages } from "../composables/useComponentLocaleMassages.ts";
+import { COMPONENT_NAME } from "./constants";
+import defaultConfig from "./config";
+import { useComponentLocaleMessages } from "../composables/useComponentLocaleMassages";
 
-import type { Props, DataListItem, Config } from "./types.ts";
+import type { Props, DataListItem, Config } from "./types";
 
 defineOptions({ inheritAttrs: false });
 

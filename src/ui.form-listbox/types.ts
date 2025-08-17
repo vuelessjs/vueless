@@ -1,5 +1,5 @@
-import defaultConfig from "./config.ts";
-import type { ComponentConfig, UnknownObject } from "../types.ts";
+import defaultConfig from "./config";
+import type { ComponentConfig, UnknownObject } from "../types";
 
 export type Config = typeof defaultConfig;
 export type OnClickOption = (option: Omit<Option, "onClick">) => void;

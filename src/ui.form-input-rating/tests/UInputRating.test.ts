@@ -4,7 +4,7 @@ import { describe, it, expect } from "vitest";
 import UInputRating from "../UInputRating.vue";
 import UIcon from "../../ui.image-icon/UIcon.vue";
 
-import type { Props } from "../types.ts";
+import type { Props } from "../types";
 
 describe("UInputRating.vue", () => {
   describe("props", () => {

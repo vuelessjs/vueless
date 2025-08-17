@@ -1,15 +1,11 @@
 import tippy from "tippy.js";
 import { merge } from "lodash-es";
 
-import { vuelessConfig } from "../utils/ui.ts";
-import { isCSR, isSSR } from "../utils/helper.ts";
+import { vuelessConfig } from "../utils/ui";
+import { isCSR, isSSR } from "../utils/helper";
 
 import type { DefaultProps, Instance as TippyInstance, Props as TippyProps } from "tippy.js";
-import type {
-  TippyTargetElement,
-  DirectiveBindingContent,
-  DirectiveBindingProps,
-} from "./types.ts";
+import type { TippyTargetElement, DirectiveBindingContent, DirectiveBindingProps } from "./types";
 
 let settings: Partial<DefaultProps> = {};
 

@@ -1,4 +1,4 @@
-import { isSSR, isCSR } from "./helper.ts";
+import { isSSR, isCSR } from "./helper";
 
 import type { Config } from "tailwindcss";
 

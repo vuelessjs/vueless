@@ -4,11 +4,11 @@ import { describe, it, expect, afterEach } from "vitest";
 import UNotify from "../UNotify.vue";
 import UIcon from "../../ui.image-icon/UIcon.vue";
 
-import { NotificationType } from "../constants.ts";
-import { LocaleSymbol } from "../../composables/useLocale.ts";
-import { createVuelessAdapter } from "../../adapter.locale/vueless.ts";
+import { NotificationType } from "../constants";
+import { LocaleSymbol } from "../../composables/useLocale";
+import { createVuelessAdapter } from "../../adapter.locale/vueless";
 
-import type { Props, Notification } from "../types.ts";
+import type { Props, Notification } from "../types";
 
 describe("UNotify.vue", () => {
   // Create mock locale instance

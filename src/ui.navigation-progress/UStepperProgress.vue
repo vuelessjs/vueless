@@ -1,11 +1,11 @@
 <script setup lang="ts">
 import { computed } from "vue";
 
-import useUI from "../composables/useUI.ts";
+import useUI from "../composables/useUI";
 
-import defaultConfig from "./config.ts";
+import defaultConfig from "./config";
 
-import type { StepperProgressProps, Config } from "./types.ts";
+import type { StepperProgressProps, Config } from "./types";
 
 defineOptions({ internal: true });
 

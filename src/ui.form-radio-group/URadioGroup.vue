@@ -1,16 +1,16 @@
 <script setup lang="ts">
 import { computed, provide, useTemplateRef } from "vue";
 
-import useUI from "../composables/useUI.ts";
-import { getDefaults } from "../utils/ui.ts";
+import useUI from "../composables/useUI";
+import { getDefaults } from "../utils/ui";
 
 import ULabel from "../ui.form-label/ULabel.vue";
 import URadio from "../ui.form-radio/URadio.vue";
 
-import defaultConfig from "./config.ts";
-import { COMPONENT_NAME } from "./constants.ts";
+import defaultConfig from "./config";
+import { COMPONENT_NAME } from "./constants";
 
-import type { Props, SetRadioGroupSelectedItem, Config } from "./types.ts";
+import type { Props, SetRadioGroupSelectedItem, Config } from "./types";
 
 defineOptions({ inheritAttrs: false });
 

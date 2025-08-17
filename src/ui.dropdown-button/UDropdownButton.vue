@@ -2,20 +2,20 @@
 import { nextTick, computed, provide, ref, useId, useTemplateRef } from "vue";
 import { isEqual } from "lodash-es";
 
-import useUI from "../composables/useUI.ts";
-import { getDefaults } from "../utils/ui.ts";
+import useUI from "../composables/useUI";
+import { getDefaults } from "../utils/ui";
 
 import UIcon from "../ui.image-icon/UIcon.vue";
 import UButton from "../ui.button/UButton.vue";
 import UListbox from "../ui.form-listbox/UListbox.vue";
 
-import vClickOutside from "../v.click-outside/vClickOutside.ts";
+import vClickOutside from "../v.click-outside/vClickOutside";
 
-import defaultConfig from "./config.ts";
-import { COMPONENT_NAME } from "./constants.ts";
+import defaultConfig from "./config";
+import { COMPONENT_NAME } from "./constants";
 
-import type { Props, Config } from "./types.ts";
-import type { Option, SelectedValue } from "../ui.form-listbox/types.ts";
+import type { Props, Config } from "./types";
+import type { Option, SelectedValue } from "../ui.form-listbox/types";
 
 defineOptions({ inheritAttrs: false });
 

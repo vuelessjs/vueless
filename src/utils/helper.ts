@@ -1,4 +1,4 @@
-import type { UnknownObject } from "../types.ts";
+import type { UnknownObject } from "../types";
 import { Comment, Text, Fragment } from "vue";
 
 import type { Slot, VNode } from "vue";
