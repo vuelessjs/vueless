@@ -27,6 +27,8 @@
     /* Enables all strict type-checking options. */
     "strict": true,
     "noImplicitThis": true,
+    "isolatedModules": true,
+    "moduleDetection": "force",
 
     /* Bundlers settings */
     "moduleResolution": "bundler",

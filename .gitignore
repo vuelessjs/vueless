@@ -26,3 +26,6 @@ pnpm-debug.log*
 .cursor
 .junie
 CLAUDE.md
+
+# TypeScript
+*.tsbuildinfo
