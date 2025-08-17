@@ -24,3 +24,10 @@ declare module "virtual:vueless/icons" {
   import type { UnknownArray } from "./types";
   export const cachedIcons: UnknownArray;
 }
+
+/* Fake minimal types just to suppress errors */
+declare module "vue-i18n" {
+  import type { UnknownObject } from "./types";
+  export type I18n = UnknownObject;
+  export type VueMessageType = UnknownObject;
+}

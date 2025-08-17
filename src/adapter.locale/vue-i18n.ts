@@ -7,7 +7,6 @@ export function createVueI18nAdapter(i18n: I18n): LocaleInstance {
     locale: i18n.global.locale,
     fallback: i18n.global.fallbackLocale as string,
     messages: i18n.global.messages,
-    // @ts-expect-error Type instantiation is excessively deep and possibly infinite
     t: (key: string, ...params: unknown[]) => i18n.global.t(key, params),
     tm: i18n.global.tm,
     n: i18n.global.n,
