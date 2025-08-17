@@ -346,8 +346,8 @@ function getOutlines(outline?: ThemeConfig["outline"]) {
     lg: `vl-${OUTLINE}-lg`,
   };
 
-  const runtimeOutline = primitiveToObject(outline) as ThemeConfigText;
-  const globalOutline = primitiveToObject(vuelessConfig.outline) as ThemeConfigText;
+  const runtimeOutline = primitiveToObject(outline) as ThemeConfigOutline;
+  const globalOutline = primitiveToObject(vuelessConfig.outline) as ThemeConfigOutline;
 
   const outlineMd = Math.max(0, Number(runtimeOutline.md ?? globalOutline.md ?? DEFAULT_OUTLINE));
   const outlineSm = Math.max(0, outlineMd - OUTLINE_DECREMENT);
