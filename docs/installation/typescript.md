@@ -22,3 +22,15 @@ Add a reference to the Vueless module types in your project’s global type decl
 },
 ```
 {% endcode %}
+
+If you are using Nuxt.js, add this rule to override the default Nuxt TypeScript preset:
+
+{% code title="tsconfig.json" %}
+```json
+"compilerOptions": {
+  ...
+  "noUncheckedIndexedAccess": false,
+}
+```
+{% endcode %}
+
