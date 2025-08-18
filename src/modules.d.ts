@@ -26,7 +26,7 @@ declare module "virtual:vueless/icons" {
 }
 
 /* Fake minimal types just to suppress errors */
-declare module "vueless/vue-i18n" {
+declare module "virtual:vueless/vue-i18n" {
   import type { UnknownObject } from "./types";
   export type I18n = UnknownObject;
   export type VueMessageType = UnknownObject;

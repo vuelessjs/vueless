@@ -6,7 +6,7 @@ import { useLocale } from "./useLocale";
 
 import { COMPONENTS } from "../constants";
 
-import type { VueMessageType } from "vueless/vue-i18n";
+import type { VueMessageType } from "virtual:vueless/vue-i18n";
 
 export function useComponentLocaleMessages<TLocale>(
   componentName: keyof typeof COMPONENTS,
