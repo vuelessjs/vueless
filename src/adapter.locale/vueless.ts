@@ -4,7 +4,7 @@ import { merge } from "lodash-es";
 import en from "./locales/en";
 
 import type { Ref } from "vue";
-import type { VueMessageType } from "vue-i18n";
+import type { VueMessageType } from "vueless/vue-i18n";
 import type { UnknownObject, LocaleOptions, LocaleMessages, LocaleInstance } from "../types";
 
 const FALLBACK_LOCALE_CODE = "en";

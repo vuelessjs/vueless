@@ -1,4 +1,4 @@
-import type { I18n } from "vue-i18n";
+import type { I18n } from "vueless/vue-i18n";
 import type { LocaleInstance } from "../types";
 
 export function createVueI18nAdapter(i18n: I18n): LocaleInstance {
