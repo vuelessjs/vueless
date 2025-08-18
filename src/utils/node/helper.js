@@ -186,8 +186,6 @@ export async function detectTypeScript() {
 }
 
 export async function autoImportUserConfigs(rootDir = "") {
-  console.log("desc >>>>>>>>>>>>>>>>");
-
   const vuelessConfigDir = path.join(cwd(), rootDir, VUELESS_CONFIG_DIR);
 
   const indexTsPath = path.join(vuelessConfigDir, `${CONFIG_INDEX_FILE_NAME}${TYPESCRIPT_EXT}`);
