@@ -9,7 +9,7 @@
  * Example: "UButton.config.ts"
  */
 
-import UButton from "./configs/UButton.config.ts";
+import UButton from "./configs/UButton.ts";
 
 export const componentConfigs = {
   UButton,
