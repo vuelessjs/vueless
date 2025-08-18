@@ -183,8 +183,8 @@ export async function detectTypeScript() {
   }
 }
 
-export async function autoImportUserConfigs() {
-  const vuelessConfigDir = path.join(cwd(), ".vueless");
+export async function autoImportUserConfigs(rootDir = "") {
+  const vuelessConfigDir = path.join(cwd(), rootDir, ".vueless");
 
   const indexTsPath = path.join(vuelessConfigDir, "index.ts");
   const indexJsPath = path.join(vuelessConfigDir, "index.js");
