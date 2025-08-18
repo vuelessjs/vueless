@@ -425,9 +425,9 @@ export const COMPONENTS_INDEX_COMMENT = `/**
  * ⚠️ This file is auto-generated — do not edit it manually.
  * It gets updated automatically whenever the Vite server restarts.
  *
- * This file imports all component config files from the current directory.
- * Only files following the naming pattern "U[Component].config.[ts|js]" will be included.
- * Example: "UButton.config.ts"
+ * This file imports all config files from the current directory and subdirectories.
+ * Only files following the naming pattern "U[Component].[ts|js]" will be included.
+ * Example: "UButton.ts"
  */`;
 
 export const COMPONENTS_INDEX_EXPORT = `export const componentConfigs = {};`;
