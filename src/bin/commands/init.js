@@ -12,6 +12,7 @@ import { DEFAULT_VUELESS_CONFIG_CONTENT } from "../constants.js";
 import {
   JAVASCRIPT_EXT,
   TYPESCRIPT_EXT,
+  VUELESS_CONFIG_DIR,
   CONFIG_INDEX_FILE_NAME,
   VUELESS_CONFIG_FILE_NAME,
 } from "../../constants.js";
@@ -19,7 +20,7 @@ import {
 const vuelessInitOptions = ["--ts", "--js"];
 
 /**
- * Initializes Vueless in the project by creating a default config file and .vueless directory.
+ * Initializes Vueless in the project by creating a default config file and vueless config directory.
  * @param {string[]} options - The function options.
  * @param {boolean} options.includes("--ts") - If true, creates a TypeScript config file.
  * @param {boolean} options.includes("--js") - If true, creates a JavaScript config file.
@@ -68,14 +69,17 @@ export async function vuelessInit(options) {
     ),
   );
 
-  /* Create .vueless directory and index file. */
-  const vuelessDir = path.join(cwd(), ".vueless");
+  /* Create a vueless config directory and index file. */
+  const vuelessDir = path.join(cwd(), VUELESS_CONFIG_DIR);
   const destPath = path.join(vuelessDir, `${CONFIG_INDEX_FILE_NAME}${fileExt}`);
 
   if (!existsSync(vuelessDir)) {
     mkdirSync(vuelessDir);
     console.log(
-      styleText("green", "The '.vueless' directory was created in the project root directory."),
+      styleText(
+        "green",
+        `The '${VUELESS_CONFIG_DIR}' directory was created in the project root directory.`,
+      ),
     );
   }
 

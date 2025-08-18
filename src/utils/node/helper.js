@@ -12,10 +12,12 @@ import {
   JAVASCRIPT_EXT,
   TYPESCRIPT_EXT,
   SUPPRESS_TS_CHECK,
+  VUELESS_CONFIG_DIR,
   COMPONENTS_INDEX_EXPORT,
   COMPONENTS_INDEX_COMMENT,
   VUELESS_CONFIGS_CACHED_DIR,
   VUELESS_MERGED_CONFIGS_CACHED_DIR,
+  CONFIG_INDEX_FILE_NAME,
 } from "../../constants.js";
 
 export async function getDirFiles(dirPath, ext, { recursive = true, exclude = [] } = {}) {
@@ -85,7 +87,7 @@ export function getVueDirs() {
 }
 
 export function getVuelessConfigDirs() {
-  return [path.join(cwd(), ".vueless")];
+  return [path.join(cwd(), VUELESS_CONFIG_DIR)];
 }
 
 export async function getMergedComponentConfig(name) {
@@ -184,10 +186,12 @@ export async function detectTypeScript() {
 }
 
 export async function autoImportUserConfigs(rootDir = "") {
-  const vuelessConfigDir = path.join(cwd(), rootDir, ".vueless");
+  console.log("desc >>>>>>>>>>>>>>>>");
 
-  const indexTsPath = path.join(vuelessConfigDir, "index.ts");
-  const indexJsPath = path.join(vuelessConfigDir, "index.js");
+  const vuelessConfigDir = path.join(cwd(), rootDir, VUELESS_CONFIG_DIR);
+
+  const indexTsPath = path.join(vuelessConfigDir, `${CONFIG_INDEX_FILE_NAME}${TYPESCRIPT_EXT}`);
+  const indexJsPath = path.join(vuelessConfigDir, `${CONFIG_INDEX_FILE_NAME}${JAVASCRIPT_EXT}`);
 
   const hasTypeScript = detectTypeScript();
 
@@ -196,13 +200,16 @@ export async function autoImportUserConfigs(rootDir = "") {
 
   const configFiles = await getDirFiles(vuelessConfigDir, fileExt, {
     recursive: true,
-    exclude: ["index.ts", "index.js"],
+    exclude: [
+      `${CONFIG_INDEX_FILE_NAME}${TYPESCRIPT_EXT}`,
+      `${CONFIG_INDEX_FILE_NAME}${JAVASCRIPT_EXT}`,
+    ],
   });
 
   const componentConfigFiles = configFiles.filter((filePath) => {
     const fileName = path.basename(filePath);
 
-    return /^U\w+\.config\.(ts|js)$/.test(fileName);
+    return /^U\w+\.(ts|js)$/.test(fileName);
   });
 
   const imports = [];
@@ -211,12 +218,11 @@ export async function autoImportUserConfigs(rootDir = "") {
   if (componentConfigFiles.length) {
     for (const configFilePath of componentConfigFiles) {
       const fileName = path.basename(configFilePath, path.extname(configFilePath));
-      const componentName = fileName.replace(".config", "");
       const relativePath = path.relative(vuelessConfigDir, configFilePath);
       const importPath = "./" + relativePath.replace(/\\/g, "/");
 
-      imports.push(`import ${componentName} from "${importPath}";`);
-      componentEntries.push(`  ${componentName},`);
+      imports.push(`import ${fileName} from "${importPath}";`);
+      componentEntries.push(`  ${fileName},`);
     }
   }
 
