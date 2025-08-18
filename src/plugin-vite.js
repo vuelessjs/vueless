@@ -114,7 +114,9 @@ export const Vueless = function (options = {}) {
         "process.env": {},
       },
       optimizeDeps: {
-        include: ["vueless/types", "vueless/constants", "vueless/constants.js"],
+        include: isInternalEnv
+          ? []
+          : ["vueless", "vueless/types", "vueless/constants", "vueless/constants.js"],
       },
     }),
 
