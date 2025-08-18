@@ -1,3 +1,5 @@
+import { componentConfigs } from "./.vueless";
+
 export default {
   /**
    * Global settings.
@@ -13,7 +15,7 @@ export default {
   /**
    * Component settings.
    */
-  components: /*tw*/ {},
+  components: /*tw*/ { ...componentConfigs },
 
   /**
    * Directive settings.
