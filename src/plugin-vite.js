@@ -120,7 +120,7 @@ export const Vueless = function (options = {}) {
       },
     }),
 
-    configResolved: async () => {
+    configResolved: async (config) => {
       if (!isNuxtModuleEnv) {
         /* auto import user configs */
         await autoImportUserConfigs();
@@ -137,6 +137,15 @@ export const Vueless = function (options = {}) {
 
       /* cache vueless built-in and project icons */
       await prepareIcons();
+
+      /* suppress rollup warnings */
+      const originalOnWarn = config.build.rollupOptions.onwarn;
+
+      config.build.rollupOptions.onwarn = (warning, warn) => {
+        // eslint-disable-next-line prettier/prettier
+        if (warning.code === "SOURCEMAP_BROKEN" && warning.plugin === "@tailwindcss/vite:generate:build") return;
+        originalOnWarn ? originalOnWarn(warning, warn) : warn(warning);
+      };
     },
 
     /* update icons cache in dev env */
