@@ -51,12 +51,12 @@ if (isSSR) {
   (async () => {
     try {
       vuelessConfig = (
-        await import(/* @vite-ignore */ `/${VUELESS_CONFIG_FILE_NAME}.${JAVASCRIPT_EXT}`)
+        await import(/* @vite-ignore */ `/${VUELESS_CONFIG_FILE_NAME}${JAVASCRIPT_EXT}`)
       ).default;
 
       if (!vuelessConfig) {
         vuelessConfig = (
-          await import(/* @vite-ignore */ `/${VUELESS_CONFIG_FILE_NAME}.${TYPESCRIPT_EXT}`)
+          await import(/* @vite-ignore */ `/${VUELESS_CONFIG_FILE_NAME}${TYPESCRIPT_EXT}`)
         ).default;
       }
     } catch {
