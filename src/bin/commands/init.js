@@ -83,7 +83,7 @@ export async function vuelessInit(options) {
     );
   }
 
-  const indexFileContent = generateConfigIndexContent();
+  const indexFileContent = await generateConfigIndexContent();
 
   await writeFile(destPath, indexFileContent, "utf-8");
 }

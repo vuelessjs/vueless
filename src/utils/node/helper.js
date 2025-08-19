@@ -198,7 +198,7 @@ export async function autoImportUserConfigs(basePath = "") {
   const indexTsPath = path.join(vuelessConfigDir, `${CONFIG_INDEX_FILE_NAME}${TYPESCRIPT_EXT}`);
   const indexJsPath = path.join(vuelessConfigDir, `${CONFIG_INDEX_FILE_NAME}${JAVASCRIPT_EXT}`);
 
-  const hasTypeScript = detectTypeScript();
+  const hasTypeScript = await detectTypeScript();
 
   const indexFilePath = hasTypeScript ? indexTsPath : indexJsPath;
   const fileExt = hasTypeScript ? TYPESCRIPT_EXT : JAVASCRIPT_EXT;
@@ -235,22 +235,24 @@ export async function autoImportUserConfigs(basePath = "") {
     await mkdir(vuelessConfigDir, { recursive: true });
   }
 
-  await writeFile(indexFilePath, generateConfigIndexContent(imports, componentEntries), "utf-8");
+  const indexFileContent = await generateConfigIndexContent(imports, componentEntries);
+
+  await writeFile(indexFilePath, indexFileContent, "utf-8");
 }
 
 /**
- * Generates the content for a configuration index file by combining various sections such as imports,
- * component entries, and other metadata.
+ * Generates the content for a configuration index file by combining imports, component entries,
+ * and TypeScript-related handling.
  *
- * @param {string[]} [imports=[]] - Array of import statements to include in the index content.
- * @param {string[]} [componentEntries=[]] - Array of component entry definitions to include in the index content.
- * @return {string} The generated configuration indexes file content as a string.
+ * @param {string[]} imports - An array of import statements to include in the configuration index file.
+ * @param {string[]} componentEntries - An array of component entry definitions to export in the configuration index file.
+ * @return {Promise<string>} The constructed configuration indexes file content as a string.
  */
-export function generateConfigIndexContent(imports = [], componentEntries = []) {
+export async function generateConfigIndexContent(imports = [], componentEntries = []) {
   const importsSection = imports.length ? `\n${imports.join("\n")}\n\n` : "";
   const entriesSection = componentEntries.length ? `\n${componentEntries.join("\n")}\n` : "";
 
-  const hasTypeScript = detectTypeScript();
+  const hasTypeScript = await detectTypeScript();
   const suppressTsCheck = hasTypeScript ? `${SUPPRESS_TS_CHECK}\n` : "";
 
   return `${suppressTsCheck}${COMPONENTS_INDEX_COMMENT}\n${importsSection}${COMPONENTS_INDEX_EXPORT.replace(
