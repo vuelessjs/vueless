@@ -15,27 +15,34 @@ import { COMPONENTS, DIRECTIVES } from "../../constants.js";
  * @param {string} componentName
  * @return {Object} Component path
  */
-export function componentResolver(componentName) {
-  const folder = COMPONENTS[componentName];
+export const componentResolver = {
+  type: "component",
+  resolve(componentName) {
+    const folder = COMPONENTS[componentName];
 
-  if (folder) {
-    return {
-      from: `vueless/${folder}/${componentName}.vue`,
-    };
-  }
-}
+    if (folder) {
+      return {
+        from: `vueless/${folder}/${componentName}.vue`,
+      };
+    }
+  },
+};
 
 /**
  * Resolver for Vueless directives.
  * @param {string} directiveName
  * @return {Object} Directive path
  */
-export function directiveResolver(directiveName) {
-  const folder = DIRECTIVES[directiveName];
+export const directiveResolver = {
+  type: "directive",
+  resolve(directive) {
+    const directiveName = `v${directive}`;
+    const folder = DIRECTIVES[directiveName];
 
-  if (folder) {
-    return {
-      from: `vueless/${folder}/${directiveName}.vue`,
-    };
-  }
-}
+    if (folder) {
+      return {
+        from: `vueless/${folder}/${directiveName}.ts`,
+      };
+    }
+  },
+};

@@ -81,11 +81,11 @@
       "types": "./index.d.ts",
       "style": "./tailwind.css"
     },
+    "./v.*": "./v.*",
     "./ui.*": "./ui.*",
     "./utils/*": "./utils/*",
     "./utils/node/*": "./utils/node/*",
     "./composables/*": "./composables/*",
-    "./directives/*": "./directives/*",
     "./constants": "./constants.js",
     "./constants.js": "./constants.js",
     "./plugin-vite": "./plugin-vite.js",
