@@ -116,7 +116,14 @@ export const Vueless = function (options = {}) {
       optimizeDeps: {
         include: isInternalEnv
           ? []
-          : ["vueless", "vueless/types", "vueless/constants", "vueless/constants.js"],
+          : [
+              "vueless",
+              "vueless/types",
+              "vueless/constants",
+              "vueless/constants.js",
+              "vueless/v.tooltip/vTooltip.ts",
+              "vueless/v.click-outside/vClickOutside.ts",
+            ],
       },
     }),
 
