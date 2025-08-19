@@ -185,8 +185,15 @@ export async function detectTypeScript() {
   }
 }
 
-export async function autoImportUserConfigs(rootDir = "") {
-  const vuelessConfigDir = path.join(cwd(), rootDir, VUELESS_CONFIG_DIR);
+/**
+ * Automatically imports user configuration files from a specified directory, generates index file entries for them,
+ * and writes the configuration index file in the appropriate format (TypeScript or JavaScript).
+ *
+ * @param {string} [basePath=""] The base directory path where the user configuration files are located.
+ * @return {Promise<void>} A promise that resolves when the configuration import and index file generation is completed.
+ */
+export async function autoImportUserConfigs(basePath = "") {
+  const vuelessConfigDir = path.join(cwd(), basePath, VUELESS_CONFIG_DIR);
 
   const indexTsPath = path.join(vuelessConfigDir, `${CONFIG_INDEX_FILE_NAME}${TYPESCRIPT_EXT}`);
   const indexJsPath = path.join(vuelessConfigDir, `${CONFIG_INDEX_FILE_NAME}${JAVASCRIPT_EXT}`);
@@ -231,6 +238,14 @@ export async function autoImportUserConfigs(rootDir = "") {
   await writeFile(indexFilePath, generateConfigIndexContent(imports, componentEntries), "utf-8");
 }
 
+/**
+ * Generates the content for a configuration index file by combining various sections such as imports,
+ * component entries, and other metadata.
+ *
+ * @param {string[]} [imports=[]] - Array of import statements to include in the index content.
+ * @param {string[]} [componentEntries=[]] - Array of component entry definitions to include in the index content.
+ * @return {string} The generated configuration indexes file content as a string.
+ */
 export function generateConfigIndexContent(imports = [], componentEntries = []) {
   const importsSection = imports.length ? `\n${imports.join("\n")}\n\n` : "";
   const entriesSection = componentEntries.length ? `\n${componentEntries.join("\n")}\n` : "";
