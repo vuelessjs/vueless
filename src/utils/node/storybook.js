@@ -18,6 +18,30 @@ export function defineConfigWithVueless(config) {
   return (async () => ({
     ...config,
     stories: [...config.stories, ...(await getVuelessStoriesGlob(config?.vuelessEnv))],
+    addons: [
+      ...new Set([
+        ...(config.addons || []),
+        "@storybook/addon-docs",
+        "@storybook/addon-links",
+        "@vueless/storybook-dark-mode",
+        "@storybook/addon-themes",
+      ]),
+    ],
+    framework: {
+      ...config.framework,
+      name: "@storybook/vue3-vite",
+      options: {
+        ...config.framework?.options,
+        builder: {
+          ...config.framework?.options?.builder,
+          viteConfigPath: ".storybook/vite.config.js",
+        },
+      },
+    },
+    env: (envConfig) => ({
+      ...envConfig,
+      BASE_URL: "/",
+    }),
   }))();
 }
 
