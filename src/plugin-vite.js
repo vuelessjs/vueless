@@ -60,7 +60,7 @@ export const UnpluginComponents = (options) =>
   – Loads SVG images as a Vue component.
  */
 export const Vueless = function (options = {}) {
-  const { debug, env, include, mirrorCacheDir } = options;
+  const { debug, env, include, mirrorCachePath } = options;
 
   const isInternalEnv = env === INTERNAL_ENV;
   const isStorybookEnv = env === STORYBOOK_ENV;
@@ -84,7 +84,7 @@ export const Vueless = function (options = {}) {
     }
 
     /* remove cached icons */
-    await removeIconsCache(mirrorCacheDir);
+    await removeIconsCache(mirrorCachePath);
 
     /* clear tailwind safelist */
     await clearTailwindSafelist(debug);
@@ -97,11 +97,11 @@ export const Vueless = function (options = {}) {
 
   /* cache vueless built-in and project icons */
   async function prepareIcons() {
-    await removeIconsCache(mirrorCacheDir);
+    await removeIconsCache(mirrorCachePath);
     await createIconsCache({ env, debug, targetFiles });
 
     if (isNuxtModuleEnv) {
-      await copyIconsCache(mirrorCacheDir);
+      await copyIconsCache(mirrorCachePath);
     }
   }
 
@@ -171,7 +171,7 @@ export const Vueless = function (options = {}) {
         await createIconsCache({ env, debug, targetFiles: [file] });
 
         if (isNuxtModuleEnv) {
-          await copyIconsCache(mirrorCacheDir);
+          await copyIconsCache(mirrorCachePath);
         }
 
         reloadServerOnIconsCacheUpdate(server);
@@ -198,7 +198,7 @@ export const Vueless = function (options = {}) {
 
     /* remove cached icons */
     buildEnd: async () => {
-      await removeIconsCache(mirrorCacheDir);
+      await removeIconsCache(mirrorCachePath);
     },
   };
 };

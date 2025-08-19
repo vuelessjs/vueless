@@ -77,18 +77,18 @@ export async function createIconsCache({ env, debug = false, targetFiles = [] } 
 
 /**
  * Remove cached icons.
- * @param {string} mirrorCacheDir
+ * @param {string} mirrorCachePath
  * @returns {Promise<void>}
  */
-export async function removeIconsCache(mirrorCacheDir) {
+export async function removeIconsCache(mirrorCachePath) {
   const cachePath = path.join(cwd(), ICONS_CACHED_DIR);
 
   if (fs.existsSync(cachePath)) {
     await rm(cachePath, { recursive: true, force: true });
   }
 
-  if (mirrorCacheDir) {
-    const mirrorCacheIconsPath = path.join(cwd(), mirrorCacheDir, ICONS_DIR);
+  if (mirrorCachePath) {
+    const mirrorCacheIconsPath = path.join(cwd(), mirrorCachePath, ICONS_DIR);
 
     if (fs.existsSync(mirrorCacheIconsPath)) {
       await rm(mirrorCacheIconsPath, { recursive: true, force: true });
@@ -98,14 +98,14 @@ export async function removeIconsCache(mirrorCacheDir) {
 
 /**
  * Copy cached icons in the provided folder by path.
- * @param {string} mirrorCacheDir
+ * @param {string} mirrorCachePath
  * @returns {Promise<void>}
  */
-export async function copyIconsCache(mirrorCacheDir) {
+export async function copyIconsCache(mirrorCachePath) {
   const cachePath = path.join(cwd(), ICONS_CACHED_DIR);
 
-  if (mirrorCacheDir && fs.existsSync(cachePath)) {
-    const mirrorPath = path.join(cwd(), mirrorCacheDir, ICONS_DIR);
+  if (mirrorCachePath && fs.existsSync(cachePath)) {
+    const mirrorPath = path.join(cwd(), mirrorCachePath, ICONS_DIR);
 
     await cp(cachePath, mirrorPath, { recursive: true });
   }

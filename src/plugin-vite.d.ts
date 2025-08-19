@@ -5,7 +5,7 @@ declare function Vueless(options?: {
   env?: string;
   debug?: boolean;
   include?: string[];
-  mirrorCacheDir?: string;
+  mirrorCachePath?: string;
   svgoConfig?: Config;
   svgo?: boolean;
   defaultImport?: "url" | "raw" | "component";
