@@ -60,7 +60,7 @@ export const UnpluginComponents = (options) =>
   – Loads SVG images as a Vue component.
  */
 export const Vueless = function (options = {}) {
-  const { debug, env, include, mirrorCachePath } = options;
+  const { debug, env, include, basePath } = options;
 
   const isInternalEnv = env === INTERNAL_ENV;
   const isStorybookEnv = env === STORYBOOK_ENV;
@@ -84,7 +84,7 @@ export const Vueless = function (options = {}) {
     }
 
     /* remove cached icons */
-    await removeIconsCache(mirrorCachePath);
+    await removeIconsCache(basePath);
 
     /* clear tailwind safelist */
     await clearTailwindSafelist(debug);
@@ -94,16 +94,6 @@ export const Vueless = function (options = {}) {
     /* stop a command line process */
     process.exit(DEFAULT_EXIT_CODE);
   });
-
-  /* cache vueless built-in and project icons */
-  async function prepareIcons() {
-    await removeIconsCache(mirrorCachePath);
-    await createIconsCache({ env, debug, targetFiles });
-
-    if (isNuxtModuleEnv) {
-      await copyIconsCache(mirrorCachePath);
-    }
-  }
 
   return {
     name: "vite-plugin-vue-vueless",
@@ -143,7 +133,12 @@ export const Vueless = function (options = {}) {
       await createTailwindSafelist({ env, srcDir: vuelessSrcDir, targetFiles, debug });
 
       /* cache vueless built-in and project icons */
-      await prepareIcons();
+      await removeIconsCache(basePath);
+      await createIconsCache({ env, debug, targetFiles });
+
+      if (isNuxtModuleEnv) {
+        await copyIconsCache(basePath);
+      }
 
       /* suppress rollup warnings */
       const originalOnWarn = config.build.rollupOptions.onwarn;
@@ -178,7 +173,7 @@ export const Vueless = function (options = {}) {
         await createIconsCache({ env, debug, targetFiles: [file] });
 
         if (isNuxtModuleEnv) {
-          await copyIconsCache(mirrorCachePath);
+          await copyIconsCache(basePath);
         }
 
         reloadServerOnIconsCacheUpdate(server);
@@ -205,7 +200,7 @@ export const Vueless = function (options = {}) {
 
     /* remove cached icons */
     buildEnd: async () => {
-      await removeIconsCache(mirrorCachePath);
+      await removeIconsCache(basePath);
     },
   };
 };

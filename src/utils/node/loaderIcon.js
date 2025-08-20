@@ -14,7 +14,6 @@ import { createRequire } from "module";
 import { vuelessConfig } from "./vuelessConfig.js";
 import { getDirFiles, getMergedComponentConfig } from "./helper.js";
 import {
-  ICONS_DIR,
   INTERNAL_ENV,
   STORYBOOK_ENV,
   NODE_MODULES_DIR,
@@ -77,18 +76,18 @@ export async function createIconsCache({ env, debug = false, targetFiles = [] } 
 
 /**
  * Remove cached icons.
- * @param {string} mirrorCachePath
+ * @param {string} basePath
  * @returns {Promise<void>}
  */
-export async function removeIconsCache(mirrorCachePath) {
+export async function removeIconsCache(basePath) {
   const cachePath = path.join(cwd(), ICONS_CACHED_DIR);
 
   if (fs.existsSync(cachePath)) {
     await rm(cachePath, { recursive: true, force: true });
   }
 
-  if (mirrorCachePath) {
-    const mirrorCacheIconsPath = path.join(cwd(), mirrorCachePath, ICONS_DIR);
+  if (basePath) {
+    const mirrorCacheIconsPath = path.join(cwd(), basePath, ICONS_CACHED_DIR);
 
     if (fs.existsSync(mirrorCacheIconsPath)) {
       await rm(mirrorCacheIconsPath, { recursive: true, force: true });
@@ -98,14 +97,14 @@ export async function removeIconsCache(mirrorCachePath) {
 
 /**
  * Copy cached icons in the provided folder by path.
- * @param {string} mirrorCachePath
+ * @param {string} basePath
  * @returns {Promise<void>}
  */
-export async function copyIconsCache(mirrorCachePath) {
+export async function copyIconsCache(basePath) {
   const cachePath = path.join(cwd(), ICONS_CACHED_DIR);
 
-  if (mirrorCachePath && fs.existsSync(cachePath)) {
-    const mirrorPath = path.join(cwd(), mirrorCachePath, ICONS_DIR);
+  if (basePath && fs.existsSync(cachePath)) {
+    const mirrorPath = path.join(cwd(), basePath, ICONS_CACHED_DIR);
 
     await cp(cachePath, mirrorPath, { recursive: true });
   }
