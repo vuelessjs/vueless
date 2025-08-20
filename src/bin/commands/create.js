@@ -6,7 +6,7 @@ import { cwd } from "node:process";
 import { readFile, writeFile, rename, mkdir, readdir, copyFile } from "node:fs/promises";
 import { styleText } from "node:util";
 
-import { getDirFiles } from "../../utils/node/helper";
+import { getDirFiles } from "../../utils/node/helper.js";
 import { replaceRelativeImports } from "../utils/format.js";
 import { getStorybookId } from "../utils/data.js";
 

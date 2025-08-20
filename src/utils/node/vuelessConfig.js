@@ -3,10 +3,10 @@ import path from "node:path";
 import { cwd } from "node:process";
 import { pathToFileURL } from "node:url";
 import { defineConfig } from "cva";
-import { createGetMergedConfig } from "./mergeConfigs.js";
 import { merge } from "lodash-es";
 import { extendTailwindMerge } from "tailwind-merge";
 
+import { createGetMergedConfig } from "./mergeConfigs.js";
 import { buildTSFile } from "./helper.js";
 import {
   VUELESS_CACHE_DIR,
