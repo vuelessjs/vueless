@@ -65,7 +65,7 @@ const { getDataTest, config, passwordInputAttrs, passwordIconAttrs, passwordIcon
 
 <template>
   <UInput
-    :id="id"
+    :id="elementId"
     v-model="localValue"
     :type="inputType"
     :label="label"
