@@ -36,7 +36,7 @@ export default /*tw*/ {
     yPosition: "bottom",
     xPosition: "left",
     underlined: undefined,
-    dashed: true,
+    dashed: false,
     disabled: false,
     searchable: false,
     multiple: false,
