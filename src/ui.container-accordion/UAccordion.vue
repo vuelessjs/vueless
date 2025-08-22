@@ -29,6 +29,7 @@ const emit = defineEmits([
 ]);
 
 const wrapperRef = useTemplateRef<HTMLDivElement>("wrapper");
+const contentRef = useTemplateRef<HTMLDivElement>("content");
 
 const isOpened = ref(false);
 
@@ -43,7 +44,11 @@ const toggleIconName = computed(() => {
   return props.toggleIcon ? config.value.defaults.toggleIcon : "";
 });
 
-function onClickItem() {
+function onClickItem(event: MouseEvent) {
+  if (contentRef.value && contentRef.value.contains(event.target as Node)) {
+    return;
+  }
+
   isOpened.value = !isOpened.value;
 
   emit("click", elementId, isOpened.value);
@@ -103,7 +108,7 @@ const {
         v-text="description"
       />
 
-      <div v-if="isOpened && hasSlotContent(slots['default'])" v-bind="contentAttrs">
+      <div v-if="isOpened && hasSlotContent(slots['default'])" ref="content" v-bind="contentAttrs">
         <!-- @slot Use it to add accordion content. -->
         <slot />
       </div>
