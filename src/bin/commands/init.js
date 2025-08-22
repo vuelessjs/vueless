@@ -17,13 +17,15 @@ import {
   VUELESS_CONFIG_FILE_NAME,
 } from "../../constants.js";
 
-const vuelessInitOptions = ["--ts", "--js"];
+const vuelessInitOptions = ["--ts", "--js", "--pnpm", "--yarn"];
 
 /**
  * Initializes Vueless in the project by creating a default config file and vueless config directory.
  * @param {string[]} options - The function options.
  * @param {boolean} options.includes("--ts") - If true, creates a TypeScript config file.
  * @param {boolean} options.includes("--js") - If true, creates a JavaScript config file.
+ * @param {boolean} options.includes("--pnpm") - If true, creates a `.npmrc` config with hoisting disabled.
+ * @param {boolean} options.includes("--yarn") - If true, creates a `.yarnrc.yml` config with pnp disabled.
  */
 export async function vuelessInit(options) {
   const isValidOptions = options.every((option) => vuelessInitOptions.includes(option));
@@ -37,53 +39,105 @@ export async function vuelessInit(options) {
   const hasTypeScript = await detectTypeScript();
   const fileExt = options.includes("--ts") || hasTypeScript ? TYPESCRIPT_EXT : JAVASCRIPT_EXT;
 
-  const formattedDestPath = path.format({
+  const destPath = path.format({
     dir: cwd(),
     name: VUELESS_CONFIG_FILE_NAME,
     ext: fileExt,
   });
 
-  /* Backup existing config if it exists. */
-  if (existsSync(formattedDestPath)) {
-    const timestamp = new Date().valueOf();
-    const renamedTarget = `${VUELESS_CONFIG_FILE_NAME}-backup-${timestamp}${fileExt}`;
-
-    await rename(formattedDestPath, renamedTarget);
-
-    console.warn(
-      styleText(
-        "yellow",
-        // eslint-disable-next-line vue/max-len
-        `Current Vueless config backed into: '${path.basename(renamedTarget)}' folder. Don't forget to remove it before commit.`,
-      ),
-    );
+  /* Create pnpm package manager config. */
+  if (options.includes("--pnpm")) {
+    await createPackageManagerConfig(".npmrc", [
+      "# Pnpm",
+      "# Vueless: disable hoisting for the package related modules.",
+      "public-hoist-pattern[] = tailwindcss",
+      "public-hoist-pattern[] = *storybook*",
+      "public-hoist-pattern[] = prettier2",
+    ]);
   }
+
+  /* Create yarn 2+ package manager config. */
+  if (options.includes("--yarn")) {
+    await createPackageManagerConfig(".yarnrc.yml", [
+      "# Yarn 2+",
+      "# Vueless: install Node packages into a standard node_modules folder, the same way as Yarn Classic or npm.",
+      "nodeLinker: node-modules",
+    ]);
+  }
+
+  /* Backup existing config if it exists. */
+  await backupVuelessConfig(destPath);
 
   /* Create a default config file. */
-  await writeFile(formattedDestPath, DEFAULT_VUELESS_CONFIG_CONTENT, "utf-8");
-
-  console.log(
-    styleText(
-      "green",
-      `The '${formattedDestPath.split(path.sep).at(-1)}' was created in the project root directory.`,
-    ),
-  );
+  await createVuelessConfig(destPath);
 
   /* Create a vueless config directory and index file. */
-  const vuelessDir = path.join(cwd(), VUELESS_CONFIG_DIR);
-  const destPath = path.join(vuelessDir, `${CONFIG_INDEX_FILE_NAME}${fileExt}`);
+  await createVuelessConfigDir(fileExt);
+}
 
-  if (!existsSync(vuelessDir)) {
-    mkdirSync(vuelessDir);
-    console.log(
-      styleText(
-        "green",
-        `The '${VUELESS_CONFIG_DIR}' directory was created in the project root directory.`,
-      ),
-    );
-  }
+/**
+ * Backs up the existing Vueless config file by renaming it.
+ * @param {string} destPath - The path to the Vueless config file.
+ */
+async function backupVuelessConfig(destPath) {
+  if (!existsSync(destPath)) return;
+
+  const fileNameWithoutExtension = path.basename(destPath, path.extname(destPath));
+  const extension = path.extname(destPath);
+  const timestamp = new Date().valueOf();
+
+  const backupConfigName = `${fileNameWithoutExtension}-backup-${timestamp}${extension}`;
+
+  await rename(destPath, backupConfigName);
+
+  console.warn(
+    styleText(
+      "yellow",
+      `Current Vueless config backed into: '${path.basename(backupConfigName)}'. Remove it before commit.`,
+    ),
+  );
+}
+
+/**
+ * Creates a default Vueless config file.
+ * @param {string} destPath - The path to the Vueless config file.
+ */
+async function createVuelessConfig(destPath) {
+  await writeFile(destPath, DEFAULT_VUELESS_CONFIG_CONTENT, "utf-8");
+
+  const fileName = path.basename(destPath);
+
+  console.log(styleText("green", `The '${fileName}' was created in the project root.`));
+}
+
+/**
+ * Creates a Vueless config directory and index file.
+ * @param {string} fileExt - The file extension to use for the index file.
+ */
+async function createVuelessConfigDir(fileExt) {
+  const vuelessDir = path.join(cwd(), VUELESS_CONFIG_DIR);
+
+  if (existsSync(vuelessDir)) return;
+
+  mkdirSync(vuelessDir);
+  console.log(
+    styleText("green", `The '${VUELESS_CONFIG_DIR}' directory was created in the project root.`),
+  );
 
   const indexFileContent = await generateConfigIndexContent();
+  const destPath = path.join(vuelessDir, `${CONFIG_INDEX_FILE_NAME}${fileExt}`);
 
   await writeFile(destPath, indexFileContent, "utf-8");
+}
+
+/**
+ * Creates a package manager config file.
+ * @param {string} fileName - The name of the config file.
+ * @param {string[]} fileContent - The content of the config file.
+ */
+async function createPackageManagerConfig(fileName, fileContent) {
+  const filePath = path.join(cwd(), fileName);
+
+  await writeFile(filePath, fileContent.join("\n"), "utf-8");
+  console.log(styleText("green", `The '${fileName}' was created in the project root.`));
 }
