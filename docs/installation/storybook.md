@@ -24,13 +24,13 @@ yarn @vueless/storybook
 {% tab title="pnpm" %}
 ```bash
 pnpm add -D @vueless/storybook
-pnpm exec @vueless/storybook --pnpm
+pnpm exec @vueless/storybook
 ```
 {% endtab %}
 
 {% tab title="bun" %}
 ```bash
-bun add @vueless/storybook -d
+bun add -D @vueless/storybook
 bunx @vueless/storybook
 ```
 {% endtab %}
@@ -40,7 +40,6 @@ Which:
 
 * creates `.storybook` folder with all needed configuration in the project's root.
 * adds commands into the project `package.json` to run and build Storybook locally.
-* creates `.npmrc` config (for `pnpm` project only).
 
 {% hint style="info" %}
 If the `.storybook` folder already exists, the command will back it up by renaming it to `.storybook-backup-{timestamp}`. You should migrate your custom configuration (if any) and remove the backup folder manually afterward.
