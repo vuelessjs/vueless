@@ -5,8 +5,13 @@
 
 /* ------ Production sources ------ */
 
+/* npm, yarn, bun */
 @source "../.cache/vueless/tailwind";
 @source "../.cache/vueless/mergedConfigs";
+
+/* pnpm */
+@source "../../../../.cache/vueless/tailwind";
+@source "../../../../.cache/vueless/mergedConfigs";
 
 /* ------ Color mode settings ------ */
 
