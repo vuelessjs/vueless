@@ -45,10 +45,19 @@ export async function vuelessInit(options) {
     ext: fileExt,
   });
 
+  /* Backup existing config if it exists. */
+  await backupVuelessConfig(destPath);
+
+  /* Create a default config file. */
+  await createVuelessConfig(destPath);
+
+  /* Create a vueless config directory and index file. */
+  await createVuelessConfigDir(fileExt);
+
   /* Create pnpm package manager config. */
   if (options.includes("--pnpm")) {
     await createPackageManagerConfig(".npmrc", [
-      "# Pnpm",
+      "# pnpm",
       "# Vueless: disable hoisting for the package related modules.",
       "public-hoist-pattern[] = tailwindcss",
       "public-hoist-pattern[] = *storybook*",
@@ -64,15 +73,6 @@ export async function vuelessInit(options) {
       "nodeLinker: node-modules",
     ]);
   }
-
-  /* Backup existing config if it exists. */
-  await backupVuelessConfig(destPath);
-
-  /* Create a default config file. */
-  await createVuelessConfig(destPath);
-
-  /* Create a vueless config directory and index file. */
-  await createVuelessConfigDir(fileExt);
 }
 
 /**
