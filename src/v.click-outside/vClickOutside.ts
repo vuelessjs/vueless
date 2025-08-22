@@ -8,7 +8,7 @@ import type {
   ClickOutsideTargetElement,
   DirectiveBindingCallback,
   DirectiveBindingOptions,
-} from "./types.ts";
+} from "./types";
 
 function isElement(element: EventTarget | null) {
   return element instanceof HTMLElement || element instanceof SVGElement;

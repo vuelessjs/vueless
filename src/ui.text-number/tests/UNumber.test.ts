@@ -2,9 +2,9 @@ import { mount } from "@vue/test-utils";
 import { describe, it, expect, beforeAll } from "vitest";
 
 import UNumber from "../UNumber.vue";
-import { MATH_SIGN, MATH_SIGN_TYPE } from "../utilNumber.ts";
+import { MATH_SIGN, MATH_SIGN_TYPE } from "../utilNumber";
 
-import type { Props } from "../types.ts";
+import type { Props } from "../types";
 
 describe("UNumber.vue", () => {
   let value: number;

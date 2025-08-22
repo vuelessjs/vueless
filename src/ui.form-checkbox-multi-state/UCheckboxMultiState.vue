@@ -1,18 +1,18 @@
 <script setup lang="ts">
 import { computed, ref, watchEffect } from "vue";
-import { cloneDeep } from "../utils/helper.ts";
+import { cloneDeep } from "../utils/helper";
 
-import useUI from "../composables/useUI.ts";
-import { getDefaults } from "../utils/ui.ts";
+import useUI from "../composables/useUI";
+import { getDefaults } from "../utils/ui";
 
 import UCheckbox from "../ui.form-checkbox/UCheckbox.vue";
 
-import defaultConfig from "./config.ts";
-import { COMPONENT_NAME } from "./constants.ts";
+import defaultConfig from "./config";
+import { COMPONENT_NAME } from "./constants";
 
-import type { Props, Config } from "./types.ts";
-import type { UCheckboxOption, Config as UCheckboxConfig } from "../ui.form-checkbox/types.ts";
-import type { KeyAttrsWithConfig, UnknownObject } from "../types.ts";
+import type { Props, Config } from "./types";
+import type { UCheckboxOption, Config as UCheckboxConfig } from "../ui.form-checkbox/types";
+import type { KeyAttrsWithConfig, UnknownObject } from "../types";
 
 defineOptions({ inheritAttrs: false });
 

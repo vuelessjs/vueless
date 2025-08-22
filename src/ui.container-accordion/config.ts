@@ -24,6 +24,7 @@ export default /*tw*/ {
       },
     },
   },
+  content: "pt-3 cursor-default",
   toggleIcon: {
     base: "{UIcon} transition duration-300",
     variants: {

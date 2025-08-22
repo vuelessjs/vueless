@@ -5,7 +5,7 @@ import UModalConfirm from "../UModalConfirm.vue";
 import UModal from "../../ui.container-modal/UModal.vue";
 import UButton from "../../ui.button/UButton.vue";
 
-import type { Props } from "../types.ts";
+import type { Props } from "../types";
 
 describe("UModalConfirm", () => {
   // Define common test value

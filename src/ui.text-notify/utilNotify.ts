@@ -1,6 +1,6 @@
-import { vuelessConfig } from "../utils/ui.ts";
-import { getRandomId, isSSR } from "../utils/helper.ts";
-import { LOCAL_STORAGE_ID, NotificationDuration, NotificationType } from "./constants.ts";
+import { vuelessConfig } from "../utils/ui";
+import { getRandomId, isSSR } from "../utils/helper";
+import { LOCAL_STORAGE_ID, NotificationDuration, NotificationType } from "./constants";
 
 interface NotifyConfig {
   type?: NotificationType;

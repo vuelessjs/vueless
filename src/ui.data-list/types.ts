@@ -1,8 +1,8 @@
-import defaultConfig from "./config.ts";
+import defaultConfig from "./config";
 
 import DraggableContext from "vuedraggable";
 
-import type { ComponentConfig, UnknownType } from "../types.ts";
+import type { ComponentConfig, UnknownType } from "../types";
 
 export type Config = typeof defaultConfig;
 

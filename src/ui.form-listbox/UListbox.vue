@@ -2,23 +2,23 @@
 import { watch, computed, useId, ref, useTemplateRef, nextTick } from "vue";
 import { isEqual } from "lodash-es";
 
-import useUI from "../composables/useUI.ts";
-import { getDefaults } from "../utils/ui.ts";
-import { isMac } from "../utils/platform.ts";
-import { filterOptions, filterGroups } from "./utilListbox.ts";
-import { useComponentLocaleMessages } from "../composables/useComponentLocaleMassages.ts";
+import useUI from "../composables/useUI";
+import { getDefaults } from "../utils/ui";
+import { isMac } from "../utils/platform";
+import { filterOptions, filterGroups } from "./utilListbox";
+import { useComponentLocaleMessages } from "../composables/useComponentLocaleMassages";
 
 import UIcon from "../ui.image-icon/UIcon.vue";
 import UButton from "../ui.button/UButton.vue";
 import UDivider from "../ui.container-divider/UDivider.vue";
 import UInputSearch from "../ui.form-input-search/UInputSearch.vue";
 
-import usePointer from "./usePointer.ts";
+import usePointer from "./usePointer";
 
-import defaultConfig from "./config.ts";
-import { COMPONENT_NAME } from "./constants.ts";
+import defaultConfig from "./config";
+import { COMPONENT_NAME } from "./constants";
 
-import type { Option, Props, Config, SelectedValue } from "./types.ts";
+import type { Option, Props, Config, SelectedValue } from "./types";
 
 defineOptions({ inheritAttrs: false });
 
@@ -471,7 +471,7 @@ const {
             <span
               :style="getMarginForSubCategory(option.level)"
               v-bind="optionContentAttrs"
-              :title="String(option.label)"
+              :title="String(option[labelKey])"
               v-text="option[labelKey]"
             />
           </slot>

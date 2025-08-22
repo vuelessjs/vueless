@@ -5,7 +5,7 @@ import UListbox from "../UListbox.vue";
 import UIcon from "../../ui.image-icon/UIcon.vue";
 import UInputSearch from "../../ui.form-input-search/UInputSearch.vue";
 
-import type { Props } from "../types.ts";
+import type { Props } from "../types";
 
 describe("UListbox.vue", () => {
   const defaultOptions = [

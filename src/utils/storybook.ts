@@ -1,4 +1,4 @@
-import { COMPONENTS } from "../constants.js";
+import { COMPONENTS } from "../constants";
 
 import type {
   WebTypes,
@@ -8,7 +8,7 @@ import type {
   SlotBinding,
   ExposeProperty,
   UnknownObject,
-} from "../types.ts";
+} from "../types";
 
 interface Types {
   [key: string]: ArgType | undefined;
@@ -33,7 +33,7 @@ interface TableConfig {
 
 type ComponentNames = keyof typeof COMPONENTS;
 
-/* Load Web-Types from the project root. */
+/* Load Web-Types from cache. */
 const [webTypes]: WebTypes[] = Object.values(
   import.meta.glob("/node_modules/.cache/vueless/web-types.json", {
     eager: true,

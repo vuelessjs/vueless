@@ -7,7 +7,7 @@ import {
   getSlotNames,
   getSlotsFragment,
   getDocsDescription,
-} from "../../utils/storybook.ts";
+} from "../../utils/storybook";
 
 import UDatePickerRange from "../UDatePickerRange.vue";
 import URow from "../../ui.container-row/URow.vue";
@@ -16,11 +16,11 @@ import UIcon from "../../ui.image-icon/UIcon.vue";
 import UButton from "../../ui.button/UButton.vue";
 import UText from "../../ui.text-block/UText.vue";
 
-import { addDays } from "../../ui.form-calendar/utilDate.ts";
+import { addDays } from "../../ui.form-calendar/utilDate";
 
-import { COMPONENT_NAME } from "../constants.ts";
+import { COMPONENT_NAME } from "../constants";
 
-import type { Props } from "../types.ts";
+import type { Props } from "../types";
 
 interface DefaultUDatePickerRangeArgs extends Props<unknown> {
   slotTemplate?: string;

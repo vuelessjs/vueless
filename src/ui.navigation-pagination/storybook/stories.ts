@@ -4,13 +4,13 @@ import {
   getSlotNames,
   getSlotsFragment,
   getDocsDescription,
-} from "../../utils/storybook.ts";
+} from "../../utils/storybook";
 
 import UPagination from "../../ui.navigation-pagination/UPagination.vue";
 import UIcon from "../../ui.image-icon/UIcon.vue";
 
 import type { Meta, StoryFn } from "@storybook/vue3-vite";
-import type { Props } from "../types.ts";
+import type { Props } from "../types";
 
 interface UPaginationArgs extends Props {
   slotTemplate?: string;
@@ -29,7 +29,9 @@ export default {
     ...getArgTypes(UPagination.__name),
   },
   parameters: {
-    ...getDocsDescription(UPagination.__name),
+    docs: {
+      ...getDocsDescription(UPagination.__name),
+    },
   },
 } as Meta;
 

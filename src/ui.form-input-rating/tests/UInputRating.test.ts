@@ -4,7 +4,7 @@ import { describe, it, expect } from "vitest";
 import UInputRating from "../UInputRating.vue";
 import UIcon from "../../ui.image-icon/UIcon.vue";
 
-import type { Props } from "../types.ts";
+import type { Props } from "../types";
 
 describe("UInputRating.vue", () => {
   describe("props", () => {
@@ -18,8 +18,8 @@ describe("UInputRating.vue", () => {
 
       const icons = component.findAllComponents(UIcon);
 
-      expect(icons[2].props("name")).that.includes("star-fill");
-      expect(icons[3].props("name")).that.includes("star");
+      expect(icons[2].props("name")).toContain("star-fill");
+      expect(icons[3].props("name")).toContain("star");
     });
 
     it("Model Value – updates value on click", async () => {

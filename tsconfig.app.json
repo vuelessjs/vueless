@@ -4,7 +4,7 @@
     "src/**/*",
     "src/**/*.vue",
   ],
-  "exclude": ["dist/**/*"],
+  "exclude": ["dist/**/*.d.ts"],
   "compilerOptions": {
     /* General */
     "module": "ESNext",
@@ -14,7 +14,6 @@
     "forceConsistentCasingInFileNames": true,
     "verbatimModuleSyntax": true, // This is important for `<script setup>`.
     "tsBuildInfoFile": "./node_modules/.tmp/tsconfig.app.tsbuildinfo",
-    "allowImportingTsExtensions": true,
     "removeComments": true,
     "skipLibCheck": true,
     "composite": true,
@@ -28,6 +27,8 @@
     /* Enables all strict type-checking options. */
     "strict": true,
     "noImplicitThis": true,
+    "isolatedModules": true,
+    "moduleDetection": "force",
 
     /* Bundlers settings */
     "moduleResolution": "bundler",

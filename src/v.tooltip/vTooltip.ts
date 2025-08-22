@@ -1,26 +1,21 @@
 import tippy from "tippy.js";
 import { merge } from "lodash-es";
 
-import { vuelessConfig } from "../../utils/ui.ts";
-import { isCSR, isSSR } from "../../utils/helper.ts";
+import { vuelessConfig } from "../utils/ui";
+import { isCSR, isSSR } from "../utils/helper";
 
 import type { DefaultProps, Instance as TippyInstance, Props as TippyProps } from "tippy.js";
-import type {
-  TippyTargetElement,
-  DirectiveBindingContent,
-  DirectiveBindingProps,
-} from "./types.ts";
+import type { TippyTargetElement, DirectiveBindingContent, DirectiveBindingProps } from "./types";
 
 let settings: Partial<DefaultProps> = {};
 
 if (isCSR) {
   import("tippy.js/dist/tippy.css");
-  import("tippy.js/themes/light.css");
   import("tippy.js/animations/shift-away.css");
 
   const defaultSettings = {
     arrow: true,
-    theme: "light",
+    theme: "vueless",
     animation: "shift-away",
   };
 

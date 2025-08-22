@@ -1,7 +1,7 @@
-import defaultConfig from "./config.ts";
+import defaultConfig from "./config";
 
-import type { ComponentConfig } from "../types.ts";
-import type { DateLocale } from "./utilFormatting.ts";
+import type { ComponentConfig } from "../types";
+import type { DateLocale } from "./utilFormatting";
 
 export type RangeDate =
   | { from: string | null; to: string | null }

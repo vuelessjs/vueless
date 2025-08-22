@@ -2,7 +2,7 @@ import { inject, readonly, ref } from "vue";
 
 import type { Ref } from "vue";
 
-import { getRequestWithoutQuery } from "./utilLoaderProgress.ts";
+import { getRequestWithoutQuery } from "./utilLoaderProgress";
 
 export const LoaderProgressSymbol = Symbol.for("vueless:loader-progress");
 

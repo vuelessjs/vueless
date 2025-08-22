@@ -6,7 +6,9 @@ export async function buildWebTypes(srcDir) {
 
     await build(vuelessConfig, srcDir);
   } catch (error) {
-    // eslint-disable-next-line no-console
-    console.warn(error);
+    if (error.code !== "ERR_MODULE_NOT_FOUND") {
+      // eslint-disable-next-line no-console
+      console.warn(error);
+    }
   }
 }

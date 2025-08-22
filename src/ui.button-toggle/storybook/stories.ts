@@ -5,7 +5,7 @@ import {
   getSlotNames,
   getSlotsFragment,
   getDocsDescription,
-} from "../../utils/storybook.ts";
+} from "../../utils/storybook";
 
 import UToggle from "../../ui.button-toggle/UToggle.vue";
 import UIcon from "../../ui.image-icon/UIcon.vue";
@@ -15,7 +15,7 @@ import UDot from "../../ui.other-dot/UDot.vue";
 import ULabel from "../../ui.form-label/ULabel.vue";
 
 import type { Meta, StoryFn } from "@storybook/vue3-vite";
-import type { Props } from "../types.ts";
+import type { Props } from "../types";
 
 interface UToggleArgs extends Props {
   slotTemplate?: string;
@@ -23,9 +23,10 @@ interface UToggleArgs extends Props {
 }
 
 export default {
-  components: { UIcon },
+  id: "1030",
   title: "Buttons & Links / Toggle",
   component: UToggle,
+  components: { UIcon },
   args: {
     modelValue: "11",
     options: [

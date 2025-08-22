@@ -4,7 +4,7 @@ import { describe, it, expect } from "vitest";
 import USkeletonText from "../USkeletonText.vue";
 import USkeleton from "../../ui.skeleton/USkeleton.vue";
 
-import type { Props } from "../types.ts";
+import type { Props } from "../types";
 
 describe("USkeletonText.vue", () => {
   // Props tests

@@ -1,4 +1,4 @@
-import { LocaleType, DAYS_IN_WEEK, SECONDS_IN_MINUTES } from "./constants.ts";
+import { LocaleType, DAYS_IN_WEEK, SECONDS_IN_MINUTES } from "./constants";
 
 export type dateSettings = { weekStartsOn?: number };
 

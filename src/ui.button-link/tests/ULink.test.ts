@@ -4,7 +4,7 @@ import { createRouter, createWebHistory } from "vue-router";
 
 import ULink from "../ULink.vue";
 
-import type { Props } from "../types.ts";
+import type { Props } from "../types";
 
 const router = createRouter({
   history: createWebHistory(),

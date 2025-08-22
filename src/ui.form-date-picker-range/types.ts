@@ -1,9 +1,9 @@
-import defaultConfig from "./config.ts";
-import { ShiftAction } from "./constants.ts";
+import defaultConfig from "./config";
+import { ShiftAction } from "./constants";
 
 import type { Ref } from "vue";
-import type { UnknownObject, ComponentConfig } from "../types.ts";
-import type { DatePeriodRange } from "./utilDateRange.ts";
+import type { UnknownObject, ComponentConfig } from "../types";
+import type { DatePeriodRange } from "./utilDateRange";
 
 export type Locale = typeof defaultConfig.i18n;
 export type Config = typeof defaultConfig;

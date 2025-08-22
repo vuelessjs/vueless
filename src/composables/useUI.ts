@@ -1,19 +1,18 @@
 import { ref, watch, getCurrentInstance, toValue, useAttrs, computed } from "vue";
 import { isEqual } from "lodash-es";
 
-import { cx, cva, setColor, vuelessConfig, getMergedConfig } from "../utils/ui.ts";
+import { cx, cva, setColor, vuelessConfig, getMergedConfig } from "../utils/ui";
 import {
   CVA_CONFIG_KEY,
   SYSTEM_CONFIG_KEY,
   EXTENDS_PATTERN_REG_EXP,
   NESTED_COMPONENT_PATTERN_REG_EXP,
-} from "../constants.js";
+} from "../constants";
 
 import type { Ref, ComputedRef } from "vue";
 import type {
   CVA,
   UseUI,
-  Defaults,
   KeyAttrs,
   KeysAttrs,
   MutatedProps,
@@ -21,9 +20,10 @@ import type {
   PrimaryColors,
   ComponentNames,
   NestedComponent,
+  ComponentDefaults,
   ComponentConfigFull,
   VuelessComponentInstance,
-} from "../types.ts";
+} from "../types";
 
 /**
  * Merging component configs in a given sequence (bigger number = bigger priority):
@@ -235,7 +235,7 @@ export default function useUI<T>(
      * Use an object where key = parent component prop value, value = nested component prop value.
      * */
     function getDefaults(defaultAttrs: NestedComponent["defaults"]) {
-      const defaults: Defaults = {};
+      const defaults: ComponentDefaults = {};
 
       for (const key in defaultAttrs) {
         defaults[key] =

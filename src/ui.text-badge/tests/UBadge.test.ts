@@ -4,7 +4,7 @@ import { describe, it, expect, beforeAll } from "vitest";
 import UBadge from "../UBadge.vue";
 import UIcon from "../../ui.image-icon/UIcon.vue";
 
-import type { Props } from "../types.ts";
+import type { Props } from "../types";
 
 describe("UBadge.vue", () => {
   let label: string;

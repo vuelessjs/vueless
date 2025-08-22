@@ -2,9 +2,9 @@ import { mount } from "@vue/test-utils";
 import { describe, it, expect } from "vitest";
 
 import UCalendarMonthView from "../UCalendarMonthView.vue";
-import defaultConfig from "../config.ts";
+import defaultConfig from "../config";
 
-import type { UCalendarViewProps } from "../types.ts";
+import type { UCalendarViewProps } from "../types";
 import UButton from "../../ui.button/UButton.vue";
 
 describe("UCalendarMonthView.vue", () => {

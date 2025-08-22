@@ -7,9 +7,9 @@ import DayView from "../UCalendarDayView.vue";
 import MonthView from "../UCalendarMonthView.vue";
 import YearView from "../UCalendarYearView.vue";
 
-import { View } from "../constants.ts";
+import { View } from "../constants";
 
-import type { Props, RangeDate } from "../types.ts";
+import type { Props, RangeDate } from "../types";
 
 describe("UCalendar.vue", () => {
   describe("Props", () => {

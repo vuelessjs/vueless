@@ -4,7 +4,7 @@ import { describe, it, expect } from "vitest";
 import UTextarea from "../UTextarea.vue";
 import ULabel from "../../ui.form-label/ULabel.vue";
 
-import type { Props } from "../types.ts";
+import type { Props } from "../types";
 
 describe("UTextarea.vue", () => {
   describe("Props", () => {

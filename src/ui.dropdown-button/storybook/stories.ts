@@ -4,7 +4,7 @@ import {
   getSlotNames,
   getSlotsFragment,
   getDocsDescription,
-} from "../../utils/storybook.ts";
+} from "../../utils/storybook";
 
 import UDropdownButton from "../../ui.dropdown-button/UDropdownButton.vue";
 import URow from "../../ui.container-row/URow.vue";
@@ -14,7 +14,7 @@ import ULink from "../../ui.button-link/ULink.vue";
 import UAvatar from "../../ui.image-avatar/UAvatar.vue";
 
 import type { Meta, StoryFn } from "@storybook/vue3-vite";
-import type { Props } from "../types.ts";
+import type { Props } from "../types";
 
 interface DefaultUDropdownButtonArgs extends Props {
   slotTemplate?: string;
@@ -167,7 +167,7 @@ export const ListboxXPosition = EnumTemplate.bind({});
 ListboxXPosition.args = {
   enum: "xPosition",
   label: "{enumValue}",
-  class: "w-40",
+  block: true,
 };
 
 export const ListboxYPosition = EnumTemplate.bind({});

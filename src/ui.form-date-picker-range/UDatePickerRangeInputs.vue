@@ -1,16 +1,16 @@
 <script setup lang="ts" generic="TLocalValue extends RangeDate">
-import { isWrongDateFormat, isWrongMonthNumber, isWrongDayNumber } from "./utilValidation.ts";
+import { isWrongDateFormat, isWrongMonthNumber, isWrongDayNumber } from "./utilValidation";
 import { onBeforeUnmount, useTemplateRef } from "vue";
 
-import { dateIsOutOfRange, parseDate } from "../ui.form-calendar/utilCalendar.ts";
-import { isSameDay } from "../ui.form-calendar/utilDate.ts";
+import { dateIsOutOfRange, parseDate } from "../ui.form-calendar/utilCalendar";
+import { isSameDay } from "../ui.form-calendar/utilDate";
 
 import UInput from "../ui.form-input/UInput.vue";
 
-import { InputRangeType, INPUT_RANGE_FORMAT } from "./constants.ts";
+import { InputRangeType, INPUT_RANGE_FORMAT } from "./constants";
 
-import type { UDatePickerRangeInputsProps } from "./types.ts";
-import type { RangeDate } from "../ui.form-calendar/types.ts";
+import type { UDatePickerRangeInputsProps } from "./types";
+import type { RangeDate } from "../ui.form-calendar/types";
 
 type UInputRef = InstanceType<typeof UInput>;
 

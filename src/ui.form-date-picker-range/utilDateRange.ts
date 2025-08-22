@@ -10,8 +10,8 @@ import {
   addQuarters,
   getEndOfYear,
   getStartOfYear,
-} from "../ui.form-calendar/utilDate.ts";
-import { formats } from "../ui.form-calendar/utilFormatting.ts";
+} from "../ui.form-calendar/utilDate";
+import { formats } from "../ui.form-calendar/utilFormatting";
 
 export interface DatePeriodRange {
   title: string | number;

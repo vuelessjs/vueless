@@ -1,4 +1,4 @@
-import { getDaysInMonth } from "../ui.form-calendar/utilDate.ts";
+import { getDaysInMonth } from "../ui.form-calendar/utilDate";
 
 const datePattern = /^\d{1,2}\.\d{1,2}\.\d{4}$/;
 

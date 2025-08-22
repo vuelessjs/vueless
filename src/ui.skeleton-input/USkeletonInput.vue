@@ -1,12 +1,12 @@
 <script setup lang="ts">
 import { computed } from "vue";
-import useUI from "../composables/useUI.ts";
-import { getDefaults } from "../utils/ui.ts";
+import useUI from "../composables/useUI";
+import { getDefaults } from "../utils/ui";
 
-import defaultConfig from "./config.ts";
-import { COMPONENT_NAME, LABEL_ALIGN } from "./constants.ts";
+import defaultConfig from "./config";
+import { COMPONENT_NAME, LABEL_ALIGN } from "./constants";
 
-import type { Props, Config } from "./types.ts";
+import type { Props, Config } from "./types";
 
 import USkeleton from "../ui.skeleton/USkeleton.vue";
 

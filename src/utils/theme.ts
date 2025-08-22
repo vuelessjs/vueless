@@ -1,7 +1,7 @@
 import { cloneDeep, merge } from "lodash-es";
 
-import { vuelessConfig } from "./ui.ts";
-import { isCSR, setCookie } from "./helper.ts";
+import { vuelessConfig } from "./ui";
+import { isCSR, setCookie } from "./helper";
 
 import {
   PX_IN_REM,
@@ -33,7 +33,7 @@ import {
   TEXT_DECREMENT,
   DISABLED_OPACITY,
   DEFAULT_DISABLED_OPACITY,
-} from "../constants.js";
+} from "../constants";
 
 import type {
   NeutralColors,
@@ -43,8 +43,8 @@ import type {
   ThemeConfigOutline,
   ThemeConfigRounding,
   VuelessCssVariables,
-} from "../types.ts";
-import { ColorMode } from "../types.ts";
+} from "../types";
+import { ColorMode } from "../types";
 
 declare interface RootCSSVariableOptions {
   primary: PrimaryColors | string;
@@ -170,11 +170,39 @@ export function setTheme(config: ThemeConfig = {}, isCachedAutoMode?: boolean) {
         ? `--vl-grayscale-${shade}`
         : "--vl-grayscale";
 
-      if (!vuelessConfig.darkTheme?.[primaryShade] && !config.darkTheme?.[primaryShade]) {
+      /* Dark theme: if the primary color shade is not defined in global or runtime config, use the grayscale color. */
+
+      const hasGlobalDarkPrimaryColor = hasPrimaryColor(
+        vuelessConfig.darkTheme,
+        DEFAULT_DARK_THEME,
+        primaryShade,
+      );
+
+      const hasRuntimeDarkPrimaryColor = hasPrimaryColor(
+        config.darkTheme,
+        DEFAULT_DARK_THEME,
+        primaryShade,
+      );
+
+      if (!hasGlobalDarkPrimaryColor && !hasRuntimeDarkPrimaryColor) {
         darkTheme[primaryShade] = darkTheme[grayscaleShade];
       }
 
-      if (!vuelessConfig.lightTheme?.[primaryShade] && !config.lightTheme?.[primaryShade]) {
+      /* Light theme: if the primary color shade is not defined in global or runtime config, use the grayscale color. */
+
+      const hasGlobalLightPrimaryColor = hasPrimaryColor(
+        vuelessConfig.lightTheme,
+        DEFAULT_LIGHT_THEME,
+        primaryShade,
+      );
+
+      const hasRuntimeLightPrimaryColor = hasPrimaryColor(
+        config.lightTheme,
+        DEFAULT_LIGHT_THEME,
+        primaryShade,
+      );
+
+      if (!hasGlobalLightPrimaryColor && !hasRuntimeLightPrimaryColor) {
         lightTheme[primaryShade] = lightTheme[grayscaleShade];
       }
     });
@@ -190,6 +218,17 @@ export function setTheme(config: ThemeConfig = {}, isCachedAutoMode?: boolean) {
     lightTheme,
     darkTheme,
   });
+}
+
+function hasPrimaryColor(
+  colorModeConfig: Partial<VuelessCssVariables> | undefined,
+  defaultColorModeConfig: Partial<VuelessCssVariables>,
+  primaryShade: keyof VuelessCssVariables,
+) {
+  const shade = colorModeConfig?.[primaryShade];
+  const defaultShade = defaultColorModeConfig?.[primaryShade];
+
+  return shade && shade !== defaultShade;
 }
 
 /**
@@ -275,10 +314,10 @@ function getText(text?: ThemeConfig["text"]) {
   };
 
   const mergedText = {
-    xs: runtimeText.xs === undefined ? textXs : definedText.xs,
-    sm: runtimeText.sm === undefined ? textSm : definedText.sm,
-    md: runtimeText.md === undefined ? textMd : definedText.md,
-    lg: runtimeText.lg === undefined ? textLg : definedText.lg,
+    xs: runtimeText.xs === undefined && globalText.xs === undefined ? textXs : definedText.xs,
+    sm: runtimeText.sm === undefined && globalText.sm === undefined ? textSm : definedText.sm,
+    md: runtimeText.md === undefined && globalText.md === undefined ? textMd : definedText.md,
+    lg: runtimeText.lg === undefined && globalText.lg === undefined ? textLg : definedText.lg,
   };
 
   if (isCSR && text) {
@@ -307,8 +346,8 @@ function getOutlines(outline?: ThemeConfig["outline"]) {
     lg: `vl-${OUTLINE}-lg`,
   };
 
-  const runtimeOutline = primitiveToObject(outline) as ThemeConfigText;
-  const globalOutline = primitiveToObject(vuelessConfig.outline) as ThemeConfigText;
+  const runtimeOutline = primitiveToObject(outline) as ThemeConfigOutline;
+  const globalOutline = primitiveToObject(vuelessConfig.outline) as ThemeConfigOutline;
 
   const outlineMd = Math.max(0, Number(runtimeOutline.md ?? globalOutline.md ?? DEFAULT_OUTLINE));
   const outlineSm = Math.max(0, outlineMd - OUTLINE_DECREMENT);
@@ -324,11 +363,13 @@ function getOutlines(outline?: ThemeConfig["outline"]) {
     lg: Math.max(0, Number(runtimeOutline.lg ?? getStored(storageKey.lg) ?? globalOutline.lg ?? 0)),
   };
 
+  /* eslint-disable prettier/prettier */
   const mergedOutline = {
-    sm: runtimeOutline.sm === undefined ? outlineSm : definedOutline.sm,
-    md: runtimeOutline.md === undefined ? outlineMd : definedOutline.md,
-    lg: runtimeOutline.lg === undefined ? outlineLg : definedOutline.lg,
+    sm: runtimeOutline.sm === undefined && globalOutline.sm === undefined ? outlineSm : definedOutline.sm,
+    md: runtimeOutline.md === undefined && globalOutline.md === undefined ? outlineMd : definedOutline.md,
+    lg: runtimeOutline.lg === undefined && globalOutline.lg === undefined ? outlineLg : definedOutline.lg,
   };
+  /* eslint-enable prettier/prettier */
 
   if (isCSR && outline) {
     setCookie(storageKey.sm, String(mergedOutline.sm));
@@ -380,13 +421,13 @@ function getRoundings(rounding?: ThemeConfig["rounding"]) {
     md: Math.max(0, Number(runtimeRounding.md ?? getStored(storageKey.md) ?? globalRounding.md ?? 0)),
     lg: Math.max(0, Number(runtimeRounding.lg ?? getStored(storageKey.lg) ?? globalRounding.lg ?? 0)),
   };
-  /* eslint-enable prettier/prettier */
 
   const mergedRounding = {
-    sm: runtimeRounding.sm === undefined ? roundingSm : definedRounding.sm,
-    md: runtimeRounding.md === undefined ? roundingMd : definedRounding.md,
-    lg: runtimeRounding.lg === undefined ? roundingLg : definedRounding.lg,
+    sm: runtimeRounding.sm === undefined && globalRounding.sm === undefined ? roundingSm : definedRounding.sm,
+    md: runtimeRounding.md === undefined && globalRounding.md === undefined ? roundingMd : definedRounding.md,
+    lg: runtimeRounding.lg === undefined && globalRounding.lg === undefined ? roundingLg : definedRounding.lg,
   };
+  /* eslint-enable prettier/prettier */
 
   if (isCSR && rounding) {
     setCookie(storageKey.sm, String(mergedRounding.sm));

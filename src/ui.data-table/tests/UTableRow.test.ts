@@ -6,7 +6,7 @@ import UTableRow from "../UTableRow.vue";
 import UIcon from "../../ui.image-icon/UIcon.vue";
 import UCheckbox from "../../ui.form-checkbox/UCheckbox.vue";
 
-import type { FlatRow, ColumnObject, UTableRowAttrs, Config } from "../types.ts";
+import type { FlatRow, ColumnObject, UTableRowAttrs, Config } from "../types";
 
 describe("UTableRow.vue", () => {
   const defaultColumns: ColumnObject[] = [

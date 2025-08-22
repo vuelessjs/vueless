@@ -10,9 +10,9 @@ import UDivider from "../../ui.container-divider/UDivider.vue";
 import {
   LoaderProgressSymbol,
   createLoaderProgress,
-} from "../../ui.loader-progress/useLoaderProgress.ts";
+} from "../../ui.loader-progress/useLoaderProgress";
 
-import type { Column, Row, Props, ColumnObject } from "../types.ts";
+import type { Column, Row, Props, ColumnObject } from "../types";
 
 describe("UTable.vue", () => {
   const defaultColumns: ColumnObject[] = [
@@ -294,6 +294,24 @@ describe("UTable.vue", () => {
   });
 
   describe("Slots", () => {
+    it("Header Counter Slot – renders custom header counter content", () => {
+      const customHeaderCounterContent = "Custom Header Counter";
+
+      const component = mountUTable(
+        getDefaultProps({
+          selectable: true,
+          selectedRows: [defaultRows[0]],
+        }),
+        {
+          slots: {
+            "header-counter": customHeaderCounterContent,
+          },
+        },
+      );
+
+      expect(component.text()).toContain(customHeaderCounterContent);
+    });
+
     it("Header Slot – renders custom header content", () => {
       const customHeaderContent = "Custom Name Header";
 

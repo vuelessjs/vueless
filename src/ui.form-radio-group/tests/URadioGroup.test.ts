@@ -6,7 +6,7 @@ import URadioGroup from "../URadioGroup.vue";
 import URadio from "../../ui.form-radio/URadio.vue";
 import ULabel from "../../ui.form-label/ULabel.vue";
 
-import type { Props } from "../types.ts";
+import type { Props } from "../types";
 
 describe("URadioGroup.vue", () => {
   const defaultOptions = [
@@ -269,7 +269,11 @@ describe("URadioGroup.vue", () => {
 
   describe("Exposed properties", () => {
     it("exposes listRef", () => {
-      const component = mount(URadioGroup, { name: defaultName });
+      const component = mount(URadioGroup, {
+        props: {
+          name: defaultName,
+        },
+      });
 
       expect(component.vm.listRef).toBeDefined();
     });

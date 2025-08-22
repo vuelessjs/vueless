@@ -226,6 +226,12 @@ export const SYSTEM_CONFIG_KEY = {
 /* UIcon non-props defaults */
 export const ICON_NON_PROPS_DEFAULTS = ["library", "path", "style", "weight"];
 
+/* Directive to folder mapping. */
+export const DIRECTIVES = {
+  vTooltip: "v.tooltip",
+  vClickOutside: "v.click-outside",
+};
+
 /* Component to folder mapping. */
 export const COMPONENTS = {
   /* Buttons & Links */
@@ -368,10 +374,6 @@ export const DEFAULT_SVGO_CONFIG = {
         },
       },
     },
-    {
-      name: "removeViewBox",
-      active: false,
-    },
   ],
 };
 
@@ -384,9 +386,10 @@ export const VUELESS_LIBRARY = "vueless";
 export const INTERNAL_ICONS_LIBRARY = "internal";
 export const STORYBOOK_ICONS_LIBRARY = "storybook";
 
+export const CACHE_DIR = ".cache";
 export const NODE_MODULES_DIR = "node_modules";
 export const VUELESS_PACKAGE_DIR = `${NODE_MODULES_DIR}/vueless`;
-export const VUELESS_CACHE_DIR = `${NODE_MODULES_DIR}/.cache/vueless`;
+export const VUELESS_CACHE_DIR = `${NODE_MODULES_DIR}/${CACHE_DIR}/vueless`;
 export const VUELESS_LOCAL_DIR = "src";
 export const ICONS_DIR = "icons";
 export const ICONS_VUELESS_DIR = `${VUELESS_PACKAGE_DIR}/${ICONS_DIR}`;
@@ -400,6 +403,7 @@ export const VUELESS_CONFIGS_CACHED_DIR = `${VUELESS_CACHE_DIR}/configs`;
 export const VUELESS_MERGED_CONFIGS_CACHED_DIR = `${VUELESS_CACHE_DIR}/mergedConfigs`;
 export const VUELESS_CONFIG_FILE_NAME = "vueless.config";
 export const CONFIG_INDEX_FILE_NAME = "index";
+export const VUELESS_CONFIG_DIR = ".vueless";
 
 /* System error codes */
 export const DEFAULT_EXIT_CODE = 0;
@@ -413,3 +417,17 @@ export const DYNAMIC_COLOR_PATTERN = "{color}";
 export const JAVASCRIPT_EXT = ".js";
 export const TYPESCRIPT_EXT = ".ts";
 export const VUE_EXT = ".vue";
+
+export const SUPPRESS_TS_CHECK = `/* eslint-disable */
+// @ts-nocheck`;
+
+export const COMPONENTS_INDEX_COMMENT = `/**
+ * ⚠️ This file is auto-generated — do not edit it manually.
+ * It gets updated automatically whenever the Vite server restarts.
+ *
+ * This file imports all config files from the current directory and subdirectories.
+ * Only files following the naming pattern "U[Component].[ts|js]" will be included.
+ * Example: "UButton.ts"
+ */`;
+
+export const COMPONENTS_INDEX_EXPORT = `export const componentConfigs = {};`;

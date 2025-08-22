@@ -5,14 +5,14 @@ import UPagination from "../UPagination.vue";
 import UButton from "../../ui.button/UButton.vue";
 import UIcon from "../../ui.image-icon/UIcon.vue";
 
-import type { Props } from "../types.ts";
+import type { Props } from "../types";
 
 describe("UPagination.vue", () => {
   // Props tests
   describe("Props", () => {
     // Variant prop
     it("applies the correct variant to buttons", async () => {
-      const variants = ["solid", "outlined", "soft", "ghost"];
+      const variants = ["solid", "outlined", "subtle", "soft", "ghost"];
 
       variants.forEach((variant) => {
         const component = mount(UPagination, {

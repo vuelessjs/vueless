@@ -1,9 +1,9 @@
-import { revFormat, formats } from "./utilFormatting.ts";
-import { getDateFromUnixTimestamp } from "./utilDate.ts";
+import { revFormat, formats } from "./utilFormatting";
+import { getDateFromUnixTimestamp } from "./utilDate";
 
-import { SEPARATOR, TOKEN_REG_EXP } from "./constants.ts";
+import { SEPARATOR, TOKEN_REG_EXP } from "./constants";
 
-import type { DateLocale } from "./utilFormatting.ts";
+import type { DateLocale } from "./utilFormatting";
 
 type UnknownFunction = (...args: unknown[]) => unknown;
 

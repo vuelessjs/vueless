@@ -4,8 +4,8 @@ import { createRouter, createWebHistory } from "vue-router";
 
 import UPage from "../UPage.vue";
 
-import type { Props } from "../types.ts";
-import type { UnknownObject } from "../../types.ts";
+import type { Props } from "../types";
+import type { UnknownObject } from "../../types";
 
 // Create a mock router for testing router-link functionality
 const router = createRouter({

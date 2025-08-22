@@ -4,13 +4,13 @@ import {
   getSlotNames,
   getSlotsFragment,
   getDocsDescription,
-} from "../../utils/storybook.ts";
+} from "../../utils/storybook";
 
 import UListbox from "../UListbox.vue";
 import URow from "../../ui.container-row/URow.vue";
 
 import type { Meta, StoryFn } from "@storybook/vue3-vite";
-import type { Option, Props } from "../types.ts";
+import type { Option, Props } from "../types";
 
 interface DefaultUListboxArgs extends Props {
   slotTemplate?: string;
@@ -26,11 +26,11 @@ export default {
   component: UListbox,
   args: {
     options: [
-      { label: "New York", id: ["1"] },
-      { label: "Los Angeles", id: ["2"] },
-      { label: "Chicago", id: ["3"] },
-      { label: "Houston", id: ["4"] },
-      { label: "San Francisco", id: ["5"] },
+      { label: "New York", id: 1 },
+      { label: "Los Angeles", id: 2 },
+      { label: "Chicago", id: 3 },
+      { label: "Houston", id: 4 },
+      { label: "San Francisco", id: 5 },
     ],
   },
   argTypes: {

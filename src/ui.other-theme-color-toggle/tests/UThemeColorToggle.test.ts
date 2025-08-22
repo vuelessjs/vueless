@@ -5,7 +5,7 @@ import UThemeColorToggle from "../UThemeColorToggle.vue";
 import UColorPicker from "../../ui.form-color-picker/UColorPicker.vue";
 import UDivider from "../../ui.container-divider/UDivider.vue";
 
-import type { Props } from "../types.ts";
+import type { Props } from "../types";
 import type { ComponentPublicInstance } from "vue";
 
 // Mock the setTheme function

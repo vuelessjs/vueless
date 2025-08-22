@@ -4,7 +4,7 @@ import {
   getSlotNames,
   getSlotsFragment,
   getDocsDescription,
-} from "../../utils/storybook.ts";
+} from "../../utils/storybook";
 
 import UCol from "../../ui.container-col/UCol.vue";
 import URow from "../../ui.container-row/URow.vue";
@@ -13,7 +13,7 @@ import UButton from "../../ui.button/UButton.vue";
 import UPage from "../../ui.container-page/UPage.vue";
 
 import type { Meta, StoryFn } from "@storybook/vue3-vite";
-import type { Props } from "../types.ts";
+import type { Props } from "../types";
 
 interface UColArgs extends Props {
   slotTemplate?: string;

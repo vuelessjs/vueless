@@ -5,7 +5,7 @@ import {
   getSlotNames,
   getSlotsFragment,
   getDocsDescription,
-} from "../../utils/storybook.ts";
+} from "../../utils/storybook";
 
 import USelect from "../../ui.form-select/USelect.vue";
 import URow from "../../ui.container-row/URow.vue";
@@ -22,7 +22,7 @@ import alexJohnson from "./assets/images/alex-johnson.png";
 import patMorgan from "./assets/images/pat-morgan.png";
 
 import type { Meta, StoryFn } from "@storybook/vue3-vite";
-import type { Props } from "../types.ts";
+import type { Props } from "../types";
 
 interface USelectArgs extends Props {
   slotTemplate?: string;
@@ -38,11 +38,11 @@ export default {
     label: "Choose a city",
     modelValue: null,
     options: [
-      { label: "New York", id: "1" },
-      { label: "Los Angeles", id: "2" },
-      { label: "Chicago", id: "3" },
-      { label: "Houston", id: "4" },
-      { label: "San Francisco", id: "5" },
+      { label: "New York", id: 1 },
+      { label: "Los Angeles", id: 2 },
+      { label: "Chicago", id: 3 },
+      { label: "Houston", id: 4 },
+      { label: "San Francisco", id: 5 },
     ],
   },
   argTypes: {

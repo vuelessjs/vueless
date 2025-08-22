@@ -4,7 +4,7 @@ import {
   getSlotNames,
   getSlotsFragment,
   getDocsDescription,
-} from "../../utils/storybook.ts";
+} from "../../utils/storybook";
 
 import UFile from "../../ui.text-file/UFile.vue";
 import URow from "../../ui.container-row/URow.vue";
@@ -14,7 +14,7 @@ import UBadge from "../../ui.text-badge/UBadge.vue";
 import imageURL from "./assets/imageURL.png";
 
 import type { Meta, StoryFn } from "@storybook/vue3-vite";
-import type { Props } from "../types.ts";
+import type { Props } from "../types";
 
 interface UFileArgs extends Props {
   slotTemplate?: string;

@@ -5,8 +5,13 @@
 
 /* ------ Production sources ------ */
 
+/* npm, yarn, bun */
 @source "../.cache/vueless/tailwind";
 @source "../.cache/vueless/mergedConfigs";
+
+/* pnpm */
+@source "../../../../.cache/vueless/tailwind";
+@source "../../../../.cache/vueless/mergedConfigs";
 
 /* ------ Color mode settings ------ */
 
@@ -131,3 +136,28 @@
   outline-style: var(--tw-outline-style);
   outline-width: var(--vl-outline-lg);
 }
+
+/* ------ Tippy.js Vueless default theme ------ */
+.tippy-box[data-theme~="vueless"] {
+  background-color: var(--vl-bg-inverted);
+  color: var(--vl-text-inverted);
+}
+
+.tippy-box[data-theme~="vueless"][data-placement^="top"] > .tippy-arrow:before {
+  border-top-color: var(--vl-bg-inverted);
+}
+
+.tippy-box[data-theme~="vueless"][data-placement^="bottom"] > .tippy-arrow:before {
+  border-bottom-color: var(--vl-bg-inverted);
+}
+
+.tippy-box[data-theme~="vueless"][data-placement^="left"] > .tippy-arrow:before {
+  border-left-color: var(--vl-bg-inverted);
+}
+
+.tippy-box[data-theme~="vueless"][data-placement^="right"] > .tippy-arrow:before {
+  border-right-color: var(--vl-bg-inverted);
+}
+
+
+

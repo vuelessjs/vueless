@@ -1,9 +1,9 @@
-import { getArgTypes, getSlotNames, getSlotsFragment } from "../../utils/storybook.ts";
+import { getArgTypes, getSlotNames, getSlotsFragment } from "../../utils/storybook";
 
 import UBoilerplate from "../UBoilerplate.vue";
 
 import type { Meta, StoryFn } from "@storybook/vue3-vite";
-import type { Props } from "../types.ts";
+import type { Props } from "../types";
 
 interface UBoilerplateArgs extends Props {
   slotTemplate?: string;

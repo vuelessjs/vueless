@@ -3,9 +3,9 @@ import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
 
 import ULoaderOverlay from "../ULoaderOverlay.vue";
 import ULoader from "../../ui.loader/ULoader.vue";
-import { LoaderOverlaySymbol, createLoaderOverlay } from "../useLoaderOverlay.ts";
+import { LoaderOverlaySymbol, createLoaderOverlay } from "../useLoaderOverlay";
 
-import type { Props } from "../types.ts";
+import type { Props } from "../types";
 
 describe("ULoaderOverlay.vue", () => {
   // Define common test configurations

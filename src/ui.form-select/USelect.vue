@@ -7,20 +7,20 @@ import UListbox from "../ui.form-listbox/UListbox.vue";
 import UBadge from "../ui.text-badge/UBadge.vue";
 import ULink from "../ui.button-link/ULink.vue";
 
-import useUI from "../composables/useUI.ts";
-import { hasSlotContent } from "../utils/helper.ts";
-import { getDefaults } from "../utils/ui.ts";
-import { isMac } from "../utils/platform.ts";
-import { useMutationObserver } from "../composables/useMutationObserver.ts";
-import { getCurrentOption } from "./utilSelect.ts";
-import { useComponentLocaleMessages } from "../composables/useComponentLocaleMassages.ts";
+import useUI from "../composables/useUI";
+import { hasSlotContent } from "../utils/helper";
+import { getDefaults } from "../utils/ui";
+import { isMac } from "../utils/platform";
+import { useMutationObserver } from "../composables/useMutationObserver";
+import { getCurrentOption } from "./utilSelect";
+import { useComponentLocaleMessages } from "../composables/useComponentLocaleMassages";
 
-import defaultConfig from "./config.ts";
-import { COMPONENT_NAME, DIRECTION, KEYS, MULTIPLE_VARIANTS } from "./constants.ts";
+import defaultConfig from "./config";
+import { COMPONENT_NAME, DIRECTION, KEYS, MULTIPLE_VARIANTS } from "./constants";
 
-import type { Option, Config as UListboxConfig } from "../ui.form-listbox/types.ts";
-import type { Props, Config } from "./types.ts";
-import type { KeyAttrsWithConfig } from "../types.ts";
+import type { Option, Config as UListboxConfig } from "../ui.form-listbox/types";
+import type { Props, Config } from "./types";
+import type { KeyAttrsWithConfig } from "../types";
 
 defineOptions({ inheritAttrs: false });
 
@@ -472,6 +472,7 @@ const {
 <template>
   <ULabel
     ref="labelComponent"
+    :for="elementId"
     :size="size"
     :label="label"
     :error="error"

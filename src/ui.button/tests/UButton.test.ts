@@ -5,7 +5,7 @@ import UButton from "../UButton.vue";
 import ULoader from "../../ui.loader/ULoader.vue";
 import UIcon from "../../ui.image-icon/UIcon.vue";
 
-import type { Props } from "../types.ts";
+import type { Props } from "../types";
 
 describe("UButton.vue", () => {
   describe("Props", () => {

@@ -1,7 +1,7 @@
 export default /*tw*/ {
   inputLabel: {
     base: "{ULabel}",
-    content: "w-full",
+    content: "w-full h-full",
     variants: {
       labelAlign: {
         right: "w-full",

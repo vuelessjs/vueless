@@ -2,17 +2,17 @@
 import { inject, ref, onMounted, computed, watchEffect, toValue, useId } from "vue";
 import { isEqual } from "lodash-es";
 
-import useUI from "../composables/useUI.ts";
-import { getDefaults } from "../utils/ui.ts";
+import useUI from "../composables/useUI";
+import { getDefaults } from "../utils/ui";
 
 import UIcon from "../ui.image-icon/UIcon.vue";
 import ULabel from "../ui.form-label/ULabel.vue";
 
-import defaultConfig from "./config.ts";
-import { COMPONENT_NAME } from "./constants.ts";
+import defaultConfig from "./config";
+import { COMPONENT_NAME } from "./constants";
 
-import type { UnknownObject } from "../types.ts";
-import type { Props, Config } from "./types.ts";
+import type { UnknownObject } from "../types";
+import type { Props, Config } from "./types";
 
 defineOptions({ inheritAttrs: false });
 

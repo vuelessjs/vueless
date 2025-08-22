@@ -1,8 +1,8 @@
-import defaultConfig from "./config.ts";
+import defaultConfig from "./config";
 
 import type { Ref } from "vue";
-import type { ComponentConfig, UnknownObject } from "../types.ts";
-import type { Config as UDividerConfig } from "../ui.container-divider/types.ts";
+import type { ComponentConfig, UnknownObject } from "../types";
+import type { Config as UDividerConfig } from "../ui.container-divider/types";
 
 export type Config = typeof defaultConfig;
 

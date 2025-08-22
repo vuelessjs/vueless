@@ -1,16 +1,17 @@
 <script setup lang="ts">
-import { computed, ref, useId, useTemplateRef } from "vue";
+import { computed, ref, useId, useSlots, useTemplateRef } from "vue";
 
-import useUI from "../composables/useUI.ts";
-import { getDefaults } from "../utils/ui.ts";
+import useUI from "../composables/useUI";
+import { getDefaults } from "../utils/ui";
+import { hasSlotContent } from "../utils/helper";
 
 import UIcon from "../ui.image-icon/UIcon.vue";
 import UDivider from "../ui.container-divider/UDivider.vue";
 
-import { COMPONENT_NAME } from "./constants.ts";
-import defaultConfig from "./config.ts";
+import { COMPONENT_NAME } from "./constants";
+import defaultConfig from "./config";
 
-import type { Props, Config } from "./types.ts";
+import type { Props, Config } from "./types";
 
 defineOptions({ inheritAttrs: false });
 
@@ -28,9 +29,11 @@ const emit = defineEmits([
 ]);
 
 const wrapperRef = useTemplateRef<HTMLDivElement>("wrapper");
+const contentRef = useTemplateRef<HTMLDivElement>("content");
 
 const isOpened = ref(false);
 
+const slots = useSlots();
 const elementId = props.id || useId();
 
 const toggleIconName = computed(() => {
@@ -41,7 +44,11 @@ const toggleIconName = computed(() => {
   return props.toggleIcon ? config.value.defaults.toggleIcon : "";
 });
 
-function onClickItem() {
+function onClickItem(event: MouseEvent) {
+  if (contentRef.value && contentRef.value.contains(event.target as Node)) {
+    return;
+  }
+
   isOpened.value = !isOpened.value;
 
   emit("click", elementId, isOpened.value);
@@ -67,6 +74,7 @@ const {
   descriptionAttrs,
   bodyAttrs,
   titleAttrs,
+  contentAttrs,
   toggleIconAttrs,
   accordionDividerAttrs,
 } = useUI<Config>(defaultConfig, mutatedProps);
@@ -93,7 +101,17 @@ const {
         </slot>
       </div>
 
-      <div :id="`description-${elementId}`" v-bind="descriptionAttrs" v-text="description" />
+      <div
+        v-if="description"
+        :id="`description-${elementId}`"
+        v-bind="descriptionAttrs"
+        v-text="description"
+      />
+
+      <div v-if="isOpened && hasSlotContent(slots['default'])" ref="content" v-bind="contentAttrs">
+        <!-- @slot Use it to add accordion content. -->
+        <slot />
+      </div>
     </div>
 
     <UDivider v-bind="accordionDividerAttrs" />

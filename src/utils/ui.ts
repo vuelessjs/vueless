@@ -2,12 +2,18 @@ import { merge } from "lodash-es";
 import { defineConfig } from "cva";
 import { extendTailwindMerge } from "tailwind-merge";
 
-import { isCSR } from "./helper.ts";
-import { createGetMergedConfig } from "./node/mergeConfigs.js";
-import { COMPONENT_NAME as U_ICON } from "../ui.image-icon/constants.ts";
-import { ICON_NON_PROPS_DEFAULTS, TAILWIND_MERGE_EXTENSION } from "../constants.js";
+import { isCSR, isSSR } from "./helper";
+import { createGetMergedConfig } from "./node/mergeConfigs";
+import { COMPONENT_NAME as U_ICON } from "../ui.image-icon/constants";
+import {
+  JAVASCRIPT_EXT,
+  TYPESCRIPT_EXT,
+  VUELESS_CONFIG_FILE_NAME,
+  TAILWIND_MERGE_EXTENSION,
+  ICON_NON_PROPS_DEFAULTS,
+} from "../constants";
 
-import type { Config, Defaults, UnknownObject, ComponentNames } from "../types.ts";
+import type { Config, ComponentDefaults, UnknownObject, ComponentNames } from "../types";
 
 interface MergedConfigOptions {
   defaultConfig: unknown;
@@ -33,11 +39,30 @@ export function setVuelessConfig(config?: Config) {
 if (isCSR) {
   vuelessConfig =
     Object.values(
-      import.meta.glob(["/vueless.config.{js,ts}", "/**/vueless.config.{js,ts}"], {
+      import.meta.glob(["/vueless.config.{js,ts}"], {
         eager: true,
         import: "default",
       }),
     )[0] || {};
+}
+
+if (isSSR) {
+  /* Load Tailwind config from the project root in IIFE (no top-level await). */
+  (async () => {
+    try {
+      vuelessConfig = (
+        await import(/* @vite-ignore */ `/${VUELESS_CONFIG_FILE_NAME}${JAVASCRIPT_EXT}`)
+      ).default;
+
+      if (!vuelessConfig) {
+        vuelessConfig = (
+          await import(/* @vite-ignore */ `/${VUELESS_CONFIG_FILE_NAME}${TYPESCRIPT_EXT}`)
+        ).default;
+      }
+    } catch {
+      vuelessConfig = {} as Config;
+    }
+  })();
 }
 
 /**
@@ -79,7 +104,7 @@ export function getDefaults<Props, Config>(defaultConfig: Config, name: Componen
   const componentDefaults = (defaultConfig as UnknownObject).defaults || {};
   const globalDefaults = vuelessConfig.components?.[name]?.defaults || {};
 
-  const defaults = merge({}, componentDefaults, globalDefaults) as Props & Defaults;
+  const defaults = merge({}, componentDefaults, globalDefaults) as Props & ComponentDefaults;
 
   /* Remove non a props defaults. */
   for (const key in defaults) {

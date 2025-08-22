@@ -4,7 +4,7 @@ import {
   getSlotNames,
   getSlotsFragment,
   getDocsDescription,
-} from "../../utils/storybook.ts";
+} from "../../utils/storybook";
 
 import UCheckbox from "../../ui.form-checkbox/UCheckbox.vue";
 import UCheckboxGroup from "../../ui.form-checkbox-group/UCheckboxGroup.vue";
@@ -16,7 +16,7 @@ import URow from "../../ui.container-row/URow.vue";
 import UChip from "../../ui.other-chip/UChip.vue";
 
 import type { Meta, StoryFn } from "@storybook/vue3-vite";
-import type { Props } from "../types.ts";
+import type { Props } from "../types";
 
 interface UCheckboxArgs extends Props {
   slotTemplate?: string;

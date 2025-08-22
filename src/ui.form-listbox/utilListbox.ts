@@ -1,4 +1,4 @@
-import type { Option } from "./types.ts";
+import type { Option } from "./types";
 
 export function filterOptions(options: Option[], search: string, labelKey: string) {
   if (!search) return options;

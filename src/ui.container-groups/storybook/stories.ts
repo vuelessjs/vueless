@@ -6,7 +6,7 @@ import {
   getSlotNames,
   getSlotsFragment,
   getDocsDescription,
-} from "../../utils/storybook.ts";
+} from "../../utils/storybook";
 
 import UGroups from "../../ui.container-groups/UGroups.vue";
 import UGroup from "../../ui.container-group/UGroup.vue";
@@ -16,7 +16,7 @@ import UInputPassword from "../../ui.form-input-password/UInputPassword.vue";
 import UAlert from "../../ui.text-alert/UAlert.vue";
 
 import type { Meta, StoryFn } from "@storybook/vue3-vite";
-import type { Props } from "../types.ts";
+import type { Props } from "../types";
 
 interface UGroupsArgs extends Props {
   slotTemplate?: string;

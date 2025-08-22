@@ -19,6 +19,7 @@ export default /*tw*/ {
   nextButton: "{>paginationButton}",
   inactiveButton: "{>paginationButton}",
   activeButton: "{>paginationButton}",
+  ellipsis: "{>paginationButton} {>inactiveButton}",
   paginationIcon: {
     base: "{UIcon}",
     defaults: {

@@ -1,16 +1,16 @@
 <script setup lang="ts">
 import { computed, watch, ref, useTemplateRef, onBeforeMount, onBeforeUnmount } from "vue";
 
-import useUI from "../composables/useUI.ts";
-import { getDefaults } from "../utils/ui.ts";
+import useUI from "../composables/useUI";
+import { getDefaults } from "../utils/ui";
 
-import { clamp, queue, getRequestWithoutQuery } from "./utilLoaderProgress.ts";
-import { useLoaderProgress } from "./useLoaderProgress.ts";
+import { clamp, queue, getRequestWithoutQuery } from "./utilLoaderProgress";
+import { useLoaderProgress } from "./useLoaderProgress";
 
-import { COMPONENT_NAME, MAXIMUM, SPEED } from "./constants.ts";
-import defaultConfig from "./config.ts";
+import { COMPONENT_NAME, MAXIMUM, SPEED } from "./constants";
+import defaultConfig from "./config";
 
-import type { Props, Config } from "./types.ts";
+import type { Props, Config } from "./types";
 
 defineOptions({ inheritAttrs: false });
 

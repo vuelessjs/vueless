@@ -6,7 +6,7 @@ import UDatePicker from "../UDatePicker.vue";
 import UInput from "../../ui.form-input/UInput.vue";
 import UIcon from "../../ui.image-icon/UIcon.vue";
 
-import type { Props } from "../types.ts";
+import type { Props } from "../types";
 
 describe("UDatePicker.vue", () => {
   describe("Props", () => {

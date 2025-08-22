@@ -4,7 +4,7 @@ import {
   getSlotNames,
   getSlotsFragment,
   getDocsDescription,
-} from "../../utils/storybook.ts";
+} from "../../utils/storybook";
 
 import ULink from "../../ui.button-link/ULink.vue";
 import UIcon from "../../ui.image-icon/UIcon.vue";
@@ -12,7 +12,7 @@ import UButton from "../../ui.button/UButton.vue";
 import URow from "../../ui.container-row/URow.vue";
 
 import type { Meta, StoryFn } from "@storybook/vue3-vite";
-import type { Props } from "../types.ts";
+import type { Props } from "../types";
 
 interface ULinkArgs extends Props {
   slotTemplate?: string;
@@ -20,7 +20,7 @@ interface ULinkArgs extends Props {
 }
 
 export default {
-  id: "1060",
+  id: "1020",
   title: "Buttons & Links / Link",
   component: ULink,
   args: {

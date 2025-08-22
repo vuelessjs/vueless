@@ -2,16 +2,16 @@
 import { computed, useTemplateRef } from "vue";
 import { range } from "lodash-es";
 
-import useUI from "../composables/useUI.ts";
-import { getDefaults } from "../utils/ui.ts";
+import useUI from "../composables/useUI";
+import { getDefaults } from "../utils/ui";
 
 import UButton from "../ui.button/UButton.vue";
 import UIcon from "../ui.image-icon/UIcon.vue";
 
-import defaultConfig from "./config.ts";
-import { COMPONENT_NAME } from "./constants.ts";
+import defaultConfig from "./config";
+import { COMPONENT_NAME } from "./constants";
 
-import type { Props, Config } from "./types.ts";
+import type { Props, Config } from "./types";
 
 defineOptions({ inheritAttrs: false });
 
@@ -124,6 +124,7 @@ const {
   nextButtonAttrs,
   activeButtonAttrs,
   inactiveButtonAttrs,
+  ellipsisAttrs,
   lastIconAttrs,
   firstIconAttrs,
   prevIconAttrs,
@@ -181,13 +182,7 @@ const {
     </UButton>
 
     <template v-for="page in pageButtons" :key="page">
-      <UButton
-        v-if="!isFinite(page.number)"
-        square
-        disabled
-        variant="ghost"
-        v-bind="inactiveButtonAttrs"
-      >
+      <UButton v-if="!isFinite(page.number)" square disabled variant="ghost" v-bind="ellipsisAttrs">
         <!-- @slot Use it to add something instead of the ellipsis. -->
         <slot name="ellipsis">&hellip;</slot>
       </UButton>

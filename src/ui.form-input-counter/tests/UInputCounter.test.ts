@@ -5,7 +5,7 @@ import UInputCounter from "../UInputCounter.vue";
 import UButton from "../../ui.button/UButton.vue";
 import UInputNumber from "../../ui.form-input-number/UInputNumber.vue";
 
-import type { Props } from "../types.ts";
+import type { Props } from "../types";
 
 describe("UInputCounter.vue", () => {
   beforeEach(() => {
@@ -261,7 +261,7 @@ describe("UInputCounter.vue", () => {
           },
         });
 
-        component.get(`[data-test='test-${testCase}']`);
+        expect(component.get(`[data-test='test-${testCase}']`)).toBeTruthy();
       });
     });
   });

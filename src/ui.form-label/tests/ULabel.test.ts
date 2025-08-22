@@ -3,7 +3,7 @@ import { describe, it, expect } from "vitest";
 
 import ULabel from "../ULabel.vue";
 
-import type { Props } from "../types.ts";
+import type { Props } from "../types";
 
 describe("ULabel.vue", () => {
   describe("Props", () => {

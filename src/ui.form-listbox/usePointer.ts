@@ -1,7 +1,7 @@
 import { ref, computed, toValue } from "vue";
 
 import type { MaybeRef } from "vue";
-import type { Option } from "./types.ts";
+import type { Option } from "./types";
 
 export default function usePointer(
   options: MaybeRef<Option[]>,

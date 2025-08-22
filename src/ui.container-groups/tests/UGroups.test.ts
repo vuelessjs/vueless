@@ -3,7 +3,7 @@ import { describe, it, expect } from "vitest";
 
 import UGroups from "../UGroups.vue";
 
-import type { Props } from "../types.ts";
+import type { Props } from "../types";
 
 describe("UGroups.vue", () => {
   // Props tests

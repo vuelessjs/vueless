@@ -5,7 +5,7 @@ import {
   getSlotNames,
   getSlotsFragment,
   getDocsDescription,
-} from "../../utils/storybook.ts";
+} from "../../utils/storybook";
 
 import UModalConfirm from "../../ui.container-modal-confirm/UModalConfirm.vue";
 import UModal from "../../ui.container-modal/UModal.vue";
@@ -17,8 +17,8 @@ import UCol from "../../ui.container-col/UCol.vue";
 import UText from "../../ui.text-block/UText.vue";
 
 import type { Meta, StoryFn } from "@storybook/vue3-vite";
-import type { Props } from "../types.ts";
-import type { UnknownObject } from "../../types.ts";
+import type { Props } from "../types";
+import type { UnknownObject } from "../../types";
 
 interface UModalConfirmArgs extends Props {
   width: string;

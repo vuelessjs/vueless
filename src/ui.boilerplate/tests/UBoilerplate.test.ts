@@ -2,13 +2,11 @@ import { mount } from "@vue/test-utils";
 import { describe, it, expect } from "vitest";
 
 import UBoilerplate from "../UBoilerplate.vue";
-import defaultConfig from "../config.ts";
+import defaultConfig from "../config";
 
 describe("UBoilerplate.vue", () => {
-  // Props tests
   describe("Props", () => {
-    // DataTest prop
-    it("accepts the dataTest prop", () => {
+    it("Data Test – accepts the dataTest prop", () => {
       const dataTest = "test-boilerplate";
 
       const component = mount(UBoilerplate, {
@@ -20,8 +18,7 @@ describe("UBoilerplate.vue", () => {
       expect(component.attributes("data-test")).toBe(dataTest);
     });
 
-    // Config prop
-    it("applies custom config when provided", () => {
+    it("Config – applies custom config when provided", () => {
       const customClass = "custom-class";
       const config = {
         wrapper: customClass,
@@ -38,23 +35,4 @@ describe("UBoilerplate.vue", () => {
       expect(component.attributes("class")).toContain(defaultConfig.wrapper);
     });
   });
-
-  /*
-  // Slots tests
-  describe("Slots", () => {
-    // Default slot
-    it("renders content from default slot", () => {
-      const slotContent = "Custom Content";
-
-      const component = mount(UBoilerplate, {
-        slots: {
-          default: slotContent,
-        },
-      });
-
-      expect(component.text()).not.toBe("Boilerplate");
-      expect(component.text()).toBe(slotContent);
-    });
-  });
-  */
 });

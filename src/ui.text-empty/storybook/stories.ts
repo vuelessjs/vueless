@@ -4,7 +4,7 @@ import {
   getSlotNames,
   getSlotsFragment,
   getDocsDescription,
-} from "../../utils/storybook.ts";
+} from "../../utils/storybook";
 
 import UEmpty from "../../ui.text-empty/UEmpty.vue";
 import UButton from "../../ui.button/UButton.vue";
@@ -17,7 +17,7 @@ import UText from "../../ui.text-block/UText.vue";
 import emptyInbox from "./assets/empty-inbox.png";
 
 import type { Meta, StoryFn } from "@storybook/vue3-vite";
-import type { Props } from "../types.ts";
+import type { Props } from "../types";
 
 interface UEmptyArgs extends Props {
   slotTemplate?: string;

@@ -29,7 +29,7 @@ export default /*tw*/ {
   stickyHeaderLoader: "{ULoaderProgress} absolute top-auto bottom-0",
   headerActionsCheckbox: "{UCheckbox}",
   headerActionsCounter: "{>headerCounterBase} -ml-1.5",
-  tableWrapper: "border border-muted rounded-medium bg-default",
+  tableWrapper: "border border-muted rounded-medium bg-default overflow-x-auto",
   table: "min-w-full border-none text-medium w-full table-auto",
   header:
     "border-b border-muted [&>tr:first-child>*]:first:rounded-tl-medium [&>tr:last-child>*]:last:rounded-tr-medium relative",

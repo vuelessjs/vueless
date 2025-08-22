@@ -1,4 +1,4 @@
-import type { Option } from "../ui.form-listbox/types.ts";
+import type { Option } from "../ui.form-listbox/types";
 
 export function getCurrentOption(
   options: Option[],

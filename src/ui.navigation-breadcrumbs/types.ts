@@ -1,6 +1,6 @@
-import defaultConfig from "./config.ts";
-import type { ComponentConfig } from "../types.ts";
-import type { Props as ULinkProps } from "../ui.button-link/types.ts";
+import defaultConfig from "./config";
+import type { ComponentConfig } from "../types";
+import type { Props as ULinkProps } from "../ui.button-link/types";
 
 export type Config = typeof defaultConfig;
 

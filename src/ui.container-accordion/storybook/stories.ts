@@ -5,14 +5,17 @@ import {
   getSlotsFragment,
   getDocsDescription,
   trimText,
-} from "../../utils/storybook.ts";
+} from "../../utils/storybook";
 
 import UAccordion from "../../ui.container-accordion/UAccordion.vue";
 import UButton from "../../ui.button/UButton.vue";
 import ULink from "../../ui.button-link/ULink.vue";
+import UCol from "../../ui.container-col/UCol.vue";
+import URow from "../../ui.container-row/URow.vue";
+import UIcon from "../../ui.image-icon/UIcon.vue";
 
 import type { Meta, StoryFn } from "@storybook/vue3-vite";
-import type { Props } from "../types.ts";
+import type { Props } from "../types";
 
 interface UAccordionArgs extends Props {
   slotTemplate?: string;
@@ -41,7 +44,7 @@ export default {
 } as Meta;
 
 const DefaultTemplate: StoryFn<UAccordionArgs> = (args: UAccordionArgs) => ({
-  components: { UAccordion, ULink },
+  components: { UAccordion, ULink, UButton, UCol, URow, UIcon },
   setup: () => ({ args, slots: getSlotNames(UAccordion.__name) }),
   template: `
     <UAccordion v-bind="args">
@@ -112,6 +115,30 @@ Accordions.args = {};
 
 export const Sizes = EnumTemplate.bind({});
 Sizes.args = { enum: "size", description: "{enumValue}" };
+
+export const DefaultSlot = DefaultTemplate.bind({});
+DefaultSlot.args = {
+  slotTemplate: `
+    <template #default>
+      <UCol gap="sm">
+        <URow gap="xs" align="end">
+          <UIcon name="contact_mail" size="xs" color="primary" />
+          <ULink label="Email services" />
+        </URow>
+
+        <URow gap="xs" align="end">
+          <UIcon name="vpn_key" size="xs" color="primary" />
+          <ULink label="VPN" />
+        </URow>
+
+        <URow gap="xs" align="end">
+          <UIcon name="web_traffic" size="xs" color="primary" />
+          <ULink label="SEO Tools" />
+        </URow>
+      </UCol>
+    </template>
+  `,
+};
 
 export const ToggleSlot = DefaultTemplate.bind({});
 ToggleSlot.args = {

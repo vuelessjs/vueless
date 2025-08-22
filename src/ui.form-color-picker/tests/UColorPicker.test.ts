@@ -4,7 +4,7 @@ import { describe, it, expect } from "vitest";
 import UColorPicker from "../UColorPicker.vue";
 import UButton from "../../ui.button/UButton.vue";
 
-import type { Props } from "../types.ts";
+import type { Props } from "../types";
 
 describe("UColorPicker.vue", () => {
   describe("Props", () => {

@@ -6,7 +6,7 @@ import {
   getSlotNames,
   getSlotsFragment,
   getDocsDescription,
-} from "../../utils/storybook.ts";
+} from "../../utils/storybook";
 
 import UPage from "../../ui.container-page/UPage.vue";
 import UCard from "../../ui.container-card/UCard.vue";
@@ -22,7 +22,7 @@ import UCheckbox from "../../ui.form-checkbox/UCheckbox.vue";
 import UDivider from "../../ui.container-divider/UDivider.vue";
 
 import type { Meta, StoryFn } from "@storybook/vue3-vite";
-import type { Props } from "../types.ts";
+import type { Props } from "../types";
 
 interface UPageArgs extends Props {
   slotTemplate?: string;

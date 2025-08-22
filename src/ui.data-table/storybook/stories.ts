@@ -4,8 +4,8 @@ import {
   getSlotNames,
   getSlotsFragment,
   getDocsDescription,
-} from "../../utils/storybook.ts";
-import { getRandomId } from "../../utils/helper.ts";
+} from "../../utils/storybook";
+import { getRandomId } from "../../utils/helper";
 
 import UTable from "../UTable.vue";
 import UButton from "../../ui.button/UButton.vue";
@@ -16,7 +16,7 @@ import URow from "../../ui.container-row/URow.vue";
 import UIcon from "../../ui.image-icon/UIcon.vue";
 import ULoader from "../../ui.loader/ULoader.vue";
 
-import type { Row, Props } from "../types.ts";
+import type { Row, Props } from "../types";
 
 interface UTableArgs extends Props {
   slotTemplate?: string;
@@ -472,6 +472,17 @@ DateDividerCustomLabel.parameters = {
         "You can customize date divider by passing necessary data in `date`, `label` and `config` object keys.",
     },
   },
+};
+
+export const HeaderCounterSlot = DefaultTemplate.bind({});
+HeaderCounterSlot.args = {
+  selectable: true,
+  config: { headerCellCheckbox: "w-20" },
+  slotTemplate: `
+    <template #header-counter="{ total }">
+      Total: {{ total }}
+    </template>
+  `,
 };
 
 export const HeaderKeySlot = DefaultTemplate.bind({});

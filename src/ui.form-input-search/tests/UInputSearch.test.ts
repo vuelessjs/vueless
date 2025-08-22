@@ -6,7 +6,7 @@ import UInput from "../../ui.form-input/UInput.vue";
 import UIcon from "../../ui.image-icon/UIcon.vue";
 import UButton from "../../ui.button/UButton.vue";
 
-import type { Props } from "../types.ts";
+import type { Props } from "../types";
 
 describe("UInputSearch.vue", () => {
   describe("props", () => {
@@ -227,7 +227,7 @@ describe("UInputSearch.vue", () => {
       expect(component.get("input").attributes("disabled")).toBeDefined();
     });
 
-    it("Data Test – applies the correct data-test attribute", async () => {
+    it("Data Test – applies the correct data-test attribute", () => {
       const testCases = [
         { testCase: "search-icon" },
         { testCase: "clear" },
@@ -248,7 +248,7 @@ describe("UInputSearch.vue", () => {
 
         await flushPromises();
 
-        component.get(`[data-test='${resolvedDataTest}']`);
+        expect(component.get(`[data-test='${resolvedDataTest}']`)).toBeTruthy();
       });
     });
   });

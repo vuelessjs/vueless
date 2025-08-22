@@ -1,10 +1,10 @@
 import type { Meta, StoryFn } from "@storybook/vue3-vite";
-import { getArgs, getArgTypes } from "../../utils/storybook.ts";
+import { getArgs, getArgTypes, getDocsDescription } from "../../utils/storybook";
 
 import USkeletonText from "../USkeletonText.vue";
 import UCol from "../../ui.container-col/UCol.vue";
 
-import type { Props } from "../types.ts";
+import type { Props } from "../types";
 
 interface SkeletonTextArgs extends Props {
   enum: "size" | "variant";
@@ -16,6 +16,11 @@ export default {
   args: {},
   argTypes: {
     ...getArgTypes(USkeletonText.__name),
+  },
+  parameters: {
+    docs: {
+      ...getDocsDescription(USkeletonText.__name),
+    },
   },
 } as Meta;
 

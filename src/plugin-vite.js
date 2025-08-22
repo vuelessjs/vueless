@@ -20,7 +20,6 @@ import { createTailwindSafelist, clearTailwindSafelist } from "./utils/node/tail
 import { componentResolver, directiveResolver } from "./utils/node/vuelessResolver.js";
 import { setCustomPropTypes, removeCustomPropTypes } from "./utils/node/dynamicProps.js";
 import { buildWebTypes } from "./utils/node/webTypes.js";
-import { hideHiddenStories, showHiddenStories } from "./utils/node/dynamicStories.js";
 import {
   getNuxtDirs,
   getVueDirs,
@@ -61,7 +60,7 @@ export const UnpluginComponents = (options) =>
   – Loads SVG images as a Vue component.
  */
 export const Vueless = function (options = {}) {
-  const { debug, env, include, mirrorCacheDir } = options;
+  const { debug, env, include, basePath } = options;
 
   const isInternalEnv = env === INTERNAL_ENV;
   const isStorybookEnv = env === STORYBOOK_ENV;
@@ -81,12 +80,11 @@ export const Vueless = function (options = {}) {
   /* if server stopped by developer (Ctrl+C) */
   process.on("SIGINT", async () => {
     if (isInternalEnv || isStorybookEnv) {
-      await showHiddenStories(vuelessSrcDir);
       await removeCustomPropTypes(vuelessSrcDir);
     }
 
     /* remove cached icons */
-    await removeIconsCache(mirrorCacheDir);
+    await removeIconsCache(basePath);
 
     /* clear tailwind safelist */
     await clearTailwindSafelist(debug);
@@ -97,16 +95,6 @@ export const Vueless = function (options = {}) {
     process.exit(DEFAULT_EXIT_CODE);
   });
 
-  /* cache vueless built-in and project icons */
-  async function prepareIcons() {
-    await removeIconsCache(mirrorCacheDir);
-    await createIconsCache({ env, debug, targetFiles });
-
-    if (isNuxtModuleEnv) {
-      await copyIconsCache(mirrorCacheDir);
-    }
-  }
-
   return {
     name: "vite-plugin-vue-vueless",
     enforce: "pre",
@@ -116,33 +104,50 @@ export const Vueless = function (options = {}) {
         "process.env": {},
       },
       optimizeDeps: {
-        include: ["vueless/directives/**/*.ts"],
+        include: isInternalEnv
+          ? []
+          : [
+              "vueless",
+              "vueless/types",
+              "vueless/constants",
+              "vueless/constants.js",
+              "vueless/v.tooltip/vTooltip.ts",
+              "vueless/v.click-outside/vClickOutside.ts",
+            ],
       },
     }),
 
-    configResolved: async () => {
+    configResolved: async (config) => {
       if (!isNuxtModuleEnv) {
+        /* auto import user configs */
+        await autoImportUserConfigs();
+
         /* merge and cache component configs. */
         await cacheMergedConfigs(vuelessSrcDir);
-      }
-
-      if (!isInternalEnv) {
-        await autoImportUserConfigs();
       }
 
       await buildWebTypes(vuelessSrcDir);
       await setCustomPropTypes(vuelessSrcDir);
 
-      if (isInternalEnv || isStorybookEnv) {
-        await showHiddenStories(vuelessSrcDir);
-        await hideHiddenStories(vuelessSrcDir);
-      }
-
       /* collect used in project colors for tailwind safelist */
       await createTailwindSafelist({ env, srcDir: vuelessSrcDir, targetFiles, debug });
 
       /* cache vueless built-in and project icons */
-      await prepareIcons();
+      await removeIconsCache(basePath);
+      await createIconsCache({ env, debug, targetFiles });
+
+      if (isNuxtModuleEnv) {
+        await copyIconsCache(basePath);
+      }
+
+      /* suppress rollup warnings */
+      const originalOnWarn = config.build.rollupOptions.onwarn;
+
+      config.build.rollupOptions.onwarn = (warning, warn) => {
+        // eslint-disable-next-line prettier/prettier
+        if (warning.code === "SOURCEMAP_BROKEN" && warning.plugin === "@tailwindcss/vite:generate:build") return;
+        originalOnWarn ? originalOnWarn(warning, warn) : warn(warning);
+      };
     },
 
     /* update icons cache in dev env */
@@ -168,7 +173,7 @@ export const Vueless = function (options = {}) {
         await createIconsCache({ env, debug, targetFiles: [file] });
 
         if (isNuxtModuleEnv) {
-          await copyIconsCache(mirrorCacheDir);
+          await copyIconsCache(basePath);
         }
 
         reloadServerOnIconsCacheUpdate(server);
@@ -195,7 +200,7 @@ export const Vueless = function (options = {}) {
 
     /* remove cached icons */
     buildEnd: async () => {
-      await removeIconsCache(mirrorCacheDir);
+      await removeIconsCache(basePath);
     },
   };
 };

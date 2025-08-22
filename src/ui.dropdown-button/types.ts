@@ -1,7 +1,7 @@
-import defaultConfig from "./config.ts";
+import defaultConfig from "./config";
 
-import type { Option } from "../ui.form-listbox/types.ts";
-import type { ComponentConfig, UnknownObject } from "../types.ts";
+import type { Option } from "../ui.form-listbox/types";
+import type { ComponentConfig, UnknownObject } from "../types";
 
 export type Config = typeof defaultConfig;
 
@@ -74,6 +74,11 @@ export interface Props {
    * Allows multiple selection.
    */
   multiple?: boolean;
+
+  /**
+   * Make the dropdown button expand to fill the entire width of its container.
+   */
+  block?: boolean;
 
   /**
    * Set button corners rounded.

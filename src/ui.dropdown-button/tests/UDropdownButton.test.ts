@@ -6,7 +6,7 @@ import UButton from "../../ui.button/UButton.vue";
 import UIcon from "../../ui.image-icon/UIcon.vue";
 import UListbox from "../../ui.form-listbox/UListbox.vue";
 
-import type { Props } from "../types.ts";
+import type { Props } from "../types";
 
 describe("UDropdownButton.vue", () => {
   const defaultOptions = [
@@ -207,6 +207,22 @@ describe("UDropdownButton.vue", () => {
       expect(component.findComponent(UButton).props("disabled")).toBe(disabled);
     });
 
+    // Block prop
+    it("applies class when prop is true", () => {
+      const block = true;
+      const expectedClass = "w-full";
+
+      const component = mount(UDropdownButton, {
+        props: {
+          block,
+          options: defaultOptions,
+        },
+      });
+
+      expect(component.attributes("class")).toContain(expectedClass);
+      expect(component.findComponent(UButton).attributes("class")).toContain(expectedClass);
+    });
+
     // ToggleIcon prop (boolean: true)
     it("shows default toggle icon when toggleIcon is true", () => {
       const toggleIcon = true;
@@ -225,7 +241,7 @@ describe("UDropdownButton.vue", () => {
     });
 
     // ToggleIcon prop (boolean: false)
-    it("shows default toggle icon when toggleIcon is true", () => {
+    it("shows default toggle icon when toggleIcon is false", () => {
       const toggleIcon = false;
 
       const component = mount(UDropdownButton, {

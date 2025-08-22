@@ -3,7 +3,7 @@ import { describe, it, expect } from "vitest";
 
 import ULoader from "../ULoader.vue";
 
-import type { Props } from "../types.ts";
+import type { Props } from "../types";
 
 describe("ULoader.vue", () => {
   // Props tests
