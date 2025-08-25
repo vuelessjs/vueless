@@ -51,7 +51,7 @@ export function defineConfigWithVueless(config) {
  * @param {string} vuelessEnv - The Vueless environment.
  * @return {Promise<string[]>} A promise that resolves to an array of glob patterns for Vueless stories.
  */
-export async function getVuelessStoriesGlob(vuelessEnv) {
+async function getVuelessStoriesGlob(vuelessEnv) {
   const vuelessSrcDir = vuelessEnv === INTERNAL_ENV ? VUELESS_LOCAL_DIR : VUELESS_PACKAGE_DIR;
   const vuelessConfig = await getVuelessConfig();
   const storiesGlob = [];
