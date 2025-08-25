@@ -78,9 +78,10 @@ function toggleColorModeClass() {
  * @param {boolean} isCachedAutoMode
  * @return {string} current color mode
  */
-function setColorMode(mode: `${ColorMode}`, isCachedAutoMode: boolean = false): string {
+function setColorMode(mode: `${ColorMode}`, isCachedAutoMode?: boolean): string {
   const colorMode = mode || getStored(COLOR_MODE_KEY) || vuelessConfig.colorMode || ColorMode.Light;
 
+  // TODO: This always true `!!Number(getStored(AUTO_MODE_KEY))` > `!!Number(undefined) = true`
   isCachedAutoMode = isCachedAutoMode ?? !!Number(getStored(AUTO_MODE_KEY));
 
   const isAutoMode = colorMode === ColorMode.Auto;
