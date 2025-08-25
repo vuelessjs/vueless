@@ -90,6 +90,7 @@
     "./constants.js": "./constants.js",
     "./plugin-vite": "./plugin-vite.js",
     "./plugin-vite.js": "./plugin-vite.js",
+    "./storybook": "./utils/node/storybook.js",
     "./tailwind.css": "./tailwind.css",
     "./types": "./types.ts",
     "./modules": {
