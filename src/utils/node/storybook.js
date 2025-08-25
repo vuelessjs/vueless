@@ -1,5 +1,4 @@
 import { getVuelessConfig } from "./vuelessConfig.js";
-import { autoImportUserConfigs } from "./helper.js";
 import {
   COMPONENTS,
   DIRECTIVES,
@@ -17,10 +16,7 @@ import {
 export function defineConfigWithVueless(config) {
   return (async () => ({
     ...config,
-    stories: [
-      ...config.stories,
-      ...(await getVuelessStoriesGlob(config?.vuelessEnv, config?.basePath)),
-    ],
+    stories: [...config.stories, ...(await getVuelessStoriesGlob(config?.vuelessEnv))],
     addons: [
       ...new Set([
         ...(config.addons || []),
@@ -53,13 +49,9 @@ export function defineConfigWithVueless(config) {
  * Retrieves the glob pattern for Vueless stories based on the provided Vueless environment.
  *
  * @param {string} vuelessEnv - The Vueless environment.
- * @param {string} basePath - The Project base path.
  * @return {Promise<string[]>} A promise that resolves to an array of glob patterns for Vueless stories.
  */
-export async function getVuelessStoriesGlob(vuelessEnv, basePath) {
-  /* Auto import user configs. */
-  await autoImportUserConfigs(basePath);
-
+export async function getVuelessStoriesGlob(vuelessEnv) {
   const vuelessSrcDir = vuelessEnv === INTERNAL_ENV ? VUELESS_LOCAL_DIR : VUELESS_PACKAGE_DIR;
   const vuelessConfig = await getVuelessConfig();
   const storiesGlob = [];
