@@ -30,6 +30,7 @@ export function defineConfigWithVueless(config) {
         "@storybook/addon-themes",
       ]),
     ],
+    staticDirs: ["public"],
     framework: {
       ...config.framework,
       name: "@storybook/vue3-vite",
