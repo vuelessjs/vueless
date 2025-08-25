@@ -1,5 +1,4 @@
 import { create } from "storybook/theming/create";
-import { TAILWIND_COLORS } from "./tailwindColors.js";
 
 export default create({
   base: "dark",
@@ -9,38 +8,37 @@ export default create({
 
   brandTitle: "Vueless UI",
   brandUrl: "https://vueless.com",
-  brandImage:
-    "https://raw.githubusercontent.com/vuelessjs/vueless-storybook/main/public/images/vueless-logo-dark.svg",
+  brandImage: "./images/vueless-logo-dark.svg",
   brandTarget: "_blank",
 
   // Main colors
-  colorPrimary: TAILWIND_COLORS.gray["200"],
-  colorSecondary: TAILWIND_COLORS.gray["700"],
+  colorPrimary: "#e5e7eb", // gray-200
+  colorSecondary: "#374151", // gray-700
 
   // UI
-  appBg: TAILWIND_COLORS.gray["900"],
-  appPreviewBg: TAILWIND_COLORS.gray["900"],
-  appBorderColor: TAILWIND_COLORS.gray["900"],
+  appBg: "#111827", // gray-900
+  appPreviewBg: "#111827", // gray-900
+  appBorderColor: "#111827", // gray-900
   appBorderRadius: 0,
 
   // Text colors
-  textColor: TAILWIND_COLORS.gray["300"],
-  textInverseColor: TAILWIND_COLORS.gray["800"],
+  textColor: "#d1d5db", // gray-300
+  textInverseColor: "#1f2937", // gray-800
 
   // Toolbar default and active colors
-  barTextColor: TAILWIND_COLORS.gray["500"],
-  barHoverColor: TAILWIND_COLORS.gray["400"],
-  barSelectedColor: TAILWIND_COLORS.gray["300"],
-  barBg: TAILWIND_COLORS.gray["950"],
+  barTextColor: "#6b7280", // gray-500
+  barHoverColor: "#9ca3af", // gray-400
+  barSelectedColor: "#d1d5db", // gray-300
+  barBg: "#030712", // gray-950
 
   // Form colors
-  inputBg: TAILWIND_COLORS.gray["950"],
-  inputBorder: TAILWIND_COLORS.gray["600"],
-  inputTextColor: TAILWIND_COLORS.gray["100"],
+  inputBg: "#030712", // gray-950
+  inputBorder: "#4b5563", // gray-600
+  inputTextColor: "#f3f4f6", // gray-100
   inputBorderRadius: 4,
 
-  buttonBg: TAILWIND_COLORS.gray["800"],
-  buttonBorder: TAILWIND_COLORS.gray["800"],
-  booleanBg: TAILWIND_COLORS.gray["900"],
-  booleanSelectedBg: TAILWIND_COLORS.gray["800"],
+  buttonBg: "#1f2937", // gray-800
+  buttonBorder: "#1f2937", // gray-800
+  booleanBg: "#111827", // gray-900
+  booleanSelectedBg: "#1f2937", // gray-800
 });

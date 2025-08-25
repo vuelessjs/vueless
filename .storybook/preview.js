@@ -2,15 +2,14 @@ import { setup } from "@storybook/vue3-vite";
 
 import { getRandomId } from "../src";
 
-import themeLight from "./themes/themeLight.js";
+/* Theme styles */
+import "./themes/preview.css";
 import themeDark from "./themes/themeDark.js";
-import themeLightDocs from "./themes/themeLightDocs.js";
+import themeLight from "./themes/themeLight.js";
+import themeLightPreview from "./themes/themeLightPreview.js";
 
 import { storyDarkModeDecorator } from "./decorators/storyDarkModeDecorator.js";
 import { vue3SourceDecorator } from "./decorators/vue3SourceDecorator.js";
-
-/* Tailwind styles */
-import "./index.css";
 
 /* Vue plugins */
 import { createVueless } from "../src/index";
@@ -40,7 +39,7 @@ export const parameters = {
   layout: "fullscreen",
   backgrounds: { disable: true },
   docs: {
-    theme: themeLightDocs,
+    theme: themeLightPreview,
     source: { language: "html" },
   },
   darkMode: {
