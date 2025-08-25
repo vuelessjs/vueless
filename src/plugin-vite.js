@@ -120,7 +120,7 @@ export const Vueless = function (options = {}) {
     configResolved: async (config) => {
       if (!isNuxtModuleEnv) {
         /* auto import user configs */
-        await autoImportUserConfigs();
+        await autoImportUserConfigs(basePath);
 
         /* merge and cache component configs. */
         await cacheMergedConfigs(vuelessSrcDir);
