@@ -11,7 +11,7 @@ import { cwd } from "node:process";
 import { rm, cp } from "node:fs/promises";
 import { createRequire } from "module";
 
-import { vuelessConfig } from "./vuelessConfig.js";
+import { getVuelessConfig } from "./vuelessConfig.js";
 import { getDirFiles, getMergedComponentConfig } from "./helper.js";
 import {
   ICONS_DIR,
@@ -34,8 +34,9 @@ let uIconDefaults = {};
  * @param {string} env
  * @param {boolean} debug
  * @param {Array} targetFiles
+ * @param {string} basePath
  */
-export async function createIconsCache({ env, debug = false, targetFiles = [] } = {}) {
+export async function createIconsCache({ env, debug = false, targetFiles = [], basePath } = {}) {
   const isInternalEnv = env === INTERNAL_ENV;
   const isStorybookEnv = env === STORYBOOK_ENV;
 
@@ -55,6 +56,8 @@ export async function createIconsCache({ env, debug = false, targetFiles = [] } 
     ...vuelessMergedConfigFiles,
   ];
 
+  const vuelessConfig = await getVuelessConfig(basePath);
+
   if (isInternalEnv) {
     const storybookFiles = [];
     const internalFiles = [];
@@ -65,13 +68,13 @@ export async function createIconsCache({ env, debug = false, targetFiles = [] } 
         : internalFiles.push(file);
     }
 
-    await findAndCopyIcons(storybookFiles, STORYBOOK_ICONS_LIBRARY, debug);
-    await findAndCopyIcons(internalFiles, INTERNAL_ICONS_LIBRARY, debug);
+    await findAndCopyIcons(storybookFiles, STORYBOOK_ICONS_LIBRARY, vuelessConfig, debug);
+    await findAndCopyIcons(internalFiles, INTERNAL_ICONS_LIBRARY, vuelessConfig, debug);
   }
 
   if (!isInternalEnv) {
     await cachePackageIcons(isStorybookEnv);
-    await findAndCopyIcons(files, uIconDefaults.library, debug);
+    await findAndCopyIcons(files, uIconDefaults.library, vuelessConfig, debug);
   }
 }
 
@@ -180,9 +183,10 @@ async function cachePackageIcons(isStorybookEnv) {
  * Scan the project for icon names and copy found icons to the cache.
  * @param {Array} files
  * @param {string} library
+ * @param {object} vuelessConfig
  * @param {boolean} debug
  */
-async function findAndCopyIcons(files, library, debug) {
+async function findAndCopyIcons(files, library, vuelessConfig, debug) {
   const safelistIcons = vuelessConfig.components?.["UIcon"]?.safelistIcons;
 
   const validIconNamesRegex = /^(?!icon$|name$)[a-z0-9_-]+$/;
