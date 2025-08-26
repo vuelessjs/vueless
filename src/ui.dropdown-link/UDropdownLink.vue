@@ -39,6 +39,22 @@ const emit = defineEmits([
    * @property {number} value
    */
   "update:modelValue",
+
+  /**
+   * Triggers when a dropdown list is opened.
+   */
+  "open",
+
+  /**
+   * Triggers when a dropdown list is closed.
+   */
+  "close",
+
+  /**
+   * Triggers when the search value is changed.
+   * @property {string} query
+   */
+  "searchChange",
 ]);
 
 provide("hideDropdownOptions", hideOptions);
@@ -82,7 +98,7 @@ const selectedOptions = computed(() => {
 });
 
 const linkLabel = computed(() => {
-  if (!selectedOptions.value.length) {
+  if (!props.showOptionsLabel || !selectedOptions.value.length) {
     return props.label;
   }
 
@@ -116,6 +132,10 @@ function getFullOptionLabels(value: Option | Option[]) {
   return "";
 }
 
+function onSearchChange(query: string) {
+  emit("searchChange", query);
+}
+
 function onClickLink() {
   if (props.disabled) return;
 
@@ -123,17 +143,21 @@ function onClickLink() {
 
   if (isShownOptions.value) {
     nextTick(() => listboxRef.value?.wrapperRef?.focus());
+
+    emit("open");
   }
 }
 
 function hideOptions() {
   isShownOptions.value = false;
+
+  emit("close");
 }
 
 function onClickOption(option: Option) {
   emit("clickOption", option);
 
-  hideOptions();
+  if (!props.multiple) hideOptions();
 }
 
 defineExpose({
@@ -235,6 +259,7 @@ const { config, getDataTest, wrapperAttrs, dropdownLinkAttrs, listboxAttrs, togg
       v-bind="listboxAttrs"
       :data-test="getDataTest('list')"
       @click-option="onClickOption"
+      @search-change="onSearchChange"
     />
   </div>
 </template>

@@ -39,6 +39,22 @@ const emit = defineEmits([
    * @property {number} value
    */
   "update:modelValue",
+
+  /**
+   * Triggers when a dropdown list is opened.
+   */
+  "open",
+
+  /**
+   * Triggers when a dropdown list is closed.
+   */
+  "close",
+
+  /**
+   * Triggers when the search value is changed.
+   * @property {string} query
+   */
+  "searchChange",
 ]);
 
 provide("hideDropdownOptions", hideOptions);
@@ -82,7 +98,7 @@ const selectedOptions = computed(() => {
 });
 
 const buttonLabel = computed(() => {
-  if (!selectedOptions.value.length) {
+  if (!props.showOptionsLabel || !selectedOptions.value.length) {
     return props.label;
   }
 
@@ -106,6 +122,10 @@ const toggleIconName = computed(() => {
   return props.toggleIcon ? config.value.defaults.toggleIcon : "";
 });
 
+function onSearchChange(query: string) {
+  emit("searchChange", query);
+}
+
 function getFullOptionLabels(value: Option | Option[]) {
   const labelKey = props.labelKey;
 
@@ -119,7 +139,7 @@ function getFullOptionLabels(value: Option | Option[]) {
 function onClickOption(option: Option) {
   emit("clickOption", option);
 
-  hideOptions();
+  if (!props.multiple) hideOptions();
 }
 
 function onClickButton() {
@@ -127,11 +147,15 @@ function onClickButton() {
 
   if (isShownOptions.value) {
     nextTick(() => listboxRef.value?.wrapperRef?.focus());
+
+    emit("open");
   }
 }
 
 function hideOptions() {
   isShownOptions.value = false;
+
+  emit("close");
 }
 
 defineExpose({
@@ -230,6 +254,7 @@ const { getDataTest, config, dropdownButtonAttrs, listboxAttrs, toggleIconAttrs,
       v-bind="listboxAttrs"
       :data-test="getDataTest('list')"
       @click-option="onClickOption"
+      @search-change="onSearchChange"
     />
   </div>
 </template>
