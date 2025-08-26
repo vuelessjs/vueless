@@ -178,7 +178,7 @@ const {
       />
     </UButton>
 
-    <div v-if="readonly" v-bind="counterTextAttrs" v-text="count" />
+    <div v-if="props.readonly" v-bind="counterTextAttrs" v-text="count" />
 
     <UInputNumber
       v-else
