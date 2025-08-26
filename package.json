@@ -55,7 +55,7 @@
     "@vue/eslint-config-typescript": "^14.6.0",
     "@vue/test-utils": "^2.4.6",
     "@vue/tsconfig": "^0.7.0",
-    "@vueless/storybook": "^1.1.3",
+    "@vueless/storybook": "^1.1.3-beta.10",
     "eslint": "^9.32.0",
     "eslint-plugin-storybook": "^9.0.18",
     "eslint-plugin-vue": "^10.3.0",
@@ -68,7 +68,8 @@
     "vitest": "^3.2.4",
     "vue": "^3.5.18",
     "vue-router": "^4.5.1",
-    "vue-tsc": "^3.0.4"
+    "vue-tsc": "^3.0.4",
+    "vueless": "^1.2.1-beta.2"
   },
   "sideEffects": false,
   "style": "tailwind.css",

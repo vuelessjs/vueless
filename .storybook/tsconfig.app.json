@@ -1,0 +1,36 @@
+{
+  "include": [
+    "env.d.ts",
+    "**/*",
+    "../src/**/*"
+  ],
+  "compilerOptions": {
+    /* General */
+    "module": "ESNext",
+    "target": "ESNext",
+    "esModuleInterop": true,
+    "useDefineForClassFields": true,
+    "forceConsistentCasingInFileNames": true,
+    "verbatimModuleSyntax": true, // This is important for `<script setup>`.
+    "tsBuildInfoFile": "./node_modules/.tmp/storybookTsconfig.app.tsbuildinfo",
+    "removeComments": true,
+    "skipLibCheck": true,
+    "composite": true,
+    "noEmit": true,
+
+    /* Path settings */
+    "baseUrl": ".",
+    //"rootDir": "./",
+
+    /* Enables all strict type-checking options. */
+    "strict": true,
+    "noImplicitThis": true,
+
+    /* Bundlers settings */
+    "moduleResolution": "bundler",
+    "resolveJsonModule": true,
+
+    /* JS file support. */
+    "allowJs": true
+  }
+}

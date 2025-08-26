@@ -1,6 +1,7 @@
 import { create } from "storybook/theming/create";
+import type { ThemeVars } from "storybook/theming";
 
-export default create({
+export const themeDark: ThemeVars = create({
   base: "dark",
   // Typography
   fontBase: '"Roboto", sans-serif',
