@@ -20,6 +20,12 @@ declare module "*.svg?skipsvgo" {
   export default component;
 }
 
+declare module "vueless/storybook" {
+  import type { Config, UnknownObject } from "./types";
+  export function defineConfigWithVueless(config: Config): Promise<UnknownObject>;
+  export function getVuelessStoriesGlob(vuelessEnv: string): Promise<string[]>;
+}
+
 declare module "virtual:vueless/icons" {
   import type { UnknownArray } from "./types";
   export const cachedIcons: UnknownArray;

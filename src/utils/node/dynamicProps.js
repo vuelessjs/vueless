@@ -3,7 +3,7 @@ import { existsSync } from "node:fs";
 import path from "node:path";
 
 import { removeFolderIfEmpty } from "./helper.js";
-import { vuelessConfig } from "./vuelessConfig.js";
+import { getVuelessConfig } from "./vuelessConfig.js";
 
 import {
   CACHE_DIR,
@@ -25,7 +25,9 @@ const WORD_IN_QUOTE_REG_EXP = /"([^"]+)"/g;
 
 const DEFAULT_SAFE_COLORS = [PRIMARY_COLOR, GRAYSCALE_COLOR, INHERIT_COLOR, TEXT_COLOR];
 
-export async function setCustomPropTypes(srcDir) {
+export async function setCustomPropTypes({ vuelessSrcDir, basePath } = {}) {
+  const vuelessConfig = await getVuelessConfig(basePath);
+
   for await (const [componentName, componentDir] of Object.entries(COMPONENTS)) {
     let componentGlobalConfig = vuelessConfig.components?.[componentName];
 
@@ -78,8 +80,10 @@ export async function setCustomPropTypes(srcDir) {
     const isCustomProps = componentGlobalConfig && componentGlobalConfig.props;
 
     if (isCustomProps) {
-      await cacheComponentTypes(path.join(srcDir, componentDir));
-      await modifyComponentTypes(path.join(srcDir, componentDir), componentGlobalConfig.props);
+      const cachePath = path.join(vuelessSrcDir, componentDir);
+
+      await cacheComponentTypes(cachePath);
+      await modifyComponentTypes(cachePath, componentGlobalConfig.props);
     }
   }
 }

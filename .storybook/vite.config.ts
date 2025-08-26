@@ -18,6 +18,7 @@ export default defineConfig({
       "storybook/internal/docs-tools",
       "@storybook/addon-themes",
       "@storybook/vue3-vite",
+      "@vueless/storybook",
     ],
   },
 });

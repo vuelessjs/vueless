@@ -120,21 +120,21 @@ export const Vueless = function (options = {}) {
     configResolved: async (config) => {
       if (!isNuxtModuleEnv) {
         /* auto import user configs */
-        await autoImportUserConfigs();
+        await autoImportUserConfigs(basePath);
 
         /* merge and cache component configs. */
         await cacheMergedConfigs(vuelessSrcDir);
       }
 
-      await buildWebTypes(vuelessSrcDir);
-      await setCustomPropTypes(vuelessSrcDir);
+      await buildWebTypes({ vuelessSrcDir, basePath });
+      await setCustomPropTypes({ vuelessSrcDir, basePath });
 
       /* collect used in project colors for tailwind safelist */
-      await createTailwindSafelist({ env, srcDir: vuelessSrcDir, targetFiles, debug });
+      await createTailwindSafelist({ env, srcDir: vuelessSrcDir, targetFiles, basePath, debug });
 
       /* cache vueless built-in and project icons */
       await removeIconsCache(basePath);
-      await createIconsCache({ env, debug, targetFiles });
+      await createIconsCache({ env, targetFiles, basePath, debug });
 
       if (isNuxtModuleEnv) {
         await copyIconsCache(basePath);
@@ -170,7 +170,7 @@ export const Vueless = function (options = {}) {
 
       if (hasIconChanges && currentIconLines.length) {
         /* cache vueless built-in and project icons */
-        await createIconsCache({ env, debug, targetFiles: [file] });
+        await createIconsCache({ env, targetFiles: [file], basePath, debug });
 
         if (isNuxtModuleEnv) {
           await copyIconsCache(basePath);
