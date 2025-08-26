@@ -98,7 +98,7 @@ const selectedOptions = computed(() => {
 });
 
 const linkLabel = computed(() => {
-  if (!props.showOptionsLabel || !selectedOptions.value.length) {
+  if (!props.labelDisplayCount || !selectedOptions.value.length) {
     return props.label;
   }
 

@@ -27,11 +27,6 @@ export interface Props {
   options?: Option[];
 
   /**
-   * Show labels of selected options.
-   */
-  showOptionsLabel?: boolean;
-
-  /**
    * Label key in the item object of options.
    */
   labelKey?: string;

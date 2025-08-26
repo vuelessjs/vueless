@@ -40,7 +40,6 @@ export default /*tw*/ {
     disabled: false,
     searchable: false,
     multiple: false,
-    showOptionsLabel: true,
     labelDisplayCount: 2,
     /* icons */
     toggleIcon: "keyboard_arrow_down",

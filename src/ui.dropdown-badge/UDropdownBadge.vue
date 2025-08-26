@@ -96,7 +96,7 @@ const selectedOptions = computed(() => {
 });
 
 const badgeLabel = computed(() => {
-  if (!props.showOptionsLabel || !selectedOptions.value.length) {
+  if (!props.labelDisplayCount || !selectedOptions.value.length) {
     return props.label;
   }
 
