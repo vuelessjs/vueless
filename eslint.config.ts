@@ -1,3 +1,4 @@
+import path from "path";
 import globals from "globals";
 import { defineConfigWithVueTs, vueTsConfigs } from "@vue/eslint-config-typescript";
 import prettierEslintConfig from "@vue/eslint-config-prettier";
@@ -13,6 +14,8 @@ const languageOptions = {
   },
   parserOptions: {
     module: "esnext",
+    project: path.resolve("./tsconfig.eslint.json"),
+    tsconfigRootDir: __dirname,
   },
 };
 
