@@ -114,6 +114,11 @@ export interface ThemeConfig {
   outline?: number | Partial<ThemeConfigOutline>;
 
   /**
+   * Default components letter spacing.
+   */
+  letterSpacing?: number;
+
+  /**
    * Default components opacity for disabled state (in percents).
    */
   disabledOpacity?: number;
