@@ -20,12 +20,6 @@ declare module "*.svg?skipsvgo" {
   export default component;
 }
 
-declare module "vueless/storybook" {
-  import type { Config, UnknownObject } from "./types";
-  export function defineConfigWithVueless(config: Config): Promise<UnknownObject>;
-  export function getVuelessStoriesGlob(vuelessEnv: string): Promise<string[]>;
-}
-
 declare module "virtual:vueless/icons" {
   import type { UnknownArray } from "./types";
   export const cachedIcons: UnknownArray;
@@ -36,4 +30,12 @@ declare module "virtual:vueless/vue-i18n" {
   import type { UnknownObject } from "./types";
   export type I18n = UnknownObject;
   export type VueMessageType = UnknownObject;
+}
+
+declare module "@vueless/storybook" {
+  import type { UnknownObject } from "./types";
+  export function storyDarkModeDecorator(): Promise<UnknownObject>;
+  export function vue3SourceDecorator(): Promise<UnknownObject>;
+  export function defineConfigWithVueless(options?: UnknownObject): () => UnknownObject;
+  export function getVuelessStoriesGlob(vuelessEnv?: string): Promise<string[]>;
 }
