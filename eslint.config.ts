@@ -13,6 +13,7 @@ const languageOptions = {
   },
   parserOptions: {
     module: "esnext",
+    tsconfigRootDir: __dirname,
   },
 };
 
