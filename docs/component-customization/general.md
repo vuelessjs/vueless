@@ -38,10 +38,10 @@ export default {
 
 To enhance the developer experience, the component name and config key are displayed in the browser console (dev environment only) under the attributes `vl-component` and `vl-key.`
 
-<figure><img src="../.gitbook/assets/image.png" alt=""><figcaption></figcaption></figure>
+<figure><img src="../.gitbook/assets/image (1).png" alt=""><figcaption></figcaption></figure>
 
 For components with nested components, two additional attributes, `vl-child-component` and `vl-child-key`, indicate the nested component and its corresponding config key.&#x20;
 
-<figure><img src="../.gitbook/assets/image (1).png" alt=""><figcaption></figcaption></figure>
+<figure><img src="../.gitbook/assets/image (1) (1).png" alt=""><figcaption></figcaption></figure>
 
 Learn more how to [style nested components](nested-components-styling.md).
