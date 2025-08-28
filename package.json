@@ -68,8 +68,7 @@
     "vitest": "^3.2.4",
     "vue": "^3.5.18",
     "vue-router": "^4.5.1",
-    "vue-tsc": "^3.0.4",
-    "vueless": "^1.2.1-beta.2"
+    "vue-tsc": "^3.0.4"
   },
   "sideEffects": false,
   "style": "tailwind.css",

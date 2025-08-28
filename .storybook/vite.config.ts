@@ -1,3 +1,4 @@
+import path from "node:path";
 import { defineConfig } from "vite";
 
 // Plugins
@@ -20,5 +21,11 @@ export default defineConfig({
       "@storybook/vue3-vite",
       "@vueless/storybook",
     ],
+  },
+  resolve: {
+    alias: {
+      /* this resolves the `storyDarkModeDecorator` issue */
+      vueless: path.resolve(__dirname, "../src"),
+    },
   },
 });
