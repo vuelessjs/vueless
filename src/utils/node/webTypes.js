@@ -3,7 +3,7 @@ import { getVuelessConfig } from "./vuelessConfig.js";
 export async function buildWebTypes({ vuelessSrcDir, basePath } = {}) {
   try {
     const vuelessConfig = await getVuelessConfig(basePath);
-    const { default: build } = await import("@vueless/storybook/webTypes/index.js");
+    const { buildWebTypes: build } = await import("@vueless/storybook");
 
     await build(vuelessConfig, vuelessSrcDir);
   } catch (error) {
