@@ -1,4 +1,4 @@
-import { vue3SourceDecorator, storyDarkModeDecorator } from "@vueless/storybook";
+import { storyDarkModeDecorator, vue3SourceDecorator } from "@vueless/storybook";
 import { getRandomId } from "vueless";
 import { setup } from "@storybook/vue3-vite";
 
