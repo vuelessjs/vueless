@@ -31,11 +31,3 @@ declare module "virtual:vueless/vue-i18n" {
   export type I18n = UnknownObject;
   export type VueMessageType = UnknownObject;
 }
-
-declare module "@vueless/storybook" {
-  import type { UnknownObject } from "./types";
-  export function storyDarkModeDecorator(): Promise<UnknownObject>;
-  export function vue3SourceDecorator(): Promise<UnknownObject>;
-  export function defineConfigWithVueless(options?: UnknownObject): () => UnknownObject;
-  export function getVuelessStoriesGlob(vuelessEnv?: string): Promise<string[]>;
-}
