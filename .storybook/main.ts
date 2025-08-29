@@ -1,9 +1,8 @@
 /** @type { import('@storybook/vue3-vite').StorybookConfig } */
-import { INTERNAL_ENV } from "../src/constants.js";
-import { defineConfigWithVueless } from "../src/utils/node/storybook.js";
+import { defineConfigWithVueless } from "@vueless/storybook";
 
 export default defineConfigWithVueless({
-  vuelessEnv: INTERNAL_ENV,
+  vuelessEnv: "internal",
   stories: [
     /* Define a path to your own component stories. */
     // "../src/**/stories.{js,jsx,ts,tsx}",
