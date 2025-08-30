@@ -40,6 +40,18 @@ Vueless is simple enough for everyday use and powerful enough for advanced scena
 
 ## Quick Start (Vue)
 
+### New project
+
+To get started with Vueless UI, simply paste the following code into your terminal:
+
+```bash
+npm create vueless@latest
+```
+
+This command guides you through a few setup options, then generates a new scaffolded Vue + Vueless UI project with the complete application structure.
+
+### Existing project
+
 1. Install `vueless` UI library packages.
 
 ```bash
