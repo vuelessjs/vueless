@@ -20,6 +20,7 @@
 * [Focus Outline](global-customization/focus-outline.md)
 * [Font Size](global-customization/font-size.md)
 * [Disabled Opacity](global-customization/disabled-opacity.md)
+* [Letter Spacing](global-customization/letter-spacing.md)
 * [Dark mode](global-customization/dark-mode.md)
 * [Custom tailwind classes](global-customization/custom-tailwind-classes.md)
 

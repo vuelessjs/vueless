@@ -10,28 +10,28 @@ If you going to debug component stylings in a more easier way you can use our [S
 {% tab title="npm" %}
 ```bash
 npm install -D @vueless/storybook
-npx @vueless/storybook
+npx @vueless/storybook init
 ```
 {% endtab %}
 
 {% tab title="yarn" %}
 ```bash
 yarn add -D @vueless/storybook
-yarn @vueless/storybook
+yarn vueless-storybook init
 ```
 {% endtab %}
 
 {% tab title="pnpm" %}
 ```bash
 pnpm add -D @vueless/storybook
-pnpm exec @vueless/storybook
+pnpm exec @vueless/storybook init
 ```
 {% endtab %}
 
 {% tab title="bun" %}
 ```bash
 bun add -D @vueless/storybook
-bunx @vueless/storybook
+bunx @vueless/storybook init
 ```
 {% endtab %}
 {% endtabs %}

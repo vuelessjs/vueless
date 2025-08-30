@@ -1,5 +1,52 @@
 # Quick start (Vue)
 
+## New project
+
+To get started with Vueless UI, simply paste the following code into your terminal:
+
+{% tabs %}
+{% tab title="npm" %}
+```bash
+npm create vueless@latest
+```
+{% endtab %}
+
+{% tab title="yarn" %}
+```bash
+# For Yarn (v1+)
+yarn create vueless
+
+# For Yarn Modern (v2+)
+$ yarn create vueless@latest
+  
+# For Yarn ^v4.11
+$ yarn dlx create-vueless@latest
+```
+{% endtab %}
+
+{% tab title="pnpm" %}
+```bash
+pnpm create vueless@latest
+```
+
+{% hint style="info" %}
+Use the `--pnpm` flag when working with pnpm. This will generate a `.npmrc` file preconfigured with the necessary settings for the Vueless package.
+{% endhint %}
+{% endtab %}
+
+{% tab title="bun" %}
+```bash
+bun create vueless@latest
+```
+{% endtab %}
+{% endtabs %}
+
+This command guides you through a few setup options, then generates a new scaffolded Vue + Vueless UI project with the complete application structure.
+
+***
+
+## Existing project
+
 1\. Install Vueless package.
 
 {% tabs %}

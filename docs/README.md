@@ -2,7 +2,7 @@
 
 <figure><img src=".gitbook/assets/promo-image.png" alt=""><figcaption></figcaption></figure>
 
-Vueless is an open-source UI library and design system framework for Vue.js 3 and Nuxt.js 3, built on top of Tailwind CSS v4.
+Vueless is an open-source UI library and design system framework for Vue.js 3 and Nuxt.js 3 / 4, built on top of Tailwind CSS v4.
 
 It’s completely styleless, allowing you to extend or override default styles without modifying the components themselves — only your custom styles are included in the final build.
 

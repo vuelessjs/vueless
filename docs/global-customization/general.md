@@ -57,6 +57,20 @@ See [Font Size](font-size.md) chapter for more details.
 
 ***
 
+## Letter Spacing
+
+Use the `letterSpacing` key to simultaneously apply letter spacing to all components.
+
+{% code title="vueless.config.{js,ts}" %}
+```js
+export default {
+  letterSpacing: 0.025, /* em */
+};
+```
+{% endcode %}
+
+See [Letter Spacing](letter-spacing.md) chapter for more details.
+
 ## Disabled Opacity
 
 You can set the components disabled state opacity globally for related Vueless components.

@@ -11,6 +11,8 @@ setTheme({
   text: 16, /* px */
   outline: 4, /* px */
   rounding: 8, /* px */
+  letterSpacing: 0.025, /* em */
+  disabledOpacity: 40, /* percent, % */
   colorMode: "dark", /* dark | light | auto */
 });
 ```
