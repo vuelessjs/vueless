@@ -71,6 +71,14 @@
     "vue-router": "^4.5.1",
     "vue-tsc": "^3.0.4"
   },
+  "peerDependencies": {
+    "vue-router": "^4.5.0"
+  },
+  "peerDependenciesMeta": {
+    "vue-router": {
+      "optional": true
+    }
+  },
   "sideEffects": false,
   "style": "tailwind.css",
   "types": "index.d.ts",
