@@ -33,6 +33,8 @@ import {
   TEXT_DECREMENT,
   DISABLED_OPACITY,
   DEFAULT_DISABLED_OPACITY,
+  LETTER_SPACING,
+  DEFAULT_LETTER_SPACING,
 } from "../constants";
 
 import type {
@@ -52,6 +54,7 @@ declare interface RootCSSVariableOptions {
   text: ThemeConfigText;
   rounding: ThemeConfigRounding;
   outline: ThemeConfigOutline;
+  letterSpacing: number;
   disabledOpacity: number;
   lightTheme: Partial<VuelessCssVariables>;
   darkTheme: Partial<VuelessCssVariables>;
@@ -150,6 +153,7 @@ export function setTheme(config: ThemeConfig = {}, isCachedAutoMode?: boolean) {
   const text = getText(config.text);
   const outline = getOutlines(config.outline);
   const rounding = getRoundings(config.rounding);
+  const letterSpacing = getLetterSpacing(config.letterSpacing);
   const disabledOpacity = getDisabledOpacity(config.disabledOpacity);
 
   let primary = getPrimaryColor(config.primary);
@@ -215,6 +219,7 @@ export function setTheme(config: ThemeConfig = {}, isCachedAutoMode?: boolean) {
     text,
     outline,
     rounding,
+    letterSpacing,
     disabledOpacity,
     lightTheme,
     darkTheme,
@@ -444,6 +449,24 @@ function getRoundings(rounding?: ThemeConfig["rounding"]) {
 }
 
 /**
+ * Retrieve letter spacing value and save them to cookie and localStorage.
+ * @return number - letter spacing value.
+ */
+function getLetterSpacing(letterSpacing?: ThemeConfig["letterSpacing"]) {
+  const storageKey = `vl-${LETTER_SPACING}`;
+
+  const spacing = letterSpacing ?? getStored(storageKey) ?? vuelessConfig.letterSpacing;
+  const mergedSpacing = Number(spacing ?? DEFAULT_LETTER_SPACING);
+
+  if (isCSR && letterSpacing) {
+    setCookie(storageKey, String(mergedSpacing));
+    localStorage.setItem(storageKey, String(mergedSpacing));
+  }
+
+  return mergedSpacing;
+}
+
+/**
  * Retrieve disabled opacity value and save them to cookie and localStorage.
  * @return number - opacity value.
  */
@@ -487,6 +510,7 @@ function setRootCSSVariables(vars: RootCSSVariableOptions) {
     "--vl-rounding-sm": `${vars.rounding.sm / PX_IN_REM}rem`,
     "--vl-rounding-md": `${vars.rounding.md / PX_IN_REM}rem`,
     "--vl-rounding-lg": `${vars.rounding.lg / PX_IN_REM}rem`,
+    "--vl-letter-spacing": `${vars.letterSpacing}em`,
     "--vl-disabled-opacity": `${vars.disabledOpacity}%`,
   };
 

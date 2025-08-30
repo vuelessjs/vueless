@@ -1,6 +1,6 @@
 {
   "name": "vueless",
-  "version": "1.2.2",
+  "version": "1.2.3-beta.9",
   "description": "Vue Styleless UI Component Library, powered by Tailwind CSS.",
   "author": "Johnny Grid <hello@vueless.com> (https://vueless.com)",
   "homepage": "https://vueless.com",
@@ -9,9 +9,10 @@
     "access": "public"
   },
   "scripts": {
-    "dev:docs": "storybook dev -p 6006 --docs --no-open",
-    "dev": "storybook dev -p 6006 --no-open",
-    "build": "storybook build --docs",
+    "link:package": "rm -rf node_modules/vueless && ln -s ../src ./node_modules/vueless",
+    "dev:docs": "npm run link:package && storybook dev -p 6006 --docs --no-open",
+    "dev": "npm run link:package && storybook dev -p 6006 --no-open",
+    "build": "npm run link:package && storybook build --docs",
     "preview": "vite preview --host --outDir=storybook-static",
     "ts:check": "vue-tsc --build --force",
     "release:icons": "npx node .scripts/icons",
@@ -21,8 +22,8 @@
     "release:patch": "release-it patch --ci --npm.publish --git.tag --github.release",
     "release:minor": "release-it minor --ci --npm.publish --git.tag --github.release",
     "release:major": "release-it major --ci --npm.publish --git.tag --github.release",
-    "lint": "eslint --no-fix src/ test/ .storybook/ .vueless/",
-    "lint:fix": "eslint --fix src/ test/ .storybook/ .vueless/",
+    "lint": "eslint --no-fix src/ test/ .storybook/ .vueless/ .scripts/",
+    "lint:fix": "eslint --fix src/ test/ .storybook/ .vueless/ .scripts/",
     "lint:ci": "eslint --no-fix --max-warnings=0",
     "test": "vitest",
     "test:ci": "vitest --run"
@@ -55,7 +56,7 @@
     "@vue/eslint-config-typescript": "^14.6.0",
     "@vue/test-utils": "^2.4.6",
     "@vue/tsconfig": "^0.7.0",
-    "@vueless/storybook": "^1.1.3-beta.10",
+    "@vueless/storybook": "^1.2.1",
     "eslint": "^9.32.0",
     "eslint-plugin-storybook": "^9.0.18",
     "eslint-plugin-vue": "^10.3.0",
@@ -68,8 +69,15 @@
     "vitest": "^3.2.4",
     "vue": "^3.5.18",
     "vue-router": "^4.5.1",
-    "vue-tsc": "^3.0.4",
-    "vueless": "^1.2.1-beta.2"
+    "vue-tsc": "^3.0.4"
+  },
+  "peerDependencies": {
+    "vue-router": "^4.5.0"
+  },
+  "peerDependenciesMeta": {
+    "vue-router": {
+      "optional": true
+    }
   },
   "sideEffects": false,
   "style": "tailwind.css",

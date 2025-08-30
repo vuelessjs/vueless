@@ -295,7 +295,17 @@ async function copyIcon(name, library) {
     const require = createRequire(import.meta.url);
 
     fs.mkdirSync(path.dirname(destinationPath), { recursive: true });
-    await cp(require.resolve(sourcePath), destinationPath);
+
+    try {
+      await fs.promises.copyFile(require.resolve(sourcePath), destinationPath);
+    } catch (err) {
+      if (err.code === "EEXIST" || err.code === "EBUSY") {
+        // Another process/thread already copied or Windows locked temporarily
+        return;
+      }
+
+      throw err;
+    }
   }
 }
 

@@ -2,7 +2,7 @@
 
 # Vueless UI
 
-Vueless is an open-source UI library and design system framework for Vue.js 3 and Nuxt.js 3, built on top of Tailwind CSS v4.
+Vueless is an open-source UI library and design system framework for Vue.js 3 and Nuxt.js 3 / 4, built on top of Tailwind CSS v4.
 
 It’s completely styleless, allowing you to extend or override default styles without modifying the components themselves — only your custom styles are included in the final build.
 
@@ -39,6 +39,18 @@ Vueless is simple enough for everyday use and powerful enough for advanced scena
 
 
 ## Quick Start (Vue)
+
+### New project
+
+To get started with Vueless UI, simply paste the following code into your terminal:
+
+```bash
+npm create vueless@latest
+```
+
+This command guides you through a few setup options, then generates a new scaffolded Vue + Vueless UI project with the complete application structure.
+
+### Existing project
 
 1. Install `vueless` UI library packages.
 
@@ -108,6 +120,14 @@ export default defineNuxtConfig({
 @import "vueless";
 ```
 
+## Ecosystem
+
+* [@vueless/storybook](https://github.com/vuelessjs/vueless-storybook) - Storybook preset for Vueless UI component library [(docs)](https://docs.vueless.com/installation/storybook).
+* [@vueless/nuxt](https://github.com/vuelessjs/vueless-module-nuxt) - Vueless UI module for Nuxt.js [(docs)](https://docs.vueless.com/installation/nuxt).
+* [create-vueless](https://github.com/vuelessjs/vueless-create) - CLI tool to quickly start a Vueless UI project from a template [(docs)](https://docs.vueless.com/installation/vue).
+  * [vueless-quickstart](https://github.com/vuelessjs/vueless-quickstart) - Vue + Vueless UI + JavaScript project template.
+  * [vueless-quickstart-ts](https://github.com/vuelessjs/vueless-quickstart-ts) - Vue + Vueless UI + TypeScript project template.
+
 ## Contributing
 
 * We encourage you to contribute to Vueless! Please check out the
@@ -119,6 +139,9 @@ check out our [security policy](SECURITY.md) for guidelines.
 ## License
 
 Vueless is released under the [MIT License](https://opensource.org/licenses/MIT).
+
+---
+From Ukrainians to a Peaceful World 🇺🇦
 
 
 

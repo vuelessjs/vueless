@@ -1,5 +1,5 @@
 import { storyDarkModeDecorator, vue3SourceDecorator } from "@vueless/storybook";
-import { getRandomId } from "../src";
+import { getRandomId } from "vueless";
 import { setup } from "@storybook/vue3-vite";
 
 import type { Preview } from "@storybook/vue3-vite";
@@ -11,7 +11,7 @@ import { themeLight } from "./themes/themeLight";
 import { themeLightPreview } from "./themes/themeLightPreview";
 
 /* Vue plugins */
-import { createVueless } from "../src";
+import { createVueless } from "vueless";
 import { createRouter, createWebHistory } from "vue-router";
 
 const vueless = createVueless();

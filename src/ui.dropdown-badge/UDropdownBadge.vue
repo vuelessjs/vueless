@@ -39,6 +39,22 @@ const emit = defineEmits([
    * @property {number} value
    */
   "update:modelValue",
+
+  /**
+   * Triggers when a dropdown list is opened.
+   */
+  "open",
+
+  /**
+   * Triggers when a dropdown list is closed.
+   */
+  "close",
+
+  /**
+   * Triggers when the search value is changed.
+   * @property {string} query
+   */
+  "searchChange",
 ]);
 
 type UListboxRef = InstanceType<typeof UListbox>;
@@ -80,7 +96,7 @@ const selectedOptions = computed(() => {
 });
 
 const badgeLabel = computed(() => {
-  if (!selectedOptions.value.length) {
+  if (!props.labelDisplayCount || !selectedOptions.value.length) {
     return props.label;
   }
 
@@ -114,22 +130,30 @@ function getFullOptionLabels(value: Option | Option[]) {
   return "";
 }
 
+function onSearchChange(query: string) {
+  emit("searchChange", query);
+}
+
 function onClickBadge() {
   isShownOptions.value = !isShownOptions.value;
 
   if (isShownOptions.value) {
     nextTick(() => listboxRef.value?.wrapperRef?.focus());
+
+    emit("open");
   }
 }
 
 function hideOptions() {
   isShownOptions.value = false;
+
+  emit("close");
 }
 
 function onClickOption(option: Option) {
   emit("clickOption", option);
 
-  hideOptions();
+  if (!props.multiple) hideOptions();
 }
 
 defineExpose({
@@ -229,6 +253,7 @@ const { getDataTest, config, wrapperAttrs, dropdownBadgeAttrs, listboxAttrs, tog
       v-bind="listboxAttrs"
       :data-test="getDataTest('list')"
       @click-option="onClickOption"
+      @search-change="onSearchChange"
     />
   </div>
 </template>
