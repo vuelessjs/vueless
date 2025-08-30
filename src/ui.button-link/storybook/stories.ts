@@ -31,7 +31,10 @@ export default {
   },
   parameters: {
     docs: {
-      ...getDocsDescription(ULink.__name),
+      ...getDocsDescription(
+        ULink.__name,
+        "For Vue projects <a href='https://router.vuejs.org' target='_blank'>VueRouter</a> needs to be installed.",
+      ),
     },
   },
 } as Meta;
