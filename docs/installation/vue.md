@@ -2,7 +2,7 @@
 
 ## New project
 
-To get started with Vueless UI, simply paste the following code into your terminal:
+To start using Vueless UI, run the following command:
 
 {% tabs %}
 {% tab title="npm" %}
@@ -42,8 +42,6 @@ bun create vueless@latest
 {% endtabs %}
 
 This command guides you through a few setup options, then generates a new scaffolded Vue + Vueless UI project with the complete application structure.
-
-***
 
 ## Existing project
 
