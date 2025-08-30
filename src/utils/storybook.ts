@@ -334,7 +334,7 @@ export function getSlotsFragment(defaultTemplate: string) {
 /**
  * Create story param config to show component description with a link on GitHub.
  */
-export function getDocsDescription(componentName: string | undefined) {
+export function getDocsDescription(componentName: string | undefined, afterText = "") {
   if (!componentName) {
     return {};
   }
@@ -342,7 +342,7 @@ export function getDocsDescription(componentName: string | undefined) {
   let viewOnGitHub = "";
 
   if (COMPONENTS[componentName as ComponentNames]) {
-    viewOnGitHub = `| <a href="https://github.com/vuelessjs/vueless/tree/main/src/${COMPONENTS[componentName as ComponentNames]}" target="_blank">View on GitHub</a>`;
+    viewOnGitHub = `| <a href="https://github.com/vuelessjs/vueless/tree/main/src/${COMPONENTS[componentName as ComponentNames]}" target="_blank">View on GitHub</a><br/>${afterText}`;
   }
 
   return {
