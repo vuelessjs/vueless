@@ -17,10 +17,10 @@ npm create vueless@latest
 yarn create vueless
 
 # For Yarn Modern (v2+)
-$ yarn create vueless@latest
+yarn create vueless@latest
   
 # For Yarn ^v4.11
-$ yarn dlx create-vueless@latest
+yarn dlx create-vueless@latest
 ```
 {% endtab %}
 
@@ -28,10 +28,6 @@ $ yarn dlx create-vueless@latest
 ```bash
 pnpm create vueless@latest
 ```
-
-{% hint style="info" %}
-Use the `--pnpm` flag when working with pnpm. This will generate a `.npmrc` file preconfigured with the necessary settings for the Vueless package.
-{% endhint %}
 {% endtab %}
 
 {% tab title="bun" %}
