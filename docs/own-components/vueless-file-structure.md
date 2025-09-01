@@ -17,7 +17,6 @@ U[component]/
 ├─ config.ts
 ├─ constants.ts
 ├─ types.ts
-├─ U[component].test.ts
 ├─ U[component].vue
 │  # optional
 ├─ U[component][child].vue
@@ -35,10 +34,14 @@ ui.form-date-picker-range/
 ├─ storybook/
 │  ├─ docs.mdx
 │  └─ stories.ts
+├─ tests/
+│  ├─ UDatePickerRange.test.ts 
+│  ├─ UDatePickerRangeInputs.test.ts 
+│  ├─ UDatePickerRangePeriodMenu.test.ts
+│  └─ ... # rest tests
 ├─ config.ts
 ├─ constants.ts
 ├─ types.ts
-├─ UDatePickerRange.test.ts
 ├─ UDatePickerRange.vue
 ├─ UDatePickerRangeInputs.vue
 ├─ UDatePickerRangePeriodMenu.vue
@@ -63,11 +66,13 @@ Folder for Storybook-related files:
 
 ### 📁 tests/
 
-Folder for Storybook-related files:
+Folder for test-related files:
 
 * 📜 U\[component].test.ts – component tests.
 * 📜 util\[service].test.ts – component utility service tests. <mark style="color:yellow;">(optional)</mark>
 * 📜 use\[composable].test.ts – component composable tests. <mark style="color:yellow;">(optional)</mark>
+
+We recommend using `vitest` with `@vue/test-utils` for testing
 
 ### 📜 config.ts
 
@@ -80,10 +85,6 @@ Contains all styles, default prop values, internationalization (i18n), and other
 ### 📜 types.ts
 
 Contains component types and props declaration.
-
-### 📜 U\[component].test.ts
-
-Contains unit tests for the component. We recommend using `vitest` with `@vue/test-utils` for testing.
 
 ### 📜 U\[component].vue
 
