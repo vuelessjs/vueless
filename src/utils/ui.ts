@@ -6,11 +6,10 @@ import { isCSR, isSSR } from "./helper";
 import { createGetMergedConfig } from "./node/mergeConfigs";
 import { COMPONENT_NAME as U_ICON } from "../ui.image-icon/constants";
 import {
-  JAVASCRIPT_EXT,
-  TYPESCRIPT_EXT,
+  VUELESS_CACHE_DIR,
+  ICON_NON_PROPS_DEFAULTS,
   VUELESS_CONFIG_FILE_NAME,
   TAILWIND_MERGE_EXTENSION,
-  ICON_NON_PROPS_DEFAULTS,
 } from "../constants";
 
 import type { Config, ComponentDefaults, UnknownObject, ComponentNames } from "../types";
@@ -51,14 +50,10 @@ if (isSSR) {
   (async () => {
     try {
       vuelessConfig = (
-        await import(/* @vite-ignore */ `/${VUELESS_CONFIG_FILE_NAME}${JAVASCRIPT_EXT}`)
+        await import(
+          /* @vite-ignore */ `${process.cwd()}/${VUELESS_CACHE_DIR}/${VUELESS_CONFIG_FILE_NAME}.mjs`
+        )
       ).default;
-
-      if (!vuelessConfig) {
-        vuelessConfig = (
-          await import(/* @vite-ignore */ `/${VUELESS_CONFIG_FILE_NAME}${TYPESCRIPT_EXT}`)
-        ).default;
-      }
     } catch {
       vuelessConfig = {} as Config;
     }
