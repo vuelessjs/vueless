@@ -54,7 +54,12 @@ npx vueless init
 {% tab title="yarn" %}
 ```bash
 yarn add vueless
+
+# For Yarn (v1+)
 yarn vueless init --yarn
+​
+# For Yarn Modern (v2+)
+yarn dlx vueless init --yarn
 ```
 
 {% hint style="info" %}
