@@ -67,8 +67,8 @@ export default defineConfigWithVueTs(
   },
   {
     name: "vitest",
-    ...pluginVitest.configs.recommended,
     files: ["src/**/tests/*"],
+    ...pluginVitest.configs.recommended,
   },
   {
     name: "eslint",
