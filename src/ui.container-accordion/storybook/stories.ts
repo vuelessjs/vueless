@@ -106,10 +106,7 @@ Sizes.args = {
     {
       value: "1",
       title: "Committed to Quality and Performance",
-      description:
-        trimText(`We take pride in delivering high-quality solutions tailored to your needs.
-      Our expertise ensures that your project is built with efficiency, scalability, and reliability in mind.
-    `),
+      description: "{enumValue}",
     },
   ],
 };
