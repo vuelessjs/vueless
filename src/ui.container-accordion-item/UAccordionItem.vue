@@ -32,7 +32,6 @@ const getAccordionSelectedItem = inject<(() => string | string[] | null) | null>
 
 const props = withDefaults(defineProps<Props>(), {
   ...getDefaults<Props, Config>(defaultConfig, COMPONENT_NAME),
-  modelValue: "",
 });
 
 const emit = defineEmits([

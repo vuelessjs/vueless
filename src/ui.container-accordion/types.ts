@@ -14,7 +14,7 @@ export type SetAccordionSelectedItem = (value: string, opened: boolean) => void;
 
 export interface Props {
   /**
-   * Accordion state (opened/collapsed).
+   * Accordion items state control.
    */
   modelValue?: string | string[] | null;
 

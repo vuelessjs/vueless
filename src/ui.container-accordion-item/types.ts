@@ -5,11 +5,6 @@ export type Config = typeof defaultConfig;
 
 export interface Props {
   /**
-   * Accordion value.
-   */
-  modelValue?: string | string[] | null;
-
-  /**
    * Accordion value attribute.
    */
   value?: string;
