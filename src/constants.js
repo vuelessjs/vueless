@@ -287,6 +287,7 @@ export const COMPONENTS = {
   UGroup: "ui.container-group",
   UGroups: "ui.container-groups",
   UAccordion: "ui.container-accordion",
+  UAccordionItem: "ui.container-accordion-item",
   UCard: "ui.container-card",
   UModal: "ui.container-modal",
   UModalConfirm: "ui.container-modal-confirm",

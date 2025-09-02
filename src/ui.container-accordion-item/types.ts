@@ -3,25 +3,21 @@ import type { ComponentConfig } from "../types";
 
 export type Config = typeof defaultConfig;
 
-export interface UAccordionOption {
-  value: string;
-  title: string;
-  description?: string;
-  opened?: boolean;
-}
-
-export type SetAccordionSelectedItem = (value: string | null) => void;
-
 export interface Props {
   /**
-   * Accordion state (opened/collapsed).
+   * Accordion value.
    */
   modelValue?: string | null;
 
   /**
-   * Radio group options.
+   * Accordion value attribute.
    */
-  options?: UAccordionOption[];
+  value?: string;
+
+  /**
+   * Accordion name.
+   */
+  name: string;
 
   /**
    * Accordion title.
@@ -34,24 +30,24 @@ export interface Props {
   description?: string;
 
   /**
-   * Unique accordion name (sets for each accordion).
-   */
-  name: string;
-
-  /**
    * Accordion size.
    */
   size?: "sm" | "md" | "lg";
 
   /**
-   * Accordion toggle icon.
+   * Control accordion state (opened/closed).
    */
-  toggleIcon?: boolean | string;
+  opened?: boolean;
 
   /**
    * Disable an accordion.
    */
   disabled?: boolean;
+
+  /**
+   * Accordion toggle icon.
+   */
+  toggleIcon?: boolean | string;
 
   /**
    * Unique element id.

@@ -94,6 +94,7 @@ export { default as URow } from "./ui.container-row/URow.vue";
 export { default as UGroup } from "./ui.container-group/UGroup.vue";
 export { default as UGroups } from "./ui.container-groups/UGroups.vue";
 export { default as UAccordion } from "./ui.container-accordion/UAccordion.vue";
+export { default as UAccordionItem } from "./ui.container-accordion-item/UAccordionItem.vue";
 export { default as UCard } from "./ui.container-card/UCard.vue";
 export { default as UModal } from "./ui.container-modal/UModal.vue";
 export { default as UModalConfirm } from "./ui.container-modal-confirm/UModalConfirm.vue";
