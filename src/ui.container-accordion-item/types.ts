@@ -5,42 +5,42 @@ export type Config = typeof defaultConfig;
 
 export interface Props {
   /**
-   * Accordion value attribute.
+   * Accordion item value attribute.
    */
   value?: string;
 
   /**
-   * Accordion name.
+   * Accordion item name.
    */
   name: string;
 
   /**
-   * Accordion title.
+   * Accordion item title.
    */
   title?: string;
 
   /**
-   * Accordion description.
+   * Accordion item description.
    */
   description?: string;
 
   /**
-   * Accordion size.
+   * Accordion item size.
    */
   size?: "sm" | "md" | "lg";
 
   /**
-   * Control accordion state (opened/closed).
+   * Control accordion item state (opened/closed).
    */
   opened?: boolean;
 
   /**
-   * Disable an accordion.
+   * Disable accordion item.
    */
   disabled?: boolean;
 
   /**
-   * Accordion toggle icon.
+   * Accordion item toggle icon.
    */
   toggleIcon?: boolean | string;
 
