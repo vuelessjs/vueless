@@ -15,6 +15,7 @@ defineOptions({ inheritAttrs: false });
 
 const props = withDefaults(defineProps<Props>(), {
   ...getDefaults<Props, Config>(defaultConfig, COMPONENT_NAME),
+  modelValue: () => [],
   options: () => [],
 });
 
@@ -33,9 +34,32 @@ const selectedItem = computed({
   set: (value) => emit("update:modelValue", value),
 });
 
-provide<SetAccordionSelectedItem>("setAccordionSelectedItem", (value) => {
-  selectedItem.value = value;
+provide<SetAccordionSelectedItem>("setAccordionSelectedItem", (value, opened) => {
+  if (props.multiple) {
+    let current: string[] = [];
+
+    if (selectedItem.value) {
+      current = Array.isArray(selectedItem.value) ? [...selectedItem.value] : [selectedItem.value];
+    }
+
+    if (opened && !current.includes(value)) {
+      current.push(value);
+    } else {
+      const index = current.indexOf(value);
+
+      if (index !== -1) {
+        current.splice(index, 1);
+      }
+    }
+
+    selectedItem.value = current;
+
+    return;
+  }
+
+  selectedItem.value = opened ? value : null;
 });
+
 provide("getAccordionSelectedItem", () => selectedItem.value ?? null);
 provide("getAccordionName", () => props.name);
 provide("getAccordionSize", () => props.size);

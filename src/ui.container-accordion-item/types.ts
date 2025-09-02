@@ -7,7 +7,7 @@ export interface Props {
   /**
    * Accordion value.
    */
-  modelValue?: string | null;
+  modelValue?: string | string[] | null;
 
   /**
    * Accordion value attribute.

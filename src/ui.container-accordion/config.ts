@@ -4,5 +4,6 @@ export default /*tw*/ {
   defaults: {
     size: "md",
     disabled: false,
+    multiple: false,
   },
 };

@@ -25,10 +25,14 @@ const setAccordionSelectedItem = inject<SetAccordionSelectedItem | null>(
 const getAccordionName = inject("getAccordionName", null);
 const getAccordionSize = inject("getAccordionSize", null);
 const getAccordionDisabled = inject("getAccordionDisabled", null);
-const getAccordionSelectedItem = inject("getAccordionSelectedItem", null);
+const getAccordionSelectedItem = inject<(() => string | string[] | null) | null>(
+  "getAccordionSelectedItem",
+  null,
+);
 
 const props = withDefaults(defineProps<Props>(), {
   ...getDefaults<Props, Config>(defaultConfig, COMPONENT_NAME),
+  modelValue: "",
 });
 
 const emit = defineEmits([
@@ -38,12 +42,6 @@ const emit = defineEmits([
    * @property {boolean} isOpened
    */
   "click",
-
-  /**
-   * Triggers when the value attribute changes.
-   * @property {string} value
-   */
-  "update:modelValue",
 ]);
 
 const wrapperRef = useTemplateRef<HTMLDivElement>("wrapper");
@@ -63,14 +61,14 @@ const elementId = props.id || useId();
 const internalOpened = ref(false);
 
 const isOpened = computed(() => {
-  const selectedFromGroup = toValue(getAccordionSelectedItem);
+  const selectedItem = toValue(getAccordionSelectedItem);
 
-  if (selectedFromGroup !== null) {
-    return isEqual(selectedFromGroup, props.value);
-  }
+  if (selectedItem !== null) {
+    if (Array.isArray(selectedItem)) {
+      return selectedItem.includes(props.value ?? "");
+    }
 
-  if (props.modelValue !== undefined && props.modelValue !== null) {
-    return isEqual(props.modelValue, props.value);
+    return isEqual(selectedItem, props.value);
   }
 
   return props.opened || internalOpened.value;
@@ -85,26 +83,19 @@ const toggleIconName = computed(() => {
 });
 
 function onClickItem(event: MouseEvent) {
-  if (props.disabled || (contentRef.value && contentRef.value.contains(event.target as Node))) {
-    return;
-  }
+  const clickedInsideContent = contentRef.value?.contains(event.target as Node);
+
+  if (props.disabled || clickedInsideContent) return;
 
   emit("click", elementId, isOpened.value);
 
   if (setAccordionSelectedItem) {
-    if (isOpened.value) {
-      setAccordionSelectedItem(null);
-
-      return;
-    }
-
-    setAccordionSelectedItem(props.value ?? "");
+    setAccordionSelectedItem(props.value ?? "", !isOpened.value);
 
     return;
   }
 
   internalOpened.value = !internalOpened.value;
-  emit("update:modelValue", internalOpened.value);
 }
 
 defineExpose({

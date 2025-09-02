@@ -10,16 +10,16 @@ export interface UAccordionOption {
   opened?: boolean;
 }
 
-export type SetAccordionSelectedItem = (value: string | null) => void;
+export type SetAccordionSelectedItem = (value: string, opened: boolean) => void;
 
 export interface Props {
   /**
    * Accordion state (opened/collapsed).
    */
-  modelValue?: string | null;
+  modelValue?: string | string[] | null;
 
   /**
-   * Radio group options.
+   * Accordion options.
    */
   options?: UAccordionOption[];
 
@@ -42,6 +42,11 @@ export interface Props {
    * Accordion size.
    */
   size?: "sm" | "md" | "lg";
+
+  /**
+   * Allow multiple items to be opened at the same time.
+   */
+  multiple?: boolean;
 
   /**
    * Accordion toggle icon.
