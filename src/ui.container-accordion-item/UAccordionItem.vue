@@ -87,7 +87,7 @@ function onClickItem(event: MouseEvent) {
 
   if (props.disabled || clickedInsideContent) return;
 
-  emit("click", elementId, isOpened.value);
+  emit("click", elementId, !isOpened.value);
 
   if (setAccordionSelectedItem) {
     setAccordionSelectedItem(props.value ?? "", !isOpened.value);
@@ -125,14 +125,7 @@ const {
 </script>
 
 <template>
-  <div
-    ref="wrapper"
-    v-bind="wrapperAttrs"
-    :name="accordionName"
-    :value="value"
-    :data-test="getDataTest()"
-    @click="onClickItem"
-  >
+  <div ref="wrapper" v-bind="wrapperAttrs" :data-test="getDataTest()" @click="onClickItem">
     <div v-bind="bodyAttrs">
       <div v-bind="titleAttrs">
         {{ title }}

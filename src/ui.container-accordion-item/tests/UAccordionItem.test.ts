@@ -15,6 +15,7 @@ describe("UAccordionItem", () => {
 
       const component = mount(UAccordionItem, {
         props: {
+          name: "test",
           title,
         },
       });
@@ -28,6 +29,7 @@ describe("UAccordionItem", () => {
 
       const component = mount(UAccordionItem, {
         props: {
+          name: "test",
           description,
         },
       });
@@ -46,6 +48,7 @@ describe("UAccordionItem", () => {
       Object.entries(sizeClasses).forEach(([size, classes]) => {
         const component = mount(UAccordionItem, {
           props: {
+            name: "test",
             size: size as Props["size"],
           },
         });
@@ -65,6 +68,7 @@ describe("UAccordionItem", () => {
       toggleIconTests.forEach(({ toggleIcon, exists, iconName }) => {
         const component = mount(UAccordionItem, {
           props: {
+            name: "test",
             toggleIcon: toggleIcon as Props["toggleIcon"],
           },
         });
@@ -86,6 +90,7 @@ describe("UAccordionItem", () => {
 
       const component = mount(UAccordionItem, {
         props: {
+          name: "test",
           id,
           description,
         },
@@ -100,6 +105,7 @@ describe("UAccordionItem", () => {
 
       const component = mount(UAccordionItem, {
         props: {
+          name: "test",
           dataTest,
         },
       });
@@ -116,6 +122,7 @@ describe("UAccordionItem", () => {
 
       const component = mount(UAccordionItem, {
         props: {
+          name: "test",
           toggleIcon,
         },
       });
@@ -133,6 +140,7 @@ describe("UAccordionItem", () => {
 
       const component = mount(UAccordionItem, {
         props: {
+          name: "test",
           toggleIcon,
         },
         slots: {
@@ -153,6 +161,7 @@ describe("UAccordionItem", () => {
 
       const component = mount(UAccordionItem, {
         props: {
+          name: "test",
           toggleIcon,
         },
         slots: {
@@ -182,6 +191,7 @@ describe("UAccordionItem", () => {
       const slotClass = "custom-content";
 
       const component = mount(UAccordionItem, {
+        props: { name: "test" },
         slots: {
           default: `<div class="${slotClass}">${slotContent}</div>`,
         },
@@ -204,6 +214,7 @@ describe("UAccordionItem", () => {
       const slotClass = "custom-content";
 
       const component = mount(UAccordionItem, {
+        props: { name: "test" },
         slots: {
           default: `<div class="${slotClass}">${slotContent}</div>`,
         },
@@ -213,7 +224,7 @@ describe("UAccordionItem", () => {
     });
 
     it("does not render content wrapper when default slot is empty", async () => {
-      const component = mount(UAccordionItem);
+      const component = mount(UAccordionItem, { props: { name: "test" } });
 
       await component.trigger("click");
 
@@ -229,6 +240,7 @@ describe("UAccordionItem", () => {
 
       const component = mount(UAccordionItem, {
         props: {
+          name: "test",
           id,
         },
       });
@@ -269,6 +281,7 @@ describe("UAccordionItem", () => {
 
       const component = mount(UAccordionItem, {
         props: {
+          name: "test",
           description,
         },
       });

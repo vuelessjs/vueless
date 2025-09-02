@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, provide, useTemplateRef } from "vue";
+import { computed, provide, useTemplateRef, ref, watch } from "vue";
 
 import useUI from "../composables/useUI";
 import { getDefaults } from "../utils/ui";
@@ -15,7 +15,7 @@ defineOptions({ inheritAttrs: false });
 
 const props = withDefaults(defineProps<Props>(), {
   ...getDefaults<Props, Config>(defaultConfig, COMPONENT_NAME),
-  modelValue: () => [],
+  modelValue: undefined,
   options: () => [],
 });
 
@@ -29,9 +29,17 @@ const emit = defineEmits([
 
 const listRef = useTemplateRef<HTMLDivElement>("list");
 
+const internalValue = ref<string | string[] | null>(props.multiple ? [] : null);
+
+const isControlled = computed(() => props.modelValue !== undefined);
+
 const selectedItem = computed({
-  get: () => props.modelValue,
-  set: (value) => emit("update:modelValue", value),
+  get: () => (isControlled.value ? props.modelValue! : internalValue.value),
+  set: (value) => {
+    if (!isControlled.value) internalValue.value = value;
+
+    emit("update:modelValue", value);
+  },
 });
 
 provide<SetAccordionSelectedItem>("setAccordionSelectedItem", (value, opened) => {
@@ -64,6 +72,15 @@ provide("getAccordionSelectedItem", () => selectedItem.value ?? null);
 provide("getAccordionName", () => props.name);
 provide("getAccordionSize", () => props.size);
 provide("getAccordionDisabled", () => props.disabled);
+
+watch(
+  () => props.multiple,
+  (isMultiple) => {
+    if (!isControlled.value) {
+      internalValue.value = isMultiple ? [] : null;
+    }
+  },
+);
 
 defineExpose({
   /**

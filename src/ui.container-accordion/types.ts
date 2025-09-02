@@ -24,16 +24,6 @@ export interface Props {
   options?: UAccordionOption[];
 
   /**
-   * Accordion title.
-   */
-  title?: string;
-
-  /**
-   * Accordion description.
-   */
-  description?: string;
-
-  /**
    * Unique accordion name (sets for each accordion).
    */
   name: string;
@@ -47,11 +37,6 @@ export interface Props {
    * Allow multiple items to be opened at the same time.
    */
   multiple?: boolean;
-
-  /**
-   * Accordion toggle icon.
-   */
-  toggleIcon?: boolean | string;
 
   /**
    * Disable an accordion.
