@@ -364,6 +364,12 @@ function getText(text?: ThemeConfig["text"]) {
 
   const runtimeText = primitiveToObject(text) as ThemeConfigText;
   const globalText = primitiveToObject(vuelessConfig.text) as ThemeConfigText;
+  const storedText = {
+    xs: getStored(storageKey.xs),
+    sm: getStored(storageKey.sm),
+    md: getStored(storageKey.md),
+    lg: getStored(storageKey.lg),
+  };
 
   const textMd = Math.max(0, Number(runtimeText.md ?? globalText.md ?? DEFAULT_TEXT));
   const textXs = Math.max(0, textMd - TEXT_DECREMENT * 2);
@@ -377,20 +383,22 @@ function getText(text?: ThemeConfig["text"]) {
     lg: Math.max(0, Number(runtimeText.lg ?? getStored(storageKey.lg) ?? globalText.lg ?? 0)),
   };
 
+  /* eslint-disable prettier/prettier,vue/max-len */
   const mergedText = {
-    xs: runtimeText.xs === undefined && globalText.xs === undefined ? textXs : definedText.xs,
-    sm: runtimeText.sm === undefined && globalText.sm === undefined ? textSm : definedText.sm,
-    md: runtimeText.md === undefined && globalText.md === undefined ? textMd : definedText.md,
-    lg: runtimeText.lg === undefined && globalText.lg === undefined ? textLg : definedText.lg,
+    xs: runtimeText.xs === undefined && globalText.xs === undefined && (storedText.xs === undefined || typeof text === "number") ? textXs : definedText.xs,
+    sm: runtimeText.sm === undefined && globalText.sm === undefined && (storedText.sm === undefined || typeof text === "number") ? textSm : definedText.sm,
+    md: runtimeText.md === undefined && globalText.md === undefined && storedText.md === undefined ? textMd : definedText.md,
+    lg: runtimeText.lg === undefined && globalText.lg === undefined && (storedText.lg === undefined || typeof text === "number") ? textLg : definedText.lg,
   };
+  /* eslint-enable prettier/prettier,vue/max-len */
 
-  if (isCSR && text) {
-    setCookie(storageKey.sm, String(mergedText.xs));
+  if (isCSR && text !== undefined) {
+    setCookie(storageKey.xs, String(mergedText.xs));
     setCookie(storageKey.sm, String(mergedText.sm));
     setCookie(storageKey.md, String(mergedText.md));
     setCookie(storageKey.lg, String(mergedText.lg));
 
-    localStorage.setItem(storageKey.sm, String(mergedText.xs));
+    localStorage.setItem(storageKey.xs, String(mergedText.xs));
     localStorage.setItem(storageKey.sm, String(mergedText.sm));
     localStorage.setItem(storageKey.md, String(mergedText.md));
     localStorage.setItem(storageKey.lg, String(mergedText.lg));
@@ -412,6 +420,11 @@ function getOutlines(outline?: ThemeConfig["outline"]) {
 
   const runtimeOutline = primitiveToObject(outline) as ThemeConfigOutline;
   const globalOutline = primitiveToObject(vuelessConfig.outline) as ThemeConfigOutline;
+  const storedOutline = {
+    sm: getStored(storageKey.sm),
+    md: getStored(storageKey.md),
+    lg: getStored(storageKey.lg),
+  };
 
   const outlineMd = Math.max(0, Number(runtimeOutline.md ?? globalOutline.md ?? DEFAULT_OUTLINE));
   const outlineSm = Math.max(0, outlineMd - OUTLINE_DECREMENT);
@@ -427,15 +440,15 @@ function getOutlines(outline?: ThemeConfig["outline"]) {
     lg: Math.max(0, Number(runtimeOutline.lg ?? getStored(storageKey.lg) ?? globalOutline.lg ?? 0)),
   };
 
-  /* eslint-disable prettier/prettier */
+  /* eslint-disable prettier/prettier,vue/max-len */
   const mergedOutline = {
-    sm: runtimeOutline.sm === undefined && globalOutline.sm === undefined ? outlineSm : definedOutline.sm,
-    md: runtimeOutline.md === undefined && globalOutline.md === undefined ? outlineMd : definedOutline.md,
-    lg: runtimeOutline.lg === undefined && globalOutline.lg === undefined ? outlineLg : definedOutline.lg,
+    sm: runtimeOutline.sm === undefined && globalOutline.sm === undefined && (storedOutline.sm === undefined || typeof outline === "number") ? outlineSm : definedOutline.sm,
+    md: runtimeOutline.md === undefined && globalOutline.md === undefined && storedOutline.md === undefined ? outlineMd : definedOutline.md,
+    lg: runtimeOutline.lg === undefined && globalOutline.lg === undefined && (storedOutline.lg === undefined || typeof outline === "number") ? outlineLg : definedOutline.lg,
   };
-  /* eslint-enable prettier/prettier */
+  /* eslint-enable prettier/prettier,vue/max-len */
 
-  if (isCSR && outline) {
+  if (isCSR && outline !== undefined) {
     setCookie(storageKey.sm, String(mergedOutline.sm));
     setCookie(storageKey.md, String(mergedOutline.md));
     setCookie(storageKey.lg, String(mergedOutline.lg));
@@ -519,9 +532,9 @@ function getLetterSpacing(letterSpacing?: ThemeConfig["letterSpacing"]) {
   const storageKey = `vl-${LETTER_SPACING}`;
 
   const spacing = letterSpacing ?? getStored(storageKey) ?? vuelessConfig.letterSpacing;
-  const mergedSpacing = Number(spacing ?? DEFAULT_LETTER_SPACING);
+  const mergedSpacing = Math.max(0, Number(spacing ?? DEFAULT_LETTER_SPACING));
 
-  if (isCSR && letterSpacing) {
+  if (isCSR && letterSpacing !== undefined) {
     setCookie(storageKey, String(mergedSpacing));
     localStorage.setItem(storageKey, String(mergedSpacing));
   }
@@ -539,7 +552,7 @@ function getDisabledOpacity(disabledOpacity?: ThemeConfig["disabledOpacity"]) {
   const opacity = disabledOpacity ?? getStored(storageKey) ?? vuelessConfig.disabledOpacity;
   const mergedOpacity = Math.max(0, Number(opacity ?? DEFAULT_DISABLED_OPACITY));
 
-  if (isCSR && disabledOpacity) {
+  if (isCSR && disabledOpacity !== undefined) {
     setCookie(storageKey, String(mergedOpacity));
     localStorage.setItem(storageKey, String(mergedOpacity));
   }
