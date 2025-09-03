@@ -1,7 +1,7 @@
 import { cloneDeep, merge } from "lodash-es";
 
 import { vuelessConfig } from "./ui";
-import { isCSR, setCookie } from "./helper";
+import { isCSR, setCookie, deleteCookie } from "./helper";
 
 import {
   PX_IN_REM,
@@ -140,6 +140,39 @@ export function cssVar(name: string) {
  */
 export function getStored(key: string) {
   return isCSR ? localStorage.getItem(key) : undefined;
+}
+
+/**
+ * Resets all theme data by clearing cookies and localStorage.
+ * This removes all stored theme preferences including color mode, colors, text sizes,
+ * outline sizes, rounding values, letter spacing, and disabled opacity.
+ */
+export function resetTheme() {
+  if (!isCSR) return;
+
+  const themeKeys = [
+    COLOR_MODE_KEY,
+    AUTO_MODE_KEY,
+    `vl-${PRIMARY_COLOR}`,
+    `vl-${NEUTRAL_COLOR}`,
+    `vl-${TEXT}-xs`,
+    `vl-${TEXT}-sm`,
+    `vl-${TEXT}-md`,
+    `vl-${TEXT}-lg`,
+    `vl-${OUTLINE}-sm`,
+    `vl-${OUTLINE}-md`,
+    `vl-${OUTLINE}-lg`,
+    `vl-${ROUNDING}-sm`,
+    `vl-${ROUNDING}-md`,
+    `vl-${ROUNDING}-lg`,
+    `vl-${LETTER_SPACING}`,
+    `vl-${DISABLED_OPACITY}`,
+  ];
+
+  themeKeys.forEach((key) => {
+    localStorage.removeItem(key);
+    deleteCookie(key);
+  });
 }
 
 /**
