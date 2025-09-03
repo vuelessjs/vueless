@@ -403,6 +403,11 @@ function getRoundings(rounding?: ThemeConfig["rounding"]) {
 
   const runtimeRounding = primitiveToObject(rounding) as ThemeConfigRounding;
   const globalRounding = primitiveToObject(vuelessConfig.rounding) as ThemeConfigRounding;
+  const storedRounding = {
+    sm: getStored(storageKey.sm),
+    md: getStored(storageKey.md),
+    lg: getStored(storageKey.lg),
+  };
 
   // eslint-disable-next-line prettier/prettier
   const roundingMd = Math.max(0, Number(runtimeRounding.md ?? globalRounding.md ?? DEFAULT_ROUNDING));
@@ -421,7 +426,7 @@ function getRoundings(rounding?: ThemeConfig["rounding"]) {
     roundingLg = ROUNDING_INCREMENT - ROUNDING_DECREMENT;
   }
 
-  /* eslint-disable prettier/prettier */
+  /* eslint-disable prettier/prettier,vue/max-len */
   const definedRounding = {
     sm: Math.max(0, Number(runtimeRounding.sm ?? getStored(storageKey.sm) ?? globalRounding.sm ?? 0)),
     md: Math.max(0, Number(runtimeRounding.md ?? getStored(storageKey.md) ?? globalRounding.md ?? 0)),
@@ -429,13 +434,13 @@ function getRoundings(rounding?: ThemeConfig["rounding"]) {
   };
 
   const mergedRounding = {
-    sm: runtimeRounding.sm === undefined && globalRounding.sm === undefined ? roundingSm : definedRounding.sm,
-    md: runtimeRounding.md === undefined && globalRounding.md === undefined ? roundingMd : definedRounding.md,
-    lg: runtimeRounding.lg === undefined && globalRounding.lg === undefined ? roundingLg : definedRounding.lg,
+    sm: runtimeRounding.sm === undefined && globalRounding.sm === undefined && (storedRounding.sm === undefined || typeof rounding === "number") ? roundingSm : definedRounding.sm,
+    md: runtimeRounding.md === undefined && globalRounding.md === undefined && storedRounding.md === undefined ? roundingMd : definedRounding.md,
+    lg: runtimeRounding.lg === undefined && globalRounding.lg === undefined && (storedRounding.lg === undefined || typeof rounding === "number") ? roundingLg : definedRounding.lg,
   };
-  /* eslint-enable prettier/prettier */
+  /* eslint-enable prettier/prettier,vue/max-len */
 
-  if (isCSR && rounding) {
+  if (isCSR && rounding !== undefined) {
     setCookie(storageKey.sm, String(mergedRounding.sm));
     setCookie(storageKey.md, String(mergedRounding.md));
     setCookie(storageKey.lg, String(mergedRounding.lg));
