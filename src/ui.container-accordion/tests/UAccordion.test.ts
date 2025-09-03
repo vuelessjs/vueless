@@ -14,7 +14,7 @@ describe("UAccordion", () => {
   describe("Props", () => {
     it("renders items from options", () => {
       const component = mount(UAccordion, {
-        props: { name: "test", options },
+        props: { options },
       });
 
       const items = component.findAllComponents(UAccordionItem);
@@ -24,12 +24,11 @@ describe("UAccordion", () => {
 
     it("passes base props down to items", () => {
       const component = mount(UAccordion, {
-        props: { name: "acc", size: "md", disabled: true, options },
+        props: { size: "md", disabled: true, options },
       });
 
       const item = component.findComponent(UAccordionItem);
 
-      expect(item.props("name")).toBe("acc");
       expect(item.props("size")).toBe("md");
       expect(item.props("disabled")).toBe(true);
     });
@@ -38,7 +37,7 @@ describe("UAccordion", () => {
       const dataTest = "accordion-test";
 
       const component = mount(UAccordion, {
-        props: { name: "test", dataTest },
+        props: { dataTest },
       });
 
       expect(component.attributes("data-test")).toBe(dataTest);
@@ -47,11 +46,11 @@ describe("UAccordion", () => {
 
   // Exposed refs
   describe("Exposed refs", () => {
-    it("exposes listRef", () => {
-      const component = mount(UAccordion, { props: { name: "test" } });
+    it("exposes accordionRef", () => {
+      const component = mount(UAccordion);
 
-      expect(component.vm.listRef).toBeDefined();
-      expect(component.vm.listRef instanceof HTMLDivElement).toBe(true);
+      expect(component.vm.accordionRef).toBeDefined();
+      expect(component.vm.accordionRef instanceof HTMLDivElement).toBe(true);
     });
   });
 
@@ -59,7 +58,7 @@ describe("UAccordion", () => {
   describe("Events", () => {
     it("emits update:modelValue when an item is toggled (single)", async () => {
       const component = mount(UAccordion, {
-        props: { name: "test", options },
+        props: { options },
       });
 
       const firstItem = component.findAllComponents(UAccordionItem)[0];
@@ -79,7 +78,7 @@ describe("UAccordion", () => {
 
     it("emits update:modelValue with arrays when multiple=true", async () => {
       const component = mount(UAccordion, {
-        props: { name: "test", options, multiple: true },
+        props: { options, multiple: true },
       });
 
       const [firstItem, secondItem] = component.findAllComponents(UAccordionItem);

@@ -15,7 +15,6 @@ describe("UAccordionItem", () => {
 
       const component = mount(UAccordionItem, {
         props: {
-          name: "test",
           title,
         },
       });
@@ -29,7 +28,6 @@ describe("UAccordionItem", () => {
 
       const component = mount(UAccordionItem, {
         props: {
-          name: "test",
           description,
         },
       });
@@ -48,7 +46,6 @@ describe("UAccordionItem", () => {
       Object.entries(sizeClasses).forEach(([size, classes]) => {
         const component = mount(UAccordionItem, {
           props: {
-            name: "test",
             size: size as Props["size"],
           },
         });
@@ -68,7 +65,6 @@ describe("UAccordionItem", () => {
       toggleIconTests.forEach(({ toggleIcon, exists, iconName }) => {
         const component = mount(UAccordionItem, {
           props: {
-            name: "test",
             toggleIcon: toggleIcon as Props["toggleIcon"],
           },
         });
@@ -90,7 +86,6 @@ describe("UAccordionItem", () => {
 
       const component = mount(UAccordionItem, {
         props: {
-          name: "test",
           id,
           description,
         },
@@ -105,7 +100,6 @@ describe("UAccordionItem", () => {
 
       const component = mount(UAccordionItem, {
         props: {
-          name: "test",
           dataTest,
         },
       });
@@ -122,7 +116,6 @@ describe("UAccordionItem", () => {
 
       const component = mount(UAccordionItem, {
         props: {
-          name: "test",
           toggleIcon,
         },
       });
@@ -140,7 +133,6 @@ describe("UAccordionItem", () => {
 
       const component = mount(UAccordionItem, {
         props: {
-          name: "test",
           toggleIcon,
         },
         slots: {
@@ -161,7 +153,6 @@ describe("UAccordionItem", () => {
 
       const component = mount(UAccordionItem, {
         props: {
-          name: "test",
           toggleIcon,
         },
         slots: {
@@ -240,7 +231,6 @@ describe("UAccordionItem", () => {
 
       const component = mount(UAccordionItem, {
         props: {
-          name: "test",
           id,
         },
       });
@@ -281,7 +271,6 @@ describe("UAccordionItem", () => {
 
       const component = mount(UAccordionItem, {
         props: {
-          name: "test",
           description,
         },
       });

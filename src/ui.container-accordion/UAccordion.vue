@@ -15,7 +15,7 @@ defineOptions({ inheritAttrs: false });
 
 const props = withDefaults(defineProps<Props>(), {
   ...getDefaults<Props, Config>(defaultConfig, COMPONENT_NAME),
-  modelValue: () => [],
+  modelValue: undefined,
   options: () => [],
 });
 
