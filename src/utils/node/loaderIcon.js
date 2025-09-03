@@ -337,6 +337,10 @@ function getIconLibraryPaths(name, library) {
     sourcePath = path.join(cwd(), NODE_MODULES_DIR, library, "24", fillVariant, `${iconName}.svg`);
   }
 
+  if (library === "lucide-static") {
+    sourcePath = path.join(cwd(), NODE_MODULES_DIR, library, "icons", `${name}.svg`);
+  }
+
   if (library === "custom-icons") {
     sourcePath = path.join(cwd(), uIconDefaults.path, `${name}.svg`);
   }
