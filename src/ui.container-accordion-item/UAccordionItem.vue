@@ -8,7 +8,6 @@ import { getDefaults } from "../utils/ui";
 import { hasSlotContent } from "../utils/helper";
 
 import UIcon from "../ui.image-icon/UIcon.vue";
-import UDivider from "../ui.container-divider/UDivider.vue";
 
 import { COMPONENT_NAME } from "./constants";
 import defaultConfig from "./config";
@@ -22,7 +21,6 @@ const setAccordionSelectedItem = inject<SetAccordionSelectedItem | null>(
   "setAccordionSelectedItem",
   null,
 );
-const getAccordionName = inject("getAccordionName", null);
 const getAccordionSize = inject("getAccordionSize", null);
 const getAccordionDisabled = inject("getAccordionDisabled", null);
 const getAccordionSelectedItem = inject<(() => string | string[] | null) | null>(
@@ -44,13 +42,12 @@ const emit = defineEmits([
 ]);
 
 const wrapperRef = useTemplateRef<HTMLDivElement>("wrapper");
+const descriptionRef = useTemplateRef<HTMLDivElement>("description");
 const contentRef = useTemplateRef<HTMLDivElement>("content");
 
-const accordionName = ref(toValue(getAccordionName) || props.name);
 const accordionSize = ref(toValue(getAccordionSize) || props.size);
 const accordionDisabled = ref(toValue(getAccordionDisabled) || props.disabled);
 
-watchEffect(() => (accordionName.value = toValue(getAccordionName) || props.name));
 watchEffect(() => (accordionSize.value = toValue(getAccordionSize) || props.size));
 watchEffect(() => (accordionDisabled.value = toValue(getAccordionDisabled) || props.disabled));
 
@@ -83,8 +80,9 @@ const toggleIconName = computed(() => {
 
 function onClickItem(event: MouseEvent) {
   const clickedInsideContent = contentRef.value?.contains(event.target as Node);
+  const clickedDescription = descriptionRef.value?.contains(event.target as Node);
 
-  if (props.disabled || clickedInsideContent) return;
+  if (props.disabled || clickedDescription || clickedInsideContent) return;
 
   emit("click", elementId, !isOpened.value);
 
@@ -119,7 +117,6 @@ const {
   titleAttrs,
   contentAttrs,
   toggleIconAttrs,
-  accordionDividerAttrs,
 } = useUI<Config>(defaultConfig, mutatedProps);
 </script>
 
@@ -147,6 +144,7 @@ const {
       <div
         v-if="description"
         :id="`description-${elementId}`"
+        ref="description"
         v-bind="descriptionAttrs"
         v-text="description"
       />
@@ -156,7 +154,5 @@ const {
         <slot />
       </div>
     </div>
-
-    <UDivider v-bind="accordionDividerAttrs" />
   </div>
 </template>

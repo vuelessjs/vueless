@@ -24,11 +24,6 @@ export interface Props {
   options?: UAccordionOption[];
 
   /**
-   * Unique accordion name (sets for each accordion).
-   */
-  name: string;
-
-  /**
    * Accordion size.
    */
   size?: "sm" | "md" | "lg";

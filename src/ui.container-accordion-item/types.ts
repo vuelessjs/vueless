@@ -10,11 +10,6 @@ export interface Props {
   value?: string;
 
   /**
-   * Accordion item name.
-   */
-  name: string;
-
-  /**
    * Accordion item title.
    */
   title?: string;

@@ -3,7 +3,7 @@ export default /*tw*/ {
     base: "group cursor-pointer",
     variants: {
       disabled: {
-        true: "cursor-not-allowed",
+        true: "cursor-not-allowed text-default/(--vl-disabled-opacity)",
       },
     },
   },
@@ -19,7 +19,7 @@ export default /*tw*/ {
     },
   },
   description: {
-    base: "text-accented h-0 opacity-0 transition-all",
+    base: "text-accented h-0 opacity-0 transition-all cursor-default",
     variants: {
       size: {
         sm: "text-tiny",
@@ -29,6 +29,9 @@ export default /*tw*/ {
       opened: {
         true: "pt-2 h-fit opacity-100",
       },
+      disabled: {
+        true: "text-accented/(--vl-disabled-opacity)",
+      },
     },
   },
   content: "pt-3 cursor-default",
@@ -37,16 +40,6 @@ export default /*tw*/ {
     variants: {
       opened: {
         true: "group-[*]:rotate-180",
-      },
-    },
-  },
-  accordionDivider: {
-    base: "{UDivider} group-last:hidden",
-    variants: {
-      size: {
-        sm: "py-4",
-        md: "py-5",
-        lg: "py-6",
       },
     },
   },

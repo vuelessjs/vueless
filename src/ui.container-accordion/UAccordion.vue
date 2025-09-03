@@ -15,7 +15,7 @@ defineOptions({ inheritAttrs: false });
 
 const props = withDefaults(defineProps<Props>(), {
   ...getDefaults<Props, Config>(defaultConfig, COMPONENT_NAME),
-  modelValue: undefined,
+  modelValue: () => [],
   options: () => [],
 });
 
@@ -27,7 +27,7 @@ const emit = defineEmits([
   "update:modelValue",
 ]);
 
-const listRef = useTemplateRef<HTMLDivElement>("list");
+const accordionRef = useTemplateRef<HTMLDivElement>("accordion");
 
 const internalValue = ref<string | string[] | null>(props.multiple ? [] : null);
 
@@ -69,7 +69,6 @@ provide<SetAccordionSelectedItem>("setAccordionSelectedItem", (value, opened) =>
 });
 
 provide("getAccordionSelectedItem", () => selectedItem.value ?? null);
-provide("getAccordionName", () => props.name);
 provide("getAccordionSize", () => props.size);
 provide("getAccordionDisabled", () => props.disabled);
 
@@ -87,28 +86,27 @@ defineExpose({
    * A reference to the component's wrapper element for direct DOM manipulation.
    * @property {HTMLDivElement}
    */
-  listRef,
+  accordionRef,
 });
 
-const { getDataTest, accordionAttrs, listAttrs } = useUI<Config>(defaultConfig);
+const { getDataTest, accordionItemAttrs, accordionAttrs } = useUI<Config>(defaultConfig);
 </script>
 
 <template>
-  <div ref="list" v-bind="listAttrs" :data-test="getDataTest()">
+  <div ref="accordion" v-bind="accordionAttrs" :data-test="getDataTest()">
     <!-- @slot Use it to add UAccordionItem directly. -->
     <slot>
       <UAccordionItem
         v-for="(option, index) in options"
         :key="index"
         :model-value="selectedItem"
-        :name="name"
         :value="option.value"
         :opened="option.opened"
         :title="option.title"
         :description="option.description"
         :size="size"
         :disabled="disabled"
-        v-bind="accordionAttrs"
+        v-bind="accordionItemAttrs"
         :data-test="getDataTest(`item-${index}`)"
       />
     </slot>

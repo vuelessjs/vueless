@@ -92,14 +92,13 @@ const EnumTemplate: StoryFn<UAccordionArgs> = (args: UAccordionArgs, { argTypes 
 });
 
 export const Default = DefaultTemplate.bind({});
-Default.args = { name: "Default" };
+Default.args = {};
 
 export const Disabled = DefaultTemplate.bind({});
-Disabled.args = { name: "Disabled", disabled: true };
+Disabled.args = { disabled: true };
 
 export const Sizes = EnumTemplate.bind({});
 Sizes.args = {
-  name: "Sizes",
   enum: "size",
   class: "w-full",
   options: [

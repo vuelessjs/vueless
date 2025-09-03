@@ -54,29 +54,33 @@ const DefaultTemplate: StoryFn<UAccordionItemArgs> = (args: UAccordionItemArgs) 
 });
 
 const EnumTemplate: StoryFn<UAccordionItemArgs> = (args: UAccordionItemArgs, { argTypes }) => ({
-  components: { UAccordionItem },
+  components: { UAccordionItem, UCol },
   setup: () => ({ args, argTypes, getArgs }),
   template: `
-    <UAccordionItem
-      v-for="option in argTypes?.[args.enum]?.options"
-      v-bind="getArgs(args, option)"
-      :key="option"
-    />
+    <UCol gap="xl">
+      <UAccordionItem
+        v-for="option in argTypes?.[args.enum]?.options"
+        v-bind="getArgs(args, option)"
+        :key="option"
+      />
+    </UCol>
   `,
 });
 
 export const Default = DefaultTemplate.bind({});
-Default.args = { name: "Default" };
+Default.args = {};
 
 export const Disabled = DefaultTemplate.bind({});
-Disabled.args = { name: "Disabled", disabled: true };
+Disabled.args = { disabled: true };
+
+export const Opened = DefaultTemplate.bind({});
+Opened.args = { opened: true };
 
 export const Sizes = EnumTemplate.bind({});
-Sizes.args = { name: "Sizes", enum: "size", description: "{enumValue}" };
+Sizes.args = { enum: "size", description: "{enumValue}" };
 
 export const DefaultSlot = DefaultTemplate.bind({});
 DefaultSlot.args = {
-  name: "DefaultSlot",
   slotTemplate: `
     <template #default>
       <UCol gap="sm">
@@ -101,7 +105,6 @@ DefaultSlot.args = {
 
 export const ToggleSlot = DefaultTemplate.bind({});
 ToggleSlot.args = {
-  name: "ToggleSlot",
   slotTemplate: `
     <template #toggle="{ opened }">
       <ULink :label="opened ? 'Collapse' : 'Expand'" color="grayscale" />
