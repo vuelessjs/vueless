@@ -8,13 +8,10 @@ export {
   isCSR,
   setTitle,
   getRandomId,
-  getCookie,
-  setCookie,
-  deleteCookie,
   createDebounce,
   hasSlotContent
 } from "./utils/helper";
-export { getStored, setTheme, cssVar } from "./utils/theme";
+export { getStored, getTheme, setTheme, resetTheme, cssVar } from "./utils/theme";
 export { isMac, isPWA, isIOS, isAndroid, isMobileApp, isWindows } from "./utils/platform";
 export { cx, cva, compose, getDefaults, setVuelessConfig, setColor, vuelessConfig } from "./utils/ui";
 export { getArgTypes, getSlotNames, getSlotsFragment, getSource, getDocsDescription } from "./utils/storybook";

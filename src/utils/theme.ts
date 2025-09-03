@@ -1,12 +1,11 @@
 import { cloneDeep, merge } from "lodash-es";
 
 import { vuelessConfig } from "./ui";
-import { isCSR, setCookie, deleteCookie } from "./helper";
+import { isCSR, isSSR, setCookie, deleteCookie } from "./helper";
 
 import {
   PX_IN_REM,
   COLOR_MODE_KEY,
-  AUTO_MODE_KEY,
   LIGHT_MODE_CLASS,
   DARK_MODE_CLASS,
   GRAYSCALE_COLOR,
@@ -78,14 +77,10 @@ function toggleColorModeClass() {
 /**
  * Sets color mode.
  * @param {string} mode (dark | light | auto)
- * @param {boolean} isCachedAutoMode
  * @return {string} current color mode
  */
-function setColorMode(mode: `${ColorMode}`, isCachedAutoMode?: boolean): string {
+function setColorMode(mode: `${ColorMode}`): string {
   const colorMode = mode || getStored(COLOR_MODE_KEY) || vuelessConfig.colorMode || ColorMode.Light;
-
-  // TODO: This always true `!!Number(getStored(AUTO_MODE_KEY))` > `!!Number(undefined) = true`
-  isCachedAutoMode = isCachedAutoMode ?? !!Number(getStored(AUTO_MODE_KEY));
 
   const isAutoMode = colorMode === ColorMode.Auto;
   const isSystemDarkMode = isAutoMode && prefersColorSchemeDark && prefersColorSchemeDark?.matches;
@@ -97,7 +92,7 @@ function setColorMode(mode: `${ColorMode}`, isCachedAutoMode?: boolean): string 
   }
 
   /* Adding system color mode change event listener. */
-  if ((isAutoMode || isCachedAutoMode) && prefersColorSchemeDark) {
+  if (isAutoMode && prefersColorSchemeDark) {
     prefersColorSchemeDark.addEventListener("change", toggleColorModeClass);
   }
 
@@ -117,10 +112,7 @@ function setColorMode(mode: `${ColorMode}`, isCachedAutoMode?: boolean): string 
 
   if (mode) {
     setCookie(COLOR_MODE_KEY, currentColorMode);
-    setCookie(AUTO_MODE_KEY, String(Number(isAutoMode || isCachedAutoMode)));
-
     localStorage.setItem(COLOR_MODE_KEY, currentColorMode);
-    localStorage.setItem(AUTO_MODE_KEY, String(Number(isAutoMode || isCachedAutoMode)));
   }
 
   return currentColorMode;
@@ -139,7 +131,9 @@ export function cssVar(name: string) {
  * @return string | undefined
  */
 export function getStored(key: string) {
-  return isCSR ? localStorage.getItem(key) : undefined;
+  if (isSSR) return;
+
+  return localStorage.getItem(key) ?? undefined;
 }
 
 /**
@@ -152,7 +146,6 @@ export function resetTheme() {
 
   const themeKeys = [
     COLOR_MODE_KEY,
-    AUTO_MODE_KEY,
     `vl-${PRIMARY_COLOR}`,
     `vl-${NEUTRAL_COLOR}`,
     `vl-${TEXT}-xs`,
@@ -176,12 +169,44 @@ export function resetTheme() {
 }
 
 /**
+ * Retrieves the current theme configuration.
+ * @return ThemeConfig - current theme configuration
+ */
+export function getTheme(): ThemeConfig {
+  const colorMode = getStored(COLOR_MODE_KEY) || vuelessConfig.colorMode || ColorMode.Light;
+  const primary = getPrimaryColor();
+  const neutral = getNeutralColor();
+
+  const text = getText();
+  const outline = getOutlines();
+  const rounding = getRoundings();
+  const letterSpacing = getLetterSpacing();
+  const disabledOpacity = getDisabledOpacity();
+
+  const lightTheme = merge({}, DEFAULT_LIGHT_THEME, vuelessConfig.lightTheme);
+  const darkTheme = merge({}, DEFAULT_DARK_THEME, vuelessConfig.darkTheme);
+
+  return {
+    colorMode: colorMode as `${ColorMode}`,
+    primary,
+    neutral,
+    text,
+    outline,
+    rounding,
+    letterSpacing,
+    disabledOpacity,
+    lightTheme,
+    darkTheme,
+  };
+}
+
+/**
  * Applying theme settings.
  * Changes and reset Vueless CSS variables.
  * @return string - CSS variables
  */
-export function setTheme(config: ThemeConfig = {}, isCachedAutoMode?: boolean) {
-  if (isCSR) setColorMode(config.colorMode as ColorMode, isCachedAutoMode);
+export function setTheme(config: ThemeConfig = {}) {
+  if (isCSR) setColorMode(config.colorMode as ColorMode);
 
   const text = getText(config.text);
   const outline = getOutlines(config.outline);
