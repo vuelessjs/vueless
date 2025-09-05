@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, provide, useTemplateRef, ref, watch } from "vue";
+import { computed, provide, useTemplateRef, ref, watch, onMounted } from "vue";
 
 import useUI from "../composables/useUI";
 import { getDefaults } from "../utils/ui";
@@ -15,7 +15,7 @@ defineOptions({ inheritAttrs: false });
 
 const props = withDefaults(defineProps<Props>(), {
   ...getDefaults<Props, Config>(defaultConfig, COMPONENT_NAME),
-  modelValue: undefined,
+  modelValue: () => [],
   options: () => [],
 });
 
@@ -40,6 +40,16 @@ const selectedItem = computed({
 
     emit("update:modelValue", value);
   },
+});
+
+onMounted(() => {
+  const initiallyOpened = props.options
+    .filter((option) => option.opened)
+    .map((option) => option.value);
+
+  if (initiallyOpened.length > 0) {
+    selectedItem.value = props.multiple ? initiallyOpened : initiallyOpened[0];
+  }
 });
 
 provide<SetAccordionSelectedItem>("setAccordionSelectedItem", (value, opened) => {
@@ -101,7 +111,6 @@ const { getDataTest, accordionItemAttrs, accordionAttrs } = useUI<Config>(defaul
         :key="index"
         :model-value="selectedItem"
         :value="option.value"
-        :opened="option.opened"
         :title="option.title"
         :description="option.description"
         :size="size"

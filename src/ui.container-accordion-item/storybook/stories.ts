@@ -27,6 +27,7 @@ export default {
   title: "Containers / Accordion Item",
   component: UAccordionItem,
   args: {
+    opened: true,
     title: "Committed to Quality and Performance",
     description: trimText(
       `We take pride in delivering high-quality solutions tailored to your needs.
