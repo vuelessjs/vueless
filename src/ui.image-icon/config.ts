@@ -40,7 +40,7 @@ export default /*tw*/ {
     interactive: false,
     /* icon library */
     library: "@material-symbols",
-    path: "", // set for `custom-icons` library only.
+    path: "", // set for `custom` library only.
     style: "outlined",
     weight: 500,
   },
