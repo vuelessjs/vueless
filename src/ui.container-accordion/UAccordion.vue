@@ -47,7 +47,9 @@ onMounted(() => {
     .filter((option) => option.opened)
     .map((option) => option.value);
 
-  selectedItem.value = props.multiple ? initiallyOpened : initiallyOpened[0];
+  if (initiallyOpened.length > 0) {
+    selectedItem.value = props.multiple ? initiallyOpened : initiallyOpened[0];
+  }
 });
 
 provide<SetAccordionSelectedItem>("setAccordionSelectedItem", (value, opened) => {

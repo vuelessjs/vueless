@@ -1,3 +1,4 @@
+import { ref } from "vue";
 import { mount } from "@vue/test-utils";
 import { describe, it, expect } from "vitest";
 
@@ -57,8 +58,17 @@ describe("UAccordion", () => {
   // Events
   describe("Events", () => {
     it("emits update:modelValue when an item is toggled (single)", async () => {
+      const modelValue = ref<string | null>(null);
+
       const component = mount(UAccordion, {
-        props: { options },
+        props: {
+          options,
+          modelValue: modelValue.value,
+          "onUpdate:modelValue": (value: string | null) => {
+            modelValue.value = value;
+            component.setProps({ modelValue: value });
+          },
+        },
       });
 
       const firstItem = component.findAllComponents(UAccordionItem)[0];
@@ -77,8 +87,18 @@ describe("UAccordion", () => {
     });
 
     it("emits update:modelValue with arrays when multiple=true", async () => {
+      const modelValue = ref<string[]>([]);
+
       const component = mount(UAccordion, {
-        props: { options, multiple: true },
+        props: {
+          options,
+          multiple: true,
+          modelValue: modelValue.value,
+          "onUpdate:modelValue": (value: string[]) => {
+            modelValue.value = value;
+            component.setProps({ modelValue: value });
+          },
+        },
       });
 
       const [firstItem, secondItem] = component.findAllComponents(UAccordionItem);
