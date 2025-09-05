@@ -73,14 +73,14 @@ describe("UAccordion", () => {
 
       const firstItem = component.findAllComponents(UAccordionItem)[0];
 
-      await firstItem.trigger("click");
+      await firstItem.find("[vl-child-key='title']").trigger("click");
 
       const updates = component.emitted("update:modelValue");
 
       expect(updates).toBeTruthy();
       expect(updates?.[0]).toEqual(["a"]);
 
-      await firstItem.trigger("click");
+      await firstItem.find("[vl-child-key='title']").trigger("click");
       const updates2 = component.emitted("update:modelValue");
 
       expect(updates2?.[1]).toEqual([null]);
@@ -103,14 +103,14 @@ describe("UAccordion", () => {
 
       const [firstItem, secondItem] = component.findAllComponents(UAccordionItem);
 
-      await firstItem.trigger("click");
-      await secondItem.trigger("click");
+      await firstItem.find("[vl-child-key='title']").trigger("click");
+      await secondItem.find("[vl-child-key='title']").trigger("click");
       const updates = component.emitted("update:modelValue");
 
       expect(updates?.[0]).toEqual([["a"]]);
       expect(updates?.[1]).toEqual([["a", "b"]]);
 
-      await firstItem.trigger("click");
+      await firstItem.find("[vl-child-key='title']").trigger("click");
       const updates2 = component.emitted("update:modelValue");
 
       expect(updates2?.[2]).toEqual([["b"]]);
