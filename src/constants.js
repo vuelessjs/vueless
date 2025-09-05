@@ -367,13 +367,9 @@ export const TAILWIND_MERGE_EXTENSION = {
 export const DEFAULT_SVGO_CONFIG = {
   plugins: [
     {
-      name: "preset-default",
+      name: "addAttributesToSVGElement",
       params: {
-        overrides: {
-          convertColors: {
-            currentColor: true,
-          },
-        },
+        attributes: [{ fill: "currentColor" }],
       },
     },
   ],
