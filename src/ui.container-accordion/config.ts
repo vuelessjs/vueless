@@ -1,51 +1,9 @@
 export default /*tw*/ {
-  wrapper: "group cursor-pointer",
-  body: "",
-  title: {
-    base: "flex items-center justify-between font-medium",
-    variants: {
-      size: {
-        sm: "text-small",
-        md: "text-medium",
-        lg: "text-large",
-      },
-    },
-  },
-  description: {
-    base: "text-accented h-0 opacity-0 transition-all",
-    variants: {
-      size: {
-        sm: "text-tiny",
-        md: "text-small",
-        lg: "text-medium",
-      },
-      opened: {
-        true: "pt-2 h-fit opacity-100",
-      },
-    },
-  },
-  content: "pt-3 cursor-default",
-  toggleIcon: {
-    base: "{UIcon} transition duration-300",
-    variants: {
-      opened: {
-        true: "group-[*]:rotate-180",
-      },
-    },
-  },
-  accordionDivider: {
-    base: "{UDivider} group-last:hidden",
-    variants: {
-      size: {
-        sm: "py-4",
-        md: "py-5",
-        lg: "py-6",
-      },
-    },
-  },
+  accordion: "flex flex-col w-full divide-y divide-muted",
+  accordionItem: "{UAccordionItem} py-5 first:pt-0 last:pb-0",
   defaults: {
     size: "md",
-    /* icons */
-    toggleIcon: "keyboard_arrow_down",
+    disabled: false,
+    multiple: false,
   },
 };

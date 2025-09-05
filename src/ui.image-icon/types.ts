@@ -6,7 +6,7 @@ import type { ComponentConfig } from "../types";
 
 export type Config = typeof defaultConfig;
 
-export type IconLibraries = "@material-symbols" | "bootstrap-icons" | "heroicons" | "custom-icons";
+export type IconLibraries = "@material-symbols" | "bootstrap-icons" | "heroicons" | "custom";
 
 export interface Props {
   /**
