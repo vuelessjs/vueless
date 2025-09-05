@@ -54,7 +54,7 @@ watchEffect(() => (accordionDisabled.value = toValue(getAccordionDisabled) || pr
 const slots = useSlots();
 const elementId = props.id || useId();
 
-const internalOpened = ref(false);
+const internalOpened = ref(props.opened || false);
 
 const isOpened = computed(() => {
   const selectedItem = toValue(getAccordionSelectedItem);
@@ -67,7 +67,7 @@ const isOpened = computed(() => {
     return isEqual(selectedItem, props.value);
   }
 
-  return props.opened || internalOpened.value;
+  return internalOpened.value;
 });
 
 const toggleIconName = computed(() => {

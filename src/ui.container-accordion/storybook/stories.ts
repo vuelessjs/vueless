@@ -28,7 +28,7 @@ export default {
   title: "Containers / Accordion",
   component: UAccordion,
   args: {
-    modelValue: "2",
+    modelValue: null,
     options: [
       {
         value: "1",
@@ -40,6 +40,7 @@ export default {
       },
       {
         value: "2",
+        opened: true,
         title: "Pioneering Cutting-Edge Solutions",
         description:
           trimText(`Our team stays ahead of the curve, integrating the latest technologies
