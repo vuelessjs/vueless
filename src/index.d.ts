@@ -11,9 +11,9 @@ export {
   createDebounce,
   hasSlotContent
 } from "./utils/helper";
-export { getStored, getTheme, setTheme, resetTheme, cssVar } from "./utils/theme";
 export { isMac, isPWA, isIOS, isAndroid, isMobileApp, isWindows } from "./utils/platform";
 export { cx, cva, compose, getDefaults, setVuelessConfig, setColor, vuelessConfig } from "./utils/ui";
+export { getTheme, setTheme, resetTheme, normalizeThemeConfig, getStored, cssVar } from "./utils/theme";
 export { getArgTypes, getSlotNames, getSlotsFragment, getSource, getDocsDescription } from "./utils/storybook";
 /* adapters */
 export { default as defaultEnLocale } from "./adapter.locale/locales/en";
@@ -130,6 +130,7 @@ export type {
   ThemeConfigText,
   ThemeConfigRounding,
   ThemeConfigOutline,
+  MergedThemeConfig,
   NestedComponent,
   ComponentConfig,
   ComponentDefaults,

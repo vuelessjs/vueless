@@ -34,6 +34,7 @@ import {
   DEFAULT_DISABLED_OPACITY,
   LETTER_SPACING,
   DEFAULT_LETTER_SPACING,
+  AUTO_MODE_KEY,
 } from "../constants";
 
 import type {
@@ -43,6 +44,7 @@ import type {
   ThemeConfigText,
   ThemeConfigOutline,
   ThemeConfigRounding,
+  MergedThemeConfig,
   VuelessCssVariables,
 } from "../types";
 import { ColorMode } from "../types";
@@ -57,6 +59,11 @@ declare interface RootCSSVariableOptions {
   disabledOpacity: number;
   lightTheme: Partial<VuelessCssVariables>;
   darkTheme: Partial<VuelessCssVariables>;
+}
+
+declare interface SetColorMode {
+  colorMode: `${ColorMode}`;
+  isColorModeAuto: boolean;
 }
 
 /* Creates a media query that checks if the user's system color scheme is set to the dark. */
@@ -75,12 +82,18 @@ function toggleColorModeClass() {
 }
 
 /**
- * Sets color mode.
- * @param {string} mode (dark | light | auto)
- * @return {string} current color mode
+ * Sets the client-side rendering (CSR) color mode by applying the specified mode,
+ * configuring the appropriate event listeners, setting CSS classes, and saving the mode
+ * in cookies and local storage.
+ *
+ * @param {`${ColorMode}`} mode - The desired color mode (dark | light | auto).
+ * @return {Object} An object containing:
+ * - `colorMode` {string}: The applied color mode (e.g., "light", "dark").
+ * - `isColorModeAuto` {boolean}: Indicates whether the color mode is set to auto.
  */
-function setColorMode(mode: `${ColorMode}`): string {
+function setCSRColorMode(mode: `${ColorMode}`): SetColorMode {
   const colorMode = mode || getStored(COLOR_MODE_KEY) || vuelessConfig.colorMode || ColorMode.Light;
+  const isCachedAutoMode = !!Number(getStored(AUTO_MODE_KEY) ?? 0);
 
   const isAutoMode = colorMode === ColorMode.Auto;
   const isSystemDarkMode = isAutoMode && prefersColorSchemeDark && prefersColorSchemeDark?.matches;
@@ -92,7 +105,7 @@ function setColorMode(mode: `${ColorMode}`): string {
   }
 
   /* Adding system color mode change event listener. */
-  if (isAutoMode && prefersColorSchemeDark) {
+  if ((isAutoMode || isCachedAutoMode) && prefersColorSchemeDark) {
     prefersColorSchemeDark.addEventListener("change", toggleColorModeClass);
   }
 
@@ -112,10 +125,35 @@ function setColorMode(mode: `${ColorMode}`): string {
 
   if (mode) {
     setCookie(COLOR_MODE_KEY, currentColorMode);
+    setCookie(AUTO_MODE_KEY, String(Number(isAutoMode)));
+
     localStorage.setItem(COLOR_MODE_KEY, currentColorMode);
+    localStorage.setItem(AUTO_MODE_KEY, String(Number(isAutoMode)));
   }
 
-  return currentColorMode;
+  return {
+    colorMode: currentColorMode,
+    isColorModeAuto: isAutoMode || isCachedAutoMode,
+  };
+}
+
+/**
+ * Gets server-side rendering (SSR) color mode.
+ *
+ * @param {`${ColorMode}`} mode - The desired color mode (dark | light | auto).
+ * @param {boolean} isColorModeAuto - Indicates whether the color mode is set to auto.
+ * @return {Object} An object containing:
+ * - `colorMode` {string}: The applied color mode (e.g., "light", "dark").
+ * - `isColorModeAuto` {boolean}: Indicates whether the color mode is set to auto.
+ */
+function getSSRColorMode(mode: `${ColorMode}`, isColorModeAuto: boolean = false): SetColorMode {
+  const currentColorMode = mode || vuelessConfig.colorMode || ColorMode.Light;
+  const isAutoMode = currentColorMode === ColorMode.Auto;
+
+  return {
+    colorMode: currentColorMode,
+    isColorModeAuto: isAutoMode || isColorModeAuto,
+  };
 }
 
 /**
@@ -145,6 +183,7 @@ export function resetTheme() {
   if (!isCSR) return;
 
   const themeKeys = [
+    AUTO_MODE_KEY,
     COLOR_MODE_KEY,
     `vl-${PRIMARY_COLOR}`,
     `vl-${NEUTRAL_COLOR}`,
@@ -169,25 +208,63 @@ export function resetTheme() {
 }
 
 /**
+ * Normalizes the provided theme configuration object into a structured format.
+ *
+ * @param {object} theme - The theme configuration object to normalize.
+ * @return {MergedThemeConfig}
+ */
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export function normalizeThemeConfig(theme: any): MergedThemeConfig {
+  return {
+    colorMode: theme.colorMode,
+    isColorModeAuto: theme.isColorModeAuto,
+    primary: theme.primary,
+    neutral: theme.neutral,
+    text: {
+      xs: toNumber(theme.text?.xs),
+      sm: toNumber(theme.text?.sm),
+      md: toNumber(theme.text?.md),
+      lg: toNumber(theme.text?.lg),
+    },
+    outline: {
+      sm: toNumber(theme.outline?.sm),
+      md: toNumber(theme.outline?.md),
+      lg: toNumber(theme.outline?.lg),
+    },
+    rounding: {
+      sm: toNumber(theme.rounding?.sm),
+      md: toNumber(theme.rounding?.md),
+      lg: toNumber(theme.rounding?.lg),
+    },
+    letterSpacing: toNumber(theme.letterSpacing),
+    disabledOpacity: toNumber(theme.disabledOpacity),
+  };
+}
+
+/**
  * Retrieves the current theme configuration.
  * @return ThemeConfig - current theme configuration
  */
-export function getTheme(): ThemeConfig {
-  const colorMode = getStored(COLOR_MODE_KEY) || vuelessConfig.colorMode || ColorMode.Light;
-  const primary = getPrimaryColor();
-  const neutral = getNeutralColor();
+export function getTheme(config?: ThemeConfig): MergedThemeConfig {
+  const { colorMode, isColorModeAuto } = isCSR
+    ? setCSRColorMode(config?.colorMode as ColorMode)
+    : getSSRColorMode(config?.colorMode as ColorMode, config?.isColorModeAuto);
 
-  const text = getText();
-  const outline = getOutlines();
-  const rounding = getRoundings();
-  const letterSpacing = getLetterSpacing();
-  const disabledOpacity = getDisabledOpacity();
+  const primary = getPrimaryColor(config?.primary);
+  const neutral = getNeutralColor(config?.neutral);
+
+  const text = getText(config?.text);
+  const outline = getOutlines(config?.outline);
+  const rounding = getRoundings(config?.rounding);
+  const letterSpacing = getLetterSpacing(config?.letterSpacing);
+  const disabledOpacity = getDisabledOpacity(config?.disabledOpacity);
 
   const lightTheme = merge({}, DEFAULT_LIGHT_THEME, vuelessConfig.lightTheme);
   const darkTheme = merge({}, DEFAULT_DARK_THEME, vuelessConfig.darkTheme);
 
   return {
-    colorMode: colorMode as `${ColorMode}`,
+    colorMode,
+    isColorModeAuto,
     primary,
     neutral,
     text,
@@ -206,7 +283,9 @@ export function getTheme(): ThemeConfig {
  * @return string - CSS variables
  */
 export function setTheme(config: ThemeConfig = {}) {
-  if (isCSR) setColorMode(config.colorMode as ColorMode);
+  isCSR
+    ? setCSRColorMode(config.colorMode as ColorMode)
+    : getSSRColorMode(config.colorMode as ColorMode);
 
   const text = getText(config.text);
   const outline = getOutlines(config.outline);
@@ -663,4 +742,26 @@ function setCSSVariables(
   }
 
   return rootVariables;
+}
+
+/**
+ * Converts the given value to a number if possible.
+ *
+ * @param {unknown} value - The value to be converted to a number. Can be of any data type.
+ * @return {number | undefined} The numeric representation of the value if conversion is successful; otherwise, undefined.
+ */
+function toNumber(value: unknown): number | undefined {
+  if (typeof value === "number") {
+    return value;
+  }
+
+  if (typeof value === "string" && value.trim() !== "") {
+    const number = Number(value);
+
+    if (!Number.isNaN(number)) {
+      return number;
+    }
+  }
+
+  return;
 }

@@ -130,6 +130,11 @@ export interface ThemeConfig {
   colorMode?: `${ColorMode}`;
 
   /**
+   * Defines the color mode to auto.
+   */
+  isColorModeAuto?: boolean;
+
+  /**
    * Light theme design system CSS variables.
    */
   lightTheme?: Partial<VuelessCssVariables>;
@@ -184,6 +189,12 @@ export interface Config extends ThemeConfig {
    */
   tailwindMerge?: UnknownObject;
 }
+
+export type MergedThemeConfig = Omit<ThemeConfig, "text | outline | rounding"> & {
+  text: Partial<ThemeConfigText>;
+  outline: Partial<ThemeConfigOutline>;
+  rounding: Partial<ThemeConfigRounding>;
+};
 
 export type UnknownObject = Record<string, unknown>;
 export type UnknownArray = unknown[];

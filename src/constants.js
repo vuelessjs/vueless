@@ -20,6 +20,7 @@ export const LETTER_SPACING = "letter-spacing";
 
 /* Vueless color mode keys */
 export const COLOR_MODE_KEY = "vl-color-mode";
+export const AUTO_MODE_KEY = "vl-auto-mode";
 export const DARK_MODE_CLASS = "vl-dark";
 export const LIGHT_MODE_CLASS = "vl-light";
 
