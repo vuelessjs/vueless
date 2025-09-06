@@ -124,7 +124,7 @@ function setCSRColorMode(mode: `${ColorMode}`): SetColorMode {
   }
 
   /* Define color mode cookies to be used in both CSR and SSR */
-  if (mode || getCookie(AUTO_MODE_KEY) === null) {
+  if (mode || getCookie(AUTO_MODE_KEY) === undefined) {
     setCookie(COLOR_MODE_KEY, currentColorMode);
     setCookie(AUTO_MODE_KEY, String(Number(isAutoMode)));
 
