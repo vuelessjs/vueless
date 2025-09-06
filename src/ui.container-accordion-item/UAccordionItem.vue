@@ -42,8 +42,7 @@ const emit = defineEmits([
 ]);
 
 const wrapperRef = useTemplateRef<HTMLDivElement>("wrapper");
-const descriptionRef = useTemplateRef<HTMLDivElement>("description");
-const contentRef = useTemplateRef<HTMLDivElement>("content");
+const titleRef = useTemplateRef<HTMLDivElement>("title");
 
 const accordionSize = ref(toValue(getAccordionSize) || props.size);
 const accordionDisabled = ref(toValue(getAccordionDisabled) || props.disabled);
@@ -79,10 +78,9 @@ const toggleIconName = computed(() => {
 });
 
 function onClickItem(event: MouseEvent) {
-  const clickedInsideContent = contentRef.value?.contains(event.target as Node);
-  const clickedDescription = descriptionRef.value?.contains(event.target as Node);
+  const clickedOnTitle = titleRef.value?.contains(event.target as Node);
 
-  if (props.disabled || clickedDescription || clickedInsideContent) return;
+  if (!clickedOnTitle || props.disabled) return;
 
   emit("click", elementId, !isOpened.value);
 
@@ -123,7 +121,7 @@ const {
 <template>
   <div ref="wrapper" v-bind="wrapperAttrs" :data-test="getDataTest()" @click="onClickItem">
     <div v-bind="bodyAttrs">
-      <div v-bind="titleAttrs">
+      <div v-bind="titleAttrs" ref="title">
         {{ title }}
         <!--
           @slot Use it to add something instead of the toggle icon.
@@ -144,12 +142,11 @@ const {
       <div
         v-if="description"
         :id="`description-${elementId}`"
-        ref="description"
         v-bind="descriptionAttrs"
         v-text="description"
       />
 
-      <div v-if="isOpened && hasSlotContent(slots['default'])" ref="content" v-bind="contentAttrs">
+      <div v-if="isOpened && hasSlotContent(slots['default'])" v-bind="contentAttrs">
         <!-- @slot Use it to add accordion content. -->
         <slot />
       </div>

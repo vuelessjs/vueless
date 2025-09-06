@@ -171,7 +171,7 @@ describe("UAccordionItem", () => {
       expect(toggleElement.attributes("data-opened")).toBe("false");
 
       // Click to toggle
-      await component.trigger("click");
+      await component.find("[vl-key='title']").trigger("click");
 
       expect(toggleElement.attributes("data-opened")).toBe("true");
     });
@@ -190,12 +190,12 @@ describe("UAccordionItem", () => {
 
       expect(component.find(`.${slotClass}`).exists()).toBe(false);
 
-      await component.trigger("click");
+      await component.find("[vl-key='title']").trigger("click");
 
       expect(component.find(`.${slotClass}`).exists()).toBe(true);
       expect(component.find(`.${slotClass}`).text()).toBe(slotContent);
 
-      await component.trigger("click");
+      await component.find("[vl-key='title']").trigger("click");
 
       expect(component.find(`.${slotClass}`).exists()).toBe(false);
     });
@@ -217,7 +217,7 @@ describe("UAccordionItem", () => {
     it("does not render content wrapper when default slot is empty", async () => {
       const component = mount(UAccordionItem, { props: { name: "test" } });
 
-      await component.trigger("click");
+      await component.find("[vl-key='title']").trigger("click");
 
       expect(component.find("[vl-key='content']").exists()).toBe(false);
     });
@@ -235,7 +235,7 @@ describe("UAccordionItem", () => {
         },
       });
 
-      await component.trigger("click");
+      await component.find("[vl-key='title']").trigger("click");
 
       const emitted = component.emitted("click");
 
@@ -243,7 +243,7 @@ describe("UAccordionItem", () => {
       expect(emitted?.[0]).toEqual([id, true]);
 
       // Click again to toggle back
-      await component.trigger("click");
+      await component.find("[vl-key='title']").trigger("click");
 
       const emittedAgain = component.emitted("click");
 
@@ -281,13 +281,13 @@ describe("UAccordionItem", () => {
       expect(descriptionElement.classes()).not.toContain(openedClass);
 
       // Click to open
-      await component.trigger("click");
+      await component.find("[vl-key='title']").trigger("click");
 
       // Should be opened
       expect(descriptionElement.classes()).toContain(openedClass);
 
       // Click to close
-      await component.trigger("click");
+      await component.find("[vl-key='title']").trigger("click");
 
       // Should be closed again
       expect(descriptionElement.classes()).not.toContain(openedClass);
