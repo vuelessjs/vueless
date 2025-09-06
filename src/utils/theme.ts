@@ -1,10 +1,11 @@
 import { cloneDeep, merge } from "lodash-es";
 
 import { vuelessConfig } from "./ui";
-import { isCSR, isSSR, setCookie, deleteCookie } from "./helper";
+import { isCSR, getStored, getCookie, setCookie, deleteCookie, toNumber } from "./helper";
 
 import {
   PX_IN_REM,
+  AUTO_MODE_KEY,
   COLOR_MODE_KEY,
   LIGHT_MODE_CLASS,
   DARK_MODE_CLASS,
@@ -34,7 +35,6 @@ import {
   DEFAULT_DISABLED_OPACITY,
   LETTER_SPACING,
   DEFAULT_LETTER_SPACING,
-  AUTO_MODE_KEY,
 } from "../constants";
 
 import type {
@@ -75,7 +75,7 @@ function toggleColorModeClass() {
   const colorMode = prefersColorSchemeDark.matches ? ColorMode.Dark : ColorMode.Light;
 
   setCookie(COLOR_MODE_KEY, colorMode);
-  localStorage.setItem(COLOR_MODE_KEY, colorMode);
+  setCookie(AUTO_MODE_KEY, String(Number(true)));
 
   document.documentElement.classList.toggle(DARK_MODE_CLASS, prefersColorSchemeDark.matches);
   document.documentElement.classList.toggle(LIGHT_MODE_CLASS, !prefersColorSchemeDark.matches);
@@ -92,8 +92,8 @@ function toggleColorModeClass() {
  * - `isColorModeAuto` {boolean}: Indicates whether the color mode is set to auto.
  */
 function setCSRColorMode(mode: `${ColorMode}`): SetColorMode {
-  const colorMode = mode || getStored(COLOR_MODE_KEY) || vuelessConfig.colorMode || ColorMode.Light;
-  const isCachedAutoMode = !!Number(getStored(AUTO_MODE_KEY) ?? 0);
+  const colorMode = mode || getCookie(COLOR_MODE_KEY) || vuelessConfig.colorMode || ColorMode.Light;
+  const isCachedAutoMode = !!Number(getCookie(AUTO_MODE_KEY) ?? 0);
 
   const isAutoMode = colorMode === ColorMode.Auto;
   const isSystemDarkMode = isAutoMode && prefersColorSchemeDark && prefersColorSchemeDark?.matches;
@@ -123,12 +123,14 @@ function setCSRColorMode(mode: `${ColorMode}`): SetColorMode {
     currentColorMode = isDarkMode ? ColorMode.Dark : ColorMode.Light;
   }
 
-  if (mode) {
+  /* Define color mode cookies to be used in both CSR and SSR */
+  if (mode || getCookie(AUTO_MODE_KEY) === null) {
     setCookie(COLOR_MODE_KEY, currentColorMode);
     setCookie(AUTO_MODE_KEY, String(Number(isAutoMode)));
 
-    localStorage.setItem(COLOR_MODE_KEY, currentColorMode);
-    localStorage.setItem(AUTO_MODE_KEY, String(Number(isAutoMode)));
+    if (mode !== ColorMode.Auto && prefersColorSchemeDark) {
+      prefersColorSchemeDark.removeEventListener("change", toggleColorModeClass);
+    }
   }
 
   return {
@@ -165,16 +167,6 @@ export function cssVar(name: string) {
 }
 
 /**
- * Get a stored value from local storage.
- * @return string | undefined
- */
-export function getStored(key: string) {
-  if (isSSR) return;
-
-  return localStorage.getItem(key) ?? undefined;
-}
-
-/**
  * Resets all theme data by clearing cookies and localStorage.
  * This removes all stored theme preferences including color mode, colors, text sizes,
  * outline sizes, rounding values, letter spacing, and disabled opacity.
@@ -205,40 +197,6 @@ export function resetTheme() {
     localStorage.removeItem(key);
     deleteCookie(key);
   });
-}
-
-/**
- * Normalizes the provided theme configuration object into a structured format.
- *
- * @param {object} theme - The theme configuration object to normalize.
- * @return {MergedThemeConfig}
- */
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-export function normalizeThemeConfig(theme: any): MergedThemeConfig {
-  return {
-    colorMode: theme.colorMode,
-    isColorModeAuto: theme.isColorModeAuto,
-    primary: theme.primary,
-    neutral: theme.neutral,
-    text: {
-      xs: toNumber(theme.text?.xs),
-      sm: toNumber(theme.text?.sm),
-      md: toNumber(theme.text?.md),
-      lg: toNumber(theme.text?.lg),
-    },
-    outline: {
-      sm: toNumber(theme.outline?.sm),
-      md: toNumber(theme.outline?.md),
-      lg: toNumber(theme.outline?.lg),
-    },
-    rounding: {
-      sm: toNumber(theme.rounding?.sm),
-      md: toNumber(theme.rounding?.md),
-      lg: toNumber(theme.rounding?.lg),
-    },
-    letterSpacing: toNumber(theme.letterSpacing),
-    disabledOpacity: toNumber(theme.disabledOpacity),
-  };
 }
 
 /**
@@ -363,6 +321,45 @@ export function setTheme(config: ThemeConfig = {}) {
   });
 }
 
+/**
+ * Normalizes the provided theme configuration object into a structured format.
+ *
+ * @param {object} theme - The theme configuration object to normalize.
+ * @return {MergedThemeConfig}
+ */
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export function normalizeThemeConfig(theme: any): MergedThemeConfig {
+  return {
+    colorMode: theme.colorMode,
+    isColorModeAuto: theme.isColorModeAuto,
+    primary: theme.primary,
+    neutral: theme.neutral,
+    text: {
+      xs: toNumber(theme.text?.xs),
+      sm: toNumber(theme.text?.sm),
+      md: toNumber(theme.text?.md),
+      lg: toNumber(theme.text?.lg),
+    },
+    outline: {
+      sm: toNumber(theme.outline?.sm),
+      md: toNumber(theme.outline?.md),
+      lg: toNumber(theme.outline?.lg),
+    },
+    rounding: {
+      sm: toNumber(theme.rounding?.sm),
+      md: toNumber(theme.rounding?.md),
+      lg: toNumber(theme.rounding?.lg),
+    },
+    letterSpacing: toNumber(theme.letterSpacing),
+    disabledOpacity: toNumber(theme.disabledOpacity),
+  };
+}
+
+/**
+ * Determines if the provided color mode configuration has a primary color
+ * that differs from the default color mode configuration.
+ * @return {boolean}
+ */
 function hasPrimaryColor(
   colorModeConfig: Partial<VuelessCssVariables> | undefined,
   defaultColorModeConfig: Partial<VuelessCssVariables>,
@@ -640,14 +637,6 @@ function getDisabledOpacity(disabledOpacity?: ThemeConfig["disabledOpacity"]) {
 }
 
 /**
- * Converts a primitive value into an object with the primitive value assigned to a key "md".
- * If the provided value is already an object, it returns a deeply cloned copy of that object.
- */
-function primitiveToObject(value: unknown): object {
-  return typeof value === "object" ? cloneDeep(value as object) : { md: value };
-}
-
-/**
  * Generate and apply Vueless CSS variables.
  * @return string - Vueless CSS variables string.
  */
@@ -745,23 +734,9 @@ function setCSSVariables(
 }
 
 /**
- * Converts the given value to a number if possible.
- *
- * @param {unknown} value - The value to be converted to a number. Can be of any data type.
- * @return {number | undefined} The numeric representation of the value if conversion is successful; otherwise, undefined.
+ * Converts a primitive value into an object with the primitive value assigned to a key "md".
+ * If the provided value is already an object, it returns a deeply cloned copy of that object.
  */
-function toNumber(value: unknown): number | undefined {
-  if (typeof value === "number") {
-    return value;
-  }
-
-  if (typeof value === "string" && value.trim() !== "") {
-    const number = Number(value);
-
-    if (!Number.isNaN(number)) {
-      return number;
-    }
-  }
-
-  return;
+function primitiveToObject(value: unknown): object {
+  return typeof value === "object" ? cloneDeep(value as object) : { md: value };
 }

@@ -184,3 +184,35 @@ export function isEmptyValue(value: object | null | undefined | string | unknown
     (typeof value === "object" && !Object.keys(value).length)
   );
 }
+
+/**
+ * Converts the given value to a number if possible.
+ *
+ * @param {unknown} value - The value to be converted to a number. Can be of any data type.
+ * @return {number | undefined} The numeric representation of the value if conversion is successful; otherwise, undefined.
+ */
+export function toNumber(value: unknown): number | undefined {
+  if (typeof value === "number") {
+    return value;
+  }
+
+  if (typeof value === "string" && value.trim() !== "") {
+    const number = Number(value);
+
+    if (!Number.isNaN(number)) {
+      return number;
+    }
+  }
+
+  return;
+}
+
+/**
+ * Get a stored value from local storage.
+ * @return string | undefined
+ */
+export function getStored(key: string) {
+  if (isSSR) return;
+
+  return localStorage.getItem(key) ?? undefined;
+}
