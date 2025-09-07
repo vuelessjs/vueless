@@ -18,14 +18,6 @@ import {
 export let vuelessConfig = {};
 
 /**
- * Load Vueless config from the project root.
- * IIFE is used to prevent top level await issue.
- */
-(async () => {
-  vuelessConfig = await getVuelessConfig();
-})();
-
-/**
  * Retrieves the Vueless config from the project root.
  *
  * This method checks for the existence of a `vueless.config.{js,ts}` file in the project root.
