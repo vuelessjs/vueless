@@ -49,9 +49,14 @@ if (isSSR) {
   /* Load Tailwind config from the project root in IIFE (no top-level await). */
   (async () => {
     try {
+      const { readFile } = await import("node:fs/promises");
+
+      const path = `${process.cwd()}/${VUELESS_CACHE_DIR}/${VUELESS_CONFIG_FILE_NAME}.mjs`;
+      const code = await readFile(path, "utf8");
+
       vuelessConfig = (
         await import(
-          /* @vite-ignore */ `${process.cwd()}/${VUELESS_CACHE_DIR}/${VUELESS_CONFIG_FILE_NAME}.mjs`
+          /* @vite-ignore */ `data:text/javascript;base64,${Buffer.from(code).toString("base64")}`
         )
       ).default;
     } catch {

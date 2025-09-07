@@ -103,6 +103,11 @@ export const Vueless = function (options = {}) {
       define: {
         "process.env": {},
       },
+      build: {
+        rollupOptions: {
+          external: ["node:fs/promises"],
+        },
+      },
       optimizeDeps: {
         include: isInternalEnv
           ? []
