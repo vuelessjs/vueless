@@ -17,8 +17,6 @@ export {
   getRandomId,
   createDebounce,
   hasSlotContent,
-  getCookie,
-  setCookie
 } from "./utils/helper";
 export { isMac, isPWA, isIOS, isAndroid, isMobileApp, isWindows } from "./utils/platform";
 export { cx, cva, compose, getDefaults, setVuelessConfig, setColor, vuelessConfig } from "./utils/ui";
