@@ -5,30 +5,26 @@ import { readFile } from "node:fs/promises";
 
 import { getDirFiles } from "../../utils/node/helper.js";
 
-import { SRC_COMPONENTS_PATH, COMPONENTS_PATH } from "../constants.js";
-import { VUELESS_PACKAGE_DIR } from "../../constants.js";
+import { VUELESS_PACKAGE_DIR, VUELESS_USER_COMPONENTS_DIR } from "../../constants.js";
 
 const storiesName = "stories.ts";
 
+/**
+ * Retrieves the next available Storybook ID by scanning story files for the highest existing ID and incrementing it.
+ *
+ * @return {Promise<number>} A promise that resolves to the next available Storybook ID.
+ */
 export async function getStorybookId() {
-  const srcComponentsDir = path.join(cwd(), SRC_COMPONENTS_PATH);
-  const componentsDir = path.join(cwd(), COMPONENTS_PATH);
   const vuelessPackagePath = path.join(cwd(), VUELESS_PACKAGE_DIR);
-  const isSrcComponentsDir = existsSync(srcComponentsDir);
-  const isComponentsDir = existsSync(componentsDir);
+  const vuelessUserComponentsPath = path.join(cwd(), VUELESS_USER_COMPONENTS_DIR);
 
   const stories = await getDirFiles(vuelessPackagePath, storiesName);
+  const hasVuelessUserComponentsDir = existsSync(vuelessUserComponentsPath);
 
-  if (isSrcComponentsDir) {
-    const srcComponentsDirStories = await getDirFiles(srcComponentsDir, storiesName);
+  if (hasVuelessUserComponentsDir) {
+    const customStories = await getDirFiles(vuelessUserComponentsPath, storiesName);
 
-    stories.push(...srcComponentsDirStories);
-  }
-
-  if (isComponentsDir) {
-    const componentsDirStories = await getDirFiles(componentsDir, storiesName);
-
-    stories.push(...componentsDirStories);
+    stories.push(...customStories);
   }
 
   let id = 200000;
@@ -51,6 +47,14 @@ export async function getStorybookId() {
   return id + 10;
 }
 
+/**
+ * Retrieves the line index within a file content where a specific key appears
+ * as a top-level property in an exported default object.
+ *
+ * @param {string} fileContent - The content of the file to search through.
+ * @param {string} key - The key to locate within the top-level export block.
+ * @return {number} The zero-based index of the line where the key is found, or -1 if the key is not found.
+ */
 export function getStoryMetaKeyIndex(fileContent, key) {
   const lines = fileContent.split("\n");
   let insideExportBlock = false;

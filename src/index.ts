@@ -21,7 +21,7 @@ export {
 export { isMac, isPWA, isIOS, isAndroid, isMobileApp, isWindows } from "./utils/platform";
 export { cx, cva, compose, getDefaults, setVuelessConfig, setColor, vuelessConfig } from "./utils/ui";
 export { getTheme, setTheme, resetTheme, normalizeThemeConfig, cssVar } from "./utils/theme";
-export { getArgTypes, getSlotNames, getSlotsFragment, getSource, getDocsDescription } from "./utils/storybook";
+export { getArgs, getArgTypes, getSlotNames, getSlotsFragment, getSource, getDocsDescription } from "./utils/storybook";
 /* adapters */
 export { default as defaultEnLocale } from "./adapter.locale/locales/en";
 export { createVuelessAdapter } from "./adapter.locale/vueless";

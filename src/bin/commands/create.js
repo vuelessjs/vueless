@@ -10,9 +10,7 @@ import { getDirFiles } from "../../utils/node/helper.js";
 import { replaceRelativeImports } from "../utils/format.js";
 import { getStorybookId } from "../utils/data.js";
 
-import { SRC_COMPONENTS_PATH, COMPONENTS_PATH } from "../constants.js";
-
-import { COMPONENTS, VUELESS_PACKAGE_DIR, VUELESS_LOCAL_DIR } from "../../constants.js";
+import { COMPONENTS, VUELESS_PACKAGE_DIR, VUELESS_USER_COMPONENTS_DIR } from "../../constants.js";
 
 const BOILERPLATE_NAME = "UBoilerplate";
 const BOILERPLATE_PATH = path.join(cwd(), VUELESS_PACKAGE_DIR, "ui.boilerplate");
@@ -26,10 +24,7 @@ export async function createVuelessComponent(options) {
     return;
   }
 
-  const isSrcDir = existsSync(path.join(cwd(), VUELESS_LOCAL_DIR));
-  const destPath = isSrcDir
-    ? path.join(SRC_COMPONENTS_PATH, componentName)
-    : path.join(COMPONENTS_PATH, componentName);
+  const destPath = path.join(VUELESS_USER_COMPONENTS_DIR, componentName);
   const absoluteDestPath = path.join(cwd(), destPath);
 
   const isComponentExists = componentName in COMPONENTS || existsSync(absoluteDestPath);
