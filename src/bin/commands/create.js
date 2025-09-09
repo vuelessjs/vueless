@@ -1,15 +1,14 @@
 /* eslint-disable no-console */
 
-import { existsSync } from "node:fs";
 import path from "node:path";
 import { cwd } from "node:process";
-import { readFile, writeFile, rename, mkdir, readdir, copyFile } from "node:fs/promises";
+import { existsSync } from "node:fs";
 import { styleText } from "node:util";
+import { readFile, writeFile, rename, mkdir, readdir, copyFile } from "node:fs/promises";
 
+import { getStorybookId } from "../utils/data.js";
 import { getDirFiles } from "../../utils/node/helper.js";
 import { replaceRelativeImports } from "../utils/format.js";
-import { getStorybookId } from "../utils/data.js";
-
 import { COMPONENTS, VUELESS_PACKAGE_DIR, VUELESS_USER_COMPONENTS_DIR } from "../../constants.js";
 
 const BOILERPLATE_NAME = "UBoilerplate";
@@ -24,23 +23,34 @@ export async function createVuelessComponent(options) {
     return;
   }
 
-  const destPath = path.join(VUELESS_USER_COMPONENTS_DIR, componentName);
-  const absoluteDestPath = path.join(cwd(), destPath);
+  if (componentName in COMPONENTS) {
+    console.log(
+      styleText("red", `Component with name '${componentName}' already exists in Vueless UI.`),
+    );
 
-  const isComponentExists = componentName in COMPONENTS || existsSync(absoluteDestPath);
+    return;
+  }
 
-  if (isComponentExists) {
-    console.log(styleText("red", `Component with name ${componentName} already exists.`));
+  if (!componentName.startsWith("U")) {
+    console.log(styleText("red", `Component should have 'U' prefix (ex. 'UButtonCustom').`));
+
+    return;
+  }
+
+  const absoluteDestPath = path.join(cwd(), VUELESS_USER_COMPONENTS_DIR, componentName);
+
+  if (existsSync(absoluteDestPath)) {
+    console.log(styleText("red", `Component with name '${componentName}' already exists.`));
 
     return;
   }
 
   await copyAndRenameFiles(BOILERPLATE_PATH, absoluteDestPath);
-  await modifyCreatedComponent(absoluteDestPath, componentName);
+  await modifyCreatedComponent(componentName, absoluteDestPath);
 
   console.log(
-    // eslint-disable-next-line prettier/prettier
-    styleText("green", `The '${componentName}' was successfully created in the '${destPath}' directory.`,),
+    // eslint-disable-next-line vue/max-len, prettier/prettier
+    styleText("green", `The '${componentName}' was successfully created in the '${VUELESS_USER_COMPONENTS_DIR}/${componentName}' directory.`,),
   );
 }
 
@@ -50,11 +60,7 @@ async function copyAndRenameFiles(srcDir, destDir) {
 
   for (const entry of entries) {
     const srcPath = path.join(srcDir, entry.name);
-
-    const renamed = entry.name.replace(".hidden", "");
-    const destPath = path.join(destDir, renamed);
-
-    console.log(entry.name, renamed);
+    const destPath = path.join(destDir, entry.name);
 
     entry.isDirectory()
       ? await copyAndRenameFiles(srcPath, destPath)
@@ -62,32 +68,64 @@ async function copyAndRenameFiles(srcDir, destDir) {
   }
 }
 
-async function modifyCreatedComponent(destPath, componentName) {
+async function modifyCreatedComponent(componentName, destPath) {
   const destFiles = await getDirFiles(destPath, "");
   const storybookId = await getStorybookId();
 
   for await (const filePath of destFiles) {
     const fileContent = await readFile(filePath, "utf-8");
-
     let updatedContent = replaceRelativeImports(componentName, filePath, fileContent);
-    let targetPath = filePath;
 
+    /* Renaming component name in constants */
     if (filePath.endsWith("constants.ts")) {
-      updatedContent = updatedContent.replace(BOILERPLATE_NAME, componentName);
+      updatedContent = updatedContent.replaceAll(BOILERPLATE_NAME, componentName);
     }
 
+    /* Renaming component name in tests */
+    if (filePath.endsWith("test.ts")) {
+      updatedContent = updatedContent.replaceAll(BOILERPLATE_NAME, componentName);
+    }
+
+    /* Renaming component name in types */
+    if (filePath.endsWith("types.ts")) {
+      updatedContent = updatedContent.replaceAll(BOILERPLATE_NAME, componentName);
+    }
+
+    /* Renaming component name in components */
+    if (filePath.endsWith(".vue")) {
+      let lines = updatedContent.split("\n");
+
+      for (const [index, line] of lines.entries()) {
+        // Add some condition here in future if some edge cases appear
+        if (line.includes(componentName)) {
+          lines[index] = line.replaceAll(BOILERPLATE_NAME, componentName);
+        }
+      }
+
+      updatedContent = lines.join("\n");
+    }
+
+    /* Renaming component name in stories */
     if (filePath.endsWith("stories.ts")) {
       updatedContent = updatedContent
         .replaceAll(BOILERPLATE_NAME, componentName)
         .replace("{{component_id}}", String(storybookId));
     }
 
-    if (targetPath.endsWith(`${BOILERPLATE_NAME}.vue`)) {
-      targetPath = targetPath.replace(BOILERPLATE_NAME, componentName);
+    /* Renaming file */
+    let targetPath = filePath;
+    const [fileName] = filePath.split("/").reverse();
+
+    if (fileName.includes(BOILERPLATE_NAME)) {
+      const [targetDir] = filePath.split(fileName);
+      const targetFileName = fileName.replace(BOILERPLATE_NAME, componentName);
+
+      targetPath = path.join(targetDir, targetFileName);
 
       await rename(filePath, targetPath);
     }
 
+    /* Update file */
     await writeFile(targetPath, updatedContent);
   }
 }
