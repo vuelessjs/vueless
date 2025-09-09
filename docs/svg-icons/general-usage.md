@@ -4,11 +4,12 @@ Vueless supports the dynamic import of SVG icons, so you don’t need to explici
 
 ***
 
-Vueless comes with built-in support for three popular SVG icon libraries:&#x20;
+Vueless comes with built-in support for four popular SVG icon libraries:&#x20;
 
 * `@material-symbols` ([icon list](https://fonts.google.com/icons))
 * `bootstrap-icons` ([icon list](https://icons.getbootstrap.com/))
 * `heroicons` ([icon list](https://heroicons.com/outline))
+* `lucide-static` ([icon list](https://lucide.dev/icons/))
 
 1\. Install the desired icon library package.
 
@@ -21,6 +22,8 @@ npm install @material-symbols/svg-500
 npm install bootstrap-icons
 # or
 npm install heroicons
+# or
+npm install lucide-static
 ```
 {% endtab %}
 
@@ -32,6 +35,8 @@ yarn add @material-symbols/svg-500
 yarn add bootstrap-icons
 # or
 yarn add heroicons
+# or
+yarn add lucide-static
 ```
 {% endtab %}
 
@@ -43,6 +48,8 @@ pnpm add @material-symbols/svg-500
 pnpm add bootstrap-icons
 # or
 pnpm add heroicons
+# or
+pnpm add lucide-static
 ```
 {% endtab %}
 
@@ -54,6 +61,8 @@ bun add @material-symbols/svg-500
 bun add bootstrap-icons
 # or
 bun add heroicons
+# or
+bun add lucide-static
 ```
 {% endtab %}
 {% endtabs %}
