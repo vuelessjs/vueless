@@ -118,6 +118,22 @@ export default {
 ```
 {% endcode %}
 {% endtab %}
+
+{% tab title="lucide-static" %}
+{% code title="vueless.config.js" %}
+```javascript
+export default {
+  component: {
+    UIcon: {
+      defaults: {
+        library: "lucide-static",
+      }
+    }
+  }
+};
+```
+{% endcode %}
+{% endtab %}
 {% endtabs %}
 
 3\. Use the SVG icon anywhere in the project.
