@@ -13,17 +13,18 @@ export {
   isSSR,
   isCSR,
   setTitle,
+  getStored,
   getRandomId,
   getCookie,
   setCookie,
   deleteCookie,
   createDebounce,
-  hasSlotContent
+  hasSlotContent,
 } from "./utils/helper";
-export { getStored, setTheme, cssVar } from "./utils/theme";
 export { isMac, isPWA, isIOS, isAndroid, isMobileApp, isWindows } from "./utils/platform";
 export { cx, cva, compose, getDefaults, setVuelessConfig, setColor, vuelessConfig } from "./utils/ui";
-export { getArgTypes, getSlotNames, getSlotsFragment, getSource, getDocsDescription } from "./utils/storybook";
+export { getTheme, setTheme, resetTheme, normalizeThemeConfig, cssVar } from "./utils/theme";
+export { getArgs, getArgTypes, getSlotNames, getSlotsFragment, getSource, getDocsDescription } from "./utils/storybook";
 /* adapters */
 export { default as defaultEnLocale } from "./adapter.locale/locales/en";
 export { createVuelessAdapter } from "./adapter.locale/vueless";
@@ -34,6 +35,8 @@ export { default as useUI } from "./composables/useUI";
 export { useDarkMode } from "./composables/useDarkMode";
 export { useLoaderProgress } from "./ui.loader-progress/useLoaderProgress";
 export { useMutationObserver } from "./composables/useMutationObserver";
+export { Direction, useAutoPosition } from "./composables/useAutoPosition";
+export { useComponentLocaleMessages } from "./composables/useComponentLocaleMassages";
 /* loaders */
 export { loaderProgressOn, loaderProgressOff } from "./ui.loader-progress/utilLoaderProgress";
 export { useLoaderOverlay } from "./ui.loader-overlay/useLoaderOverlay";
@@ -100,6 +103,7 @@ export { default as URow } from "./ui.container-row/URow.vue";
 export { default as UGroup } from "./ui.container-group/UGroup.vue";
 export { default as UGroups } from "./ui.container-groups/UGroups.vue";
 export { default as UAccordion } from "./ui.container-accordion/UAccordion.vue";
+export { default as UAccordionItem } from "./ui.container-accordion-item/UAccordionItem.vue";
 export { default as UCard } from "./ui.container-card/UCard.vue";
 export { default as UModal } from "./ui.container-modal/UModal.vue";
 export { default as UModalConfirm } from "./ui.container-modal-confirm/UModalConfirm.vue";
@@ -138,6 +142,7 @@ export type {
   ThemeConfigText,
   ThemeConfigRounding,
   ThemeConfigOutline,
+  MergedThemeConfig,
   NestedComponent,
   ComponentConfig,
   ComponentDefaults,

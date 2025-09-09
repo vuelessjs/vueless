@@ -28,17 +28,19 @@ import {
   autoImportUserConfigs,
 } from "./utils/node/helper.js";
 import {
+  VUE_EXT,
+  JAVASCRIPT_EXT,
+  TYPESCRIPT_EXT,
   INTERNAL_ENV,
   STORYBOOK_ENV,
   NUXT_MODULE_ENV,
   VUELESS_LOCAL_DIR,
   VUELESS_PACKAGE_DIR,
+  SRC_USER_COMPONENTS_DIR,
+  VUELESS_USER_COMPONENTS_DIR,
   ICONS_VIRTUAL_MODULE_ID,
   RESOLVED_ICONS_VIRTUAL_MODULE_ID,
   DEFAULT_EXIT_CODE,
-  JAVASCRIPT_EXT,
-  TYPESCRIPT_EXT,
-  VUE_EXT,
 } from "./constants.js";
 
 /* TailwindCSS Vite plugins. */
@@ -49,6 +51,7 @@ export const TailwindCSS = (options) => {
 /* Automatically importing Vueless components on demand */
 export const UnpluginComponents = (options) =>
   UnpluginVueComponents({
+    dirs: [VUELESS_USER_COMPONENTS_DIR, SRC_USER_COMPONENTS_DIR],
     resolvers: [componentResolver, directiveResolver],
     dts: true,
     ...options,
@@ -102,6 +105,11 @@ export const Vueless = function (options = {}) {
     config: () => ({
       define: {
         "process.env": {},
+      },
+      build: {
+        rollupOptions: {
+          external: ["node:fs/promises"],
+        },
       },
       optimizeDeps: {
         include: isInternalEnv

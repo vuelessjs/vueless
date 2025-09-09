@@ -5,7 +5,7 @@ import { pathToFileURL } from "node:url";
 import { existsSync, statSync } from "node:fs";
 import { mkdir, readdir, rmdir, readFile, writeFile } from "node:fs/promises";
 
-import { vuelessConfig, getMergedConfig } from "./vuelessConfig.js";
+import { getMergedConfig, getVuelessConfig } from "./vuelessConfig.js";
 
 import {
   COMPONENTS,
@@ -117,11 +117,12 @@ export async function getDefaultComponentConfig(name, configDir) {
   return config;
 }
 
-export async function cacheMergedConfigs(srcDir) {
+export async function cacheMergedConfigs(basePath) {
+  const vuelessConfig = await getVuelessConfig(basePath);
   const componentNames = Object.entries(COMPONENTS);
 
   for await (const [componentName, componentDir] of componentNames) {
-    const defaultComponentConfigPath = path.join(srcDir, componentDir, "config.ts");
+    const defaultComponentConfigPath = path.join(basePath, componentDir, "config.ts");
 
     const defaultConfig = await getDefaultComponentConfig(
       componentName,

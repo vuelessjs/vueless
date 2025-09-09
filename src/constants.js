@@ -287,6 +287,7 @@ export const COMPONENTS = {
   UGroup: "ui.container-group",
   UGroups: "ui.container-groups",
   UAccordion: "ui.container-accordion",
+  UAccordionItem: "ui.container-accordion-item",
   UCard: "ui.container-card",
   UModal: "ui.container-modal",
   UModalConfirm: "ui.container-modal-confirm",
@@ -367,13 +368,15 @@ export const TAILWIND_MERGE_EXTENSION = {
 export const DEFAULT_SVGO_CONFIG = {
   plugins: [
     {
-      name: "preset-default",
+      name: "removeAttrs",
       params: {
-        overrides: {
-          convertColors: {
-            currentColor: true,
-          },
-        },
+        attrs: "(fill)",
+      },
+    },
+    {
+      name: "addAttributesToSVGElement",
+      params: {
+        attributes: [{ fill: "currentColor" }],
       },
     },
   ],
@@ -388,11 +391,12 @@ export const VUELESS_LIBRARY = "vueless";
 export const INTERNAL_ICONS_LIBRARY = "internal";
 export const STORYBOOK_ICONS_LIBRARY = "storybook";
 
+export const SRC_DIR = "src";
 export const CACHE_DIR = ".cache";
 export const NODE_MODULES_DIR = "node_modules";
 export const VUELESS_PACKAGE_DIR = `${NODE_MODULES_DIR}/vueless`;
 export const VUELESS_CACHE_DIR = `${NODE_MODULES_DIR}/${CACHE_DIR}/vueless`;
-export const VUELESS_LOCAL_DIR = "src";
+export const VUELESS_LOCAL_DIR = SRC_DIR;
 export const ICONS_DIR = "icons";
 export const ICONS_VUELESS_DIR = `${VUELESS_PACKAGE_DIR}/${ICONS_DIR}`;
 export const ICONS_CACHED_DIR = `${VUELESS_CACHE_DIR}/${ICONS_DIR}`;
@@ -406,6 +410,8 @@ export const VUELESS_MERGED_CONFIGS_CACHED_DIR = `${VUELESS_CACHE_DIR}/mergedCon
 export const VUELESS_CONFIG_FILE_NAME = "vueless.config";
 export const CONFIG_INDEX_FILE_NAME = "index";
 export const VUELESS_CONFIG_DIR = ".vueless";
+export const VUELESS_USER_COMPONENTS_DIR = `${VUELESS_CONFIG_DIR}/components`;
+export const SRC_USER_COMPONENTS_DIR = `${SRC_DIR}/components`;
 
 /* System error codes */
 export const DEFAULT_EXIT_CODE = 0;

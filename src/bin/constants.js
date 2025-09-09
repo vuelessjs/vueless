@@ -1,6 +1,3 @@
-export const SRC_COMPONENTS_PATH = "/src/components";
-export const COMPONENTS_PATH = "/components";
-
 export const DEFAULT_VUELESS_CONFIG_CONTENT = `import { componentConfigs } from "./.vueless";
 
 export default {

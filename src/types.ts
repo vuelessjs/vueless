@@ -20,6 +20,7 @@ import UDropdownBadgeConfig from "./ui.dropdown-badge/config";
 import UDropdownButtonConfig from "./ui.dropdown-button/config";
 import UDropdownLinkConfig from "./ui.dropdown-link/config";
 import UAccordionConfig from "./ui.container-accordion/config";
+import UAccordionItemConfig from "./ui.container-accordion-item/config";
 import UCardConfig from "./ui.container-card/config";
 import UColConfig from "./ui.container-col/config";
 import UDividerConfig from "./ui.container-divider/config";
@@ -129,6 +130,11 @@ export interface ThemeConfig {
   colorMode?: `${ColorMode}`;
 
   /**
+   * Defines the color mode to auto.
+   */
+  isColorModeAuto?: boolean;
+
+  /**
    * Light theme design system CSS variables.
    */
   lightTheme?: Partial<VuelessCssVariables>;
@@ -183,6 +189,12 @@ export interface Config extends ThemeConfig {
    */
   tailwindMerge?: UnknownObject;
 }
+
+export type MergedThemeConfig = Omit<ThemeConfig, "text | outline | rounding"> & {
+  text: Partial<ThemeConfigText>;
+  outline: Partial<ThemeConfigOutline>;
+  rounding: Partial<ThemeConfigRounding>;
+};
 
 export type UnknownObject = Record<string, unknown>;
 export type UnknownArray = unknown[];
@@ -252,6 +264,7 @@ export interface Components {
   UDropdownLink: Partial<typeof UDropdownLinkConfig>;
   UListbox: Partial<typeof UListboxConfig>;
   UAccordion: Partial<typeof UAccordionConfig>;
+  UAccordionItem: Partial<typeof UAccordionItemConfig>;
   UCard: Partial<typeof UCardConfig>;
   UCol: Partial<typeof UColConfig>;
   UDivider: Partial<typeof UDividerConfig>;

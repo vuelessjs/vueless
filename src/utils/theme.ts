@@ -1,12 +1,12 @@
 import { cloneDeep, merge } from "lodash-es";
 
 import { vuelessConfig } from "./ui";
-import { isCSR, setCookie } from "./helper";
+import { isCSR, getStored, getCookie, setCookie, deleteCookie, toNumber } from "./helper";
 
 import {
   PX_IN_REM,
-  COLOR_MODE_KEY,
   AUTO_MODE_KEY,
+  COLOR_MODE_KEY,
   LIGHT_MODE_CLASS,
   DARK_MODE_CLASS,
   GRAYSCALE_COLOR,
@@ -44,6 +44,7 @@ import type {
   ThemeConfigText,
   ThemeConfigOutline,
   ThemeConfigRounding,
+  MergedThemeConfig,
   VuelessCssVariables,
 } from "../types";
 import { ColorMode } from "../types";
@@ -60,6 +61,11 @@ declare interface RootCSSVariableOptions {
   darkTheme: Partial<VuelessCssVariables>;
 }
 
+declare interface SetColorMode {
+  colorMode: `${ColorMode}`;
+  isColorModeAuto: boolean;
+}
+
 /* Creates a media query that checks if the user's system color scheme is set to the dark. */
 const prefersColorSchemeDark = isCSR && window.matchMedia("(prefers-color-scheme: dark)");
 
@@ -69,23 +75,25 @@ function toggleColorModeClass() {
   const colorMode = prefersColorSchemeDark.matches ? ColorMode.Dark : ColorMode.Light;
 
   setCookie(COLOR_MODE_KEY, colorMode);
-  localStorage.setItem(COLOR_MODE_KEY, colorMode);
+  setCookie(AUTO_MODE_KEY, String(Number(true)));
 
   document.documentElement.classList.toggle(DARK_MODE_CLASS, prefersColorSchemeDark.matches);
   document.documentElement.classList.toggle(LIGHT_MODE_CLASS, !prefersColorSchemeDark.matches);
 }
 
 /**
- * Sets color mode.
- * @param {string} mode (dark | light | auto)
- * @param {boolean} isCachedAutoMode
- * @return {string} current color mode
+ * Sets the client-side rendering (CSR) color mode by applying the specified mode,
+ * configuring the appropriate event listeners, setting CSS classes, and saving the mode
+ * in cookies and local storage.
+ *
+ * @param {`${ColorMode}`} mode - The desired color mode (dark | light | auto).
+ * @return {Object} An object containing:
+ * - `colorMode` {string}: The applied color mode (e.g., "light", "dark").
+ * - `isColorModeAuto` {boolean}: Indicates whether the color mode is set to auto.
  */
-function setColorMode(mode: `${ColorMode}`, isCachedAutoMode?: boolean): string {
-  const colorMode = mode || getStored(COLOR_MODE_KEY) || vuelessConfig.colorMode || ColorMode.Light;
-
-  // TODO: This always true `!!Number(getStored(AUTO_MODE_KEY))` > `!!Number(undefined) = true`
-  isCachedAutoMode = isCachedAutoMode ?? !!Number(getStored(AUTO_MODE_KEY));
+function setCSRColorMode(mode: `${ColorMode}`): SetColorMode {
+  const colorMode = mode || getCookie(COLOR_MODE_KEY) || vuelessConfig.colorMode || ColorMode.Light;
+  const isCachedAutoMode = !!Number(getCookie(AUTO_MODE_KEY) ?? 0);
 
   const isAutoMode = colorMode === ColorMode.Auto;
   const isSystemDarkMode = isAutoMode && prefersColorSchemeDark && prefersColorSchemeDark?.matches;
@@ -115,15 +123,39 @@ function setColorMode(mode: `${ColorMode}`, isCachedAutoMode?: boolean): string 
     currentColorMode = isDarkMode ? ColorMode.Dark : ColorMode.Light;
   }
 
-  if (mode) {
+  /* Define color mode cookies to be used in both CSR and SSR */
+  if (mode || getCookie(AUTO_MODE_KEY) === undefined) {
     setCookie(COLOR_MODE_KEY, currentColorMode);
-    setCookie(AUTO_MODE_KEY, String(Number(isAutoMode || isCachedAutoMode)));
+    setCookie(AUTO_MODE_KEY, String(Number(isAutoMode)));
 
-    localStorage.setItem(COLOR_MODE_KEY, currentColorMode);
-    localStorage.setItem(AUTO_MODE_KEY, String(Number(isAutoMode || isCachedAutoMode)));
+    if (mode !== ColorMode.Auto && prefersColorSchemeDark) {
+      prefersColorSchemeDark.removeEventListener("change", toggleColorModeClass);
+    }
   }
 
-  return currentColorMode;
+  return {
+    colorMode: currentColorMode,
+    isColorModeAuto: isAutoMode || isCachedAutoMode,
+  };
+}
+
+/**
+ * Gets server-side rendering (SSR) color mode.
+ *
+ * @param {`${ColorMode}`} mode - The desired color mode (dark | light | auto).
+ * @param {boolean} isColorModeAuto - Indicates whether the color mode is set to auto.
+ * @return {Object} An object containing:
+ * - `colorMode` {string}: The applied color mode (e.g., "light", "dark").
+ * - `isColorModeAuto` {boolean}: Indicates whether the color mode is set to auto.
+ */
+function getSSRColorMode(mode: `${ColorMode}`, isColorModeAuto: boolean = false): SetColorMode {
+  const currentColorMode = mode || vuelessConfig.colorMode || ColorMode.Light;
+  const isAutoMode = currentColorMode === ColorMode.Auto;
+
+  return {
+    colorMode: currentColorMode,
+    isColorModeAuto: isAutoMode || isColorModeAuto,
+  };
 }
 
 /**
@@ -135,11 +167,72 @@ export function cssVar(name: string) {
 }
 
 /**
- * Get a stored value from local storage.
- * @return string | undefined
+ * Resets all theme data by clearing cookies and localStorage.
+ * This removes all stored theme preferences including color mode, colors, text sizes,
+ * outline sizes, rounding values, letter spacing, and disabled opacity.
  */
-export function getStored(key: string) {
-  return isCSR ? localStorage.getItem(key) : undefined;
+export function resetTheme() {
+  if (!isCSR) return;
+
+  const themeKeys = [
+    AUTO_MODE_KEY,
+    COLOR_MODE_KEY,
+    `vl-${PRIMARY_COLOR}`,
+    `vl-${NEUTRAL_COLOR}`,
+    `vl-${TEXT}-xs`,
+    `vl-${TEXT}-sm`,
+    `vl-${TEXT}-md`,
+    `vl-${TEXT}-lg`,
+    `vl-${OUTLINE}-sm`,
+    `vl-${OUTLINE}-md`,
+    `vl-${OUTLINE}-lg`,
+    `vl-${ROUNDING}-sm`,
+    `vl-${ROUNDING}-md`,
+    `vl-${ROUNDING}-lg`,
+    `vl-${LETTER_SPACING}`,
+    `vl-${DISABLED_OPACITY}`,
+  ];
+
+  themeKeys.forEach((key) => {
+    localStorage.removeItem(key);
+    deleteCookie(key);
+  });
+}
+
+/**
+ * Retrieves the current theme configuration.
+ * @return ThemeConfig - current theme configuration
+ */
+export function getTheme(config?: ThemeConfig): MergedThemeConfig {
+  const { colorMode, isColorModeAuto } = isCSR
+    ? setCSRColorMode(config?.colorMode as ColorMode)
+    : getSSRColorMode(config?.colorMode as ColorMode, config?.isColorModeAuto);
+
+  const primary = getPrimaryColor(config?.primary);
+  const neutral = getNeutralColor(config?.neutral);
+
+  const text = getText(config?.text);
+  const outline = getOutlines(config?.outline);
+  const rounding = getRoundings(config?.rounding);
+  const letterSpacing = getLetterSpacing(config?.letterSpacing);
+  const disabledOpacity = getDisabledOpacity(config?.disabledOpacity);
+
+  const lightTheme = merge({}, DEFAULT_LIGHT_THEME, vuelessConfig.lightTheme);
+  const darkTheme = merge({}, DEFAULT_DARK_THEME, vuelessConfig.darkTheme);
+
+  return {
+    colorMode,
+    isColorModeAuto,
+    primary,
+    neutral,
+    text,
+    outline,
+    rounding,
+    letterSpacing,
+    disabledOpacity,
+    lightTheme,
+    darkTheme,
+  };
 }
 
 /**
@@ -147,8 +240,10 @@ export function getStored(key: string) {
  * Changes and reset Vueless CSS variables.
  * @return string - CSS variables
  */
-export function setTheme(config: ThemeConfig = {}, isCachedAutoMode?: boolean) {
-  if (isCSR) setColorMode(config.colorMode as ColorMode, isCachedAutoMode);
+export function setTheme(config: ThemeConfig = {}) {
+  isCSR
+    ? setCSRColorMode(config.colorMode as ColorMode)
+    : getSSRColorMode(config.colorMode as ColorMode);
 
   const text = getText(config.text);
   const outline = getOutlines(config.outline);
@@ -226,6 +321,45 @@ export function setTheme(config: ThemeConfig = {}, isCachedAutoMode?: boolean) {
   });
 }
 
+/**
+ * Normalizes the provided theme configuration object into a structured format.
+ *
+ * @param {object} theme - The theme configuration object to normalize.
+ * @return {MergedThemeConfig}
+ */
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export function normalizeThemeConfig(theme: any): MergedThemeConfig {
+  return {
+    colorMode: theme.colorMode,
+    isColorModeAuto: theme.isColorModeAuto,
+    primary: theme.primary,
+    neutral: theme.neutral,
+    text: {
+      xs: toNumber(theme.text?.xs),
+      sm: toNumber(theme.text?.sm),
+      md: toNumber(theme.text?.md),
+      lg: toNumber(theme.text?.lg),
+    },
+    outline: {
+      sm: toNumber(theme.outline?.sm),
+      md: toNumber(theme.outline?.md),
+      lg: toNumber(theme.outline?.lg),
+    },
+    rounding: {
+      sm: toNumber(theme.rounding?.sm),
+      md: toNumber(theme.rounding?.md),
+      lg: toNumber(theme.rounding?.lg),
+    },
+    letterSpacing: toNumber(theme.letterSpacing),
+    disabledOpacity: toNumber(theme.disabledOpacity),
+  };
+}
+
+/**
+ * Determines if the provided color mode configuration has a primary color
+ * that differs from the default color mode configuration.
+ * @return {boolean}
+ */
 function hasPrimaryColor(
   colorModeConfig: Partial<VuelessCssVariables> | undefined,
   defaultColorModeConfig: Partial<VuelessCssVariables>,
@@ -306,6 +440,12 @@ function getText(text?: ThemeConfig["text"]) {
 
   const runtimeText = primitiveToObject(text) as ThemeConfigText;
   const globalText = primitiveToObject(vuelessConfig.text) as ThemeConfigText;
+  const storedText = {
+    xs: getStored(storageKey.xs),
+    sm: getStored(storageKey.sm),
+    md: getStored(storageKey.md),
+    lg: getStored(storageKey.lg),
+  };
 
   const textMd = Math.max(0, Number(runtimeText.md ?? globalText.md ?? DEFAULT_TEXT));
   const textXs = Math.max(0, textMd - TEXT_DECREMENT * 2);
@@ -319,20 +459,22 @@ function getText(text?: ThemeConfig["text"]) {
     lg: Math.max(0, Number(runtimeText.lg ?? getStored(storageKey.lg) ?? globalText.lg ?? 0)),
   };
 
+  /* eslint-disable prettier/prettier,vue/max-len */
   const mergedText = {
-    xs: runtimeText.xs === undefined && globalText.xs === undefined ? textXs : definedText.xs,
-    sm: runtimeText.sm === undefined && globalText.sm === undefined ? textSm : definedText.sm,
-    md: runtimeText.md === undefined && globalText.md === undefined ? textMd : definedText.md,
-    lg: runtimeText.lg === undefined && globalText.lg === undefined ? textLg : definedText.lg,
+    xs: runtimeText.xs === undefined && globalText.xs === undefined && (storedText.xs === undefined || typeof text === "number") ? textXs : definedText.xs,
+    sm: runtimeText.sm === undefined && globalText.sm === undefined && (storedText.sm === undefined || typeof text === "number") ? textSm : definedText.sm,
+    md: runtimeText.md === undefined && globalText.md === undefined && storedText.md === undefined ? textMd : definedText.md,
+    lg: runtimeText.lg === undefined && globalText.lg === undefined && (storedText.lg === undefined || typeof text === "number") ? textLg : definedText.lg,
   };
+  /* eslint-enable prettier/prettier,vue/max-len */
 
-  if (isCSR && text) {
-    setCookie(storageKey.sm, String(mergedText.xs));
+  if (isCSR && text !== undefined) {
+    setCookie(storageKey.xs, String(mergedText.xs));
     setCookie(storageKey.sm, String(mergedText.sm));
     setCookie(storageKey.md, String(mergedText.md));
     setCookie(storageKey.lg, String(mergedText.lg));
 
-    localStorage.setItem(storageKey.sm, String(mergedText.xs));
+    localStorage.setItem(storageKey.xs, String(mergedText.xs));
     localStorage.setItem(storageKey.sm, String(mergedText.sm));
     localStorage.setItem(storageKey.md, String(mergedText.md));
     localStorage.setItem(storageKey.lg, String(mergedText.lg));
@@ -354,6 +496,11 @@ function getOutlines(outline?: ThemeConfig["outline"]) {
 
   const runtimeOutline = primitiveToObject(outline) as ThemeConfigOutline;
   const globalOutline = primitiveToObject(vuelessConfig.outline) as ThemeConfigOutline;
+  const storedOutline = {
+    sm: getStored(storageKey.sm),
+    md: getStored(storageKey.md),
+    lg: getStored(storageKey.lg),
+  };
 
   const outlineMd = Math.max(0, Number(runtimeOutline.md ?? globalOutline.md ?? DEFAULT_OUTLINE));
   const outlineSm = Math.max(0, outlineMd - OUTLINE_DECREMENT);
@@ -369,15 +516,15 @@ function getOutlines(outline?: ThemeConfig["outline"]) {
     lg: Math.max(0, Number(runtimeOutline.lg ?? getStored(storageKey.lg) ?? globalOutline.lg ?? 0)),
   };
 
-  /* eslint-disable prettier/prettier */
+  /* eslint-disable prettier/prettier,vue/max-len */
   const mergedOutline = {
-    sm: runtimeOutline.sm === undefined && globalOutline.sm === undefined ? outlineSm : definedOutline.sm,
-    md: runtimeOutline.md === undefined && globalOutline.md === undefined ? outlineMd : definedOutline.md,
-    lg: runtimeOutline.lg === undefined && globalOutline.lg === undefined ? outlineLg : definedOutline.lg,
+    sm: runtimeOutline.sm === undefined && globalOutline.sm === undefined && (storedOutline.sm === undefined || typeof outline === "number") ? outlineSm : definedOutline.sm,
+    md: runtimeOutline.md === undefined && globalOutline.md === undefined && storedOutline.md === undefined ? outlineMd : definedOutline.md,
+    lg: runtimeOutline.lg === undefined && globalOutline.lg === undefined && (storedOutline.lg === undefined || typeof outline === "number") ? outlineLg : definedOutline.lg,
   };
-  /* eslint-enable prettier/prettier */
+  /* eslint-enable prettier/prettier,vue/max-len */
 
-  if (isCSR && outline) {
+  if (isCSR && outline !== undefined) {
     setCookie(storageKey.sm, String(mergedOutline.sm));
     setCookie(storageKey.md, String(mergedOutline.md));
     setCookie(storageKey.lg, String(mergedOutline.lg));
@@ -403,6 +550,11 @@ function getRoundings(rounding?: ThemeConfig["rounding"]) {
 
   const runtimeRounding = primitiveToObject(rounding) as ThemeConfigRounding;
   const globalRounding = primitiveToObject(vuelessConfig.rounding) as ThemeConfigRounding;
+  const storedRounding = {
+    sm: getStored(storageKey.sm),
+    md: getStored(storageKey.md),
+    lg: getStored(storageKey.lg),
+  };
 
   // eslint-disable-next-line prettier/prettier
   const roundingMd = Math.max(0, Number(runtimeRounding.md ?? globalRounding.md ?? DEFAULT_ROUNDING));
@@ -421,7 +573,7 @@ function getRoundings(rounding?: ThemeConfig["rounding"]) {
     roundingLg = ROUNDING_INCREMENT - ROUNDING_DECREMENT;
   }
 
-  /* eslint-disable prettier/prettier */
+  /* eslint-disable prettier/prettier,vue/max-len */
   const definedRounding = {
     sm: Math.max(0, Number(runtimeRounding.sm ?? getStored(storageKey.sm) ?? globalRounding.sm ?? 0)),
     md: Math.max(0, Number(runtimeRounding.md ?? getStored(storageKey.md) ?? globalRounding.md ?? 0)),
@@ -429,13 +581,13 @@ function getRoundings(rounding?: ThemeConfig["rounding"]) {
   };
 
   const mergedRounding = {
-    sm: runtimeRounding.sm === undefined && globalRounding.sm === undefined ? roundingSm : definedRounding.sm,
-    md: runtimeRounding.md === undefined && globalRounding.md === undefined ? roundingMd : definedRounding.md,
-    lg: runtimeRounding.lg === undefined && globalRounding.lg === undefined ? roundingLg : definedRounding.lg,
+    sm: runtimeRounding.sm === undefined && globalRounding.sm === undefined && (storedRounding.sm === undefined || typeof rounding === "number") ? roundingSm : definedRounding.sm,
+    md: runtimeRounding.md === undefined && globalRounding.md === undefined && storedRounding.md === undefined ? roundingMd : definedRounding.md,
+    lg: runtimeRounding.lg === undefined && globalRounding.lg === undefined && (storedRounding.lg === undefined || typeof rounding === "number") ? roundingLg : definedRounding.lg,
   };
-  /* eslint-enable prettier/prettier */
+  /* eslint-enable prettier/prettier,vue/max-len */
 
-  if (isCSR && rounding) {
+  if (isCSR && rounding !== undefined) {
     setCookie(storageKey.sm, String(mergedRounding.sm));
     setCookie(storageKey.md, String(mergedRounding.md));
     setCookie(storageKey.lg, String(mergedRounding.lg));
@@ -456,9 +608,9 @@ function getLetterSpacing(letterSpacing?: ThemeConfig["letterSpacing"]) {
   const storageKey = `vl-${LETTER_SPACING}`;
 
   const spacing = letterSpacing ?? getStored(storageKey) ?? vuelessConfig.letterSpacing;
-  const mergedSpacing = Number(spacing ?? DEFAULT_LETTER_SPACING);
+  const mergedSpacing = Math.max(0, Number(spacing ?? DEFAULT_LETTER_SPACING));
 
-  if (isCSR && letterSpacing) {
+  if (isCSR && letterSpacing !== undefined) {
     setCookie(storageKey, String(mergedSpacing));
     localStorage.setItem(storageKey, String(mergedSpacing));
   }
@@ -476,20 +628,12 @@ function getDisabledOpacity(disabledOpacity?: ThemeConfig["disabledOpacity"]) {
   const opacity = disabledOpacity ?? getStored(storageKey) ?? vuelessConfig.disabledOpacity;
   const mergedOpacity = Math.max(0, Number(opacity ?? DEFAULT_DISABLED_OPACITY));
 
-  if (isCSR && disabledOpacity) {
+  if (isCSR && disabledOpacity !== undefined) {
     setCookie(storageKey, String(mergedOpacity));
     localStorage.setItem(storageKey, String(mergedOpacity));
   }
 
   return mergedOpacity;
-}
-
-/**
- * Converts a primitive value into an object with the primitive value assigned to a key "md".
- * If the provided value is already an object, it returns a deeply cloned copy of that object.
- */
-function primitiveToObject(value: unknown): object {
-  return typeof value === "object" ? cloneDeep(value as object) : { md: value };
 }
 
 /**
@@ -587,4 +731,12 @@ function setCSSVariables(
   }
 
   return rootVariables;
+}
+
+/**
+ * Converts a primitive value into an object with the primitive value assigned to a key "md".
+ * If the provided value is already an object, it returns a deeply cloned copy of that object.
+ */
+function primitiveToObject(value: unknown): object {
+  return typeof value === "object" ? cloneDeep(value as object) : { md: value };
 }
