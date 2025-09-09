@@ -1,6 +1,6 @@
 {
   "name": "vueless",
-  "version": "1.2.5-beta.10",
+  "version": "1.2.5",
   "description": "Vue Styleless UI Component Library, powered by Tailwind CSS.",
   "author": "Johnny Grid <hello@vueless.com> (https://vueless.com)",
   "homepage": "https://vueless.com",
