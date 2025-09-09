@@ -346,30 +346,6 @@ describe("UPagination.vue", () => {
 
   // Events tests
   describe("Events", () => {
-    // Change event
-    it("emits change event when page is changed", async () => {
-      const component = mount(UPagination, {
-        props: {
-          modelValue: 1,
-          total: 100,
-          perPage: 10,
-        },
-      });
-
-      // Find the second page button and click it
-      const pageButtons = component.findAllComponents(UButton).filter((button) => {
-        const text = button.text();
-
-        return text && !isNaN(Number(text));
-      });
-
-      // Second button
-      await pageButtons[1].trigger("click");
-
-      expect(component.emitted("change")).toBeTruthy();
-      expect(component.emitted("change")?.[0]).toEqual([2]); // Second button value
-    });
-
     // Update:modelValue event
     it("emits update:modelValue event when page is changed", async () => {
       const component = mount(UPagination, {

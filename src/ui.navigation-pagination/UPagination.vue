@@ -29,12 +29,6 @@ const emit = defineEmits([
    * Triggers when current page changes.
    * @property {number} value
    */
-  "change",
-
-  /**
-   * Triggers when current page changes.
-   * @property {number} value
-   */
   "update:modelValue",
 ]);
 
@@ -44,7 +38,6 @@ const currentPage = computed({
   get: () => props.modelValue,
   set: (value) => {
     emit("update:modelValue", value);
-    emit("change", value);
   },
 });
 
