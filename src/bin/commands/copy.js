@@ -44,6 +44,12 @@ export async function copyVuelessComponent(options) {
     return;
   }
 
+  if (!newComponentName.startsWith("U")) {
+    console.log(styleText("red", `Component should have 'U' prefix (ex. 'UButtonCustom').`));
+
+    return;
+  }
+
   const absoluteSourcePath = path.join(cwd(), VUELESS_PACKAGE_DIR, COMPONENTS[componentName]);
   const absoluteDestPath = path.join(cwd(), VUELESS_USER_COMPONENTS_DIR, newComponentName);
 
@@ -77,37 +83,60 @@ async function modifyCreatedComponent(destPath, componentName, newComponentName)
 
   for await (const filePath of destFiles) {
     const fileContent = await readFile(filePath, "utf-8");
-
     let updatedContent = replaceRelativeImports(newComponentName, filePath, fileContent);
 
+    /* Renaming component name in constants */
     if (filePath.endsWith("constants.ts")) {
-      updatedContent = updatedContent.replace(componentName, newComponentName);
+      updatedContent = updatedContent.replaceAll(componentName, newComponentName);
     }
 
+    /* Renaming component name in tests */
     if (filePath.endsWith("test.ts")) {
       updatedContent = updatedContent.replaceAll(componentName, newComponentName);
     }
 
+    /* Renaming component name in types */
+    if (filePath.endsWith("types.ts")) {
+      updatedContent = updatedContent.replaceAll(componentName, newComponentName);
+    }
+
+    /* Renaming component name in components */
+    if (filePath.endsWith(".vue")) {
+      let lines = updatedContent.split("\n");
+
+      for (const [index, line] of lines.entries()) {
+        // Add some condition here in future if some edge cases appear
+        if (line.includes(componentName)) {
+          lines[index] = line.replaceAll(componentName, newComponentName);
+        }
+      }
+
+      updatedContent = lines.join("\n");
+    }
+
+    /* Renaming component name in stories */
     if (filePath.endsWith("stories.ts")) {
-      let storyLines = updatedContent.split("\n");
-      const storyComponentImportIndex = storyLines.findIndex(
+      let lines = updatedContent.split("\n");
+
+      // saving indexes
+      const storyIdIndex = getStoryMetaKeyIndex(fileContent, "id");
+      const storyTitleIndex = getStoryMetaKeyIndex(fileContent, "title");
+      const componentImportIndex = lines.findIndex(
         (line) => line.includes(componentName) && line.includes("import"),
       );
 
-      const storyIdIndex = getStoryMetaKeyIndex(fileContent, "id");
-      const storyTitleIndex = getStoryMetaKeyIndex(fileContent, "title");
+      updatedContent = lines.join("\n").replaceAll(componentName, newComponentName);
+      lines = updatedContent.split("\n");
 
-      updatedContent = storyLines.join("\n").replaceAll(componentName, newComponentName);
-      storyLines = updatedContent.split("\n");
+      // replacing lines by indexes
+      lines[storyIdIndex] = `  id: "${storybookId}",`;
+      lines[storyTitleIndex] = `  title: "Custom / ${newComponentName}",`;
+      lines[componentImportIndex] = `import ${newComponentName} from "../${newComponentName}.vue";`;
 
-      storyLines[storyIdIndex] = `  id: "${storybookId}",`;
-      storyLines[storyTitleIndex] = `  title: "Custom / ${newComponentName}",`;
-      storyLines[storyComponentImportIndex] =
-        `import ${newComponentName} from "../${newComponentName}.vue";`;
-
-      updatedContent = storyLines.join("\n");
+      updatedContent = lines.join("\n");
     }
 
+    /* Renaming file */
     let targetPath = filePath;
     const [fileName] = filePath.split("/").reverse();
 
@@ -120,6 +149,7 @@ async function modifyCreatedComponent(destPath, componentName, newComponentName)
       await rename(filePath, targetPath);
     }
 
+    /* Update file */
     await writeFile(targetPath, updatedContent);
   }
 }
