@@ -35,5 +35,5 @@ const { getDataTest, wrapperAttrs } = useUI<Config>(defaultConfig, mutatedProps)
 </script>
 
 <template>
-  <div v-bind="wrapperAttrs" :data-test="getDataTest()">Boilerplate</div>
+  <div v-bind="wrapperAttrs" :data-test="getDataTest()">UBoilerplate</div>
 </template>
