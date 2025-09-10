@@ -20,7 +20,7 @@ export default {
   component: {
     UIcon: {
       defaults: {
-        library: "custom-icons", /* tells Vueless that the library is custom */
+        library: "custom", /* tells Vueless that the library is custom */
         path: "src/assets/icons", /* path to the icons folder from the project root */
       }
     }
@@ -30,7 +30,7 @@ export default {
 {% endcode %}
 
 {% hint style="info" %}
-In this case, the library name should be `custom-icons`, which is a predefined name.
+In this case, the library name should be `custom`, which is a predefined name.
 {% endhint %}
 
 Afterward, you can use the icons by passing the prop name in the `<UIcon>` component.
