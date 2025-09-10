@@ -117,12 +117,12 @@ export async function getDefaultComponentConfig(name, configDir) {
   return config;
 }
 
-export async function cacheMergedConfigs(basePath) {
+export async function cacheMergedConfigs({ vuelessSrcDir, basePath } = {}) {
   const vuelessConfig = await getVuelessConfig(basePath);
   const componentNames = Object.entries(COMPONENTS);
 
   for await (const [componentName, componentDir] of componentNames) {
-    const defaultComponentConfigPath = path.join(basePath, componentDir, "config.ts");
+    const defaultComponentConfigPath = path.join(vuelessSrcDir, componentDir, "config.ts");
 
     const defaultConfig = await getDefaultComponentConfig(
       componentName,
