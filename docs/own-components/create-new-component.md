@@ -40,8 +40,5 @@ bunx vueless create <componentName>
 {% endtab %}
 {% endtabs %}
 
-The component will be created in the project's `/components` folder:
-
-* `/src/components/<componentName>` – for Vue
-* `/components/<componentName>` – for Nuxt
+The component will be created in the `.vueless/components` folder.
 
