@@ -5,12 +5,7 @@ import { extendTailwindMerge } from "tailwind-merge";
 import { isCSR, isSSR } from "./helper";
 import { createGetMergedConfig } from "./node/mergeConfigs";
 import { COMPONENT_NAME as U_ICON } from "../ui.image-icon/constants";
-import {
-  VUELESS_CACHE_DIR,
-  ICON_NON_PROPS_DEFAULTS,
-  VUELESS_CONFIG_FILE_NAME,
-  TAILWIND_MERGE_EXTENSION,
-} from "../constants";
+import { ICON_NON_PROPS_DEFAULTS, TAILWIND_MERGE_EXTENSION } from "../constants";
 
 import type { Config, ComponentDefaults, UnknownObject, ComponentNames } from "../types";
 
@@ -46,21 +41,19 @@ if (isCSR) {
 }
 
 if (isSSR) {
-  /* Load Tailwind config from the project root in IIFE (no top-level await). */
   (async () => {
     try {
-      const { readFile } = await import("node:fs/promises");
-
-      const path = `${process.cwd()}/${VUELESS_CACHE_DIR}/${VUELESS_CONFIG_FILE_NAME}.mjs`;
-      const code = await readFile(path, "utf8");
-
-      vuelessConfig = (
-        await import(
-          /* @vite-ignore */ `data:text/javascript;base64,${Buffer.from(code).toString("base64")}`
-        )
-      ).default;
+      // @ts-expect-error: vueless.config.js is optional
+      vuelessConfig = (await import(/* @vite-ignore */ "/vueless.config.js")).default;
     } catch {
-      vuelessConfig = {} as Config;
+      vuelessConfig = {};
+    }
+
+    try {
+      // @ts-expect-error: vueless.config.ts is optional
+      vuelessConfig = (await import(/* @vite-ignore */ "/vueless.config.ts")).default;
+    } catch {
+      vuelessConfig = {};
     }
   })();
 }
