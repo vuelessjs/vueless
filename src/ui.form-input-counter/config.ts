@@ -34,8 +34,12 @@ export default /*tw*/ {
   defaults: {
     size: "md",
     step: 1,
-    min: 1,
+    min: 0,
     max: 999,
+    minFractionDigits: 0,
+    maxFractionDigits: 2,
+    decimalSeparator: ",",
+    thousandsSeparator: " ",
     readonly: false,
     disabled: false,
     /* icons */
