@@ -27,6 +27,18 @@ const emit = defineEmits([
    * @property {number} modelValue
    */
   "update:modelValue",
+
+  /**
+   * Triggers when the input gains focus.
+   * @property {FocusEvent} event
+   */
+  "focus",
+
+  /**
+   * Triggers when the input loses focus.
+   * @property {FocusEvent} event
+   */
+  "blur",
 ]);
 
 const inputComponentRef = useTemplateRef<InstanceType<typeof UInput>>("inputComponent");
@@ -120,9 +132,15 @@ function onMouseLeave() {
   clearIntervals();
 }
 
-function onBlur() {
+function onFocus(event: FocusEvent) {
+  emit("focus", event);
+}
+
+function onBlur(event: FocusEvent) {
   if (Number(count.value) > props.max) count.value = props.max;
   if (Number(count.value) < props.min) count.value = props.min;
+
+  emit("blur", event);
 }
 
 function onInput() {
@@ -187,7 +205,12 @@ const {
       :size="size"
       :disabled="disabled"
       :readonly="readonly"
+      :min-fraction-digits="minFractionDigits"
+      :max-fraction-digits="maxFractionDigits"
+      :decimal-separator="decimalSeparator"
+      :thousands-separator="thousandsSeparator"
       v-bind="counterInputAttrs"
+      @focus="onFocus"
       @blur="onBlur"
       @input="onInput"
     />
