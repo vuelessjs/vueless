@@ -111,6 +111,35 @@ const MultiEnumTemplate: StoryFn<EnumUDropdownButtonArgs> = (
   `,
 });
 
+const GroupValuesTemplate: StoryFn<DefaultUDropdownButtonArgs> = (
+  args: DefaultUDropdownButtonArgs,
+) => ({
+  components: { UDropdownButton },
+  setup() {
+    return {
+      args,
+    };
+  },
+  template: `
+    <UDropdownButton
+      v-bind="args"
+      v-model="args.modelValue"
+      label="Single"
+      :config="{ listbox: 'min-w-[200px]' }"
+      class="max-w-96 mr-20"
+    />
+
+    <UDropdownButton
+      v-bind="args"
+      v-model="args.modelValueMultiple"
+      label="Multiple"
+      multiple
+      :config="{ listbox: 'min-w-[200px]' }"
+      class="mt-5 max-w-96"
+    />
+  `,
+});
+
 export const Default = DefaultTemplate.bind({});
 Default.args = {};
 Default.parameters = {
@@ -120,6 +149,9 @@ Default.parameters = {
     },
   },
 };
+
+export const Disabled = DefaultTemplate.bind({});
+Disabled.args = { disabled: true };
 
 export const Searchable = DefaultTemplate.bind({});
 Searchable.args = { searchable: true };
@@ -176,8 +208,59 @@ ListboxYPosition.parameters = {
   storyClasses: "h-[350px] flex items-center px-6 pt-8 pb-12",
 };
 
-export const Disabled = DefaultTemplate.bind({});
-Disabled.args = { disabled: true };
+export const GroupValue = GroupValuesTemplate.bind({});
+GroupValue.args = {
+  modelValue: "",
+  groupValueKey: "libs",
+  groupLabelKey: "language",
+  labelKey: "name",
+  valueKey: "name",
+  options: [
+    {
+      language: "Javascript",
+      libs: [{ name: "Vue.js" }, { name: "Adonis" }],
+    },
+    {
+      language: "Ruby",
+      libs: [
+        { name: "Frameworks", isSubGroup: true, level: 2 },
+        { name: "Rails", level: 3 },
+        { name: "Sinatra", level: 3 },
+      ],
+    },
+    {
+      language: "Other",
+      libs: [{ name: "Laravel" }, { name: "Phoenix" }],
+    },
+  ],
+};
+GroupValue.parameters = {
+  docs: {
+    story: {
+      height: "400px",
+    },
+  },
+};
+
+export const OptionsLimit = DefaultTemplate.bind({});
+OptionsLimit.args = { optionsLimit: 2 };
+OptionsLimit.parameters = {
+  docs: {
+    description: {
+      story: "`optionsLimit` prop controls the number of options displayed in the dropdown.",
+    },
+  },
+};
+
+export const VisibleOptions = DefaultTemplate.bind({});
+VisibleOptions.args = { visibleOptions: 2 };
+VisibleOptions.parameters = {
+  docs: {
+    description: {
+      story: "`visibleOptions` prop controls the number of options you can see without a scroll.",
+    },
+  },
+};
 
 export const WithoutToggleIcon = Default.bind({});
 WithoutToggleIcon.args = { toggleIcon: false };
