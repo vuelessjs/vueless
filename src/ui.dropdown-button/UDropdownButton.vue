@@ -249,12 +249,43 @@ const { getDataTest, config, dropdownButtonAttrs, listboxAttrs, toggleIconAttrs,
       :multiple="multiple"
       :color="color"
       :options="options"
+      :options-limit="optionsLimit"
+      :visible-options="visibleOptions"
       :label-key="labelKey"
       :value-key="valueKey"
+      :group-label-key="groupLabelKey"
+      :group-value-key="groupValueKey"
       v-bind="listboxAttrs"
       :data-test="getDataTest('list')"
       @click-option="onClickOption"
       @search-change="onSearchChange"
-    />
+    >
+      <template #before-option="{ option, index }">
+        <!--
+            @slot Use it to add something before option.
+            @binding {object} option
+            @binding {number} index
+          -->
+        <slot name="before-option" :option="option" :index="index" />
+      </template>
+
+      <template #option="{ option, index }">
+        <!--
+            @slot Use it to customize the option.
+            @binding {object} option
+            @binding {number} index
+          -->
+        <slot name="option" :option="option" :index="index" />
+      </template>
+
+      <template #after-option="{ option, index }">
+        <!--
+            @slot Use it to add something after option.
+            @binding {object} option
+            @binding {number} index
+          -->
+        <slot name="after-option" :option="option" :index="index" />
+      </template>
+    </UListbox>
   </div>
 </template>
