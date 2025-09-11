@@ -109,7 +109,6 @@ const { getDataTest, accordionItemAttrs, accordionAttrs } = useUI<Config>(defaul
       <UAccordionItem
         v-for="(option, index) in options"
         :key="index"
-        :model-value="selectedItem"
         :value="option.value"
         :title="option.title"
         :description="option.description"
