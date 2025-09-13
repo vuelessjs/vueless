@@ -37,6 +37,26 @@ export interface Props {
   valueKey?: string;
 
   /**
+   * Set a name of the property containing the group label.
+   */
+  groupLabelKey?: string;
+
+  /**
+   * Set a name of the property containing the group values.
+   */
+  groupValueKey?: string;
+
+  /**
+   * Number of options displayed in the dropdown.
+   */
+  optionsLimit?: number;
+
+  /**
+   * Number of options you can see without a scroll.
+   */
+  visibleOptions?: number;
+
+  /**
    * Button variant.
    */
   variant?: "solid" | "outlined" | "subtle" | "soft" | "ghost";

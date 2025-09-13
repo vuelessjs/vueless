@@ -212,9 +212,9 @@ GroupValue.parameters = {
   },
 };
 
-export const OptionsLimit2 = DefaultTemplate.bind({});
-OptionsLimit2.args = { optionsLimit: 2 };
-OptionsLimit2.parameters = {
+export const OptionsLimit = DefaultTemplate.bind({});
+OptionsLimit.args = { optionsLimit: 2 };
+OptionsLimit.parameters = {
   docs: {
     description: {
       story: "`optionsLimit` prop controls the number of options displayed in the dropdown.",
