@@ -26,6 +26,26 @@ export interface Props {
   max?: number;
 
   /**
+   * Minimal number of signs after the decimal separator (fractional part of a number).
+   */
+  minFractionDigits?: number;
+
+  /**
+   * Maximal number of signs after the decimal separator (fractional part of a number).
+   */
+  maxFractionDigits?: number;
+
+  /**
+   * A symbol used to separate the integer part from the fractional part of a number.
+   */
+  decimalSeparator?: string;
+
+  /**
+   *  A symbol used to separate the thousand parts of a number.
+   */
+  thousandsSeparator?: string;
+
+  /**
    * Input size.
    */
   size?: "sm" | "md" | "lg";

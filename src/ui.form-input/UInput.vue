@@ -25,7 +25,7 @@ const props = withDefaults(defineProps<Props>(), {
 
 const emit = defineEmits([
   /**
-   * Triggers when the input value is changes.
+   * Triggers when the input value is changed.
    * @property {string} modelValue
    * @property {number} modelValue
    */
@@ -43,6 +43,7 @@ const emit = defineEmits([
 
   /**
    * Triggers when the input gains focus.
+   * @property {FocusEvent} event
    */
   "focus",
 
@@ -53,11 +54,12 @@ const emit = defineEmits([
 
   /**
    * Triggers when the input loses focus.
+   * @property {FocusEvent} event
    */
   "blur",
 
   /**
-   * Triggers when the input value is changes.
+   * Triggers when the input value is changed.
    * @property {string} modelValue
    * @property {number} modelValue
    */
