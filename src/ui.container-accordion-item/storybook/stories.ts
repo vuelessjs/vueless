@@ -58,11 +58,12 @@ const EnumTemplate: StoryFn<UAccordionItemArgs> = (args: UAccordionItemArgs, { a
   components: { UAccordionItem, UCol },
   setup: () => ({ args, argTypes, getArgs }),
   template: `
-    <UCol gap="xl">
+    <UCol gap="lg">
       <UAccordionItem
         v-for="option in argTypes?.[args.enum]?.options"
         v-bind="getArgs(args, option)"
         :key="option"
+        class="py-0"
       />
     </UCol>
   `,
@@ -109,6 +110,30 @@ ToggleSlot.args = {
   slotTemplate: `
     <template #toggle="{ opened }">
       <ULink :label="opened ? 'Collapse' : 'Expand'" color="grayscale" />
+    </template>
+  `,
+};
+
+export const TitleSlot = DefaultTemplate.bind({});
+TitleSlot.args = {
+  slotTemplate: `
+    <template #title="{ title }">
+      <URow gap="xs" align="center">
+        <UIcon name="rocket_launch" size="xs" color="primary" />
+        <span>{{ title }}</span>
+      </URow>
+    </template>
+  `,
+};
+
+export const DescriptionSlot = DefaultTemplate.bind({});
+DescriptionSlot.args = {
+  slotTemplate: `
+    <template #description="{ description }">
+      <URow gap="xs" align="start">
+        <UIcon name="info" size="xs" color="accented" />
+        <span>{{ description }}</span>
+      </URow>
     </template>
   `,
 };

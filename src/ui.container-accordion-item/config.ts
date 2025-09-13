@@ -1,6 +1,6 @@
 export default /*tw*/ {
   wrapper: {
-    base: "group cursor-pointer",
+    base: "group cursor-pointer py-5 first:pt-0 last:pb-0",
     variants: {
       disabled: {
         true: "cursor-not-allowed text-default/(--vl-disabled-opacity)",
