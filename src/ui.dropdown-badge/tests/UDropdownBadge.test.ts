@@ -256,6 +256,60 @@ describe("UDropdownBadge.vue", () => {
 
       expect(component.findComponent(UBadge).attributes("data-test")).toBe(dataTest);
     });
+
+    // OptionsLimit prop
+    it("passes optionsLimit prop to UListbox component", async () => {
+      const optionsLimit = 2;
+
+      const component = mount(UDropdownBadge, {
+        props: {
+          optionsLimit,
+          options: defaultOptions,
+        },
+      });
+
+      await component.findComponent(UBadge).trigger("click");
+
+      expect(component.findComponent(UListbox).props("optionsLimit")).toBe(optionsLimit);
+    });
+
+    // VisibleOptions prop
+    it("passes visibleOptions prop to UListbox component", async () => {
+      const visibleOptions = 5;
+
+      const component = mount(UDropdownBadge, {
+        props: {
+          visibleOptions,
+          options: defaultOptions,
+        },
+      });
+
+      await component.findComponent(UBadge).trigger("click");
+
+      expect(component.findComponent(UListbox).props("visibleOptions")).toBe(visibleOptions);
+    });
+
+    // GroupLabelKey prop
+    it("passes groupLabelKey prop to UListbox component", async () => {
+      const groupLabelKey = "category";
+      const groupedOptions = [
+        { groupLabel: "Group 1", category: "group1" },
+        { label: "Option 1", id: "option1", category: "group1" },
+        { groupLabel: "Group 2", category: "group2" },
+        { label: "Option 2", id: "option2", category: "group2" },
+      ];
+
+      const component = mount(UDropdownBadge, {
+        props: {
+          groupLabelKey,
+          options: groupedOptions,
+        },
+      });
+
+      await component.findComponent(UBadge).trigger("click");
+
+      expect(component.findComponent(UListbox).props("groupLabelKey")).toBe(groupLabelKey);
+    });
   });
 
   // Slots tests
@@ -316,6 +370,80 @@ describe("UDropdownBadge.vue", () => {
 
       expect(component.find(`.${slotClass}`).exists()).toBe(true);
       expect(component.find(`.${slotClass}`).text()).toBe(slotText);
+    });
+
+    // Before-option slot
+    it("renders content from before-option slot", async () => {
+      const label = "Dropdown Badge";
+      const slotText = "Before";
+      const slotClass = "before-option-content";
+
+      const component = mount(UDropdownBadge, {
+        props: {
+          label,
+          options: defaultOptions,
+        },
+        slots: {
+          "before-option": `<span class='${slotClass}'>${slotText}</span>`,
+        },
+      });
+
+      await component.findComponent(UBadge).trigger("click");
+
+      const listbox = component.findComponent(UListbox);
+      const beforeOptionSlot = listbox.find(`.${slotClass}`);
+
+      expect(beforeOptionSlot.exists()).toBe(true);
+      expect(beforeOptionSlot.text()).toBe(slotText);
+    });
+
+    // Option slot
+    it("renders custom content from option slot", async () => {
+      const label = "Dropdown Badge";
+      const slotClass = "custom-option-content";
+
+      const component = mount(UDropdownBadge, {
+        props: {
+          label,
+          options: defaultOptions,
+        },
+        slots: {
+          option: `<span class='${slotClass}'>Custom {{ params.option.label }}</span>`,
+        },
+      });
+
+      await component.findComponent(UBadge).trigger("click");
+
+      const listbox = component.findComponent(UListbox);
+      const customOptionSlot = listbox.find(`.${slotClass}`);
+
+      expect(customOptionSlot.exists()).toBe(true);
+      expect(customOptionSlot.text()).toBe("Custom Option 1");
+    });
+
+    // After-option slot
+    it("renders content from after-option slot", async () => {
+      const label = "Dropdown Badge";
+      const slotText = "After";
+      const slotClass = "after-option-content";
+
+      const component = mount(UDropdownBadge, {
+        props: {
+          label,
+          options: defaultOptions,
+        },
+        slots: {
+          "after-option": `<span class='${slotClass}'>${slotText}</span>`,
+        },
+      });
+
+      await component.findComponent(UBadge).trigger("click");
+
+      const listbox = component.findComponent(UListbox);
+      const afterOptionSlot = listbox.find(`.${slotClass}`);
+
+      expect(afterOptionSlot.exists()).toBe(true);
+      expect(afterOptionSlot.text()).toBe(slotText);
     });
   });
 
