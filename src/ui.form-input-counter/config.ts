@@ -33,13 +33,14 @@ export default /*tw*/ {
   subtractIcon: "{UIcon}",
   defaults: {
     size: "md",
+    decimalSeparator: ",",
+    thousandsSeparator: " ",
+    prefix: "",
     step: 1,
     min: 0,
     max: 999,
     minFractionDigits: 0,
     maxFractionDigits: 2,
-    decimalSeparator: ",",
-    thousandsSeparator: " ",
     readonly: false,
     disabled: false,
     /* icons */

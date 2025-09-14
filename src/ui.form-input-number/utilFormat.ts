@@ -2,8 +2,8 @@ import { RAW_DECIMAL_MARK } from "./constants";
 
 import type { FormatOptions } from "./types";
 
-export function fixFloatingPointPrecision(value: number, maxDecimals: number = 10): number {
-  if (!isFinite(value)) return value;
+export function getFixedNumber(value: number, maxDecimals: number = 10): number | "" {
+  if (!isFinite(value) || isNaN(value)) return "";
   if (maxDecimals < 0) maxDecimals = 10;
 
   return parseFloat(value.toFixed(maxDecimals));
@@ -34,9 +34,9 @@ export function getFormattedValue(value: string, options: FormatOptions): string
   const actualMinFractionDigit = isValidMinFractionDigits ? minFractionDigits : maxFractionDigits;
 
   const numericValue = parseFloat(value);
-  const fixedValue = isNaN(numericValue)
-    ? 0
-    : fixFloatingPointPrecision(numericValue, Math.max(maxFractionDigits, 10));
+  const fixedValue = getFixedNumber(numericValue, Math.max(maxFractionDigits, 10));
+
+  if (fixedValue === "") return prefix;
 
   const intlNumberOptions: Intl.NumberFormatOptions = {
     minimumFractionDigits: actualMinFractionDigit,
