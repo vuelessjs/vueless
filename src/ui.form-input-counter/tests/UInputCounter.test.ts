@@ -1,4 +1,4 @@
-import { mount } from "@vue/test-utils";
+import { flushPromises, mount } from "@vue/test-utils";
 import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
 
 import UInputCounter from "../UInputCounter.vue";
@@ -167,6 +167,90 @@ describe("UInputCounter.vue", () => {
 
       expect(component.emitted("update:modelValue")![0][0]).toBe(6);
       expect(addButton.props("disabled")).toBe(true);
+    });
+
+    it("Min Fraction Digit – set fraction digit when it was not provided", async () => {
+      const initialValue = 12345678;
+      const initialValueWithFactions = "12 345 678,00";
+
+      const component = mount(UInputCounter, {
+        props: {
+          modelValue: initialValue,
+          minFractionDigits: 2,
+        },
+      });
+
+      await flushPromises();
+
+      expect(component.get("input").element.value).toBe(initialValueWithFactions);
+    });
+
+    it("Max Fraction Digit – truncate fraction digit to max value", async () => {
+      const initialValue = 12345678.011;
+      const initialValueWithFactions = "12 345 678,01";
+
+      const component = mount(UInputCounter, {
+        props: {
+          modelValue: initialValue,
+          maxFractionDigits: 2,
+        },
+      });
+
+      await flushPromises();
+
+      expect(component.get("input").element.value).toBe(initialValueWithFactions);
+    });
+
+    it("Decimal Separator – set correct decimal separator char", async () => {
+      const initialValue = 12345678.01;
+      const expectedDecimalSubString = "/01";
+
+      const component = mount(UInputCounter, {
+        props: {
+          modelValue: initialValue,
+          decimalSeparator: "/",
+        },
+      });
+
+      await flushPromises();
+
+      expect(component.get("input").element.value).toContain(expectedDecimalSubString);
+    });
+
+    it("Thousands Separator – set correct decimal separator char", async () => {
+      const initialValue = 12_345_678.01;
+      const expectedThousandsSeparator = "/";
+      const expectedThousandsSeparatorAmount = 2;
+
+      const component = mount(UInputCounter, {
+        props: {
+          modelValue: initialValue,
+          thousandsSeparator: expectedThousandsSeparator,
+        },
+      });
+
+      await flushPromises();
+
+      const inputValue = component.get("input").element.value;
+      const separatorCount = inputValue.split(expectedThousandsSeparator).length - 1;
+
+      expect(separatorCount).toBe(expectedThousandsSeparatorAmount);
+    });
+
+    it("Prefix – displays prefix at the beginning of the value", async () => {
+      const initialValue = 12345678;
+      const prefix = "pizza";
+
+      const component = mount(UInputCounter, {
+        props: {
+          modelValue: initialValue,
+          prefix: prefix,
+        },
+      });
+
+      await flushPromises();
+
+      expect(component.get("input").element.value.startsWith(prefix)).toBe(true);
     });
 
     it("Readonly – renders text instead of input when readonly set to true", async () => {

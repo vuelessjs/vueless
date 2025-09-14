@@ -46,6 +46,11 @@ export interface Props {
   thousandsSeparator?: string;
 
   /**
+   * Prefix to display before input value.
+   */
+  prefix?: string;
+
+  /**
    * Input size.
    */
   size?: "sm" | "md" | "lg";

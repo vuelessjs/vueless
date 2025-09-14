@@ -11,7 +11,7 @@ import useFormatNumber from "./useFormatNumber";
 import { COMPONENT_NAME, RAW_DECIMAL_MARK } from "./constants";
 
 import type { Props, Config } from "./types";
-import { getRawValue, fixFloatingPointPrecision } from "./utilFormat";
+import { getRawValue, getFixedNumber } from "./utilFormat";
 
 defineOptions({ inheritAttrs: false });
 
@@ -68,7 +68,7 @@ const { formattedValue, rawValue, setValue } = useFormatNumber(elementId, () => 
 }));
 
 const localValue = computed({
-  get: () => (props.modelValue !== undefined && props.modelValue !== null ? props.modelValue : ""),
+  get: () => props.modelValue ?? "",
   set: (value) => emit("update:modelValue", value),
 });
 
@@ -104,17 +104,13 @@ watch(
 );
 
 onMounted(() => {
-  if (localValue.value !== undefined && localValue.value !== null && localValue.value !== "") {
+  if (localValue.value) {
     setValue(stringLocalValue.value);
   }
 });
 
 function onKeyup(event: KeyboardEvent) {
-  let numberValue = !Number.isNaN(parseFloat(rawValue.value)) ? parseFloat(rawValue.value) : "";
-
-  if (typeof numberValue === "number") {
-    numberValue = fixFloatingPointPrecision(numberValue, props.maxFractionDigits || 10);
-  }
+  const numberValue = getFixedNumber(parseFloat(rawValue.value), props.maxFractionDigits || 10);
 
   localValue.value = props.valueType === "number" ? numberValue : rawValue.value || "";
 

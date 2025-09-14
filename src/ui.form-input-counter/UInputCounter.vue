@@ -209,6 +209,7 @@ const {
       :max-fraction-digits="maxFractionDigits"
       :decimal-separator="decimalSeparator"
       :thousands-separator="thousandsSeparator"
+      :prefix="prefix"
       v-bind="counterInputAttrs"
       @focus="onFocus"
       @blur="onBlur"
