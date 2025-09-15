@@ -255,6 +255,25 @@ describe("USelect.vue", () => {
       expect(component.getComponent(UListbox).props("searchable")).toBe(true);
     });
 
+    it("Search v-model – passes search to UListbox and filters", async () => {
+      const component = mount(USelect, {
+        props: {
+          searchable: true,
+          options: defaultOptions,
+          search: "Option 2",
+        },
+      });
+
+      await component.get("[role='combobox']").trigger("focus");
+      await flushPromises();
+
+      const listbox = component.getComponent(UListbox);
+      const options = listbox.findAll("[vl-child-key='option']");
+
+      expect(options).toHaveLength(1);
+      expect(options[0].text()).toBe("Option 2");
+    });
+
     it("Clearable – renders clear icon when true", async () => {
       const component = mount(USelect, {
         props: {
@@ -478,6 +497,24 @@ describe("USelect.vue", () => {
       expect(component.findComponent(UListbox).exists()).toBe(false);
     });
 
+    it("Keeps dropdown open when closeOnSelect is false", async () => {
+      const component = mount(USelect, {
+        props: {
+          modelValue: "",
+          options: defaultOptions,
+          closeOnSelect: false,
+        },
+      });
+
+      await component.get("[role='combobox']").trigger("focus");
+
+      const firstOption = component.find("[vl-child-key='option']");
+
+      await firstOption.trigger("click");
+
+      expect(component.findComponent(UListbox).exists()).toBe(true);
+    });
+
     it("Handles keyboard navigation", async () => {
       const updatedValue = "option2";
 
@@ -659,6 +696,93 @@ describe("USelect.vue", () => {
 
       expect(component.text()).toContain(slotContent);
     });
+
+    it("Before Option – renders custom content from before-option slot", async () => {
+      const slotContent = "Before Option";
+      const slotClass = "before-option-content";
+
+      const component = mount(USelect, {
+        props: {
+          options: defaultOptions,
+        },
+        slots: {
+          "before-option": `<span class='${slotClass}'>${slotContent}</span>`,
+        },
+      });
+
+      await component.get("[role='combobox']").trigger("focus");
+
+      const listbox = component.findComponent(UListbox);
+      const beforeOptionSlot = listbox.find(`.${slotClass}`);
+
+      expect(beforeOptionSlot.exists()).toBe(true);
+      expect(beforeOptionSlot.text()).toBe(slotContent);
+    });
+
+    it("Option – renders custom content from option slot", async () => {
+      const slotClass = "custom-option-content";
+
+      const component = mount(USelect, {
+        props: {
+          options: defaultOptions,
+        },
+        slots: {
+          option: `<span class='${slotClass}'>Custom {{ params.option.label }}</span>`,
+        },
+      });
+
+      await component.get("[role='combobox']").trigger("focus");
+
+      const listbox = component.findComponent(UListbox);
+      const customOptionSlot = listbox.find(`.${slotClass}`);
+
+      expect(customOptionSlot.exists()).toBe(true);
+      expect(customOptionSlot.text()).toBe("Custom Option 1");
+    });
+
+    it("After Option – renders custom content from after-option slot", async () => {
+      const slotContent = "After Option";
+      const slotClass = "after-option-content";
+
+      const component = mount(USelect, {
+        props: {
+          options: defaultOptions,
+        },
+        slots: {
+          "after-option": `<span class='${slotClass}'>${slotContent}</span>`,
+        },
+      });
+
+      await component.get("[role='combobox']").trigger("focus");
+
+      const listbox = component.findComponent(UListbox);
+      const afterOptionSlot = listbox.find(`.${slotClass}`);
+
+      expect(afterOptionSlot.exists()).toBe(true);
+      expect(afterOptionSlot.text()).toBe(slotContent);
+    });
+
+    it("Empty – renders custom content from empty slot", async () => {
+      const slotContent = "No options available";
+      const slotClass = "custom-empty";
+
+      const component = mount(USelect, {
+        props: {
+          options: [],
+        },
+        slots: {
+          empty: `<span class='${slotClass}'>${slotContent}</span>`,
+        },
+      });
+
+      await component.get("[role='combobox']").trigger("focus");
+
+      const listbox = component.findComponent(UListbox);
+      const emptySlot = listbox.find(`.${slotClass}`);
+
+      expect(emptySlot.exists()).toBe(true);
+      expect(emptySlot.text()).toBe(slotContent);
+    });
   });
 
   describe("Events", () => {
@@ -726,6 +850,25 @@ describe("USelect.vue", () => {
       expect(component.emitted("searchChange")![0][0]).toBe(testValue);
 
       vi.useRealTimers();
+    });
+
+    it("Update:search – re-emits from UListbox", async () => {
+      const component = mount(USelect, {
+        props: {
+          searchable: true,
+          options: defaultOptions,
+        },
+      });
+
+      await component.get("[role='combobox']").trigger("focus");
+
+      const input = component.get("input");
+
+      await input.setValue("Option 3");
+      await flushPromises();
+
+      expect(component.emitted("update:search")).toBeTruthy();
+      expect(component.emitted("update:search")![0][0]).toBe("Option 3");
     });
 
     it("Clear – emits when clear icon is clicked", async () => {

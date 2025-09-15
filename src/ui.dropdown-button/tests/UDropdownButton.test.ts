@@ -317,6 +317,24 @@ describe("UDropdownButton.vue", () => {
       expect(component.findComponent(UListbox).props("optionsLimit")).toBe(optionsLimit);
     });
 
+    it("Search v-model – passes search to UListbox and filters", async () => {
+      const component = mount(UDropdownButton, {
+        props: {
+          searchable: true,
+          options: defaultOptions,
+          search: "Option 2",
+        },
+      });
+
+      await component.findComponent(UButton).trigger("click");
+
+      const listbox = component.getComponent(UListbox);
+      const options = listbox.findAll("[vl-child-key='option']");
+
+      expect(options).toHaveLength(1);
+      expect(options[0].text()).toBe("Option 2");
+    });
+
     // VisibleOptions prop
     it("passes visibleOptions prop to UListbox component", async () => {
       const visibleOptions = 5;
@@ -489,6 +507,31 @@ describe("UDropdownButton.vue", () => {
       expect(afterOptionSlot.exists()).toBe(true);
       expect(afterOptionSlot.text()).toBe(slotText);
     });
+
+    // Empty slot
+    it("renders custom content from empty slot", async () => {
+      const label = "Dropdown Button";
+      const slotContent = "No options available";
+      const slotClass = "custom-empty";
+
+      const component = mount(UDropdownButton, {
+        props: {
+          label,
+          options: [],
+        },
+        slots: {
+          empty: `<span class='${slotClass}'>${slotContent}</span>`,
+        },
+      });
+
+      await component.findComponent(UButton).trigger("click");
+
+      const listbox = component.findComponent(UListbox);
+      const emptySlot = listbox.find(`.${slotClass}`);
+
+      expect(emptySlot.exists()).toBe(true);
+      expect(emptySlot.text()).toBe(slotContent);
+    });
   });
 
   // Events tests
@@ -574,6 +617,25 @@ describe("UDropdownButton.vue", () => {
 
       // Dropdown should be closed
       expect(component.findComponent(UListbox).exists()).toBe(false);
+    });
+
+    // CloseOnSelect prop
+    it("keeps dropdown open when closeOnSelect is false", async () => {
+      const component = mount(UDropdownButton, {
+        props: {
+          options: defaultOptions,
+          closeOnSelect: false,
+        },
+      });
+
+      await component.findComponent(UButton).trigger("click");
+      expect(component.findComponent(UListbox).exists()).toBe(true);
+
+      const listbox = component.findComponent(UListbox);
+
+      listbox.vm.$emit("update:modelValue", 2);
+
+      expect(component.findComponent(UListbox).exists()).toBe(true);
     });
   });
 

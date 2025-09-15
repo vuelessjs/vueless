@@ -12,9 +12,17 @@ import UCol from "../../ui.container-col/UCol.vue";
 import UIcon from "../../ui.image-icon/UIcon.vue";
 import ULink from "../../ui.button-link/ULink.vue";
 import UAvatar from "../../ui.image-avatar/UAvatar.vue";
+import UBadge from "../../ui.text-badge/UBadge.vue";
+import UText from "../../ui.text-block/UText.vue";
+import ULoader from "../../ui.loader/ULoader.vue";
 
 import type { Meta, StoryFn } from "@storybook/vue3-vite";
 import type { Props } from "../types";
+
+import johnDoe from "../../ui.form-select/storybook/assets/images/john-doe.png";
+import emilyDavis from "../../ui.form-select/storybook/assets/images/emily-davis.png";
+import alexJohnson from "../../ui.form-select/storybook/assets/images/alex-johnson.png";
+import patMorgan from "../../ui.form-select/storybook/assets/images/pat-morgan.png";
 
 interface DefaultUDropdownButtonArgs extends Props {
   slotTemplate?: string;
@@ -54,7 +62,7 @@ export default {
 const DefaultTemplate: StoryFn<DefaultUDropdownButtonArgs> = (
   args: DefaultUDropdownButtonArgs,
 ) => ({
-  components: { UDropdownButton, UIcon, ULink, UAvatar },
+  components: { UDropdownButton, UIcon, ULink, UAvatar, ULoader, URow, UText },
   setup: () => ({ args, slots: getSlotNames(UDropdownButton.__name) }),
   template: `
     <UDropdownButton v-bind="args">
@@ -161,6 +169,27 @@ Searchable.parameters = {
       height: "250px",
     },
   },
+};
+
+export const SearchModelValue = DefaultTemplate.bind({});
+SearchModelValue.args = { searchable: true, search: "Copy" };
+SearchModelValue.parameters = {
+  docs: {
+    story: {
+      height: "250px",
+    },
+  },
+};
+
+export const NoCloseOnSelect = SelectableTemplate.bind({});
+NoCloseOnSelect.args = {
+  modelValue: "pending",
+  options: [
+    { label: "Active", id: "active" },
+    { label: "Pending", id: "pending" },
+    { label: "Archived", id: "archived" },
+  ],
+  closeOnSelect: false,
 };
 
 export const OptionSelection = SelectableTemplate.bind({});
@@ -310,4 +339,177 @@ ToggleSlot.args = {
       <ULink :label="opened ? 'collapse' : 'expand'" color="inherit" underlined />
     </template>
   `,
+};
+
+export const EmptySlot = DefaultTemplate.bind({});
+EmptySlot.args = {
+  options: [],
+  slotTemplate: `
+    <template #empty>
+      <URow align="center">
+        <ULoader loading size="sm" />
+        <UText label="Loading, this may take a while..." />
+      </URow>
+    </template>
+  `,
+};
+
+export const OptionSlots: StoryFn<DefaultUDropdownButtonArgs> = (args) => ({
+  components: { UDropdownButton, URow, UCol, UAvatar, UIcon, UBadge, UText },
+  setup: () => ({ args, johnDoe, emilyDavis, alexJohnson, patMorgan }),
+  template: `
+    <URow>
+      <UDropdownButton
+        v-model="args.beforeOptionModel"
+        label="Before option slot"
+        :options="[
+          {
+            label: 'John Doe',
+            id: '1',
+            role: 'Developer',
+            avatar: johnDoe,
+            status: 'online',
+            statusColor: 'success',
+          },
+          {
+            label: 'Jane Smith',
+            id: '2',
+            role: 'Designer',
+            avatar: emilyDavis,
+            status: 'away',
+            statusColor: 'warning',
+          },
+          {
+            label: 'Mike Johnson',
+            id: '3',
+            role: 'Product Manager',
+            avatar: alexJohnson,
+            status: 'offline',
+            statusColor: 'grayscale',
+          },
+          {
+            label: 'Sarah Wilson',
+            id: '4',
+            role: 'QA Engineer',
+            avatar: patMorgan,
+            status: 'online',
+            statusColor: 'success',
+          },
+        ]"
+      >
+        <template #before-option="{ option }">
+          <UAvatar :src="option.avatar" size="sm" />
+        </template>
+      </UDropdownButton>
+
+      <UDropdownButton
+        v-model="args.optionModel"
+        label="Option slot"
+        :options="[
+          {
+            label: 'John Doe',
+            id: '1',
+            role: 'Developer',
+            avatar: johnDoe,
+            status: 'online',
+            statusColor: 'success',
+          },
+          {
+            label: 'Jane Smith',
+            id: '2',
+            role: 'Designer',
+            avatar: emilyDavis,
+            status: 'away',
+            statusColor: 'warning',
+          },
+          {
+            label: 'Mike Johnson',
+            id: '3',
+            role: 'Product Manager',
+            avatar: alexJohnson,
+            status: 'offline',
+            statusColor: 'grayscale',
+          },
+          {
+            label: 'Sarah Wilson',
+            id: '4',
+            role: 'QA Engineer',
+            avatar: patMorgan,
+            status: 'online',
+            statusColor: 'success',
+          },
+        ]"
+      >
+        <template #option="{ option }">
+          <URow align="center" gap="xs">
+            <UCol gap="none">
+              <UText size="sm">{{ option.label }}</UText>
+              <UText variant="lifted" size="xs">{{ option.role }}</UText>
+            </UCol>
+            <UBadge
+              :label="option.status"
+              :color="option.statusColor"
+              size="sm"
+              variant="subtle"
+            />
+          </URow>
+        </template>
+      </UDropdownButton>
+
+      <UDropdownButton
+        v-model="args.afterOptionModel"
+        label="After option slot"
+        :options="[
+          {
+            label: 'John Doe',
+            id: '1',
+            role: 'Developer',
+            avatar: johnDoe,
+            status: 'online',
+            statusColor: 'success',
+          },
+          {
+            label: 'Jane Smith',
+            id: '2',
+            role: 'Designer',
+            avatar: emilyDavis,
+            status: 'away',
+            statusColor: 'warning',
+          },
+          {
+            label: 'Mike Johnson',
+            id: '3',
+            role: 'Product Manager',
+            avatar: alexJohnson,
+            status: 'offline',
+            statusColor: 'grayscale',
+          },
+          {
+            label: 'Sarah Wilson',
+            id: '4',
+            role: 'QA Engineer',
+            avatar: patMorgan,
+            status: 'online',
+            statusColor: 'success',
+          },
+        ]"
+      >
+        <template #after-option="{ option }">
+          <UBadge
+            :label="option.status"
+            :color="option.statusColor"
+            size="sm"
+            variant="subtle"
+          />
+        </template>
+      </UDropdownButton>
+    </URow>
+  `,
+});
+OptionSlots.parameters = {
+  docs: {
+    story: {
+      height: "300px",
+    },
+  },
 };

@@ -25,6 +25,11 @@ export interface Props {
   modelValue?: string | number | UnknownObject | (string | number | UnknownObject)[];
 
   /**
+   * Search input model value.
+   */
+  search?: string;
+
+  /**
    * List options.
    */
   options?: Option[];
