@@ -15,6 +15,7 @@ import UIcon from "../../ui.image-icon/UIcon.vue";
 import ULink from "../../ui.button-link/ULink.vue";
 import UAvatar from "../../ui.image-avatar/UAvatar.vue";
 import UText from "../../ui.text-block/UText.vue";
+import ULoader from "../../ui.loader/ULoader.vue";
 
 import johnDoe from "./assets/images/john-doe.png";
 import emilyDavis from "./assets/images/emily-davis.png";
@@ -59,7 +60,7 @@ export default {
 } as Meta;
 
 const DefaultTemplate: StoryFn<USelectArgs> = (args: USelectArgs) => ({
-  components: { USelect, UIcon, ULink, UText },
+  components: { USelect, UIcon, ULink, UText, ULoader, URow },
   setup: () => ({ args, slots: getSlotNames(USelect.__name) }),
   template: `
     <USelect
@@ -147,6 +148,19 @@ NotClearable.args = { clearable: false };
 
 export const Searchable = DefaultTemplate.bind({});
 Searchable.args = { searchable: true };
+
+export const SearchModelValue = DefaultTemplate.bind({});
+SearchModelValue.args = { search: "New York", searchable: true };
+SearchModelValue.parameters = {
+  docs: {
+    story: {
+      height: "350px",
+    },
+  },
+};
+
+export const NoCloseOnSelect = DefaultTemplate.bind({});
+NoCloseOnSelect.args = { modelValue: 3, closeOnSelect: false };
 
 export const Readonly = DefaultTemplate.bind({});
 Readonly.args = { readonly: true, modelValue: "1", clearable: false };
@@ -526,6 +540,19 @@ SelectedCounterSlot.args = {
   slotTemplate: `
     <template #selected-counter="{ count }">
       <UText v-if="count">, and {{ count }} more variant(s)</UText>
+    </template>
+  `,
+};
+
+export const EmptySlot = DefaultTemplate.bind({});
+EmptySlot.args = {
+  options: [],
+  slotTemplate: `
+    <template #empty>
+      <URow align="center">
+        <ULoader loading size="sm" />
+        <UText label="Loading, this may take a while..." />
+      </URow>
     </template>
   `,
 };

@@ -47,6 +47,7 @@ export default /*tw*/ {
     round: false,
     searchable: false,
     multiple: false,
+    closeOnSelect: true,
     /* icons */
     toggleIcon: "keyboard_arrow_down",
   },

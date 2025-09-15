@@ -322,6 +322,24 @@ describe("UDropdownLink.vue", () => {
 
       expect(component.findComponent(UListbox).props("groupLabelKey")).toBe(groupLabelKey);
     });
+
+    it("Search v-model – passes search to UListbox and filters", async () => {
+      const component = mount(UDropdownLink, {
+        props: {
+          searchable: true,
+          options: defaultOptions,
+          search: "Option 3",
+        },
+      });
+
+      await component.findComponent(ULink).trigger("click");
+
+      const listbox = component.getComponent(UListbox);
+      const options = listbox.findAll("[vl-child-key='option']");
+
+      expect(options).toHaveLength(1);
+      expect(options[0].text()).toBe("Option 3");
+    });
   });
 
   // Slots tests
@@ -457,6 +475,31 @@ describe("UDropdownLink.vue", () => {
       expect(afterOptionSlot.exists()).toBe(true);
       expect(afterOptionSlot.text()).toBe(slotText);
     });
+
+    // Empty slot
+    it("renders custom content from empty slot", async () => {
+      const label = "Dropdown Link";
+      const slotContent = "No options available";
+      const slotClass = "custom-empty";
+
+      const component = mount(UDropdownLink, {
+        props: {
+          label,
+          options: [],
+        },
+        slots: {
+          empty: `<span class='${slotClass}'>${slotContent}</span>`,
+        },
+      });
+
+      await component.findComponent(ULink).trigger("click");
+
+      const listbox = component.findComponent(UListbox);
+      const emptySlot = listbox.find(`.${slotClass}`);
+
+      expect(emptySlot.exists()).toBe(true);
+      expect(emptySlot.text()).toBe(slotContent);
+    });
   });
 
   // Events tests
@@ -563,6 +606,29 @@ describe("UDropdownLink.vue", () => {
 
       // Dropdown should still be closed
       expect(component.findComponent(UListbox).exists()).toBe(false);
+    });
+
+    // CloseOnSelect prop
+    it("keeps dropdown open when closeOnSelect is false", async () => {
+      const component = mount(UDropdownLink, {
+        props: {
+          options: defaultOptions,
+          closeOnSelect: false,
+        },
+      });
+
+      // Open the dropdown
+      await component.findComponent(ULink).trigger("click");
+      expect(component.findComponent(UListbox).exists()).toBe(true);
+
+      // Find the listbox component
+      const listbox = component.findComponent(UListbox);
+
+      // Simulate selecting an option by emitting update:modelValue from the listbox
+      listbox.vm.$emit("update:modelValue", 2);
+
+      // Dropdown should remain open
+      expect(component.findComponent(UListbox).exists()).toBe(true);
     });
   });
 

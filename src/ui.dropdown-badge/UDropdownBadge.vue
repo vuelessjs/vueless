@@ -55,6 +55,12 @@ const emit = defineEmits([
    * @property {string} query
    */
   "searchChange",
+
+  /**
+   * Triggers when the search v-model updates.
+   * @property {string} query
+   */
+  "update:search",
 ]);
 
 type UListboxRef = InstanceType<typeof UListbox>;
@@ -74,6 +80,11 @@ const dropdownValue = computed({
     return props.modelValue;
   },
   set: (value) => emit("update:modelValue", value),
+});
+
+const dropdownSearch = computed({
+  get: () => props.search ?? "",
+  set: (value: string) => emit("update:search", value),
 });
 
 const selectedOptions = computed(() => {
@@ -153,7 +164,7 @@ function hideOptions() {
 function onClickOption(option: Option) {
   emit("clickOption", option);
 
-  if (!props.multiple) hideOptions();
+  if (!props.multiple && props.closeOnSelect) hideOptions();
 }
 
 defineExpose({
@@ -243,6 +254,7 @@ const { getDataTest, config, wrapperAttrs, dropdownBadgeAttrs, listboxAttrs, tog
       v-if="isShownOptions"
       ref="dropdown-list"
       v-model="dropdownValue"
+      v-model:search="dropdownSearch as string"
       :searchable="searchable"
       :multiple="multiple"
       :size="size"
@@ -258,6 +270,7 @@ const { getDataTest, config, wrapperAttrs, dropdownBadgeAttrs, listboxAttrs, tog
       :data-test="getDataTest('list')"
       @click-option="onClickOption"
       @search-change="onSearchChange"
+      @update:search="(value) => emit('update:search', value)"
     >
       <template #before-option="{ option, index }">
         <!--
@@ -284,6 +297,11 @@ const { getDataTest, config, wrapperAttrs, dropdownBadgeAttrs, listboxAttrs, tog
             @binding {number} index
           -->
         <slot name="after-option" :option="option" :index="index" />
+      </template>
+
+      <template #empty>
+        <!-- @slot Use it to add something instead of empty state. -->
+        <slot name="empty" />
       </template>
     </UListbox>
   </div>

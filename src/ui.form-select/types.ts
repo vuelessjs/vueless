@@ -52,6 +52,16 @@ export interface Props {
   debounce?: number | string;
 
   /**
+   * Search input model value for the dropdown list.
+   */
+  search?: string;
+
+  /**
+   * Close dropdown on option select.
+   */
+  closeOnSelect?: boolean;
+
+  /**
    * Left icon name.
    */
   leftIcon?: string;

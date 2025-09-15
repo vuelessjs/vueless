@@ -86,6 +86,16 @@ export interface Props {
   searchable?: boolean;
 
   /**
+   * Search input model value for the dropdown list.
+   */
+  search?: string;
+
+  /**
+   * Close dropdown on option select.
+   */
+  closeOnSelect?: boolean;
+
+  /**
    * Allows multiple selection.
    */
   multiple?: boolean;
