@@ -328,6 +328,29 @@ describe("UDropdownBadge.vue", () => {
       expect(options).toHaveLength(1);
       expect(options[0].text()).toBe("Option 1");
     });
+
+    // CloseOnSelect prop
+    it("keeps dropdown open when closeOnSelect is false", async () => {
+      const component = mount(UDropdownBadge, {
+        props: {
+          options: defaultOptions,
+          closeOnSelect: false,
+        },
+      });
+
+      // Open the dropdown
+      await component.findComponent(UBadge).trigger("click");
+      expect(component.findComponent(UListbox).exists()).toBe(true);
+
+      // Find the listbox component
+      const listbox = component.findComponent(UListbox);
+
+      // Simulate selecting an option by emitting update:modelValue from the listbox
+      listbox.vm.$emit("update:modelValue", 2);
+
+      // Dropdown should remain open
+      expect(component.findComponent(UListbox).exists()).toBe(true);
+    });
   });
 
   // Slots tests
@@ -573,29 +596,6 @@ describe("UDropdownBadge.vue", () => {
 
       // Dropdown should be closed
       expect(component.findComponent(UListbox).exists()).toBe(false);
-    });
-
-    // CloseOnSelect prop
-    it("keeps dropdown open when closeOnSelect is false", async () => {
-      const component = mount(UDropdownBadge, {
-        props: {
-          options: defaultOptions,
-          closeOnSelect: false,
-        },
-      });
-
-      // Open the dropdown
-      await component.findComponent(UBadge).trigger("click");
-      expect(component.findComponent(UListbox).exists()).toBe(true);
-
-      // Find the listbox component
-      const listbox = component.findComponent(UListbox);
-
-      // Simulate selecting an option by emitting update:modelValue from the listbox
-      listbox.vm.$emit("update:modelValue", 2);
-
-      // Dropdown should remain open
-      expect(component.findComponent(UListbox).exists()).toBe(true);
     });
   });
 

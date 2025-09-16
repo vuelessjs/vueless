@@ -372,6 +372,25 @@ describe("UDropdownButton.vue", () => {
 
       expect(component.findComponent(UListbox).props("groupLabelKey")).toBe(groupLabelKey);
     });
+
+    // CloseOnSelect prop
+    it("keeps dropdown open when closeOnSelect is false", async () => {
+      const component = mount(UDropdownButton, {
+        props: {
+          options: defaultOptions,
+          closeOnSelect: false,
+        },
+      });
+
+      await component.findComponent(UButton).trigger("click");
+      expect(component.findComponent(UListbox).exists()).toBe(true);
+
+      const listbox = component.findComponent(UListbox);
+
+      listbox.vm.$emit("update:modelValue", 2);
+
+      expect(component.findComponent(UListbox).exists()).toBe(true);
+    });
   });
 
   // Slots tests
@@ -617,25 +636,6 @@ describe("UDropdownButton.vue", () => {
 
       // Dropdown should be closed
       expect(component.findComponent(UListbox).exists()).toBe(false);
-    });
-
-    // CloseOnSelect prop
-    it("keeps dropdown open when closeOnSelect is false", async () => {
-      const component = mount(UDropdownButton, {
-        props: {
-          options: defaultOptions,
-          closeOnSelect: false,
-        },
-      });
-
-      await component.findComponent(UButton).trigger("click");
-      expect(component.findComponent(UListbox).exists()).toBe(true);
-
-      const listbox = component.findComponent(UListbox);
-
-      listbox.vm.$emit("update:modelValue", 2);
-
-      expect(component.findComponent(UListbox).exists()).toBe(true);
     });
   });
 

@@ -260,7 +260,7 @@ const { config, getDataTest, wrapperAttrs, dropdownLinkAttrs, listboxAttrs, togg
       v-if="isShownOptions"
       ref="dropdown-list"
       v-model="dropdownValue"
-      v-model:search="dropdownSearch as string"
+      v-model:search="dropdownSearch"
       :searchable="searchable"
       :multiple="multiple"
       :size="size"
