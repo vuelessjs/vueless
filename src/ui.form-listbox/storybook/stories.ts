@@ -8,9 +8,20 @@ import {
 
 import UListbox from "../UListbox.vue";
 import URow from "../../ui.container-row/URow.vue";
+import UCol from "../../ui.container-col/UCol.vue";
+import UAvatar from "../../ui.image-avatar/UAvatar.vue";
+import UIcon from "../../ui.image-icon/UIcon.vue";
+import UBadge from "../../ui.text-badge/UBadge.vue";
+import UText from "../../ui.text-block/UText.vue";
+import ULoader from "../../ui.loader/ULoader.vue";
 
 import type { Meta, StoryFn } from "@storybook/vue3-vite";
 import type { Option, Props } from "../types";
+
+import johnDoe from "../../ui.form-select/storybook/assets/images/john-doe.png";
+import emilyDavis from "../../ui.form-select/storybook/assets/images/emily-davis.png";
+import alexJohnson from "../../ui.form-select/storybook/assets/images/alex-johnson.png";
+import patMorgan from "../../ui.form-select/storybook/assets/images/pat-morgan.png";
 
 interface DefaultUListboxArgs extends Props {
   slotTemplate?: string;
@@ -47,7 +58,7 @@ export default {
 } as Meta;
 
 const DefaultTemplate: StoryFn<DefaultUListboxArgs> = (args: DefaultUListboxArgs) => ({
-  components: { UListbox },
+  components: { UListbox, ULoader, UText, URow },
   setup: () => ({ args, slots: getSlotNames(UListbox.__name) }),
   template: `
     <UListbox
@@ -81,6 +92,9 @@ Default.args = {};
 
 export const Searchable = DefaultTemplate.bind({});
 Searchable.args = { searchable: true };
+
+export const SearchModelValue = DefaultTemplate.bind({});
+SearchModelValue.args = { search: "New York", searchable: true };
 
 export const Multiple = DefaultTemplate.bind({});
 Multiple.args = { multiple: true, modelValue: [] };
@@ -202,6 +216,179 @@ OptionSettings.parameters = {
       story:
         // eslint-disable-next-line vue/max-len
         "The first option of the array is disabled (`disabled` object property is set to `true`). The second option is hidden (`isHidden` object property is set to `true`). <br/> The third option has `onClick` event handler: <br/> `onClick: (option: Option) => alert('onClick function for option 3: ' + JSON.stringify(option))`",
+    },
+  },
+};
+
+export const EmptySlot = DefaultTemplate.bind({});
+EmptySlot.args = {
+  options: [],
+  slotTemplate: `
+    <template #empty>
+      <URow align="center">
+        <ULoader loading size="sm" />
+        <UText label="Loading, this may take a while..." />
+      </URow>
+    </template>
+  `,
+};
+
+export const OptionSlots: StoryFn<DefaultUListboxArgs> = (args) => ({
+  components: { UListbox, URow, UCol, UAvatar, UIcon, UBadge, UText },
+  setup: () => ({ args, johnDoe, emilyDavis, alexJohnson, patMorgan }),
+  template: `
+    <URow gap="lg">
+      <UListbox
+        v-model="args.beforeOptionModel"
+        class="static"
+        :options="[
+          {
+            label: 'John Doe',
+            id: '1',
+            role: 'Developer',
+            avatar: johnDoe,
+            status: 'online',
+            statusColor: 'success',
+          },
+          {
+            label: 'Jane Smith',
+            id: '2',
+            role: 'Designer',
+            avatar: emilyDavis,
+            status: 'away',
+            statusColor: 'warning',
+          },
+          {
+            label: 'Mike Johnson',
+            id: '3',
+            role: 'Product Manager',
+            avatar: alexJohnson,
+            status: 'offline',
+            statusColor: 'grayscale',
+          },
+          {
+            label: 'Sarah Wilson',
+            id: '4',
+            role: 'QA Engineer',
+            avatar: patMorgan,
+            status: 'online',
+            statusColor: 'success',
+          },
+        ]"
+      >
+        <template #before-option="{ option }">
+          <UAvatar :src="option.avatar" size="sm" />
+        </template>
+      </UListbox>
+
+      <UListbox
+        v-model="args.optionModel"
+        class="static"
+        :options="[
+          {
+            label: 'John Doe',
+            id: '1',
+            role: 'Developer',
+            avatar: johnDoe,
+            status: 'online',
+            statusColor: 'success',
+          },
+          {
+            label: 'Jane Smith',
+            id: '2',
+            role: 'Designer',
+            avatar: emilyDavis,
+            status: 'away',
+            statusColor: 'warning',
+          },
+          {
+            label: 'Mike Johnson',
+            id: '3',
+            role: 'Product Manager',
+            avatar: alexJohnson,
+            status: 'offline',
+            statusColor: 'grayscale',
+          },
+          {
+            label: 'Sarah Wilson',
+            id: '4',
+            role: 'QA Engineer',
+            avatar: patMorgan,
+            status: 'online',
+            statusColor: 'success',
+          },
+        ]"
+      >
+        <template #option="{ option }">
+          <URow align="center" gap="xs">
+            <UCol gap="none">
+              <UText size="sm">{{ option.label }}</UText>
+              <UText variant="lifted" size="xs">{{ option.role }}</UText>
+            </UCol>
+            <UBadge
+              :label="option.status"
+              :color="option.statusColor"
+              size="sm"
+              variant="subtle"
+            />
+          </URow>
+        </template>
+      </UListbox>
+
+      <UListbox
+        v-model="args.afterOptionModel"
+        class="static"
+        :options="[
+          {
+            label: 'John Doe',
+            id: '1',
+            role: 'Developer',
+            avatar: johnDoe,
+            status: 'online',
+            statusColor: 'success',
+          },
+          {
+            label: 'Jane Smith',
+            id: '2',
+            role: 'Designer',
+            avatar: emilyDavis,
+            status: 'away',
+            statusColor: 'warning',
+          },
+          {
+            label: 'Mike Johnson',
+            id: '3',
+            role: 'Product Manager',
+            avatar: alexJohnson,
+            status: 'offline',
+            statusColor: 'grayscale',
+          },
+          {
+            label: 'Sarah Wilson',
+            id: '4',
+            role: 'QA Engineer',
+            avatar: patMorgan,
+            status: 'online',
+            statusColor: 'success',
+          },
+        ]"
+      >
+        <template #after-option="{ option }">
+          <UBadge
+            :label="option.status"
+            :color="option.statusColor"
+            size="sm"
+            variant="subtle"
+          />
+        </template>
+      </UListbox>
+    </URow>
+  `,
+});
+OptionSlots.parameters = {
+  docs: {
+    story: {
+      height: "300px",
     },
   },
 };

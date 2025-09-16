@@ -37,6 +37,26 @@ export interface Props {
   valueKey?: string;
 
   /**
+   * Set a name of the property containing the group label.
+   */
+  groupLabelKey?: string;
+
+  /**
+   * Set a name of the property containing the group values.
+   */
+  groupValueKey?: string;
+
+  /**
+   * Number of options displayed in the dropdown.
+   */
+  optionsLimit?: number;
+
+  /**
+   * Number of options you can see without a scroll.
+   */
+  visibleOptions?: number;
+
+  /**
    * Badge variant.
    */
   variant?: "solid" | "outlined" | "subtle" | "soft";
@@ -69,6 +89,16 @@ export interface Props {
    * Shows input to search value in a list.
    */
   searchable?: boolean;
+
+  /**
+   * Search input model value for the dropdown list.
+   */
+  search?: string;
+
+  /**
+   * Close dropdown on option select.
+   */
+  closeOnSelect?: boolean;
 
   /**
    * Allows multiple selection.

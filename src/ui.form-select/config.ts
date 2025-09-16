@@ -152,6 +152,7 @@ export default /*tw*/ {
     searchable: false,
     clearable: true,
     addOption: false,
+    closeOnSelect: true,
     /* icons */
     toggleIcon: "keyboard_arrow_down",
     clearIcon: "close_small",

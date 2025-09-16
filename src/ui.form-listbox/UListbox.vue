@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { watch, computed, useId, ref, useTemplateRef, nextTick } from "vue";
+import { watch, computed, useId, ref, useTemplateRef, nextTick, useAttrs } from "vue";
 import { isEqual } from "lodash-es";
 
 import useUI from "../composables/useUI";
@@ -57,7 +57,15 @@ const emit = defineEmits([
    * Triggers when the search input loses focus.
    */
   "searchBlur",
+
+  /**
+   * Triggers when the search v-model updates.
+   * @property {string} query
+   */
+  "update:search",
 ]);
+
+const attrs = useAttrs();
 
 const wrapperRef = useTemplateRef<HTMLDivElement>("wrapper");
 const listboxInputRef = useTemplateRef<{ input: HTMLInputElement }>("listbox-input");
@@ -67,7 +75,7 @@ const addOptionRef = useTemplateRef<HTMLLIElement>("add-option");
 
 const wrapperMaxHeight = ref("");
 
-const search = ref("");
+const internalSearch = ref<string>(props.search ?? "");
 
 const { pointer, pointerDirty, pointerSet, pointerBackward, pointerForward, pointerReset } =
   usePointer(props.options, optionsRef, wrapperRef);
@@ -79,6 +87,16 @@ const { localeMessages } = useComponentLocaleMessages<typeof defaultConfig.i18n>
   defaultConfig.i18n,
   props?.config?.i18n,
 );
+
+const isControlledSearch = computed(() => "onUpdate:search" in attrs);
+
+const search = computed({
+  get: () => (isControlledSearch.value ? (props.search ?? "") : internalSearch.value),
+  set: (value: string) => {
+    emit("update:search", value);
+    if (!isControlledSearch.value) internalSearch.value = value;
+  },
+});
 
 const selectedValue = computed({
   get: () => {
@@ -118,7 +136,14 @@ const filteredOptions = computed(() => {
 });
 
 watch(
-  () => [props.options, props.size, props.visibleOptions, props.searchable],
+  () => props.search,
+  (value) => {
+    if (isControlledSearch.value) internalSearch.value = value ?? "";
+  },
+);
+
+watch(
+  () => [props.options, props.size, props.visibleOptions, props.searchable, search.value],
   () => {
     nextTick(() => {
       const options = [

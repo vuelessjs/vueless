@@ -55,6 +55,12 @@ const emit = defineEmits([
    * @property {string} query
    */
   "searchChange",
+
+  /**
+   * Triggers when the search v-model updates.
+   * @property {string} query
+   */
+  "update:search",
 ]);
 
 provide("hideDropdownOptions", hideOptions);
@@ -76,6 +82,11 @@ const dropdownValue = computed({
     return props.modelValue;
   },
   set: (value) => emit("update:modelValue", value),
+});
+
+const dropdownSearch = computed({
+  get: () => props.search ?? "",
+  set: (value: string) => emit("update:search", value),
 });
 
 const selectedOptions = computed(() => {
@@ -157,7 +168,7 @@ function hideOptions() {
 function onClickOption(option: Option) {
   emit("clickOption", option);
 
-  if (!props.multiple) hideOptions();
+  if (!props.multiple && props.closeOnSelect) hideOptions();
 }
 
 defineExpose({
@@ -249,17 +260,55 @@ const { config, getDataTest, wrapperAttrs, dropdownLinkAttrs, listboxAttrs, togg
       v-if="isShownOptions"
       ref="dropdown-list"
       v-model="dropdownValue"
+      v-model:search="dropdownSearch"
       :searchable="searchable"
       :multiple="multiple"
       :size="size"
       :color="color"
       :options="options"
+      :options-limit="optionsLimit"
+      :visible-options="visibleOptions"
       :label-key="labelKey"
       :value-key="valueKey"
+      :group-label-key="groupLabelKey"
+      :group-value-key="groupValueKey"
       v-bind="listboxAttrs"
       :data-test="getDataTest('list')"
       @click-option="onClickOption"
       @search-change="onSearchChange"
-    />
+      @update:search="(value) => emit('update:search', value)"
+    >
+      <template #before-option="{ option, index }">
+        <!--
+            @slot Use it to add something before option.
+            @binding {object} option
+            @binding {number} index
+          -->
+        <slot name="before-option" :option="option" :index="index" />
+      </template>
+
+      <template #option="{ option, index }">
+        <!--
+            @slot Use it to customize the option.
+            @binding {object} option
+            @binding {number} index
+          -->
+        <slot name="option" :option="option" :index="index" />
+      </template>
+
+      <template #after-option="{ option, index }">
+        <!--
+            @slot Use it to add something after option.
+            @binding {object} option
+            @binding {number} index
+          -->
+        <slot name="after-option" :option="option" :index="index" />
+      </template>
+
+      <template #empty>
+        <!-- @slot Use it to add something instead of empty state. -->
+        <slot name="empty" />
+      </template>
+    </ULisbox>
   </div>
 </template>

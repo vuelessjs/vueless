@@ -58,6 +58,12 @@ const emit = defineEmits([
   "searchChange",
 
   /**
+   * Triggers when the search v-model updates.
+   * @property {string} query
+   */
+  "update:search",
+
+  /**
    * Triggers when the option from multiple select is removed.
    * @property {string} option
    */
@@ -129,7 +135,7 @@ const dropdownValue = computed({
     emit("update:modelValue", value);
     emit("change", { value, options: props.options });
 
-    if (!props.multiple) deactivate();
+    if (!props.multiple && props.closeOnSelect) deactivate();
   },
 });
 
@@ -179,6 +185,11 @@ const selectedOptionsLabel = computed(() => {
     visible: selectedOptions.value.visible.map((item) => item[props.labelKey]).join(", "),
     hidden: selectedOptions.value.hidden.map((item) => item[props.labelKey]).join(", "),
   };
+});
+
+const dropdownSearch = computed({
+  get: () => props.search ?? "",
+  set: (value: string) => emit("update:search", value),
 });
 
 const hiddenSelectedOptionsCount = computed(() => {
@@ -797,6 +808,7 @@ const {
         v-if="isOpen"
         ref="listbox"
         v-model="dropdownValue as string | number"
+        v-model:search="dropdownSearch"
         :searchable="searchable"
         :options-limit="optionsLimit"
         :multiple="multiple"
@@ -818,6 +830,7 @@ const {
         @blur="onListboxBlur"
         @search-blur="onListboxSearchBlur"
         @search-change="onSearchChange"
+        @update:search="(value) => emit('update:search', value)"
       >
         <template #before-option="{ option, index }">
           <!--
@@ -844,6 +857,11 @@ const {
             @binding {number} index
           -->
           <slot name="after-option" :option="option" :index="index" />
+        </template>
+
+        <template #empty>
+          <!-- @slot Use it to add something instead of empty state. -->
+          <slot name="empty" />
         </template>
       </UListbox>
 
