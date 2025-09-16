@@ -176,6 +176,104 @@ describe("UAccordionItem", () => {
       expect(toggleElement.attributes("data-opened")).toBe("true");
     });
 
+    // Title slot
+    it("renders custom content in title slot", () => {
+      const title = "Original Title";
+      const slotClass = "custom-title";
+      const slotContent = "Custom Title Content";
+
+      const component = mount(UAccordionItem, {
+        props: { title },
+        slots: {
+          title: `<div class="${slotClass}">${slotContent}</div>`,
+        },
+      });
+
+      expect(component.find(`.${slotClass}`).exists()).toBe(true);
+      expect(component.find(`.${slotClass}`).text()).toBe(slotContent);
+
+      expect(component.text()).not.toContain(title);
+    });
+
+    // Title slot bindings
+    it("provides title binding to title slot", () => {
+      const title = "Test Title";
+      const slotClass = "custom-title";
+
+      const component = mount(UAccordionItem, {
+        props: { title },
+        slots: {
+          title: `
+            <template #default="{ title }">
+              <div class="${slotClass}" :data-title="title"></div>
+            </template>
+          `,
+        },
+      });
+
+      const titleElement = component.find(`.${slotClass}`);
+
+      expect(titleElement.exists()).toBe(true);
+      expect(titleElement.attributes("data-title")).toBe(title);
+    });
+
+    // Description slot
+    it("renders custom content in description slot", () => {
+      const description = "Original Description";
+      const slotClass = "custom-description";
+      const slotContent = "Custom Description Content";
+
+      const component = mount(UAccordionItem, {
+        props: { description },
+        slots: {
+          description: `<div class="${slotClass}">${slotContent}</div>`,
+        },
+      });
+
+      expect(component.find(`.${slotClass}`).exists()).toBe(true);
+      expect(component.find(`.${slotClass}`).text()).toBe(slotContent);
+
+      expect(component.text()).not.toContain(description);
+    });
+
+    // Description slot bindings
+    it("provides description binding to description slot", () => {
+      const description = "Test Description";
+      const slotClass = "custom-description";
+
+      const component = mount(UAccordionItem, {
+        props: { description },
+        slots: {
+          description: `
+            <template #default="{ description }">
+              <div class="${slotClass}" :data-description="description"></div>
+            </template>
+          `,
+        },
+      });
+
+      const descriptionElement = component.find(`.${slotClass}`);
+
+      expect(descriptionElement.exists()).toBe(true);
+      expect(descriptionElement.attributes("data-description")).toBe(description);
+    });
+
+    // Description slot with empty prop
+    it("renders description slot even when description prop is empty", () => {
+      const slotClass = "custom-description";
+      const slotContent = "Custom Description Content";
+
+      const component = mount(UAccordionItem, {
+        props: {},
+        slots: {
+          description: `<div class="${slotClass}">${slotContent}</div>`,
+        },
+      });
+
+      expect(component.find(`.${slotClass}`).exists()).toBe(true);
+      expect(component.find(`.${slotClass}`).text()).toBe(slotContent);
+    });
+
     // Default slot
     it("renders default slot content when accordion is opened", async () => {
       const slotContent = "Custom accordion content";
@@ -220,6 +318,94 @@ describe("UAccordionItem", () => {
       await component.find("[vl-key='title']").trigger("click");
 
       expect(component.find("[vl-key='content']").exists()).toBe(false);
+    });
+
+    // Slot interactions with accordion behavior
+    it("title slot content is clickable and toggles accordion", async () => {
+      const title = "Test Title";
+      const slotClass = "custom-title";
+      const slotContent = "Custom Title Content";
+
+      const component = mount(UAccordionItem, {
+        props: { title },
+        slots: {
+          title: `<div class="${slotClass}">${slotContent}</div>`,
+        },
+      });
+
+      const titleElement = component.find(`.${slotClass}`);
+
+      expect(titleElement.exists()).toBe(true);
+
+      await titleElement.trigger("click");
+
+      const emitted = component.emitted("click");
+
+      expect(emitted).toBeTruthy();
+      expect(emitted?.[0]).toEqual([expect.any(String), true]);
+    });
+
+    it("description slot content is not clickable and does not toggle accordion", async () => {
+      const description = "Test Description";
+      const slotClass = "custom-description";
+      const slotContent = "Custom Description Content";
+
+      const component = mount(UAccordionItem, {
+        props: { description },
+        slots: {
+          description: `<div class="${slotClass}">${slotContent}</div>`,
+        },
+      });
+
+      const descriptionElement = component.find(`.${slotClass}`);
+
+      expect(descriptionElement.exists()).toBe(true);
+
+      await descriptionElement.trigger("click");
+
+      const emitted = component.emitted("click");
+
+      expect(emitted).toBeFalsy();
+    });
+
+    it("title slot preserves accordion toggle functionality", async () => {
+      const title = "Test Title";
+      const description = "Test Description";
+      const slotClass = "custom-title";
+      const slotContent = "Custom Title Content";
+
+      const component = mount(UAccordionItem, {
+        props: { title, description },
+        slots: {
+          title: `<div class="${slotClass}">${slotContent}</div>`,
+        },
+      });
+
+      expect(component.find("[id^='description-']").classes()).not.toContain("opacity-100");
+
+      await component.find(`.${slotClass}`).trigger("click");
+      expect(component.find("[id^='description-']").classes()).toContain("opacity-100");
+
+      await component.find(`.${slotClass}`).trigger("click");
+      expect(component.find("[id^='description-']").classes()).not.toContain("opacity-100");
+    });
+
+    it("description slot content is always visible when slot is provided", () => {
+      const slotClass = "custom-description";
+      const slotContent = "Custom Description Content";
+
+      const component = mount(UAccordionItem, {
+        props: {},
+        slots: {
+          description: `<div class="${slotClass}">${slotContent}</div>`,
+        },
+      });
+
+      // Description slot content should be visible even without description prop
+      const descriptionElement = component.find(`.${slotClass}`);
+
+      expect(descriptionElement.exists()).toBe(true);
+      expect(descriptionElement.text()).toBe(slotContent);
     });
   });
 

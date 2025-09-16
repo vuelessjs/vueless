@@ -122,7 +122,13 @@ const {
   <div ref="wrapper" v-bind="wrapperAttrs" :data-test="getDataTest()" @click="onClickItem">
     <div v-bind="bodyAttrs">
       <div v-bind="titleAttrs" ref="title">
-        {{ title }}
+        <!--
+          @slot Use it to add custom title content.
+          @binding {string} title
+        -->
+        <slot name="title" :title="title">
+          {{ title }}
+        </slot>
         <!--
           @slot Use it to add something instead of the toggle icon.
           @binding {string} icon-name
@@ -140,11 +146,18 @@ const {
       </div>
 
       <div
-        v-if="description"
+        v-if="description || hasSlotContent(slots['description'])"
         :id="`description-${elementId}`"
         v-bind="descriptionAttrs"
-        v-text="description"
-      />
+      >
+        <!--
+          @slot Use it to add custom description content.
+          @binding {string} description
+        -->
+        <slot name="description" :description="description">
+          {{ description }}
+        </slot>
+      </div>
 
       <div v-if="isOpened && hasSlotContent(slots['default'])" v-bind="contentAttrs">
         <!-- @slot Use it to add accordion content. -->

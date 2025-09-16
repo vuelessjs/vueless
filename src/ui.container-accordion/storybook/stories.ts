@@ -8,6 +8,7 @@ import {
 } from "../../utils/storybook";
 
 import UAccordion from "../../ui.container-accordion/UAccordion.vue";
+import UAccordionItem from "../../ui.container-accordion-item/UAccordionItem.vue";
 import UButton from "../../ui.button/UButton.vue";
 import ULink from "../../ui.button-link/ULink.vue";
 import UCol from "../../ui.container-col/UCol.vue";
@@ -68,7 +69,7 @@ export default {
 } as Meta;
 
 const DefaultTemplate: StoryFn<UAccordionArgs> = (args: UAccordionArgs) => ({
-  components: { UAccordion, ULink, UButton, UCol, URow, UIcon },
+  components: { UAccordion, UAccordionItem, ULink, UButton, UCol, URow, UIcon },
   setup: () => ({ args, slots: getSlotNames(UAccordion.__name) }),
   template: `
     <UAccordion v-bind="args" v-model="args.modelValue">
@@ -110,3 +111,14 @@ Sizes.args = {
     },
   ],
 };
+
+export const DefaultSlot: StoryFn<UAccordionArgs> = (args: UAccordionArgs, { argTypes }) => ({
+  components: { UAccordion, UAccordionItem },
+  setup: () => ({ args, argTypes, getArgs }),
+  template: `
+    <UAccordion v-model="args.modelValue">
+      <UAccordionItem title="Custom Accordion Item 1" description="Custom Accordion Item 1" value="1" />
+      <UAccordionItem title="Custom Accordion Item 2" description="Custom Accordion Item 2" value="2" />
+    </UAccordion>
+  `,
+});
