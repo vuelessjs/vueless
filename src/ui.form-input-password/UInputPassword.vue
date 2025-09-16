@@ -21,11 +21,23 @@ const props = withDefaults(defineProps<Props>(), {
 
 const emit = defineEmits([
   /**
-   * Triggers when the input value is changes.
+   * Triggers when the input value is changed.
    * @property {string} modelValue
    * @property {number} modelValue
    */
   "update:modelValue",
+
+  /**
+   * Triggers when the input gains focus.
+   * @property {FocusEvent} event
+   */
+  "focus",
+
+  /**
+   * Triggers when the input loses focus.
+   * @property {FocusEvent} event
+   */
+  "blur",
 ]);
 
 const elementId = props.id || useId();
@@ -49,6 +61,14 @@ const passwordIcon = computed(() => {
 
 function onClickShowPassword() {
   isShownPassword.value = !isShownPassword.value;
+}
+
+function onFocus(event: FocusEvent) {
+  emit("focus", event);
+}
+
+function onBlur(event: FocusEvent) {
+  emit("blur", event);
 }
 
 /**
@@ -80,6 +100,8 @@ const { getDataTest, config, passwordInputAttrs, passwordIconAttrs, passwordIcon
     :disabled="disabled"
     v-bind="passwordInputAttrs"
     :data-test="getDataTest()"
+    @focus="onFocus"
+    @blur="onBlur"
   >
     <template #left>
       <!--
