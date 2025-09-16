@@ -60,6 +60,7 @@ const emit = defineEmits([
 
   /**
    * Triggers when the search v-model updates.
+   * @property {string} query
    */
   "update:search",
 ]);

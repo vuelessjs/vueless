@@ -375,6 +375,24 @@ describe("USelect.vue", () => {
       expect(component.getComponent(UListbox).props("valueKey")).toBe(valueKey);
     });
 
+    it("Keeps dropdown open when closeOnSelect is false", async () => {
+      const component = mount(USelect, {
+        props: {
+          modelValue: "",
+          options: defaultOptions,
+          closeOnSelect: false,
+        },
+      });
+
+      await component.get("[role='combobox']").trigger("focus");
+
+      const firstOption = component.find("[vl-child-key='option']");
+
+      await firstOption.trigger("click");
+
+      expect(component.findComponent(UListbox).exists()).toBe(true);
+    });
+
     it("Options Limit – passes optionsLimit prop to UListbox", async () => {
       const optionsLimit = 5;
 
@@ -495,24 +513,6 @@ describe("USelect.vue", () => {
       await firstOption.trigger("click");
 
       expect(component.findComponent(UListbox).exists()).toBe(false);
-    });
-
-    it("Keeps dropdown open when closeOnSelect is false", async () => {
-      const component = mount(USelect, {
-        props: {
-          modelValue: "",
-          options: defaultOptions,
-          closeOnSelect: false,
-        },
-      });
-
-      await component.get("[role='combobox']").trigger("focus");
-
-      const firstOption = component.find("[vl-child-key='option']");
-
-      await firstOption.trigger("click");
-
-      expect(component.findComponent(UListbox).exists()).toBe(true);
     });
 
     it("Handles keyboard navigation", async () => {

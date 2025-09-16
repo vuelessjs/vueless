@@ -256,7 +256,7 @@ const { getDataTest, config, dropdownButtonAttrs, listboxAttrs, toggleIconAttrs,
       v-if="isShownOptions"
       ref="dropdown-list"
       v-model="dropdownValue"
-      v-model:search="dropdownSearch as string"
+      v-model:search="dropdownSearch"
       :searchable="searchable"
       :multiple="multiple"
       :color="color"

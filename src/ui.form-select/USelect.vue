@@ -807,7 +807,7 @@ const {
         v-if="isOpen"
         ref="listbox"
         v-model="dropdownValue as string | number"
-        v-model:search="dropdownSearch as string"
+        v-model:search="dropdownSearch"
         :searchable="searchable"
         :options-limit="optionsLimit"
         :multiple="multiple"

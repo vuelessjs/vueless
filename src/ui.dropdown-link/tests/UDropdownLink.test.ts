@@ -340,6 +340,29 @@ describe("UDropdownLink.vue", () => {
       expect(options).toHaveLength(1);
       expect(options[0].text()).toBe("Option 3");
     });
+
+    // CloseOnSelect prop
+    it("keeps dropdown open when closeOnSelect is false", async () => {
+      const component = mount(UDropdownLink, {
+        props: {
+          options: defaultOptions,
+          closeOnSelect: false,
+        },
+      });
+
+      // Open the dropdown
+      await component.findComponent(ULink).trigger("click");
+      expect(component.findComponent(UListbox).exists()).toBe(true);
+
+      // Find the listbox component
+      const listbox = component.findComponent(UListbox);
+
+      // Simulate selecting an option by emitting update:modelValue from the listbox
+      listbox.vm.$emit("update:modelValue", 2);
+
+      // Dropdown should remain open
+      expect(component.findComponent(UListbox).exists()).toBe(true);
+    });
   });
 
   // Slots tests
@@ -606,29 +629,6 @@ describe("UDropdownLink.vue", () => {
 
       // Dropdown should still be closed
       expect(component.findComponent(UListbox).exists()).toBe(false);
-    });
-
-    // CloseOnSelect prop
-    it("keeps dropdown open when closeOnSelect is false", async () => {
-      const component = mount(UDropdownLink, {
-        props: {
-          options: defaultOptions,
-          closeOnSelect: false,
-        },
-      });
-
-      // Open the dropdown
-      await component.findComponent(ULink).trigger("click");
-      expect(component.findComponent(UListbox).exists()).toBe(true);
-
-      // Find the listbox component
-      const listbox = component.findComponent(UListbox);
-
-      // Simulate selecting an option by emitting update:modelValue from the listbox
-      listbox.vm.$emit("update:modelValue", 2);
-
-      // Dropdown should remain open
-      expect(component.findComponent(UListbox).exists()).toBe(true);
     });
   });
 
