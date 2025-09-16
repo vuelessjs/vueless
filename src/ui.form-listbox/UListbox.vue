@@ -49,6 +49,7 @@ const emit = defineEmits([
 
   /**
    * Triggers when the search input value changes.
+   * @property {string} value
    */
   "searchChange",
 
