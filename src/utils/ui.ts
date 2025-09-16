@@ -43,15 +43,8 @@ if (isCSR) {
 if (isSSR) {
   (async () => {
     try {
-      // @ts-expect-error: vueless.config.js is optional
-      vuelessConfig = (await import(/* @vite-ignore */ "/vueless.config.js")).default;
-    } catch {
-      vuelessConfig = {};
-    }
-
-    try {
-      // @ts-expect-error: vueless.config.ts is optional
-      vuelessConfig = (await import(/* @vite-ignore */ "/vueless.config.ts")).default;
+      // @ts-expect-error: vueless.config.{js,ts} is optional
+      vuelessConfig = (await import(/* @vite-ignore */ "/vueless.config")).default;
     } catch {
       vuelessConfig = {};
     }
