@@ -608,7 +608,7 @@ function getLetterSpacing(letterSpacing?: ThemeConfig["letterSpacing"]) {
   const storageKey = `vl-${LETTER_SPACING}`;
 
   const spacing = letterSpacing ?? getStored(storageKey) ?? vuelessConfig.letterSpacing;
-  const mergedSpacing = Math.max(0, Number(spacing ?? DEFAULT_LETTER_SPACING));
+  const mergedSpacing = Number(spacing ?? DEFAULT_LETTER_SPACING);
 
   if (isCSR && letterSpacing !== undefined) {
     setCookie(storageKey, String(mergedSpacing));
@@ -654,7 +654,7 @@ function setRootCSSVariables(vars: RootCSSVariableOptions) {
     "--vl-rounding-sm": `${vars.rounding.sm / PX_IN_REM}rem`,
     "--vl-rounding-md": `${vars.rounding.md / PX_IN_REM}rem`,
     "--vl-rounding-lg": `${vars.rounding.lg / PX_IN_REM}rem`,
-    "--vl-letter-spacing": `${vars.letterSpacing}em`,
+    "--vl-letter-spacing": `${vars.letterSpacing}px`,
     "--vl-disabled-opacity": `${vars.disabledOpacity}%`,
   };
 

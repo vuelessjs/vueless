@@ -37,7 +37,7 @@ export const DEFAULT_ROUNDING = 8; /* pixels */
 export const ROUNDING_DECREMENT = 4; /* pixels */
 export const ROUNDING_INCREMENT = 6; /* pixels */
 export const DEFAULT_DISABLED_OPACITY = 50; /* presents */
-export const DEFAULT_LETTER_SPACING = 0; /* em */
+export const DEFAULT_LETTER_SPACING = 0; /* pixels */
 
 /* Vueless supported color shades */
 export const PRIMARY_COLORS = [
