@@ -654,7 +654,7 @@ function setRootCSSVariables(vars: RootCSSVariableOptions) {
     "--vl-rounding-sm": `${vars.rounding.sm / PX_IN_REM}rem`,
     "--vl-rounding-md": `${vars.rounding.md / PX_IN_REM}rem`,
     "--vl-rounding-lg": `${vars.rounding.lg / PX_IN_REM}rem`,
-    "--vl-letter-spacing": `${vars.letterSpacing}px`,
+    "--vl-letter-spacing": `${vars.letterSpacing}em`,
     "--vl-disabled-opacity": `${vars.disabledOpacity}%`,
   };
 
