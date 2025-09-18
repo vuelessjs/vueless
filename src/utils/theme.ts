@@ -645,7 +645,7 @@ function getDisabledOpacity(disabledOpacity?: ThemeConfig["disabledOpacity"]) {
  * @return Partial<VuelessCssVariables> - light theme configuration.
  */
 function getLightTheme(lightTheme?: Partial<VuelessCssVariables>) {
-  const storageKey = "vl-light-theme";
+  const storageKey = `vl-${LIGHT_THEME}`;
 
   let storedLightTheme: Partial<VuelessCssVariables> = {};
 
@@ -676,7 +676,7 @@ function getLightTheme(lightTheme?: Partial<VuelessCssVariables>) {
  * @return Partial<VuelessCssVariables> - dark theme configuration.
  */
 function getDarkTheme(darkTheme?: Partial<VuelessCssVariables>) {
-  const storageKey = "vl-dark-theme";
+  const storageKey = `vl-${DARK_THEME}`;
 
   let storedDarkTheme: Partial<VuelessCssVariables> = {};
 
