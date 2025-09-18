@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { watch, computed, useId, ref, useTemplateRef, nextTick, useAttrs } from "vue";
+import { watch, computed, useId, ref, useTemplateRef, nextTick } from "vue";
 import { isEqual } from "lodash-es";
 
 import useUI from "../composables/useUI";
@@ -65,8 +65,6 @@ const emit = defineEmits([
   "update:search",
 ]);
 
-const attrs = useAttrs();
-
 const wrapperRef = useTemplateRef<HTMLDivElement>("wrapper");
 const listboxInputRef = useTemplateRef<{ input: HTMLInputElement }>("listbox-input");
 const optionsRef = useTemplateRef<HTMLLIElement[]>("option");
@@ -75,7 +73,7 @@ const addOptionRef = useTemplateRef<HTMLLIElement>("add-option");
 
 const wrapperMaxHeight = ref("");
 
-const internalSearch = ref<string>(props.search ?? "");
+const localSearch = ref(props.search ?? "");
 
 const { pointer, pointerDirty, pointerSet, pointerBackward, pointerForward, pointerReset } =
   usePointer(props.options, optionsRef, wrapperRef);
@@ -88,13 +86,12 @@ const { localeMessages } = useComponentLocaleMessages<typeof defaultConfig.i18n>
   props?.config?.i18n,
 );
 
-const isControlledSearch = computed(() => "onUpdate:search" in attrs);
-
-const search = computed({
-  get: () => (isControlledSearch.value ? (props.search ?? "") : internalSearch.value),
+const searchModel = computed({
+  get: () => localSearch.value,
   set: (value: string) => {
     emit("update:search", value);
-    if (!isControlledSearch.value) internalSearch.value = value;
+
+    localSearch.value = value ?? "";
   },
 });
 
@@ -107,7 +104,7 @@ const selectedValue = computed({
     return props.modelValue;
   },
   set: (value) => {
-    if (search.value) search.value = "";
+    if (searchModel.value) searchModel.value = "";
 
     emit("update:modelValue", value);
   },
@@ -118,7 +115,7 @@ const addOptionKeyCombination = computed(() => {
 });
 
 const filteredOptions = computed(() => {
-  const normalizedSearch = search.value.toLowerCase().trim();
+  const normalizedSearch = searchModel.value.toLowerCase().trim();
 
   let options = [...props.options];
 
@@ -136,14 +133,7 @@ const filteredOptions = computed(() => {
 });
 
 watch(
-  () => props.search,
-  (value) => {
-    if (isControlledSearch.value) internalSearch.value = value ?? "";
-  },
-);
-
-watch(
-  () => [props.options, props.size, props.visibleOptions, props.searchable, search.value],
+  () => [props.options, props.size, props.visibleOptions, props.searchable, searchModel.value],
   () => {
     nextTick(() => {
       const options = [
@@ -444,7 +434,7 @@ const {
       v-if="searchable"
       :id="elementId"
       ref="listbox-input"
-      v-model="search"
+      v-model="searchModel"
       :placeholder="localeMessages.search"
       :size="size"
       :debounce="debounce"
