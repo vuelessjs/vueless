@@ -104,7 +104,7 @@ watch(
 );
 
 onMounted(() => {
-  if (localValue.value !== undefined && localValue.value !== null && localValue.value !== "") {
+  if (localValue.value || localValue.value === 0) {
     setValue(stringLocalValue.value);
   }
 });
