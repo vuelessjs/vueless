@@ -16,7 +16,7 @@ describe("ULabel.vue", () => {
         },
       });
 
-      expect(component.get("label").text()).toContain(label);
+      expect(component.find("[vl-key='label']").text()).toContain(label);
     });
 
     it("For – applied to label element", () => {
@@ -29,7 +29,7 @@ describe("ULabel.vue", () => {
         },
       });
 
-      expect(component.get("label").attributes("for")).toBe(forId);
+      expect(component.find("[vl-key='label']").attributes("for")).toBe(forId);
     });
 
     it("For – applies interactive classes when true", () => {
@@ -42,7 +42,7 @@ describe("ULabel.vue", () => {
         },
       });
 
-      expect(component.get("label").attributes("class")).toContain(interactiveClasses);
+      expect(component.find("[vl-key='label']").attributes("class")).toContain(interactiveClasses);
     });
 
     it("Description – description is rendered with provided text", () => {
@@ -133,7 +133,7 @@ describe("ULabel.vue", () => {
           },
         });
 
-        expect(component.get("label").attributes("class")).toContain(expectedClass);
+        expect(component.find("[vl-key='label']").attributes("class")).toContain(expectedClass);
       });
     });
 
@@ -148,7 +148,7 @@ describe("ULabel.vue", () => {
       });
 
       expect(component.attributes("class")).toContain(disabledClasses);
-      expect(component.get("label").attributes("class")).toContain(disabledClasses);
+      expect(component.find("[vl-key='label']").attributes("class")).toContain(disabledClasses);
     });
 
     it("Disabled – does not apply disabled class when false", () => {
@@ -162,7 +162,7 @@ describe("ULabel.vue", () => {
       });
 
       expect(component.attributes("class")).not.toContain(disabledClasses);
-      expect(component.get("label").attributes("class")).not.toContain(disabledClasses);
+      expect(component.find("[vl-key='label']").attributes("class")).not.toContain(disabledClasses);
     });
 
     it("Disabled – interactive class is not applied when disabled true", () => {
@@ -176,7 +176,9 @@ describe("ULabel.vue", () => {
         },
       });
 
-      expect(component.get("label").attributes("class")).not.toContain(interactiveClasses);
+      expect(component.find("[vl-key='label']").attributes("class")).not.toContain(
+        interactiveClasses,
+      );
     });
 
     it("Disabled – topInside label doesn't have focus styles disabled", () => {
@@ -190,7 +192,7 @@ describe("ULabel.vue", () => {
         },
       });
 
-      expect(component.get("label").attributes("class")).not.toContain(focusClasses);
+      expect(component.find("[vl-key='label']").attributes("class")).not.toContain(focusClasses);
     });
 
     it("Disabled – error is not rendered when disabled is true", () => {
@@ -294,7 +296,7 @@ describe("ULabel.vue", () => {
         },
       });
 
-      const labelElement = component.get("label");
+      const labelElement = component.find("[vl-key='label']");
 
       expect(labelElement.text()).toBe(slotContent);
       expect(labelElement.text()).not.toContain(defaultLabel);
@@ -313,7 +315,7 @@ describe("ULabel.vue", () => {
         },
       });
 
-      expect(component.get("label").text()).toBe(slotContent);
+      expect(component.find("[vl-key='label']").text()).toBe(slotContent);
     });
 
     it("Bottom – renders content from bottom slot", () => {
@@ -337,7 +339,7 @@ describe("ULabel.vue", () => {
         },
       });
 
-      const labelElement = component.get("label");
+      const labelElement = component.find("[vl-key='label']");
 
       await labelElement.trigger("click");
 
@@ -346,12 +348,27 @@ describe("ULabel.vue", () => {
   });
 
   describe("Exposed properties", () => {
-    it("Exposes label element ref", () => {
+    it("Exposes label element ref as a div", () => {
       const defaultLabel = "Label";
 
       const component = mount(ULabel, {
         props: {
           label: defaultLabel,
+        },
+      });
+
+      expect(component.vm.labelElement).toBeDefined();
+      expect(component.vm.labelElement!.tagName).toBe("DIV");
+      expect(component.vm.labelElement!.textContent).toBe(defaultLabel);
+    });
+
+    it("Exposes label element ref as a label", () => {
+      const defaultLabel = "Label";
+
+      const component = mount(ULabel, {
+        props: {
+          label: defaultLabel,
+          for: "test-id",
         },
       });
 

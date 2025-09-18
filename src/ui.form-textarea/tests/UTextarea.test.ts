@@ -408,7 +408,7 @@ describe("UTextarea.vue", () => {
         },
       });
 
-      const labelElement = component.getComponent(ULabel).find("label");
+      const labelElement = component.getComponent(ULabel).find("[vl-child-key='label']");
 
       expect(labelElement.text()).toBe(customLabelContent);
     });
@@ -425,7 +425,7 @@ describe("UTextarea.vue", () => {
         },
       });
 
-      const labelElement = component.getComponent(ULabel).find("label");
+      const labelElement = component.getComponent(ULabel).find("[vl-child-key='label']");
 
       expect(labelElement.text()).toBe(`Modified ${defaultLabel}`);
     });

@@ -269,7 +269,7 @@ describe("UInputFile.vue", () => {
       });
 
       const labelComponent = component.getComponent(ULabel);
-      const labelElement = labelComponent.find("label");
+      const labelElement = labelComponent.find("[vl-child-key='label']");
 
       expect(labelElement.text()).toBe(customLabelContent);
     });
@@ -287,7 +287,7 @@ describe("UInputFile.vue", () => {
       });
 
       const labelComponent = component.getComponent(ULabel);
-      const labelElement = labelComponent.find("label");
+      const labelElement = labelComponent.find("[vl-child-key='label']");
 
       expect(labelElement.text()).toBe(`Custom ${defaultLabel}`);
     });
