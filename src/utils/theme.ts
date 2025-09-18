@@ -647,11 +647,7 @@ function getDisabledOpacity(disabledOpacity?: ThemeConfig["disabledOpacity"]) {
 function getLightTheme(lightTheme?: Partial<VuelessCssVariables>) {
   const storageKey = `vl-${LIGHT_THEME}`;
 
-  let storedLightTheme: Partial<VuelessCssVariables> = {};
-
-  const stored = getStored(storageKey);
-
-  storedLightTheme = stored ? JSON.parse(stored) : {};
+  const storedLightTheme: Partial<VuelessCssVariables> = JSON.parse(getStored(storageKey) ?? "{}");
 
   const mergedLightTheme = merge(
     {},
@@ -664,7 +660,6 @@ function getLightTheme(lightTheme?: Partial<VuelessCssVariables>) {
   if (isCSR && lightTheme !== undefined) {
     const themeString = JSON.stringify(mergedLightTheme);
 
-    setCookie(storageKey, themeString);
     localStorage.setItem(storageKey, themeString);
   }
 
@@ -678,11 +673,7 @@ function getLightTheme(lightTheme?: Partial<VuelessCssVariables>) {
 function getDarkTheme(darkTheme?: Partial<VuelessCssVariables>) {
   const storageKey = `vl-${DARK_THEME}`;
 
-  let storedDarkTheme: Partial<VuelessCssVariables> = {};
-
-  const stored = getStored(storageKey);
-
-  storedDarkTheme = stored ? JSON.parse(stored) : {};
+  const storedDarkTheme: Partial<VuelessCssVariables> = JSON.parse(getStored(storageKey) ?? "{}");
 
   const mergedDarkTheme = merge(
     {},
@@ -695,7 +686,6 @@ function getDarkTheme(darkTheme?: Partial<VuelessCssVariables>) {
   if (isCSR && darkTheme !== undefined) {
     const themeString = JSON.stringify(mergedDarkTheme);
 
-    setCookie(storageKey, themeString);
     localStorage.setItem(storageKey, themeString);
   }
 
