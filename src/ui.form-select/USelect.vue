@@ -483,7 +483,6 @@ const {
 <template>
   <ULabel
     ref="labelComponent"
-    :for="elementId"
     :size="size"
     :label="label"
     :error="error"

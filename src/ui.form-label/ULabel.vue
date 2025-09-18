@@ -33,6 +33,10 @@ const isHorizontalPlacement = computed(() => {
   return props.align === PLACEMENT.left || props.align === PLACEMENT.right;
 });
 
+const tag = computed(() => {
+  return props.for ? "label" : "div";
+});
+
 const isTopWithDescPlacement = computed(() => {
   return props.align === PLACEMENT.topWithDesc;
 });
@@ -95,7 +99,8 @@ const { getDataTest, wrapperAttrs, contentAttrs, labelAttrs, descriptionAttrs, e
 
     <!-- `v-bind` isn't assigned, because the div is system -->
     <div v-if="label || hasSlotContent(slots['label'], { label }) || error || description">
-      <label
+      <component
+        :is="tag"
         v-if="label || hasSlotContent(slots['label'], { label })"
         ref="label"
         :for="props.for"
@@ -110,7 +115,7 @@ const { getDataTest, wrapperAttrs, contentAttrs, labelAttrs, descriptionAttrs, e
         <slot name="label" :label="label">
           {{ label }}
         </slot>
-      </label>
+      </component>
 
       <div
         v-if="isShownError"
@@ -132,7 +137,8 @@ const { getDataTest, wrapperAttrs, contentAttrs, labelAttrs, descriptionAttrs, e
   </div>
 
   <div v-else ref="wrapper" v-bind="wrapperAttrs">
-    <label
+    <component
+      :is="tag"
       v-if="label || hasSlotContent(slots['label'], { label })"
       v-bind="labelAttrs"
       ref="label"
@@ -147,7 +153,7 @@ const { getDataTest, wrapperAttrs, contentAttrs, labelAttrs, descriptionAttrs, e
       <slot name="label" :label="label">
         {{ label }}
       </slot>
-    </label>
+    </component>
 
     <div v-bind="contentAttrs" :data-test="getDataTest('content')">
       <!-- @slot Use it to add label content. -->

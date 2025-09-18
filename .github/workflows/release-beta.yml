@@ -22,7 +22,6 @@ jobs:
 
   ts-check:
     name: 'TS Check'
-    needs: lint
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -36,7 +35,6 @@ jobs:
   test:
     name: 'Test'
     if: "!contains(github.event.head_commit.message, 'GITBOOK')"
-    needs: ts-check
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -50,7 +48,7 @@ jobs:
   release-beta:
     name: 'Release: beta'
     if: "!contains(github.event.head_commit.message, 'GITBOOK')"
-    needs: test
+    needs: [lint, ts-check, test]
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -61,8 +59,7 @@ jobs:
           node-version: 22
           cache: 'npm'
           registry-url: https://registry.npmjs.org/
-      - name: git config
-        run: |
+      - run: |
           git config user.name "${GITHUB_ACTOR}"
           git config user.email "${GITHUB_ACTOR}@users.noreply.github.com"
       - run: npm ci
