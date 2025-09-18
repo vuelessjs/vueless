@@ -17,6 +17,8 @@ export const OUTLINE = "outline";
 export const ROUNDING = "rounding";
 export const DISABLED_OPACITY = "disabled-opacity";
 export const LETTER_SPACING = "letter-spacing";
+export const LIGHT_THEME = "light-theme";
+export const DARK_THEME = "dark-theme";
 
 /* Vueless color mode keys */
 export const COLOR_MODE_KEY = "vl-color-mode";
