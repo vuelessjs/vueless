@@ -608,7 +608,7 @@ function getLetterSpacing(letterSpacing?: ThemeConfig["letterSpacing"]) {
   const storageKey = `vl-${LETTER_SPACING}`;
 
   const spacing = letterSpacing ?? getStored(storageKey) ?? vuelessConfig.letterSpacing;
-  const mergedSpacing = Math.max(0, Number(spacing ?? DEFAULT_LETTER_SPACING));
+  const mergedSpacing = Number(spacing ?? DEFAULT_LETTER_SPACING);
 
   if (isCSR && letterSpacing !== undefined) {
     setCookie(storageKey, String(mergedSpacing));
