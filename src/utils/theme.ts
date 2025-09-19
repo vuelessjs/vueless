@@ -35,6 +35,8 @@ import {
   DEFAULT_DISABLED_OPACITY,
   LETTER_SPACING,
   DEFAULT_LETTER_SPACING,
+  LIGHT_THEME,
+  DARK_THEME,
 } from "../constants";
 
 import type {
@@ -191,6 +193,8 @@ export function resetTheme() {
     `vl-${ROUNDING}-lg`,
     `vl-${LETTER_SPACING}`,
     `vl-${DISABLED_OPACITY}`,
+    `vl-${LIGHT_THEME}`,
+    `vl-${DARK_THEME}`,
   ];
 
   themeKeys.forEach((key) => {
@@ -217,8 +221,8 @@ export function getTheme(config?: ThemeConfig): MergedThemeConfig {
   const letterSpacing = getLetterSpacing(config?.letterSpacing);
   const disabledOpacity = getDisabledOpacity(config?.disabledOpacity);
 
-  const lightTheme = merge({}, DEFAULT_LIGHT_THEME, vuelessConfig.lightTheme);
-  const darkTheme = merge({}, DEFAULT_DARK_THEME, vuelessConfig.darkTheme);
+  const lightTheme = getLightTheme(config?.lightTheme);
+  const darkTheme = getDarkTheme(config?.darkTheme);
 
   return {
     colorMode,
@@ -254,8 +258,8 @@ export function setTheme(config: ThemeConfig = {}) {
   let primary = getPrimaryColor(config.primary);
   const neutral = getNeutralColor(config.neutral);
 
-  const lightTheme = merge({}, DEFAULT_LIGHT_THEME, vuelessConfig.lightTheme, config.lightTheme);
-  const darkTheme = merge({}, DEFAULT_DARK_THEME, vuelessConfig.darkTheme, config.darkTheme);
+  const lightTheme = getLightTheme(config.lightTheme);
+  const darkTheme = getDarkTheme(config.darkTheme);
 
   /* Redeclare primary color if grayscale color set as default */
   if (primary === GRAYSCALE_COLOR) {
@@ -634,6 +638,58 @@ function getDisabledOpacity(disabledOpacity?: ThemeConfig["disabledOpacity"]) {
   }
 
   return mergedOpacity;
+}
+
+/**
+ * Retrieve light theme configuration and save them to cookie and localStorage.
+ * @return Partial<VuelessCssVariables> - light theme configuration.
+ */
+function getLightTheme(lightTheme?: Partial<VuelessCssVariables>) {
+  const storageKey = `vl-${LIGHT_THEME}`;
+
+  const storedLightTheme: Partial<VuelessCssVariables> = JSON.parse(getStored(storageKey) ?? "{}");
+
+  const mergedLightTheme = merge(
+    {},
+    DEFAULT_LIGHT_THEME,
+    vuelessConfig.lightTheme,
+    storedLightTheme,
+    lightTheme,
+  );
+
+  if (isCSR && lightTheme !== undefined) {
+    const themeString = JSON.stringify(mergedLightTheme);
+
+    localStorage.setItem(storageKey, themeString);
+  }
+
+  return mergedLightTheme;
+}
+
+/**
+ * Retrieve dark theme configuration and save them to cookie and localStorage.
+ * @return Partial<VuelessCssVariables> - dark theme configuration.
+ */
+function getDarkTheme(darkTheme?: Partial<VuelessCssVariables>) {
+  const storageKey = `vl-${DARK_THEME}`;
+
+  const storedDarkTheme: Partial<VuelessCssVariables> = JSON.parse(getStored(storageKey) ?? "{}");
+
+  const mergedDarkTheme = merge(
+    {},
+    DEFAULT_DARK_THEME,
+    vuelessConfig.darkTheme,
+    storedDarkTheme,
+    darkTheme,
+  );
+
+  if (isCSR && darkTheme !== undefined) {
+    const themeString = JSON.stringify(mergedDarkTheme);
+
+    localStorage.setItem(storageKey, themeString);
+  }
+
+  return mergedDarkTheme;
 }
 
 /**
