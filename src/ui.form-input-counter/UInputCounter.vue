@@ -170,7 +170,7 @@ const {
   subtractIconAttrs,
   addButtonAttrs,
   addIconAttrs,
-} = useUI<Config>(defaultConfig, undefined, "counterInput");
+} = useUI<Config>(defaultConfig);
 </script>
 
 <template>
