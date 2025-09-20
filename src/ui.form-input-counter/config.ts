@@ -10,7 +10,7 @@ export default /*tw*/ {
     },
   },
   counterInput: {
-    base: "{UInputNumber} w-fit",
+    base: "{UInputNumber} w-inherit",
     numberInput: {
       base: "{UInput}",
       input: "text-center",
