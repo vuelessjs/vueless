@@ -58,12 +58,12 @@ export async function setCustomPropTypes({ vuelessSrcDir, basePath } = {}) {
     const hasDefaultColorProp = componentsWithColorProp.some((item) => item.name === componentName);
 
     /* Skip components without props and without global colors in config */
-    if (!componentGlobalConfig?.props && !hasDefaultColorProp) {
+    if (!componentGlobalConfig?.props && !(hasCustomColors && hasDefaultColorProp)) {
       continue;
     }
 
     /* Add colors to the default or custom color prop */
-    if (componentGlobalConfig?.props?.color || hasDefaultColorProp) {
+    if (componentGlobalConfig?.props?.color || (hasCustomColors && hasDefaultColorProp)) {
       // eslint-disable-next-line prettier/prettier
       const defaultColors = componentsWithColorProp.find((component) => component.name === componentName)?.colors || [];
       const safelistedColors = defaultColors.filter((color) => SAFE_COLORS.includes(color));
