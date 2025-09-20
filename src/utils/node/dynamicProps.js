@@ -38,10 +38,16 @@ const WORD_IN_QUOTE_REG_EXP = /"([^"]+)"/g;
  */
 export async function setCustomPropTypes({ vuelessSrcDir, basePath } = {}) {
   const vuelessConfig = await getVuelessConfig(basePath);
+
+  const hasCustomColors = vuelessConfig.colors?.length;
+  const hasCustomColorProp = !!Object.values(vuelessConfig.components || {}).find(
+    (component) => component.props?.color,
+  );
+
   let componentsWithColorProp = [];
 
   /* Build web-types.json to get list of components with color prop */
-  if (vuelessConfig.colors?.length) {
+  if (hasCustomColors || hasCustomColorProp) {
     await buildWebTypes({ vuelessSrcDir, basePath });
 
     componentsWithColorProp = await getComponentsWithColors();
@@ -71,7 +77,7 @@ export async function setCustomPropTypes({ vuelessSrcDir, basePath } = {}) {
             values: [
               ...new Set([
                 ...(componentGlobalConfig?.props?.color?.values || []),
-                ...vuelessConfig.colors,
+                ...(vuelessConfig.colors || []),
                 ...safelistedColors,
               ]),
             ],
