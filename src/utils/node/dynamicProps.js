@@ -8,10 +8,10 @@ import { getVuelessConfig } from "./vuelessConfig.js";
 import {
   CACHE_DIR,
   COMPONENTS,
-  GRAYSCALE_COLOR,
+  TEXT_COLOR,
   INHERIT_COLOR,
   PRIMARY_COLOR,
-  TEXT_COLOR,
+  GRAYSCALE_COLOR,
   VUELESS_CACHE_DIR,
 } from "../../constants.js";
 import { buildWebTypes } from "./webTypes.js";
