@@ -129,8 +129,8 @@ export const Vueless = function (options = {}) {
         await cacheMergedConfigs({ vuelessSrcDir, basePath });
       }
 
-      await buildWebTypes({ vuelessSrcDir, basePath });
       await setCustomPropTypes({ vuelessSrcDir, basePath });
+      await buildWebTypes({ vuelessSrcDir, basePath }); // should be after setCustomPropTypes
 
       /* collect used in project colors for tailwind safelist */
       await createTailwindSafelist({ env, srcDir: vuelessSrcDir, targetFiles, basePath, debug });
