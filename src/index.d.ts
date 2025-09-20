@@ -140,6 +140,8 @@ export type {
   NestedComponent,
   ComponentConfig,
   ComponentDefaults,
+  ComponentCustomProp,
+  ComponentCustomProps,
   CreateVuelessOptions,
   /* Color and theme types */
   StateColors,

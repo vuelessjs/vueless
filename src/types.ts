@@ -319,13 +319,25 @@ export type ComponentConfigFull<T> = ComponentConfig<T> & NestedComponent;
 
 export interface NestedComponent {
   base?: string;
-  defaults?: Record<string, string | UnknownObject>;
-  [key: string]: Record<string, string | UnknownObject> | string | undefined;
+  defaults?: UnknownType;
+  [key: string]: UnknownType | string | undefined;
 }
 
 export type ComponentDefaults = {
   color?: string;
-  [key: string]: unknown | UnknownObject;
+  [key: string]: UnknownType;
+};
+
+export type ComponentCustomProps = {
+  [key: string]: ComponentCustomProp;
+};
+
+export type ComponentCustomProp = {
+  required?: boolean;
+  ignore?: boolean;
+  values?: string[];
+  default?: UnknownType;
+  description?: string;
 };
 
 export interface CVA {

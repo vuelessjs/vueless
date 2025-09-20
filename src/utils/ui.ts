@@ -7,7 +7,13 @@ import { createGetMergedConfig } from "./node/mergeConfigs";
 import { COMPONENT_NAME as U_ICON } from "../ui.image-icon/constants";
 import { ICON_NON_PROPS_DEFAULTS, TAILWIND_MERGE_EXTENSION } from "../constants";
 
-import type { Config, ComponentDefaults, UnknownObject, ComponentNames } from "../types";
+import type {
+  Config,
+  UnknownObject,
+  ComponentNames,
+  ComponentDefaults,
+  ComponentCustomProps,
+} from "../types";
 
 interface MergedConfigOptions {
   defaultConfig: unknown;
@@ -87,10 +93,14 @@ export const cva = ({ base = "", variants = {}, compoundVariants = [], defaultVa
  * Return default values for component props, icons, etc..
  */
 export function getDefaults<Props, Config>(defaultConfig: Config, name: ComponentNames) {
-  const componentDefaults = (defaultConfig as UnknownObject).defaults || {};
+  const componentDefaults = (defaultConfig as Config & UnknownObject).defaults || {};
   const globalDefaults = vuelessConfig.components?.[name]?.defaults || {};
 
-  const defaults = merge({}, componentDefaults, globalDefaults) as Props & ComponentDefaults;
+  const customProps = vuelessConfig.components?.[name]?.props as ComponentCustomProps;
+  const customPropsDefaults = getCustomPropsDefaults(customProps) || {};
+
+  const defaults = merge({}, componentDefaults, globalDefaults, customPropsDefaults) as Props &
+    ComponentDefaults;
 
   /* Remove non a props defaults. */
   for (const key in defaults) {
@@ -115,4 +125,23 @@ export function getDefaults<Props, Config>(defaultConfig: Config, name: Componen
  */
 export function setColor(classes: string, color: string) {
   return classes?.replace(/{color}/g, color);
+}
+
+/**
+ * Retrieves the default values from the provided component custom properties.
+ */
+export function getCustomPropsDefaults(props: ComponentCustomProps) {
+  const customPropsDefaults: ComponentDefaults = {};
+
+  if (!props) {
+    return customPropsDefaults;
+  }
+
+  for (const [key, value] of Object.entries(props)) {
+    if (value.default) {
+      customPropsDefaults[key] = value.default;
+    }
+  }
+
+  return customPropsDefaults;
 }

@@ -222,6 +222,7 @@ export const SYSTEM_CONFIG_KEY = {
   unstyled: "unstyled",
   transition: "transition",
   colors: "colors",
+  props: "props",
   ...CVA_CONFIG_KEY,
 };
 

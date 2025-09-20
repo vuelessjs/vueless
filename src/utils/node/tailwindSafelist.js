@@ -233,7 +233,7 @@ function getClassesToSafelist(config) {
   const safelistItems = [];
 
   for (const key in config) {
-    if (key === SYSTEM_CONFIG_KEY.defaults) continue;
+    if (key === SYSTEM_CONFIG_KEY.defaults || SYSTEM_CONFIG_KEY.props) continue;
 
     if (Object.hasOwn(config, key)) {
       const classes = config[key];
@@ -267,7 +267,7 @@ function getClassesToSafelist(config) {
  */
 function getSafelistClasses(config, colors) {
   const classes = new Set();
-  const defaultColor = config.defaults?.color || "";
+  const defaultColor = config.defaults?.color || config.props?.color?.default || "";
 
   getClassesToSafelist(config).map((safelistClass) => {
     [...colors, defaultColor].forEach((color) => {
