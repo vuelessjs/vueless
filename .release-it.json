@@ -16,6 +16,28 @@
   "plugins": {
     "@release-it/bumper": {
       "out": "dist/*.json"
+    },
+    "@release-it/conventional-changelog": {
+      "infile": false,
+      "whatBump": false,
+      "ignoreRecommendedBump": true,
+      "preset": {
+        "name": "conventionalcommits",
+        "types": [
+          {
+            "type": "feat",
+            "section": "✨Features"
+          },
+          {
+            "type": "fix",
+            "section": "🐛 Fixes"
+          },
+          {
+            "type": "perf",
+            "section": "🚀 Performance"
+          }
+        ]
+      }
     }
   },
   "hooks": {

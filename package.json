@@ -18,7 +18,7 @@
     "release:icons": "npx node .scripts/icons",
     "release:types": "rm -f ./node_modules/.tmp/tsconfig.app.tsbuildinfo && npx tsc --project tsconfig.build.json",
     "release:prepare": "npm run release:icons && rm -rf dist && mkdir -p dist && cp -r src/. package.json LICENSE README.md dist/ && npx node .scripts/writeLocales && npm run release:types",
-    "release:beta": "release-it --ci --npm.publish --preRelease=beta --increment=prerelease",
+    "release:beta": "release-it --ci --npm.publish --preRelease=beta --increment=prerelease --no-plugins.@release-it/conventional-changelog",
     "release:patch": "release-it patch --ci --npm.publish --git.tag --github.release",
     "release:minor": "release-it minor --ci --npm.publish --git.tag --github.release",
     "release:major": "release-it major --ci --npm.publish --git.tag --github.release",
@@ -47,6 +47,7 @@
   "devDependencies": {
     "@material-symbols/svg-500": "^0.35.0",
     "@release-it/bumper": "^7.0.5",
+    "@release-it/conventional-changelog": "^10.0.1",
     "@tsconfig/node20": "^20.1.6",
     "@types/jsdom": "^21.1.7",
     "@types/node": "^24.1.0",
@@ -105,6 +106,9 @@
     "./modules": {
       "types": "./modules.d.ts"
     }
+  },
+  "overrides": {
+    "conventional-changelog-conventionalcommits": "8.0.0"
   },
   "resolutions": {
     "jackspeak": "2.3.6"
