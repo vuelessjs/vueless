@@ -334,10 +334,10 @@ export function setTheme(config: ThemeConfig = {}) {
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export function normalizeThemeConfig(theme: any): MergedThemeConfig {
   return {
-    colorMode: theme.colorMode,
-    isColorModeAuto: theme.isColorModeAuto,
-    primary: theme.primary,
-    neutral: theme.neutral,
+    colorMode: String(theme.colorMode) as ColorMode,
+    isColorModeAuto: !!toNumber(theme.isColorModeAuto),
+    primary: String(theme.primary),
+    neutral: String(theme.neutral),
     text: {
       xs: toNumber(theme.text?.xs),
       sm: toNumber(theme.text?.sm),
