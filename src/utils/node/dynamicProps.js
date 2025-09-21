@@ -243,7 +243,7 @@ async function modifyComponentTypes(filePath, props) {
     const lines = propsInterface.split("\n");
 
     for (const name in props) {
-      const { type, values = [], description, required, ignore } = props[name];
+      const { type = "string", values = [], description, required, ignore } = props[name];
 
       /* Find line with prop. */
       const propRegex = new RegExp(`^\\s*${name}[?:]?\\s*:`);
