@@ -1,16 +1,16 @@
 {
   "git": {
-    "tag": false,
+    "tag": true,
     "tagName": "v${version}",
     "commitMessage": "Release v${version} / [no ci]",
     "requireUpstream": false,
     "requireCleanWorkingDir": false
   },
   "github": {
-    "release": false
+    "release": true
   },
   "npm": {
-    "publish": false,
+    "publish": true,
     "publishPath": "./dist"
   },
   "plugins": {
@@ -19,23 +19,13 @@
     },
     "@release-it/conventional-changelog": {
       "infile": false,
-      "whatBump": false,
       "ignoreRecommendedBump": true,
       "preset": {
         "name": "conventionalcommits",
         "types": [
-          {
-            "type": "feat",
-            "section": "✨Features"
-          },
-          {
-            "type": "fix",
-            "section": "🐛 Fixes"
-          },
-          {
-            "type": "perf",
-            "section": "🚀 Performance"
-          }
+          { "type": "feat", "section": "✨ Features" },
+          { "type": "fix", "section": "🐛 Fixes" },
+          { "type": "perf", "section": "🚀 Performance" }
         ]
       }
     }
