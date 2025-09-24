@@ -233,7 +233,14 @@ function getClassesToSafelist(config) {
   const safelistItems = [];
 
   for (const key in config) {
-    if (key === SYSTEM_CONFIG_KEY.defaults || SYSTEM_CONFIG_KEY.props) continue;
+    const nonClassKeys = [
+      SYSTEM_CONFIG_KEY.defaults,
+      SYSTEM_CONFIG_KEY.props,
+      SYSTEM_CONFIG_KEY.i18n,
+      SYSTEM_CONFIG_KEY.colors,
+    ];
+
+    if (nonClassKeys.some((item) => key === item)) continue;
 
     if (Object.hasOwn(config, key)) {
       const classes = config[key];
