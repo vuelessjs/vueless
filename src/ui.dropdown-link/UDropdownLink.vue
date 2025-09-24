@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { nextTick, computed, provide, ref, useId, useTemplateRef } from "vue";
+import { nextTick, computed, ref, useId, useTemplateRef } from "vue";
 import { isEqual } from "lodash-es";
 
 import useUI from "../composables/useUI";
@@ -63,11 +63,10 @@ const emit = defineEmits([
   "update:search",
 ]);
 
-provide("hideDropdownOptions", hideOptions);
-
 type ULisboxRef = InstanceType<typeof ULisbox>;
 
 const isShownOptions = ref(false);
+const isClickingOption = ref(false);
 const listboxRef = useTemplateRef<ULisboxRef>("dropdown-list");
 const wrapperRef = useTemplateRef<HTMLDivElement>("wrapper");
 
@@ -166,9 +165,23 @@ function hideOptions() {
 }
 
 function onClickOption(option: Option) {
+  isClickingOption.value = true;
+
   emit("clickOption", option);
 
   if (!props.multiple && props.closeOnSelect) hideOptions();
+
+  nextTick(() => {
+    setTimeout(() => {
+      isClickingOption.value = false;
+    }, 10);
+  });
+}
+
+function handleClickOutside() {
+  if (isClickingOption.value) return;
+
+  hideOptions();
 }
 
 defineExpose({
@@ -201,7 +214,7 @@ const { config, getDataTest, wrapperAttrs, dropdownLinkAttrs, listboxAttrs, togg
 <template>
   <div
     ref="wrapper"
-    v-click-outside="hideOptions"
+    v-click-outside="handleClickOutside"
     tabindex="1"
     v-bind="wrapperAttrs"
     :data-test="getDataTest('wrapper')"

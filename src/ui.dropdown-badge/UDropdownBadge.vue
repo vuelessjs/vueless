@@ -66,6 +66,7 @@ const emit = defineEmits([
 type UListboxRef = InstanceType<typeof UListbox>;
 
 const isShownOptions = ref(false);
+const isClickingOption = ref(false);
 const listboxRef = useTemplateRef<UListboxRef>("dropdown-list");
 const wrapperRef = useTemplateRef<HTMLDivElement>("wrapper");
 
@@ -162,9 +163,23 @@ function hideOptions() {
 }
 
 function onClickOption(option: Option) {
+  isClickingOption.value = true;
+
   emit("clickOption", option);
 
   if (!props.multiple && props.closeOnSelect) hideOptions();
+
+  nextTick(() => {
+    setTimeout(() => {
+      isClickingOption.value = false;
+    }, 10);
+  });
+}
+
+function handleClickOutside() {
+  if (isClickingOption.value) return;
+
+  hideOptions();
 }
 
 defineExpose({
@@ -197,7 +212,7 @@ const { getDataTest, config, wrapperAttrs, dropdownBadgeAttrs, listboxAttrs, tog
 <template>
   <div
     ref="wrapper"
-    v-click-outside="hideOptions"
+    v-click-outside="handleClickOutside"
     v-bind="wrapperAttrs"
     :data-test="getDataTest('wrapper')"
   >
