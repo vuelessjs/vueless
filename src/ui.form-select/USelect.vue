@@ -821,6 +821,7 @@ const {
         :group-label-key="groupLabelKey"
         :group-value-key="groupValueKey"
         :add-option="addOption"
+        :clear-search-on-select="clearSearchOnSelect"
         tabindex="-1"
         v-bind="listboxAttrs as KeyAttrsWithConfig<UListboxConfig>"
         :data-test="getDataTest()"

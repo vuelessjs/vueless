@@ -162,6 +162,21 @@ SearchModelValue.parameters = {
 export const NoCloseOnSelect = DefaultTemplate.bind({});
 NoCloseOnSelect.args = { modelValue: 3, closeOnSelect: false };
 
+export const NoClearSearchOnSelect = DefaultTemplate.bind({});
+NoClearSearchOnSelect.args = {
+  modelValue: 3,
+  searchable: true,
+  clearSearchOnSelect: false,
+  closeOnSelect: false,
+};
+NoClearSearchOnSelect.parameters = {
+  docs: {
+    story: {
+      height: "350px",
+    },
+  },
+};
+
 export const Readonly = DefaultTemplate.bind({});
 Readonly.args = { readonly: true, modelValue: "1", clearable: false };
 

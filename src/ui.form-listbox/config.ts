@@ -108,6 +108,7 @@ export default /*tw*/ {
     disabled: false,
     addOption: false,
     multiple: false,
+    clearSearchOnSelect: true,
     /* icons */
     addOptionIcon: "add",
     selectedIcon: "check",

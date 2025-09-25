@@ -192,6 +192,21 @@ NoCloseOnSelect.args = {
   closeOnSelect: false,
 };
 
+export const NoClearSearchOnSelect = SelectableTemplate.bind({});
+NoClearSearchOnSelect.args = {
+  modelValue: "edit",
+  searchable: true,
+  clearSearchOnSelect: false,
+  closeOnSelect: false,
+};
+NoClearSearchOnSelect.parameters = {
+  docs: {
+    story: {
+      height: "250px",
+    },
+  },
+};
+
 export const OptionSelection = SelectableTemplate.bind({});
 OptionSelection.args = {
   label: "Select status",

@@ -101,6 +101,11 @@ export interface Props {
   closeOnSelect?: boolean;
 
   /**
+   * Clear search on option select.
+   */
+  clearSearchOnSelect?: boolean;
+
+  /**
    * Allows multiple selection.
    */
   multiple?: boolean;

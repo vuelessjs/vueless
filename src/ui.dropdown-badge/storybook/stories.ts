@@ -182,6 +182,21 @@ SearchModelValue.parameters = {
 export const NoCloseOnSelect = SelectableTemplate.bind({});
 NoCloseOnSelect.args = { modelValue: "delivered", closeOnSelect: false };
 
+export const NoClearSearchOnSelect = SelectableTemplate.bind({});
+NoClearSearchOnSelect.args = {
+  modelValue: "delivered",
+  searchable: true,
+  clearSearchOnSelect: false,
+  closeOnSelect: false,
+};
+NoClearSearchOnSelect.parameters = {
+  docs: {
+    story: {
+      height: "250px",
+    },
+  },
+};
+
 export const OptionSelection = SelectableTemplate.bind({});
 OptionSelection.args = { modelValue: "pending" };
 

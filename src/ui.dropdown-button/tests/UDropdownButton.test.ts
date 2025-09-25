@@ -335,6 +335,38 @@ describe("UDropdownButton.vue", () => {
       expect(options[0].text()).toBe("Option 2");
     });
 
+    // ClearSearchOnSelect prop
+    it("passes clearSearchOnSelect prop to UListbox component", async () => {
+      const clearSearchOnSelect = false;
+
+      const component = mount(UDropdownButton, {
+        props: {
+          searchable: true,
+          options: defaultOptions,
+          clearSearchOnSelect,
+        },
+      });
+
+      await component.findComponent(UButton).trigger("click");
+
+      expect(component.findComponent(UListbox).props("clearSearchOnSelect")).toBe(
+        clearSearchOnSelect,
+      );
+    });
+
+    it("defaults clearSearchOnSelect to true", async () => {
+      const component = mount(UDropdownButton, {
+        props: {
+          searchable: true,
+          options: defaultOptions,
+        },
+      });
+
+      await component.findComponent(UButton).trigger("click");
+
+      expect(component.findComponent(UListbox).props("clearSearchOnSelect")).toBe(true);
+    });
+
     // VisibleOptions prop
     it("passes visibleOptions prop to UListbox component", async () => {
       const visibleOptions = 5;

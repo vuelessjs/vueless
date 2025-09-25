@@ -341,6 +341,38 @@ describe("UDropdownLink.vue", () => {
       expect(options[0].text()).toBe("Option 3");
     });
 
+    // ClearSearchOnSelect prop
+    it("passes clearSearchOnSelect prop to UListbox component", async () => {
+      const clearSearchOnSelect = false;
+
+      const component = mount(UDropdownLink, {
+        props: {
+          searchable: true,
+          options: defaultOptions,
+          clearSearchOnSelect,
+        },
+      });
+
+      await component.findComponent(ULink).trigger("click");
+
+      expect(component.findComponent(UListbox).props("clearSearchOnSelect")).toBe(
+        clearSearchOnSelect,
+      );
+    });
+
+    it("defaults clearSearchOnSelect to true", async () => {
+      const component = mount(UDropdownLink, {
+        props: {
+          searchable: true,
+          options: defaultOptions,
+        },
+      });
+
+      await component.findComponent(ULink).trigger("click");
+
+      expect(component.findComponent(UListbox).props("clearSearchOnSelect")).toBe(true);
+    });
+
     // CloseOnSelect prop
     it("keeps dropdown open when closeOnSelect is false", async () => {
       const component = mount(UDropdownLink, {

@@ -62,6 +62,11 @@ export interface Props {
   closeOnSelect?: boolean;
 
   /**
+   * Clear search on option select.
+   */
+  clearSearchOnSelect?: boolean;
+
+  /**
    * Left icon name.
    */
   leftIcon?: string;

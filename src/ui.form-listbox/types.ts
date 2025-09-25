@@ -40,6 +40,11 @@ export interface Props {
   searchable?: boolean;
 
   /**
+   * Clear search on option select.
+   */
+  clearSearchOnSelect?: boolean;
+
+  /**
    * Allows multiple selection.
    */
   multiple?: boolean;

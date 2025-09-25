@@ -274,6 +274,33 @@ describe("USelect.vue", () => {
       expect(options[0].text()).toBe("Option 2");
     });
 
+    it("ClearSearchOnSelect – passes clearSearchOnSelect prop to UListbox", async () => {
+      const component = mount(USelect, {
+        props: {
+          searchable: true,
+          options: defaultOptions,
+          clearSearchOnSelect: false,
+        },
+      });
+
+      await component.get("[role='combobox']").trigger("focus");
+
+      expect(component.getComponent(UListbox).props("clearSearchOnSelect")).toBe(false);
+    });
+
+    it("ClearSearchOnSelect – defaults to true", async () => {
+      const component = mount(USelect, {
+        props: {
+          searchable: true,
+          options: defaultOptions,
+        },
+      });
+
+      await component.get("[role='combobox']").trigger("focus");
+
+      expect(component.getComponent(UListbox).props("clearSearchOnSelect")).toBe(true);
+    });
+
     it("Clearable – renders clear icon when true", async () => {
       const component = mount(USelect, {
         props: {

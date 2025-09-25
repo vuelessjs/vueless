@@ -104,7 +104,7 @@ const selectedValue = computed({
     return props.modelValue;
   },
   set: (value) => {
-    if (searchModel.value) searchModel.value = "";
+    if (searchModel.value && props.clearSearchOnSelect && !props.multiple) searchModel.value = "";
 
     emit("update:modelValue", value);
   },

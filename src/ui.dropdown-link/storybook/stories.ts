@@ -160,6 +160,21 @@ SearchModelValue.parameters = {
 export const NoCloseOnSelect = SelectableTemplate.bind({});
 NoCloseOnSelect.args = { modelValue: "logout", closeOnSelect: false };
 
+export const NoClearSearchOnSelect = SelectableTemplate.bind({});
+NoClearSearchOnSelect.args = {
+  modelValue: "logout",
+  searchable: true,
+  clearSearchOnSelect: false,
+  closeOnSelect: false,
+};
+NoClearSearchOnSelect.parameters = {
+  docs: {
+    story: {
+      height: "250px",
+    },
+  },
+};
+
 export const OptionSelection = SelectableTemplate.bind({});
 OptionSelection.args = { modelValue: "profile" };
 

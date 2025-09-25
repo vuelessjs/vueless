@@ -285,6 +285,7 @@ const { config, getDataTest, wrapperAttrs, dropdownLinkAttrs, listboxAttrs, togg
       :value-key="valueKey"
       :group-label-key="groupLabelKey"
       :group-value-key="groupValueKey"
+      :clear-search-on-select="clearSearchOnSelect"
       v-bind="listboxAttrs"
       :data-test="getDataTest('list')"
       @click-option="onClickOption"

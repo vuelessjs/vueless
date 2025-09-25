@@ -507,6 +507,104 @@ describe("UListbox.vue", () => {
       expect(component.emitted("searchBlur")).toBeTruthy();
     });
 
+    it("ClearSearchOnSelect – clears search when option is selected and clearSearchOnSelect is true", async () => {
+      const component = mount(UListbox, {
+        props: {
+          searchable: true,
+          options: defaultOptions,
+          clearSearchOnSelect: true,
+        },
+      });
+
+      const searchInput = component.getComponent(UInputSearch);
+
+      // Set search value
+      await searchInput.setValue("Option 1");
+      await flushPromises();
+
+      // Select an option
+      const firstOption = component.find('[vl-key="option"]');
+
+      await firstOption.trigger("click");
+
+      // Check that search was cleared
+      expect(searchInput.props("modelValue")).toBe("");
+    });
+
+    it(`ClearSearchOnSelect –
+        does not clear search when option is selected and clearSearchOnSelect is false`, async () => {
+      const component = mount(UListbox, {
+        props: {
+          searchable: true,
+          options: defaultOptions,
+          clearSearchOnSelect: false,
+        },
+      });
+
+      const searchInput = component.getComponent(UInputSearch);
+
+      // Set search value
+      await searchInput.setValue("Option 1");
+      await flushPromises();
+
+      // Select an option
+      const firstOption = component.find('[vl-key="option"]');
+
+      await firstOption.trigger("click");
+
+      // Check that search was NOT cleared
+      expect(searchInput.props("modelValue")).toBe("Option 1");
+    });
+
+    it("ClearSearchOnSelect – defaults to true", async () => {
+      const component = mount(UListbox, {
+        props: {
+          searchable: true,
+          options: defaultOptions,
+        },
+      });
+
+      const searchInput = component.getComponent(UInputSearch);
+
+      // Set search value
+      await searchInput.setValue("Option 1");
+      await flushPromises();
+
+      // Select an option
+      const firstOption = component.find('[vl-key="option"]');
+
+      await firstOption.trigger("click");
+
+      // Check that search was cleared (default behavior)
+      expect(searchInput.props("modelValue")).toBe("");
+    });
+
+    it(`ClearSearchOnSelect –
+        does not clear search in multiple mode regardless of clearSearchOnSelect value`, async () => {
+      const component = mount(UListbox, {
+        props: {
+          searchable: true,
+          multiple: true,
+          options: defaultOptions,
+          clearSearchOnSelect: true, // Even when true, should not clear in multiple mode
+        },
+      });
+
+      const searchInput = component.getComponent(UInputSearch);
+
+      // Set search value
+      await searchInput.setValue("Option 1");
+      await flushPromises();
+
+      // Select an option
+      const firstOption = component.find('[vl-key="option"]');
+
+      await firstOption.trigger("click");
+
+      // Check that search was NOT cleared in multiple mode
+      expect(searchInput.props("modelValue")).toBe("Option 1");
+    });
+
     it("Keyboard Navigation – moves pointer down with arrow down", async () => {
       const component = mount(UListbox, {
         props: {

@@ -96,6 +96,9 @@ Searchable.args = { searchable: true };
 export const SearchModelValue = DefaultTemplate.bind({});
 SearchModelValue.args = { search: "New York", searchable: true };
 
+export const NoClearSearchOnSelect = DefaultTemplate.bind({});
+NoClearSearchOnSelect.args = { searchable: true, clearSearchOnSelect: false };
+
 export const Multiple = DefaultTemplate.bind({});
 Multiple.args = { multiple: true, modelValue: [] };
 
