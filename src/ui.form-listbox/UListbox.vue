@@ -103,11 +103,7 @@ const selectedValue = computed({
 
     return props.modelValue;
   },
-  set: (value) => {
-    if (searchModel.value) searchModel.value = "";
-
-    emit("update:modelValue", value);
-  },
+  set: (value) => emit("update:modelValue", value),
 });
 
 const addOptionKeyCombination = computed(() => {

@@ -51,18 +51,6 @@ import type {
 } from "../types";
 import { ColorMode } from "../types";
 
-declare interface RootCSSVariableOptions {
-  primary: PrimaryColors | string;
-  neutral: NeutralColors | string;
-  text: ThemeConfigText;
-  rounding: ThemeConfigRounding;
-  outline: ThemeConfigOutline;
-  letterSpacing: number;
-  disabledOpacity: number;
-  lightTheme: Partial<VuelessCssVariables>;
-  darkTheme: Partial<VuelessCssVariables>;
-}
-
 declare interface SetColorMode {
   colorMode: `${ColorMode}`;
   isColorModeAuto: boolean;
@@ -696,20 +684,20 @@ function getDarkTheme(darkTheme?: Partial<VuelessCssVariables>) {
  * Generate and apply Vueless CSS variables.
  * @return string - Vueless CSS variables string.
  */
-export function setRootCSSVariables(vars: RootCSSVariableOptions) {
+export function setRootCSSVariables(vars: MergedThemeConfig) {
   let darkVariables: Partial<VuelessCssVariables> = {};
 
   let variables: Partial<VuelessCssVariables> = {
-    "--vl-text-xs": `${vars.text.xs / PX_IN_REM}rem`,
-    "--vl-text-sm": `${vars.text.sm / PX_IN_REM}rem`,
-    "--vl-text-md": `${vars.text.md / PX_IN_REM}rem`,
-    "--vl-text-lg": `${vars.text.lg / PX_IN_REM}rem`,
+    "--vl-text-xs": `${Number(vars.text?.xs ?? 0) / PX_IN_REM}rem`,
+    "--vl-text-sm": `${Number(vars.text?.sm ?? 0) / PX_IN_REM}rem`,
+    "--vl-text-md": `${Number(vars.text?.md ?? 0) / PX_IN_REM}rem`,
+    "--vl-text-lg": `${Number(vars.text?.lg ?? 0) / PX_IN_REM}rem`,
     "--vl-outline-sm": `${vars.outline.sm}px`,
     "--vl-outline-md": `${vars.outline.md}px`,
     "--vl-outline-lg": `${vars.outline.lg}px`,
-    "--vl-rounding-sm": `${vars.rounding.sm / PX_IN_REM}rem`,
-    "--vl-rounding-md": `${vars.rounding.md / PX_IN_REM}rem`,
-    "--vl-rounding-lg": `${vars.rounding.lg / PX_IN_REM}rem`,
+    "--vl-rounding-sm": `${Number(vars.rounding.sm ?? 0) / PX_IN_REM}rem`,
+    "--vl-rounding-md": `${Number(vars.rounding.md ?? 0) / PX_IN_REM}rem`,
+    "--vl-rounding-lg": `${Number(vars.rounding.lg ?? 0) / PX_IN_REM}rem`,
     "--vl-letter-spacing": `${vars.letterSpacing}em`,
     "--vl-disabled-opacity": `${vars.disabledOpacity}%`,
   };
@@ -724,7 +712,7 @@ export function setRootCSSVariables(vars: RootCSSVariableOptions) {
       `var(--color-${vars.neutral}-${shade})`;
   }
 
-  const [light, dark] = generateCSSColorVariables(vars.lightTheme, vars.darkTheme);
+  const [light, dark] = generateCSSColorVariables(vars.lightTheme ?? {}, vars.darkTheme ?? {});
 
   variables = { ...variables, ...light };
   darkVariables = { ...darkVariables, ...dark };

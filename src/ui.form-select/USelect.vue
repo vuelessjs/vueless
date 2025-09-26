@@ -266,6 +266,7 @@ function deactivate() {
   wrapperRef.value?.blur();
 
   isOpen.value = false;
+  dropdownSearch.value = "";
 
   nextTick(() => emit("close", localValue.value, elementId));
 }
