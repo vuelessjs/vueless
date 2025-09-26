@@ -763,7 +763,7 @@ function setCSSVariables(
     .join(" ");
 
   const rootVariables = `
-    :root {${variablesString}}
+    :host, :root {${variablesString}}
     .${DARK_MODE_CLASS} {${darkVariablesString}}
   `;
 
