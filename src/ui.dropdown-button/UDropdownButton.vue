@@ -178,6 +178,7 @@ function onClickButton() {
 
 function hideOptions() {
   isShownOptions.value = false;
+  dropdownSearch.value = "";
 
   emit("close");
 }
