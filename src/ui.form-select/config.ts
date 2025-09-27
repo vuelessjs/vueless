@@ -12,7 +12,7 @@ export default /*tw*/ {
   wrapper: {
     base: `
       flex flex-row-reverse justify-between w-full min-h-full box-border relative
-      rounded-medium border border-default bg-default outline-transparent
+      rounded-medium border border-solid border-default bg-default outline-transparent
       hover:border-lifted hover:transition hover:focus-within:border-primary focus-within:border-primary
       focus-within:outline focus-within:outline-small focus-within:outline-primary focus-within:transition
     `,

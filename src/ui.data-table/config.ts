@@ -2,7 +2,7 @@ export default /*tw*/ {
   wrapper: "relative w-full overflow-auto",
   headerCounterBase: "mr-1.5 pr-1.5 font-medium text-medium",
   stickyHeader: {
-    base: "fixed top-0 flex items-center z-30 overflow-hidden border rounded-none",
+    base: "fixed top-0 flex items-center z-30 overflow-hidden border border-solid rounded-none",
     variants: {
       stickedHeader: {
         false: "absolute",
@@ -29,12 +29,12 @@ export default /*tw*/ {
   stickyHeaderLoader: "{ULoaderProgress} absolute top-auto bottom-0",
   headerActionsCheckbox: "{UCheckbox}",
   headerActionsCounter: "{>headerCounterBase} -ml-1.5",
-  tableWrapper: "border border-muted rounded-medium bg-default overflow-x-auto",
+  tableWrapper: "border border-solid border-muted rounded-medium bg-default overflow-x-auto",
   table: "min-w-full border-none text-medium w-full table-auto",
   header:
     "border-b border-muted [&>tr:first-child>*]:first:rounded-tl-medium [&>tr:last-child>*]:last:rounded-tr-medium relative",
   headerRow: "",
-  beforeHeaderRow: "border border-muted",
+  beforeHeaderRow: "border border-solid border-muted",
   beforeHeaderCell: "{>headerCellBase}",
   headerCellBase: {
     base: "p-4 text-medium font-normal text-lifted text-left text-nowrap",
@@ -100,7 +100,7 @@ export default /*tw*/ {
     },
   },
   stickyFooterRow: `
-    fixed bottom-0 -ml-px border border-b border-muted bg-default
+    fixed bottom-0 -ml-px border-b border-solid border-muted bg-default
     collapse group-[*]/footer-fixed:[visibility:inherit]
   `,
   i18n: {

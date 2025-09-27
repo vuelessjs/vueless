@@ -15,7 +15,7 @@ export default /*tw*/ {
   wrapper: {
     base: `
       flex px-3 py-2 gap-3 w-full bg-default transition
-      rounded-medium border border-default outline-transparent
+      rounded-medium border border-solid border-default outline-transparent
       hover:border-lifted hover:focus-within:border-primary focus-within:border-primary
       focus-within:outline focus-within:outline-small focus-within:outline-primary focus-within:transition
     `,

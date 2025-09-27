@@ -1,5 +1,7 @@
 export default /*tw*/ {
-  wrapper: "p-3 w-[19rem] border border-default rounded-medium bg-default shadow-sm overflow-hidden focus:outline-hidden",
+  wrapper: `
+    p-3 w-[19rem] bg-default shadow-sm overflow-hidden focus:outline-hidden
+    border border-solid border-default rounded-medium`,
   navigation: "mb-2 pb-2 border-b border-muted flex items-center justify-between",
   viewSwitchButton: {
     base: "{UButton}",
@@ -54,7 +56,7 @@ export default /*tw*/ {
   timepicker: "mt-2 pl-1 pt-3 text-medium flex items-stretch justify-between gap-2 border-t border-muted",
   timepickerLabel: "w-full self-center",
   timepickerInputWrapper: `
-    flex items-center rounded-medium border border-default
+    flex items-center rounded-medium border border-solid border-default
     hover:focus-within:border-primary focus-within:border-primary
     focus-within:outline focus-within:outline-small focus-within:outline-primary
   `,
