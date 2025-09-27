@@ -12,11 +12,11 @@ describe("UButton.vue", () => {
     it("Variant – applies the correct variant class", async () => {
       const color = "primary";
       const variants = {
-        solid: "text-inverted bg-primary",
+        solid: "bg-primary border-transparent text-inverted",
         outlined: "text-primary border-primary",
         subtle: "text-primary bg-primary/5 border-primary/15",
-        soft: "text-primary bg-primary/5",
-        ghost: "text-primary bg-transparent",
+        soft: "text-primary bg-primary/5 border-transparent",
+        ghost: "text-primary bg-transparent border-transparent",
       };
 
       Object.entries(variants).forEach(([variant, classes]) => {
