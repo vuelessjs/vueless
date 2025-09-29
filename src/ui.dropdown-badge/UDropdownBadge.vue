@@ -55,11 +55,18 @@ const emit = defineEmits([
    * @property {string} query
    */
   "searchChange",
+
+  /**
+   * Triggers when the search v-model updates.
+   * @property {string} query
+   */
+  "update:search",
 ]);
 
 type UListboxRef = InstanceType<typeof UListbox>;
 
 const isShownOptions = ref(false);
+const isClickingOption = ref(false);
 const listboxRef = useTemplateRef<UListboxRef>("dropdown-list");
 const wrapperRef = useTemplateRef<HTMLDivElement>("wrapper");
 
@@ -74,6 +81,11 @@ const dropdownValue = computed({
     return props.modelValue;
   },
   set: (value) => emit("update:modelValue", value),
+});
+
+const dropdownSearch = computed({
+  get: () => props.search ?? "",
+  set: (value: string) => emit("update:search", value),
 });
 
 const selectedOptions = computed(() => {
@@ -146,14 +158,29 @@ function onClickBadge() {
 
 function hideOptions() {
   isShownOptions.value = false;
+  dropdownSearch.value = "";
 
   emit("close");
 }
 
 function onClickOption(option: Option) {
+  isClickingOption.value = true;
+
   emit("clickOption", option);
 
-  if (!props.multiple) hideOptions();
+  if (!props.multiple && props.closeOnSelect) hideOptions();
+
+  nextTick(() => {
+    setTimeout(() => {
+      isClickingOption.value = false;
+    }, 10);
+  });
+}
+
+function handleClickOutside() {
+  if (isClickingOption.value) return;
+
+  hideOptions();
 }
 
 defineExpose({
@@ -186,7 +213,7 @@ const { getDataTest, config, wrapperAttrs, dropdownBadgeAttrs, listboxAttrs, tog
 <template>
   <div
     ref="wrapper"
-    v-click-outside="hideOptions"
+    v-click-outside="handleClickOutside"
     v-bind="wrapperAttrs"
     :data-test="getDataTest('wrapper')"
   >
@@ -243,17 +270,55 @@ const { getDataTest, config, wrapperAttrs, dropdownBadgeAttrs, listboxAttrs, tog
       v-if="isShownOptions"
       ref="dropdown-list"
       v-model="dropdownValue"
+      v-model:search="dropdownSearch"
       :searchable="searchable"
       :multiple="multiple"
       :size="size"
       :color="color"
       :options="options"
+      :options-limit="optionsLimit"
+      :visible-options="visibleOptions"
       :label-key="labelKey"
       :value-key="valueKey"
+      :group-label-key="groupLabelKey"
+      :group-value-key="groupValueKey"
       v-bind="listboxAttrs"
       :data-test="getDataTest('list')"
       @click-option="onClickOption"
       @search-change="onSearchChange"
-    />
+      @update:search="(value) => emit('update:search', value)"
+    >
+      <template #before-option="{ option, index }">
+        <!--
+            @slot Use it to add something before option.
+            @binding {object} option
+            @binding {number} index
+          -->
+        <slot name="before-option" :option="option" :index="index" />
+      </template>
+
+      <template #option="{ option, index }">
+        <!--
+            @slot Use it to customize the option.
+            @binding {object} option
+            @binding {number} index
+          -->
+        <slot name="option" :option="option" :index="index" />
+      </template>
+
+      <template #after-option="{ option, index }">
+        <!--
+            @slot Use it to add something after option.
+            @binding {object} option
+            @binding {number} index
+          -->
+        <slot name="after-option" :option="option" :index="index" />
+      </template>
+
+      <template #empty>
+        <!-- @slot Use it to add something instead of empty state. -->
+        <slot name="empty" />
+      </template>
+    </UListbox>
   </div>
 </template>

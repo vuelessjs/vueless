@@ -196,6 +196,10 @@ export function toNumber(value: unknown): number | undefined {
     return value;
   }
 
+  if (typeof value === "boolean") {
+    return Number(value);
+  }
+
   if (typeof value === "string" && value.trim() !== "") {
     const number = Number(value);
 

@@ -417,6 +417,41 @@ describe("UListbox.vue", () => {
   });
 
   describe("Functionality", () => {
+    it("Search v-model – filters options using external search prop", async () => {
+      const targetValue = "Option 2";
+
+      const component = mount(UListbox, {
+        props: {
+          searchable: true,
+          options: defaultOptions,
+          search: targetValue,
+        },
+      });
+
+      await flushPromises();
+
+      const options = component.findAll('[vl-key="option"]');
+
+      expect(options).toHaveLength(1);
+      expect(options[0].text()).toBe(targetValue);
+    });
+
+    it("Search v-model – emits update:search on input change", async () => {
+      const component = mount(UListbox, {
+        props: {
+          searchable: true,
+          options: defaultOptions,
+        },
+      });
+
+      const searchInput = component.getComponent(UInputSearch);
+
+      await searchInput.setValue("Option 3");
+
+      expect(component.emitted("update:search")).toBeTruthy();
+      expect(component.emitted("update:search")![0][0]).toBe("Option 3");
+    });
+
     it("Search – filters options based on search input", async () => {
       const targetValue = "Option 1";
       const filteredOptionsAmount = 1;
@@ -431,6 +466,7 @@ describe("UListbox.vue", () => {
       const searchInput = component.getComponent(UInputSearch);
 
       await searchInput.setValue(targetValue);
+      await flushPromises();
 
       const options = component.findAll('[vl-key="option"]');
 

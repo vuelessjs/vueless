@@ -8,13 +8,21 @@ import {
 
 import UDropdownLink from "../../ui.dropdown-link/UDropdownLink.vue";
 import URow from "../../ui.container-row/URow.vue";
+import UCol from "../../ui.container-col/UCol.vue";
 import UIcon from "../../ui.image-icon/UIcon.vue";
 import UBadge from "../../ui.text-badge/UBadge.vue";
 import ULink from "../../ui.button-link/ULink.vue";
 import UAvatar from "../../ui.image-avatar/UAvatar.vue";
+import UText from "../../ui.text-block/UText.vue";
+import ULoader from "../../ui.loader/ULoader.vue";
 
 import type { Meta, StoryFn } from "@storybook/vue3-vite";
 import type { Props } from "../types";
+
+import johnDoe from "../../ui.form-select/storybook/assets/images/john-doe.png";
+import emilyDavis from "../../ui.form-select/storybook/assets/images/emily-davis.png";
+import alexJohnson from "../../ui.form-select/storybook/assets/images/alex-johnson.png";
+import patMorgan from "../../ui.form-select/storybook/assets/images/pat-morgan.png";
 
 interface DefaultUDropdownLinkArgs extends Props {
   slotTemplate?: string;
@@ -51,7 +59,7 @@ export default {
 } as Meta;
 
 const DefaultTemplate: StoryFn<DefaultUDropdownLinkArgs> = (args: DefaultUDropdownLinkArgs) => ({
-  components: { UDropdownLink, UIcon, ULink, UBadge, UAvatar },
+  components: { UDropdownLink, UIcon, ULink, UBadge, UAvatar, ULoader, URow, UText },
   setup: () => ({ args, slots: getSlotNames(UDropdownLink.__name) }),
   template: `
     <UDropdownLink v-bind="args">
@@ -87,6 +95,35 @@ const EnumTemplate: StoryFn<EnumUDropdownLinkArgs> = (
   `,
 });
 
+const GroupValuesTemplate: StoryFn<DefaultUDropdownLinkArgs> = (
+  args: DefaultUDropdownLinkArgs,
+) => ({
+  components: { UDropdownLink },
+  setup() {
+    return {
+      args,
+    };
+  },
+  template: `
+    <UDropdownLink
+      v-bind="args"
+      v-model="args.modelValue"
+      label="Single"
+      :config="{ listbox: 'min-w-[200px]' }"
+      class="max-w-96 mr-20"
+    />
+
+    <UDropdownLink
+      v-bind="args"
+      v-model="args.modelValueMultiple"
+      label="Multiple"
+      multiple
+      :config="{ listbox: 'min-w-[200px]' }"
+      class="mt-5 max-w-96"
+    />
+  `,
+});
+
 export const Default = DefaultTemplate.bind({});
 Default.args = {};
 Default.parameters = {
@@ -97,6 +134,9 @@ Default.parameters = {
   },
 };
 
+export const Disabled = DefaultTemplate.bind({});
+Disabled.args = { disabled: true };
+
 export const Searchable = DefaultTemplate.bind({});
 Searchable.args = { searchable: true };
 Searchable.parameters = {
@@ -106,6 +146,19 @@ Searchable.parameters = {
     },
   },
 };
+
+export const SearchModelValue = DefaultTemplate.bind({});
+SearchModelValue.args = { searchable: true, search: "Settings" };
+SearchModelValue.parameters = {
+  docs: {
+    story: {
+      height: "250px",
+    },
+  },
+};
+
+export const NoCloseOnSelect = SelectableTemplate.bind({});
+NoCloseOnSelect.args = { modelValue: "logout", closeOnSelect: false };
 
 export const OptionSelection = SelectableTemplate.bind({});
 OptionSelection.args = { modelValue: "profile" };
@@ -132,6 +185,60 @@ ListboxYPosition.parameters = {
   storyClasses: "h-[350px] flex items-center px-6 pt-8 pb-12",
 };
 
+export const GroupValue = GroupValuesTemplate.bind({});
+GroupValue.args = {
+  modelValue: "",
+  groupValueKey: "libs",
+  groupLabelKey: "language",
+  labelKey: "name",
+  valueKey: "name",
+  options: [
+    {
+      language: "Javascript",
+      libs: [{ name: "Vue.js" }, { name: "Adonis" }],
+    },
+    {
+      language: "Ruby",
+      libs: [
+        { name: "Frameworks", isSubGroup: true, level: 2 },
+        { name: "Rails", level: 3 },
+        { name: "Sinatra", level: 3 },
+      ],
+    },
+    {
+      language: "Other",
+      libs: [{ name: "Laravel" }, { name: "Phoenix" }],
+    },
+  ],
+};
+GroupValue.parameters = {
+  docs: {
+    story: {
+      height: "400px",
+    },
+  },
+};
+
+export const OptionsLimit = DefaultTemplate.bind({});
+OptionsLimit.args = { optionsLimit: 2 };
+OptionsLimit.parameters = {
+  docs: {
+    description: {
+      story: "`optionsLimit` prop controls the number of options displayed in the dropdown.",
+    },
+  },
+};
+
+export const VisibleOptions = DefaultTemplate.bind({});
+VisibleOptions.args = { visibleOptions: 2 };
+VisibleOptions.parameters = {
+  docs: {
+    description: {
+      story: "`visibleOptions` prop controls the number of options you can see without a scroll.",
+    },
+  },
+};
+
 export const Color = EnumTemplate.bind({});
 Color.args = { enum: "color", label: "{enumValue}" };
 
@@ -148,9 +255,6 @@ export const UnderlineVariants: StoryFn<EnumUDropdownLinkArgs> = (args: EnumUDro
     </URow>
   `,
 });
-
-export const Disabled = DefaultTemplate.bind({});
-Disabled.args = { disabled: true };
 
 export const WithoutToggleIcon = Default.bind({});
 WithoutToggleIcon.args = { toggleIcon: false };
@@ -201,4 +305,177 @@ ToggleSlot.args = {
       />
     </template>
   `,
+};
+
+export const EmptySlot = DefaultTemplate.bind({});
+EmptySlot.args = {
+  options: [],
+  slotTemplate: `
+    <template #empty>
+      <URow align="center">
+        <ULoader loading size="sm" />
+        <UText label="Loading, this may take a while..." />
+      </URow>
+    </template>
+  `,
+};
+
+export const OptionSlots: StoryFn<DefaultUDropdownLinkArgs> = (args) => ({
+  components: { UDropdownLink, URow, UCol, UAvatar, UIcon, UBadge, UText },
+  setup: () => ({ args, johnDoe, emilyDavis, alexJohnson, patMorgan }),
+  template: `
+    <URow>
+      <UDropdownLink
+        v-model="args.beforeOptionModel"
+        label="Before option slot"
+        :options="[
+          {
+            label: 'John Doe',
+            id: '1',
+            role: 'Developer',
+            avatar: johnDoe,
+            status: 'online',
+            statusColor: 'success',
+          },
+          {
+            label: 'Jane Smith',
+            id: '2',
+            role: 'Designer',
+            avatar: emilyDavis,
+            status: 'away',
+            statusColor: 'warning',
+          },
+          {
+            label: 'Mike Johnson',
+            id: '3',
+            role: 'Product Manager',
+            avatar: alexJohnson,
+            status: 'offline',
+            statusColor: 'grayscale',
+          },
+          {
+            label: 'Sarah Wilson',
+            id: '4',
+            role: 'QA Engineer',
+            avatar: patMorgan,
+            status: 'online',
+            statusColor: 'success',
+          },
+        ]"
+      >
+        <template #before-option="{ option }">
+          <UAvatar :src="option.avatar" size="sm" />
+        </template>
+      </UDropdownLink>
+
+      <UDropdownLink
+        v-model="args.optionModel"
+        label="Option slot"
+        :options="[
+          {
+            label: 'John Doe',
+            id: '1',
+            role: 'Developer',
+            avatar: johnDoe,
+            status: 'online',
+            statusColor: 'success',
+          },
+          {
+            label: 'Jane Smith',
+            id: '2',
+            role: 'Designer',
+            avatar: emilyDavis,
+            status: 'away',
+            statusColor: 'warning',
+          },
+          {
+            label: 'Mike Johnson',
+            id: '3',
+            role: 'Product Manager',
+            avatar: alexJohnson,
+            status: 'offline',
+            statusColor: 'grayscale',
+          },
+          {
+            label: 'Sarah Wilson',
+            id: '4',
+            role: 'QA Engineer',
+            avatar: patMorgan,
+            status: 'online',
+            statusColor: 'success',
+          },
+        ]"
+      >
+        <template #option="{ option }">
+          <URow align="center" gap="xs">
+            <UCol gap="none">
+              <UText size="sm">{{ option.label }}</UText>
+              <UText variant="lifted" size="xs">{{ option.role }}</UText>
+            </UCol>
+            <UBadge
+              :label="option.status"
+              :color="option.statusColor"
+              size="sm"
+              variant="subtle"
+            />
+          </URow>
+        </template>
+      </UDropdownLink>
+
+      <UDropdownLink
+        v-model="args.afterOptionModel"
+        label="After option slot"
+        :options="[
+          {
+            label: 'John Doe',
+            id: '1',
+            role: 'Developer',
+            avatar: johnDoe,
+            status: 'online',
+            statusColor: 'success',
+          },
+          {
+            label: 'Jane Smith',
+            id: '2',
+            role: 'Designer',
+            avatar: emilyDavis,
+            status: 'away',
+            statusColor: 'warning',
+          },
+          {
+            label: 'Mike Johnson',
+            id: '3',
+            role: 'Product Manager',
+            avatar: alexJohnson,
+            status: 'offline',
+            statusColor: 'grayscale',
+          },
+          {
+            label: 'Sarah Wilson',
+            id: '4',
+            role: 'QA Engineer',
+            avatar: patMorgan,
+            status: 'online',
+            statusColor: 'success',
+          },
+        ]"
+      >
+        <template #after-option="{ option }">
+          <UBadge
+            :label="option.status"
+            :color="option.statusColor"
+            size="sm"
+            variant="subtle"
+          />
+        </template>
+      </UDropdownLink>
+    </URow>
+  `,
+});
+OptionSlots.parameters = {
+  docs: {
+    story: {
+      height: "300px",
+    },
+  },
 };

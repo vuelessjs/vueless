@@ -1,6 +1,6 @@
 export default /*tw*/ {
   wrapper: {
-    base: "p-4 md:p-6 border rounded-large w-full text-medium",
+    base: "p-4 md:p-6 border border-solid rounded-large w-full text-medium",
     variants: {
       variant: {
         solid: "bg-default border-transparent",

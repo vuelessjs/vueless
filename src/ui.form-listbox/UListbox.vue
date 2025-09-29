@@ -49,6 +49,7 @@ const emit = defineEmits([
 
   /**
    * Triggers when the search input value changes.
+   * @property {string} value
    */
   "searchChange",
 
@@ -56,6 +57,12 @@ const emit = defineEmits([
    * Triggers when the search input loses focus.
    */
   "searchBlur",
+
+  /**
+   * Triggers when the search v-model updates.
+   * @property {string} query
+   */
+  "update:search",
 ]);
 
 const wrapperRef = useTemplateRef<HTMLDivElement>("wrapper");
@@ -66,7 +73,7 @@ const addOptionRef = useTemplateRef<HTMLLIElement>("add-option");
 
 const wrapperMaxHeight = ref("");
 
-const search = ref("");
+const localSearch = ref(props.search ?? "");
 
 const { pointer, pointerDirty, pointerSet, pointerBackward, pointerForward, pointerReset } =
   usePointer(props.options, optionsRef, wrapperRef);
@@ -79,6 +86,15 @@ const { localeMessages } = useComponentLocaleMessages<typeof defaultConfig.i18n>
   props?.config?.i18n,
 );
 
+const searchModel = computed({
+  get: () => localSearch.value,
+  set: (value: string) => {
+    emit("update:search", value);
+
+    localSearch.value = value ?? "";
+  },
+});
+
 const selectedValue = computed({
   get: () => {
     if (props.multiple && !Array.isArray(props.modelValue)) {
@@ -87,11 +103,7 @@ const selectedValue = computed({
 
     return props.modelValue;
   },
-  set: (value) => {
-    if (search.value) search.value = "";
-
-    emit("update:modelValue", value);
-  },
+  set: (value) => emit("update:modelValue", value),
 });
 
 const addOptionKeyCombination = computed(() => {
@@ -99,7 +111,7 @@ const addOptionKeyCombination = computed(() => {
 });
 
 const filteredOptions = computed(() => {
-  const normalizedSearch = search.value.toLowerCase().trim();
+  const normalizedSearch = searchModel.value.toLowerCase().trim();
 
   let options = [...props.options];
 
@@ -117,7 +129,7 @@ const filteredOptions = computed(() => {
 });
 
 watch(
-  () => [props.options, props.size, props.visibleOptions, props.searchable],
+  () => [props.options, props.size, props.visibleOptions, props.searchable, searchModel.value],
   () => {
     nextTick(() => {
       const options = [
@@ -418,7 +430,7 @@ const {
       v-if="searchable"
       :id="elementId"
       ref="listbox-input"
-      v-model="search"
+      v-model="searchModel"
       :placeholder="localeMessages.search"
       :size="size"
       :debounce="debounce"

@@ -201,7 +201,7 @@ describe("UCheckboxGroup.vue", () => {
       });
 
       const labelComponent = component.getComponent(ULabel);
-      const labelElement = labelComponent.find("label");
+      const labelElement = labelComponent.find("[vl-child-key='label']");
 
       expect(labelElement.text()).toBe(customLabelContent);
     });
@@ -219,7 +219,7 @@ describe("UCheckboxGroup.vue", () => {
       });
 
       const labelComponent = component.getComponent(ULabel);
-      const labelElement = labelComponent.find("label");
+      const labelElement = labelComponent.find("[vl-child-key='label']");
 
       expect(labelElement.text()).toBe(`Modified ${defaultLabel}`);
     });

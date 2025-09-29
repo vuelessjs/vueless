@@ -198,7 +198,7 @@ export type MergedThemeConfig = Omit<ThemeConfig, "text | outline | rounding"> &
 
 export type UnknownObject = Record<string, unknown>;
 export type UnknownArray = unknown[];
-export type UnknownType = string | number | boolean | UnknownObject | undefined | null;
+export type UnknownType = string | number | boolean | UnknownObject | undefined | null | unknown;
 
 export type ComponentNames = keyof Components & string; // keys union
 
@@ -325,7 +325,19 @@ export interface NestedComponent {
 
 export type ComponentDefaults = {
   color?: string;
-  [key: string]: unknown | UnknownObject;
+  [key: string]: UnknownType;
+};
+
+export type ComponentCustomProps = {
+  [key: string]: ComponentCustomProp;
+};
+
+export type ComponentCustomProp = {
+  required?: boolean;
+  ignore?: boolean;
+  values?: string[];
+  default?: UnknownType;
+  description?: string;
 };
 
 export interface CVA {

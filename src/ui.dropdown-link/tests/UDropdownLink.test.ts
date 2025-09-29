@@ -268,6 +268,101 @@ describe("UDropdownLink.vue", () => {
 
       expect(component.findComponent(ULink).attributes("data-test")).toBe(dataTest);
     });
+
+    // OptionsLimit prop
+    it("passes optionsLimit prop to UListbox component", async () => {
+      const optionsLimit = 2;
+
+      const component = mount(UDropdownLink, {
+        props: {
+          optionsLimit,
+          options: defaultOptions,
+        },
+      });
+
+      await component.findComponent(ULink).trigger("click");
+
+      expect(component.findComponent(UListbox).props("optionsLimit")).toBe(optionsLimit);
+    });
+
+    // VisibleOptions prop
+    it("passes visibleOptions prop to UListbox component", async () => {
+      const visibleOptions = 5;
+
+      const component = mount(UDropdownLink, {
+        props: {
+          visibleOptions,
+          options: defaultOptions,
+        },
+      });
+
+      await component.findComponent(ULink).trigger("click");
+
+      expect(component.findComponent(UListbox).props("visibleOptions")).toBe(visibleOptions);
+    });
+
+    // GroupLabelKey prop
+    it("passes groupLabelKey prop to UListbox component", async () => {
+      const groupLabelKey = "category";
+      const groupedOptions = [
+        { groupLabel: "Group 1", category: "group1" },
+        { label: "Option 1", id: "option1", category: "group1" },
+        { groupLabel: "Group 2", category: "group2" },
+        { label: "Option 2", id: "option2", category: "group2" },
+      ];
+
+      const component = mount(UDropdownLink, {
+        props: {
+          groupLabelKey,
+          options: groupedOptions,
+        },
+      });
+
+      await component.findComponent(ULink).trigger("click");
+
+      expect(component.findComponent(UListbox).props("groupLabelKey")).toBe(groupLabelKey);
+    });
+
+    it("Search v-model – passes search to UListbox and filters", async () => {
+      const component = mount(UDropdownLink, {
+        props: {
+          searchable: true,
+          options: defaultOptions,
+          search: "Option 3",
+        },
+      });
+
+      await component.findComponent(ULink).trigger("click");
+
+      const listbox = component.getComponent(UListbox);
+      const options = listbox.findAll("[vl-child-key='option']");
+
+      expect(options).toHaveLength(1);
+      expect(options[0].text()).toBe("Option 3");
+    });
+
+    // CloseOnSelect prop
+    it("keeps dropdown open when closeOnSelect is false", async () => {
+      const component = mount(UDropdownLink, {
+        props: {
+          options: defaultOptions,
+          closeOnSelect: false,
+        },
+      });
+
+      // Open the dropdown
+      await component.findComponent(ULink).trigger("click");
+      expect(component.findComponent(UListbox).exists()).toBe(true);
+
+      // Find the listbox component
+      const listbox = component.findComponent(UListbox);
+
+      // Simulate selecting an option by emitting update:modelValue from the listbox
+      listbox.vm.$emit("update:modelValue", 2);
+
+      // Dropdown should remain open
+      expect(component.findComponent(UListbox).exists()).toBe(true);
+    });
   });
 
   // Slots tests
@@ -328,6 +423,105 @@ describe("UDropdownLink.vue", () => {
 
       expect(component.find(`.${slotClass}`).exists()).toBe(true);
       expect(component.find(`.${slotClass}`).text()).toBe(slotText);
+    });
+
+    // Before-option slot
+    it("renders content from before-option slot", async () => {
+      const label = "Dropdown Link";
+      const slotText = "Before";
+      const slotClass = "before-option-content";
+
+      const component = mount(UDropdownLink, {
+        props: {
+          label,
+          options: defaultOptions,
+        },
+        slots: {
+          "before-option": `<span class='${slotClass}'>${slotText}</span>`,
+        },
+      });
+
+      await component.findComponent(ULink).trigger("click");
+
+      const listbox = component.findComponent(UListbox);
+      const beforeOptionSlot = listbox.find(`.${slotClass}`);
+
+      expect(beforeOptionSlot.exists()).toBe(true);
+      expect(beforeOptionSlot.text()).toBe(slotText);
+    });
+
+    // Option slot
+    it("renders custom content from option slot", async () => {
+      const label = "Dropdown Link";
+      const slotClass = "custom-option-content";
+
+      const component = mount(UDropdownLink, {
+        props: {
+          label,
+          options: defaultOptions,
+        },
+        slots: {
+          option: `<span class='${slotClass}'>Custom {{ params.option.label }}</span>`,
+        },
+      });
+
+      await component.findComponent(ULink).trigger("click");
+
+      const listbox = component.findComponent(UListbox);
+      const customOptionSlot = listbox.find(`.${slotClass}`);
+
+      expect(customOptionSlot.exists()).toBe(true);
+      expect(customOptionSlot.text()).toBe("Custom Option 1");
+    });
+
+    // After-option slot
+    it("renders content from after-option slot", async () => {
+      const label = "Dropdown Link";
+      const slotText = "After";
+      const slotClass = "after-option-content";
+
+      const component = mount(UDropdownLink, {
+        props: {
+          label,
+          options: defaultOptions,
+        },
+        slots: {
+          "after-option": `<span class='${slotClass}'>${slotText}</span>`,
+        },
+      });
+
+      await component.findComponent(ULink).trigger("click");
+
+      const listbox = component.findComponent(UListbox);
+      const afterOptionSlot = listbox.find(`.${slotClass}`);
+
+      expect(afterOptionSlot.exists()).toBe(true);
+      expect(afterOptionSlot.text()).toBe(slotText);
+    });
+
+    // Empty slot
+    it("renders custom content from empty slot", async () => {
+      const label = "Dropdown Link";
+      const slotContent = "No options available";
+      const slotClass = "custom-empty";
+
+      const component = mount(UDropdownLink, {
+        props: {
+          label,
+          options: [],
+        },
+        slots: {
+          empty: `<span class='${slotClass}'>${slotContent}</span>`,
+        },
+      });
+
+      await component.findComponent(ULink).trigger("click");
+
+      const listbox = component.findComponent(UListbox);
+      const emptySlot = listbox.find(`.${slotClass}`);
+
+      expect(emptySlot.exists()).toBe(true);
+      expect(emptySlot.text()).toBe(slotContent);
     });
   });
 

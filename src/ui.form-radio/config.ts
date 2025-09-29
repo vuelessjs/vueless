@@ -3,7 +3,7 @@ export default /*tw*/ {
   radio: {
     base: `
       bg-default cursor-pointer transition
-      border border-default rounded-full outline-transparent
+      border border-solid border-default rounded-full outline-transparent
       appearance-none p-0 print:color-adjust-exact inline-block align-middle bg-origin-border select-none shrink-0
       hover:border-lifted hover:checked:border-{color}
       active:border-{color} active:bg-{color}/15

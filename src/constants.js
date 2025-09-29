@@ -17,6 +17,8 @@ export const OUTLINE = "outline";
 export const ROUNDING = "rounding";
 export const DISABLED_OPACITY = "disabled-opacity";
 export const LETTER_SPACING = "letter-spacing";
+export const LIGHT_THEME = "light-theme";
+export const DARK_THEME = "dark-theme";
 
 /* Vueless color mode keys */
 export const COLOR_MODE_KEY = "vl-color-mode";
@@ -70,6 +72,7 @@ export const STATE_COLORS = [
   NEUTRAL_COLOR,
   GRAYSCALE_COLOR,
 ];
+export const LAYOUT_COLORS = ["text", "border", "bg"];
 export const NEUTRAL_COLORS = ["slate", "gray", "zinc", "neutral", "stone"];
 export const COLOR_SHADES = [50, 100, 200, 300, 400, 500, 600, 700, 800, 900, 950];
 
@@ -222,6 +225,7 @@ export const SYSTEM_CONFIG_KEY = {
   unstyled: "unstyled",
   transition: "transition",
   colors: "colors",
+  props: "props",
   ...CVA_CONFIG_KEY,
 };
 

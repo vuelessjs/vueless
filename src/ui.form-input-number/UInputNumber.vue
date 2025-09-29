@@ -11,7 +11,7 @@ import useFormatNumber from "./useFormatNumber";
 import { COMPONENT_NAME, RAW_DECIMAL_MARK } from "./constants";
 
 import type { Props, Config } from "./types";
-import { getRawValue } from "./utilFormat";
+import { getRawValue, getFixedNumber } from "./utilFormat";
 
 defineOptions({ inheritAttrs: false });
 
@@ -42,7 +42,14 @@ const emit = defineEmits([
   "keyup",
 
   /**
+   * Triggers when the input gains focus.
+   * @property {FocusEvent} event
+   */
+  "focus",
+
+  /**
    * Triggers when the input loses focus.
+   * @property {FocusEvent} event
    */
   "blur",
 ]);
@@ -97,17 +104,21 @@ watch(
 );
 
 onMounted(() => {
-  if (localValue.value) {
+  if (localValue.value || localValue.value === 0) {
     setValue(stringLocalValue.value);
   }
 });
 
 function onKeyup(event: KeyboardEvent) {
-  const numberValue = !Number.isNaN(parseFloat(rawValue.value)) ? parseFloat(rawValue.value) : "";
+  const numberValue = getFixedNumber(parseFloat(rawValue.value), props.maxFractionDigits || 10);
 
   localValue.value = props.valueType === "number" ? numberValue : rawValue.value || "";
 
   emit("keyup", event);
+}
+
+function onFocus(event: FocusEvent) {
+  emit("focus", event);
 }
 
 function onBlur(event: FocusEvent) {
@@ -164,6 +175,7 @@ const { getDataTest, numberInputAttrs } = useUI<Config>(defaultConfig);
     v-bind="numberInputAttrs"
     :data-test="getDataTest()"
     @keyup="onKeyup"
+    @focus="onFocus"
     @blur="onBlur"
     @input="onInput"
   >

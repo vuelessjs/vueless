@@ -35,6 +35,8 @@ import {
   DEFAULT_DISABLED_OPACITY,
   LETTER_SPACING,
   DEFAULT_LETTER_SPACING,
+  LIGHT_THEME,
+  DARK_THEME,
 } from "../constants";
 
 import type {
@@ -48,18 +50,6 @@ import type {
   VuelessCssVariables,
 } from "../types";
 import { ColorMode } from "../types";
-
-declare interface RootCSSVariableOptions {
-  primary: PrimaryColors | string;
-  neutral: NeutralColors | string;
-  text: ThemeConfigText;
-  rounding: ThemeConfigRounding;
-  outline: ThemeConfigOutline;
-  letterSpacing: number;
-  disabledOpacity: number;
-  lightTheme: Partial<VuelessCssVariables>;
-  darkTheme: Partial<VuelessCssVariables>;
-}
 
 declare interface SetColorMode {
   colorMode: `${ColorMode}`;
@@ -191,6 +181,8 @@ export function resetTheme() {
     `vl-${ROUNDING}-lg`,
     `vl-${LETTER_SPACING}`,
     `vl-${DISABLED_OPACITY}`,
+    `vl-${LIGHT_THEME}`,
+    `vl-${DARK_THEME}`,
   ];
 
   themeKeys.forEach((key) => {
@@ -217,8 +209,8 @@ export function getTheme(config?: ThemeConfig): MergedThemeConfig {
   const letterSpacing = getLetterSpacing(config?.letterSpacing);
   const disabledOpacity = getDisabledOpacity(config?.disabledOpacity);
 
-  const lightTheme = merge({}, DEFAULT_LIGHT_THEME, vuelessConfig.lightTheme);
-  const darkTheme = merge({}, DEFAULT_DARK_THEME, vuelessConfig.darkTheme);
+  const lightTheme = getLightTheme(config?.lightTheme);
+  const darkTheme = getDarkTheme(config?.darkTheme);
 
   return {
     colorMode,
@@ -254,8 +246,8 @@ export function setTheme(config: ThemeConfig = {}) {
   let primary = getPrimaryColor(config.primary);
   const neutral = getNeutralColor(config.neutral);
 
-  const lightTheme = merge({}, DEFAULT_LIGHT_THEME, vuelessConfig.lightTheme, config.lightTheme);
-  const darkTheme = merge({}, DEFAULT_DARK_THEME, vuelessConfig.darkTheme, config.darkTheme);
+  const lightTheme = getLightTheme(config.lightTheme);
+  const darkTheme = getDarkTheme(config.darkTheme);
 
   /* Redeclare primary color if grayscale color set as default */
   if (primary === GRAYSCALE_COLOR) {
@@ -330,10 +322,10 @@ export function setTheme(config: ThemeConfig = {}) {
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export function normalizeThemeConfig(theme: any): MergedThemeConfig {
   return {
-    colorMode: theme.colorMode,
-    isColorModeAuto: theme.isColorModeAuto,
-    primary: theme.primary,
-    neutral: theme.neutral,
+    colorMode: String(theme.colorMode ?? "") as ColorMode,
+    isColorModeAuto: !!toNumber(theme.isColorModeAuto),
+    primary: String(theme.primary ?? ""),
+    neutral: String(theme.neutral ?? ""),
     text: {
       xs: toNumber(theme.text?.xs),
       sm: toNumber(theme.text?.sm),
@@ -608,7 +600,7 @@ function getLetterSpacing(letterSpacing?: ThemeConfig["letterSpacing"]) {
   const storageKey = `vl-${LETTER_SPACING}`;
 
   const spacing = letterSpacing ?? getStored(storageKey) ?? vuelessConfig.letterSpacing;
-  const mergedSpacing = Math.max(0, Number(spacing ?? DEFAULT_LETTER_SPACING));
+  const mergedSpacing = Number(spacing ?? DEFAULT_LETTER_SPACING);
 
   if (isCSR && letterSpacing !== undefined) {
     setCookie(storageKey, String(mergedSpacing));
@@ -637,23 +629,75 @@ function getDisabledOpacity(disabledOpacity?: ThemeConfig["disabledOpacity"]) {
 }
 
 /**
+ * Retrieve light theme configuration and save them to cookie and localStorage.
+ * @return Partial<VuelessCssVariables> - light theme configuration.
+ */
+function getLightTheme(lightTheme?: Partial<VuelessCssVariables>) {
+  const storageKey = `vl-${LIGHT_THEME}`;
+
+  const storedLightTheme: Partial<VuelessCssVariables> = JSON.parse(getStored(storageKey) ?? "{}");
+
+  const mergedLightTheme = merge(
+    {},
+    DEFAULT_LIGHT_THEME,
+    vuelessConfig.lightTheme,
+    storedLightTheme,
+    lightTheme,
+  );
+
+  if (isCSR && lightTheme !== undefined) {
+    const themeString = JSON.stringify(mergedLightTheme);
+
+    localStorage.setItem(storageKey, themeString);
+  }
+
+  return mergedLightTheme;
+}
+
+/**
+ * Retrieve dark theme configuration and save them to cookie and localStorage.
+ * @return Partial<VuelessCssVariables> - dark theme configuration.
+ */
+function getDarkTheme(darkTheme?: Partial<VuelessCssVariables>) {
+  const storageKey = `vl-${DARK_THEME}`;
+
+  const storedDarkTheme: Partial<VuelessCssVariables> = JSON.parse(getStored(storageKey) ?? "{}");
+
+  const mergedDarkTheme = merge(
+    {},
+    DEFAULT_DARK_THEME,
+    vuelessConfig.darkTheme,
+    storedDarkTheme,
+    darkTheme,
+  );
+
+  if (isCSR && darkTheme !== undefined) {
+    const themeString = JSON.stringify(mergedDarkTheme);
+
+    localStorage.setItem(storageKey, themeString);
+  }
+
+  return mergedDarkTheme;
+}
+
+/**
  * Generate and apply Vueless CSS variables.
  * @return string - Vueless CSS variables string.
  */
-function setRootCSSVariables(vars: RootCSSVariableOptions) {
+export function setRootCSSVariables(vars: MergedThemeConfig) {
   let darkVariables: Partial<VuelessCssVariables> = {};
 
   let variables: Partial<VuelessCssVariables> = {
-    "--vl-text-xs": `${vars.text.xs / PX_IN_REM}rem`,
-    "--vl-text-sm": `${vars.text.sm / PX_IN_REM}rem`,
-    "--vl-text-md": `${vars.text.md / PX_IN_REM}rem`,
-    "--vl-text-lg": `${vars.text.lg / PX_IN_REM}rem`,
+    "--vl-text-xs": `${Number(vars.text?.xs ?? 0) / PX_IN_REM}rem`,
+    "--vl-text-sm": `${Number(vars.text?.sm ?? 0) / PX_IN_REM}rem`,
+    "--vl-text-md": `${Number(vars.text?.md ?? 0) / PX_IN_REM}rem`,
+    "--vl-text-lg": `${Number(vars.text?.lg ?? 0) / PX_IN_REM}rem`,
     "--vl-outline-sm": `${vars.outline.sm}px`,
     "--vl-outline-md": `${vars.outline.md}px`,
     "--vl-outline-lg": `${vars.outline.lg}px`,
-    "--vl-rounding-sm": `${vars.rounding.sm / PX_IN_REM}rem`,
-    "--vl-rounding-md": `${vars.rounding.md / PX_IN_REM}rem`,
-    "--vl-rounding-lg": `${vars.rounding.lg / PX_IN_REM}rem`,
+    "--vl-rounding-sm": `${Number(vars.rounding.sm ?? 0) / PX_IN_REM}rem`,
+    "--vl-rounding-md": `${Number(vars.rounding.md ?? 0) / PX_IN_REM}rem`,
+    "--vl-rounding-lg": `${Number(vars.rounding.lg ?? 0) / PX_IN_REM}rem`,
     "--vl-letter-spacing": `${vars.letterSpacing}em`,
     "--vl-disabled-opacity": `${vars.disabledOpacity}%`,
   };
@@ -668,7 +712,7 @@ function setRootCSSVariables(vars: RootCSSVariableOptions) {
       `var(--color-${vars.neutral}-${shade})`;
   }
 
-  const [light, dark] = generateCSSColorVariables(vars.lightTheme, vars.darkTheme);
+  const [light, dark] = generateCSSColorVariables(vars.lightTheme ?? {}, vars.darkTheme ?? {});
 
   variables = { ...variables, ...light };
   darkVariables = { ...darkVariables, ...dark };
@@ -719,7 +763,7 @@ function setCSSVariables(
     .join(" ");
 
   const rootVariables = `
-    :root {${variablesString}}
+    :host, :root {${variablesString}}
     .${DARK_MODE_CLASS} {${darkVariablesString}}
   `;
 
