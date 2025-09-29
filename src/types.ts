@@ -27,6 +27,7 @@ import UDividerConfig from "./ui.container-divider/config";
 import UGroupConfig from "./ui.container-group/config";
 import UModalConfig from "./ui.container-modal/config";
 import UModalConfirmConfig from "./ui.container-modal-confirm/config";
+import UDrawerConfig from "./ui.container-drawer/config";
 import UPageConfig from "./ui.container-page/config";
 import URowConfig from "./ui.container-row/config";
 import ULoaderConfig from "./ui.loader/config";
@@ -272,6 +273,7 @@ export interface Components {
   UModal: Partial<typeof UModalConfig>;
   UModalConfirm: Partial<typeof UModalConfirmConfig>;
   UPage: Partial<typeof UPageConfig>;
+  UDrawer: Partial<typeof UDrawerConfig>;
   URow: Partial<typeof URowConfig>;
   ULoader: Partial<typeof ULoaderConfig>;
   ULoaderOverlay: Partial<typeof ULoaderOverlayConfig>;

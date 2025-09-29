@@ -101,6 +101,7 @@ export { default as UAccordionItem } from "./ui.container-accordion-item/UAccord
 export { default as UCard } from "./ui.container-card/UCard.vue";
 export { default as UModal } from "./ui.container-modal/UModal.vue";
 export { default as UModalConfirm } from "./ui.container-modal-confirm/UModalConfirm.vue";
+export { default as UDrawer } from "./ui.container-drawer/UDrawer.vue";
 export { default as UPage } from "./ui.container-page/UPage.vue";
 /* Images and Icons */
 export { default as UIcon } from "./ui.image-icon/UIcon.vue";
