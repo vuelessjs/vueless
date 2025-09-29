@@ -29,7 +29,6 @@
         ]
       },
       "writerOpts": {
-        "noteGroupsSort": "title",
         "noteGroupTitle": "🚨 Breaking Changes"
       }
     }
