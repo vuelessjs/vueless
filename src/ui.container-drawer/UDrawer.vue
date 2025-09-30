@@ -271,10 +271,6 @@ const wrapperTransition = computed(() => {
  * Get element / nested component attributes for each config token ✨
  * Applies: `class`, `config`, redefined default `props` and dev `vl-...` attributes.
  */
-const mutatedProps = computed(() => ({
-  /* component state, not a props */
-  dragging: isDragging.value,
-}));
 
 const {
   getDataTest,
@@ -282,6 +278,7 @@ const {
   handleAttrs,
   handleWrapperAttrs,
   drawerAttrs,
+  drawerWrapperAttrs,
   titleAttrs,
   overlayAttrs,
   wrapperAttrs,
@@ -294,7 +291,7 @@ const {
   footerRightAttrs,
   beforeTitleAttrs,
   titleFallbackAttrs,
-} = useUI<Config>(defaultConfig, mutatedProps);
+} = useUI<Config>(defaultConfig);
 </script>
 
 <template>
@@ -315,55 +312,57 @@ const {
       <div v-bind="innerWrapperAttrs" @click.self="onClickOutside">
         <div
           ref="drawer"
-          v-bind="drawerAttrs"
           :style="{ transform: dragTransform }"
+          v-bind="drawerWrapperAttrs"
           @mousedown="onDragStart"
           @touchstart="onDragStart"
         >
-          <div v-if="handle" v-bind="handleWrapperAttrs">
-            <div v-bind="handleAttrs" />
-          </div>
-
-          <div v-if="isExistHeader" v-bind="headerAttrs">
-            <div v-bind="beforeTitleAttrs">
-              <!-- @slot Use it to add something before the header title. -->
-              <slot name="before-title" />
-              <!--
+          <div v-bind="drawerAttrs">
+            <div v-if="isExistHeader" v-bind="headerAttrs">
+              <div v-bind="beforeTitleAttrs">
+                <!-- @slot Use it to add something before the header title. -->
+                <slot name="before-title" />
+                <!--
                 @slot Use it to add something to the left side of the header.
                 @binding {string} title
               -->
-              <slot name="title" :title="title">
-                <div v-bind="titleFallbackAttrs">
-                  <UHeader :label="title" size="sm" v-bind="titleAttrs" />
-                  <div v-if="description" v-bind="descriptionAttrs" v-text="description" />
-                </div>
-              </slot>
-              <!-- @slot Use it to add something after the header title. -->
-              <slot name="after-title" />
-            </div>
+                <slot name="title" :title="title">
+                  <div v-bind="titleFallbackAttrs">
+                    <UHeader :label="title" size="sm" v-bind="titleAttrs" />
+                    <div v-if="description" v-bind="descriptionAttrs" v-text="description" />
+                  </div>
+                </slot>
+                <!-- @slot Use it to add something after the header title. -->
+                <slot name="after-title" />
+              </div>
 
-            <!--
+              <!--
                 @slot Use it to add something instead of the close button.
                 @binding {function} close
               -->
-            <slot name="actions" :close="closeDrawer" />
-          </div>
-
-          <div v-bind="bodyAttrs">
-            <!-- @slot Use it to add something into the drawer body. -->
-            <slot />
-          </div>
-
-          <div v-if="isExistFooter" v-bind="footerAttrs">
-            <div v-if="hasSlotContent($slots['footer-left'])" v-bind="footerLeftAttrs">
-              <!-- @slot Use it to add something to the left side of the footer. -->
-              <slot name="footer-left" />
+              <slot name="actions" :close="closeDrawer" />
             </div>
 
-            <div v-if="hasSlotContent($slots['footer-right'])" v-bind="footerRightAttrs">
-              <!-- @slot Use it to add something to the right side of the footer. -->
-              <slot name="footer-right" />
+            <div v-bind="bodyAttrs">
+              <!-- @slot Use it to add something into the drawer body. -->
+              <slot />
             </div>
+
+            <div v-if="isExistFooter" v-bind="footerAttrs">
+              <div v-if="hasSlotContent($slots['footer-left'])" v-bind="footerLeftAttrs">
+                <!-- @slot Use it to add something to the left side of the footer. -->
+                <slot name="footer-left" />
+              </div>
+
+              <div v-if="hasSlotContent($slots['footer-right'])" v-bind="footerRightAttrs">
+                <!-- @slot Use it to add something to the right side of the footer. -->
+                <slot name="footer-right" />
+              </div>
+            </div>
+          </div>
+
+          <div v-if="handle" v-bind="handleWrapperAttrs">
+            <div v-bind="handleAttrs" />
           </div>
         </div>
       </div>

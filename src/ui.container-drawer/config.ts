@@ -44,62 +44,50 @@ export default /*tw*/ {
     leaveToClass: "opacity-0",
   },
   innerWrapper: {
-    base: "h-full relative",
+    base: "h-full relative", // add overflow-y
     variants: {
       inset: {
-        true: "m-4",
+        true: "m-4 h-[calc(100%-2rem)]",
       },
     },
   },
-  header: "flex justify-between px-4 md:px-6 py-6",
+  header: {
+    base: "flex justify-between px-4 md:px-6 py-6",
+    compoundVariants: [
+      { handle: true, position: "left", class: "!pr-0" },
+      { handle: true, position: "right", class: "!pl-0" },
+      { handle: true, position: "bottom", class: "!pt-0" },
+    ],
+  },
   beforeTitle: "flex items-center gap-3",
   titleFallback: "flex flex-col",
   title: "{UHeader}",
   description: "mt-1.5 text-medium font-normal text-lifted",
-  body: "px-4 md:px-6 pb-6 text-medium",
+  body: {
+    base: "px-4 md:px-6 pb-6 text-medium",
+    compoundVariants: [
+      { handle: true, position: "left", class: "!pr-0" },
+      { handle: true, position: "right", class: "!pl-0" },
+      { handle: true, position: "top", class: "!pb-0" },
+    ],
+  },
   footer: {
     base: "flex justify-between px-4 md:px-6 py-6 max-md:flex-col max-md:gap-4",
     variants: {
       divided: {
-        true: "border-t",
+        true: "border-t border-muted",
         false: "pt-0",
       },
     },
     compoundVariants: [
-      { divided: true, variant: ["subtle", "soft"], class: "border-default/50" },
-      { divided: true, variant: ["solid", "outlined"], class: "border-muted" },
+      { handle: true, position: "left", class: "!pr-0" },
+      { handle: true, position: "right", class: "!pl-0" },
     ],
   },
   footerLeft: "flex flex-col md:flex-row gap-4 w-full",
   footerRight: "flex flex-col md:flex-row gap-4 w-full justify-end",
-  drawer: {
-    base: "absolute select-none cursor-grab active:cursor-grabbing",
-    variants: {
-      position: {
-        top: "top-0 rounded-b-large w-full h-auto",
-        bottom: "bottom-0 rounded-t-large w-full h-auto",
-        left: "left-0 rounded-r-large w-max h-full",
-        right: "right-0 rounded-l-large w-max h-full",
-      },
-      inset: {
-        true: "rounded-large mx-auto",
-      },
-      dragging: {
-        true: "opacity-60 transition-opacity duration-300",
-      },
-    },
-    compoundVariants: [
-      { handle: true, class: "rounded-none" },
-      { variant: ["subtle", "soft"], class: "bg-muted" },
-      { variant: ["solid", "outlined"], class: "bg-default" },
-      { inset: true, position: "top", class: "rounded-t-large" },
-      { inset: true, position: "bottom", class: "rounded-b-large" },
-      { inset: true, position: "left", class: "rounded-l-large" },
-      { inset: true, position: "right", class: "rounded-r-large" },
-    ],
-  },
-  handleWrapper: {
-    base: "flex items-center justify-center bg-inherit absolute",
+  drawerWrapper: {
+    base: "flex border absolute select-none cursor-grab active:cursor-grabbing overflow-x-hidden overflow-y-auto",
     variants: {
       variant: {
         solid: "bg-default border-transparent",
@@ -108,13 +96,25 @@ export default /*tw*/ {
         soft: "bg-muted border-transparent",
       },
       position: {
-        top: "top-full border-b rounded-b-large w-full h-11",
-        bottom: "bottom-full border-t rounded-t-large w-full h-11",
-        left: "left-full border-r rounded-r-large w-11 h-full",
-        right: "right-full border-l rounded-l-large w-11 h-full",
+        top: "top-0 flex-col rounded-b-large w-full h-auto",
+        bottom: "bottom-0 flex-col-reverse rounded-t-large w-full h-auto",
+        left: "left-0 flex-row rounded-r-large w-max h-full",
+        right: "right-0 flex-row-reverse rounded-l-large w-max h-full",
       },
       inset: {
-        true: "mx-auto",
+        true: "rounded-large",
+      },
+    },
+  },
+  drawer: "",
+  handleWrapper: {
+    base: "flex items-center justify-center bg-inherit",
+    variants: {
+      position: {
+        top: "w-full h-11",
+        bottom: "w-full h-11",
+        left: "w-11 h-auto",
+        right: "w-11 h-auto",
       },
     },
   },
