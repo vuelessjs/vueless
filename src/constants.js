@@ -296,6 +296,7 @@ export const COMPONENTS = {
   UModal: "ui.container-modal",
   UModalConfirm: "ui.container-modal-confirm",
   UPage: "ui.container-page",
+  UDrawer: "ui.container-drawer",
 
   /* Images and Icons */
   UIcon: "ui.image-icon",
