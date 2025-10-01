@@ -68,16 +68,14 @@ const dragThreshold = computed(() => {
 
   const rect = drawerRef.value.getBoundingClientRect();
 
-  switch (props.position) {
-    case "top":
-    case "bottom":
-      return rect.height / 2;
-    case "left":
-    case "right":
-      return rect.width / 2;
-    default:
-      return 0;
-  }
+  const dragThresholdMap = {
+    top: rect.height / 2,
+    bottom: rect.height / 2,
+    left: rect.width / 2,
+    right: rect.width / 2,
+  };
+
+  return dragThresholdMap[props.position] || 0;
 });
 
 const dragDistance = computed(() => {
@@ -90,18 +88,14 @@ const dragDistance = computed(() => {
 
   if (totalDistance < minDragDistance) return 0;
 
-  switch (props.position) {
-    case "top":
-      return Math.min(0, deltaY);
-    case "bottom":
-      return Math.max(0, deltaY);
-    case "left":
-      return Math.min(0, deltaX);
-    case "right":
-      return Math.max(0, deltaX);
-    default:
-      return 0;
-  }
+  const dragDistanceMap = {
+    top: Math.min(0, deltaY),
+    bottom: Math.max(0, deltaY),
+    left: Math.min(0, deltaX),
+    right: Math.max(0, deltaX),
+  };
+
+  return dragDistanceMap[props.position] || 0;
 });
 
 const shouldCloseDrawer = computed(() => {
@@ -113,18 +107,14 @@ const dragTransform = computed(() => {
 
   const distance = dragDistance.value;
 
-  switch (props.position) {
-    case "top":
-      return `translateY(${distance}px)`;
-    case "bottom":
-      return `translateY(${distance}px)`;
-    case "left":
-      return `translateX(${distance}px)`;
-    case "right":
-      return `translateX(${distance}px)`;
-    default:
-      return "";
-  }
+  const dragTransformMap = {
+    top: `translateY(${distance}px)`,
+    bottom: `translateY(${distance}px)`,
+    left: `translateX(${distance}px)`,
+    right: `translateX(${distance}px)`,
+  };
+
+  return dragTransformMap[props.position] || "";
 });
 
 function getFocusableElements() {
@@ -258,13 +248,14 @@ defineExpose({
 });
 
 const wrapperTransition = computed(() => {
-  const baseTransition = config.value.wrapperTransition.base;
-  const positionTransition = config.value.wrapperTransition.variants.position[props.position];
-
-  return {
-    ...baseTransition,
-    ...positionTransition,
+  const transitionMap = {
+    top: config.value.wrapperTransitionTop,
+    bottom: config.value.wrapperTransitionBottom,
+    left: config.value.wrapperTransitionLeft,
+    right: config.value.wrapperTransitionRight,
   };
+
+  return transitionMap[props.position];
 });
 
 /**
@@ -362,7 +353,10 @@ const {
           </div>
 
           <div v-if="handle" v-bind="handleWrapperAttrs">
-            <div v-bind="handleAttrs" />
+            <!-- @slot Use it to add something instead of the default handle. -->
+            <slot name="handle">
+              <div v-bind="handleAttrs" />
+            </slot>
           </div>
         </div>
       </div>

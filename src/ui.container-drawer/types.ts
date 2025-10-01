@@ -51,11 +51,6 @@ export interface Props {
   closeOnEsc?: boolean;
 
   /**
-   * Show divider between content and footer.
-   */
-  divided?: boolean;
-
-  /**
    * Unique element id.
    */
   id?: string;

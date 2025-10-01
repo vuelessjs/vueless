@@ -1,38 +1,36 @@
 export default /*tw*/ {
   wrapper: "fixed inset-0 z-50 outline-hidden",
-  wrapperTransition: {
-    base: {
-      enterActiveClass: "ease-out duration-300",
-      leaveActiveClass: "ease-in duration-200",
-    },
-    variants: {
-      position: {
-        top: {
-          enterFromClass: "opacity-0 -translate-y-full",
-          enterToClass: "opacity-100 translate-y-0",
-          leaveFromClass: "opacity-100 translate-y-0",
-          leaveToClass: "opacity-0 -translate-y-full",
-        },
-        bottom: {
-          enterFromClass: "opacity-0 translate-y-full",
-          enterToClass: "opacity-100 translate-y-0",
-          leaveFromClass: "opacity-100 translate-y-0",
-          leaveToClass: "opacity-0 translate-y-full",
-        },
-        left: {
-          enterFromClass: "opacity-0 -translate-x-full",
-          enterToClass: "opacity-100 translate-x-0",
-          leaveFromClass: "opacity-100 translate-x-0",
-          leaveToClass: "opacity-0 -translate-x-full",
-        },
-        right: {
-          enterFromClass: "opacity-0 translate-x-full",
-          enterToClass: "opacity-100 translate-x-0",
-          leaveFromClass: "opacity-100 translate-x-0",
-          leaveToClass: "opacity-0 translate-x-full",
-        },
-      },
-    },
+  wrapperTransitionTop: {
+    enterActiveClass: "ease-out duration-300",
+    leaveActiveClass: "ease-in duration-200",
+    enterFromClass: "opacity-0 -translate-y-full",
+    enterToClass: "opacity-100 translate-y-0",
+    leaveFromClass: "opacity-100 translate-y-0",
+    leaveToClass: "opacity-0 -translate-y-full",
+  },
+  wrapperTransitionBottom: {
+    enterActiveClass: "ease-out duration-300",
+    leaveActiveClass: "ease-in duration-200",
+    enterFromClass: "opacity-0 translate-y-full",
+    enterToClass: "opacity-100 translate-y-0",
+    leaveFromClass: "opacity-100 translate-y-0",
+    leaveToClass: "opacity-0 translate-y-full",
+  },
+  wrapperTransitionLeft: {
+    enterActiveClass: "ease-out duration-300",
+    leaveActiveClass: "ease-in duration-200",
+    enterFromClass: "opacity-0 -translate-x-full",
+    enterToClass: "opacity-100 translate-x-0",
+    leaveFromClass: "opacity-100 translate-x-0",
+    leaveToClass: "opacity-0 -translate-x-full",
+  },
+  wrapperTransitionRight: {
+    enterActiveClass: "ease-out duration-300",
+    leaveActiveClass: "ease-in duration-200",
+    enterFromClass: "opacity-0 translate-x-full",
+    enterToClass: "opacity-100 translate-x-0",
+    leaveFromClass: "opacity-100 translate-x-0",
+    leaveToClass: "opacity-0 translate-x-full",
   },
   overlay: "fixed inset-0 z-40 bg-inverted/15 dark:bg-lifted/75 backdrop-blur-md",
   overlayTransition: {
@@ -52,11 +50,11 @@ export default /*tw*/ {
     },
   },
   header: {
-    base: "flex justify-between px-4 md:px-6 py-6",
+    base: "flex justify-between p-6",
     compoundVariants: [
-      { handle: true, position: "left", class: "!pr-0" },
-      { handle: true, position: "right", class: "!pl-0" },
-      { handle: true, position: "bottom", class: "!pt-0" },
+      { handle: true, position: "left", class: "pr-0" },
+      { handle: true, position: "right", class: "pl-0" },
+      { handle: true, position: "bottom", class: "pt-0" },
     ],
   },
   beforeTitle: "flex items-center gap-3",
@@ -64,24 +62,18 @@ export default /*tw*/ {
   title: "{UHeader}",
   description: "mt-1.5 text-medium font-normal text-lifted",
   body: {
-    base: "px-4 md:px-6 pb-6 text-medium",
+    base: "px-6 pb-6 text-medium",
     compoundVariants: [
-      { handle: true, position: "left", class: "!pr-0" },
-      { handle: true, position: "right", class: "!pl-0" },
-      { handle: true, position: "top", class: "!pb-0" },
+      { handle: true, position: "left", class: "pr-0" },
+      { handle: true, position: "right", class: "pl-0" },
+      { handle: true, position: "top", class: "pb-0" },
     ],
   },
   footer: {
-    base: "flex justify-between px-4 md:px-6 py-6 max-md:flex-col max-md:gap-4",
-    variants: {
-      divided: {
-        true: "border-t border-muted",
-        false: "pt-0",
-      },
-    },
+    base: "flex justify-between p-6 max-md:flex-col max-md:gap-4 border-t border-muted",
     compoundVariants: [
-      { handle: true, position: "left", class: "!pr-0" },
-      { handle: true, position: "right", class: "!pl-0" },
+      { handle: true, position: "left", class: "pr-0" },
+      { handle: true, position: "right", class: "pl-0" },
     ],
   },
   footerLeft: "flex flex-col md:flex-row gap-4 w-full",
@@ -130,7 +122,6 @@ export default /*tw*/ {
     position: "left",
     inset: false,
     handle: true,
-    divided: true,
     closeOnEsc: true,
     closeOnOverlay: true,
   },

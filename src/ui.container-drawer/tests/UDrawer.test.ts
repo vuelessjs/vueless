@@ -16,8 +16,7 @@ describe("UDrawer", () => {
 
   // Props tests
   describe("Props", () => {
-    // ModelValue prop
-    it("renders when modelValue is true", () => {
+    it("ModelValue – renders when true", () => {
       const component = mount(UDrawer, {
         props: {
           modelValue,
@@ -27,7 +26,7 @@ describe("UDrawer", () => {
       expect(component.isVisible()).toBe(modelValue);
     });
 
-    it("does not render when modelValue is false", () => {
+    it("ModelValue – does not render when false", () => {
       const modelValue = false;
 
       const component = mount(UDrawer, {
@@ -39,8 +38,7 @@ describe("UDrawer", () => {
       expect(component.find("[vl-key='overlay']").exists()).toBe(modelValue);
     });
 
-    // Title prop
-    it("renders with title prop", () => {
+    it("Title – renders with title prop", () => {
       const title = "Drawer Title";
 
       const component = mount(UDrawer, {
@@ -56,8 +54,7 @@ describe("UDrawer", () => {
       expect(header.props("label")).toBe(title);
     });
 
-    // Description prop
-    it("renders with description prop", () => {
+    it("Description – renders with description prop", () => {
       const title = "Drawer Title";
       const description = "Drawer Description";
 
@@ -72,8 +69,7 @@ describe("UDrawer", () => {
       expect(component.text()).toContain(description);
     });
 
-    // Position prop
-    it("applies correct position classes", () => {
+    it("Position – applies correct position classes", () => {
       const positions = {
         top: ["top-0", "w-full", "h-auto"],
         bottom: ["bottom-0", "w-full", "h-auto"],
@@ -97,8 +93,7 @@ describe("UDrawer", () => {
       });
     });
 
-    // Variant prop
-    it("applies correct variant classes", () => {
+    it("Variant – applies correct variant classes", () => {
       const variants = {
         solid: "bg-default",
         outlined: "bg-default",
@@ -120,8 +115,7 @@ describe("UDrawer", () => {
       });
     });
 
-    // Handle prop
-    it("renders handle when handle prop is true", () => {
+    it("Handle – renders handle when prop is true", () => {
       const handle = [true, false];
 
       handle.forEach((value) => {
@@ -140,8 +134,7 @@ describe("UDrawer", () => {
       });
     });
 
-    // Inset prop
-    it("applies inset class when inset prop is true", () => {
+    it("Inset – applies inset class when prop is true", () => {
       const inset = true;
       const expectedClass = "m-4";
 
@@ -157,8 +150,7 @@ describe("UDrawer", () => {
       expect(innerWrapper.attributes("class")).toContain(expectedClass);
     });
 
-    // CloseOnOverlay prop
-    it("renders with closeOnOverlay prop", () => {
+    it("CloseOnOverlay – closes drawer when overlay is clicked", () => {
       const closeOnOverlay = [true, false];
 
       closeOnOverlay.forEach(async (value) => {
@@ -182,8 +174,7 @@ describe("UDrawer", () => {
       });
     });
 
-    // CloseOnEsc prop
-    it("renders with closeOnEsc prop", () => {
+    it("CloseOnEsc – closes drawer when escape key is pressed", () => {
       const closeOnEsc = [true, false];
 
       closeOnEsc.forEach(async (value) => {
@@ -205,31 +196,7 @@ describe("UDrawer", () => {
       });
     });
 
-    // Divided prop
-    it("applies divided class when divided prop is true", () => {
-      const divided = true;
-      const footerLeftContent = "Footer Left";
-      const footerRightContent = "Footer Right";
-      const expectedClass = "border-t";
-
-      const component = mount(UDrawer, {
-        props: {
-          modelValue,
-          divided,
-        },
-        slots: {
-          "footer-left": footerLeftContent,
-          "footer-right": footerRightContent,
-        },
-      });
-
-      const footer = component.find("[vl-key='footer']");
-
-      expect(footer.attributes("class")).toContain(expectedClass);
-    });
-
-    // DataTest prop
-    it("applies the correct data-test attribute", () => {
+    it("DataTest – applies the correct data-test attribute", () => {
       const dataTest = "drawer-test";
 
       const component = mount(UDrawer, {
@@ -247,8 +214,7 @@ describe("UDrawer", () => {
 
   // Slots tests
   describe("Slots", () => {
-    // Default slot
-    it("renders content in default slot", () => {
+    it("Default – renders content in default slot", () => {
       const slotClass = "default-content";
       const slotContent = "Default Content";
 
@@ -263,8 +229,7 @@ describe("UDrawer", () => {
       expect(component.text()).toContain(slotContent);
     });
 
-    // Before-title slot
-    it("renders content in before-title slot and shows header", () => {
+    it("Before Title – renders content in slot and shows header", () => {
       const slotClass = "before-title";
       const slotContent = "Before Title";
 
@@ -288,8 +253,7 @@ describe("UDrawer", () => {
       expect(header.text()).toContain(slotContent);
     });
 
-    // Title slot
-    it("renders custom content in title slot and shows header", () => {
+    it("Title – renders custom content in slot and shows header", () => {
       const slotClass = "custom-title";
       const slotContent = "Custom Title";
 
@@ -314,8 +278,7 @@ describe("UDrawer", () => {
       expect(header.text()).toContain(slotContent);
     });
 
-    // After-title slot
-    it("renders content in after-title slot and shows header", () => {
+    it("After Title – renders content in slot and shows header", () => {
       const slotClass = "after-title";
       const slotContent = "After Title";
 
@@ -339,8 +302,7 @@ describe("UDrawer", () => {
       expect(header.text()).toContain(slotContent);
     });
 
-    // Actions slot
-    it("renders custom content in actions slot and shows header", () => {
+    it("Actions – renders custom content in slot and shows header", () => {
       const slotClass = "actions";
       const slotContent = "Actions";
 
@@ -364,7 +326,7 @@ describe("UDrawer", () => {
       expect(header.text()).toContain(slotContent);
     });
 
-    it("does not show header when no title or slots are provided", () => {
+    it("Header – does not show when no title or slots are provided", () => {
       const component = mount(UDrawer, {
         props: { modelValue },
       });
@@ -374,7 +336,7 @@ describe("UDrawer", () => {
       expect(header.exists()).toBe(false);
     });
 
-    it("provides close binding to actions slot", () => {
+    it("Actions – provides close binding to slot", () => {
       const component = mount(UDrawer, {
         props: {
           modelValue: true,
@@ -401,8 +363,30 @@ describe("UDrawer", () => {
       expect(component.emitted("update:modelValue")?.[0]).toEqual([false]);
     });
 
-    // Footer-left slot
-    it("renders content in footer-left slot and shows footer", () => {
+    it("Handle – renders custom content in slot", () => {
+      const slotClass = "custom-handle";
+      const slotContent = "Custom Handle";
+
+      const component = mount(UDrawer, {
+        props: {
+          modelValue: true,
+          handle: true,
+        },
+        slots: {
+          handle: `<div class="${slotClass}">${slotContent}</div>`,
+        },
+      });
+
+      expect(component.find(`.${slotClass}`).exists()).toBe(true);
+      expect(component.text()).toContain(slotContent);
+
+      // Check that default handle element is not rendered when slot is used
+      const defaultHandle = component.find("[vl-key='handle']");
+
+      expect(defaultHandle.exists()).toBe(false);
+    });
+
+    it("Footer Left – renders content in slot and shows footer", () => {
       const slotClass = "footer-left";
       const slotContent = "Footer Left";
 
@@ -423,8 +407,7 @@ describe("UDrawer", () => {
       expect(footer.text()).toContain(slotContent);
     });
 
-    // Footer-right slot
-    it("renders content in footer-right slot and shows footer", () => {
+    it("Footer Right – renders content in slot and shows footer", () => {
       const slotClass = "footer-right";
       const slotContent = "Footer Right";
 
@@ -445,7 +428,7 @@ describe("UDrawer", () => {
       expect(footer.text()).toContain(slotContent);
     });
 
-    it("does not show footer when no footer slots are provided", () => {
+    it("Footer – does not show when no footer slots are provided", () => {
       const component = mount(UDrawer, {
         props: { modelValue },
       });
@@ -458,8 +441,7 @@ describe("UDrawer", () => {
 
   // Events tests
   describe("Events", () => {
-    // Update:modelValue event
-    it("emits update:modelValue event when drawer is closed", async () => {
+    it("Update:modelValue – emits event when drawer is closed", async () => {
       const title = "Drawer Title";
 
       const component = mount(UDrawer, {
@@ -484,8 +466,7 @@ describe("UDrawer", () => {
       expect(component.emitted("update:modelValue")?.[0]).toEqual([false]);
     });
 
-    // Close event
-    it("emits close event when drawer is closed", async () => {
+    it("Close – emits event when drawer is closed", async () => {
       const title = "Drawer Title";
 
       const component = mount(UDrawer, {
@@ -509,8 +490,7 @@ describe("UDrawer", () => {
       expect(component.emitted("close")).toBeTruthy();
     });
 
-    // CloseOnOverlay events
-    it("emits events when overlay is clicked based on closeOnOverlay prop", () => {
+    it("CloseOnOverlay – emits events when overlay is clicked based on prop", () => {
       const closeOnOverlay = [true, false];
 
       closeOnOverlay.forEach(async (value) => {
@@ -536,8 +516,7 @@ describe("UDrawer", () => {
       });
     });
 
-    // CloseOnEsc events
-    it("emits events when escape key is pressed based on closeOnEsc prop", () => {
+    it("CloseOnEsc – emits events when escape key is pressed based on prop", () => {
       const closeOnEsc = [true, false];
 
       closeOnEsc.forEach(async (value) => {
@@ -566,7 +545,7 @@ describe("UDrawer", () => {
 
   // Drag functionality tests
   describe("Drag Functionality", () => {
-    it("applies drag cursor classes when drawer is draggable", () => {
+    it("Cursor – applies drag cursor classes when drawer is draggable", () => {
       const component = mount(UDrawer, {
         props: {
           modelValue: true,
@@ -578,7 +557,7 @@ describe("UDrawer", () => {
       expect(drawer.attributes("class")).toContain("cursor-grab");
     });
 
-    it("handles mouse drag start", async () => {
+    it("Mouse Drag – handles drag start", async () => {
       const component = mount(UDrawer, {
         props: {
           modelValue: true,
@@ -608,7 +587,7 @@ describe("UDrawer", () => {
       expect(drawer.attributes("class")).toContain("cursor-grab");
     });
 
-    it("handles touch drag start", async () => {
+    it("Touch Drag – handles drag start", async () => {
       const component = mount(UDrawer, {
         props: {
           modelValue: true,
@@ -637,7 +616,7 @@ describe("UDrawer", () => {
       expect(drawer.attributes("class")).toContain("cursor-grab");
     });
 
-    it("applies drag transform styles during drag", async () => {
+    it("Transform – applies drag transform styles during drag", async () => {
       const component = mount(UDrawer, {
         props: {
           modelValue: true,
@@ -689,8 +668,7 @@ describe("UDrawer", () => {
 
   // Exposed refs tests
   describe("Exposed refs", () => {
-    // wrapperRef
-    it("exposes wrapperRef", () => {
+    it("WrapperRef – exposes wrapper element ref", () => {
       const component = mount(UDrawer, {
         props: { modelValue },
       });

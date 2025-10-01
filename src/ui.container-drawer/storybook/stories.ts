@@ -13,7 +13,6 @@ import URow from "../../ui.container-row/URow.vue";
 import UCol from "../../ui.container-col/UCol.vue";
 import UHeader from "../../ui.text-header/UHeader.vue";
 import USkeleton from "../../ui.skeleton/USkeleton.vue";
-import UDivider from "../../ui.container-divider/UDivider.vue";
 import USkeletonText from "../../ui.skeleton-text/USkeletonText.vue";
 import USkeletonInput from "../../ui.skeleton-input/USkeletonInput.vue";
 
@@ -63,15 +62,11 @@ const defaultTemplate = `
       gap="sm"
     >
       <USkeleton class="h-12" />
-
       <USkeleton class="h-12" />
     </URow>
 
-    <UDivider />
-
     <UCol gap="sm" block>
       <USkeletonInput label label-align="top" />
-
       <USkeletonInput label label-align="top" />
     </UCol>
   </UCol>
@@ -85,7 +80,6 @@ const DefaultTemplate: StoryFn<UDrawerArgs> = (args: UDrawerArgs) => ({
     UButton,
     UIcon,
     UHeader,
-    UDivider,
     USkeleton,
     USkeletonText,
     USkeletonInput,
@@ -100,13 +94,13 @@ const DefaultTemplate: StoryFn<UDrawerArgs> = (args: UDrawerArgs) => ({
     return { args, slots, onClick };
   },
   template: `
-    <div>
+    <UCol>
       <UDrawer v-bind="args" v-model="args.modelValue">
         ${args.slotTemplate || getSlotsFragment(defaultTemplate)}
       </UDrawer>
 
       <UButton label="Show drawer" @click="onClick" />
-    </div>
+    </UCol>
   `,
 });
 
@@ -116,7 +110,6 @@ const EnumTemplate: StoryFn<UDrawerArgs> = (args: UDrawerArgs, { argTypes }) => 
     UButton,
     URow,
     UCol,
-    UDivider,
     USkeleton,
     USkeletonText,
     USkeletonInput,
@@ -161,23 +154,6 @@ export const NoCloseOnEscAndOverlay = DefaultTemplate.bind({});
 NoCloseOnEscAndOverlay.args = {
   closeOnEsc: false,
   closeOnOverlay: false,
-};
-
-export const WithoutDivider = DefaultTemplate.bind({});
-WithoutDivider.args = {
-  divided: false,
-  slotTemplate: `
-    ${defaultTemplate}
-    <template #footer-left>
-      <UButton label="Back" color="neutral" variant="subtle" />
-    </template>`,
-};
-WithoutDivider.parameters = {
-  docs: {
-    description: {
-      story: "Hide divider between content and footer.",
-    },
-  },
 };
 
 export const Position = EnumTemplate.bind({});
@@ -236,6 +212,18 @@ ActionsSlot.args = {
     </template>
     <template #default>
       ${defaultTemplate}
+    </template>
+  `,
+};
+
+export const HandleSlot = DefaultTemplate.bind({});
+HandleSlot.args = {
+  slotTemplate: `
+    <template #default>
+      ${defaultTemplate}
+    </template>
+    <template #handle>
+      <UIcon name="arrow_forward_ios" size="sm" color="neutral" />
     </template>
   `,
 };
