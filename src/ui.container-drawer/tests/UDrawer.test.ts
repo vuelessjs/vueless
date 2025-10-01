@@ -89,7 +89,7 @@ describe("UDrawer", () => {
           },
         });
 
-        const drawerClasses = component.find("[vl-key='drawer']").attributes("class");
+        const drawerClasses = component.find("[vl-key='drawerWrapper']").attributes("class");
 
         expectedClasses.forEach((expectedClass) => {
           expect(drawerClasses).toContain(expectedClass);
@@ -114,7 +114,9 @@ describe("UDrawer", () => {
           },
         });
 
-        expect(component.find("[vl-key='drawer']").attributes("class")).toContain(expectedClasses);
+        expect(component.find("[vl-key='drawerWrapper']").attributes("class")).toContain(
+          expectedClasses,
+        );
       });
     });
 
@@ -571,7 +573,7 @@ describe("UDrawer", () => {
         },
       });
 
-      const drawer = component.find("[vl-key='drawer']");
+      const drawer = component.find("[vl-key='drawerWrapper']");
 
       expect(drawer.attributes("class")).toContain("cursor-grab");
     });
@@ -583,7 +585,7 @@ describe("UDrawer", () => {
         },
       });
 
-      const drawer = component.find("[vl-key='drawer']");
+      const drawer = component.find("[vl-key='drawerWrapper']");
 
       // Mock getBoundingClientRect
       const mockRect = {
@@ -613,7 +615,7 @@ describe("UDrawer", () => {
         },
       });
 
-      const drawer = component.find("[vl-key='drawer']");
+      const drawer = component.find("[vl-key='drawerWrapper']");
 
       // Mock getBoundingClientRect
       const mockRect = {
@@ -643,7 +645,7 @@ describe("UDrawer", () => {
         },
       });
 
-      const drawer = component.find("[vl-key='drawer']");
+      const drawer = component.find("[vl-key='drawerWrapper']");
 
       // Mock getBoundingClientRect
       const mockRect = {
@@ -672,7 +674,7 @@ describe("UDrawer", () => {
       document.dispatchEvent(mouseMoveEvent);
 
       // Check if transform is applied
-      const drawerElement = component.find("[vl-key='drawer']");
+      const drawerElement = component.find("[vl-key='drawerWrapper']");
       const style = drawerElement.attributes("style");
 
       // Should contain transform when dragging (if style exists)
