@@ -54,6 +54,9 @@ export default /*tw*/ {
       loading: {
         true: "gap-0 pointer-events-none",
       },
+      icon: {
+        true: "gap-0",
+      },
       label: {
         false: "gap-0",
       },
@@ -62,6 +65,8 @@ export default /*tw*/ {
       },
     },
     compoundVariants: [
+      { label: false, leftIcon: true, class: "gap-0" },
+      { label: false, rightIcon: true, class: "gap-0" },
       { square: true, size: "2xs", class: "p-1" },
       { square: true, size: "xs", class: "p-1.5" },
       { square: true, size: "sm", class: "p-2" },

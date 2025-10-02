@@ -62,6 +62,7 @@ defineExpose({
  * Applies: `class`, `config`, redefined default `props` and dev `vl-...` attributes.
  */
 const mutatedProps = computed(() => ({
+  icon: Boolean(props.icon) || hasSlotContent(slots["default"]),
   leftIcon: Boolean(props.leftIcon) || hasSlotContent(slots["left"]),
   rightIcon: Boolean(props.rightIcon) || hasSlotContent(slots["right"]),
   label: Boolean(props.label),
@@ -129,11 +130,6 @@ const {
     </template>
 
     <!-- This is needed to prevent changing button height -->
-    <div
-      v-if="(!label && !hasSlotContent(slots['default']) && !icon) || loading"
-      tabindex="-1"
-      v-bind="invisibleAttrs"
-      v-text="'invisible'"
-    />
+    <div v-if="icon || loading" tabindex="-1" v-bind="invisibleAttrs" v-text="'invisible'" />
   </component>
 </template>
