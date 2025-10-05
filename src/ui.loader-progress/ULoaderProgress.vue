@@ -151,12 +151,10 @@ function start() {
 }
 
 function set(amount: number) {
-  let currentProgress;
+  let currentProgress = 0;
 
   if (isLoading.value) {
     currentProgress = amount < progress.value ? clamp(amount, 0, 100) : clamp(amount, 0.8, 100);
-  } else {
-    currentProgress = 0;
   }
 
   status.value = currentProgress === 100 ? null : currentProgress;
