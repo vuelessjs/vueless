@@ -2,10 +2,11 @@
 import { computed, watch, ref, useTemplateRef, onBeforeMount, onBeforeUnmount } from "vue";
 
 import useUI from "../composables/useUI";
-import { useRequestQueue } from "../composables/useRequestQueue";
 import { getDefaults } from "../utils/ui";
+import { useRequestQueue } from "../composables/useRequestQueue";
 import { getRequestWithoutQuery } from "../utils/requestQueue";
 
+import { useLoaderProgress } from "./useLoaderProgress";
 import { clamp, queue } from "./utilLoaderProgress";
 
 import { COMPONENT_NAME, MAXIMUM, SPEED } from "./constants";
@@ -26,9 +27,9 @@ const progress = ref(0);
 const opacity = ref(1);
 const status = ref<number | null>(null);
 
+const { requestQueue } = useRequestQueue();
+const { loaderProgressOff, loaderProgressOn } = useLoaderProgress();
 const progressRef = useTemplateRef<HTMLDivElement>("progress-bar");
-
-const { requestQueue, addToRequestQueue, removeFromRequestQueue } = useRequestQueue();
 
 const isLoading = computed(() => {
   return typeof status.value === "number";
@@ -169,11 +170,11 @@ function stop() {
 }
 
 function onLoaderProgressOn(event: CustomEvent<{ request: string }>) {
-  addToRequestQueue(event.detail.request);
+  loaderProgressOn(event.detail.request);
 }
 
 function onLoaderProgressOff(event: CustomEvent<{ request: string }>) {
-  removeFromRequestQueue(event.detail.request);
+  loaderProgressOff(event.detail.request);
 }
 
 onBeforeMount(() => {

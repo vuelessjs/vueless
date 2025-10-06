@@ -1,10 +1,10 @@
-export function loaderProgressOn(request: string): void {
+export function loaderProgressOn(request: string | string[]): void {
   const loaderProgressOnEvent = new CustomEvent("loaderProgressOn", { detail: { request } });
 
   window.dispatchEvent(loaderProgressOnEvent);
 }
 
-export function loaderProgressOff(request: string): void {
+export function loaderProgressOff(request: string | string[]): void {
   const loaderProgressOffEvent = new CustomEvent("loaderProgressOff", { detail: { request } });
 
   window.dispatchEvent(loaderProgressOffEvent);

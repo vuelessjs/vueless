@@ -6,7 +6,6 @@ import UButton from "../../ui.button/UButton.vue";
 import URow from "../../ui.container-row/URow.vue";
 import UCol from "../../ui.container-col/UCol.vue";
 
-import { useLoaderProgress } from "../useLoaderProgress";
 import { loaderProgressOff, loaderProgressOn } from "../utilLoaderProgress";
 
 import type { Meta, StoryFn } from "@storybook/vue3-vite";
@@ -34,13 +33,6 @@ export default {
 const DefaultTemplate: StoryFn<ULoaderProgressArgs> = (args: ULoaderProgressArgs) => ({
   components: { ULoaderProgress, UButton, URow },
   setup() {
-    const loaderProgress = useLoaderProgress();
-
-    if (!loaderProgress) {
-      throw new Error("[vueless] LoaderProgress is not provided. Ensure it is properly injected.");
-    }
-
-    const { loaderProgressOn, loaderProgressOff } = loaderProgress;
     const slots = getSlotNames(ULoaderProgress.__name);
 
     return { args, slots, loaderProgressOn, loaderProgressOff };
