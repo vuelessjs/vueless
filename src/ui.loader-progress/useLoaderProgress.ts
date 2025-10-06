@@ -2,45 +2,31 @@ import { inject, readonly, ref } from "vue";
 
 import type { Ref } from "vue";
 
-import { getRequestWithoutQuery } from "./utilLoaderProgress";
+import { useRequestQueue } from "../composables/useRequestQueue";
+
+type LoaderProgress = {
+  isLoading: Readonly<Ref<boolean, boolean>>;
+  loaderProgressOn: (request: string | string[]) => void;
+  loaderProgressOff: (request: string | string[]) => void;
+};
 
 export const LoaderProgressSymbol = Symbol.for("vueless:loader-progress");
 
-type LoaderProgress = {
-  isLoading: (endpoint: string) => boolean;
-  requestQueue: Readonly<Ref<readonly string[]>>;
-  loaderProgressOn: (url: string | string[]) => void;
-  loaderProgressOff: (url: string | string[]) => void;
-};
+const { addToRequestQueue, removeFromRequestQueue } = useRequestQueue();
+
+const isLoading = ref(true);
+
+function loaderProgressOn(request?: string | string[]): void {
+  request ? addToRequestQueue(request) : (isLoading.value = true);
+}
+
+function loaderProgressOff(request?: string | string[]): void {
+  request ? removeFromRequestQueue(request) : (isLoading.value = false);
+}
 
 export function createLoaderProgress(): LoaderProgress {
-  const requestQueue = ref<string[]>([]);
-
-  function loaderProgressOn(url: string | string[]): void {
-    if (Array.isArray(url)) {
-      requestQueue.value.push(...url.map(getRequestWithoutQuery));
-    } else {
-      requestQueue.value.push(getRequestWithoutQuery(url));
-    }
-  }
-
-  function loaderProgressOff(url: string | string[]): void {
-    if (Array.isArray(url)) {
-      url.map(getRequestWithoutQuery).forEach(loaderProgressOff);
-    } else {
-      requestQueue.value = requestQueue.value.filter(
-        (item) => item !== getRequestWithoutQuery(url),
-      );
-    }
-  }
-
-  function isLoading(endpoint: string): boolean {
-    return requestQueue.value.some((item: string) => item === endpoint);
-  }
-
   return {
-    isLoading,
-    requestQueue: readonly(requestQueue),
+    isLoading: readonly(isLoading),
     loaderProgressOn,
     loaderProgressOff,
   };

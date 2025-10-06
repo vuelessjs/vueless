@@ -2,14 +2,14 @@ import { inject, readonly, ref } from "vue";
 
 import type { Ref, InjectionKey } from "vue";
 
-export const LoaderOverlaySymbol: InjectionKey<LoaderOverlay> =
-  Symbol.for("vueless:loader-overlay");
-
 interface LoaderOverlay {
   isLoading: Readonly<Ref<boolean, boolean>>;
   loaderOverlayOn: () => void;
   loaderOverlayOff: () => void;
 }
+
+export const LoaderOverlaySymbol: InjectionKey<LoaderOverlay> =
+  Symbol.for("vueless:loader-overlay");
 
 const isLoading = ref(true);
 

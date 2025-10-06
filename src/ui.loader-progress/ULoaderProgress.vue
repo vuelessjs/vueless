@@ -2,10 +2,11 @@
 import { computed, watch, ref, useTemplateRef, onBeforeMount, onBeforeUnmount } from "vue";
 
 import useUI from "../composables/useUI";
+import { useRequestQueue } from "../composables/useRequestQueue";
 import { getDefaults } from "../utils/ui";
+import { getRequestWithoutQuery } from "../utils/requestQueue";
 
-import { clamp, queue, getRequestWithoutQuery } from "./utilLoaderProgress";
-import { useLoaderProgress } from "./useLoaderProgress";
+import { clamp, queue } from "./utilLoaderProgress";
 
 import { COMPONENT_NAME, MAXIMUM, SPEED } from "./constants";
 import defaultConfig from "./config";
@@ -27,43 +28,7 @@ const status = ref<number | null>(null);
 
 const progressRef = useTemplateRef<HTMLDivElement>("progress-bar");
 
-const { requestQueue, loaderProgressOff, loaderProgressOn } = useLoaderProgress();
-
-onBeforeMount(() => {
-  if (window.__VuelessProgressLoaderInstance === undefined) {
-    window.__VuelessProgressLoaderInstance = 0;
-  }
-
-  if (!window.__VuelessProgressLoaderInstance) {
-    window.addEventListener("loaderProgressOn", onLoaderProgressOn as EventListener);
-    window.addEventListener("loaderProgressOff", onLoaderProgressOff as EventListener);
-  }
-
-  window.__VuelessProgressLoaderInstance += 1;
-});
-
-onBeforeUnmount(() => {
-  if (window.__VuelessProgressLoaderInstance === undefined) {
-    return;
-  }
-
-  window.__VuelessProgressLoaderInstance -= 1;
-
-  if (!window.__VuelessProgressLoaderInstance) {
-    delete window.__VuelessProgressLoaderInstance;
-
-    window.removeEventListener("loaderProgressOn", onLoaderProgressOn as EventListener);
-    window.removeEventListener("loaderProgressOff", onLoaderProgressOff as EventListener);
-  }
-});
-
-function onLoaderProgressOn(event: CustomEvent<{ resource: string }>) {
-  loaderProgressOn(event.detail.resource);
-}
-
-function onLoaderProgressOff(event: CustomEvent<{ resource: string }>) {
-  loaderProgressOff(event.detail.resource);
-}
+const { requestQueue, addToRequestQueue, removeFromRequestQueue } = useRequestQueue();
 
 const isLoading = computed(() => {
   return typeof status.value === "number";
@@ -202,6 +167,39 @@ function increase(amount?: number) {
 function stop() {
   set(100);
 }
+
+function onLoaderProgressOn(event: CustomEvent<{ request: string }>) {
+  addToRequestQueue(event.detail.request);
+}
+
+function onLoaderProgressOff(event: CustomEvent<{ request: string }>) {
+  removeFromRequestQueue(event.detail.request);
+}
+
+onBeforeMount(() => {
+  if (!window.__VuelessLoaderProgressInstanceCount) {
+    window.addEventListener("loaderProgressOn", onLoaderProgressOn as EventListener);
+    window.addEventListener("loaderProgressOff", onLoaderProgressOff as EventListener);
+  }
+
+  window.__VuelessLoaderProgressInstanceCount = window.__VuelessLoaderProgressInstanceCount ?? 0;
+  window.__VuelessLoaderProgressInstanceCount += 1;
+});
+
+onBeforeUnmount(() => {
+  if (window.__VuelessLoaderProgressInstanceCount === undefined) {
+    return;
+  }
+
+  window.__VuelessLoaderProgressInstanceCount -= 1;
+
+  if (!window.__VuelessLoaderProgressInstanceCount) {
+    delete window.__VuelessLoaderProgressInstanceCount;
+
+    window.removeEventListener("loaderProgressOn", onLoaderProgressOn as EventListener);
+    window.removeEventListener("loaderProgressOff", onLoaderProgressOff as EventListener);
+  }
+});
 
 defineExpose({
   /**

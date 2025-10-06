@@ -33,13 +33,14 @@ export { createVueI18nAdapter } from "./adapter.locale/vue-i18n";
 export { useLocale } from "./composables/useLocale";
 export { default as useUI } from "./composables/useUI";
 export { useDarkMode } from "./composables/useDarkMode";
+export { useRequestQueue } from "./composables/useRequestQueue";
+export { useLoaderOverlay } from "./ui.loader-overlay/useLoaderOverlay";
 export { useLoaderProgress } from "./ui.loader-progress/useLoaderProgress";
 export { useMutationObserver } from "./composables/useMutationObserver";
 export { Direction, useAutoPosition } from "./composables/useAutoPosition";
 export { useComponentLocaleMessages } from "./composables/useComponentLocaleMassages";
 /* loaders */
 export { loaderProgressOn, loaderProgressOff } from "./ui.loader-progress/utilLoaderProgress";
-export { useLoaderOverlay } from "./ui.loader-overlay/useLoaderOverlay";
 export { loaderOverlayOn, loaderOverlayOff } from "./ui.loader-overlay/utilLoaderOverlay";
 /* notifications */
 export {

@@ -3,7 +3,7 @@ import type { ComponentConfig } from "../types";
 
 declare global {
   interface Window {
-    __VuelessProgressLoaderInstance?: number;
+    __VuelessLoaderProgressInstanceCount?: number;
   }
 }
 
