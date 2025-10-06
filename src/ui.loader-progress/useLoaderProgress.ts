@@ -7,6 +7,7 @@ import { getRequestWithoutQuery } from "./utilLoaderProgress";
 export const LoaderProgressSymbol = Symbol.for("vueless:loader-progress");
 
 type LoaderProgress = {
+  isLoading: (endpoint: string) => boolean;
   requestQueue: Readonly<Ref<readonly string[]>>;
   loaderProgressOn: (url: string | string[]) => void;
   loaderProgressOff: (url: string | string[]) => void;
@@ -33,7 +34,12 @@ export function createLoaderProgress(): LoaderProgress {
     }
   }
 
+  function isLoading(endpoint: string): boolean {
+    return requestQueue.value.some((item: string) => item === endpoint);
+  }
+
   return {
+    isLoading,
     requestQueue: readonly(requestQueue),
     loaderProgressOn,
     loaderProgressOff,
