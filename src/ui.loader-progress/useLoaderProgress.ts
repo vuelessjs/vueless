@@ -51,7 +51,7 @@ export function useLoaderProgress(): LoaderProgress {
 
   if (!loaderProgress) {
     throw new Error(
-      "LoaderProgress not provided. Ensure you are using `provide` with `LoaderProgressSymbol`.",
+      "[vueless] LoaderProgress not provided. Ensure you are using `provide` with `LoaderProgressSymbol`.",
     );
   }
 

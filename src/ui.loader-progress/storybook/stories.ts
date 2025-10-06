@@ -37,7 +37,7 @@ const DefaultTemplate: StoryFn<ULoaderProgressArgs> = (args: ULoaderProgressArgs
     const loaderProgress = useLoaderProgress();
 
     if (!loaderProgress) {
-      throw new Error("LoaderProgress is not provided. Ensure it is properly injected.");
+      throw new Error("[vueless] LoaderProgress is not provided. Ensure it is properly injected.");
     }
 
     const { loaderProgressOn, loaderProgressOff } = loaderProgress;

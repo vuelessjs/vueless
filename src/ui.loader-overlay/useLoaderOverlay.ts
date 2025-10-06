@@ -34,7 +34,7 @@ export function useLoaderOverlay(): LoaderOverlay {
 
   if (!loaderOverlay) {
     throw new Error(
-      "LoaderOverlay not provided. Ensure you are using `provide` with `LoaderOverlaySymbol`.",
+      "[vueless] LoaderOverlay not provided. Ensure you are using `provide` with `LoaderOverlaySymbol`.",
     );
   }
 
