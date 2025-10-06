@@ -15,6 +15,7 @@ export {
   createDebounce,
   hasSlotContent,
 } from "./utils/helper";
+export { addToRequestQueue, removeFromRequestQueue } from "./utils/requestQueue";
 export { isMac, isPWA, isIOS, isAndroid, isMobileApp, isWindows } from "./utils/platform";
 export { cx, cva, compose, getDefaults, setVuelessConfig, setColor, vuelessConfig } from "./utils/ui";
 export { getTheme, setTheme, resetTheme, normalizeThemeConfig, cssVar, setRootCSSVariables } from "./utils/theme";
