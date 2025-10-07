@@ -30,6 +30,7 @@ export { default as useUI } from "./composables/useUI";
 export { useDarkMode } from "./composables/useDarkMode";
 export { useRequestQueue } from "./composables/useRequestQueue";
 export { useLoaderOverlay } from "./ui.loader-overlay/useLoaderOverlay";
+export { useLoaderProgress } from "./ui.loader-progress/useLoaderProgress";
 export { useMutationObserver } from "./composables/useMutationObserver";
 export { Direction, useAutoPosition } from "./composables/useAutoPosition";
 export { useComponentLocaleMessages } from "./composables/useComponentLocaleMassages";

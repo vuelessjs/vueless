@@ -3,7 +3,6 @@ import { computed, watch, ref, useTemplateRef, onBeforeMount, onBeforeUnmount } 
 
 import useUI from "../composables/useUI";
 import { getDefaults } from "../utils/ui";
-import { useRequestQueue } from "../composables/useRequestQueue";
 import { getRequestWithoutQuery } from "../utils/requestQueue";
 
 import { useLoaderProgress } from "./useLoaderProgress";
@@ -18,7 +17,7 @@ defineOptions({ inheritAttrs: false });
 
 const props = withDefaults(defineProps<Props>(), {
   ...getDefaults<Props, Config>(defaultConfig, COMPONENT_NAME),
-  resources: () => "",
+  resources: "any",
 });
 
 const error = ref(false);
@@ -27,8 +26,7 @@ const progress = ref(0);
 const opacity = ref(1);
 const status = ref<number | null>(null);
 
-const { requestQueue } = useRequestQueue();
-const { loaderProgressOff, loaderProgressOn } = useLoaderProgress();
+const { progressRequestQueue, loaderProgressOff, loaderProgressOn } = useLoaderProgress();
 const progressRef = useTemplateRef<HTMLDivElement>("progress-bar");
 
 const isLoading = computed(() => {
@@ -51,15 +49,15 @@ const resourceSubscriptions = computed(() => {
 });
 
 const isActiveRequests = computed(() => {
-  const isAnyRequestActive = props.resources === "any" && requestQueue.value.length;
+  const isAnyRequestActive = props.resources === "any" && progressRequestQueue.value.length;
   const isSubscribedRequestsActive = resourceSubscriptions.value.some((resource) =>
-    requestQueue.value.includes(resource),
+    progressRequestQueue.value.includes(resource),
   );
 
   return isAnyRequestActive || isSubscribedRequestsActive;
 });
 
-watch(() => requestQueue, onChangeRequestsQueue, { immediate: true, deep: true });
+watch(() => progressRequestQueue, onChangeRequestsQueue, { immediate: true, deep: true });
 
 watch(
   () => props.loading,
