@@ -1,6 +1,6 @@
 {
   "name": "vueless",
-  "version": "1.2.9",
+  "version": "1.2.10-beta.8",
   "description": "Vue Styleless UI Component Library, powered by Tailwind CSS.",
   "author": "Johnny Grid <hello@vueless.com> (https://vueless.com)",
   "homepage": "https://vueless.com",
@@ -66,7 +66,7 @@
     "prettier": "^3.6.2",
     "release-it": "^19.0.4",
     "typescript": "^5.8.3",
-    "vite": "^7.1.5",
+    "vite": "^7.1.9",
     "vitest": "^3.2.4",
     "vue": "^3.5.18",
     "vue-router": "^4.5.1",

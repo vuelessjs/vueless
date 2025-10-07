@@ -29,8 +29,7 @@
         ]
       },
       "writerOpts": {
-        "noteGroupTitle": "🚨 Breaking Changes",
-        "groupBy": "section"
+        "noteGroupTitle": "🚨 Breaking Changes"
       }
     }
   },

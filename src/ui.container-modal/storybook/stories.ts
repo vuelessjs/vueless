@@ -25,7 +25,7 @@ import type { UnknownObject } from "../../types";
 
 interface UModalArgs extends Props {
   slotTemplate?: string;
-  enum: "size";
+  enum: "size" | "variant";
   modelValues?: UnknownObject;
 }
 
@@ -279,6 +279,9 @@ WithoutDivider.parameters = {
 
 export const Sizes = EnumTemplate.bind({});
 Sizes.args = { enum: "size", modelValues: {} };
+
+export const Variant = EnumTemplate.bind({});
+Variant.args = { enum: "variant", modelValues: {} };
 
 export const BackLink: StoryFn<UModalArgs> = (args: UModalArgs) => ({
   components: { UModal, UButton, UCheckbox, UCol, URow, UDivider, UInput, UInputPassword },

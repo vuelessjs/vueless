@@ -375,7 +375,7 @@ describe("UCalendar.vue", () => {
         },
       });
 
-      const nextPrevButtons = component.findAll('[vl-key="nextPrevButton"]');
+      const nextPrevButtons = component.findAll('button[vl-key="nextPrevButton"]');
 
       expect(nextPrevButtons.length).toBe(4);
     });
@@ -391,7 +391,7 @@ describe("UCalendar.vue", () => {
           },
         });
 
-        const nextPrevButtons = component.findAll('[vl-key="nextPrevButton"]');
+        const nextPrevButtons = component.findAll('button[vl-key="nextPrevButton"]');
 
         expect(nextPrevButtons.length).toBe(2);
       });
@@ -422,7 +422,7 @@ describe("UCalendar.vue", () => {
 
       const dayView = component.findComponent(DayView);
       const initialDays = dayView.findAll('[vl-key="day"]').map((day) => day.text());
-      const navButtons = component.findAll('[vl-key="nextPrevButton"]');
+      const navButtons = component.findAll('button[vl-key="nextPrevButton"]');
 
       expect(navButtons.length).toBe(4);
 
@@ -446,7 +446,7 @@ describe("UCalendar.vue", () => {
 
       const dayView = component.findComponent(DayView);
       const initialDays = dayView.findAll('[vl-key="day"]').map((day) => day.text());
-      const navButtons = component.findAll('[vl-key="nextPrevButton"]');
+      const navButtons = component.findAll('button[vl-key="nextPrevButton"]');
       const nextButton = navButtons[2];
 
       await nextButton.trigger("click");

@@ -3,9 +3,10 @@ import { computed, watch, ref, useTemplateRef, onBeforeMount, onBeforeUnmount } 
 
 import useUI from "../composables/useUI";
 import { getDefaults } from "../utils/ui";
+import { getRequestWithoutQuery } from "../utils/requestQueue";
 
-import { clamp, queue, getRequestWithoutQuery } from "./utilLoaderProgress";
 import { useLoaderProgress } from "./useLoaderProgress";
+import { clamp, queue } from "./utilLoaderProgress";
 
 import { COMPONENT_NAME, MAXIMUM, SPEED } from "./constants";
 import defaultConfig from "./config";
@@ -16,7 +17,7 @@ defineOptions({ inheritAttrs: false });
 
 const props = withDefaults(defineProps<Props>(), {
   ...getDefaults<Props, Config>(defaultConfig, COMPONENT_NAME),
-  resources: () => "",
+  resources: "any",
 });
 
 const error = ref(false);
@@ -25,45 +26,8 @@ const progress = ref(0);
 const opacity = ref(1);
 const status = ref<number | null>(null);
 
+const { progressRequestQueue, loaderProgressOff, loaderProgressOn } = useLoaderProgress();
 const progressRef = useTemplateRef<HTMLDivElement>("progress-bar");
-
-const { requestQueue, loaderProgressOff, loaderProgressOn } = useLoaderProgress();
-
-onBeforeMount(() => {
-  if (window.__VuelessProgressLoaderInstance === undefined) {
-    window.__VuelessProgressLoaderInstance = 0;
-  }
-
-  if (!window.__VuelessProgressLoaderInstance) {
-    window.addEventListener("loaderProgressOn", onLoaderProgressOn as EventListener);
-    window.addEventListener("loaderProgressOff", onLoaderProgressOff as EventListener);
-  }
-
-  window.__VuelessProgressLoaderInstance += 1;
-});
-
-onBeforeUnmount(() => {
-  if (window.__VuelessProgressLoaderInstance === undefined) {
-    return;
-  }
-
-  window.__VuelessProgressLoaderInstance -= 1;
-
-  if (!window.__VuelessProgressLoaderInstance) {
-    delete window.__VuelessProgressLoaderInstance;
-
-    window.removeEventListener("loaderProgressOn", onLoaderProgressOn as EventListener);
-    window.removeEventListener("loaderProgressOff", onLoaderProgressOff as EventListener);
-  }
-});
-
-function onLoaderProgressOn(event: CustomEvent<{ resource: string }>) {
-  loaderProgressOn(event.detail.resource);
-}
-
-function onLoaderProgressOff(event: CustomEvent<{ resource: string }>) {
-  loaderProgressOff(event.detail.resource);
-}
 
 const isLoading = computed(() => {
   return typeof status.value === "number";
@@ -85,15 +49,15 @@ const resourceSubscriptions = computed(() => {
 });
 
 const isActiveRequests = computed(() => {
-  const isAnyRequestActive = props.resources === "any" && requestQueue.value.length;
+  const isAnyRequestActive = props.resources === "any" && progressRequestQueue.value.length;
   const isSubscribedRequestsActive = resourceSubscriptions.value.some((resource) =>
-    requestQueue.value.includes(resource),
+    progressRequestQueue.value.includes(resource),
   );
 
   return isAnyRequestActive || isSubscribedRequestsActive;
 });
 
-watch(() => requestQueue, onChangeRequestsQueue, { immediate: true, deep: true });
+watch(() => progressRequestQueue, onChangeRequestsQueue, { immediate: true, deep: true });
 
 watch(
   () => props.loading,
@@ -151,12 +115,10 @@ function start() {
 }
 
 function set(amount: number) {
-  let currentProgress;
+  let currentProgress = 0;
 
   if (isLoading.value) {
     currentProgress = amount < progress.value ? clamp(amount, 0, 100) : clamp(amount, 0.8, 100);
-  } else {
-    currentProgress = 0;
   }
 
   status.value = currentProgress === 100 ? null : currentProgress;
@@ -204,6 +166,39 @@ function increase(amount?: number) {
 function stop() {
   set(100);
 }
+
+function onLoaderProgressOn(event: CustomEvent<{ request: string }>) {
+  loaderProgressOn(event.detail.request);
+}
+
+function onLoaderProgressOff(event: CustomEvent<{ request: string }>) {
+  loaderProgressOff(event.detail.request);
+}
+
+onBeforeMount(() => {
+  if (!window.__VuelessLoaderProgressInstanceCount) {
+    window.addEventListener("loaderProgressOn", onLoaderProgressOn as EventListener);
+    window.addEventListener("loaderProgressOff", onLoaderProgressOff as EventListener);
+  }
+
+  window.__VuelessLoaderProgressInstanceCount = window.__VuelessLoaderProgressInstanceCount ?? 0;
+  window.__VuelessLoaderProgressInstanceCount += 1;
+});
+
+onBeforeUnmount(() => {
+  if (window.__VuelessLoaderProgressInstanceCount === undefined) {
+    return;
+  }
+
+  window.__VuelessLoaderProgressInstanceCount -= 1;
+
+  if (!window.__VuelessLoaderProgressInstanceCount) {
+    delete window.__VuelessLoaderProgressInstanceCount;
+
+    window.removeEventListener("loaderProgressOn", onLoaderProgressOn as EventListener);
+    window.removeEventListener("loaderProgressOff", onLoaderProgressOff as EventListener);
+  }
+});
 
 defineExpose({
   /**

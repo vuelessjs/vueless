@@ -15,6 +15,7 @@ export {
   createDebounce,
   hasSlotContent,
 } from "./utils/helper";
+export { addToRequestQueue, removeFromRequestQueue } from "./utils/requestQueue";
 export { isMac, isPWA, isIOS, isAndroid, isMobileApp, isWindows } from "./utils/platform";
 export { cx, cva, compose, getDefaults, setVuelessConfig, setColor, vuelessConfig } from "./utils/ui";
 export { getTheme, setTheme, resetTheme, normalizeThemeConfig, cssVar, setRootCSSVariables } from "./utils/theme";
@@ -27,13 +28,14 @@ export { createVueI18nAdapter } from "./adapter.locale/vue-i18n";
 export { useLocale } from "./composables/useLocale";
 export { default as useUI } from "./composables/useUI";
 export { useDarkMode } from "./composables/useDarkMode";
+export { useRequestQueue } from "./composables/useRequestQueue";
+export { useLoaderOverlay } from "./ui.loader-overlay/useLoaderOverlay";
 export { useLoaderProgress } from "./ui.loader-progress/useLoaderProgress";
 export { useMutationObserver } from "./composables/useMutationObserver";
 export { Direction, useAutoPosition } from "./composables/useAutoPosition";
 export { useComponentLocaleMessages } from "./composables/useComponentLocaleMassages";
 /* loaders */
 export { loaderProgressOn, loaderProgressOff } from "./ui.loader-progress/utilLoaderProgress";
-export { useLoaderOverlay } from "./ui.loader-overlay/useLoaderOverlay";
 export { loaderOverlayOn, loaderOverlayOff } from "./ui.loader-overlay/utilLoaderOverlay";
 /* notifications */
 export {
@@ -101,6 +103,7 @@ export { default as UAccordionItem } from "./ui.container-accordion-item/UAccord
 export { default as UCard } from "./ui.container-card/UCard.vue";
 export { default as UModal } from "./ui.container-modal/UModal.vue";
 export { default as UModalConfirm } from "./ui.container-modal-confirm/UModalConfirm.vue";
+export { default as UDrawer } from "./ui.container-drawer/UDrawer.vue";
 export { default as UPage } from "./ui.container-page/UPage.vue";
 /* Images and Icons */
 export { default as UIcon } from "./ui.image-icon/UIcon.vue";

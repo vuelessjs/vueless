@@ -3,7 +3,7 @@ import type { ComponentConfig } from "../types";
 
 declare global {
   interface Window {
-    __VuelessProgressLoaderInstance?: number;
+    __VuelessLoaderProgressInstanceCount?: number;
   }
 }
 
@@ -27,7 +27,7 @@ export interface Props {
   /**
    * API resource names (endpoint URIs).
    */
-  resources?: string | string[] | "any" | ["any"];
+  resources?: string | string[] | "any";
 
   /**
    * Loader progress size.

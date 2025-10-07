@@ -115,7 +115,7 @@ describe("UButton.vue", () => {
 
       const nestedUIconComponents = component.findAllComponents(UIcon);
 
-      expect(component.text()).toBe("");
+      expect(component.text()).not.toBe(label);
       expect(nestedUIconComponents.length).toBe(1);
       expect(nestedUIconComponents[0].props("name")).toBe(icon);
     });

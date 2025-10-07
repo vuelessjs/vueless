@@ -86,7 +86,7 @@ export function parseDate<TLocale extends DateLocale>(
   }
 
   if (!(parsedDate instanceof Date && !isNaN(parsedDate.getTime()))) {
-    throw new Error(`Invalid date provided: ${originalDate}`);
+    throw new Error(`[vueless] Invalid date provided: ${originalDate}`);
   }
 
   if (timeless === true) {
@@ -158,7 +158,7 @@ export function dateIsOutOfRange<TLocale extends DateLocale>(
   dateFormat: string | null = null,
 ) {
   if ((!dateFormat && typeof min === "string") || (!dateFormat && typeof max === "string")) {
-    throw new Error("strings needs a date format");
+    throw new Error("[vueless] strings needs a date format.");
   }
 
   const minDate =
