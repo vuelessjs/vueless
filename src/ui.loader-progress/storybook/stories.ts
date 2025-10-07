@@ -69,7 +69,6 @@ const EnumTemplate: StoryFn<ULoaderProgressArgs> = (args: ULoaderProgressArgs, {
         v-for="option in argTypes?.[args.enum]?.options"
         :key="option"
         v-bind="getArgs(args, option)"
-        :resources="args.resources"
         class="static"
       />
     </UCol>
