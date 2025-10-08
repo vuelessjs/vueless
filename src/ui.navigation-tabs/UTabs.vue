@@ -126,7 +126,6 @@ const {
           :label="item.label"
           :value="item.value"
           :disabled="item.disabled"
-          :size="size"
           v-bind="tabAttrs"
           :data-test="getDataTest(`item-${index}`)"
         />
