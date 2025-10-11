@@ -22,6 +22,7 @@ const OPTIONAL_MARK = "?";
 const CLOSING_BRACKET = "}";
 const IGNORE_PROP = "@ignore";
 const CUSTOM_PROP = "@custom";
+const DEFAULT_PROP_TYPE = "string";
 
 /* regular expressions */
 const PROPS_INTERFACE_REG_EXP = /export\s+interface\s+Props(?:<[^>]+>)?\s*{([^}]*)}/s;
@@ -243,7 +244,7 @@ async function modifyComponentTypes(filePath, props) {
     const lines = propsInterface.split("\n");
 
     for (const name in props) {
-      const { type = "string", values = [], description, required, ignore } = props[name];
+      const { type, values = [], description, required, ignore } = props[name];
 
       /* Find line with prop. */
       const propRegex = new RegExp(`^\\s*${name}[?:]?\\s*:`);
@@ -269,7 +270,7 @@ async function modifyComponentTypes(filePath, props) {
         .includes("@extendOnly");
 
       const propDescription = description?.replaceAll(/[\n\s]+/g, " ").trim() || "–"; // removes new lines and double spaces.
-      const propType = unionType.length ? unionType : type;
+      const propType = unionType.length ? unionType : type || DEFAULT_PROP_TYPE;
 
       /* Add ignore JSDoc property. */
       if (ignore) {
@@ -284,7 +285,6 @@ async function modifyComponentTypes(filePath, props) {
         if (unionType.length && (isAssignableValue || !isExtendOnly)) {
           // Remove multiline union types;
           lines.splice(propIndex + 1, propEndIndex);
-
           lines.splice(propIndex, 1, `  ${name}${defaultOptionalMark}: ${propType};`);
         }
 
@@ -311,7 +311,7 @@ async function modifyComponentTypes(filePath, props) {
         `   * ${propDescription}`,
         `   * ${CUSTOM_PROP}`,
         `   */`,
-        `  ${name}${optionalMark}: ${type};`,
+        `  ${name}${optionalMark}: ${type || DEFAULT_PROP_TYPE};`,
       ];
 
       lines.splice(closingBracketIndex, 0, ...propDefinition);
