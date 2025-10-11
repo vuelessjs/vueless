@@ -1,41 +1,41 @@
-# Copy existing component
+# Override existing component
 
-If Vueless customization options are not enough for your needs, you can fully copy and modify any Vueless component.
+If Vueless customization options are not enough for your needs, you can fully override and modify any Vueless component.
 
 {% tabs %}
 {% tab title="npm" %}
 ```bash
-npx vueless copy <src> <target>
+npx vueless copy <src>
 
 # example: 
-# npx vueless copy UButton CustomButton
+# npx vueless copy UButton
 ```
 {% endtab %}
 
 {% tab title="yarn" %}
 ```bash
-yarn vueless copy <src> <target>
+yarn vueless copy <src>
 
 # example:
-# yarn vueless copy UButton CustomButton
+# yarn vueless copy UButton
 ```
 {% endtab %}
 
 {% tab title="pnpm" %}
 ```bash
-pnpm exec vueless copy <src> <target>
+pnpm exec vueless copy <src>
 
 # example: 
-# pnpm exec vueless copy UButton CustomButton
+# pnpm exec vueless copy UButton
 ```
 {% endtab %}
 
 {% tab title="bun" %}
 ```bash
-bunx vueless copy <src> <target>
+bunx vueless copy <src>
 
 # example:
-# bunx vueless copy UButton CustomButton
+# bunx vueless copy UButton
 ```
 {% endtab %}
 {% endtabs %}

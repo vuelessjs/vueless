@@ -7,24 +7,22 @@ Sometimes, you might need to limit possible prop values, add new ones, or hide c
 export default {
   component: {
     UButton: {
-      props: [
+      props: {
         /* 
          * Restrict color values to a provided list of items.
          * Use this to align the prop entirely with the design system.
          */
-        { 
-          name: "color",
+        color: {
           values: ["blue", "green", "yellow", "brand"],
         },
 
         /* 
-         * Add a new, previously non-existent value, `ghost`.
+         * Add a new, previously non-existent value, `liquid-glass`.
          * Use this to fully align the prop with the design system.
          * For examle, if the design system includes variant not present in Vueless.
          */
-        { 
-          name: "variant",
-          values: ["primary", "secondary", "thirdary", "ghost"],
+        variant: { 
+          values: ["solid", "outline", "subtle", "soft", "ghost", "liquid-glass"],
         },
          
         /* 
@@ -32,8 +30,7 @@ export default {
          * For example, if the design system lacks related styles
          * and the prop serves no purpose.
          */
-        {
-          name: "filled",
+        filled: {
           ignore: true,
         }
       }

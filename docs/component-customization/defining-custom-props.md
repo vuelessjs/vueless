@@ -7,12 +7,11 @@ If existing props don’t support the conditional styling you need, you can add 
 export default {
   component: {
     UButton: {
-      props: [
+      props: {
         /* 
          * Boolean prop example.
          */
-        {
-          name: "featured",
+        featured: {
           type: "boolean",
           required: false,
           description: "Set button featured." 
@@ -21,12 +20,12 @@ export default {
         /* 
          * Enum (string) prop example.
          */
-        {
-          name: "shape",
+        shape: {
           type: "string",
           values: ["circle", "parallelogram", "square"],
+          default: "square",
           required: true,
-          description: "Set button shape." 
+          description: "Set button shape."
         }
       }
     }
@@ -35,7 +34,10 @@ export default {
 ```
 {% endcode %}
 
-{% hint style="info" %}
-The `name` and `type` keys are required; all other keys are optional.
-{% endhint %}
+### Prop settings
 
+<table><thead><tr><th width="138.55859375">key</th><th width="145.4765625">default</th><th>Description</th></tr></thead><tbody><tr><td>type</td><td>"string"</td><td>Supported values: "string", "number", "boolean".</td></tr><tr><td>values</td><td>[]</td><td>Limits possible prop values (union type in TS).</td></tr><tr><td>default</td><td>""</td><td>Defines default value.</td></tr><tr><td>required</td><td>false</td><td>Makes props required.</td></tr><tr><td>description</td><td>""</td><td>Adds props description in Storybook docs.</td></tr><tr><td>ignore</td><td>false</td><td>Hides prop in Storybook docs.</td></tr></tbody></table>
+
+{% hint style="info" %}
+All key are optional.
+{% endhint %}

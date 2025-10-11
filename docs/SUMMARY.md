@@ -43,6 +43,7 @@
 * [Vueless component anatomy](own-components/vueless-component-anatomy.md)
 * [Create new component](own-components/create-new-component.md)
 * [Copy existing component](own-components/copy-existing-component.md)
+* [Override existing component](own-components/copy-existing-component-1.md)
 
 ## Svg Icons
 
@@ -53,7 +54,7 @@
 
 ## Helpers
 
-* [Change settings in runtime](helpers/change-settings-in-runtime.md)
+* [Runtime theming](helpers/change-settings-in-runtime.md)
 
 ## Other
 
