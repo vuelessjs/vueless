@@ -324,8 +324,8 @@ export function normalizeThemeConfig(theme: any): MergedThemeConfig {
   return {
     colorMode: String(theme.colorMode ?? "") as ColorMode,
     isColorModeAuto: !!toNumber(theme.isColorModeAuto),
-    primary: String(theme.primary ?? ""),
-    neutral: String(theme.neutral ?? ""),
+    primary: theme.primary || null,
+    neutral: theme.neutral || null,
     text: {
       xs: toNumber(theme.text?.xs),
       sm: toNumber(theme.text?.sm),
