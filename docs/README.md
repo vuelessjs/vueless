@@ -24,7 +24,7 @@ Vueless is simple enough for everyday use and powerful enough for advanced scena
 * ♿️ Accessibility (a11y)
 * ⚙️ Server-side rendering (SSR) friendly
 * 🖼️ 1000+ built-in SVG icons
-* 🧪️ 1200+ unit tests ensuring consistent logic
+* 🧪️ 1300+ unit tests ensuring consistent logic
 * 🛡️ Full TypeScript support with type safety
 
 ### **Advance features:**
@@ -34,4 +34,3 @@ Vueless is simple enough for everyday use and powerful enough for advanced scena
 * 🔧️ Define default values for props
 * 🔩️ Add or hide props to components
 * 🧿 `npm` package ships full source without TypeScript transpilation for better DX
-
