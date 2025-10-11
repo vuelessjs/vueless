@@ -53,7 +53,7 @@
 
 ## Helpers
 
-* [Change settings in runtime](helpers/change-settings-in-runtime.md)
+* [Runtime theming](helpers/change-settings-in-runtime.md)
 
 ## Other
 
