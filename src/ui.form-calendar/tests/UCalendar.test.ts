@@ -585,10 +585,10 @@ describe("UCalendar.vue", () => {
     });
 
     it("Arrow Key Navigation – moves focus correctly in month view", async () => {
-      const expectedMonthAfterRight = "February";
-      const expectedMonthAfterLeft = "January";
-      const expectedMonthAfterDown = "April";
-      const expectedMonthAfterUp = "January";
+      const expectedMonthAfterRight = "Feb";
+      const expectedMonthAfterLeft = "Jan";
+      const expectedMonthAfterDown = "Apr";
+      const expectedMonthAfterUp = "Jan";
 
       const component = mount(UCalendar, {
         props: {

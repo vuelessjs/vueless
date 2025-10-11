@@ -91,7 +91,7 @@ const { monthViewAttrs, monthAttrs, currentMonthAttrs, selectedMonthAttrs, activ
         size="md"
         v-bind="selectedMonthAttrs"
         :disabled="dateIsOutOfRange(month, minDate, maxDate, locale, dateFormat)"
-        :label="formatDate(month, 'F', props.locale)"
+        :label="formatDate(month, 'M', props.locale)"
         @click="onClickMonth(month)"
         @mousedown.prevent.capture
       />
@@ -102,7 +102,7 @@ const { monthViewAttrs, monthAttrs, currentMonthAttrs, selectedMonthAttrs, activ
         color="primary"
         v-bind="currentMonthAttrs"
         :disabled="dateIsOutOfRange(month, minDate, maxDate, locale, dateFormat)"
-        :label="formatDate(month, 'F', props.locale)"
+        :label="formatDate(month, 'M', props.locale)"
         @click="onClickMonth(month)"
         @mousedown.prevent.capture
       />
@@ -114,7 +114,7 @@ const { monthViewAttrs, monthAttrs, currentMonthAttrs, selectedMonthAttrs, activ
         size="md"
         v-bind="activeMonthAttrs"
         :disabled="dateIsOutOfRange(month, minDate, maxDate, locale, dateFormat)"
-        :label="formatDate(month, 'F', props.locale)"
+        :label="formatDate(month, 'M', props.locale)"
         @click="onClickMonth(month)"
         @mousedown.prevent.capture
       />
@@ -126,7 +126,7 @@ const { monthViewAttrs, monthAttrs, currentMonthAttrs, selectedMonthAttrs, activ
         size="md"
         v-bind="monthAttrs"
         :disabled="dateIsOutOfRange(month, minDate, maxDate, locale, dateFormat)"
-        :label="formatDate(month, 'F', props.locale)"
+        :label="formatDate(month, 'M', props.locale)"
         @click="onClickMonth(month)"
         @mousedown.prevent.capture
       />

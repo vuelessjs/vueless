@@ -205,7 +205,7 @@ describe("UCalendarMonthView.vue", () => {
 
       const allButtons = component.findAllComponents(UButton);
       const mayButton = allButtons.find((button) => button.props("label") === "May");
-      const decemberButton = allButtons.find((button) => button.props("label") === "December");
+      const decemberButton = allButtons.find((button) => button.props("label") === "Dec");
 
       expect(mayButton?.props("disabled")).toBe(true);
       expect(decemberButton?.props("disabled")).toBe(true);

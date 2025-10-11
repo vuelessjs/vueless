@@ -1,4 +1,5 @@
 import { readonly, ref } from "vue";
+import { isCSR } from "../utils/helper";
 
 import type { Ref } from "vue";
 
@@ -34,8 +35,10 @@ function onRemoveFromRequestQueue(event: CustomEvent<{ request: string }>) {
   removeFromRequestQueue(event.detail.request);
 }
 
-window.addEventListener("addToRequestQueue", onAddToRequestQueue as EventListener);
-window.addEventListener("removeFromRequestQueue", onRemoveFromRequestQueue as EventListener);
+if (isCSR) {
+  window.addEventListener("addToRequestQueue", onAddToRequestQueue as EventListener);
+  window.addEventListener("removeFromRequestQueue", onRemoveFromRequestQueue as EventListener);
+}
 
 export function useRequestQueue() {
   return {

@@ -69,6 +69,13 @@ const prefixedHref = computed(() => {
 });
 
 function onClick(event: MouseEvent) {
+  if (props.disabled) {
+    event.preventDefault();
+    event.stopPropagation();
+
+    return;
+  }
+
   emit("click", event);
 }
 
