@@ -14,15 +14,16 @@ import { COMPONENTS, VUELESS_PACKAGE_DIR, VUELESS_USER_COMPONENTS_DIR } from "..
 /**
  * Copies an existing Vueless component to a new location with a new name.
  * This includes duplicating the source files and updating the component's internal references as needed.
+ * If the target name is omitted or matches the source name, the component will override the original.
  *
- * @param {Array<string>} options - An array containing two elements:
+ * @param {Array<string>} options - An array containing one or two elements:
  * – The name of the component to be copied.
- * – The desired name for the copied component.
+ * – (Optional) The desired name for the copied component. If omitted, uses the source component name.
  * @return {Promise<void>} A promise that resolves when the component has been successfully copied.
  * If an error occurs, no value is returned, and the operation exits early with a logged message.
  */
 export async function copyVuelessComponent(options) {
-  const [componentName, newComponentName] = options;
+  const [componentName, newComponentName = ""] = options;
 
   if (!componentName) {
     console.log(styleText("red", "Component name is required."));
@@ -36,21 +37,14 @@ export async function copyVuelessComponent(options) {
     return;
   }
 
-  if (newComponentName in COMPONENTS) {
-    console.log(
-      styleText("red", `Component with name '${newComponentName}' already exists in Vueless UI.`),
-    );
-
-    return;
-  }
-
-  if (!newComponentName.startsWith("U")) {
+  if (newComponentName && !newComponentName.startsWith("U")) {
     console.log(styleText("red", `Component should have 'U' prefix (ex. 'UButtonCustom').`));
 
     return;
   }
 
   const absoluteSourcePath = path.join(cwd(), VUELESS_PACKAGE_DIR, COMPONENTS[componentName]);
+
   const absoluteDestPath = path.join(cwd(), VUELESS_USER_COMPONENTS_DIR, newComponentName);
 
   if (existsSync(absoluteDestPath)) {
@@ -62,10 +56,14 @@ export async function copyVuelessComponent(options) {
   await cp(absoluteSourcePath, absoluteDestPath, { recursive: true });
   await modifyCreatedComponent(absoluteDestPath, componentName, newComponentName);
 
-  console.log(
-    // eslint-disable-next-line vue/max-len, prettier/prettier
-    styleText("green", `The '${componentName}' was successfully copied into the '${VUELESS_USER_COMPONENTS_DIR}/${newComponentName}' directory.`)
-  );
+  const isOverridingOriginal = componentName === newComponentName;
+  const destDir = `${VUELESS_USER_COMPONENTS_DIR}/${newComponentName}`;
+
+  const successMessage = isOverridingOriginal
+    ? `The '${componentName}' was successfully copied and will override the original component.`
+    : `The '${componentName}' was successfully copied into the '${destDir}' directory.`;
+
+  console.log(styleText("green", successMessage));
 }
 
 /**
