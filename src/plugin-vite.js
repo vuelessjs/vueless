@@ -20,6 +20,7 @@ import { createTailwindSafelist, clearTailwindSafelist } from "./utils/node/tail
 import { componentResolver, directiveResolver } from "./utils/node/vuelessResolver.js";
 import { setCustomPropTypes, removeCustomPropTypes } from "./utils/node/dynamicProps.js";
 import { buildWebTypes } from "./utils/node/webTypes.js";
+import { overrideComponents, restoreComponents } from "./utils/node/componentOverride.js";
 import {
   getNuxtDirs,
   getVueDirs,
@@ -84,6 +85,7 @@ export const Vueless = function (options = {}) {
   process.on("SIGINT", async () => {
     if (isInternalEnv || isStorybookEnv) {
       await removeCustomPropTypes(vuelessSrcDir);
+      await restoreComponents(vuelessSrcDir);
     }
 
     /* remove cached icons */
@@ -128,6 +130,9 @@ export const Vueless = function (options = {}) {
         /* merge and cache component configs. */
         await cacheMergedConfigs({ vuelessSrcDir, basePath });
       }
+
+      /* override components with custom ones from .vueless/components */
+      await overrideComponents({ vuelessSrcDir });
 
       /* set custom prop types */
       await setCustomPropTypes({ vuelessSrcDir, basePath });
