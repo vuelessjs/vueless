@@ -23,7 +23,7 @@ import { COMPONENTS, VUELESS_PACKAGE_DIR, VUELESS_USER_COMPONENTS_DIR } from "..
  * If an error occurs, no value is returned, and the operation exits early with a logged message.
  */
 export async function copyVuelessComponent(options) {
-  const [componentName, newComponentName = componentName] = options;
+  const [componentName, newComponentName = ""] = options;
 
   if (!componentName) {
     console.log(styleText("red", "Component name is required."));
@@ -37,7 +37,7 @@ export async function copyVuelessComponent(options) {
     return;
   }
 
-  if (!newComponentName.startsWith("U")) {
+  if (newComponentName && !newComponentName.startsWith("U")) {
     console.log(styleText("red", `Component should have 'U' prefix (ex. 'UButtonCustom').`));
 
     return;
