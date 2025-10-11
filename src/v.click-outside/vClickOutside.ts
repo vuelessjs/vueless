@@ -1,4 +1,5 @@
 import { unref } from "vue";
+import { isSSR } from "../utils/helper";
 
 import type { MaybeRef } from "vue";
 import type {
@@ -41,6 +42,8 @@ function clickOutside(
 
     handler(event);
   }
+
+  if (isSSR) return () => {};
 
   window.addEventListener("click", onClick, { passive: true, capture });
   window.addEventListener("pointerdown", onClick, { passive: true });
