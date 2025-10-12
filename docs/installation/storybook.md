@@ -1,6 +1,6 @@
 # Storybook
 
-If you going to debug component stylings in a more easier way you can use our [Storybook](https://storybook.js.org/) preset to style and test components in isolation.
+To work with components in a more easier way, use our preset for [Storybook](https://storybook.js.org/) to style and test components in isolation.
 
 ## Installation
 
