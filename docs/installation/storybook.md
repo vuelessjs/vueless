@@ -64,8 +64,6 @@ npm run sb:build
 npm run sb:preview
 ```
 
-***
-
 ## Hide unused components in Storybook
 
 If you don’t plan to use certain Vueless components, you can hide them from Storybook by setting the component name key to `false` in the specific component’s config.
