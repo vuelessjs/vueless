@@ -1,4 +1,4 @@
-# Storybook docs
+# Storybook
 
 If you going to debug component stylings in a more easier way you can use our [Storybook](https://storybook.js.org/) preset to style and test components in isolation.
 
@@ -47,7 +47,7 @@ If the `.storybook` folder already exists, the command will back it up by renami
 
 2\. Run the Storybook ✨
 
-```
+```bash
 npm run sb:dev
 ```
 
@@ -64,7 +64,9 @@ npm run sb:build
 npm run sb:preview
 ```
 
-## Hiding unused components in Storybook
+***
+
+## Hide unused components in Storybook
 
 If you don’t plan to use certain Vueless components, you can hide them from Storybook by setting the component name key to `false` in the specific component’s config.
 
