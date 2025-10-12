@@ -62,13 +62,17 @@ const prefersColorSchemeDark = isCSR && window.matchMedia("(prefers-color-scheme
 function toggleColorModeClass() {
   if (!prefersColorSchemeDark) return;
 
-  const colorMode = prefersColorSchemeDark.matches ? ColorMode.Dark : ColorMode.Light;
+  const isDarkMode = prefersColorSchemeDark.matches;
+  const colorMode = isDarkMode ? ColorMode.Dark : ColorMode.Light;
 
   setCookie(COLOR_MODE_KEY, colorMode);
   setCookie(AUTO_MODE_KEY, String(Number(true)));
 
-  document.documentElement.classList.toggle(DARK_MODE_CLASS, prefersColorSchemeDark.matches);
-  document.documentElement.classList.toggle(LIGHT_MODE_CLASS, !prefersColorSchemeDark.matches);
+  document.documentElement.classList.toggle(DARK_MODE_CLASS, isDarkMode);
+  document.documentElement.classList.toggle(LIGHT_MODE_CLASS, !isDarkMode);
+
+  /* Dispatching custom event for the useDarkMode composable. */
+  window.dispatchEvent(new CustomEvent("darkModeChange", { detail: isDarkMode }));
 }
 
 /**
