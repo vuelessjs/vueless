@@ -1,4 +1,4 @@
-![vueless-examples.png](public/images/vueless-examples.png)
+![vueless-cover.png](public/images/vueless-cover.png)
 
 # Vueless UI
 
