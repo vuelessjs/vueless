@@ -502,7 +502,7 @@ export interface VuelessCssVariables {
   "--vl-bg-accented": string;
   "--vl-bg-muted": string;
   "--vl-bg-inverted": string;
-  /* Amy other design system CSS variables */
+  /* Any other design system CSS variables */
   [key: string]: string;
 }
 
