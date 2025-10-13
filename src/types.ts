@@ -116,6 +116,11 @@ export interface ThemeConfig {
   outline?: number | Partial<ThemeConfigOutline>;
 
   /**
+   * Default components spacing.
+   */
+  spacing?: number;
+
+  /**
    * Default components letter spacing.
    */
   letterSpacing?: number;
