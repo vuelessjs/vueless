@@ -728,7 +728,7 @@ export function setRootCSSVariables(vars: MergedThemeConfig) {
     "--vl-rounding-sm": `${Number(vars.rounding.sm ?? 0) / PX_IN_REM}rem`,
     "--vl-rounding-md": `${Number(vars.rounding.md ?? 0) / PX_IN_REM}rem`,
     "--vl-rounding-lg": `${Number(vars.rounding.lg ?? 0) / PX_IN_REM}rem`,
-    "--vl-spacing": `${vars.spacing}px`,
+    "--vl-spacing": `${Number(vars.spacing ?? 0) / PX_IN_REM}rem`,
     "--vl-letter-spacing": `${vars.letterSpacing}em`,
     "--vl-disabled-opacity": `${vars.disabledOpacity}%`,
   };
