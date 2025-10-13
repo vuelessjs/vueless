@@ -16,6 +16,7 @@ export const TEXT = "text";
 export const OUTLINE = "outline";
 export const ROUNDING = "rounding";
 export const DISABLED_OPACITY = "disabled-opacity";
+export const SPACING = "spacing";
 export const LETTER_SPACING = "letter-spacing";
 export const LIGHT_THEME = "light-theme";
 export const DARK_THEME = "dark-theme";
@@ -38,6 +39,7 @@ export const OUTLINE_INCREMENT = 1; /* pixels */
 export const DEFAULT_ROUNDING = 8; /* pixels */
 export const ROUNDING_DECREMENT = 4; /* pixels */
 export const ROUNDING_INCREMENT = 6; /* pixels */
+export const DEFAULT_SPACING = 8; /* pixels */
 export const DEFAULT_DISABLED_OPACITY = 50; /* presents */
 export const DEFAULT_LETTER_SPACING = 0; /* em */
 
