@@ -42,6 +42,8 @@ npm create vueless@latest
 
 This command guides you through a few setup options, then generates a new scaffolded Vue + Vueless UI project with the complete application structure.
 
+---
+
 ### Existing project
 
 1. Install `vueless` UI library packages.
