@@ -35,6 +35,7 @@ export { useLocale } from "./composables/useLocale";
 export { default as useUI } from "./composables/useUI";
 export { useDarkMode } from "./composables/useDarkMode";
 export { useRequestQueue } from "./composables/useRequestQueue";
+export { default as useBreakpoint } from "./composables/useBreakpoint";
 export { useLoaderOverlay } from "./ui.loader-overlay/useLoaderOverlay";
 export { useLoaderProgress } from "./ui.loader-progress/useLoaderProgress";
 export { useMutationObserver } from "./composables/useMutationObserver";

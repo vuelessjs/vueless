@@ -37,6 +37,8 @@ import {
   DEFAULT_LETTER_SPACING,
   LIGHT_THEME,
   DARK_THEME,
+  SPACING,
+  DEFAULT_SPACING,
 } from "../constants";
 
 import type {
@@ -62,13 +64,17 @@ const prefersColorSchemeDark = isCSR && window.matchMedia("(prefers-color-scheme
 function toggleColorModeClass() {
   if (!prefersColorSchemeDark) return;
 
-  const colorMode = prefersColorSchemeDark.matches ? ColorMode.Dark : ColorMode.Light;
+  const isDarkMode = prefersColorSchemeDark.matches;
+  const colorMode = isDarkMode ? ColorMode.Dark : ColorMode.Light;
 
   setCookie(COLOR_MODE_KEY, colorMode);
   setCookie(AUTO_MODE_KEY, String(Number(true)));
 
-  document.documentElement.classList.toggle(DARK_MODE_CLASS, prefersColorSchemeDark.matches);
-  document.documentElement.classList.toggle(LIGHT_MODE_CLASS, !prefersColorSchemeDark.matches);
+  document.documentElement.classList.toggle(DARK_MODE_CLASS, isDarkMode);
+  document.documentElement.classList.toggle(LIGHT_MODE_CLASS, !isDarkMode);
+
+  /* Dispatching custom event for the useDarkMode composable. */
+  window.dispatchEvent(new CustomEvent("darkModeChange", { detail: isDarkMode }));
 }
 
 /**
@@ -179,6 +185,7 @@ export function resetTheme() {
     `vl-${ROUNDING}-sm`,
     `vl-${ROUNDING}-md`,
     `vl-${ROUNDING}-lg`,
+    `vl-${SPACING}`,
     `vl-${LETTER_SPACING}`,
     `vl-${DISABLED_OPACITY}`,
     `vl-${LIGHT_THEME}`,
@@ -206,6 +213,7 @@ export function getTheme(config?: ThemeConfig): MergedThemeConfig {
   const text = getText(config?.text);
   const outline = getOutlines(config?.outline);
   const rounding = getRoundings(config?.rounding);
+  const spacing = getSpacing(config?.spacing);
   const letterSpacing = getLetterSpacing(config?.letterSpacing);
   const disabledOpacity = getDisabledOpacity(config?.disabledOpacity);
 
@@ -220,6 +228,7 @@ export function getTheme(config?: ThemeConfig): MergedThemeConfig {
     text,
     outline,
     rounding,
+    spacing,
     letterSpacing,
     disabledOpacity,
     lightTheme,
@@ -240,6 +249,7 @@ export function setTheme(config: ThemeConfig = {}) {
   const text = getText(config.text);
   const outline = getOutlines(config.outline);
   const rounding = getRoundings(config.rounding);
+  const spacing = getSpacing(config.spacing);
   const letterSpacing = getLetterSpacing(config.letterSpacing);
   const disabledOpacity = getDisabledOpacity(config.disabledOpacity);
 
@@ -306,6 +316,7 @@ export function setTheme(config: ThemeConfig = {}) {
     text,
     outline,
     rounding,
+    spacing,
     letterSpacing,
     disabledOpacity,
     lightTheme,
@@ -342,6 +353,7 @@ export function normalizeThemeConfig(theme: any): MergedThemeConfig {
       md: toNumber(theme.rounding?.md),
       lg: toNumber(theme.rounding?.lg),
     },
+    spacing: toNumber(theme.spacing),
     letterSpacing: toNumber(theme.letterSpacing),
     disabledOpacity: toNumber(theme.disabledOpacity),
   };
@@ -593,6 +605,24 @@ function getRoundings(rounding?: ThemeConfig["rounding"]) {
 }
 
 /**
+ * Retrieve spacing value and save them to cookie and localStorage.
+ * @return number - spacing value.
+ */
+function getSpacing(spacing?: ThemeConfig["spacing"]) {
+  const storageKey = `vl-${SPACING}`;
+
+  const storedSpacing = spacing ?? getStored(storageKey) ?? vuelessConfig.spacing;
+  const mergedSpacing = Number(storedSpacing ?? DEFAULT_SPACING);
+
+  if (isCSR && spacing !== undefined) {
+    setCookie(storageKey, String(mergedSpacing));
+    localStorage.setItem(storageKey, String(mergedSpacing));
+  }
+
+  return mergedSpacing;
+}
+
+/**
  * Retrieve letter spacing value and save them to cookie and localStorage.
  * @return number - letter spacing value.
  */
@@ -698,6 +728,7 @@ export function setRootCSSVariables(vars: MergedThemeConfig) {
     "--vl-rounding-sm": `${Number(vars.rounding.sm ?? 0) / PX_IN_REM}rem`,
     "--vl-rounding-md": `${Number(vars.rounding.md ?? 0) / PX_IN_REM}rem`,
     "--vl-rounding-lg": `${Number(vars.rounding.lg ?? 0) / PX_IN_REM}rem`,
+    "--vl-spacing": `${Number(vars.spacing ?? 0) / PX_IN_REM}rem`,
     "--vl-letter-spacing": `${vars.letterSpacing}em`,
     "--vl-disabled-opacity": `${vars.disabledOpacity}%`,
   };

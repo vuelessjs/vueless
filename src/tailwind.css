@@ -113,6 +113,9 @@
   --radius-medium: var(--vl-rounding-md);
   --radius-large: var(--vl-rounding-lg);
 
+  /* Spacing value */
+  --spacing: var(--vl-spacing);
+
   /* Mobile safe area spaceing. */
   --spacing-safe-top: "env(safe-area-inset-top)";
   --spacing-safe-bottom: "env(safe-area-inset-bottom)";
