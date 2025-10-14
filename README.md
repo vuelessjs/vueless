@@ -2,41 +2,33 @@
 
 # Vueless UI
 
-Vueless is an open-source UI library and design system framework for Vue.js 3 and Nuxt.js 3 / 4, built on top of Tailwind CSS v4.
+A UI library with Open Architecture for Vue.js 3 and Nuxt.js 3 / 4, powered by [Storybook v9](https://storybook.js.org) and [Tailwind CSS v4](https://tailwindcss.com).
 
-It’s completely styleless, allowing you to extend or override default styles without modifying the components themselves — only your custom styles are included in the final build.
-
-Vueless is simple enough for everyday use and powerful enough for advanced scenarios, making it ideal for quickly building beautiful UIs in minutes or developing a fully customized corporate UI library that strictly follows your design guidelines.
+**With Vueless UI, you’re free to:**
+- 🪄️ Customize any component
+- 📋 Copy and extend existing ones
+- 🧱 Build your own from scratch
+- 📕 Document it all seamlessly in Storybook
 
 [Documentation](https://docs.vueless.com/) | [UI Components](https://ui.vueless.com/) | [Website](http://vueless.com/)
 
 ### Key features
 
-- 🧩 65+ UI components (including range date picker, multi-selects, and nested table)
-- 🪄 Automatic on-demand component import (as you use them)
-- 📘 Built-in Storybook support
-- 🌈 Beautiful, modern default UI theme
-- 🌗 Light and dark mode support
+- 🧩 65+ crafted UI components (including range date picker, multi-select, and nested table)
+- ✨ Open Architecture lets you customize, copy, extend, and create your own components
+- 📕 Built-in Storybook support
+- 🌈 Beautiful default UI theme
 - 🌀 Unstyled mode
-- 🎨️ Flexible color palettes
-- 🎛️ Runtime theme and color switching
+- 🌗 Light and dark mode
 - 🧬 Design tokens powered by CSS variables
-- ✨ Powerful yet simple styling customization system
+- ⚙️ Server-side rendering (SSR)
 - 🌍 Internationalization (i18n)
 - ♿️ Accessibility (a11y)
-- ⚙️ Server-side rendering (SSR) friendly
-- 🖼️ 1000+ built-in SVG icons
+- 🖼️ Inline SVG icons
+- 🪄 Auto component imports (as you use them)
+- 🧿 Uncompiled source in npm for better DX
 - 🧪️ 1300+ unit tests ensuring consistent logic
 - 🛡️ Full TypeScript support with type safety
-
-### Advanced Features
-
-- 🧰 Copy and extend existing components
-- 🧱 Create your own components
-- 🔧️ Define default values for props
-- 🔩️ Add or hide props to components
-- 🧿 `npm` package ships full source without TypeScript transpilation for better DX.
-
 
 ## Quick Start (Vue)
 
@@ -49,6 +41,8 @@ npm create vueless@latest
 ```
 
 This command guides you through a few setup options, then generates a new scaffolded Vue + Vueless UI project with the complete application structure.
+
+---
 
 ### Existing project
 
