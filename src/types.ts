@@ -116,6 +116,11 @@ export interface ThemeConfig {
   outline?: number | Partial<ThemeConfigOutline>;
 
   /**
+   * Default components spacing.
+   */
+  spacing?: number;
+
+  /**
    * Default components letter spacing.
    */
   letterSpacing?: number;
@@ -497,7 +502,7 @@ export interface VuelessCssVariables {
   "--vl-bg-accented": string;
   "--vl-bg-muted": string;
   "--vl-bg-inverted": string;
-  /* Amy other design system CSS variables */
+  /* Any other design system CSS variables */
   [key: string]: string;
 }
 
