@@ -9,7 +9,7 @@ export const themeDark: ThemeVars = create({
 
   brandTitle: "Vueless UI",
   brandUrl: "https://vueless.com",
-  brandImage: "./images/vueless-logo-dark.svg",
+  brandImage: "./images/logo-dark.svg",
   brandTarget: "_blank",
 
   // Main colors
