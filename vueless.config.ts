@@ -9,6 +9,7 @@ export default {
   text: 14,
   outline: 2,
   rounding: 8,
+  spacing: 4,
   letterSpacing: 0,
   disabledOpacity: 50,
   colorMode: "auto",
