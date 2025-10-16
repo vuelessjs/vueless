@@ -11,13 +11,15 @@ on:
           - patch
           - minor
           - major
+  push:
+    branches: [ beta ]
 
 permissions: write-all
 
 jobs:
   lint:
     name: 'Lint'
-    if: "github.ref_name == 'main'"
+    if: "github.event_name != 'push' || !contains(github.event.head_commit.message, 'GITBOOK')"
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -30,6 +32,8 @@ jobs:
 
   ts-check:
     name: 'TS Check'
+    if: "github.event_name != 'push' || !contains(github.event.head_commit.message, 'GITBOOK')"
+
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -42,7 +46,7 @@ jobs:
 
   test:
     name: 'Test'
-    if: "github.ref_name == 'main'"
+    if: "github.event_name != 'push' || !contains(github.event.head_commit.message, 'GITBOOK')"
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -55,9 +59,12 @@ jobs:
 
   release:
     name: "Release: ${{ github.event.inputs.release_type }}"
-    if: github.ref_name == 'main'
+    if: github.event_name == 'workflow_dispatch' && github.ref_name == 'main'
     needs: [lint, ts-check, test]
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      id-token: write
     steps:
       - uses: actions/checkout@v4
         with:
@@ -70,15 +77,47 @@ jobs:
       - run: |
           git config user.name "${GITHUB_ACTOR}"
           git config user.email "${GITHUB_ACTOR}@users.noreply.github.com"
+      # OIDC requires npm v11.5.1 or later.
+      # Node.js v20 comes with v10.8, so we need to update it:
+      - run: npm install -g npm@latest
       - run: npm ci
       - run: npm run release:prepare
       - run: npm run release:${{ github.event.inputs.release_type }}
         env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+  release-beta:
+    name: 'Release: beta'
+    if: "github.event_name == 'push' && github.ref_name == 'beta'"
+    needs: [lint, ts-check, test]
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      id-token: write
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: 'npm'
+          registry-url: https://registry.npmjs.org/
+      - run: |
+          git config user.name "${GITHUB_ACTOR}"
+          git config user.email "${GITHUB_ACTOR}@users.noreply.github.com"
+      # OIDC requires npm v11.5.1 or later.
+      # Node.js v20 comes with v10.8, so we need to update it:
+      - run: npm install -g npm@latest
+      - run: npm ci
+      - run: npm run release:prepare
+      - run: npm run release:beta
+        env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
   release-nuxt:
     name: 'Release: Nuxt Module'
+    if: github.event_name == 'workflow_dispatch' && github.ref_name == 'main'
     needs: release
     runs-on: ubuntu-latest
     steps:
@@ -91,6 +130,7 @@ jobs:
 
   update-quickstart:
     name: 'Update: Quickstart Templates'
+    if: github.event_name == 'workflow_dispatch' && github.ref_name == 'main'
     needs: release
     runs-on: ubuntu-latest
     strategy:
@@ -106,6 +146,7 @@ jobs:
 
   update-beta:
     name: 'Update Beta'
+    if: github.event_name == 'workflow_dispatch' && github.ref_name == 'main'
     needs: release
     runs-on: ubuntu-latest
     steps:
