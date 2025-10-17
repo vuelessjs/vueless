@@ -16,6 +16,11 @@ export interface Props {
   for?: string;
 
   /**
+   * Component id (used for ARIA attributes).
+   */
+  id?: string;
+
+  /**
    * Label description.
    */
   description?: string;

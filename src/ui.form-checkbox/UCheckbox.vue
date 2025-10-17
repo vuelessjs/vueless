@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { inject, ref, onMounted, computed, watchEffect, toValue, useId } from "vue";
+import { inject, ref, onMounted, computed, watchEffect, toValue, useId, useSlots } from "vue";
 import { isEqual } from "lodash-es";
 
 import useUI from "../composables/useUI";
@@ -48,11 +48,17 @@ const emit = defineEmits([
   "input",
 ]);
 
+const slots = useSlots();
+
 const checkboxName = ref("");
 const checkboxSize = ref(props.size);
 const checkboxColor = ref(props.color);
 
 const elementId = props.id || useId();
+
+const hasLabel = computed(() => Boolean(props.label || slots.label));
+
+const inputAriaLabelledBy = computed(() => (hasLabel.value ? `label-${elementId}` : undefined));
 
 const isBinary = computed(() => !Array.isArray(props.modelValue));
 const isCheckboxInGroup = computed(() => Boolean(toValue(getCheckboxGroupName)));
@@ -108,6 +114,10 @@ function onChange() {
   emit("input", newModelValue);
 }
 
+function onIconClick() {
+  document.getElementById(elementId)?.click();
+}
+
 /**
  * Get element / nested component attributes for each config token ✨
  * Applies: `class`, `config`, redefined default `props` and dev `vl-...` attributes.
@@ -161,15 +171,17 @@ const {
       :name="checkboxName"
       :checked="isChecked"
       :disabled="disabled"
+      :aria-labelledby="inputAriaLabelledBy"
+      :aria-label="!hasLabel ? 'Checkbox' : undefined"
       v-bind="checkboxAttrs"
       :data-test="getDataTest()"
       @change="onChange"
     />
 
-    <label
+    <div
       v-if="isChecked"
       v-bind="partial ? partiallyCheckedAttrs : checkedAttrs"
-      :for="elementId"
+      @click="onIconClick"
     >
       <UIcon
         v-if="partial"
@@ -179,7 +191,7 @@ const {
       />
 
       <UIcon v-else :name="config.defaults.checkedIcon" color="inherit" v-bind="checkedIconAttrs" />
-    </label>
+    </div>
 
     <template #bottom>
       <!-- @slot Use it to add something below the checkbox. -->

@@ -31,6 +31,10 @@ export default /*tw*/ {
   subtractButton: "{>actionButton}",
   addIcon: "{UIcon}",
   subtractIcon: "{UIcon}",
+  i18n: {
+    add: "Add",
+    subtract: "Subtract",
+  },
   defaults: {
     size: "md",
     decimalSeparator: ",",

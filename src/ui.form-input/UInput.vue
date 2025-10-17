@@ -91,7 +91,7 @@ const VALIDATION_RULES_REG_EX = {
 
 const slots = useSlots();
 
-const wrapperRef = useTemplateRef<HTMLLabelElement>("wrapper");
+const wrapperRef = useTemplateRef<HTMLDivElement>("wrapper");
 const inputRef = useTemplateRef<HTMLInputElement>("input");
 const leftSlotWrapperRef = useTemplateRef<HTMLSpanElement>("leftSlotWrapper");
 const labelComponentRef = useTemplateRef<InstanceType<typeof ULabel>>("labelComponent");
@@ -174,6 +174,10 @@ function onCopy(event: ClipboardEvent) {
 
 function onKeydown(event: KeyboardEvent) {
   emit("keydown", event);
+}
+
+function onSlotClick() {
+  inputRef.value?.focus();
 }
 
 /**
@@ -286,11 +290,12 @@ const {
       <slot name="label" :label="label" />
     </template>
 
-    <label ref="wrapper" :for="elementId" v-bind="wrapperAttrs">
+    <div ref="wrapper" v-bind="wrapperAttrs">
       <span
         v-if="hasSlotContent($slots['left'], { iconName: leftIcon }) || leftIcon"
         v-bind="leftSlotAttrs"
         ref="leftSlotWrapper"
+        @click="onSlotClick"
       >
         <!--
           @slot Use it to add something before the text.
@@ -328,6 +333,7 @@ const {
       <span
         v-if="hasSlotContent($slots['right'], { iconName: rightIcon }) || rightIcon"
         v-bind="rightSlotAttrs"
+        @click="onSlotClick"
       >
         <!--
           @slot Use it to add something after the text.
@@ -337,6 +343,6 @@ const {
           <UIcon v-if="rightIcon" color="neutral" :name="rightIcon" v-bind="rightIconAttrs" />
         </slot>
       </span>
-    </label>
+    </div>
   </ULabel>
 </template>

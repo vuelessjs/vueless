@@ -448,7 +448,9 @@ describe("USelect.vue", () => {
         },
       });
 
-      expect(component.find("[vl-key='wrapper']").attributes("aria-owns")).toBe(`listbox-${id}`);
+      expect(component.find("[vl-key='wrapper']").attributes("aria-controls")).toBe(
+        `listbox-${id}`,
+      );
     });
 
     it("Data Test – applies the correct data-test attributes", async () => {

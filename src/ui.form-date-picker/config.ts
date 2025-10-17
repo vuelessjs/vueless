@@ -125,6 +125,13 @@ export default /*tw*/ {
     },
     timeLabel: "Time",
     okLabel: "Ok",
+    /**
+     * @description These are not used in the component, but are required for the type checking (because of UCalendar's aria-attributes).
+     */
+    previousYear: "Previous Year",
+    nextYear: "Next Year",
+    previousMonth: "Previous Month",
+    nextMonth: "Next Month",
   },
   defaults: {
     size: "md",

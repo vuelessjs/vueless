@@ -198,7 +198,7 @@ describe("UCheckbox.vue", () => {
           },
         });
 
-        expect(component.find("label").attributes("class")).toContain(color);
+        expect(component.get("[vl-key='checked']").attributes("class")).toContain(`bg-${color}`);
       });
     });
 

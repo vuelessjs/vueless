@@ -69,6 +69,10 @@ export default /*tw*/ {
     today: "Today",
     yesterday: "Yesterday",
     tomorrow: "Tomorrow",
+    previousYear: "Previous Year",
+    nextYear: "Next Year",
+    previousMonth: "Previous Month",
+    nextMonth: "Next Month",
     weekdays: {
       shorthand: {
         sunday: "Sun",
