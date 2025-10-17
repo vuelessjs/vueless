@@ -106,7 +106,7 @@ describe("USwitch.vue", () => {
           },
         });
 
-        expect(component.find("label").attributes("class")).toContain(color);
+        expect(component.get("[vl-key='wrapper']").attributes("class")).toContain(`bg-${color}`);
       });
     });
 
@@ -169,7 +169,9 @@ describe("USwitch.vue", () => {
       const labelComponent = component.findComponent(ULabel);
 
       expect(labelComponent.props("disabled")).toBe(true);
-      expect(component.find("label").attributes("class")).toContain("pointer-events-none");
+      expect(component.get("[vl-key='wrapper']").attributes("class")).toContain(
+        "pointer-events-none",
+      );
     });
 
     it("Id – applies the correct id attribute", () => {
@@ -210,7 +212,7 @@ describe("USwitch.vue", () => {
         },
       });
 
-      expect(component.findAll("label")[1].text()).toBe(customLabelContent);
+      expect(component.find("label").text()).toBe(customLabelContent);
     });
 
     it("Label – exposes label prop to slot", () => {
@@ -225,7 +227,7 @@ describe("USwitch.vue", () => {
         },
       });
 
-      expect(component.findAll("label")[1].text()).toBe(`Modified ${defaultLabel}`);
+      expect(component.find("label").text()).toBe(`Modified ${defaultLabel}`);
     });
   });
 

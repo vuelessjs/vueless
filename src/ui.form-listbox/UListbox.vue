@@ -351,6 +351,12 @@ function onInputSearchBlur(event: FocusEvent) {
 
 defineExpose({
   /**
+   * Current pointer index value.
+   * @property {Ref<number>}
+   */
+  pointer,
+
+  /**
    * Allows setting the pointer to a specific index.
    * @property {Function}
    */

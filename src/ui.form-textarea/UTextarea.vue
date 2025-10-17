@@ -195,7 +195,7 @@ function onMousedown() {
 defineExpose({
   /**
    * A reference to the component's wrapper element for direct DOM manipulation.
-   * @property {HTMLLabelElement}
+   * @property {HTMLDivElement}
    */
   wrapperRef,
 

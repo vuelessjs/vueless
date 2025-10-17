@@ -218,7 +218,7 @@ const toggleIconName = computed(() => {
   return props.toggleIcon ? config.value.defaults.toggleIcon : "";
 });
 
-const ariaExpanded = computed(() => isOpen.value.toString());
+const ariaExpanded = computed(() => isOpen.value);
 
 const ariaActiveDescendant = computed(() => {
   if (!isOpen.value || !listboxRef.value) return undefined;
