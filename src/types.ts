@@ -234,15 +234,8 @@ export interface ColorShades {
   950: string;
 }
 
-export type NeutralColors =
-  | "slate"
-  | "gray"
-  | "zinc"
-  | "neutral"
-  | "stone"
-  | string
-  | Partial<ColorShades>;
-export type PrimaryColors =
+export type NeutralColorName = "slate" | "gray" | "zinc" | "neutral" | "stone" | string;
+export type PrimaryColorName =
   | "red"
   | "orange"
   | "amber"
@@ -260,8 +253,10 @@ export type PrimaryColors =
   | "fuchsia"
   | "pink"
   | "rose"
-  | string
-  | Partial<ColorShades>;
+  | string;
+
+export type NeutralColors = NeutralColorName | Partial<ColorShades>;
+export type PrimaryColors = PrimaryColorName | Partial<ColorShades>;
 
 export interface Directives {
   tooltip?: Partial<Props>;

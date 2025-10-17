@@ -15,9 +15,9 @@ import type {
   UseUI,
   KeyAttrs,
   KeysAttrs,
+  StateColors,
   MutatedProps,
   UnknownObject,
-  PrimaryColors,
   ComponentNames,
   NestedComponent,
   ComponentDefaults,
@@ -72,7 +72,7 @@ export default function useUI<T>(
     return computed(() => {
       const mutatedPropsValue = toValue(mutatedProps);
       const value = (config.value as ComponentConfigFull<T>)[key];
-      const color = (toValue(mutatedProps || {}).color || props.color) as PrimaryColors;
+      const color = (toValue(mutatedProps || {}).color || props.color) as StateColors;
 
       const isNestedComponent = Boolean(getNestedComponent(value));
 

@@ -149,9 +149,11 @@ export type {
   CreateVuelessOptions,
   /* Color and theme types */
   StateColors,
+  ColorShades,
   PrimaryColors,
   NeutralColors,
-  ColorShades,
+  PrimaryColorName,
+  NeutralColorName,
   VuelessCssVariables,
   /* Component and Directive types */
   Directives,
