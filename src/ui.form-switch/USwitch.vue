@@ -68,7 +68,8 @@ function toggle() {
   }
 }
 
-function onClickToggle() {
+function onClickToggle(event: Event) {
+  event.stopPropagation();
   toggle();
 }
 
