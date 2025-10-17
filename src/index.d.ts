@@ -151,6 +151,7 @@ export type {
   StateColors,
   PrimaryColors,
   NeutralColors,
+  ColorShades,
   VuelessCssVariables,
   /* Component and Directive types */
   Directives,
