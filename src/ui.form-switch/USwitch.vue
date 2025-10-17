@@ -76,6 +76,10 @@ function onKeydownSpace() {
   toggle();
 }
 
+function onClickWrapper() {
+  toggle();
+}
+
 defineExpose({
   /**
    * A reference to the component's wrapper element for direct DOM manipulation.
@@ -130,6 +134,7 @@ const {
       v-bind="wrapperAttrs"
       @keydown.enter="onKeydownSpace"
       @keydown.space.prevent="onKeydownSpace"
+      @click="onClickWrapper"
     >
       <input
         :id="elementId"
