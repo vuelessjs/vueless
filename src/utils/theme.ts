@@ -799,10 +799,14 @@ function setCSSVariables(
   `;
 
   if (isCSR) {
+    const firstStyleOrLink = document.querySelector("link[rel='stylesheet'], style");
     const style = document.createElement("style");
 
     style.innerHTML = rootVariables;
-    document.head.appendChild(style);
+
+    firstStyleOrLink && firstStyleOrLink.parentNode
+      ? firstStyleOrLink.parentNode.insertBefore(style, firstStyleOrLink)
+      : document.head.appendChild(style);
   }
 
   return rootVariables;
