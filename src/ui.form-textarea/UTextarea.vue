@@ -63,7 +63,7 @@ const elementId = props.id || useId();
 const textareaRef = useTemplateRef<HTMLTextAreaElement>("textarea");
 const labelComponentRef = useTemplateRef<InstanceType<typeof ULabel>>("labelComponent");
 const leftSlotWrapperRef = useTemplateRef<HTMLDivElement>("leftSlotWrapper");
-const wrapperRef = useTemplateRef<HTMLLabelElement>("wrapper");
+const wrapperRef = useTemplateRef<HTMLDivElement>("wrapper");
 
 const currentRows = ref(Number(props.rows));
 
@@ -246,7 +246,7 @@ const {
       <slot name="label" :label="label" />
     </template>
 
-    <label ref="wrapper" :for="elementId" v-bind="wrapperAttrs">
+    <div ref="wrapper" v-bind="wrapperAttrs">
       <span
         v-if="hasSlotContent($slots['left'])"
         ref="leftSlotWrapper"
@@ -281,6 +281,6 @@ const {
         <!-- @slot Use it to add something after the text. -->
         <slot name="right" />
       </span>
-    </label>
+    </div>
   </ULabel>
 </template>

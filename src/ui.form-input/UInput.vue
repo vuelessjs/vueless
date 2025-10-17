@@ -91,7 +91,7 @@ const VALIDATION_RULES_REG_EX = {
 
 const slots = useSlots();
 
-const wrapperRef = useTemplateRef<HTMLLabelElement>("wrapper");
+const wrapperRef = useTemplateRef<HTMLDivElement>("wrapper");
 const inputRef = useTemplateRef<HTMLInputElement>("input");
 const leftSlotWrapperRef = useTemplateRef<HTMLSpanElement>("leftSlotWrapper");
 const labelComponentRef = useTemplateRef<InstanceType<typeof ULabel>>("labelComponent");
@@ -286,7 +286,7 @@ const {
       <slot name="label" :label="label" />
     </template>
 
-    <label ref="wrapper" :for="elementId" v-bind="wrapperAttrs">
+    <div ref="wrapper" v-bind="wrapperAttrs">
       <span
         v-if="hasSlotContent($slots['left'], { iconName: leftIcon }) || leftIcon"
         v-bind="leftSlotAttrs"
@@ -337,6 +337,6 @@ const {
           <UIcon v-if="rightIcon" color="neutral" :name="rightIcon" v-bind="rightIconAttrs" />
         </slot>
       </span>
-    </label>
+    </div>
   </ULabel>
 </template>

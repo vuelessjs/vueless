@@ -126,6 +126,7 @@ const {
           size="xs"
           :color="closeButtonColor"
           variant="ghost"
+          aria-label="Close alert"
           v-bind="closeButtonAttrs"
           :data-test="getDataTest('button')"
           @click="onClickClose"

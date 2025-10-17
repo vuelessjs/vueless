@@ -110,6 +110,19 @@ const addOptionKeyCombination = computed(() => {
   return isMac ? "(⌘ + Enter)" : "(Ctrl + Enter)";
 });
 
+const listboxAriaMultiselectable = computed(() => (props.multiple ? "true" : undefined));
+
+const listboxAriaActivedescendant = computed(() =>
+  pointer.value >= 0 ? `${elementId}-${pointer.value}` : undefined,
+);
+
+const getOptionAriaSelected = (option: Option) => {
+  if (option && option.groupLabel) return undefined;
+  if (option.divider) return undefined;
+
+  return isSelectedOption(option) ? "true" : "false";
+};
+
 const filteredOptions = computed(() => {
   const normalizedSearch = searchModel.value.toLowerCase().trim();
 
@@ -442,7 +455,13 @@ const {
       @update:model-value="onSearchChange"
     />
 
-    <ul :id="`listbox-${elementId}`" v-bind="listAttrs" role="listbox">
+    <ul
+      :id="`listbox-${elementId}`"
+      v-bind="listAttrs"
+      role="listbox"
+      :aria-multiselectable="listboxAriaMultiselectable"
+      :aria-activedescendant="listboxAriaActivedescendant"
+    >
       <li
         v-for="(option, index) of filteredOptions"
         :id="`${elementId}-${index}`"
@@ -450,6 +469,8 @@ const {
         v-bind="listItemAttrs"
         ref="option"
         :role="!(option && option.groupLabel) ? 'option' : undefined"
+        :aria-selected="getOptionAriaSelected(option)"
+        :aria-disabled="option.disabled ? 'true' : undefined"
         :data-group-label="Boolean(option.groupLabel)"
       >
         <UDivider v-if="option.divider" v-bind="optionDividerAttrs" />
@@ -505,10 +526,18 @@ const {
 
         <!-- group title -->
         <template v-if="option && (option.groupLabel || option.isSubGroup) && !option.isHidden">
-          <div v-if="option.groupLabel" v-bind="groupAttrs" v-text="option.groupLabel" />
+          <div
+            v-if="option.groupLabel"
+            role="group"
+            :aria-label="option.groupLabel"
+            v-bind="groupAttrs"
+            v-text="option.groupLabel"
+          />
 
           <div
             v-else-if="option.isSubGroup"
+            role="group"
+            :aria-label="String(option[labelKey])"
             :style="getMarginForSubCategory(option.level)"
             v-bind="subGroupAttrs"
             v-text="option[labelKey]"

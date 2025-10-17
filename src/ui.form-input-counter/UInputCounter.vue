@@ -181,6 +181,7 @@ const {
       :size="size"
       variant="outlined"
       :disabled="isSubtractButtonDisabled || disabled"
+      aria-label="Decrease value"
       v-bind="subtractButtonAttrs"
       :data-test="getDataTest('subtract')"
       @click.prevent
@@ -221,6 +222,7 @@ const {
       square
       variant="outlined"
       :disabled="isAddButtonDisabled || disabled"
+      aria-label="Increase value"
       v-bind="addButtonAttrs"
       :data-test="getDataTest('add')"
       @click.prevent

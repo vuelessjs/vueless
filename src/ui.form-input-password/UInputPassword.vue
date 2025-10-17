@@ -120,7 +120,7 @@ const { getDataTest, config, passwordInputAttrs, passwordIconAttrs, passwordIcon
     </template>
 
     <template #right>
-      <label v-bind="passwordIconWrapperAttrs" :for="elementId">
+      <div v-bind="passwordIconWrapperAttrs">
         <!--
           @slot Use it to add something instead of the password icon.
           @binding {string} icon-name
@@ -142,7 +142,7 @@ const { getDataTest, config, passwordInputAttrs, passwordIconAttrs, passwordIcon
             @click="onClickShowPassword"
           />
         </slot>
-      </label>
+      </div>
     </template>
   </UInput>
 </template>
