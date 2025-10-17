@@ -176,6 +176,10 @@ function onKeydown(event: KeyboardEvent) {
   emit("keydown", event);
 }
 
+function onSlotClick() {
+  inputRef.value?.focus();
+}
+
 /**
  * This trick prevents default browser autocomplete behavior.
  * @param toggleState { boolean }
@@ -291,6 +295,7 @@ const {
         v-if="hasSlotContent($slots['left'], { iconName: leftIcon }) || leftIcon"
         v-bind="leftSlotAttrs"
         ref="leftSlotWrapper"
+        @click="onSlotClick"
       >
         <!--
           @slot Use it to add something before the text.
@@ -328,6 +333,7 @@ const {
       <span
         v-if="hasSlotContent($slots['right'], { iconName: rightIcon }) || rightIcon"
         v-bind="rightSlotAttrs"
+        @click="onSlotClick"
       >
         <!--
           @slot Use it to add something after the text.

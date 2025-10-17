@@ -122,7 +122,7 @@ const { getDataTest, wrapperAttrs, contentAttrs, labelAttrs, descriptionAttrs, e
 
       <div
         v-if="isShownError"
-        :id="`desc-${elementId}`"
+        :id="`error-${elementId}`"
         v-bind="errorAttrs"
         :data-test="getDataTest('error')"
         v-text="error"
@@ -130,7 +130,7 @@ const { getDataTest, wrapperAttrs, contentAttrs, labelAttrs, descriptionAttrs, e
 
       <div
         v-if="description && !isShownError"
-        :id="`desc-${elementId}`"
+        :id="`description-${elementId}`"
         v-bind="descriptionAttrs"
         :data-test="getDataTest('description')"
         v-text="description"
@@ -168,7 +168,7 @@ const { getDataTest, wrapperAttrs, contentAttrs, labelAttrs, descriptionAttrs, e
 
     <div
       v-if="isShownError"
-      :id="`desc-${elementId}`"
+      :id="`error-${elementId}`"
       v-bind="errorAttrs"
       :data-test="getDataTest('error')"
       v-text="error"
@@ -176,7 +176,7 @@ const { getDataTest, wrapperAttrs, contentAttrs, labelAttrs, descriptionAttrs, e
 
     <div
       v-if="description && !isShownError"
-      :id="`desc-${elementId}`"
+      :id="`description-${elementId}`"
       v-bind="descriptionAttrs"
       :data-test="getDataTest('description')"
       v-text="description"

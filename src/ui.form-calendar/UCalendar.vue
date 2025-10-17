@@ -829,7 +829,7 @@ const {
         color="grayscale"
         variant="ghost"
         :icon="config.defaults.prevYearIcon"
-        aria-label="Previous year"
+        :aria-label="localeMessages.previousYear"
         v-bind="nextPrevButtonAttrs"
         :data-test="getDataTest('prev-year')"
         @mousedown.prevent.capture
@@ -842,7 +842,7 @@ const {
         color="grayscale"
         variant="ghost"
         :icon="config.defaults.prevIcon"
-        aria-label="Previous month"
+        :aria-label="localeMessages.previousMonth"
         v-bind="nextPrevButtonAttrs"
         :data-test="getDataTest('prev')"
         @mousedown.prevent.capture
@@ -868,7 +868,7 @@ const {
         color="grayscale"
         variant="ghost"
         :icon="config.defaults.nextIcon"
-        aria-label="Next month"
+        :aria-label="localeMessages.nextMonth"
         v-bind="nextPrevButtonAttrs"
         :data-test="getDataTest('next')"
         @mousedown.prevent.capture
@@ -882,7 +882,7 @@ const {
         color="grayscale"
         variant="ghost"
         :icon="config.defaults.nextYearIcon"
-        aria-label="Next year"
+        :aria-label="localeMessages.nextYear"
         v-bind="nextPrevButtonAttrs"
         :data-test="getDataTest('next-year')"
         @mousedown.prevent.capture

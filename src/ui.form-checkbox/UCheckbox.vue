@@ -114,6 +114,10 @@ function onChange() {
   emit("input", newModelValue);
 }
 
+function onIconClick() {
+  document.getElementById(elementId)?.click();
+}
+
 /**
  * Get element / nested component attributes for each config token ✨
  * Applies: `class`, `config`, redefined default `props` and dev `vl-...` attributes.
@@ -174,7 +178,11 @@ const {
       @change="onChange"
     />
 
-    <div v-if="isChecked" v-bind="partial ? partiallyCheckedAttrs : checkedAttrs">
+    <div
+      v-if="isChecked"
+      v-bind="partial ? partiallyCheckedAttrs : checkedAttrs"
+      @click="onIconClick"
+    >
       <UIcon
         v-if="partial"
         :name="config.defaults.partiallyCheckedIcon"

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, computed, useId } from "vue";
+import { ref, computed, useId, useTemplateRef, nextTick } from "vue";
 
 import useUI from "../composables/useUI";
 import { getDefaults } from "../utils/ui";
@@ -42,6 +42,7 @@ const emit = defineEmits([
 
 const elementId = props.id || useId();
 
+const inputRef = useTemplateRef<InstanceType<typeof UInput>>("input");
 const isShownPassword = ref(false);
 
 const localValue = computed({
@@ -59,8 +60,12 @@ const passwordIcon = computed(() => {
     : config.value.defaults.passwordHiddenIcon || "";
 });
 
-function onClickShowPassword() {
+async function onClickShowPassword() {
   isShownPassword.value = !isShownPassword.value;
+
+  await nextTick();
+
+  inputRef.value?.inputRef?.focus();
 }
 
 function onFocus(event: FocusEvent) {
@@ -86,6 +91,7 @@ const { getDataTest, config, passwordInputAttrs, passwordIconAttrs, passwordIcon
 <template>
   <UInput
     :id="elementId"
+    ref="input"
     v-model="localValue"
     :type="inputType"
     :label="label"
