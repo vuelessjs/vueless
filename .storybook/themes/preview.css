@@ -82,10 +82,6 @@ html.vl-dark #storybook-root {
   background-color: #111827; /* bg-gray-900 */
 }
 
-body {
-  font-family: Roboto, sans-serif;
-}
-
 .light .sbdocs .sbdocs-content > h1,
 .light .sbdocs .sbdocs-content > h2,
 .light .sbdocs .sbdocs-content > h3,
