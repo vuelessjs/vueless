@@ -64,9 +64,9 @@ export default /*tw*/ {
   description: "mt-1.5 text-large font-normal text-lifted",
   actions: "",
   body: "",
-  footer: "mb-0 mt-14 justify-between pt-8 md:flex md:items-baseline space-y-4 md:space-y-0 border-t border-muted",
-  footerLeft: "md:flex space-y-4 md:space-x-4 md:space-y-0",
-  footerRight: "md:flex space-y-4 md:space-x-4 md:space-y-0",
+  footer: "mb-0 mt-14 justify-between pt-8 md:flex gap-4 md:gap-0 md:items-baseline border-t border-muted",
+  footerLeft: "md:flex gap-4",
+  footerRight: "md:flex gap-4",
   defaults: {
     variant: "solid",
     size: "wide",

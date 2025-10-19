@@ -1,6 +1,7 @@
 export default /*tw*/ {
   wrapper: {
     base: `
+      flex flex-col
       font-normal leading-normal
       [&_b]:font-bold [&_i]:italic [&_p]:font-normal
       [&_a:not([class])]:underline [&_a:not([class])]:underline-offset-4
@@ -22,10 +23,10 @@ export default /*tw*/ {
         inherit: "text-inherit",
       },
       size: {
-        xs: "text-tiny space-y-1",
-        sm: "text-small space-y-2",
-        md: "text-medium space-y-3",
-        lg: "text-large space-y-4",
+        xs: "text-tiny gap-1",
+        sm: "text-small gap-2",
+        md: "text-medium gap-3",
+        lg: "text-large gap-4",
       },
       align: {
         left: "text-left",
