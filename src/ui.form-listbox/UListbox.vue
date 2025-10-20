@@ -110,7 +110,7 @@ const addOptionKeyCombination = computed(() => {
   return isMac ? "(⌘ + Enter)" : "(Ctrl + Enter)";
 });
 
-const listboxAriaMultiselectable = computed(() => (props.multiple ? true : undefined));
+const listboxAriaMultiselectable = computed(() => props.multiple || undefined);
 
 const listboxAriaActivedescendant = computed(() =>
   pointer.value >= 0 ? `${elementId}-${pointer.value}` : undefined,
@@ -462,7 +462,6 @@ const {
     />
 
     <ul
-      :id="`listbox-${elementId}`"
       v-bind="listAttrs"
       role="listbox"
       :aria-multiselectable="listboxAriaMultiselectable"
@@ -470,13 +469,12 @@ const {
     >
       <li
         v-for="(option, index) of filteredOptions"
-        :id="`${elementId}-${index}`"
         :key="index"
         v-bind="listItemAttrs"
         ref="option"
         :role="!(option && option.groupLabel) ? 'option' : undefined"
         :aria-selected="getOptionAriaSelected(option)"
-        :aria-disabled="option.disabled ? true : undefined"
+        :aria-disabled="Boolean(option.disabled) || undefined"
         :data-group-label="Boolean(option.groupLabel)"
       >
         <UDivider v-if="option.divider" v-bind="optionDividerAttrs" />
@@ -551,13 +549,7 @@ const {
         </template>
       </li>
 
-      <li
-        v-if="!filteredOptions.length"
-        :id="`${elementId}-empty`"
-        ref="empty-option"
-        role="option"
-        v-bind="optionAttrs"
-      >
+      <li v-if="!filteredOptions.length" ref="empty-option" role="option" v-bind="optionAttrs">
         <!-- @slot Use it to add something instead of empty state. -->
         <slot name="empty">
           <span v-bind="optionContentAttrs" v-text="localeMessages.noDataToShow" />
@@ -567,7 +559,6 @@ const {
       <!-- Add button -->
       <template v-if="addOption">
         <li
-          :id="`${elementId}-addOption`"
           ref="add-option"
           role="option"
           v-bind="addOptionLabelWrapperAttrs"

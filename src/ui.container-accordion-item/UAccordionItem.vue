@@ -145,11 +145,7 @@ const {
         </slot>
       </div>
 
-      <div
-        v-if="description || hasSlotContent(slots['description'])"
-        :id="`description-${elementId}`"
-        v-bind="descriptionAttrs"
-      >
+      <div v-if="description || hasSlotContent(slots['description'])" v-bind="descriptionAttrs">
         <!--
           @slot Use it to add custom description content.
           @binding {string} description

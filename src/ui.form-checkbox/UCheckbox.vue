@@ -65,7 +65,7 @@ const elementId = props.id || useId();
 
 const hasLabel = computed(() => Boolean(props.label || slots.label));
 
-const inputAriaLabelledBy = computed(() => (hasLabel.value ? `label-${elementId}` : undefined));
+const inputAriaLabelledBy = computed(() => (hasLabel.value ? elementId : undefined));
 
 const isBinary = computed(() => !Array.isArray(props.modelValue));
 const isCheckboxInGroup = computed(() => Boolean(toValue(getCheckboxGroupName)));

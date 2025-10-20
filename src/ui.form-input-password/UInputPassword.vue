@@ -126,19 +126,13 @@ const { getDataTest, config, passwordInputAttrs, passwordIconAttrs, passwordIcon
     </template>
 
     <template #right>
-      <div v-bind="passwordIconWrapperAttrs">
+      <div v-bind="passwordIconWrapperAttrs" @click="onClickShowPassword">
         <!--
           @slot Use it to add something instead of the password icon.
           @binding {string} icon-name
           @binding {boolean} visible
-          @binding {function} toggle
         -->
-        <slot
-          name="right"
-          :icon-name="passwordIcon"
-          :visible="isShownPassword"
-          :toggle="onClickShowPassword"
-        >
+        <slot name="right" :icon-name="passwordIcon" :visible="isShownPassword">
           <UIcon
             :name="passwordIcon"
             color="neutral"

@@ -104,7 +104,7 @@ const { getDataTest, wrapperAttrs, contentAttrs, labelAttrs, descriptionAttrs, e
       <component
         :is="tag"
         v-if="label || hasSlotContent(slots['label'], { label })"
-        :id="`label-${elementId}`"
+        :id="elementId"
         ref="label"
         :for="props.for"
         v-bind="labelAttrs"
@@ -122,7 +122,6 @@ const { getDataTest, wrapperAttrs, contentAttrs, labelAttrs, descriptionAttrs, e
 
       <div
         v-if="isShownError"
-        :id="`error-${elementId}`"
         v-bind="errorAttrs"
         :data-test="getDataTest('error')"
         v-text="error"
@@ -130,7 +129,6 @@ const { getDataTest, wrapperAttrs, contentAttrs, labelAttrs, descriptionAttrs, e
 
       <div
         v-if="description && !isShownError"
-        :id="`description-${elementId}`"
         v-bind="descriptionAttrs"
         :data-test="getDataTest('description')"
         v-text="description"
@@ -145,7 +143,7 @@ const { getDataTest, wrapperAttrs, contentAttrs, labelAttrs, descriptionAttrs, e
     <component
       :is="tag"
       v-if="label || hasSlotContent(slots['label'], { label })"
-      :id="`label-${elementId}`"
+      :id="elementId"
       v-bind="labelAttrs"
       ref="label"
       :for="props.for"
@@ -166,17 +164,10 @@ const { getDataTest, wrapperAttrs, contentAttrs, labelAttrs, descriptionAttrs, e
       <slot />
     </div>
 
-    <div
-      v-if="isShownError"
-      :id="`error-${elementId}`"
-      v-bind="errorAttrs"
-      :data-test="getDataTest('error')"
-      v-text="error"
-    />
+    <div v-if="isShownError" v-bind="errorAttrs" :data-test="getDataTest('error')" v-text="error" />
 
     <div
       v-if="description && !isShownError"
-      :id="`description-${elementId}`"
       v-bind="descriptionAttrs"
       :data-test="getDataTest('description')"
       v-text="description"

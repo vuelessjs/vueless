@@ -48,7 +48,7 @@ const elementId = props.id || useId();
 
 const hasLabel = computed(() => Boolean(props.label || slots.label));
 
-const inputAriaLabelledBy = computed(() => (hasLabel.value ? `label-${elementId}` : undefined));
+const inputAriaLabelledBy = computed(() => (hasLabel.value ? elementId : undefined));
 
 const switchLabel = computed(() => {
   return checkedValue.value ? localeMessages.value.active : localeMessages.value.inactive;

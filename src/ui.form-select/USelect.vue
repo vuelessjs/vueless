@@ -229,9 +229,9 @@ const ariaActiveDescendant = computed(() => {
   return `${elementId}-${pointer}`;
 });
 
-const ariaInvalid = computed(() => (props.error ? true : undefined));
+const ariaInvalid = computed(() => Boolean(props.error) ?? undefined);
 
-const ariaLabelledBy = computed(() => (props.label ? `label-${elementId}` : undefined));
+const ariaLabelledBy = computed(() => (props.label ? elementId : undefined));
 
 const ariaDescribedBy = computed(() => {
   if (props.error) return `error-${elementId}`;
@@ -252,6 +252,10 @@ onMounted(() => {
 
 function onSearchChange(query: string) {
   emit("searchChange", query);
+}
+
+function onSearchUpdate(query: string) {
+  emit("update:search", query);
 }
 
 function onKeydownAddOption(event: KeyboardEvent) {
@@ -861,7 +865,7 @@ const {
         @blur="onListboxBlur"
         @search-blur="onListboxSearchBlur"
         @search-change="onSearchChange"
-        @update:search="(value: string) => emit('update:search', value)"
+        @update:search="onSearchUpdate"
       >
         <template #before-option="{ option, index }">
           <!--
