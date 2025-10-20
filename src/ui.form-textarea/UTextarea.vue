@@ -192,6 +192,10 @@ function onMousedown() {
   emit("mousedown");
 }
 
+function onSlotClick() {
+  textareaRef.value?.focus();
+}
+
 defineExpose({
   /**
    * A reference to the component's wrapper element for direct DOM manipulation.
@@ -252,6 +256,7 @@ const {
         ref="leftSlotWrapper"
         :for="elementId"
         v-bind="leftSlotAttrs"
+        @click="onSlotClick"
       >
         <!-- @slot Use it to add something before the text. -->
         <slot name="left" />
@@ -277,7 +282,12 @@ const {
         @click="onClick"
       />
 
-      <span v-if="hasSlotContent($slots['right'])" :for="elementId" v-bind="rightSlotAttrs">
+      <span
+        v-if="hasSlotContent($slots['right'])"
+        :for="elementId"
+        v-bind="rightSlotAttrs"
+        @click="onSlotClick"
+      >
         <!-- @slot Use it to add something after the text. -->
         <slot name="right" />
       </span>

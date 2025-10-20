@@ -41,6 +41,10 @@ export default /*tw*/ {
   },
   closeIcon: "{>icon}",
   alertIcon: "{>icon}",
+  /* These are used for a11y. */
+  i18n: {
+    closeAlert: "Close alert",
+  },
   defaults: {
     variant: "subtle",
     color: "primary",

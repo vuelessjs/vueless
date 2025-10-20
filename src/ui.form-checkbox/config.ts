@@ -51,6 +51,10 @@ export default /*tw*/ {
     },
   },
   partiallyCheckedIcon: "{>checkedIcon}",
+  /* These are used for a11y. */
+  i18n: {
+    checkbox: "Checkbox",
+  },
   defaults: {
     color: "primary",
     size: "md",

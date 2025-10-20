@@ -110,7 +110,7 @@ const addOptionKeyCombination = computed(() => {
   return isMac ? "(⌘ + Enter)" : "(Ctrl + Enter)";
 });
 
-const listboxAriaMultiselectable = computed(() => (props.multiple ? "true" : undefined));
+const listboxAriaMultiselectable = computed(() => (props.multiple ? true : undefined));
 
 const listboxAriaActivedescendant = computed(() =>
   pointer.value >= 0 ? `${elementId}-${pointer.value}` : undefined,
@@ -120,7 +120,7 @@ const getOptionAriaSelected = (option: Option) => {
   if (option && option.groupLabel) return undefined;
   if (option.divider) return undefined;
 
-  return isSelectedOption(option) ? "true" : "false";
+  return !!isSelectedOption(option);
 };
 
 const filteredOptions = computed(() => {
@@ -476,7 +476,7 @@ const {
         ref="option"
         :role="!(option && option.groupLabel) ? 'option' : undefined"
         :aria-selected="getOptionAriaSelected(option)"
-        :aria-disabled="option.disabled ? 'true' : undefined"
+        :aria-disabled="option.disabled ? true : undefined"
         :data-group-label="Boolean(option.groupLabel)"
       >
         <UDivider v-if="option.divider" v-bind="optionDividerAttrs" />

@@ -144,7 +144,7 @@ const {
         type="checkbox"
         :disabled="disabled"
         :aria-labelledby="inputAriaLabelledBy"
-        :aria-label="!hasLabel ? 'Switch' : undefined"
+        :aria-label="!hasLabel ? localeMessages.switch : undefined"
         v-bind="inputAttrs"
         @click="onClickToggle"
       />

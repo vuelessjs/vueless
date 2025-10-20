@@ -31,6 +31,7 @@ export default /*tw*/ {
   subtractButton: "{>actionButton}",
   addIcon: "{UIcon}",
   subtractIcon: "{UIcon}",
+  /* These are used for a11y. */
   i18n: {
     add: "Add",
     subtract: "Subtract",

@@ -4,6 +4,7 @@ import { isEqual } from "lodash-es";
 
 import useUI from "../composables/useUI";
 import { getDefaults } from "../utils/ui";
+import { useComponentLocaleMessages } from "../composables/useComponentLocaleMassages";
 
 import UIcon from "../ui.image-icon/UIcon.vue";
 import ULabel from "../ui.form-label/ULabel.vue";
@@ -47,6 +48,12 @@ const emit = defineEmits([
    */
   "input",
 ]);
+
+const { localeMessages } = useComponentLocaleMessages<typeof defaultConfig.i18n>(
+  COMPONENT_NAME,
+  defaultConfig.i18n,
+  props?.config?.i18n,
+);
 
 const slots = useSlots();
 
@@ -172,7 +179,7 @@ const {
       :checked="isChecked"
       :disabled="disabled"
       :aria-labelledby="inputAriaLabelledBy"
-      :aria-label="!hasLabel ? 'Checkbox' : undefined"
+      :aria-label="!hasLabel ? localeMessages.checkbox : undefined"
       v-bind="checkboxAttrs"
       :data-test="getDataTest()"
       @change="onChange"

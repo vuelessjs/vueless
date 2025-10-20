@@ -229,13 +229,16 @@ const ariaActiveDescendant = computed(() => {
   return `${elementId}-${pointer}`;
 });
 
-const ariaInvalid = computed(() => (props.error ? "true" : undefined));
+const ariaInvalid = computed(() => (props.error ? true : undefined));
 
 const ariaLabelledBy = computed(() => (props.label ? `label-${elementId}` : undefined));
 
-const ariaDescribedBy = computed(() =>
-  props.error || props.description ? `desc-${elementId}` : undefined,
-);
+const ariaDescribedBy = computed(() => {
+  if (props.error) return `error-${elementId}`;
+  if (props.description) return `description-${elementId}`;
+
+  return undefined;
+});
 
 watch(localValue, setLabelPosition, { deep: true });
 
