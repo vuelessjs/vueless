@@ -139,7 +139,6 @@ const { getDataTest, config, passwordInputAttrs, passwordIconAttrs, passwordIcon
             interactive
             v-bind="passwordIconAttrs"
             :data-test="getDataTest('password-icon')"
-            @click="onClickShowPassword"
           />
         </slot>
       </div>
