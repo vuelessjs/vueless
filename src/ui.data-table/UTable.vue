@@ -18,7 +18,7 @@ import ULoaderProgress from "../ui.loader-progress/ULoaderProgress.vue";
 import UTableRow from "./UTableRow.vue";
 import UDivider from "../ui.container-divider/UDivider.vue";
 
-import useUI from "../composables/useUI";
+import { useUI } from "../composables/useUI";
 import { getDefaults, cx, getMergedConfig } from "../utils/ui";
 import { hasSlotContent } from "../utils/helper";
 import { useComponentLocaleMessages } from "../composables/useComponentLocaleMassages";

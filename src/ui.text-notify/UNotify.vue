@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { onBeforeUnmount, onMounted, ref, useTemplateRef } from "vue";
 
-import useUI from "../composables/useUI";
+import { useUI } from "../composables/useUI";
 import { getDefaults, vuelessConfig } from "../utils/ui";
 import { useComponentLocaleMessages } from "../composables/useComponentLocaleMassages";
 

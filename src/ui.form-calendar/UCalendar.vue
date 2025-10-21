@@ -1,7 +1,7 @@
 <script setup lang="ts" generic="TModelValue extends DateValue">
 import { computed, ref, watch, useTemplateRef, nextTick, onMounted } from "vue";
 
-import useUI from "../composables/useUI";
+import { useUI } from "../composables/useUI";
 import { getDefaults } from "../utils/ui";
 import { isRangeDate } from "./types";
 

@@ -10,7 +10,7 @@ import {
   useTemplateRef,
 } from "vue";
 
-import useUI from "../composables/useUI";
+import { useUI } from "../composables/useUI";
 import { getDefaults } from "../utils/ui";
 import { hasSlotContent } from "../utils/helper";
 import { getFileMbSize } from "./utilFileForm";

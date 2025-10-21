@@ -26,7 +26,7 @@ export { createVuelessAdapter } from "./adapter.locale/vueless";
 export { createVueI18nAdapter } from "./adapter.locale/vue-i18n";
 /* composables */
 export { useLocale } from "./composables/useLocale";
-export { default as useUI } from "./composables/useUI";
+export { useUI } from "./composables/useUI";
 export { useDarkMode } from "./composables/useDarkMode";
 export { useRequestQueue } from "./composables/useRequestQueue";
 export { useBreakpoint } from "./composables/useBreakpoint";

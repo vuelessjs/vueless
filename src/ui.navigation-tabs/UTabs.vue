@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { ref, computed, provide, onMounted, onUnmounted, useTemplateRef } from "vue";
 
-import useUI from "../composables/useUI";
+import { useUI } from "../composables/useUI";
 import { getDefaults } from "../utils/ui";
 
 import UTab from "../ui.navigation-tab/UTab.vue";

@@ -7,7 +7,7 @@ import UListbox from "../ui.form-listbox/UListbox.vue";
 import UBadge from "../ui.text-badge/UBadge.vue";
 import ULink from "../ui.button-link/ULink.vue";
 
-import useUI from "../composables/useUI";
+import { useUI } from "../composables/useUI";
 import { hasSlotContent } from "../utils/helper";
 import { getDefaults } from "../utils/ui";
 import { isMac } from "../utils/platform";

@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { computed, provide, useTemplateRef, ref, watch, onMounted } from "vue";
 
-import useUI from "../composables/useUI";
+import { useUI } from "../composables/useUI";
 import { getDefaults } from "../utils/ui";
 
 import UAccordionItem from "../ui.container-accordion-item/UAccordionItem.vue";

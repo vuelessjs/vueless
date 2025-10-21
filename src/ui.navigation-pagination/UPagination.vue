@@ -2,7 +2,7 @@
 import { computed, useTemplateRef } from "vue";
 import { range } from "lodash-es";
 
-import useUI from "../composables/useUI";
+import { useUI } from "../composables/useUI";
 import { getDefaults } from "../utils/ui";
 
 import UButton from "../ui.button/UButton.vue";

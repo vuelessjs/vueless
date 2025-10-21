@@ -3,7 +3,7 @@ import { computed, ref, inject, useId, useSlots, useTemplateRef, toValue, watchE
 
 import { isEqual } from "lodash-es";
 
-import useUI from "../composables/useUI";
+import { useUI } from "../composables/useUI";
 import { getDefaults } from "../utils/ui";
 import { hasSlotContent } from "../utils/helper";
 

@@ -2,7 +2,7 @@
 import { computed, defineAsyncComponent, useTemplateRef } from "vue";
 import { cachedIcons } from "virtual:vueless/icons";
 
-import useUI from "../composables/useUI";
+import { useUI } from "../composables/useUI";
 import { getDefaults } from "../utils/ui";
 import { ICONS_CACHED_DIR, INTERNAL_ICONS_LIBRARY, STORYBOOK_ICONS_LIBRARY } from "../constants";
 

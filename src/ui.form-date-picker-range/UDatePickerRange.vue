@@ -3,7 +3,7 @@ import { computed, watch, ref, nextTick, provide, useId, useTemplateRef, watchEf
 
 import { merge } from "lodash-es";
 
-import useUI from "../composables/useUI";
+import { useUI } from "../composables/useUI";
 import { getDefaults } from "../utils/ui";
 
 import UIcon from "../ui.image-icon/UIcon.vue";
