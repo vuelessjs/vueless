@@ -6,7 +6,7 @@ import { getDefaults } from "../utils/ui";
 import { setTheme } from "../utils/theme";
 
 import UDivider from "../ui.container-divider/UDivider.vue";
-import UColorPicker from "../ui.form-color-picker/UColorPicker.vue";
+import UColorToggle from "../ui.form-color-toggle/UColorToggle.vue";
 
 import { COMPONENT_NAME } from "./constants";
 import defaultConfig from "./config";
@@ -86,7 +86,7 @@ const {
 
 <template>
   <div :id="elementId" ref="list" v-bind="listAttrs" :data-test="getDataTest()">
-    <UColorPicker
+    <UColorToggle
       v-model="selectedPrimaryColor"
       :size="size"
       :colors="primaryColors"
@@ -100,7 +100,7 @@ const {
       v-bind="colorDividerAttrs"
     />
 
-    <UColorPicker
+    <UColorToggle
       v-model="selectedNeutralColor"
       :size="size"
       :colors="neutralColors"

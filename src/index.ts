@@ -87,7 +87,7 @@ export { default as URadioGroup } from "./ui.form-radio-group/URadioGroup.vue";
 export { default as UCalendar } from "./ui.form-calendar/UCalendar.vue";
 export { default as UDatePicker } from "./ui.form-date-picker/UDatePicker.vue";
 export { default as UDatePickerRange } from "./ui.form-date-picker-range/UDatePickerRange.vue";
-export { default as UColorPicker } from "./ui.form-color-picker/UColorPicker.vue";
+export { default as UColorToggle } from "./ui.form-color-toggle/UColorToggle.vue";
 export { default as ULabel } from "./ui.form-label/ULabel.vue";
 /* Text & Content */
 export { default as UHeader } from "./ui.text-header/UHeader.vue";

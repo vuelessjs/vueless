@@ -1,12 +1,12 @@
 import { mount } from "@vue/test-utils";
 import { describe, it, expect } from "vitest";
 
-import UColorPicker from "../UColorPicker.vue";
+import UColorToggle from "../UColorToggle.vue";
 import UButton from "../../ui.button/UButton.vue";
 
 import type { Props } from "../types";
 
-describe("UColorPicker.vue", () => {
+describe("UColorToggle.vue", () => {
   describe("Props", () => {
     it("Model Value – selects the correct color based on modelValue", async () => {
       const modelValue = "primary";
@@ -18,7 +18,7 @@ describe("UColorPicker.vue", () => {
         secondary: "bg-secondary-500",
       };
 
-      const component = mount(UColorPicker, {
+      const component = mount(UColorToggle, {
         props: {
           modelValue,
           "onUpdate:modelValue": (value) => component.setProps({ modelValue: value }),
@@ -47,7 +47,7 @@ describe("UColorPicker.vue", () => {
       };
 
       Object.entries(sizes).forEach(([size, classes]) => {
-        const component = mount(UColorPicker, {
+        const component = mount(UColorToggle, {
           props: {
             modelValue: "",
             size: size as Props["size"],
@@ -70,7 +70,7 @@ describe("UColorPicker.vue", () => {
         error: "bg-error-500",
       };
 
-      const component = mount(UColorPicker, {
+      const component = mount(UColorToggle, {
         props: {
           modelValue: "",
           colors,
@@ -89,7 +89,7 @@ describe("UColorPicker.vue", () => {
     it("Id – applies the correct id attribute", () => {
       const id = "test-color-picker-id";
 
-      const component = mount(UColorPicker, {
+      const component = mount(UColorToggle, {
         props: {
           modelValue: "",
           id,
@@ -107,7 +107,7 @@ describe("UColorPicker.vue", () => {
         secondary: "bg-secondary-500",
       };
 
-      const component = mount(UColorPicker, {
+      const component = mount(UColorToggle, {
         props: {
           modelValue: "",
           dataTest,
@@ -127,7 +127,7 @@ describe("UColorPicker.vue", () => {
 
   describe("Exposed properties", () => {
     it("ListRef – exposes listRef", () => {
-      const component = mount(UColorPicker, {
+      const component = mount(UColorToggle, {
         props: {
           modelValue: "",
           colors: {
