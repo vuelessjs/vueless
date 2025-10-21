@@ -3,7 +3,7 @@ import { computed, ref, useId, useTemplateRef } from "vue";
 
 import UButton from "../ui.button/UButton.vue";
 
-import useUI from "../composables/useUI";
+import { useUI } from "../composables/useUI";
 import { getDefaults } from "../utils/ui";
 
 import defaultConfig from "./config";

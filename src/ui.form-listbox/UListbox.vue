@@ -2,7 +2,7 @@
 import { watch, computed, useId, ref, useTemplateRef, nextTick } from "vue";
 import { isEqual } from "lodash-es";
 
-import useUI from "../composables/useUI";
+import { useUI } from "../composables/useUI";
 import { getDefaults } from "../utils/ui";
 import { isMac } from "../utils/platform";
 import { filterOptions, filterGroups } from "./utilListbox";

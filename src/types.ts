@@ -48,7 +48,7 @@ import URadioGroupConfig from "./ui.form-radio-group/config";
 import USwitchConfig from "./ui.form-switch/config";
 import UTextareaConfig from "./ui.form-textarea/config";
 import ULabelConfig from "./ui.form-label/config";
-import UColorPickerConfig from "./ui.other-theme-color-toggle/config";
+import UColorToggleConfig from "./ui.form-color-toggle/config";
 import UInputConfig from "./ui.form-input/config";
 import UInputCounterConfig from "./ui.form-input-counter/config";
 import UInputPasswordConfig from "./ui.form-input-password/config";
@@ -315,7 +315,7 @@ export interface Components {
   USwitch: Partial<typeof USwitchConfig>;
   UTextarea: Partial<typeof UTextareaConfig>;
   ULabel: Partial<typeof ULabelConfig>;
-  UColorPicker: Partial<typeof UColorPickerConfig>;
+  UColorToggle: Partial<typeof UColorToggleConfig>;
   UInput: Partial<typeof UInputConfig>;
   UInputCounter: Partial<typeof UInputCounterConfig>;
   UInputPassword: Partial<typeof UInputPasswordConfig>;

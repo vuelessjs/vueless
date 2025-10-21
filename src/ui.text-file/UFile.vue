@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { ref, computed, useId, useTemplateRef } from "vue";
 
-import useUI from "../composables/useUI";
+import { useUI } from "../composables/useUI";
 import { getDefaults } from "../utils/ui";
 
 import ULink from "../ui.button-link/ULink.vue";

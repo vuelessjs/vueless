@@ -32,11 +32,7 @@ import type {
  * 3. Component config (:config="{...}" props)
  * 4. Component classes (class="...")
  */
-export default function useUI<T>(
-  defaultConfig: T,
-  mutatedProps?: MutatedProps,
-  topLevelClassKey?: string,
-) {
+export function useUI<T>(defaultConfig: T, mutatedProps?: MutatedProps, topLevelClassKey?: string) {
   const { type, props, parent } = getCurrentInstance() as VuelessComponentInstance;
 
   const componentName = type?.internal

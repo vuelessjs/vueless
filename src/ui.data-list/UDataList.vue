@@ -2,7 +2,7 @@
 import { useTemplateRef } from "vue";
 import draggable from "vuedraggable/src/vuedraggable";
 
-import useUI from "../composables/useUI";
+import { useUI } from "../composables/useUI";
 import { getDefaults } from "../utils/ui";
 import { hasSlotContent } from "../utils/helper";
 

@@ -44,7 +44,6 @@ export async function copyVuelessComponent(options) {
   }
 
   const absoluteSourcePath = path.join(cwd(), VUELESS_PACKAGE_DIR, COMPONENTS[componentName]);
-
   const absoluteDestPath = path.join(cwd(), VUELESS_USER_COMPONENTS_DIR, newComponentName);
 
   if (existsSync(absoluteDestPath)) {
@@ -119,6 +118,7 @@ async function modifyCreatedComponent(destPath, componentName, newComponentName)
       // saving indexes
       const storyIdIndex = getStoryMetaKeyIndex(fileContent, "id");
       const storyTitleIndex = getStoryMetaKeyIndex(fileContent, "title");
+
       const componentImportIndex = lines.findIndex(
         (line) => line.includes(componentName) && line.includes("import"),
       );

@@ -272,7 +272,7 @@ export const COMPONENTS = {
   UCalendar: "ui.form-calendar",
   UDatePicker: "ui.form-date-picker",
   UDatePickerRange: "ui.form-date-picker-range",
-  UColorPicker: "ui.form-color-picker",
+  UColorToggle: "ui.form-color-toggle",
   ULabel: "ui.form-label",
 
   /* Text & Content */

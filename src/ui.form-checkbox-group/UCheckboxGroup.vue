@@ -2,7 +2,7 @@
 import { provide, ref, watch, useTemplateRef } from "vue";
 import { isEqual } from "lodash-es";
 
-import useUI from "../composables/useUI";
+import { useUI } from "../composables/useUI";
 import { getDefaults } from "../utils/ui";
 
 import ULabel from "../ui.form-label/ULabel.vue";

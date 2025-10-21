@@ -2,7 +2,7 @@
 import { nextTick, computed, ref, useId, useTemplateRef } from "vue";
 import { isEqual } from "lodash-es";
 
-import useUI from "../composables/useUI";
+import { useUI } from "../composables/useUI";
 import { getDefaults } from "../utils/ui";
 
 import UIcon from "../ui.image-icon/UIcon.vue";
