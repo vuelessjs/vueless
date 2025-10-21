@@ -7,6 +7,8 @@ import {
 } from "../../utils/storybook";
 import { getRandomId } from "../../utils/helper";
 
+import defaultConfig from "../config";
+
 import UTable from "../UTable.vue";
 import UButton from "../../ui.button/UButton.vue";
 import ULink from "../../ui.button-link/ULink.vue";
@@ -731,7 +733,7 @@ export const EmptyStateSlot = DefaultTemplate.bind({});
 EmptyStateSlot.args = {
   rows: [],
   config: {
-    i18n: { noData: "Fetching data..." },
+    i18n: { ...defaultConfig.i18n, noData: "Fetching data..." },
     bodyEmptyStateCell: "py-10",
   },
   slotTemplate: `

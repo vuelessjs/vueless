@@ -190,14 +190,14 @@ describe("UInputPassword.vue", () => {
       expect(input.attributes("type")).toBe("password");
       expect(passwordIcon.props("name")).toBe("visibility_off-fill");
 
-      await flushPromises();
       await passwordIcon.trigger("click");
+      await flushPromises();
 
       expect(input.attributes("type")).toBe("text");
       expect(passwordIcon.props("name")).toBe("visibility-fill");
 
-      await flushPromises();
       await passwordIcon.trigger("click");
+      await flushPromises();
 
       expect(input.attributes("type")).toBe("password");
       expect(passwordIcon.props("name")).toBe("visibility_off-fill");

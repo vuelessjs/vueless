@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, useTemplateRef, useSlots } from "vue";
+import { computed, useTemplateRef, useSlots, useId } from "vue";
 
 import { useUI } from "../composables/useUI";
 import { getDefaults } from "../utils/ui";
@@ -25,6 +25,8 @@ const emit = defineEmits([
 ]);
 
 const slots = useSlots();
+
+const elementId = props.id || useId();
 
 const wrapperRef = useTemplateRef<HTMLDivElement>("wrapper");
 const labelRef = useTemplateRef<HTMLLabelElement>("label");
@@ -102,6 +104,7 @@ const { getDataTest, wrapperAttrs, contentAttrs, labelAttrs, descriptionAttrs, e
       <component
         :is="tag"
         v-if="label || hasSlotContent(slots['label'], { label })"
+        :id="elementId"
         ref="label"
         :for="props.for"
         v-bind="labelAttrs"
@@ -140,6 +143,7 @@ const { getDataTest, wrapperAttrs, contentAttrs, labelAttrs, descriptionAttrs, e
     <component
       :is="tag"
       v-if="label || hasSlotContent(slots['label'], { label })"
+      :id="elementId"
       v-bind="labelAttrs"
       ref="label"
       :for="props.for"

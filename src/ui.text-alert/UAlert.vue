@@ -4,6 +4,7 @@ import { onMounted, ref, computed, useTemplateRef } from "vue";
 import { useUI } from "../composables/useUI";
 import { getDefaults } from "../utils/ui";
 import { hasSlotContent } from "../utils/helper";
+import { useComponentLocaleMessages } from "../composables/useComponentLocaleMassages";
 
 import UIcon from "../ui.image-icon/UIcon.vue";
 import UButton from "../ui.button/UButton.vue";
@@ -26,6 +27,12 @@ const emit = defineEmits([
    */
   "hide",
 ]);
+
+const { localeMessages } = useComponentLocaleMessages<typeof defaultConfig.i18n>(
+  COMPONENT_NAME,
+  defaultConfig.i18n,
+  props?.config?.i18n,
+);
 
 const wrapperRef = useTemplateRef<HTMLDivElement>("wrapper");
 
@@ -126,6 +133,7 @@ const {
           size="xs"
           :color="closeButtonColor"
           variant="ghost"
+          :aria-label="localeMessages.closeAlert"
           v-bind="closeButtonAttrs"
           :data-test="getDataTest('button')"
           @click="onClickClose"

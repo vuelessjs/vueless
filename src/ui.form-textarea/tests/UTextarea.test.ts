@@ -528,7 +528,7 @@ describe("UTextarea.vue", () => {
       });
 
       expect(component.vm.wrapperRef).toBeDefined();
-      expect(component.vm.wrapperRef!.tagName).toBe("LABEL");
+      expect(component.vm.wrapperRef!.tagName).toBe("DIV");
     });
 
     it("Textarea Element – exposes textarea element ref", () => {

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, useId, useTemplateRef } from "vue";
+import { computed, useId, useSlots, useTemplateRef } from "vue";
 
 import { useUI } from "../composables/useUI";
 import { getDefaults } from "../utils/ui";
@@ -29,7 +29,7 @@ const emit = defineEmits([
   "update:modelValue",
 ]);
 
-const wrapperRef = useTemplateRef<HTMLLabelElement>("wrapper");
+const wrapperRef = useTemplateRef<HTMLDivElement>("wrapper");
 
 const { localeMessages } = useComponentLocaleMessages<typeof defaultConfig.i18n>(
   COMPONENT_NAME,
@@ -42,7 +42,13 @@ const checkedValue = computed({
   set: (value) => emit("update:modelValue", value),
 });
 
+const slots = useSlots();
+
 const elementId = props.id || useId();
+
+const hasLabel = computed(() => Boolean(props.label || slots.label));
+
+const inputAriaLabelledBy = computed(() => (hasLabel.value ? elementId : undefined));
 
 const switchLabel = computed(() => {
   return checkedValue.value ? localeMessages.value.active : localeMessages.value.inactive;
@@ -62,7 +68,8 @@ function toggle() {
   }
 }
 
-function onClickToggle() {
+function onClickToggle(event: Event) {
+  event.stopPropagation();
   toggle();
 }
 
@@ -70,10 +77,14 @@ function onKeydownSpace() {
   toggle();
 }
 
+function onClickWrapper() {
+  toggle();
+}
+
 defineExpose({
   /**
    * A reference to the component's wrapper element for direct DOM manipulation.
-   * @property {HTMLLabelElement}
+   * @property {HTMLDivElement}
    */
   wrapperRef,
 });
@@ -118,13 +129,13 @@ const {
       <slot name="label" :label="label" />
     </template>
 
-    <label
+    <div
       ref="wrapper"
       tabindex="0"
-      :for="elementId"
       v-bind="wrapperAttrs"
       @keydown.enter="onKeydownSpace"
       @keydown.space.prevent="onKeydownSpace"
+      @click="onClickWrapper"
     >
       <input
         :id="elementId"
@@ -132,6 +143,8 @@ const {
         tabindex="-1"
         type="checkbox"
         :disabled="disabled"
+        :aria-labelledby="inputAriaLabelledBy"
+        :aria-label="!hasLabel ? localeMessages.switch : undefined"
         v-bind="inputAttrs"
         @click="onClickToggle"
       />
@@ -146,6 +159,6 @@ const {
       </span>
 
       <span v-if="toggleLabel" v-bind="toggleLabelAttrs" v-text="switchLabel" />
-    </label>
+    </div>
   </ULabel>
 </template>

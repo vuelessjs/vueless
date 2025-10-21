@@ -125,6 +125,11 @@ export default /*tw*/ {
     },
     timeLabel: "Time",
     okLabel: "Ok",
+    /* These are used for a11y. */
+    previousYear: "Previous Year",
+    nextYear: "Next Year",
+    previousMonth: "Previous Month",
+    nextMonth: "Next Month",
   },
   defaults: {
     size: "md",

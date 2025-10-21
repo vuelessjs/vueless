@@ -218,6 +218,28 @@ const toggleIconName = computed(() => {
   return props.toggleIcon ? config.value.defaults.toggleIcon : "";
 });
 
+const ariaExpanded = computed(() => isOpen.value);
+
+const ariaActiveDescendant = computed(() => {
+  if (!isOpen.value || !listboxRef.value) return undefined;
+  const pointer = listboxRef.value.pointer;
+
+  if (pointer === undefined || pointer < 0) return undefined;
+
+  return `${elementId}-${pointer}`;
+});
+
+const ariaInvalid = computed(() => Boolean(props.error) ?? undefined);
+
+const ariaLabelledBy = computed(() => (props.label ? elementId : undefined));
+
+const ariaDescribedBy = computed(() => {
+  if (props.error) return `error-${elementId}`;
+  if (props.description) return `description-${elementId}`;
+
+  return undefined;
+});
+
 watch(localValue, setLabelPosition, { deep: true });
 
 onMounted(() => {
@@ -230,6 +252,10 @@ onMounted(() => {
 
 function onSearchChange(query: string) {
   emit("searchChange", query);
+}
+
+function onSearchUpdate(query: string) {
+  emit("update:search", query);
 }
 
 function onKeydownAddOption(event: KeyboardEvent) {
@@ -484,6 +510,7 @@ const {
 <template>
   <ULabel
     ref="labelComponent"
+    :for="elementId"
     :size="size"
     :label="label"
     :error="error"
@@ -515,7 +542,15 @@ const {
       ref="wrapper"
       :tabindex="searchable || disabled ? -1 : 0"
       role="combobox"
-      :aria-owns="'listbox-' + elementId"
+      :aria-expanded="ariaExpanded"
+      aria-haspopup="listbox"
+      :aria-controls="`listbox-${elementId}`"
+      :aria-activedescendant="ariaActiveDescendant"
+      :aria-disabled="disabled || undefined"
+      :aria-invalid="ariaInvalid"
+      :aria-labelledby="ariaLabelledBy"
+      :aria-describedby="ariaDescribedBy"
+      :aria-autocomplete="searchable ? 'list' : undefined"
       v-bind="wrapperAttrs"
       @focus="activate"
       @blur="onBlur"
@@ -830,7 +865,7 @@ const {
         @blur="onListboxBlur"
         @search-blur="onListboxSearchBlur"
         @search-change="onSearchChange"
-        @update:search="(value) => emit('update:search', value)"
+        @update:search="onSearchUpdate"
       >
         <template #before-option="{ option, index }">
           <!--

@@ -105,6 +105,8 @@ export default /*tw*/ {
   `,
   i18n: {
     noData: "There is no data in the table.",
+    /* These are used for a11y. */
+    checkbox: "Checkbox",
   },
   defaults: {
     emptyCellLabel: "—",
