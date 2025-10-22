@@ -1,5 +1,5 @@
 export default /*tw*/ {
-  wrapper: "flex items-center gap-2",
+  wrapper: "flex items-center gap-2 w-fit",
   counterText: {
     variants: {
       size: {
