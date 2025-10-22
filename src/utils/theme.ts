@@ -39,7 +39,6 @@ import {
   DARK_THEME,
   SPACING,
   DEFAULT_SPACING,
-  THEME_TOKENS_COMMENT,
 } from "../constants";
 
 import type {
@@ -894,31 +893,26 @@ function setCSSVariables(
     .join(" ");
 
   const rootVariables = `
-    ${THEME_TOKENS_COMMENT}
     :host, :root {${variablesString}}
     .${DARK_MODE_CLASS} {${darkVariablesString}}
   `;
 
   if (isCSR) {
-    const allStyles = document.head.querySelectorAll("style");
+    const vuelessStyleId = "vueless-theme-tokens";
+    let style = document.getElementById(vuelessStyleId) as HTMLStyleElement | null;
 
-    allStyles.forEach((styleElement) => {
-      const content = styleElement.textContent || "";
+    if (!style) {
+      style = document.createElement("style");
+      style.id = vuelessStyleId;
 
-      if (content.includes(THEME_TOKENS_COMMENT)) {
-        styleElement.remove();
-      }
-    });
+      const firstStyleOrLink = document.querySelector("link[rel='stylesheet'], style");
 
-    const style = document.createElement("style");
+      firstStyleOrLink && firstStyleOrLink.parentNode
+        ? firstStyleOrLink.parentNode.insertBefore(style, firstStyleOrLink)
+        : document.head.appendChild(style);
+    }
 
-    style.textContent = rootVariables;
-
-    const firstStyleOrLink = document.querySelector("link[rel='stylesheet'], style");
-
-    firstStyleOrLink && firstStyleOrLink.parentNode
-      ? firstStyleOrLink.parentNode.insertBefore(style, firstStyleOrLink)
-      : document.head.appendChild(style);
+    style.innerHTML = rootVariables;
   }
 
   return rootVariables;

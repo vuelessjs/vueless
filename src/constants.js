@@ -20,7 +20,6 @@ export const SPACING = "spacing";
 export const LETTER_SPACING = "letter-spacing";
 export const LIGHT_THEME = "light-theme";
 export const DARK_THEME = "dark-theme";
-export const THEME_TOKENS_COMMENT = `/* Vueless Theme Tokens */`;
 
 /* Vueless color mode keys */
 export const COLOR_MODE_KEY = "vl-color-mode";
