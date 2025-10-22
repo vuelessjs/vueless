@@ -10,9 +10,9 @@ import type { Props } from "../types";
 
 describe("URadioGroup.vue", () => {
   const defaultOptions = [
-    { label: "Email Notifications", id: "email" },
-    { label: "SMS Alerts", id: "sms" },
-    { label: "Push Notifications", id: "push" },
+    { label: "Email Notifications", value: "email" },
+    { label: "SMS Alerts", value: "sms" },
+    { label: "Push Notifications", value: "push" },
   ];
   const defaultName = "test-group";
 
@@ -31,7 +31,7 @@ describe("URadioGroup.vue", () => {
 
       radios.forEach((radio, index) => {
         expect(radio.props("label")).toBe(defaultOptions[index].label);
-        expect(radio.props("value")).toBe(defaultOptions[index].id);
+        expect(radio.props("value")).toBe(defaultOptions[index].value);
       });
     });
 
@@ -197,9 +197,9 @@ describe("URadioGroup.vue", () => {
 
     it("LabelKey – uses custom label key for option labels", () => {
       const customOptions = [
-        { id: 1, name: "Option 1" },
-        { id: 2, name: "Option 2" },
-        { id: 3, name: "Option 3" },
+        { value: "option-1", name: "Option 1" },
+        { value: "option-2", name: "Option 2" },
+        { value: "option-3", name: "Option 3" },
       ];
 
       const component = mount(URadioGroup, {
@@ -219,23 +219,23 @@ describe("URadioGroup.vue", () => {
 
     it("ValueKey – uses custom value key for option values", () => {
       const customOptions = [
-        { optionId: 1, name: "Option 1" },
-        { optionId: 2, name: "Option 2" },
-        { optionId: 3, name: "Option 3" },
+        { id: "option-1", label: "Option 1" },
+        { id: "option-2", label: "Option 2" },
+        { id: "option-3", label: "Option 3" },
       ];
 
       const component = mount(URadioGroup, {
         props: {
           name: defaultName,
           options: customOptions,
-          valueKey: "optionId",
+          valueKey: "id",
         },
       });
 
       const radios = component.findAllComponents(URadio);
 
       radios.forEach((radio, index) => {
-        expect(radio.props("value")).toBe(customOptions[index].optionId);
+        expect(radio.props("value")).toBe(customOptions[index].id);
       });
     });
 

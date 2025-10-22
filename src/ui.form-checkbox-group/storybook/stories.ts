@@ -118,11 +118,11 @@ export const Options: StoryFn<UCheckboxGroupArgs> = (args: UCheckboxGroupArgs) =
 Options.args = {
   name: "Options",
   options: [
-    { label: "String", id: "Subscribed" },
-    { label: "Number", id: 42 },
-    { label: "Boolean", id: true },
-    { label: "Object", id: { id: 101, status: "active" } },
-    { label: "Array", id: ["Admin", "Editor"] },
+    { label: "String", value: "Subscribed" },
+    { label: "Number", value: 42 },
+    { label: "Boolean", value: true },
+    { label: "Object", value: { id: 101, status: "active" } },
+    { label: "Array", value: ["Admin", "Editor"] },
   ],
 };
 Options.parameters = {
@@ -172,12 +172,12 @@ CustomKeys.args = {
   name: "CustomKeys",
   label: "Select your preferred features:",
   labelKey: "name",
-  valueKey: "value",
+  valueKey: "id",
   options: [
-    { value: 1, name: "Dark Mode" },
-    { value: 2, name: "Auto-save" },
-    { value: 3, name: "Notifications" },
-    { value: 4, name: "Two-factor Authentication" },
+    { id: "dark-mode", name: "Dark Mode" },
+    { id: "auto-save", name: "Auto-save" },
+    { id: "notifications", name: "Notifications" },
+    { id: "two-factor", name: "Two-factor Authentication" },
   ],
 };
 CustomKeys.parameters = {

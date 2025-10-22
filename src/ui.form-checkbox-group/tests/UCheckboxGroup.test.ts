@@ -188,16 +188,15 @@ describe("UCheckboxGroup.vue", () => {
 
     it("LabelKey – uses custom label key for option labels", () => {
       const customOptions = [
-        { id: 1, name: "Option 1" },
-        { id: 2, name: "Option 2" },
-        { id: 3, name: "Option 3" },
+        { value: "option-1", name: "Option 1" },
+        { value: "option-2", name: "Option 2" },
+        { value: "option-3", name: "Option 3" },
       ];
 
       const component = mount(UCheckboxGroup, {
         props: {
           options: customOptions,
           labelKey: "name",
-          valueKey: "id",
         },
       });
 
@@ -210,15 +209,14 @@ describe("UCheckboxGroup.vue", () => {
 
     it("ValueKey – uses custom value key for option values", () => {
       const customOptions = [
-        { id: 1, name: "Option 1" },
-        { id: 2, name: "Option 2" },
-        { id: 3, name: "Option 3" },
+        { id: "option-1", label: "Option 1" },
+        { id: "option-2", label: "Option 2" },
+        { id: "option-3", label: "Option 3" },
       ];
 
       const component = mount(UCheckboxGroup, {
         props: {
           options: customOptions,
-          labelKey: "name",
           valueKey: "id",
         },
       });

@@ -41,9 +41,9 @@ export default {
   args: {
     label: "Order Status",
     options: [
-      { label: "Pending", id: "pending" },
-      { label: "Delivered", id: "delivered" },
-      { label: "Cancelled", id: "cancelled" },
+      { label: "Pending", value: "pending" },
+      { label: "Delivered", value: "delivered" },
+      { label: "Cancelled", value: "cancelled" },
     ],
   },
   argTypes: {

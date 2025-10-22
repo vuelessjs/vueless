@@ -15,7 +15,7 @@ export default /*tw*/ {
     color: "primary",
     size: "md",
     labelKey: "label",
-    valueKey: "id",
+    valueKey: "value",
     disabled: false,
   },
 };

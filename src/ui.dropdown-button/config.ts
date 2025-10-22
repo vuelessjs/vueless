@@ -50,7 +50,7 @@ export default /*tw*/ {
     size: "md",
     variant: "solid",
     labelKey: "label",
-    valueKey: "id",
+    valueKey: "value",
     groupLabelKey: "label",
     yPosition: "bottom",
     xPosition: "left",

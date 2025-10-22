@@ -100,11 +100,11 @@ export const Options = DefaultTemplate.bind({});
 Options.args = {
   name: "Options",
   options: [
-    { label: "String", id: "Subscribed" },
-    { label: "Number", id: 42 },
-    { label: "Boolean", id: true },
-    { label: "Object", id: { id: 101, status: "active" } },
-    { label: "Array", id: ["Admin", "Editor"] },
+    { label: "String", value: "Subscribed" },
+    { label: "Number", value: 42 },
+    { label: "Boolean", value: true },
+    { label: "Object", value: { id: 101, status: "active" } },
+    { label: "Array", value: ["Admin", "Editor"] },
   ],
 };
 Options.parameters = {
@@ -154,18 +154,19 @@ CustomKeys.args = {
   name: "CustomKeys",
   label: "Select your subscription plan:",
   labelKey: "title",
-  valueKey: "planId",
+  valueKey: "id",
   options: [
-    { planId: "basic", title: "Basic Plan - $9.99/month" },
-    { planId: "pro", title: "Pro Plan - $19.99/month" },
-    { planId: "enterprise", title: "Enterprise Plan - $49.99/month" },
+    { id: "basic", title: "Basic Plan - $9.99/month" },
+    { id: "pro", title: "Pro Plan - $19.99/month" },
+    { id: "enterprise", title: "Enterprise Plan - $49.99/month" },
   ],
 };
 CustomKeys.parameters = {
   docs: {
     description: {
       story:
-        "Use `labelKey` and `valueKey` props to specify custom keys for label and value in option objects. This is useful when working with data from APIs that use different property names.",
+        "Use `labelKey` and `valueKey` props to specify custom keys for label and value in option objects. " +
+        "This is useful when working with data from APIs that use different property names.",
     },
   },
 };

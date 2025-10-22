@@ -40,9 +40,9 @@ export default {
   args: {
     label: "Account",
     options: [
-      { label: "Profile", id: "profile" },
-      { label: "Settings", id: "settings" },
-      { label: "Logout", id: "logout" },
+      { label: "Profile", value: "profile" },
+      { label: "Settings", value: "settings" },
+      { label: "Logout", value: "logout" },
     ],
   },
   argTypes: {
