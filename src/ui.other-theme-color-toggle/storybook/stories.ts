@@ -5,6 +5,7 @@ import {
   getSlotsFragment,
   getDocsDescription,
 } from "../../utils/storybook";
+import { getTheme } from "../../utils/theme";
 
 import UThemeColorToggle from "../UThemeColorToggle.vue";
 import UCol from "../../ui.container-col/UCol.vue";
@@ -19,13 +20,15 @@ interface UThemeColorToggleArgs extends Props {
   enum: "size";
 }
 
+const theme = getTheme();
+
 export default {
   id: "100030",
   title: "Other / Theme Color Toggle",
   component: UThemeColorToggle,
   args: {
-    primary: "",
-    neutral: "",
+    primary: theme.primary,
+    neutral: theme.neutral,
     primaryColors: {
       grayscale: "bg-grayscale",
       red: "bg-red-600",
