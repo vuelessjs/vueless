@@ -39,6 +39,7 @@ import {
   DARK_THEME,
   SPACING,
   DEFAULT_SPACING,
+  THEME_TOKENS_COMMENT,
 } from "../constants";
 
 import type {
@@ -893,15 +894,27 @@ function setCSSVariables(
     .join(" ");
 
   const rootVariables = `
+    ${THEME_TOKENS_COMMENT}
     :host, :root {${variablesString}}
     .${DARK_MODE_CLASS} {${darkVariablesString}}
   `;
 
   if (isCSR) {
-    const firstStyleOrLink = document.querySelector("link[rel='stylesheet'], style");
+    const allStyles = document.head.querySelectorAll("style");
+
+    allStyles.forEach((styleElement) => {
+      const content = styleElement.textContent || "";
+
+      if (content.includes(THEME_TOKENS_COMMENT)) {
+        styleElement.remove();
+      }
+    });
+
     const style = document.createElement("style");
 
-    style.innerHTML = rootVariables;
+    style.textContent = rootVariables;
+
+    const firstStyleOrLink = document.querySelector("link[rel='stylesheet'], style");
 
     firstStyleOrLink && firstStyleOrLink.parentNode
       ? firstStyleOrLink.parentNode.insertBefore(style, firstStyleOrLink)

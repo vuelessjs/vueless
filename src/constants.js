@@ -20,12 +20,14 @@ export const SPACING = "spacing";
 export const LETTER_SPACING = "letter-spacing";
 export const LIGHT_THEME = "light-theme";
 export const DARK_THEME = "dark-theme";
+export const THEME_TOKENS_COMMENT = `/* Vueless Theme Tokens */`;
 
 /* Vueless color mode keys */
 export const COLOR_MODE_KEY = "vl-color-mode";
 export const AUTO_MODE_KEY = "vl-auto-mode";
 export const DARK_MODE_CLASS = "vl-dark";
 export const LIGHT_MODE_CLASS = "vl-light";
+export const THEME_TOKENS = "vueless-theme-tokens";
 
 /* Vueless defaults */
 export const DEFAULT_PRIMARY_COLOR = GRAYSCALE_COLOR;
