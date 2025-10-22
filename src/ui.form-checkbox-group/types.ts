@@ -17,6 +17,16 @@ export interface Props {
   options?: UCheckboxOption[];
 
   /**
+   * Label key in the item object of options.
+   */
+  labelKey?: string;
+
+  /**
+   * Value key in the item object of options.
+   */
+  valueKey?: string;
+
+  /**
    * Checkbox group label.
    */
   label?: string;

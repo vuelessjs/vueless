@@ -33,9 +33,9 @@ export default {
   args: {
     label: "Select your preferred communication methods:",
     options: [
-      { label: "Email Notifications", value: "email" },
-      { label: "SMS Alerts", value: "sms" },
-      { label: "Push Notifications", value: "push" },
+      { label: "Email Notifications", id: "email" },
+      { label: "SMS Alerts", id: "sms" },
+      { label: "Push Notifications", id: "push" },
     ],
   },
   argTypes: {
@@ -108,7 +108,7 @@ export const Options: StoryFn<UCheckboxGroupArgs> = (args: UCheckboxGroupArgs) =
       <UAlert
         :description="modelValue"
         size="sm"
-        variant="ghost"
+        variant="soft"
         color="success"
         bordered
       />
@@ -118,11 +118,11 @@ export const Options: StoryFn<UCheckboxGroupArgs> = (args: UCheckboxGroupArgs) =
 Options.args = {
   name: "Options",
   options: [
-    { label: "String", value: "Subscribed" },
-    { label: "Number", value: 42 },
-    { label: "Boolean", value: true },
-    { label: "Object", value: { id: 101, status: "active" } },
-    { label: "Array", value: ["Admin", "Editor"] },
+    { label: "String", id: "Subscribed" },
+    { label: "Number", id: 42 },
+    { label: "Boolean", id: true },
+    { label: "Object", id: { id: 101, status: "active" } },
+    { label: "Array", id: ["Admin", "Editor"] },
   ],
 };
 Options.parameters = {
@@ -144,11 +144,48 @@ export const LabelSlot = DefaultTemplate.bind({});
 LabelSlot.args = {
   name: "LabelSlot",
   slotTemplate: `
-    <template #label>
-      <URow gap="2xs" align="center">
-        <UText>Select your <ULink label="notification preferences" /></UText>
-        <UIcon name="notifications" size="xs" />
-      </URow>
+    <template #label="{ label }">
+      {{ label }}
+      <span class="text-red-500">*</span>
     </template>
   `,
+};
+
+export const CustomKeys: StoryFn<UCheckboxGroupArgs> = (args: UCheckboxGroupArgs) => ({
+  components: { UCheckboxGroup, UCol, UAlert },
+  setup: () => ({ args, modelValue: ref([]) }),
+  template: `
+    <UCol>
+      <UCheckboxGroup v-bind="args" v-model="modelValue" />
+
+      <UAlert
+        :description="modelValue"
+        size="sm"
+        variant="soft"
+        color="success"
+        bordered
+      />
+    </UCol>
+  `,
+});
+CustomKeys.args = {
+  name: "CustomKeys",
+  label: "Select your preferred features:",
+  labelKey: "name",
+  valueKey: "value",
+  options: [
+    { value: 1, name: "Dark Mode" },
+    { value: 2, name: "Auto-save" },
+    { value: 3, name: "Notifications" },
+    { value: 4, name: "Two-factor Authentication" },
+  ],
+};
+CustomKeys.parameters = {
+  docs: {
+    description: {
+      story:
+        "Use `labelKey` and `valueKey` props to specify custom keys for label and value in option objects. " +
+        "This is useful when working with data from APIs that use different property names.",
+    },
+  },
 };

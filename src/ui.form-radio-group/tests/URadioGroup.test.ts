@@ -10,9 +10,9 @@ import type { Props } from "../types";
 
 describe("URadioGroup.vue", () => {
   const defaultOptions = [
-    { label: "Email Notifications", value: "email" },
-    { label: "SMS Alerts", value: "sms" },
-    { label: "Push Notifications", value: "push" },
+    { label: "Email Notifications", id: "email" },
+    { label: "SMS Alerts", id: "sms" },
+    { label: "Push Notifications", id: "push" },
   ];
   const defaultName = "test-group";
 
@@ -31,7 +31,7 @@ describe("URadioGroup.vue", () => {
 
       radios.forEach((radio, index) => {
         expect(radio.props("label")).toBe(defaultOptions[index].label);
-        expect(radio.props("value")).toBe(defaultOptions[index].value);
+        expect(radio.props("value")).toBe(defaultOptions[index].id);
       });
     });
 
@@ -193,6 +193,74 @@ describe("URadioGroup.vue", () => {
       component.findAllComponents(URadio).forEach((radio, idx) => {
         expect(radio.attributes("data-test")).toBe(`${dataTestValue}-item-${idx}-label`);
       });
+    });
+
+    it("LabelKey – uses custom label key for option labels", () => {
+      const customOptions = [
+        { id: 1, name: "Option 1" },
+        { id: 2, name: "Option 2" },
+        { id: 3, name: "Option 3" },
+      ];
+
+      const component = mount(URadioGroup, {
+        props: {
+          name: defaultName,
+          options: customOptions,
+          labelKey: "name",
+        },
+      });
+
+      const radios = component.findAllComponents(URadio);
+
+      radios.forEach((radio, index) => {
+        expect(radio.props("label")).toBe(customOptions[index].name);
+      });
+    });
+
+    it("ValueKey – uses custom value key for option values", () => {
+      const customOptions = [
+        { optionId: 1, name: "Option 1" },
+        { optionId: 2, name: "Option 2" },
+        { optionId: 3, name: "Option 3" },
+      ];
+
+      const component = mount(URadioGroup, {
+        props: {
+          name: defaultName,
+          options: customOptions,
+          valueKey: "optionId",
+        },
+      });
+
+      const radios = component.findAllComponents(URadio);
+
+      radios.forEach((radio, index) => {
+        expect(radio.props("value")).toBe(customOptions[index].optionId);
+      });
+    });
+
+    it("LabelKey and ValueKey – works with complex objects", async () => {
+      const customOptions = [
+        { planId: "basic", title: "Basic Plan" },
+        { planId: "pro", title: "Pro Plan" },
+      ];
+
+      const component = mount(URadioGroup, {
+        props: {
+          name: defaultName,
+          options: customOptions,
+          labelKey: "title",
+          valueKey: "planId",
+          modelValue: "",
+        },
+      });
+
+      const radios = component.findAllComponents(URadio);
+
+      expect(radios[0].props("label")).toBe("Basic Plan");
+      expect(radios[0].props("value")).toBe("basic");
+      expect(radios[1].props("label")).toBe("Pro Plan");
+      expect(radios[1].props("value")).toBe("pro");
     });
   });
 
