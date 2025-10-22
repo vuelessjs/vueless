@@ -53,7 +53,7 @@ export default /*tw*/ {
   defaults: {
     size: "md",
     labelKey: "label",
-    valueKey: "id",
+    valueKey: "value",
     animationDuration: 200,
     /* icons */
     dragIcon: "drag_indicator",

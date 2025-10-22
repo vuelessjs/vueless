@@ -10,21 +10,21 @@ import type { Props, DataListItem } from "../types";
 
 describe("UDataList.vue", () => {
   const defaultList: DataListItem[] = [
-    { id: 1, label: "Item 1" },
-    { id: 2, label: "Item 2", crossed: true },
-    { id: 3, label: "Item 3", actions: false },
+    { value: 1, label: "Item 1" },
+    { value: 2, label: "Item 2", crossed: true },
+    { value: 3, label: "Item 3", actions: false },
   ];
 
   const nestedList: DataListItem[] = [
     {
-      id: 1,
+      value: 1,
       label: "Parent 1",
       children: [
-        { id: 11, label: "Child 1.1" },
-        { id: 12, label: "Child 1.2" },
+        { value: 11, label: "Child 1.1" },
+        { value: 12, label: "Child 1.2" },
       ],
     },
-    { id: 2, label: "Parent 2" },
+    { value: 2, label: "Parent 2" },
   ];
 
   describe("Props", () => {
