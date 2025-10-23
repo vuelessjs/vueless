@@ -91,7 +91,7 @@ describe("UAccordionItem", () => {
         },
       });
 
-      expect(component.find(`[id="description-${id}"]`).exists()).toBe(true);
+      expect(component.find(`[vl-key='description']`).exists()).toBe(true);
     });
 
     // DataTest prop
@@ -381,13 +381,13 @@ describe("UAccordionItem", () => {
         },
       });
 
-      expect(component.find("[id^='description-']").classes()).not.toContain("opacity-100");
+      expect(component.find("[vl-key='description']").classes()).not.toContain("opacity-100");
 
       await component.find(`.${slotClass}`).trigger("click");
-      expect(component.find("[id^='description-']").classes()).toContain("opacity-100");
+      expect(component.find("[vl-key='description']").classes()).toContain("opacity-100");
 
       await component.find(`.${slotClass}`).trigger("click");
-      expect(component.find("[id^='description-']").classes()).not.toContain("opacity-100");
+      expect(component.find("[vl-key='description']").classes()).not.toContain("opacity-100");
     });
 
     it("description slot content is always visible when slot is provided", () => {
@@ -461,7 +461,7 @@ describe("UAccordionItem", () => {
         },
       });
 
-      const descriptionElement = component.find("[id^='description-']");
+      const descriptionElement = component.find("[vl-key='description']");
 
       // Initially not opened
       expect(descriptionElement.classes()).not.toContain(openedClass);

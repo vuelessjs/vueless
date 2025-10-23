@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { useTemplateRef, computed, useId, useSlots } from "vue";
 
-import useUI from "../composables/useUI";
+import { useUI } from "../composables/useUI";
 import { hasSlotContent } from "../utils/helper";
 import { getDefaults } from "../utils/ui";
 

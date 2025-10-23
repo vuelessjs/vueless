@@ -194,6 +194,74 @@ describe("URadioGroup.vue", () => {
         expect(radio.attributes("data-test")).toBe(`${dataTestValue}-item-${idx}-label`);
       });
     });
+
+    it("LabelKey – uses custom label key for option labels", () => {
+      const customOptions = [
+        { value: "option-1", name: "Option 1" },
+        { value: "option-2", name: "Option 2" },
+        { value: "option-3", name: "Option 3" },
+      ];
+
+      const component = mount(URadioGroup, {
+        props: {
+          name: defaultName,
+          options: customOptions,
+          labelKey: "name",
+        },
+      });
+
+      const radios = component.findAllComponents(URadio);
+
+      radios.forEach((radio, index) => {
+        expect(radio.props("label")).toBe(customOptions[index].name);
+      });
+    });
+
+    it("ValueKey – uses custom value key for option values", () => {
+      const customOptions = [
+        { id: "option-1", label: "Option 1" },
+        { id: "option-2", label: "Option 2" },
+        { id: "option-3", label: "Option 3" },
+      ];
+
+      const component = mount(URadioGroup, {
+        props: {
+          name: defaultName,
+          options: customOptions,
+          valueKey: "id",
+        },
+      });
+
+      const radios = component.findAllComponents(URadio);
+
+      radios.forEach((radio, index) => {
+        expect(radio.props("value")).toBe(customOptions[index].id);
+      });
+    });
+
+    it("LabelKey and ValueKey – works with complex objects", async () => {
+      const customOptions = [
+        { planId: "basic", title: "Basic Plan" },
+        { planId: "pro", title: "Pro Plan" },
+      ];
+
+      const component = mount(URadioGroup, {
+        props: {
+          name: defaultName,
+          options: customOptions,
+          labelKey: "title",
+          valueKey: "planId",
+          modelValue: "",
+        },
+      });
+
+      const radios = component.findAllComponents(URadio);
+
+      expect(radios[0].props("label")).toBe("Basic Plan");
+      expect(radios[0].props("value")).toBe("basic");
+      expect(radios[1].props("label")).toBe("Pro Plan");
+      expect(radios[1].props("value")).toBe("pro");
+    });
   });
 
   describe("Slots", () => {

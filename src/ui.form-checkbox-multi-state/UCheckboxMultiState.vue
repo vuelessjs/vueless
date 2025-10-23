@@ -2,7 +2,7 @@
 import { computed, ref, watchEffect } from "vue";
 import { cloneDeep } from "../utils/helper";
 
-import useUI from "../composables/useUI";
+import { useUI } from "../composables/useUI";
 import { getDefaults } from "../utils/ui";
 
 import UCheckbox from "../ui.form-checkbox/UCheckbox.vue";

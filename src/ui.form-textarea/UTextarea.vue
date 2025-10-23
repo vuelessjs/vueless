@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { computed, nextTick, onMounted, ref, watch, useSlots, useId, useTemplateRef } from "vue";
 
-import useUI from "../composables/useUI";
+import { useUI } from "../composables/useUI";
 import { getDefaults } from "../utils/ui";
 import { hasSlotContent } from "../utils/helper";
 
@@ -63,7 +63,7 @@ const elementId = props.id || useId();
 const textareaRef = useTemplateRef<HTMLTextAreaElement>("textarea");
 const labelComponentRef = useTemplateRef<InstanceType<typeof ULabel>>("labelComponent");
 const leftSlotWrapperRef = useTemplateRef<HTMLDivElement>("leftSlotWrapper");
-const wrapperRef = useTemplateRef<HTMLLabelElement>("wrapper");
+const wrapperRef = useTemplateRef<HTMLDivElement>("wrapper");
 
 const currentRows = ref(Number(props.rows));
 
@@ -192,10 +192,14 @@ function onMousedown() {
   emit("mousedown");
 }
 
+function onSlotClick() {
+  textareaRef.value?.focus();
+}
+
 defineExpose({
   /**
    * A reference to the component's wrapper element for direct DOM manipulation.
-   * @property {HTMLLabelElement}
+   * @property {HTMLDivElement}
    */
   wrapperRef,
 
@@ -246,12 +250,13 @@ const {
       <slot name="label" :label="label" />
     </template>
 
-    <label ref="wrapper" :for="elementId" v-bind="wrapperAttrs">
+    <div ref="wrapper" v-bind="wrapperAttrs">
       <span
         v-if="hasSlotContent($slots['left'])"
         ref="leftSlotWrapper"
         :for="elementId"
         v-bind="leftSlotAttrs"
+        @click="onSlotClick"
       >
         <!-- @slot Use it to add something before the text. -->
         <slot name="left" />
@@ -277,10 +282,15 @@ const {
         @click="onClick"
       />
 
-      <span v-if="hasSlotContent($slots['right'])" :for="elementId" v-bind="rightSlotAttrs">
+      <span
+        v-if="hasSlotContent($slots['right'])"
+        :for="elementId"
+        v-bind="rightSlotAttrs"
+        @click="onSlotClick"
+      >
         <!-- @slot Use it to add something after the text. -->
         <slot name="right" />
       </span>
-    </label>
+    </div>
   </ULabel>
 </template>

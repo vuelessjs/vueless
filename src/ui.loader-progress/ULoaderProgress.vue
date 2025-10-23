@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { computed, watch, ref, useTemplateRef, onBeforeMount, onBeforeUnmount } from "vue";
 
-import useUI from "../composables/useUI";
+import { useUI } from "../composables/useUI";
 import { getDefaults } from "../utils/ui";
 import { getRequestWithoutQuery } from "../utils/requestQueue";
 

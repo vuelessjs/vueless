@@ -138,7 +138,7 @@ export default /*tw*/ {
     size: "md",
     labelAlign: "topInside",
     openDirection: "auto",
-    valueKey: "id",
+    valueKey: "value",
     labelKey: "label",
     groupLabelKey: "label",
     multipleVariant: "inline",

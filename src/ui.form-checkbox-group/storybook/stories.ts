@@ -108,7 +108,7 @@ export const Options: StoryFn<UCheckboxGroupArgs> = (args: UCheckboxGroupArgs) =
       <UAlert
         :description="modelValue"
         size="sm"
-        variant="ghost"
+        variant="soft"
         color="success"
         bordered
       />
@@ -121,7 +121,7 @@ Options.args = {
     { label: "String", value: "Subscribed" },
     { label: "Number", value: 42 },
     { label: "Boolean", value: true },
-    { label: "Object", value: { id: 101, status: "active" } },
+    { label: "Object", value: { value: 101, status: "active" } },
     { label: "Array", value: ["Admin", "Editor"] },
   ],
 };
@@ -144,11 +144,48 @@ export const LabelSlot = DefaultTemplate.bind({});
 LabelSlot.args = {
   name: "LabelSlot",
   slotTemplate: `
-    <template #label>
-      <URow gap="2xs" align="center">
-        <UText>Select your <ULink label="notification preferences" /></UText>
-        <UIcon name="notifications" size="xs" />
-      </URow>
+    <template #label="{ label }">
+      {{ label }}
+      <span class="text-red-500">*</span>
     </template>
   `,
+};
+
+export const CustomKeys: StoryFn<UCheckboxGroupArgs> = (args: UCheckboxGroupArgs) => ({
+  components: { UCheckboxGroup, UCol, UAlert },
+  setup: () => ({ args, modelValue: ref([]) }),
+  template: `
+    <UCol>
+      <UCheckboxGroup v-bind="args" v-model="modelValue" />
+
+      <UAlert
+        :description="modelValue"
+        size="sm"
+        variant="soft"
+        color="success"
+        bordered
+      />
+    </UCol>
+  `,
+});
+CustomKeys.args = {
+  name: "CustomKeys",
+  label: "Select your preferred features:",
+  labelKey: "name",
+  valueKey: "id",
+  options: [
+    { id: "dark-mode", name: "Dark Mode" },
+    { id: "auto-save", name: "Auto-save" },
+    { id: "notifications", name: "Notifications" },
+    { id: "two-factor", name: "Two-factor Authentication" },
+  ],
+};
+CustomKeys.parameters = {
+  docs: {
+    description: {
+      story:
+        "Use `labelKey` and `valueKey` props to specify custom keys for label and value in option objects. " +
+        "This is useful when working with data from APIs that use different property names.",
+    },
+  },
 };

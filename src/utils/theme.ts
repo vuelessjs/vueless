@@ -45,6 +45,7 @@ import type {
   NeutralColors,
   PrimaryColors,
   ThemeConfig,
+  ColorShades,
   ThemeConfigText,
   ThemeConfigOutline,
   ThemeConfigRounding,
@@ -359,6 +360,40 @@ export function normalizeThemeConfig(theme: any): MergedThemeConfig {
   };
 }
 
+function isColorShadesObject(color: unknown): color is Partial<ColorShades> {
+  return typeof color === "object" && color !== null && !Array.isArray(color);
+}
+
+function validateColorShades(color: Partial<ColorShades>, colorType: string) {
+  const validShades = COLOR_SHADES;
+  const providedShades = Object.keys(color);
+
+  const invalidShades = providedShades.filter((shade) => !validShades.includes(Number(shade)));
+  const missingShades = validShades.filter((shade) => !(String(shade) in color));
+
+  if (invalidShades.length > 0) {
+    const invalidShadesStr = invalidShades.join(", ");
+    const validShadesStr = validShades.join(", ");
+
+    // eslint-disable-next-line no-console
+    console.warn(
+      `[vueless] Invalid shade keys found in ${colorType} color object: ${invalidShadesStr}. ` +
+        `Valid shades are: ${validShadesStr}.`,
+    );
+  }
+
+  if (missingShades.length > 0) {
+    const missingShadesStr = missingShades.join(", ");
+    const validShadesStr = validShades.join(", ");
+
+    // eslint-disable-next-line no-console
+    console.warn(
+      `[vueless] Missing shade keys in ${colorType} color object: ${missingShadesStr}. ` +
+        `All shades (${validShadesStr}) should be defined.`,
+    );
+  }
+}
+
 /**
  * Determines if the provided color mode configuration has a primary color
  * that differs from the default color mode configuration.
@@ -377,13 +412,35 @@ function hasPrimaryColor(
 
 /**
  * Retrieve primary color value and save them to cookie and localStorage.
- * @return string - primary color.
+ * @return string | Partial<ColorShades> - primary color.
  */
 function getPrimaryColor(primary?: PrimaryColors) {
   const storageKey = `vl-${PRIMARY_COLOR}`;
 
+  const storedValue = getStored(storageKey);
+  let parsedStoredValue: PrimaryColors | undefined;
+
+  if (storedValue) {
+    try {
+      parsedStoredValue = JSON.parse(storedValue);
+    } catch {
+      parsedStoredValue = storedValue;
+    }
+  }
+
   let primaryColor: PrimaryColors =
-    primary ?? getStored(storageKey) ?? vuelessConfig.primary ?? DEFAULT_PRIMARY_COLOR;
+    primary ?? parsedStoredValue ?? vuelessConfig.primary ?? DEFAULT_PRIMARY_COLOR;
+
+  if (isColorShadesObject(primaryColor)) {
+    validateColorShades(primaryColor, PRIMARY_COLOR);
+
+    if (isCSR && primary) {
+      setCookie(storageKey, JSON.stringify(primaryColor));
+      localStorage.setItem(storageKey, JSON.stringify(primaryColor));
+    }
+
+    return primaryColor;
+  }
 
   const isPrimaryColor =
     PRIMARY_COLORS.some((color) => color === primaryColor) || primaryColor === GRAYSCALE_COLOR;
@@ -405,13 +462,35 @@ function getPrimaryColor(primary?: PrimaryColors) {
 
 /**
  * Retrieve neutral color value and save them to cookie and localStorage.
- * @return string - neutral color.
+ * @return string | Partial<ColorShades> - neutral color.
  */
 function getNeutralColor(neutral?: NeutralColors) {
   const storageKey = `vl-${NEUTRAL_COLOR}`;
 
+  const storedValue = getStored(storageKey);
+  let parsedStoredValue: NeutralColors | undefined;
+
+  if (storedValue) {
+    try {
+      parsedStoredValue = JSON.parse(storedValue);
+    } catch {
+      parsedStoredValue = storedValue;
+    }
+  }
+
   let neutralColor: NeutralColors =
-    neutral ?? getStored(storageKey) ?? vuelessConfig.neutral ?? DEFAULT_NEUTRAL_COLOR;
+    neutral ?? parsedStoredValue ?? vuelessConfig.neutral ?? DEFAULT_NEUTRAL_COLOR;
+
+  if (isColorShadesObject(neutralColor)) {
+    validateColorShades(neutralColor, NEUTRAL_COLOR);
+
+    if (isCSR && neutral) {
+      setCookie(storageKey, JSON.stringify(neutralColor));
+      localStorage.setItem(storageKey, JSON.stringify(neutralColor));
+    }
+
+    return neutralColor;
+  }
 
   const isNeutralColor = NEUTRAL_COLORS.some((color) => color === neutralColor);
 
@@ -733,14 +812,34 @@ export function setRootCSSVariables(vars: MergedThemeConfig) {
     "--vl-disabled-opacity": `${vars.disabledOpacity}%`,
   };
 
-  for (const shade of COLOR_SHADES) {
-    variables[`--vl-${PRIMARY_COLOR}-${shade}` as keyof VuelessCssVariables] =
-      `var(--color-${vars.primary}-${shade})`;
+  if (isColorShadesObject(vars.primary)) {
+    for (const shade of COLOR_SHADES) {
+      const shadeValue = vars.primary[shade as keyof ColorShades];
+
+      if (shadeValue) {
+        variables[`--vl-${PRIMARY_COLOR}-${shade}` as keyof VuelessCssVariables] = shadeValue;
+      }
+    }
+  } else {
+    for (const shade of COLOR_SHADES) {
+      variables[`--vl-${PRIMARY_COLOR}-${shade}` as keyof VuelessCssVariables] =
+        `var(--color-${vars.primary}-${shade})`;
+    }
   }
 
-  for (const shade of COLOR_SHADES) {
-    variables[`--vl-${NEUTRAL_COLOR}-${shade}` as keyof VuelessCssVariables] =
-      `var(--color-${vars.neutral}-${shade})`;
+  if (isColorShadesObject(vars.neutral)) {
+    for (const shade of COLOR_SHADES) {
+      const shadeValue = vars.neutral[shade as keyof ColorShades];
+
+      if (shadeValue) {
+        variables[`--vl-${NEUTRAL_COLOR}-${shade}` as keyof VuelessCssVariables] = shadeValue;
+      }
+    }
+  } else {
+    for (const shade of COLOR_SHADES) {
+      variables[`--vl-${NEUTRAL_COLOR}-${shade}` as keyof VuelessCssVariables] =
+        `var(--color-${vars.neutral}-${shade})`;
+    }
   }
 
   const [light, dark] = generateCSSColorVariables(vars.lightTheme ?? {}, vars.darkTheme ?? {});
@@ -799,10 +898,21 @@ function setCSSVariables(
   `;
 
   if (isCSR) {
-    const style = document.createElement("style");
+    const vuelessStyleId = "vueless-theme-tokens";
+    let style = document.getElementById(vuelessStyleId) as HTMLStyleElement | null;
+
+    if (!style) {
+      style = document.createElement("style");
+      style.id = vuelessStyleId;
+
+      const firstStyleOrLink = document.querySelector("link[rel='stylesheet'], style");
+
+      firstStyleOrLink && firstStyleOrLink.parentNode
+        ? firstStyleOrLink.parentNode.insertBefore(style, firstStyleOrLink)
+        : document.head.appendChild(style);
+    }
 
     style.innerHTML = rootVariables;
-    document.head.appendChild(style);
   }
 
   return rootVariables;

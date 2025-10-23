@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { useId, ref, computed, watchEffect, useTemplateRef } from "vue";
 
-import useUI from "../composables/useUI";
+import { useUI } from "../composables/useUI";
 import { getDefaults } from "../utils/ui";
 import { createDebounce } from "../utils/helper";
 

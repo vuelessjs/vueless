@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { computed, inject, toValue, useTemplateRef } from "vue";
 
-import useUI from "../composables/useUI";
+import { useUI } from "../composables/useUI";
 import { getDefaults } from "../utils/ui";
 import UButton from "../ui.button/UButton.vue";
 

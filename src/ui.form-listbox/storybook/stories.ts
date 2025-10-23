@@ -37,11 +37,11 @@ export default {
   component: UListbox,
   args: {
     options: [
-      { label: "New York", id: 1 },
-      { label: "Los Angeles", id: 2 },
-      { label: "Chicago", id: 3 },
-      { label: "Houston", id: 4 },
-      { label: "San Francisco", id: 5 },
+      { label: "New York", value: 1 },
+      { label: "Los Angeles", value: 2 },
+      { label: "Chicago", value: 3 },
+      { label: "Houston", value: 4 },
+      { label: "San Francisco", value: 5 },
     ],
   },
   argTypes: {
@@ -176,12 +176,12 @@ GroupedOptions.parameters = {
 export const Divider = DefaultTemplate.bind({});
 Divider.args = {
   options: [
-    { label: "North America", id: "1" },
-    { label: "South America", id: "2" },
+    { label: "North America", value: "1" },
+    { label: "South America", value: "2" },
     { divider: true },
-    { label: "Europe", id: "3" },
+    { label: "Europe", value: "3" },
     { divider: true },
-    { label: "Asia", id: "4" },
+    { label: "Asia", value: "4" },
   ],
 };
 Divider.parameters = {
@@ -198,12 +198,12 @@ export const OptionSettings = DefaultTemplate.bind({});
 OptionSettings.args = {
   multiple: true,
   options: [
-    { label: "New York", id: "1", disabled: true },
-    { label: "Kyiv", id: "2", disabled: true },
-    { label: "Los Angeles", id: "3", isHidden: true },
+    { label: "New York", value: "1", disabled: true },
+    { label: "Kyiv", value: "2", disabled: true },
+    { label: "Los Angeles", value: "3", isHidden: true },
     {
       label: "Chicago",
-      id: "4",
+      value: "4",
       onClick: (option: Option) =>
         alert("onClick function for the third option: " + JSON.stringify(option)),
     },
@@ -244,7 +244,7 @@ export const OptionSlots: StoryFn<DefaultUListboxArgs> = (args) => ({
         :options="[
           {
             label: 'John Doe',
-            id: '1',
+            value: '1',
             role: 'Developer',
             avatar: johnDoe,
             status: 'online',
@@ -252,7 +252,7 @@ export const OptionSlots: StoryFn<DefaultUListboxArgs> = (args) => ({
           },
           {
             label: 'Jane Smith',
-            id: '2',
+            value: '2',
             role: 'Designer',
             avatar: emilyDavis,
             status: 'away',
@@ -260,7 +260,7 @@ export const OptionSlots: StoryFn<DefaultUListboxArgs> = (args) => ({
           },
           {
             label: 'Mike Johnson',
-            id: '3',
+            value: '3',
             role: 'Product Manager',
             avatar: alexJohnson,
             status: 'offline',
@@ -268,7 +268,7 @@ export const OptionSlots: StoryFn<DefaultUListboxArgs> = (args) => ({
           },
           {
             label: 'Sarah Wilson',
-            id: '4',
+            value: '4',
             role: 'QA Engineer',
             avatar: patMorgan,
             status: 'online',
@@ -287,7 +287,7 @@ export const OptionSlots: StoryFn<DefaultUListboxArgs> = (args) => ({
         :options="[
           {
             label: 'John Doe',
-            id: '1',
+            value: '1',
             role: 'Developer',
             avatar: johnDoe,
             status: 'online',
@@ -295,7 +295,7 @@ export const OptionSlots: StoryFn<DefaultUListboxArgs> = (args) => ({
           },
           {
             label: 'Jane Smith',
-            id: '2',
+            value: '2',
             role: 'Designer',
             avatar: emilyDavis,
             status: 'away',
@@ -303,7 +303,7 @@ export const OptionSlots: StoryFn<DefaultUListboxArgs> = (args) => ({
           },
           {
             label: 'Mike Johnson',
-            id: '3',
+            value: '3',
             role: 'Product Manager',
             avatar: alexJohnson,
             status: 'offline',
@@ -311,7 +311,7 @@ export const OptionSlots: StoryFn<DefaultUListboxArgs> = (args) => ({
           },
           {
             label: 'Sarah Wilson',
-            id: '4',
+            value: '4',
             role: 'QA Engineer',
             avatar: patMorgan,
             status: 'online',
@@ -341,7 +341,7 @@ export const OptionSlots: StoryFn<DefaultUListboxArgs> = (args) => ({
         :options="[
           {
             label: 'John Doe',
-            id: '1',
+            value: '1',
             role: 'Developer',
             avatar: johnDoe,
             status: 'online',
@@ -349,7 +349,7 @@ export const OptionSlots: StoryFn<DefaultUListboxArgs> = (args) => ({
           },
           {
             label: 'Jane Smith',
-            id: '2',
+            value: '2',
             role: 'Designer',
             avatar: emilyDavis,
             status: 'away',
@@ -357,7 +357,7 @@ export const OptionSlots: StoryFn<DefaultUListboxArgs> = (args) => ({
           },
           {
             label: 'Mike Johnson',
-            id: '3',
+            value: '3',
             role: 'Product Manager',
             avatar: alexJohnson,
             status: 'offline',
@@ -365,7 +365,7 @@ export const OptionSlots: StoryFn<DefaultUListboxArgs> = (args) => ({
           },
           {
             label: 'Sarah Wilson',
-            id: '4',
+            value: '4',
             role: 'QA Engineer',
             avatar: patMorgan,
             status: 'online',

@@ -185,6 +185,71 @@ describe("UCheckboxGroup.vue", () => {
         expect(checkbox.attributes("data-test")).toBe(`${dataTestValue}-item-${idx}-label`);
       });
     });
+
+    it("LabelKey – uses custom label key for option labels", () => {
+      const customOptions = [
+        { value: "option-1", name: "Option 1" },
+        { value: "option-2", name: "Option 2" },
+        { value: "option-3", name: "Option 3" },
+      ];
+
+      const component = mount(UCheckboxGroup, {
+        props: {
+          options: customOptions,
+          labelKey: "name",
+        },
+      });
+
+      const checkboxes = component.findAllComponents(UCheckbox);
+
+      checkboxes.forEach((checkbox, index) => {
+        expect(checkbox.props("label")).toBe(customOptions[index].name);
+      });
+    });
+
+    it("ValueKey – uses custom value key for option values", () => {
+      const customOptions = [
+        { id: "option-1", label: "Option 1" },
+        { id: "option-2", label: "Option 2" },
+        { id: "option-3", label: "Option 3" },
+      ];
+
+      const component = mount(UCheckboxGroup, {
+        props: {
+          options: customOptions,
+          valueKey: "id",
+        },
+      });
+
+      const checkboxes = component.findAllComponents(UCheckbox);
+
+      checkboxes.forEach((checkbox, index) => {
+        expect(checkbox.props("value")).toBe(customOptions[index].id);
+      });
+    });
+
+    it("LabelKey and ValueKey – works with complex objects", async () => {
+      const customOptions = [
+        { planId: "basic", title: "Basic Plan" },
+        { planId: "pro", title: "Pro Plan" },
+      ];
+
+      const component = mount(UCheckboxGroup, {
+        props: {
+          options: customOptions,
+          labelKey: "title",
+          valueKey: "planId",
+          modelValue: [],
+        },
+      });
+
+      const checkboxes = component.findAllComponents(UCheckbox);
+
+      expect(checkboxes[0].props("label")).toBe("Basic Plan");
+      expect(checkboxes[0].props("value")).toBe("basic");
+      expect(checkboxes[1].props("label")).toBe("Pro Plan");
+      expect(checkboxes[1].props("value")).toBe("pro");
+    });
   });
 
   describe("Slots", () => {

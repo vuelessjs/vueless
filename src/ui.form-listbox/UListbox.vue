@@ -2,7 +2,7 @@
 import { watch, computed, useId, ref, useTemplateRef, nextTick } from "vue";
 import { isEqual } from "lodash-es";
 
-import useUI from "../composables/useUI";
+import { useUI } from "../composables/useUI";
 import { getDefaults } from "../utils/ui";
 import { isMac } from "../utils/platform";
 import { filterOptions, filterGroups } from "./utilListbox";
@@ -109,6 +109,19 @@ const selectedValue = computed({
 const addOptionKeyCombination = computed(() => {
   return isMac ? "(⌘ + Enter)" : "(Ctrl + Enter)";
 });
+
+const listboxAriaMultiselectable = computed(() => props.multiple || undefined);
+
+const listboxAriaActivedescendant = computed(() =>
+  pointer.value >= 0 ? `${elementId}-${pointer.value}` : undefined,
+);
+
+const getOptionAriaSelected = (option: Option) => {
+  if (option && option.groupLabel) return undefined;
+  if (option.divider) return undefined;
+
+  return !!isSelectedOption(option);
+};
 
 const filteredOptions = computed(() => {
   const normalizedSearch = searchModel.value.toLowerCase().trim();
@@ -338,6 +351,12 @@ function onInputSearchBlur(event: FocusEvent) {
 
 defineExpose({
   /**
+   * Current pointer index value.
+   * @property {Ref<number>}
+   */
+  pointer,
+
+  /**
    * Allows setting the pointer to a specific index.
    * @property {Function}
    */
@@ -442,14 +461,20 @@ const {
       @update:model-value="onSearchChange"
     />
 
-    <ul :id="`listbox-${elementId}`" v-bind="listAttrs" role="listbox">
+    <ul
+      v-bind="listAttrs"
+      role="listbox"
+      :aria-multiselectable="listboxAriaMultiselectable"
+      :aria-activedescendant="listboxAriaActivedescendant"
+    >
       <li
         v-for="(option, index) of filteredOptions"
-        :id="`${elementId}-${index}`"
         :key="index"
         v-bind="listItemAttrs"
         ref="option"
         :role="!(option && option.groupLabel) ? 'option' : undefined"
+        :aria-selected="getOptionAriaSelected(option)"
+        :aria-disabled="Boolean(option.disabled) || undefined"
         :data-group-label="Boolean(option.groupLabel)"
       >
         <UDivider v-if="option.divider" v-bind="optionDividerAttrs" />
@@ -505,10 +530,18 @@ const {
 
         <!-- group title -->
         <template v-if="option && (option.groupLabel || option.isSubGroup) && !option.isHidden">
-          <div v-if="option.groupLabel" v-bind="groupAttrs" v-text="option.groupLabel" />
+          <div
+            v-if="option.groupLabel"
+            role="group"
+            :aria-label="option.groupLabel"
+            v-bind="groupAttrs"
+            v-text="option.groupLabel"
+          />
 
           <div
             v-else-if="option.isSubGroup"
+            role="group"
+            :aria-label="String(option[labelKey])"
             :style="getMarginForSubCategory(option.level)"
             v-bind="subGroupAttrs"
             v-text="option[labelKey]"
@@ -516,13 +549,7 @@ const {
         </template>
       </li>
 
-      <li
-        v-if="!filteredOptions.length"
-        :id="`${elementId}-empty`"
-        ref="empty-option"
-        role="option"
-        v-bind="optionAttrs"
-      >
+      <li v-if="!filteredOptions.length" ref="empty-option" role="option" v-bind="optionAttrs">
         <!-- @slot Use it to add something instead of empty state. -->
         <slot name="empty">
           <span v-bind="optionContentAttrs" v-text="localeMessages.noDataToShow" />
@@ -532,7 +559,6 @@ const {
       <!-- Add button -->
       <template v-if="addOption">
         <li
-          :id="`${elementId}-addOption`"
           ref="add-option"
           role="option"
           v-bind="addOptionLabelWrapperAttrs"

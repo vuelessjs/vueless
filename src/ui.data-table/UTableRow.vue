@@ -7,7 +7,7 @@ import { PX_IN_REM } from "../constants";
 import { mapRowColumns } from "./utilTable";
 
 import { useMutationObserver } from "../composables/useMutationObserver";
-import useUI from "../composables/useUI";
+import { useUI } from "../composables/useUI";
 
 import UIcon from "../ui.image-icon/UIcon.vue";
 import UCheckbox from "../ui.form-checkbox/UCheckbox.vue";

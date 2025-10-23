@@ -32,10 +32,10 @@ export { createVuelessAdapter } from "./adapter.locale/vueless";
 export { createVueI18nAdapter } from "./adapter.locale/vue-i18n";
 /* composables */
 export { useLocale } from "./composables/useLocale";
-export { default as useUI } from "./composables/useUI";
+export { useUI } from "./composables/useUI";
 export { useDarkMode } from "./composables/useDarkMode";
 export { useRequestQueue } from "./composables/useRequestQueue";
-export { default as useBreakpoint } from "./composables/useBreakpoint";
+export { useBreakpoint } from "./composables/useBreakpoint";
 export { useLoaderOverlay } from "./ui.loader-overlay/useLoaderOverlay";
 export { useLoaderProgress } from "./ui.loader-progress/useLoaderProgress";
 export { useMutationObserver } from "./composables/useMutationObserver";
@@ -87,7 +87,7 @@ export { default as URadioGroup } from "./ui.form-radio-group/URadioGroup.vue";
 export { default as UCalendar } from "./ui.form-calendar/UCalendar.vue";
 export { default as UDatePicker } from "./ui.form-date-picker/UDatePicker.vue";
 export { default as UDatePickerRange } from "./ui.form-date-picker-range/UDatePickerRange.vue";
-export { default as UColorPicker } from "./ui.form-color-picker/UColorPicker.vue";
+export { default as UColorToggle } from "./ui.form-color-toggle/UColorToggle.vue";
 export { default as ULabel } from "./ui.form-label/ULabel.vue";
 /* Text & Content */
 export { default as UHeader } from "./ui.text-header/UHeader.vue";
@@ -155,8 +155,11 @@ export type {
   CreateVuelessOptions,
   /* Color and theme types */
   StateColors,
+  ColorShades,
   PrimaryColors,
   NeutralColors,
+  PrimaryColorName,
+  NeutralColorName,
   VuelessCssVariables,
   /* Component and Directive types */
   Directives,

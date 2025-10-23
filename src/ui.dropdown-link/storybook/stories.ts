@@ -40,9 +40,9 @@ export default {
   args: {
     label: "Account",
     options: [
-      { label: "Profile", id: "profile" },
-      { label: "Settings", id: "settings" },
-      { label: "Logout", id: "logout" },
+      { label: "Profile", value: "profile" },
+      { label: "Settings", value: "settings" },
+      { label: "Logout", value: "logout" },
     ],
   },
   argTypes: {
@@ -331,7 +331,7 @@ export const OptionSlots: StoryFn<DefaultUDropdownLinkArgs> = (args) => ({
         :options="[
           {
             label: 'John Doe',
-            id: '1',
+            value: '1',
             role: 'Developer',
             avatar: johnDoe,
             status: 'online',
@@ -339,7 +339,7 @@ export const OptionSlots: StoryFn<DefaultUDropdownLinkArgs> = (args) => ({
           },
           {
             label: 'Jane Smith',
-            id: '2',
+            value: '2',
             role: 'Designer',
             avatar: emilyDavis,
             status: 'away',
@@ -347,7 +347,7 @@ export const OptionSlots: StoryFn<DefaultUDropdownLinkArgs> = (args) => ({
           },
           {
             label: 'Mike Johnson',
-            id: '3',
+            value: '3',
             role: 'Product Manager',
             avatar: alexJohnson,
             status: 'offline',
@@ -355,7 +355,7 @@ export const OptionSlots: StoryFn<DefaultUDropdownLinkArgs> = (args) => ({
           },
           {
             label: 'Sarah Wilson',
-            id: '4',
+            value: '4',
             role: 'QA Engineer',
             avatar: patMorgan,
             status: 'online',
@@ -374,7 +374,7 @@ export const OptionSlots: StoryFn<DefaultUDropdownLinkArgs> = (args) => ({
         :options="[
           {
             label: 'John Doe',
-            id: '1',
+            value: '1',
             role: 'Developer',
             avatar: johnDoe,
             status: 'online',
@@ -382,7 +382,7 @@ export const OptionSlots: StoryFn<DefaultUDropdownLinkArgs> = (args) => ({
           },
           {
             label: 'Jane Smith',
-            id: '2',
+            value: '2',
             role: 'Designer',
             avatar: emilyDavis,
             status: 'away',
@@ -390,7 +390,7 @@ export const OptionSlots: StoryFn<DefaultUDropdownLinkArgs> = (args) => ({
           },
           {
             label: 'Mike Johnson',
-            id: '3',
+            value: '3',
             role: 'Product Manager',
             avatar: alexJohnson,
             status: 'offline',
@@ -398,7 +398,7 @@ export const OptionSlots: StoryFn<DefaultUDropdownLinkArgs> = (args) => ({
           },
           {
             label: 'Sarah Wilson',
-            id: '4',
+            value: '4',
             role: 'QA Engineer',
             avatar: patMorgan,
             status: 'online',
@@ -428,7 +428,7 @@ export const OptionSlots: StoryFn<DefaultUDropdownLinkArgs> = (args) => ({
         :options="[
           {
             label: 'John Doe',
-            id: '1',
+            value: '1',
             role: 'Developer',
             avatar: johnDoe,
             status: 'online',
@@ -436,7 +436,7 @@ export const OptionSlots: StoryFn<DefaultUDropdownLinkArgs> = (args) => ({
           },
           {
             label: 'Jane Smith',
-            id: '2',
+            value: '2',
             role: 'Designer',
             avatar: emilyDavis,
             status: 'away',
@@ -444,7 +444,7 @@ export const OptionSlots: StoryFn<DefaultUDropdownLinkArgs> = (args) => ({
           },
           {
             label: 'Mike Johnson',
-            id: '3',
+            value: '3',
             role: 'Product Manager',
             avatar: alexJohnson,
             status: 'offline',
@@ -452,7 +452,7 @@ export const OptionSlots: StoryFn<DefaultUDropdownLinkArgs> = (args) => ({
           },
           {
             label: 'Sarah Wilson',
-            id: '4',
+            value: '4',
             role: 'QA Engineer',
             avatar: patMorgan,
             status: 'online',

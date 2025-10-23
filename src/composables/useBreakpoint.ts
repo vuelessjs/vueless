@@ -21,7 +21,7 @@ enum BreakpointWidth {
   "2xl" = 1536,
 }
 
-export default function useBreakpoint() {
+export function useBreakpoint() {
   let animationId: number | undefined;
 
   const windowWidth = ref(0);

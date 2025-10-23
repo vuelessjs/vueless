@@ -2,7 +2,7 @@
 import { provide, ref, watch, useTemplateRef } from "vue";
 import { isEqual } from "lodash-es";
 
-import useUI from "../composables/useUI";
+import { useUI } from "../composables/useUI";
 import { getDefaults } from "../utils/ui";
 
 import ULabel from "../ui.form-label/ULabel.vue";
@@ -103,10 +103,10 @@ const { getDataTest, groupLabelAttrs, groupCheckboxAttrs, listAttrs } =
           v-for="(option, index) in options"
           :key="index"
           :model-value="modelValue"
-          :value="option.value"
+          :value="option[valueKey]"
           :true-value="option.trueValue"
           :false-value="option.falseValue"
-          :label="option.label"
+          :label="String(option[labelKey] || undefined)"
           :description="option.description"
           :disabled="disabled"
           v-bind="groupCheckboxAttrs"

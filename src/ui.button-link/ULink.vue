@@ -2,7 +2,7 @@
 import { computed, useSlots, useTemplateRef } from "vue";
 import { RouterLink } from "vue-router";
 
-import useUI from "../composables/useUI";
+import { useUI } from "../composables/useUI";
 import { hasSlotContent } from "../utils/helper";
 import { getDefaults } from "../utils/ui";
 

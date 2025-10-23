@@ -74,7 +74,9 @@ export default /*tw*/ {
       },
     ],
   },
+  /* These are used for a11y. */
   i18n: {
+    switch: "Switch",
     inactive: "Off",
     active: "On",
   },

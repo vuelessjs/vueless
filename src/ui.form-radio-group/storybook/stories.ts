@@ -8,10 +8,11 @@ import {
 
 import URadioGroup from "../../ui.form-radio-group/URadioGroup.vue";
 import URadio from "../../ui.form-radio/URadio.vue";
+import UAlert from "../../ui.text-alert/UAlert.vue";
 import UCol from "../../ui.container-col/UCol.vue";
+import URow from "../../ui.container-row/URow.vue";
 import UBadge from "../../ui.text-badge/UBadge.vue";
 import UText from "../../ui.text-block/UText.vue";
-import URow from "../../ui.container-row/URow.vue";
 
 import type { Meta, StoryFn } from "@storybook/vue3-vite";
 import type { Props } from "../types";
@@ -54,16 +55,17 @@ const DefaultTemplate: StoryFn<URadioGroupArgs> = (args: URadioGroupArgs) => ({
 });
 
 const EnumTemplate: StoryFn<URadioGroupArgs> = (args: URadioGroupArgs, { argTypes }) => ({
-  components: { URadioGroup, UCol },
+  components: { URadioGroup, URow },
   setup: () => ({ args, argTypes, getArgs }),
   template: `
-    <UCol>
+    <URow>
       <URadioGroup
         v-for="option in argTypes?.[args.enum]?.options"
         v-bind="getArgs(args, option)"
         :key="option"
+        :name="option"
       />
-    </UCol>
+    </URow>
   `,
 });
 
@@ -101,7 +103,7 @@ Options.args = {
     { label: "String", value: "Subscribed" },
     { label: "Number", value: 42 },
     { label: "Boolean", value: true },
-    { label: "Object", value: { id: 101, status: "active" } },
+    { label: "Object", value: { value: 101, status: "active" } },
     { label: "Array", value: ["Admin", "Editor"] },
   ],
 };
@@ -125,8 +127,46 @@ LabelSlot.args = {
   name: "LabelSlot",
   slotTemplate: `
     <template #label="{ label }">
-      <span class="text-red-500">*</span>
       {{ label }}
+      <span class="text-red-500">*</span>
     </template>
   `,
+};
+
+export const CustomKeys: StoryFn<URadioGroupArgs> = (args: URadioGroupArgs) => ({
+  components: { URadioGroup, UCol, UAlert },
+  setup: () => ({ args }),
+  template: `
+    <UCol>
+      <URadioGroup v-bind="args" v-model="args.modelValue" />
+
+      <UAlert
+        :description="args.modelValue"
+        size="sm"
+        variant="soft"
+        color="success"
+        bordered
+      />
+    </UCol>
+  `,
+});
+CustomKeys.args = {
+  name: "CustomKeys",
+  label: "Select your subscription plan:",
+  labelKey: "title",
+  valueKey: "id",
+  options: [
+    { id: "basic", title: "Basic Plan - $9.99/month" },
+    { id: "pro", title: "Pro Plan - $19.99/month" },
+    { id: "enterprise", title: "Enterprise Plan - $49.99/month" },
+  ],
+};
+CustomKeys.parameters = {
+  docs: {
+    description: {
+      story:
+        "Use `labelKey` and `valueKey` props to specify custom keys for label and value in option objects. " +
+        "This is useful when working with data from APIs that use different property names.",
+    },
+  },
 };

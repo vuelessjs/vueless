@@ -48,7 +48,7 @@ import URadioGroupConfig from "./ui.form-radio-group/config";
 import USwitchConfig from "./ui.form-switch/config";
 import UTextareaConfig from "./ui.form-textarea/config";
 import ULabelConfig from "./ui.form-label/config";
-import UColorPickerConfig from "./ui.other-theme-color-toggle/config";
+import UColorToggleConfig from "./ui.form-color-toggle/config";
 import UInputConfig from "./ui.form-input/config";
 import UInputCounterConfig from "./ui.form-input-counter/config";
 import UInputPasswordConfig from "./ui.form-input-password/config";
@@ -220,8 +220,22 @@ export type StateColors =
   | "grayscale"
   | string;
 
-export type NeutralColors = "slate" | "gray" | "zinc" | "neutral" | "stone" | string;
-export type PrimaryColors =
+export interface ColorShades {
+  50: string;
+  100: string;
+  200: string;
+  300: string;
+  400: string;
+  500: string;
+  600: string;
+  700: string;
+  800: string;
+  900: string;
+  950: string;
+}
+
+export type NeutralColorName = "slate" | "gray" | "zinc" | "neutral" | "stone" | string;
+export type PrimaryColorName =
   | "red"
   | "orange"
   | "amber"
@@ -240,6 +254,9 @@ export type PrimaryColors =
   | "pink"
   | "rose"
   | string;
+
+export type NeutralColors = NeutralColorName | Partial<ColorShades>;
+export type PrimaryColors = PrimaryColorName | Partial<ColorShades>;
 
 export interface Directives {
   tooltip?: Partial<Props>;
@@ -298,7 +315,7 @@ export interface Components {
   USwitch: Partial<typeof USwitchConfig>;
   UTextarea: Partial<typeof UTextareaConfig>;
   ULabel: Partial<typeof ULabelConfig>;
-  UColorPicker: Partial<typeof UColorPickerConfig>;
+  UColorToggle: Partial<typeof UColorToggleConfig>;
   UInput: Partial<typeof UInputConfig>;
   UInputCounter: Partial<typeof UInputCounterConfig>;
   UInputPassword: Partial<typeof UInputPasswordConfig>;

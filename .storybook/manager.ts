@@ -49,14 +49,3 @@ function setFavicon() {
 
   document.head.appendChild(link);
 }
-
-/* This trick prevents showing users the default storybook theme. */
-window.onload = () => {
-  setTimeout(() => {
-    const rootElement = document.getElementById("root");
-    const vuelessLoader = document.getElementById("sb-vueless-loader");
-
-    if (rootElement) rootElement.style.visibility = "visible";
-    if (vuelessLoader) vuelessLoader.style.display = "none";
-  }, 1500);
-};

@@ -2,7 +2,7 @@ import { mount } from "@vue/test-utils";
 import { describe, it, expect, vi } from "vitest";
 
 import UThemeColorToggle from "../UThemeColorToggle.vue";
-import UColorPicker from "../../ui.form-color-picker/UColorPicker.vue";
+import UColorToggle from "../../ui.form-color-toggle/UColorToggle.vue";
 import UDivider from "../../ui.container-divider/UDivider.vue";
 
 import type { Props } from "../types";
@@ -29,7 +29,7 @@ describe("UThemeColorToggle.vue", () => {
           },
         });
 
-        const colorPickers = component.findAllComponents(UColorPicker);
+        const colorPickers = component.findAllComponents(UColorToggle);
 
         expect(colorPickers.length).toBe(2);
 
@@ -50,7 +50,7 @@ describe("UThemeColorToggle.vue", () => {
         },
       });
 
-      const primaryColorPicker = component.findAllComponents(UColorPicker)[0];
+      const primaryColorPicker = component.findAllComponents(UColorToggle)[0];
 
       expect(primaryColorPicker.props("modelValue")).toBe(primary);
     });
@@ -66,7 +66,7 @@ describe("UThemeColorToggle.vue", () => {
         },
       });
 
-      const neutralColorPicker = component.findAllComponents(UColorPicker)[1];
+      const neutralColorPicker = component.findAllComponents(UColorToggle)[1];
 
       expect(neutralColorPicker.props("modelValue")).toBe(neutral);
     });
@@ -81,7 +81,7 @@ describe("UThemeColorToggle.vue", () => {
         },
       });
 
-      const primaryColorPicker = component.findAllComponents(UColorPicker)[0];
+      const primaryColorPicker = component.findAllComponents(UColorToggle)[0];
 
       expect(primaryColorPicker.props("colors")).toEqual(primaryColors);
     });
@@ -96,7 +96,7 @@ describe("UThemeColorToggle.vue", () => {
         },
       });
 
-      const neutralColorPicker = component.findAllComponents(UColorPicker)[1];
+      const neutralColorPicker = component.findAllComponents(UColorToggle)[1];
 
       expect(neutralColorPicker.props("colors")).toEqual(neutralColors);
     });
@@ -112,7 +112,7 @@ describe("UThemeColorToggle.vue", () => {
         },
       });
 
-      const primaryColorPicker = component.findAllComponents(UColorPicker)[0];
+      const primaryColorPicker = component.findAllComponents(UColorToggle)[0];
 
       expect(primaryColorPicker.props("labels")).toEqual(primaryLabels);
     });
@@ -128,7 +128,7 @@ describe("UThemeColorToggle.vue", () => {
         },
       });
 
-      const neutralColorPicker = component.findAllComponents(UColorPicker)[1];
+      const neutralColorPicker = component.findAllComponents(UColorToggle)[1];
 
       expect(neutralColorPicker.props("labels")).toEqual(neutralLabels);
     });
@@ -207,7 +207,7 @@ describe("UThemeColorToggle.vue", () => {
         },
       });
 
-      const primaryColorPicker = component.findAllComponents(UColorPicker)[0];
+      const primaryColorPicker = component.findAllComponents(UColorToggle)[0];
 
       primaryColorPicker.vm.$emit("update:modelValue", newColor);
 
@@ -226,7 +226,7 @@ describe("UThemeColorToggle.vue", () => {
         },
       });
 
-      const neutralColorPicker = component.findAllComponents(UColorPicker)[1];
+      const neutralColorPicker = component.findAllComponents(UColorToggle)[1];
 
       neutralColorPicker.vm.$emit("update:modelValue", newColor);
 

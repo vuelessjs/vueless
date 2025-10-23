@@ -26,6 +26,7 @@ export const COLOR_MODE_KEY = "vl-color-mode";
 export const AUTO_MODE_KEY = "vl-auto-mode";
 export const DARK_MODE_CLASS = "vl-dark";
 export const LIGHT_MODE_CLASS = "vl-light";
+export const THEME_TOKENS = "vueless-theme-tokens";
 
 /* Vueless defaults */
 export const DEFAULT_PRIMARY_COLOR = GRAYSCALE_COLOR;
@@ -272,7 +273,7 @@ export const COMPONENTS = {
   UCalendar: "ui.form-calendar",
   UDatePicker: "ui.form-date-picker",
   UDatePickerRange: "ui.form-date-picker-range",
-  UColorPicker: "ui.form-color-picker",
+  UColorToggle: "ui.form-color-toggle",
   ULabel: "ui.form-label",
 
   /* Text & Content */

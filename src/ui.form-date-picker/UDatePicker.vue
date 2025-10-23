@@ -2,7 +2,7 @@
 import { computed, nextTick, ref, useId, useTemplateRef, watchEffect } from "vue";
 import { merge } from "lodash-es";
 
-import useUI from "../composables/useUI";
+import { useUI } from "../composables/useUI";
 
 import UIcon from "../ui.image-icon/UIcon.vue";
 import UInput from "../ui.form-input/UInput.vue";

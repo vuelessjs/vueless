@@ -30,9 +30,9 @@ export default {
   component: UDataList,
   args: {
     list: [
-      { label: "Expenses", id: 1 },
-      { label: "Revenue Streams", id: 2 },
-      { label: "Departments", id: 3 },
+      { label: "Expenses", value: 1 },
+      { label: "Revenue Streams", value: 2 },
+      { label: "Departments", value: 3 },
     ],
   },
   argTypes: {
@@ -87,29 +87,29 @@ Nesting.args = {
   list: [
     {
       label: "Expenses",
-      id: 1,
+      value: 1,
       children: [
-        { label: "Office Supplies", id: 1.1 },
-        { label: "Travel & Lodging", id: 1.2 },
-        { label: "Utilities", id: 1.3 },
+        { label: "Office Supplies", value: 1.1 },
+        { label: "Travel & Lodging", value: 1.2 },
+        { label: "Utilities", value: 1.3 },
       ],
     },
     {
       label: "Revenue Streams",
-      id: 2,
+      value: 2,
       children: [
-        { label: "Product Sales", id: 2.1 },
-        { label: "Subscription Services", id: 2.2 },
-        { label: "Consulting", id: 2.3 },
+        { label: "Product Sales", value: 2.1 },
+        { label: "Subscription Services", value: 2.2 },
+        { label: "Consulting", value: 2.3 },
       ],
     },
     {
       label: "Departments",
-      id: 3,
+      value: 3,
       children: [
-        { label: "Engineering", id: 3.1 },
-        { label: "Marketing", id: 3.2 },
-        { label: "Finance", id: 3.3 },
+        { label: "Engineering", value: 3.1 },
+        { label: "Marketing", value: 3.2 },
+        { label: "Finance", value: 3.3 },
       ],
     },
   ],
@@ -159,17 +159,17 @@ DragSlot.args = {
   list: [
     {
       label: "John Doe (Engineering)",
-      id: 1,
+      value: 1,
       avatar: "https://cdn-icons-png.flaticon.com/128/1999/1999625.png",
     },
     {
       label: "Michael Johnson (Finance)",
-      id: 2,
+      value: 2,
       avatar: "https://cdn-icons-png.flaticon.com/128/4140/4140057.png",
     },
     {
       label: "Emma Smith (Marketing)",
-      id: 3,
+      value: 3,
       avatar: "https://cdn-icons-png.flaticon.com/128/4140/4140047.png",
     },
   ],
@@ -183,18 +183,18 @@ DragSlot.args = {
 export const ActionsSlot = DefaultTemplate.bind({});
 ActionsSlot.args = {
   list: [
-    { label: "Expenses", id: 1 },
+    { label: "Expenses", value: 1 },
     {
       label: "Revenue Streams",
-      id: 2,
+      value: 2,
       actions: false,
       children: [
-        { label: "Product Sales", id: 2.1 },
-        { label: "Subscription Services", id: 2.2 },
-        { label: "Consulting", id: 2.3, actions: false },
+        { label: "Product Sales", value: 2.1 },
+        { label: "Subscription Services", value: 2.2 },
+        { label: "Consulting", value: 2.3, actions: false },
       ],
     },
-    { label: "Departments", id: 3, crossed: true },
+    { label: "Departments", value: 3, crossed: true },
   ],
   slotTemplate: `
     <template #actions="{ item }">

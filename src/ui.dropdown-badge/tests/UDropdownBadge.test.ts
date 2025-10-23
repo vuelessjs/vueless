@@ -10,9 +10,9 @@ import type { Props } from "../types";
 
 describe("UDropdownBadge.vue", () => {
   const defaultOptions = [
-    { id: 1, label: "Option 1" },
-    { id: 2, label: "Option 2" },
-    { id: 3, label: "Option 3" },
+    { value: 1, label: "Option 1" },
+    { value: 2, label: "Option 2" },
+    { value: 3, label: "Option 3" },
   ];
 
   // Props tests
@@ -43,7 +43,7 @@ describe("UDropdownBadge.vue", () => {
       });
 
       // Find the selected option's label
-      const selectedOption = defaultOptions.find((option) => option.id === modelValue);
+      const selectedOption = defaultOptions.find((option) => option.value === modelValue);
 
       expect(component.findComponent(UBadge).props("label")).toBe(selectedOption?.label);
     });
@@ -61,7 +61,7 @@ describe("UDropdownBadge.vue", () => {
       });
 
       // Find the selected options' labels
-      const selectedOptions = defaultOptions.filter((option) => modelValue.includes(option.id));
+      const selectedOptions = defaultOptions.filter((option) => modelValue.includes(option.value));
       const expectedLabel = selectedOptions.map((option) => option.label).join(", ");
 
       expect(component.findComponent(UBadge).props("label")).toBe(expectedLabel);

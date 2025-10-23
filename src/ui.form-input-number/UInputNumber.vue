@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { computed, watch, onMounted, useId, useTemplateRef } from "vue";
 
-import useUI from "../composables/useUI";
+import { useUI } from "../composables/useUI";
 import { getDefaults } from "../utils/ui";
 
 import UInput from "../ui.form-input/UInput.vue";

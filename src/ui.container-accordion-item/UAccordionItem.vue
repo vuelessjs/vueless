@@ -3,7 +3,7 @@ import { computed, ref, inject, useId, useSlots, useTemplateRef, toValue, watchE
 
 import { isEqual } from "lodash-es";
 
-import useUI from "../composables/useUI";
+import { useUI } from "../composables/useUI";
 import { getDefaults } from "../utils/ui";
 import { hasSlotContent } from "../utils/helper";
 
@@ -145,11 +145,7 @@ const {
         </slot>
       </div>
 
-      <div
-        v-if="description || hasSlotContent(slots['description'])"
-        :id="`description-${elementId}`"
-        v-bind="descriptionAttrs"
-      >
+      <div v-if="description || hasSlotContent(slots['description'])" v-bind="descriptionAttrs">
         <!--
           @slot Use it to add custom description content.
           @binding {string} description

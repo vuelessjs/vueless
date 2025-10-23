@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { ref, watch } from "vue";
 
-import useUI from "../composables/useUI";
+import { useUI } from "../composables/useUI";
 
 import { formatDate, dateIsOutOfRange } from "./utilCalendar";
 import { isSameMonth, isCurrentYear } from "./utilDate";

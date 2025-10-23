@@ -6,22 +6,22 @@ import {
   getDocsDescription,
 } from "../../utils/storybook";
 
-import UColorPicker from "../UColorPicker.vue";
+import UColorToggle from "../UColorToggle.vue";
 import UCol from "../../ui.container-col/UCol.vue";
 import UButton from "../../ui.button/UButton.vue";
 
 import type { Meta, StoryFn } from "@storybook/vue3-vite";
 import type { Props } from "../types";
 
-interface UColorPickerArgs extends Props {
+interface UColorToggleArgs extends Props {
   slotTemplate?: string;
   enum: "size";
 }
 
 export default {
   id: "3190",
-  title: "Form Inputs & Controls / Color Picker",
-  component: UColorPicker,
+  title: "Form Inputs & Controls / Color Toggle",
+  component: UColorToggle,
   args: {
     modelValue: "",
     colors: /*tw*/ {
@@ -47,31 +47,31 @@ export default {
     },
   },
   argTypes: {
-    ...getArgTypes(UColorPicker.__name),
+    ...getArgTypes(UColorToggle.__name),
   },
   parameters: {
     docs: {
-      ...getDocsDescription(UColorPicker.__name),
+      ...getDocsDescription(UColorToggle.__name),
     },
   },
 } as Meta;
 
-const DefaultTemplate: StoryFn<UColorPickerArgs> = (args: UColorPickerArgs) => ({
-  components: { UColorPicker, UButton, UCol },
-  setup: () => ({ args, slots: getSlotNames(UColorPicker.__name) }),
+const DefaultTemplate: StoryFn<UColorToggleArgs> = (args: UColorToggleArgs) => ({
+  components: { UColorToggle, UButton, UCol },
+  setup: () => ({ args, slots: getSlotNames(UColorToggle.__name) }),
   template: `
-    <UColorPicker v-bind="args" v-model="args.modelValue">
+    <UColorToggle v-bind="args" v-model="args.modelValue">
       ${args.slotTemplate || getSlotsFragment("")}
-    </UColorPicker>
+    </UColorToggle>
   `,
 });
 
-const EnumTemplate: StoryFn<UColorPickerArgs> = (args: UColorPickerArgs, { argTypes }) => ({
-  components: { UCol, UColorPicker },
+const EnumTemplate: StoryFn<UColorToggleArgs> = (args: UColorToggleArgs, { argTypes }) => ({
+  components: { UCol, UColorToggle },
   setup: () => ({ args, argTypes, getArgs }),
   template: `
     <UCol>
-      <UColorPicker
+      <UColorToggle
         v-for="option in argTypes?.[args.enum]?.options"
         v-bind="getArgs(args, option)"
         :key="option"

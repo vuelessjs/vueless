@@ -1,6 +1,6 @@
 import defaultConfig from "./config";
 
-import type { PrimaryColors, NeutralColors, ComponentConfig } from "../types";
+import type { PrimaryColorName, NeutralColorName, ComponentConfig } from "../types";
 
 export type Config = typeof defaultConfig;
 
@@ -18,12 +18,12 @@ export interface Props {
   /**
    * Color list.
    */
-  colors?: Record<PrimaryColors, string>;
+  colors?: Record<PrimaryColorName, string>;
 
   /**
    * Color labels.
    */
-  labels?: Record<NeutralColors, string>;
+  labels?: Record<NeutralColorName, string>;
 
   /**
    * Unique element id.

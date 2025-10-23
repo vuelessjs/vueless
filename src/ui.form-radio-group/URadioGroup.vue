@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { computed, provide, useTemplateRef } from "vue";
 
-import useUI from "../composables/useUI";
+import { useUI } from "../composables/useUI";
 import { getDefaults } from "../utils/ui";
 
 import ULabel from "../ui.form-label/ULabel.vue";
@@ -86,8 +86,8 @@ const { getDataTest, groupLabelAttrs, listAttrs, groupRadioAttrs } = useUI<Confi
           v-for="(option, index) in options"
           :key="index"
           :model-value="selectedItem"
-          :value="option.value"
-          :label="option.label"
+          :value="option[valueKey]"
+          :label="String(option[labelKey] || undefined)"
           :description="option.description"
           :disabled="disabled"
           v-bind="groupRadioAttrs"
