@@ -33,9 +33,9 @@ export default {
   args: {
     label: "Select your preferred communication methods:",
     options: [
-      { label: "Email Notifications", id: "email" },
-      { label: "SMS Alerts", id: "sms" },
-      { label: "Push Notifications", id: "push" },
+      { label: "Email Notifications", value: "email" },
+      { label: "SMS Alerts", value: "sms" },
+      { label: "Push Notifications", value: "push" },
     ],
   },
   argTypes: {
@@ -121,7 +121,7 @@ Options.args = {
     { label: "String", value: "Subscribed" },
     { label: "Number", value: 42 },
     { label: "Boolean", value: true },
-    { label: "Object", value: { id: 101, status: "active" } },
+    { label: "Object", value: { value: 101, status: "active" } },
     { label: "Array", value: ["Admin", "Editor"] },
   ],
 };

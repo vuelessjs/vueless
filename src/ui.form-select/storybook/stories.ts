@@ -39,11 +39,11 @@ export default {
     label: "Choose a city",
     modelValue: null,
     options: [
-      { label: "New York", id: 1 },
-      { label: "Los Angeles", id: 2 },
-      { label: "Chicago", id: 3 },
-      { label: "Houston", id: 4 },
-      { label: "San Francisco", id: 5 },
+      { label: "New York", value: 1 },
+      { label: "Los Angeles", value: 2 },
+      { label: "Chicago", value: 3 },
+      { label: "Houston", value: 4 },
+      { label: "San Francisco", value: 5 },
     ],
   },
   argTypes: {
@@ -181,7 +181,7 @@ Sizes.args = { enum: "size", multiple: true, modelValue: [], label: "{enumValue}
 export const LargeItemList = DefaultTemplate.bind({});
 LargeItemList.args = {
   options: [...new Array(1000)].map((_, index) => {
-    return { id: index + 1, label: `value ${index + 1}`, badge: "badge" };
+    return { value: index + 1, label: `value ${index + 1}`, badge: "badge" };
   }),
 };
 
@@ -272,16 +272,16 @@ AddOption.parameters = {
 export const OptionSettings = DefaultTemplate.bind({});
 OptionSettings.args = {
   options: [
-    { label: "1. New York", id: "1" },
-    { label: "2. Los Angeles", id: "2", isHidden: true },
+    { label: "1. New York", value: "1" },
+    { label: "2. Los Angeles", value: "2", isHvalueden: true },
     {
       label: "3. Chicago",
-      id: "3",
+      value: "3",
       onClick: (option) =>
         alert("onClick function for the third option: " + JSON.stringify(option)),
     },
-    { label: "4. Houston", id: "4" },
-    { label: "5. San Francisco", id: "5" },
+    { label: "4. Houston", value: "4" },
+    { label: "5. San Francisco", value: "5" },
   ],
 };
 OptionSettings.parameters = {
@@ -298,17 +298,17 @@ export const IconProps: StoryFn<USelectArgs> = (args) => ({
   components: { USelect, URow },
   setup() {
     const levelOptions = [
-      { label: "Awesome", id: "1" },
-      { label: "Good", id: "2" },
-      { label: "Could be better", id: "3" },
-      { label: "Terrible", id: "4" },
+      { label: "Awesome", value: "1" },
+      { label: "Good", value: "2" },
+      { label: "Could be better", value: "3" },
+      { label: "Terrible", value: "4" },
     ];
 
     const roleOptions = [
-      { label: "Admin", id: "1" },
-      { label: "CEO", id: "2" },
-      { label: "Manager", id: "3" },
-      { label: "Guest", id: "4" },
+      { label: "Admin", value: "1" },
+      { label: "CEO", value: "2" },
+      { label: "Manager", value: "3" },
+      { label: "Guest", value: "4" },
     ];
 
     return { args, levelOptions, roleOptions };
@@ -342,10 +342,10 @@ export const Slots: StoryFn<USelectArgs> = (args) => ({
         v-model="leftSlotModel"
         label="Select Payment Method"
         :options="[
-          { label: 'Visa', id: 'visa', icon: 'credit_card', details: '•••• 4242' },
-          { label: 'PayPal', id: 'paypal', icon: 'payments', details: 'user@example.com' },
-          { label: 'Bank Transfer', id: 'bank', icon: 'account_balance', details: 'Acct **** 1234' },
-          { label: 'Apple Pay', id: 'apple', icon: 'phone_iphone', details: 'iPhone 15' },
+          { label: 'Visa', value: 'visa', icon: 'credit_card', details: '•••• 4242' },
+          { label: 'PayPal', value: 'paypal', icon: 'payments', details: 'user@example.com' },
+          { label: 'Bank Transfer', value: 'bank', icon: 'account_balance', details: 'Acct **** 1234' },
+          { label: 'Apple Pay', value: 'apple', icon: 'phone_iphone', details: 'iPhone 15' },
         ]"
       >
         <template #left="{ options }">
@@ -362,10 +362,10 @@ export const Slots: StoryFn<USelectArgs> = (args) => ({
         v-model="rightSlotModel"
         label="Select Payment Method"
         :options="[
-          { label: 'Visa', id: 'visa', icon: 'credit_card', details: '•••• 4242' },
-          { label: 'PayPal', id: 'paypal', icon: 'payments', details: 'user@example.com' },
-          { label: 'Bank Transfer', id: 'bank', icon: 'account_balance', details: 'Acct **** 1234' },
-          { label: 'Apple Pay', id: 'apple', icon: 'phone_iphone', details: 'iPhone 15' },
+          { label: 'Visa', value: 'visa', icon: 'credit_card', details: '•••• 4242' },
+          { label: 'PayPal', value: 'paypal', icon: 'payments', details: 'user@example.com' },
+          { label: 'Bank Transfer', value: 'bank', icon: 'account_balance', details: 'Acct **** 1234' },
+          { label: 'Apple Pay', value: 'apple', icon: 'phone_iphone', details: 'iPhone 15' },
         ]"
       >
         <template #right="{ options }">
@@ -398,9 +398,9 @@ export const ToggleSlots: StoryFn<USelectArgs> = (args) => ({
         v-model="beforeToggleModel"
         label="Before Toggle Slot"
         :options="[
-          { label: 'John Doe', id: '1' },
-          { label: 'Jane Smith', id: '2' },
-          { label: 'Mike Johnson', id: '3' },
+          { label: 'John Doe', value: '1' },
+          { label: 'Jane Smith', value: '2' },
+          { label: 'Mike Johnson', value: '3' },
         ]"
       >
         <template #before-toggle>
@@ -416,9 +416,9 @@ export const ToggleSlots: StoryFn<USelectArgs> = (args) => ({
         v-model="toggleModel"
         label="Toggle Slot"
         :options="[
-          { label: 'High', id: 'high' },
-          { label: 'Medium', id: 'medium' },
-          { label: 'Low', id: 'low' }
+          { label: 'High', value: 'high' },
+          { label: 'Medium', value: 'medium' },
+          { label: 'Low', value: 'low' }
         ]"
       >
         <template #toggle="{ opened }">
@@ -435,9 +435,9 @@ export const ToggleSlots: StoryFn<USelectArgs> = (args) => ({
         v-model="afterToggleModel"
         label="After Toggle Slot"
         :options="[
-          { label: 'In Progress', id: 'in_progress' },
-          { label: 'Done', id: 'done' },
-          { label: 'Blocked', id: 'blocked' }
+          { label: 'In Progress', value: 'in_progress' },
+          { label: 'Done', value: 'done' },
+          { label: 'Blocked', value: 'blocked' }
         ]"
       >
         <template #after-toggle>
@@ -470,10 +470,10 @@ export const SelectedOptionsSlots: StoryFn<USelectArgs> = (args) => ({
         v-model="args.selectedOption"
         label="Selected option slot"
         :options="[
-          { label: 'Paris', id: '1', icon: 'flight' },
-          { label: 'Venice', id: '2', icon: 'sailing' },
-          { label: 'Rome', id: '3', icon: 'directions_car' },
-          { label: 'Milan', id: '4', icon: 'directions_bike' },
+          { label: 'Paris', value: '1', icon: 'flight' },
+          { label: 'Venice', value: '2', icon: 'sailing' },
+          { label: 'Rome', value: '3', icon: 'directions_car' },
+          { label: 'Milan', value: '4', icon: 'directions_bike' },
         ]"
       >
         <template #selected-option="{ option }">
@@ -492,10 +492,10 @@ export const SelectedOptionsSlots: StoryFn<USelectArgs> = (args) => ({
         v-model="args.selectedOptions"
         label="Selected options slot"
         :options="[
-          { label: 'Paris', id: '1', icon: 'flight' },
-          { label: 'Venice', id: '2', icon: 'sailing' },
-          { label: 'Rome', id: '3', icon: 'directions_car' },
-          { label: 'Milan', id: '4', icon: 'directions_bike' },
+          { label: 'Paris', value: '1', icon: 'flight' },
+          { label: 'Venice', value: '2', icon: 'sailing' },
+          { label: 'Rome', value: '3', icon: 'directions_car' },
+          { label: 'Milan', value: '4', icon: 'directions_bike' },
         ]"
         multiple
       >
@@ -568,7 +568,7 @@ export const OptionSlots: StoryFn<USelectArgs> = (args) => ({
         :options="[
           {
             label: 'John Doe',
-            id: '1',
+            value: '1',
             role: 'Developer',
             avatar: johnDoe,
             status: 'online',
@@ -576,7 +576,7 @@ export const OptionSlots: StoryFn<USelectArgs> = (args) => ({
           },
           {
             label: 'Jane Smith',
-            id: '2',
+            value: '2',
             role: 'Designer',
             avatar: emilyDavis,
             status: 'away',
@@ -584,7 +584,7 @@ export const OptionSlots: StoryFn<USelectArgs> = (args) => ({
           },
           {
             label: 'Mike Johnson',
-            id: '3',
+            value: '3',
             role: 'Product Manager',
             avatar: alexJohnson,
             status: 'offline',
@@ -592,7 +592,7 @@ export const OptionSlots: StoryFn<USelectArgs> = (args) => ({
           },
           {
             label: 'Sarah Wilson',
-            id: '4',
+            value: '4',
             role: 'QA Engineer',
             avatar: patMorgan,
             status: 'online',
@@ -611,7 +611,7 @@ export const OptionSlots: StoryFn<USelectArgs> = (args) => ({
         :options="[
           {
             label: 'John Doe',
-            id: '1',
+            value: '1',
             role: 'Developer',
             avatar: johnDoe,
             status: 'online',
@@ -619,7 +619,7 @@ export const OptionSlots: StoryFn<USelectArgs> = (args) => ({
           },
           {
             label: 'Jane Smith',
-            id: '2',
+            value: '2',
             role: 'Designer',
             avatar: emilyDavis,
             status: 'away',
@@ -627,7 +627,7 @@ export const OptionSlots: StoryFn<USelectArgs> = (args) => ({
           },
           {
             label: 'Mike Johnson',
-            id: '3',
+            value: '3',
             role: 'Product Manager',
             avatar: alexJohnson,
             status: 'offline',
@@ -635,7 +635,7 @@ export const OptionSlots: StoryFn<USelectArgs> = (args) => ({
           },
           {
             label: 'Sarah Wilson',
-            id: '4',
+            value: '4',
             role: 'QA Engineer',
             avatar: patMorgan,
             status: 'online',
@@ -665,7 +665,7 @@ export const OptionSlots: StoryFn<USelectArgs> = (args) => ({
         :options="[
           {
             label: 'John Doe',
-            id: '1',
+            value: '1',
             role: 'Developer',
             avatar: johnDoe,
             status: 'online',
@@ -673,7 +673,7 @@ export const OptionSlots: StoryFn<USelectArgs> = (args) => ({
           },
           {
             label: 'Jane Smith',
-            id: '2',
+            value: '2',
             role: 'Designer',
             avatar: emilyDavis,
             status: 'away',
@@ -681,7 +681,7 @@ export const OptionSlots: StoryFn<USelectArgs> = (args) => ({
           },
           {
             label: 'Mike Johnson',
-            id: '3',
+            value: '3',
             role: 'Product Manager',
             avatar: alexJohnson,
             status: 'offline',
@@ -689,7 +689,7 @@ export const OptionSlots: StoryFn<USelectArgs> = (args) => ({
           },
           {
             label: 'Sarah Wilson',
-            id: '4',
+            value: '4',
             role: 'QA Engineer',
             avatar: patMorgan,
             status: 'online',

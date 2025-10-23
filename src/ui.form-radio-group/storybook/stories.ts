@@ -29,9 +29,9 @@ export default {
   args: {
     label: "Select your preferred delivery option:",
     options: [
-      { id: "standard", label: "Standard Shipping (3-5 business days)" },
-      { id: "express", label: "Express Shipping (1-2 business days)" },
-      { id: "pickup", label: "In-Store Pickup (Available same day)" },
+      { value: "standard", label: "Standard Shipping (3-5 business days)" },
+      { value: "express", label: "Express Shipping (1-2 business days)" },
+      { value: "pickup", label: "In-Store Pickup (Available same day)" },
     ],
   },
   argTypes: {
@@ -103,7 +103,7 @@ Options.args = {
     { label: "String", value: "Subscribed" },
     { label: "Number", value: 42 },
     { label: "Boolean", value: true },
-    { label: "Object", value: { id: 101, status: "active" } },
+    { label: "Object", value: { value: 101, status: "active" } },
     { label: "Array", value: ["Admin", "Editor"] },
   ],
 };

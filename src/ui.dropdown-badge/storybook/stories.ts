@@ -283,9 +283,9 @@ DefaultSlot.args = {
   round: true,
   toggleIcon: false,
   options: [
-    { label: "Change avatar", id: "avatar" },
-    { label: "Profile settings", id: "settings" },
-    { label: "Delete profile", id: "delete" },
+    { label: "Change avatar", value: "avatar" },
+    { label: "Profile settings", value: "settings" },
+    { label: "Delete profile", value: "delete" },
   ],
   slotTemplate: `
     <template #default>
@@ -345,7 +345,7 @@ export const OptionSlots: StoryFn<DefaultUDropdownBadgeArgs> = (args) => ({
         :options="[
           {
             label: 'John Doe',
-            id: '1',
+            value: '1',
             role: 'Developer',
             avatar: johnDoe,
             status: 'online',
@@ -353,7 +353,7 @@ export const OptionSlots: StoryFn<DefaultUDropdownBadgeArgs> = (args) => ({
           },
           {
             label: 'Jane Smith',
-            id: '2',
+            value: '2',
             role: 'Designer',
             avatar: emilyDavis,
             status: 'away',
@@ -361,7 +361,7 @@ export const OptionSlots: StoryFn<DefaultUDropdownBadgeArgs> = (args) => ({
           },
           {
             label: 'Mike Johnson',
-            id: '3',
+            value: '3',
             role: 'Product Manager',
             avatar: alexJohnson,
             status: 'offline',
@@ -369,7 +369,7 @@ export const OptionSlots: StoryFn<DefaultUDropdownBadgeArgs> = (args) => ({
           },
           {
             label: 'Sarah Wilson',
-            id: '4',
+            value: '4',
             role: 'QA Engineer',
             avatar: patMorgan,
             status: 'online',
@@ -388,7 +388,7 @@ export const OptionSlots: StoryFn<DefaultUDropdownBadgeArgs> = (args) => ({
         :options="[
           {
             label: 'John Doe',
-            id: '1',
+            value: '1',
             role: 'Developer',
             avatar: johnDoe,
             status: 'online',
@@ -396,7 +396,7 @@ export const OptionSlots: StoryFn<DefaultUDropdownBadgeArgs> = (args) => ({
           },
           {
             label: 'Jane Smith',
-            id: '2',
+            value: '2',
             role: 'Designer',
             avatar: emilyDavis,
             status: 'away',
@@ -404,7 +404,7 @@ export const OptionSlots: StoryFn<DefaultUDropdownBadgeArgs> = (args) => ({
           },
           {
             label: 'Mike Johnson',
-            id: '3',
+            value: '3',
             role: 'Product Manager',
             avatar: alexJohnson,
             status: 'offline',
@@ -412,7 +412,7 @@ export const OptionSlots: StoryFn<DefaultUDropdownBadgeArgs> = (args) => ({
           },
           {
             label: 'Sarah Wilson',
-            id: '4',
+            value: '4',
             role: 'QA Engineer',
             avatar: patMorgan,
             status: 'online',
@@ -442,7 +442,7 @@ export const OptionSlots: StoryFn<DefaultUDropdownBadgeArgs> = (args) => ({
         :options="[
           {
             label: 'John Doe',
-            id: '1',
+            value: '1',
             role: 'Developer',
             avatar: johnDoe,
             status: 'online',
@@ -450,7 +450,7 @@ export const OptionSlots: StoryFn<DefaultUDropdownBadgeArgs> = (args) => ({
           },
           {
             label: 'Jane Smith',
-            id: '2',
+            value: '2',
             role: 'Designer',
             avatar: emilyDavis,
             status: 'away',
@@ -458,7 +458,7 @@ export const OptionSlots: StoryFn<DefaultUDropdownBadgeArgs> = (args) => ({
           },
           {
             label: 'Mike Johnson',
-            id: '3',
+            value: '3',
             role: 'Product Manager',
             avatar: alexJohnson,
             status: 'offline',
@@ -466,7 +466,7 @@ export const OptionSlots: StoryFn<DefaultUDropdownBadgeArgs> = (args) => ({
           },
           {
             label: 'Sarah Wilson',
-            id: '4',
+            value: '4',
             role: 'QA Engineer',
             avatar: patMorgan,
             status: 'online',
