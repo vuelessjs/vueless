@@ -133,6 +133,23 @@ export function notifyError({
   });
 }
 
+export function notifyInfo({
+  label,
+  description,
+  duration,
+  ignoreDuplicates,
+  notifyId,
+}: Omit<NotifyConfig, "type"> = {}): void {
+  notify({
+    label,
+    description,
+    ignoreDuplicates,
+    type: NotificationType.Info,
+    duration: duration || globalNotifyDuration?.medium || NotificationDuration.Medium,
+    notifyId,
+  });
+}
+
 export function clearNotifications(notifyId?: string): void {
   window.dispatchEvent(new CustomEvent("notifyClearAll", { detail: { notifyId } }));
 }

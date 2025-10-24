@@ -10,6 +10,7 @@ import {
   notifySuccess,
   notifyWarning,
   notifyError,
+  notifyInfo,
   clearNotifications,
   setDelayedNotify,
   getDelayedNotify,
@@ -64,7 +65,7 @@ const DefaultTemplate: StoryFn<UNotifyArgs> = (args: UNotifyArgs) => ({
 
 const TypesTemplate: StoryFn<UNotifyArgs> = (args: UNotifyArgs) => ({
   components: { UNotify, UButton, UCol },
-  setup: () => ({ args, notify, notifyWarning, notifyError }),
+  setup: () => ({ args, notify, notifyWarning, notifyError, notifyInfo }),
   template: `
     <UNotify class="m-4" notify-id="type" />
 
@@ -93,6 +94,15 @@ const TypesTemplate: StoryFn<UNotifyArgs> = (args: UNotifyArgs) => ({
         @click="notifyError({
           label: 'Ooops!',
           description: 'The file cant be downloaded, please check the file and try again.',
+          notifyId: 'type'
+        })"
+      />
+      <UButton
+        label="Info"
+        color="info"
+        @click="notifyInfo({
+          label: 'Information',
+          description: 'This is some useful information about the current operation.',
           notifyId: 'type'
         })"
       />
@@ -175,7 +185,7 @@ Types.parameters = {
     description: {
       story: `
 Control the predefined notification type using the \`type\` parameter in the \`notify\` function
-<b>OR</b> using \`notifySuccess\`, \`notifyWarning\`, \`notifyError\` shortcut methods
+<b>OR</b> using \`notifySuccess\`, \`notifyWarning\`, \`notifyError\`, \`notifyInfo\` shortcut methods
 to trigger notification of a specific type.
       `,
     },
