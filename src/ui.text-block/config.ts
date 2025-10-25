@@ -1,5 +1,5 @@
 export default /*tw*/ {
-  wrapper: {
+  text: {
     base: `
       font-normal leading-normal
       [&_b]:font-bold [&_i]:italic [&_p]:font-normal
