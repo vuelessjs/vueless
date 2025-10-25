@@ -102,7 +102,7 @@ const TypesTemplate: StoryFn<UNotifyArgs> = (args: UNotifyArgs) => ({
         color="info"
         @click="notifyInfo({
           label: 'Information',
-          description: 'This is some useful information about the current operation.',
+          description: 'Downloading file...',
           notifyId: 'type'
         })"
       />
