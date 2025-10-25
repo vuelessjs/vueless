@@ -161,7 +161,7 @@ jobs:
           git fetch origin main
           git fetch origin beta
           git checkout beta
-          git merge origin/main --no-edit -m "Merge main into beta [skip ci]" || echo "Merge conflict, needs manual resolution"
+          git merge origin/main --no-edit -m "Merge main into beta [no ci]" || echo "Merge conflict, needs manual resolution"
           git push origin beta
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
