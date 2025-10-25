@@ -20,7 +20,7 @@ const textRef = useTemplateRef<HTMLElement>("text");
 defineExpose({
   /**
    * A reference to the component's wrapper element for direct DOM manipulation.
-   * @property {HTMLDivElement}
+   * @property {HTMLElement}
    */
   textRef,
 });
