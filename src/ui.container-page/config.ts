@@ -28,6 +28,7 @@ export default /*tw*/ {
         outlined: "bg-default border-muted",
         subtle: "bg-muted border-default/50",
         soft: "bg-muted border-transparent",
+        inverted: "bg-inverted border-transparent",
       },
       rounding: {
         true: "md:pr-4 border-r-0",
@@ -51,6 +52,7 @@ export default /*tw*/ {
         outlined: "bg-default border-muted",
         subtle: "bg-muted border-default/50",
         soft: "bg-muted border-transparent",
+        inverted: "bg-inverted border-transparent",
       },
     },
   },
