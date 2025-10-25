@@ -219,7 +219,7 @@ describe("UText.vue", () => {
     it("exposes wrapperRef", () => {
       const component = mount(UText, {});
 
-      expect(component.vm.wrapperRef).toBeDefined();
+      expect(component.vm.textRef).toBeDefined();
     });
   });
 });
