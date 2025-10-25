@@ -176,7 +176,9 @@ function onKeydown(event: KeyboardEvent) {
   emit("keydown", event);
 }
 
-function onSlotClick() {
+function onSlotClick(event: MouseEvent) {
+  if (event.target !== event.currentTarget) return;
+
   inputRef.value?.focus();
 }
 
