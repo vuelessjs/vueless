@@ -22,6 +22,49 @@ Vueless uses Tailwind CSS under the hood, so you can use any of the [Tailwind CS
 
 ***
 
+## Custom color shades
+
+You can also define custom colors by providing an object with all Tailwind shades (`50`, `100` ..., `950`):
+
+{% code title="vueless.config.{js,ts}" %}
+```js
+export default {
+  primary: {
+    50: "#fef2f2",
+    100: "#fee2e2",
+    200: "#fecaca",
+    300: "#fca5a5",
+    400: "#f87171",
+    500: "#ef4444",
+    600: "#dc2626",
+    700: "#b91c1c",
+    800: "#991b1b",
+    900: "#7f1d1d",
+    950: "#450a0a",
+  },
+  neutral: {
+    50: "#f9fafb",
+    100: "#f3f4f6",
+    200: "#e5e7eb",
+    300: "#d1d5db",
+    400: "#9ca3af",
+    500: "#6b7280",
+    600: "#4b5563",
+    700: "#374151",
+    800: "#1f2937",
+    900: "#111827",
+    950: "#030712",
+  },
+};
+```
+{% endcode %}
+
+{% hint style="info" %}
+If you use an object for colors, all shade keys should be defined. Missing or invalid shade keys will trigger a console warning.
+{% endhint %}
+
+***
+
 ## CSS variables
 
 To enable dynamic color changes at runtime, Vueless use the `--vl-primary-*` and `--vl-neutral-*` CSS variables. These variables will represent all Tailwind CSS shades of the defined Vueless colors.
@@ -44,7 +87,7 @@ Example usage ([custom properties syntax](https://tailwindcss.com/docs/color#usi
 
 ## Adding color utility classes
 
-To use all `primary` and `neutral` color shades in your components (e.g.: `text-primary-700 dark:text-neutral-300`), you must define them in the application’s main CSS file.
+To use all `primary` and `neutral` color shades as a utility classes (e.g.: `text-primary-700 dark:text-neutral-300`), you must define them in the application’s main CSS file.
 
 {% code title="main.css" %}
 ```scss
