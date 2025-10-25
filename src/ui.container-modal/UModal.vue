@@ -268,10 +268,10 @@ const {
             </div>
 
             <!--
-                @slot Use it to add something instead of the close button.
-                @binding {string} icon-name
-                @binding {function} close
-              -->
+              @slot Use it to add something instead of the close button.
+              @binding {string} icon-name
+              @binding {function} close
+            -->
             <slot name="actions" :icon-name="config.defaults.closeIcon" :close="closeModal">
               <UButton
                 v-if="closeOnCross"
