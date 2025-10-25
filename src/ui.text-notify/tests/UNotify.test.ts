@@ -262,6 +262,26 @@ describe("UNotify.vue", () => {
 
       expect(errorIcon).toBeDefined();
     });
+
+    // Info notification
+    it("renders info notification with correct icon", async () => {
+      const component = mountWithLocale();
+
+      dispatchNotifyEvent("notifyStart", {
+        ...mockNotification,
+        type: NotificationType.Info,
+      });
+      await component.vm.$nextTick();
+
+      const icons = component.findAllComponents(UIcon);
+
+      expect(icons.length).toBeGreaterThan(0);
+
+      // Find the info icon by its name prop
+      const infoIcon = icons.find((icon) => icon.props("name") === "info");
+
+      expect(infoIcon).toBeDefined();
+    });
   });
 
   // Exposed refs tests

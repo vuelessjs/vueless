@@ -132,6 +132,10 @@ function getBodyAttrs(type: Notification["type"]) {
   if (type === NotificationType.Error) {
     return bodyErrorAttrs.value;
   }
+
+  if (type === NotificationType.Info) {
+    return bodyInfoAttrs.value;
+  }
 }
 
 defineExpose({
@@ -153,12 +157,14 @@ const {
   bodySuccessAttrs,
   bodyWarningAttrs,
   bodyErrorAttrs,
+  bodyInfoAttrs,
   contentAttrs,
   labelAttrs,
   descriptionAttrs,
   successIconAttrs,
   warningIconAttrs,
   errorIconAttrs,
+  infoIconAttrs,
   closeIconAttrs,
 } = useUI<Config>(defaultConfig);
 </script>
@@ -199,6 +205,14 @@ const {
         size="md"
         :name="config.defaults.errorIcon"
         v-bind="errorIconAttrs"
+      />
+
+      <UIcon
+        v-else-if="notification.type === NotificationType.Info"
+        :data-test="getDataTest('type-info')"
+        size="md"
+        :name="config.defaults.infoIcon"
+        v-bind="infoIconAttrs"
       />
 
       <div v-bind="contentAttrs">
