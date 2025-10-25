@@ -135,31 +135,6 @@ export const Wrap: StoryFn<UTextArgs> = (args: UTextArgs) => ({
 });
 Wrap.args = {};
 
-export const Paragraphs = DefaultTemplate.bind({});
-Paragraphs.args = {
-  slotTemplate: `
-    <template #default>
-      <p>
-        In a world where technology evolves at an unprecedented pace, staying
-        updated with the latest advancements is crucial for success. Companies
-        that adapt quickly to new trends often find themselves at the forefront
-        of their industries, leading to increased innovation and productivity.
-        However, it's not just about adopting new tools but also about integrating
-        them seamlessly into existing workflows to maximize their potential.
-      </p>
-
-      <p>
-        Employees must be encouraged to continuously learn and develop new skills,
-        ensuring they can leverage these technological advancements effectively.
-        This not only enhances their professional growth but also contributes to
-        the overall success of the organization. By fostering a culture of
-        continuous improvement, businesses can navigate the challenges of a
-        rapidly changing landscape and emerge stronger and more competitive.
-      </p>
-    </template>
-  `,
-};
-
 export const List = DefaultTemplate.bind({});
 List.args = {
   slotTemplate: `
