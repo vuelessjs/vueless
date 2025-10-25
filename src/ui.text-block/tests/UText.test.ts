@@ -136,6 +136,20 @@ describe("UText.vue", () => {
       expect(component.html()).toContain(label);
     });
 
+    it("renders the correct HTML tag", () => {
+      const tags = ["div", "p", "span", "section", "article"];
+
+      tags.forEach((tag) => {
+        const component = mount(UText, {
+          props: {
+            tag,
+          },
+        });
+
+        expect(component.element.tagName.toLowerCase()).toBe(tag);
+      });
+    });
+
     // DataTest prop
     it("applies the correct data-test attribute", () => {
       const dataTest = "test-text";

@@ -114,6 +114,19 @@ export const Line: StoryFn<UTextArgs> = (args: UTextArgs) => ({
 });
 Line.args = {};
 
+export const Tag: StoryFn<UTextArgs> = (args: UTextArgs) => ({
+  components: { UText, UCol },
+  setup: () => ({ args }),
+  template: `
+    <UCol>
+      <UText tag="p" label="This is a paragraph tag" />
+      <UText tag="span" label="This is a span tag" />
+      <UText tag="div" label="This is a div tag (default)" />
+    </UCol>
+  `,
+});
+Tag.args = {};
+
 export const Wrap: StoryFn<UTextArgs> = (args: UTextArgs) => ({
   components: { UText, UCol },
   setup: () => ({ args }),

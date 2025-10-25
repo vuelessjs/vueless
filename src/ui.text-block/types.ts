@@ -46,6 +46,11 @@ export interface Props {
     | "inherit";
 
   /**
+   * Allows changing HTML tag.
+   */
+  tag?: string;
+
+  /**
    * Removes text line height (useful for 1-line text).
    */
   line?: boolean;
