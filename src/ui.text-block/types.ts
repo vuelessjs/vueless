@@ -22,7 +22,7 @@ export interface Props {
   /**
    * Text variant.
    */
-  variant?: "default" | "accented" | "lifted" | "muted";
+  variant?: "default" | "accented" | "lifted" | "muted" | "inverted";
 
   /**
    * Font weight.

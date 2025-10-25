@@ -17,6 +17,7 @@ export default /*tw*/ {
         lifted: "text-{color}-lifted",
         accented: "text-{color}-accented",
         muted: "text-{color}/(--vl-disabled-opacity)",
+        inverted: "text-{color} brightness-125 dark:brightness-75",
       },
       color: {
         inherit: "text-inherit",
@@ -51,6 +52,7 @@ export default /*tw*/ {
       { color: "text", variant: "lifted", class: "text-lifted" },
       { color: "text", variant: "accented", class: "text-accented" },
       { color: "text", variant: "muted", class: "text-muted" },
+      { color: "text", variant: "inverted", class: "text-inverted brightness-100 dark:brightness-100" },
     ],
   },
   label: "",

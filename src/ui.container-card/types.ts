@@ -17,7 +17,7 @@ export interface Props {
   /**
    * Card variant.
    */
-  variant?: "solid" | "outlined" | "subtle" | "soft";
+  variant?: "solid" | "outlined" | "subtle" | "soft" | "inverted";
 
   /**
    * Component config object.
