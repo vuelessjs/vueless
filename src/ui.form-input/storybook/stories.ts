@@ -193,9 +193,9 @@ export const Slots: StoryFn<UInputArgs> = (args) => ({
   components: { UInput, URow, UDropdownButton, UText, UChip },
   setup() {
     const countryCodes = [
-      { label: "+33", id: "+33" },
-      { label: "+44", id: "+44" },
-      { label: "+49", id: "+49" },
+      { label: "+33", value: "+33" },
+      { label: "+44", value: "+44" },
+      { label: "+49", value: "+49" },
     ];
 
     const countryCode = ref("+33");

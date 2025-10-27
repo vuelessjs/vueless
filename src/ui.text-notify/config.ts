@@ -14,6 +14,7 @@ export default /*tw*/ {
   bodySuccess: "{>body} bg-radial-[circle_at_0%_50%] from-success/25 from-2.17% to-transparent",
   bodyWarning: "{>body} bg-radial-[circle_at_0%_50%] from-warning/25 from-2.17% to-transparent",
   bodyError: "{>body} bg-radial-[circle_at_0%_50%] from-error/25 from-2.17% to-transparent",
+  bodyInfo: "{>body} bg-radial-[circle_at_0%_50%] from-info/25 from-2.17% to-transparent",
   content: "w-full flex flex-col max-w-full text-medium text-inverted",
   label: "mb-0.5 font-medium",
   description: "break-words font-normal",
@@ -21,6 +22,7 @@ export default /*tw*/ {
   successIcon: "{UIcon} {>statusIcon} text-success",
   warningIcon: "{UIcon} {>statusIcon} text-warning",
   errorIcon: "{UIcon} {>statusIcon} text-error",
+  infoIcon: "{UIcon} {>statusIcon} text-info",
   closeIcon: "{UIcon} !text-inverted opacity-75",
   positionClasses: {
     page: "UNotifyPage",
@@ -36,6 +38,9 @@ export default /*tw*/ {
     error: {
       default: "Operation error.",
     },
+    info: {
+      default: "Information.",
+    },
   },
   defaults: {
     xPosition: "center",
@@ -44,6 +49,7 @@ export default /*tw*/ {
     successIcon: "check_circle",
     warningIcon: "warning",
     errorIcon: "error",
+    infoIcon: "info",
     closeIcon: "close",
   },
 };
