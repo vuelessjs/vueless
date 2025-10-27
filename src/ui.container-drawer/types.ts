@@ -28,7 +28,7 @@ export interface Props {
   /**
    * Drawer variant.
    */
-  variant?: "solid" | "outlined" | "subtle" | "soft";
+  variant?: "solid" | "outlined" | "subtle" | "soft" | "inverted";
 
   /**
    * Control whether the Drawer has a handle or not.

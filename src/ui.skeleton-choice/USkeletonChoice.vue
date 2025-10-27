@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { computed } from "vue";
 import { useUI } from "../composables/useUI";
 import { getDefaults } from "../utils/ui";
 
@@ -12,14 +11,15 @@ import USkeleton from "../ui.skeleton/USkeleton.vue";
 
 defineOptions({ inheritAttrs: false });
 
-const props = withDefaults(defineProps<Props>(), {
+withDefaults(defineProps<Props>(), {
   ...getDefaults<Props, Config>(defaultConfig, COMPONENT_NAME),
 });
 
-const { getDataTest, inputAttrs, labelAttrs, wrapperAttrs } = useUI<Config>(
-  defaultConfig,
-  computed(() => props),
-);
+/**
+ * Get element / nested component attributes for each config token ✨
+ * Applies: `class`, `config`, redefined default `props` and dev `vl-...` attributes.
+ */
+const { getDataTest, inputAttrs, labelAttrs, wrapperAttrs } = useUI<Config>(defaultConfig);
 </script>
 
 <template>

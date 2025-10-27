@@ -37,6 +37,7 @@ describe("UPage.vue", () => {
         outlined: "bg-default border-muted",
         subtle: "bg-muted border-default/50",
         soft: "bg-muted border-transparent",
+        inverted: "bg-inverted border-transparent",
       };
 
       Object.entries(variants).forEach(([variant, classes]) => {

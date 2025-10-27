@@ -34,7 +34,7 @@ export interface Props {
   /**
    * Page variant.
    */
-  variant?: "solid" | "outlined" | "subtle" | "soft";
+  variant?: "solid" | "outlined" | "subtle" | "soft" | "inverted";
 
   /**
    * Page size (width).

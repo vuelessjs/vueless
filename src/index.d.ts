@@ -43,6 +43,7 @@ export {
   notify,
   notifySuccess,
   notifyWarning,
+  notifyInfo,
   notifyError,
   clearNotifications,
   setDelayedNotify,

@@ -46,7 +46,7 @@ export default /*tw*/ {
       },
     },
     compoundVariants: [
-      { divided: true, variant: ["subtle", "soft"], class: "border-default/50" },
+      { divided: true, variant: ["subtle", "soft", "inverted"], class: "border-default/50" },
       { divided: true, variant: ["solid", "outlined"], class: "border-muted" },
     ],
   },
@@ -60,6 +60,7 @@ export default /*tw*/ {
         outlined: "bg-default border-muted",
         subtle: "bg-muted border-default/50",
         soft: "bg-muted border-transparent",
+        inverted: "bg-inverted border-transparent",
       },
       size: {
         xs: "md:w-[25rem]",

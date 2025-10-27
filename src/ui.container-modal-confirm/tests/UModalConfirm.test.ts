@@ -145,7 +145,7 @@ describe("UModalConfirm", () => {
 
     // Variant prop
     it("passes variant prop to UModal", () => {
-      const variants = ["solid", "outlined", "subtle", "soft"];
+      const variants = ["solid", "outlined", "subtle", "soft", "inverted"];
 
       variants.forEach((variant) => {
         const component = mount(UModalConfirm, {

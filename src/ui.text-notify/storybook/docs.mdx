@@ -17,13 +17,14 @@ import defaultConfig from "../config?raw"
 
 ## Triggering notification
 You can trigger notification using `notify` method.
-Use `notifySuccess`, `notifyWarning`, `notifyError` shortcut methods to trigger notification of a specific type.
+Use `notifySuccess`, `notifyWarning`, `notifyInfo`, `notifyError` shortcut methods to trigger notification of a specific type.
 
 <Source code={`
 import {
     notify,
     notifySuccess,
     notifyWarning,
+    notifyInfo,
     notifyError,
 } from "vueless";
 
@@ -37,6 +38,7 @@ notify({
 
 notifySuccess({ description: "The file successfully downloaded." });
 notifyWarning({ description: "The file has been downloaded, but some data is missing." });
+notifyInfo({ description: "Starting download..." });
 notifyError({ description: "The file can't be downloaded, please check the fields and try again." });
 `} language="jsx" dark />
 

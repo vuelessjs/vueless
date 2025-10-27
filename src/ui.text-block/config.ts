@@ -1,7 +1,6 @@
 export default /*tw*/ {
-  wrapper: {
+  text: {
     base: `
-      flex flex-col
       font-normal leading-normal
       [&_b]:font-bold [&_i]:italic [&_p]:font-normal
       [&_a:not([class])]:underline [&_a:not([class])]:underline-offset-4
@@ -18,15 +17,16 @@ export default /*tw*/ {
         lifted: "text-{color}-lifted",
         accented: "text-{color}-accented",
         muted: "text-{color}/(--vl-disabled-opacity)",
+        inverted: "text-{color} brightness-125 dark:brightness-75",
       },
       color: {
         inherit: "text-inherit",
       },
       size: {
-        xs: "text-tiny gap-1",
-        sm: "text-small gap-2",
-        md: "text-medium gap-3",
-        lg: "text-large gap-4",
+        xs: "text-tiny",
+        sm: "text-small",
+        md: "text-medium",
+        lg: "text-large",
       },
       align: {
         left: "text-left",
@@ -52,15 +52,16 @@ export default /*tw*/ {
       { color: "text", variant: "lifted", class: "text-lifted" },
       { color: "text", variant: "accented", class: "text-accented" },
       { color: "text", variant: "muted", class: "text-muted" },
+      { color: "text", variant: "inverted", class: "text-inverted brightness-100 dark:brightness-100" },
     ],
   },
-  label: "",
   defaults: {
     color: "text",
     variant: "default",
     size: "md",
     align: "left",
     weight: "normal",
+    tag: "div",
     line: false,
     wrap: true,
   },

@@ -15,28 +15,28 @@ withDefaults(defineProps<Props>(), {
   ...getDefaults<Props, Config>(defaultConfig, COMPONENT_NAME),
 });
 
-const wrapperRef = useTemplateRef<HTMLDivElement>("wrapper");
+const textRef = useTemplateRef<HTMLElement>("text");
 
 defineExpose({
   /**
    * A reference to the component's wrapper element for direct DOM manipulation.
-   * @property {HTMLDivElement}
+   * @property {HTMLElement}
    */
-  wrapperRef,
+  textRef,
 });
 
 /**
  * Get element / nested component attributes for each config token ✨
  * Applies: `class`, `config`, redefined default `props` and dev `vl-...` attributes.
  */
-const { getDataTest, wrapperAttrs, labelAttrs } = useUI<Config>(defaultConfig);
+const { getDataTest, textAttrs } = useUI<Config>(defaultConfig);
 </script>
 
 <template>
-  <div ref="wrapper" v-bind="wrapperAttrs" :data-test="getDataTest()">
+  <component :is="tag" ref="text" v-bind="textAttrs" :data-test="getDataTest()">
     <!-- @slot Use it to add something inside. -->
     <slot>
-      <div v-bind="labelAttrs" v-text="label" />
+      {{ label }}
     </slot>
-  </div>
+  </component>
 </template>

@@ -86,6 +86,7 @@ export default /*tw*/ {
         outlined: "bg-default border-muted",
         subtle: "bg-muted border-default/50",
         soft: "bg-muted border-transparent",
+        inverted: "bg-inverted border-transparent",
       },
       position: {
         top: "top-0 flex-col rounded-b-large w-full h-auto",

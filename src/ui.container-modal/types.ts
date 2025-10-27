@@ -25,7 +25,7 @@ export interface Props {
   /**
    * Modal variant.
    */
-  variant?: "solid" | "outlined" | "subtle" | "soft";
+  variant?: "solid" | "outlined" | "subtle" | "soft" | "inverted";
 
   /**
    * Modal size (width).

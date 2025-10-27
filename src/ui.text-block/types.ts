@@ -22,7 +22,7 @@ export interface Props {
   /**
    * Text variant.
    */
-  variant?: "default" | "accented" | "lifted" | "muted";
+  variant?: "default" | "accented" | "lifted" | "muted" | "inverted";
 
   /**
    * Font weight.
@@ -44,6 +44,11 @@ export interface Props {
     | "neutral"
     | "grayscale"
     | "inherit";
+
+  /**
+   * Allows changing HTML tag.
+   */
+  tag?: string;
 
   /**
    * Removes text line height (useful for 1-line text).
