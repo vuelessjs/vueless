@@ -7,10 +7,8 @@ import UIcon from "../../ui.image-icon/UIcon.vue";
 import type { Props } from "../types";
 
 describe("UAccordionItem", () => {
-  // Props
   describe("Props", () => {
-    // Title prop
-    it("renders with title prop", () => {
+    it("Title – renders with title prop", () => {
       const title = "Accordion Title";
 
       const component = mount(UAccordionItem, {
@@ -22,8 +20,7 @@ describe("UAccordionItem", () => {
       expect(component.find("[vl-key='title']").text()).toContain(title);
     });
 
-    // Description prop
-    it("renders with description prop", () => {
+    it("Description – renders with description prop", () => {
       const description = "Accordion Description";
 
       const component = mount(UAccordionItem, {
@@ -35,8 +32,7 @@ describe("UAccordionItem", () => {
       expect(component.find("[vl-key='description']").text()).toBe(description);
     });
 
-    // Size prop
-    it("applies correct size classes", () => {
+    it("Size – applies correct size classes", () => {
       const sizeClasses = {
         sm: "text-small",
         md: "text-medium",
@@ -54,8 +50,7 @@ describe("UAccordionItem", () => {
       });
     });
 
-    // ToggleIcon prop
-    it("applies correct toggle icon behavior", () => {
+    it("Toggle Icon – applies correct toggle icon behavior", () => {
       const toggleIconTests = [
         { toggleIcon: true, exists: true, iconName: "keyboard_arrow_down" },
         { toggleIcon: "custom_icon", exists: true, iconName: "custom_icon" },
@@ -79,8 +74,7 @@ describe("UAccordionItem", () => {
       });
     });
 
-    // ID prop
-    it("uses provided id prop", () => {
+    it("ID – uses provided id prop", () => {
       const id = "custom-id";
       const description = "some text";
 
@@ -94,8 +88,7 @@ describe("UAccordionItem", () => {
       expect(component.find(`[vl-key='description']`).exists()).toBe(true);
     });
 
-    // DataTest prop
-    it("applies data-test attribute", () => {
+    it("Data Test – applies data-test attribute", () => {
       const dataTest = "accordion-test";
 
       const component = mount(UAccordionItem, {
@@ -108,10 +101,8 @@ describe("UAccordionItem", () => {
     });
   });
 
-  // Slots
   describe("Slots", () => {
-    // Toggle slot
-    it("renders default toggle icon when toggle slot is not provided", () => {
+    it("Toggle – renders default toggle icon when toggle slot is not provided", () => {
       const toggleIcon = true;
 
       const component = mount(UAccordionItem, {
@@ -125,8 +116,7 @@ describe("UAccordionItem", () => {
       expect(icon.exists()).toBe(true);
     });
 
-    // Custom toggle slot
-    it("renders custom content in toggle slot", () => {
+    it("Toggle – renders custom content in toggle slot", () => {
       const toggleIcon = true;
       const slotClass = "custom-toggle";
       const slotContent = "Custom Toggle";
@@ -145,8 +135,7 @@ describe("UAccordionItem", () => {
       expect(component.findComponent(UIcon).exists()).toBe(false);
     });
 
-    // Toggle slot bindings
-    it("provides icon-name and opened bindings to toggle slot", async () => {
+    it("Toggle – provides icon-name and opened bindings to toggle slot", async () => {
       const toggleIcon = true;
       const toggleClass = "custom-toggle";
       const defaultIconName = "keyboard_arrow_down";
@@ -176,8 +165,7 @@ describe("UAccordionItem", () => {
       expect(toggleElement.attributes("data-opened")).toBe("true");
     });
 
-    // Title slot
-    it("renders custom content in title slot", () => {
+    it("Title – renders custom content in title slot", () => {
       const title = "Original Title";
       const slotClass = "custom-title";
       const slotContent = "Custom Title Content";
@@ -195,8 +183,7 @@ describe("UAccordionItem", () => {
       expect(component.text()).not.toContain(title);
     });
 
-    // Title slot bindings
-    it("provides title binding to title slot", () => {
+    it("Title – provides title binding to title slot", () => {
       const title = "Test Title";
       const slotClass = "custom-title";
 
@@ -217,8 +204,7 @@ describe("UAccordionItem", () => {
       expect(titleElement.attributes("data-title")).toBe(title);
     });
 
-    // Description slot
-    it("renders custom content in description slot", () => {
+    it("Description – renders custom content in description slot", () => {
       const description = "Original Description";
       const slotClass = "custom-description";
       const slotContent = "Custom Description Content";
@@ -236,8 +222,7 @@ describe("UAccordionItem", () => {
       expect(component.text()).not.toContain(description);
     });
 
-    // Description slot bindings
-    it("provides description binding to description slot", () => {
+    it("Description – provides description binding to description slot", () => {
       const description = "Test Description";
       const slotClass = "custom-description";
 
@@ -274,8 +259,7 @@ describe("UAccordionItem", () => {
       expect(component.find(`.${slotClass}`).text()).toBe(slotContent);
     });
 
-    // Default slot
-    it("renders default slot content when accordion is opened", async () => {
+    it("Default – renders default slot content when accordion is opened", async () => {
       const slotContent = "Custom accordion content";
       const slotClass = "custom-content";
 
@@ -320,8 +304,7 @@ describe("UAccordionItem", () => {
       expect(component.find("[vl-key='content']").exists()).toBe(false);
     });
 
-    // Slot interactions with accordion behavior
-    it("title slot content is clickable and toggles accordion", async () => {
+    it("Title – title slot content is clickable and toggles accordion", async () => {
       const title = "Test Title";
       const slotClass = "custom-title";
       const slotContent = "Custom Title Content";
@@ -409,10 +392,8 @@ describe("UAccordionItem", () => {
     });
   });
 
-  // Events
   describe("Events", () => {
-    // Click event
-    it("emits click event with id and opened state when clicked", async () => {
+    it("Click – emits click event with id and opened state when clicked", async () => {
       const id = "test-id";
 
       const component = mount(UAccordionItem, {
@@ -437,10 +418,8 @@ describe("UAccordionItem", () => {
     });
   });
 
-  // Exposed refs
   describe("Exposed refs", () => {
-    // WrapperRef
-    it("exposes wrapperRef", () => {
+    it("wrapperRef – exposes wrapperRef", () => {
       const component = mount(UAccordionItem);
 
       expect(component.vm.wrapperRef).toBeDefined();
@@ -448,10 +427,8 @@ describe("UAccordionItem", () => {
     });
   });
 
-  // Component behavior
   describe("Component behavior", () => {
-    // Toggle behavior
-    it("toggles opened state when clicked", async () => {
+    it("Toggle – toggles opened state when clicked", async () => {
       const description = "Test Description";
       const openedClass = "opacity-100";
 

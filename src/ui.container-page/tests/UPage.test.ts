@@ -28,10 +28,8 @@ const mountWithRouter = (component: unknown, options: UnknownObject) => {
 };
 
 describe("UPage.vue", () => {
-  // Props tests
   describe("Props", () => {
-    // Variant prop
-    it("applies correct variant classes", () => {
+    it("Variant – applies correct variant classes", () => {
       const variants = {
         solid: "bg-default border-transparent",
         outlined: "bg-default border-muted",
@@ -52,8 +50,7 @@ describe("UPage.vue", () => {
       });
     });
 
-    // Size prop
-    it("applies correct size classes", () => {
+    it("Size – applies correct size classes", () => {
       const sizeClasses = {
         xs: "md:w-[25rem]",
         sm: "md:w-[31.25rem]",
@@ -78,8 +75,7 @@ describe("UPage.vue", () => {
       });
     });
 
-    // TitleSize prop
-    it("applies correct titleSize to the header", () => {
+    it("Title Size – applies correct titleSize to the header", () => {
       const titleSizes = ["xs", "sm", "md", "lg", "xl", "2xl"];
       const title = "Test Title";
 
@@ -98,8 +94,7 @@ describe("UPage.vue", () => {
       });
     });
 
-    // Rounding prop
-    it("applies correct rounding classes", () => {
+    it("Rounding – applies correct rounding classes", () => {
       const variants = {
         true: "border-r-0",
         false: "rounded-large",
@@ -120,8 +115,7 @@ describe("UPage.vue", () => {
       });
     });
 
-    // Title prop
-    it("renders the title correctly", () => {
+    it("Title – renders the title correctly", () => {
       const title = "Test Title";
 
       const component = mount(UPage, {
@@ -137,8 +131,7 @@ describe("UPage.vue", () => {
       expect(header.props("label")).toBe(title);
     });
 
-    // Description prop
-    it("renders the description correctly", () => {
+    it("Description – renders the description correctly", () => {
       const description = "Test Description";
 
       const component = mount(UPage, {
@@ -154,8 +147,7 @@ describe("UPage.vue", () => {
       expect(descriptionElement.text()).toBe(description);
     });
 
-    // BackTo and BackLabel props
-    it("renders back link correctly", () => {
+    it("Back To – renders back link correctly", () => {
       // Need to provide a valid RouteLocationRaw object
       const backTo = { path: "/back" };
       const backLabel = "Back";
@@ -175,8 +167,7 @@ describe("UPage.vue", () => {
       expect(backLink.props("label")).toBe(backLabel);
     });
 
-    // DataTest prop
-    it("applies the correct data-test attribute", () => {
+    it("Data Test – applies the correct data-test attribute", () => {
       const dataTest = "page-test";
 
       const component = mount(UPage, {
@@ -189,10 +180,8 @@ describe("UPage.vue", () => {
     });
   });
 
-  // Slots tests
   describe("Slots", () => {
-    // Default slot
-    it("renders content in default slot", () => {
+    it("Default – renders content in default slot", () => {
       const slotContent = "Default Content";
       const slotClass = "default-content";
 
@@ -206,8 +195,7 @@ describe("UPage.vue", () => {
       expect(component.text()).toContain(slotContent);
     });
 
-    // Before-title slot
-    it("renders content in before-title slot", () => {
+    it("Before-title – renders content in before-title slot", () => {
       const slotContent = "Before Title Content";
       const slotClass = "before-title-content";
 
@@ -221,8 +209,7 @@ describe("UPage.vue", () => {
       expect(component.text()).toContain(slotContent);
     });
 
-    // Title slot
-    it("renders content in title slot", () => {
+    it("Title – renders content in title slot", () => {
       const slotContent = "Title Content";
       const slotClass = "title-content";
 
@@ -236,8 +223,7 @@ describe("UPage.vue", () => {
       expect(component.text()).toContain(slotContent);
     });
 
-    // After-title slot
-    it("renders content in after-title slot", () => {
+    it("After-title – renders content in after-title slot", () => {
       const slotContent = "After Title Content";
       const slotClass = "after-title-content";
 
@@ -251,8 +237,7 @@ describe("UPage.vue", () => {
       expect(component.text()).toContain(slotContent);
     });
 
-    // Actions slot
-    it("renders content in actions slot", () => {
+    it("Actions – renders content in actions slot", () => {
       const slotContent = "Actions Content";
       const slotClass = "actions-content";
 
@@ -266,8 +251,7 @@ describe("UPage.vue", () => {
       expect(component.text()).toContain(slotContent);
     });
 
-    // Footer-left slot
-    it("renders content in footer-left slot", () => {
+    it("Footer-left – renders content in footer-left slot", () => {
       const slotContent = "Footer Left Content";
       const slotClass = "footer-left-content";
 
@@ -281,8 +265,7 @@ describe("UPage.vue", () => {
       expect(component.text()).toContain(slotContent);
     });
 
-    // Footer-right slot
-    it("renders content in footer-right slot", () => {
+    it("Footer-right – renders content in footer-right slot", () => {
       const slotContent = "Footer Right Content";
       const slotClass = "footer-right-content";
 
@@ -297,10 +280,8 @@ describe("UPage.vue", () => {
     });
   });
 
-  // Events tests
   describe("Events", () => {
-    // Back event
-    it("emits back event when back link is clicked", async () => {
+    it("Back – emits back event when back link is clicked", async () => {
       const component = mountWithRouter(UPage, {
         props: {
           title: "Test Title", // Need a title to make isExistHeader true
@@ -319,10 +300,8 @@ describe("UPage.vue", () => {
     });
   });
 
-  // Exposed refs tests
   describe("Exposed refs", () => {
-    // wrapperRef
-    it("exposes wrapperRef", () => {
+    it("wrapperRef – exposes wrapperRef", () => {
       const component = mount(UPage);
 
       expect(component.vm.wrapperRef).toBeDefined();
