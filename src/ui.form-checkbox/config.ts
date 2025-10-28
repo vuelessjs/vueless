@@ -1,9 +1,18 @@
 export default /*tw*/ {
   checkboxLabel: "{ULabel}",
+  checkboxBase: {
+    base: "rounded-small cursor-pointer transition",
+    variants: {
+      size: {
+        sm: "size-4 -ml-4",
+        md: "size-5 -ml-5",
+        lg: "size-6 -ml-6",
+      },
+    },
+  },
   checkbox: {
     base: `
-      bg-default cursor-pointer transition
-      border border-solid border-default rounded-small outline-transparent
+      {>checkboxBase} ml-0 bg-default border border-solid border-default outline-transparent
       appearance-none p-0 print:color-adjust-exact inline-block align-middle bg-origin-border select-none shrink-0
       hover:border-lifted
       active:border-{color} active:bg-{color}/15
@@ -13,11 +22,6 @@ export default /*tw*/ {
       disabled:checked:bg-{color}/(--vl-disabled-opacity) disabled:checked:border-transparent
     `,
     variants: {
-      size: {
-        sm: "size-4",
-        md: "size-5",
-        lg: "size-6",
-      },
       error: {
         true: "!border-error focus-visible:outline-error",
       },
@@ -25,21 +29,15 @@ export default /*tw*/ {
   },
   checked: {
     base: `
-      flex items-center justify-center absolute rounded-small cursor-pointer transition
+      {>checkboxBase} flex items-center justify-center relative
       bg-{color} hover:bg-{color}-lifted active:bg-{color}-accented
     `,
     variants: {
-      size: {
-        sm: "size-4",
-        md: "size-5",
-        lg: "size-6",
-      },
       disabled: {
         true: "!bg-{color}/(--vl-disabled-opacity) cursor-not-allowed",
       },
     },
   },
-  partiallyChecked: "{>checked}",
   checkedIcon: {
     base: "{UIcon} text-inverted",
     defaults: {
@@ -50,9 +48,10 @@ export default /*tw*/ {
       },
     },
   },
+  partiallyChecked: "{>checked}",
   partiallyCheckedIcon: "{>checkedIcon}",
-  /* These are used for a11y. */
   i18n: {
+    /* These are used for a11y. */
     checkbox: "Checkbox",
   },
   defaults: {
