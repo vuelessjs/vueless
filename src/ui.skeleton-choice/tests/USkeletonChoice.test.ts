@@ -137,25 +137,6 @@ describe("USkeletonChoice.vue", () => {
       });
     });
 
-    // Variant prop
-    it("passes the correct variant to skeleton components", () => {
-      const variants = ["light", "default", "dark"];
-
-      variants.forEach((variant) => {
-        const component = mount(USkeletonChoice, {
-          props: {
-            variant: variant as Props["variant"],
-          },
-        });
-
-        const inputSkeleton = component.findAllComponents(USkeleton)[0];
-        const labelSkeleton = component.findAllComponents(USkeleton)[1];
-
-        expect(inputSkeleton.props("variant")).toBe(variant);
-        expect(labelSkeleton.props("variant")).toBe(variant);
-      });
-    });
-
     // DataTest prop
     it("applies the correct data-test attribute", () => {
       const dataTest = "test-skeleton-choice";

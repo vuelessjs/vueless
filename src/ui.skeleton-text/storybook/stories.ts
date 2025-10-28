@@ -7,7 +7,7 @@ import UCol from "../../ui.container-col/UCol.vue";
 import type { Props } from "../types";
 
 interface SkeletonTextArgs extends Props {
-  enum: "size" | "variant";
+  enum: "size";
 }
 
 export default {
@@ -54,6 +54,3 @@ Default.args = {};
 
 export const Sizes = EnumTemplate.bind({});
 Sizes.args = { enum: "size", headerLines: 1, textLines: 3 };
-
-export const Variant = EnumTemplate.bind({});
-Variant.args = { enum: "variant" };

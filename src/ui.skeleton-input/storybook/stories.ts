@@ -16,7 +16,7 @@ import type { Props } from "../types";
 
 interface SkeletonInputArgs extends Props {
   slotTemplate?: string;
-  enum: "variant" | "size" | "labelAlign" | "type";
+  enum: "size" | "labelAlign" | "type";
 }
 
 export default {
@@ -88,9 +88,6 @@ export const Types: StoryFn<SkeletonInputArgs> = (args: SkeletonInputArgs) => ({
 export const Sizes = EnumTemplate.bind({});
 Sizes.args = { enum: "size" };
 
-export const Variants = EnumTemplate.bind({});
-Variants.args = { enum: "variant" };
-
 export const Slot: StoryFn<SkeletonInputArgs> = (args) => ({
   components: { USkeletonInput, USkeleton, UCol },
   setup() {
@@ -99,7 +96,7 @@ export const Slot: StoryFn<SkeletonInputArgs> = (args) => ({
   template: `
     <USkeletonInput label-align="top" v-bind="args" class="!max-w-96">
       <UCol align="end" >
-        <USkeleton class="size-5 rounded-small" variant="dark" />
+        <USkeleton class="size-5 rounded-small" />
       </UCol>
     </USkeletonInput>
   `,
@@ -114,8 +111,8 @@ export const LabelSlot: StoryFn<SkeletonInputArgs> = (args) => ({
     <USkeletonInput v-bind="args" label-align="top" class="!max-w-96">
       <template #label>
         <UCol gap="2xs"s>
-          <USkeleton class="h-3 w-36 rounded-small" variant="dark" />
-          <USkeleton class="h-1.5 w-24 rounded-small" variant="dark" />
+          <USkeleton class="h-3 w-36 rounded-small" />
+          <USkeleton class="h-1.5 w-24 rounded-small" />
         </UCol>
       </template>
     </USkeletonInput>

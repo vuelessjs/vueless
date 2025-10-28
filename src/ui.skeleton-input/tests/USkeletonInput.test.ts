@@ -178,30 +178,6 @@ describe("USkeletonInput.vue", () => {
       });
     });
 
-    // Variant prop
-    it("passes the correct variant to skeleton components", () => {
-      const variants = {
-        light: "light",
-        default: "default",
-        dark: "dark",
-      };
-
-      Object.entries(variants).forEach(([variant, expectedVariant]) => {
-        const component = mount(USkeletonInput, {
-          props: {
-            variant: variant as Props["variant"],
-            labelAlign: "top", // To ensure label is rendered
-          },
-        });
-
-        const skeletons = component.findAllComponents(USkeleton);
-
-        skeletons.forEach((skeleton) => {
-          expect(skeleton.props("variant")).toBe(expectedVariant);
-        });
-      });
-    });
-
     // DataTest prop
     it("applies the correct data-test attribute", () => {
       const dataTest = "test-skeleton-input";

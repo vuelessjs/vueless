@@ -26,11 +26,6 @@ export interface Props {
   type?: "input" | "textarea";
 
   /**
-   * Brightness variant.
-   */
-  variant?: "light" | "default" | "dark";
-
-  /**
    * Component config object.
    */
   config?: ComponentConfig<Config>;

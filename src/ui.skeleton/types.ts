@@ -6,11 +6,6 @@ export type Config = typeof defaultConfig;
 
 export interface Props {
   /**
-   * Brightness variant.
-   */
-  variant?: "light" | "default" | "dark";
-
-  /**
    * Component config object.
    */
   config?: ComponentConfig<Config>;

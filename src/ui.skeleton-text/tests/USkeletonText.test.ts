@@ -93,27 +93,6 @@ describe("USkeletonText.vue", () => {
       });
     });
 
-    // Variant prop
-    it("passes the correct variant to skeleton components", () => {
-      const variants = ["light", "default", "dark"];
-
-      variants.forEach((variant) => {
-        const component = mount(USkeletonText, {
-          props: {
-            variant: variant as Props["variant"],
-            headerLines: 1,
-            textLines: 1,
-          },
-        });
-
-        const headerSkeleton = component.find("[vl-key='headerWrapper']").findComponent(USkeleton);
-        const textSkeleton = component.find("[vl-key='textWrapper']").findComponent(USkeleton);
-
-        expect(headerSkeleton.props("variant")).toBe(variant);
-        expect(textSkeleton.props("variant")).toBe(variant);
-      });
-    });
-
     // DataTest prop
     it("applies the correct data-test attribute", () => {
       const dataTest = "test-skeleton-text";

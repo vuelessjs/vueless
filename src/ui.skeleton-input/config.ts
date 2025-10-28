@@ -50,7 +50,6 @@ export default /*tw*/ {
     },
   },
   defaults: {
-    variant: "default",
     labelAlign: "topInside",
     type: "input",
     size: "md",
