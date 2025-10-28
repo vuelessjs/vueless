@@ -101,7 +101,7 @@ function trapFocus(e: KeyboardEvent) {
     return;
   }
 
-  // Tab - if focused on last element, move to first
+  // Tab - if focused on the last element, move to the first
   if (!e.shiftKey && document.activeElement === lastElement) {
     e.preventDefault();
     firstElement.focus();
