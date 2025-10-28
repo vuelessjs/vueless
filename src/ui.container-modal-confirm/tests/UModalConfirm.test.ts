@@ -464,14 +464,14 @@ describe("UModalConfirm", () => {
   });
 
   describe("Exposed refs", () => {
-    it("modal – exposes modal ref", () => {
+    it("modalRef – exposes modal ref", () => {
       const component = mount(UModalConfirm, {
         props: {
           modelValue,
         },
       });
 
-      expect(component.vm.modal).toBeDefined();
+      expect(component.vm.modalRef).toBeDefined();
     });
   });
 });
