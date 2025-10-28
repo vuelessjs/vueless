@@ -31,6 +31,11 @@ export interface Props {
   size?: "sm" | "md" | "lg";
 
   /**
+   * Loader variant.
+   */
+  variant?: "dots" | "spinner";
+
+  /**
    * Component config object.
    */
   config?: ComponentConfig<Config>;
