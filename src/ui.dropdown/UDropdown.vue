@@ -246,6 +246,7 @@ const { getDataTest, wrapperAttrs, listboxAttrs } = useUI<Config>(
           :group-value-key="groupValueKey"
           v-bind="listboxAttrs"
           :data-test="getDataTest('list')"
+          @click.stop
           @click-option="onClickOption"
           @search-change="onSearchChange"
           @update:search="(value) => emit('update:search', value)"

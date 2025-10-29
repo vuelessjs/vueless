@@ -1,5 +1,12 @@
 export default /*tw*/ {
-  wrapper: "relative inline-block h-max",
+  wrapper: {
+    base: "relative inline-block h-max cursor-pointer",
+    variants: {
+      disabled: {
+        true: "cursor-not-allowed",
+      },
+    },
+  },
   listbox: {
     base: "{UListbox} absolute z-10 w-fit",
     variants: {
@@ -31,7 +38,6 @@ export default /*tw*/ {
     xPosition: "left",
     optionsLimit: 0,
     visibleOptions: 8,
-    labelDisplayCount: 2,
     searchable: false,
     multiple: false,
     closeOnSelect: true,

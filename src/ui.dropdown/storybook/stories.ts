@@ -197,36 +197,6 @@ VisibleOptions.parameters = {
   },
 };
 
-export const CustomTriggerBadge: StoryFn<DefaultUDropdownArgs> = (args) => ({
-  components: { UDropdown, UBadge, UIcon },
-  setup: () => ({ args }),
-  template: `
-    <UDropdown v-bind="args" #default="{ opened }">
-      <UBadge label="Badge" color="primary">
-        <template #right>
-          <UIcon name="expand_more" color="inherit" size="xs" />
-        </template>
-      </UBadge>
-    </UDropdown>
-  `,
-});
-CustomTriggerBadge.args = {};
-
-export const CustomTriggerButton: StoryFn<DefaultUDropdownArgs> = (args) => ({
-  components: { UDropdown, UButton, UIcon },
-  setup: () => ({ args }),
-  template: `
-    <UDropdown v-bind="args" #default="{ opened }">
-      <UButton label="Button">
-        <template #right>
-          <UIcon name="keyboard_arrow_down" color="inherit" />
-        </template>
-      </UButton>
-    </UDropdown>
-  `,
-});
-CustomTriggerButton.args = {};
-
 export const EmptySlot = DefaultTemplate.bind({});
 EmptySlot.args = {
   options: [],

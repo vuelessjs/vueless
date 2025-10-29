@@ -12,11 +12,6 @@ export interface Props {
   modelValue?: string | number | UnknownObject | (string | number | UnknownObject)[];
 
   /**
-   * Determines how many selected option labels are shown in the label.
-   */
-  labelDisplayCount?: number;
-
-  /**
    * Options list.
    */
   options?: Option[];
@@ -68,7 +63,7 @@ export interface Props {
   /**
    * Dropdown size.
    */
-  size?: "2xs" | "xs" | "sm" | "md" | "lg" | "xl";
+  size?: "sm" | "md" | "lg";
 
   /**
    * Shows input to search value in a list.
