@@ -15,10 +15,8 @@ describe("UDropdownBadge.vue", () => {
     { value: 3, label: "Option 3" },
   ];
 
-  // Props tests
   describe("Props", () => {
-    // Label prop
-    it("renders the correct label text", () => {
+    it("Label – renders the correct label text", () => {
       const label = "Dropdown Badge";
 
       const component = mount(UDropdownBadge, {
@@ -31,8 +29,7 @@ describe("UDropdownBadge.vue", () => {
       expect(component.findComponent(UBadge).props("label")).toBe(label);
     });
 
-    // ModelValue prop
-    it("selects the correct option based on modelValue", async () => {
+    it("ModelValue – selects the correct option based on modelValue", async () => {
       const modelValue = 2;
 
       const component = mount(UDropdownBadge, {
@@ -48,8 +45,7 @@ describe("UDropdownBadge.vue", () => {
       expect(component.findComponent(UBadge).props("label")).toBe(selectedOption?.label);
     });
 
-    // Multiple prop with modelValue
-    it("handles multiple selections correctly", async () => {
+    it("Multiple – handles multiple selections correctly", async () => {
       const modelValue = [1, 3];
 
       const component = mount(UDropdownBadge, {
@@ -67,8 +63,7 @@ describe("UDropdownBadge.vue", () => {
       expect(component.findComponent(UBadge).props("label")).toBe(expectedLabel);
     });
 
-    // LabelDisplayCount prop
-    it("limits displayed labels based on labelDisplayCount", async () => {
+    it("LabelDisplayCount – limits displayed labels based on labelDisplayCount", async () => {
       const modelValue = [1, 2, 3];
       const labelDisplayCount = 1;
 
@@ -87,8 +82,7 @@ describe("UDropdownBadge.vue", () => {
       expect(component.findComponent(UBadge).props("label")).toBe(expectedLabel);
     });
 
-    // LabelDisplayCount prop with single value
-    it("correctly displays label when labelDisplayCount is 1 and only one value is selected", async () => {
+    it("LabelDisplayCount – displays label correctly with single value", async () => {
       const modelValue = [1];
       const labelDisplayCount = 1;
 
@@ -107,8 +101,7 @@ describe("UDropdownBadge.vue", () => {
       expect(component.findComponent(UBadge).props("label")).toBe(expectedLabel);
     });
 
-    // Variant prop
-    it("applies the correct variant class", async () => {
+    it("Variant – applies the correct variant class", async () => {
       const variants = ["solid", "outlined", "subtle", "soft"];
 
       variants.forEach((variant) => {
@@ -123,8 +116,7 @@ describe("UDropdownBadge.vue", () => {
       });
     });
 
-    // Color prop
-    it("applies the correct color class", async () => {
+    it("Color – applies the correct color class", async () => {
       const colors = [
         "primary",
         "secondary",
@@ -149,8 +141,7 @@ describe("UDropdownBadge.vue", () => {
       });
     });
 
-    // Size prop
-    it("applies the correct size class", async () => {
+    it("Size – applies the correct size class", async () => {
       const sizes = ["sm", "md", "lg"];
 
       sizes.forEach((size) => {
@@ -165,8 +156,7 @@ describe("UDropdownBadge.vue", () => {
       });
     });
 
-    // Round prop
-    it("applies round class when round prop is true", () => {
+    it("Round – applies round class when round prop is true", () => {
       const round = true;
 
       const component = mount(UDropdownBadge, {
@@ -179,8 +169,7 @@ describe("UDropdownBadge.vue", () => {
       expect(component.findComponent(UBadge).props("round")).toBe(round);
     });
 
-    // ToggleIcon prop (boolean: true)
-    it("shows default toggle icon when toggleIcon is true", () => {
+    it("ToggleIcon – shows default toggle icon when toggleIcon is true", () => {
       const toggleIcon = true;
 
       const component = mount(UDropdownBadge, {
@@ -196,8 +185,7 @@ describe("UDropdownBadge.vue", () => {
       expect(iconComponent.props("name")).toBe("keyboard_arrow_down");
     });
 
-    // ToggleIcon prop (boolean: false)
-    it("hides toggle icon when toggleIcon is false", () => {
+    it("ToggleIcon – hides toggle icon when toggleIcon is false", () => {
       const toggleIcon = false;
 
       const component = mount(UDropdownBadge, {
@@ -212,8 +200,7 @@ describe("UDropdownBadge.vue", () => {
       expect(iconComponent.exists()).toBe(false);
     });
 
-    // ToggleIcon prop (string)
-    it("shows custom toggle icon when toggleIcon is a string", () => {
+    it("ToggleIcon – shows custom toggle icon when toggleIcon is a string", () => {
       const toggleIcon = "custom_icon";
 
       const component = mount(UDropdownBadge, {
@@ -229,8 +216,7 @@ describe("UDropdownBadge.vue", () => {
       expect(iconComponent.props("name")).toBe(toggleIcon);
     });
 
-    // ID prop
-    it("applies the correct id attribute", () => {
+    it("ID – applies the correct id attribute", () => {
       const id = "test-dropdown-id";
 
       const component = mount(UDropdownBadge, {
@@ -243,8 +229,7 @@ describe("UDropdownBadge.vue", () => {
       expect(component.findComponent(UBadge).props("id")).toBe(id);
     });
 
-    // DataTest prop
-    it("applies the correct data-test attribute", () => {
+    it("DataTest – applies the correct data-test attribute", () => {
       const dataTest = "test-dropdown";
 
       const component = mount(UDropdownBadge, {
@@ -257,8 +242,7 @@ describe("UDropdownBadge.vue", () => {
       expect(component.findComponent(UBadge).attributes("data-test")).toBe(dataTest);
     });
 
-    // OptionsLimit prop
-    it("passes optionsLimit prop to UListbox component", async () => {
+    it("OptionsLimit – passes optionsLimit prop to UListbox component", async () => {
       const optionsLimit = 2;
 
       const component = mount(UDropdownBadge, {
@@ -273,8 +257,7 @@ describe("UDropdownBadge.vue", () => {
       expect(component.findComponent(UListbox).props("optionsLimit")).toBe(optionsLimit);
     });
 
-    // VisibleOptions prop
-    it("passes visibleOptions prop to UListbox component", async () => {
+    it("VisibleOptions – passes visibleOptions prop to UListbox component", async () => {
       const visibleOptions = 5;
 
       const component = mount(UDropdownBadge, {
@@ -289,8 +272,7 @@ describe("UDropdownBadge.vue", () => {
       expect(component.findComponent(UListbox).props("visibleOptions")).toBe(visibleOptions);
     });
 
-    // GroupLabelKey prop
-    it("passes groupLabelKey prop to UListbox component", async () => {
+    it("GroupLabelKey – passes groupLabelKey prop to UListbox component", async () => {
       const groupLabelKey = "category";
       const groupedOptions = [
         { groupLabel: "Group 1", category: "group1" },
@@ -329,8 +311,7 @@ describe("UDropdownBadge.vue", () => {
       expect(options[0].text()).toBe("Option 1");
     });
 
-    // CloseOnSelect prop
-    it("keeps dropdown open when closeOnSelect is false", async () => {
+    it("CloseOnSelect – keeps dropdown open when closeOnSelect is false", async () => {
       const component = mount(UDropdownBadge, {
         props: {
           options: defaultOptions,
@@ -353,10 +334,8 @@ describe("UDropdownBadge.vue", () => {
     });
   });
 
-  // Slots tests
   describe("Slots", () => {
-    // Default slot
-    it("renders content from default slot", () => {
+    it("Default – renders content from default slot", () => {
       const slotContent = "Custom Content";
       const label = "Dropdown Badge";
 
@@ -373,8 +352,7 @@ describe("UDropdownBadge.vue", () => {
       expect(component.text()).toContain(slotContent);
     });
 
-    // Left slot
-    it("renders content from left slot", () => {
+    it("Left – renders content from left slot", () => {
       const label = "Dropdown Badge";
       const slotText = "Left";
       const slotClass = "left-content";
@@ -393,8 +371,7 @@ describe("UDropdownBadge.vue", () => {
       expect(component.find(`.${slotClass}`).text()).toBe(slotText);
     });
 
-    // Toggle slot
-    it("renders content from toggle slot", () => {
+    it("Toggle – renders content from toggle slot", () => {
       const label = "Dropdown Badge";
       const slotText = "Toggle";
       const slotClass = "toggle-content";
@@ -413,8 +390,7 @@ describe("UDropdownBadge.vue", () => {
       expect(component.find(`.${slotClass}`).text()).toBe(slotText);
     });
 
-    // Before-option slot
-    it("renders content from before-option slot", async () => {
+    it("Before – renders content from before-option slot", async () => {
       const label = "Dropdown Badge";
       const slotText = "Before";
       const slotClass = "before-option-content";
@@ -438,8 +414,7 @@ describe("UDropdownBadge.vue", () => {
       expect(beforeOptionSlot.text()).toBe(slotText);
     });
 
-    // Option slot
-    it("renders custom content from option slot", async () => {
+    it("Option – renders custom content from option slot", async () => {
       const label = "Dropdown Badge";
       const slotClass = "custom-option-content";
 
@@ -462,8 +437,7 @@ describe("UDropdownBadge.vue", () => {
       expect(customOptionSlot.text()).toBe("Custom Option 1");
     });
 
-    // After-option slot
-    it("renders content from after-option slot", async () => {
+    it("After – renders content from after-option slot", async () => {
       const label = "Dropdown Badge";
       const slotText = "After";
       const slotClass = "after-option-content";
@@ -487,8 +461,7 @@ describe("UDropdownBadge.vue", () => {
       expect(afterOptionSlot.text()).toBe(slotText);
     });
 
-    // Empty slot
-    it("renders custom content from empty slot", async () => {
+    it("Empty – renders custom content from empty slot", async () => {
       const label = "Dropdown Badge";
       const slotContent = "No options available";
       const slotClass = "custom-empty";
@@ -513,10 +486,8 @@ describe("UDropdownBadge.vue", () => {
     });
   });
 
-  // Events tests
   describe("Events", () => {
-    // Click event to open dropdown
-    it("opens dropdown when badge is clicked", async () => {
+    it("Click – opens dropdown when badge is clicked", async () => {
       const component = mount(UDropdownBadge, {
         props: {
           options: defaultOptions,
@@ -533,8 +504,7 @@ describe("UDropdownBadge.vue", () => {
       expect(component.findComponent(UListbox).exists()).toBe(true);
     });
 
-    // update:modelValue event
-    it("emits update:modelValue event when an option is selected", async () => {
+    it("update:modelValue – emits update:modelValue event when an option is selected", async () => {
       const component = mount(UDropdownBadge, {
         props: {
           options: defaultOptions,
@@ -555,8 +525,7 @@ describe("UDropdownBadge.vue", () => {
       expect(component.emitted("update:modelValue")?.[0]).toEqual([2]);
     });
 
-    // clickOption event
-    it("emits clickOption event when an option is clicked", async () => {
+    it("clickOption – emits clickOption event when an option is clicked", async () => {
       const component = mount(UDropdownBadge, {
         props: {
           options: defaultOptions,
@@ -577,8 +546,7 @@ describe("UDropdownBadge.vue", () => {
       expect(component.emitted("clickOption")?.[0]).toEqual([defaultOptions[1]]);
     });
 
-    // Close dropdown when clicking outside
-    it("closes dropdown when clicking outside", async () => {
+    it("Close – closes dropdown when clicking outside", async () => {
       const component = mount(UDropdownBadge, {
         props: {
           options: defaultOptions,
@@ -599,10 +567,8 @@ describe("UDropdownBadge.vue", () => {
     });
   });
 
-  // Exposed refs tests
   describe("Exposed refs", () => {
-    // wrapperRef
-    it("exposes wrapperRef", () => {
+    it("wrapperRef – exposes wrapperRef", () => {
       const component = mount(UDropdownBadge, {
         props: {
           options: defaultOptions,
