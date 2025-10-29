@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { nextTick, computed, ref, useTemplateRef } from "vue";
+import { nextTick, computed, ref, useId, useTemplateRef } from "vue";
 import { isEqual } from "lodash-es";
 
 import { useUI } from "../composables/useUI";
@@ -211,6 +211,7 @@ const { getDataTest, wrapperAttrs, listboxAttrs } = useUI<Config>(
 
 <template>
   <div
+    :id="elementId"
     ref="wrapper"
     v-click-outside="handleClickOutside"
     v-bind="wrapperAttrs"
