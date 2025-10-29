@@ -159,7 +159,6 @@ export default /*tw*/ {
     range: false,
     timepicker: false,
     /* icons */
-    viewSwitchIcon: "keyboard_arrow_down",
     nextYearIcon: "keyboard_double_arrow_right",
     prevYearIcon: "keyboard_double_arrow_left",
     nextIcon: "keyboard_arrow_right",
