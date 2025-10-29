@@ -249,6 +249,7 @@ export const COMPONENTS = {
   UToggle: "ui.button-toggle",
 
   /* Dropdowns */
+  UDropdown: "ui.dropdown",
   UDropdownButton: "ui.dropdown-button",
   UDropdownBadge: "ui.dropdown-badge",
   UDropdownLink: "ui.dropdown-link",
