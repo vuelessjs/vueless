@@ -59,37 +59,24 @@ const DefaultTemplate: StoryFn<DefaultUDropdownArgs> = (args: DefaultUDropdownAr
   setup: () => ({ args, slots: getSlotNames(UDropdown.__name) }),
   template: `
     <UDropdown v-bind="args">
-      <template #default="{ opened, label, toggle, elementId }">
-        <UButton :id="elementId" :label="label" @click="toggle">
-          <template #right>
-            <UIcon name="keyboard_arrow_down" color="inherit" />
-          </template>
-        </UButton>
-      </template>
-      ${args.slotTemplate || getSlotsFragment("")}
+      ${args.slotTemplate || getSlotsFragment(`<UAvatar label="JD" interactive />`)}
     </UDropdown>
   `,
 });
 
 const SelectableTemplate: StoryFn<DefaultUDropdownArgs> = (args: DefaultUDropdownArgs) => ({
-  components: { UDropdown, UButton, UIcon },
+  components: { UDropdown, UButton, UIcon, UAvatar },
   setup: () => ({ args, slots: getSlotNames(UDropdown.__name) }),
   template: `
-    <UDropdown v-bind="args" v-model="args.modelValue">
-      <template #default="{ opened, label, toggle, elementId }">
-        <UButton :id="elementId" :label="label" @click="toggle">
-          <template #right>
-            <UIcon name="keyboard_arrow_down" color="inherit" />
-          </template>
-        </UButton>
-      </template>
+    <UDropdown v-bind="args" v-model="args.modelValue" #default="{ opened }">
+      <UAvatar label="JD" interactive />
       ${args.slotTemplate || getSlotsFragment("")}
     </UDropdown>
   `,
 });
 
 const EnumTemplate: StoryFn<EnumUDropdownArgs> = (args: EnumUDropdownArgs, { argTypes }) => ({
-  components: { UDropdown, UButton, UIcon, URow },
+  components: { UDropdown, UButton, UIcon, URow, UAvatar },
   setup: () => ({ args, argTypes, getArgs }),
   template: `
     <URow>
@@ -97,14 +84,9 @@ const EnumTemplate: StoryFn<EnumUDropdownArgs> = (args: EnumUDropdownArgs, { arg
         v-for="option in argTypes?.[args.enum]?.options"
         v-bind="getArgs(args, option)"
         :key="option"
+        #default="{ opened }"
       >
-        <template #default="{ opened, label, toggle, elementId }">
-          <UButton :id="elementId" :label="label" @click="toggle">
-            <template #right>
-              <UIcon name="keyboard_arrow_down" color="inherit" />
-            </template>
-          </UButton>
-        </template>
+        <UAvatar label="JD" interactive />
       </UDropdown>
     </URow>
   `,
@@ -215,29 +197,35 @@ VisibleOptions.parameters = {
   },
 };
 
-export const CustomTriggerBadge = DefaultTemplate.bind({});
-CustomTriggerBadge.args = {
-  label: "Custom Trigger",
-  slotTemplate: `
-    <template #default="{ opened, label, toggle, elementId }">
-      <UBadge :id="elementId" :label="label" color="primary" @click="toggle">
+export const CustomTriggerBadge: StoryFn<DefaultUDropdownArgs> = (args) => ({
+  components: { UDropdown, UBadge, UIcon },
+  setup: () => ({ args }),
+  template: `
+    <UDropdown v-bind="args" #default="{ opened }">
+      <UBadge label="Badge" color="primary">
         <template #right>
           <UIcon name="expand_more" color="inherit" size="xs" />
         </template>
       </UBadge>
-    </template>
+    </UDropdown>
   `,
-};
+});
+CustomTriggerBadge.args = {};
 
-export const CustomTriggerAvatar = DefaultTemplate.bind({});
-CustomTriggerAvatar.args = {
-  label: "John Doe",
-  slotTemplate: `
-    <template #default="{ opened, label, toggle, elementId }">
-      <UAvatar :id="elementId" :label="label" interactive @click="toggle" />
-    </template>
+export const CustomTriggerButton: StoryFn<DefaultUDropdownArgs> = (args) => ({
+  components: { UDropdown, UButton, UIcon },
+  setup: () => ({ args }),
+  template: `
+    <UDropdown v-bind="args" #default="{ opened }">
+      <UButton label="Button">
+        <template #right>
+          <UIcon name="keyboard_arrow_down" color="inherit" />
+        </template>
+      </UButton>
+    </UDropdown>
   `,
-};
+});
+CustomTriggerButton.args = {};
 
 export const EmptySlot = DefaultTemplate.bind({});
 EmptySlot.args = {
@@ -253,26 +241,20 @@ EmptySlot.args = {
 };
 
 export const OptionSlots: StoryFn<DefaultUDropdownArgs> = (args) => ({
-  components: { UDropdown, UButton, UIcon, URow, UCol, UBadge, UText },
+  components: { UDropdown, UAvatar, UIcon, URow, UCol, UBadge, UText },
   setup: () => ({ args }),
   template: `
     <URow>
       <UDropdown
         v-model="args.beforeOptionModel"
-        label="Before option slot"
         :options="[
           { label: 'John Doe', value: '1', role: 'Developer', status: 'online', statusColor: 'success' },
           { label: 'Jane Smith', value: '2', role: 'Designer', status: 'away', statusColor: 'warning' },
           { label: 'Mike Johnson', value: '3', role: 'Product Manager', status: 'offline', statusColor: 'grayscale' },
         ]"
+        #default="{ opened }"
       >
-        <template #default="{ opened, label, toggle, elementId }">
-          <UButton :id="elementId" :label="label" @click="toggle">
-            <template #right>
-              <UIcon name="keyboard_arrow_down" color="inherit" />
-            </template>
-          </UButton>
-        </template>
+        <UAvatar label="JD" interactive />
         <template #before-option="{ option }">
           <UIcon name="person" size="sm" />
         </template>
@@ -280,20 +262,14 @@ export const OptionSlots: StoryFn<DefaultUDropdownArgs> = (args) => ({
 
       <UDropdown
         v-model="args.optionModel"
-        label="Option slot"
         :options="[
           { label: 'John Doe', value: '1', role: 'Developer', status: 'online', statusColor: 'success' },
           { label: 'Jane Smith', value: '2', role: 'Designer', status: 'away', statusColor: 'warning' },
           { label: 'Mike Johnson', value: '3', role: 'Product Manager', status: 'offline', statusColor: 'grayscale' },
         ]"
+        #default="{ opened }"
       >
-        <template #default="{ opened, label, toggle, elementId }">
-          <UButton :id="elementId" :label="label" @click="toggle">
-            <template #right>
-              <UIcon name="keyboard_arrow_down" color="inherit" />
-            </template>
-          </UButton>
-        </template>
+        <UAvatar label="JD" interactive />
         <template #option="{ option }">
           <URow align="center" gap="xs">
             <UCol gap="none">
@@ -319,11 +295,9 @@ export const CustomDropdownSlot: StoryFn<DefaultUDropdownArgs> = (args) => ({
   components: { UDropdown, UAvatar, URow, UCol, UText, UButton },
   setup: () => ({ args }),
   template: `
-    <UDropdown label="John Doe">
-      <template #default="{ opened, label, toggle, elementId }">
-        <UAvatar :id="elementId" :label="label" interactive @click="toggle" />
-      </template>
-      <template #dropdown="{ hide }">
+    <UDropdown #default="{ opened }">
+      <UAvatar label="JD" interactive />
+      <template #dropdown="{ opened }">
         <div class="bg-white rounded-lg shadow-lg p-4 w-64">
           <URow gap="sm" align="center">
             <UAvatar label="John Doe" size="lg" />
@@ -334,9 +308,9 @@ export const CustomDropdownSlot: StoryFn<DefaultUDropdownArgs> = (args) => ({
           </URow>
           <div class="border-t border-gray-200 my-3"></div>
           <UCol gap="xs">
-            <UButton label="Profile" variant="thirdary" size="sm" block @click="hide" />
-            <UButton label="Settings" variant="thirdary" size="sm" block @click="hide" />
-            <UButton label="Logout" variant="thirdary" size="sm" block color="red" @click="hide" />
+            <UButton label="Profile" variant="thirdary" size="sm" block />
+            <UButton label="Settings" variant="thirdary" size="sm" block />
+            <UButton label="Logout" variant="thirdary" size="sm" block color="red" />
           </UCol>
         </div>
       </template>

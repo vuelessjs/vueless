@@ -13,22 +13,6 @@ describe("UDropdown.vue", () => {
   ];
 
   describe("Props", () => {
-    it("Label – renders the correct label text", () => {
-      const label = "Select option";
-
-      const component = mount(UDropdown, {
-        props: {
-          label,
-          options: defaultOptions,
-        },
-        slots: {
-          default: `<button>{{ label }}</button>`,
-        },
-      });
-
-      expect(component.text()).toContain(label);
-    });
-
     it("ModelValue – selects the correct option based on modelValue", async () => {
       const modelValue = 2;
 
@@ -38,13 +22,11 @@ describe("UDropdown.vue", () => {
           options: defaultOptions,
         },
         slots: {
-          default: `<button>{{ label }}</button>`,
+          default: `<button>Trigger</button>`,
         },
       });
 
-      const selectedOption = defaultOptions.find((option) => option.value === modelValue);
-
-      expect(component.text()).toContain(selectedOption?.label);
+      expect(component.vm.selectedOptions[0]?.value).toBe(modelValue);
     });
 
     it("Multiple – handles multiple selections correctly", async () => {
@@ -57,71 +39,13 @@ describe("UDropdown.vue", () => {
           options: defaultOptions,
         },
         slots: {
-          default: `<button>{{ label }}</button>`,
+          default: `<button>Trigger</button>`,
         },
       });
 
-      const selectedOptions = defaultOptions.filter((option) => modelValue.includes(option.value));
-      const expectedLabel = selectedOptions.map((option) => option.label).join(", ");
-
-      expect(component.text()).toContain(expectedLabel);
-    });
-
-    it("LabelDisplayCount – limits displayed labels based on labelDisplayCount", async () => {
-      const modelValue = [1, 2, 3];
-      const labelDisplayCount = 1;
-      const expectedLabel = "Option 1, +2";
-
-      const component = mount(UDropdown, {
-        props: {
-          modelValue,
-          multiple: true,
-          labelDisplayCount,
-          options: defaultOptions,
-        },
-        slots: {
-          default: `<button>{{ label }}</button>`,
-        },
-      });
-
-      expect(component.text()).toContain(expectedLabel);
-    });
-
-    // eslint-disable-next-line vue/max-len
-    it("LabelDisplayCount – correctly displays label when labelDisplayCount is 1 and only one value is selected", async () => {
-      const modelValue = [1];
-      const labelDisplayCount = 1;
-      const expectedLabel = "Option 1";
-
-      const component = mount(UDropdown, {
-        props: {
-          modelValue,
-          multiple: true,
-          labelDisplayCount,
-          options: defaultOptions,
-        },
-        slots: {
-          default: `<button>{{ label }}</button>`,
-        },
-      });
-
-      expect(component.text()).toContain(expectedLabel);
-    });
-
-    it("Label – displays the default label when no option is selected", () => {
-      const label = "Select an option";
-
-      const component = mount(UDropdown, {
-        props: {
-          label,
-          options: defaultOptions,
-        },
-        slots: {
-          default: `<button>{{ label }}</button>`,
-        },
-      });
-
-      expect(component.text()).toContain(label);
+      expect(component.vm.selectedOptions.length).toBe(2);
+      expect(component.vm.selectedOptions[0]?.value).toBe(1);
+      expect(component.vm.selectedOptions[1]?.value).toBe(3);
     });
 
     it("Disabled – applies disabled state correctly", async () => {
@@ -132,7 +56,7 @@ describe("UDropdown.vue", () => {
           dataTest: "dropdown",
         },
         slots: {
-          default: `<button @click="toggle">Click me</button>`,
+          default: `<button>Click me</button>`,
         },
       });
 
@@ -140,7 +64,7 @@ describe("UDropdown.vue", () => {
 
       expect(wrapper.exists()).toBe(true);
 
-      await component.find("button").trigger("click");
+      await wrapper.trigger("click");
       await nextTick();
 
       expect(component.findComponent(UListbox).exists()).toBe(false);
@@ -153,7 +77,7 @@ describe("UDropdown.vue", () => {
           options: defaultOptions,
         },
         slots: {
-          default: `<button @click="toggle">{{ label }}</button>`,
+          default: `<button>Trigger</button>`,
         },
       });
 
@@ -168,20 +92,19 @@ describe("UDropdown.vue", () => {
     it("Default – renders default slot with correct bindings", () => {
       const component = mount(UDropdown, {
         props: {
-          label: "Test Label",
           options: defaultOptions,
         },
         slots: {
           default: `
-            <template #default="{ opened, label, toggle, elementId }">
-              <button :id="elementId" @click="toggle">{{ label }}</button>
+            <template #default="{ opened }">
+              <button>{{ opened ? 'Opened' : 'Closed' }}</button>
             </template>
           `,
         },
       });
 
       expect(component.find("button").exists()).toBe(true);
-      expect(component.text()).toContain("Test Label");
+      expect(component.text()).toContain("Closed");
     });
 
     it("Empty – renders empty slot when no options are provided", async () => {
@@ -190,7 +113,7 @@ describe("UDropdown.vue", () => {
           options: [],
         },
         slots: {
-          default: `<button @click="toggle">Open</button>`,
+          default: `<button>Open</button>`,
           empty: `<div class="empty-state">No options available</div>`,
         },
       });
@@ -208,7 +131,7 @@ describe("UDropdown.vue", () => {
           options: defaultOptions,
         },
         slots: {
-          default: `<button @click="toggle">Open</button>`,
+          default: `<button>Open</button>`,
           "before-option": `<span class="before-icon">→</span>`,
         },
       });
@@ -225,7 +148,7 @@ describe("UDropdown.vue", () => {
           options: defaultOptions,
         },
         slots: {
-          default: `<button @click="toggle">Open</button>`,
+          default: `<button>Open</button>`,
           option: `<template #option="{ option }"><div class="custom-option">{{ option.label }}</div></template>`,
         },
       });
@@ -242,7 +165,7 @@ describe("UDropdown.vue", () => {
           options: defaultOptions,
         },
         slots: {
-          default: `<button @click="toggle">Open</button>`,
+          default: `<button>Open</button>`,
           "after-option": `<span class="after-icon">✓</span>`,
         },
       });
@@ -261,7 +184,7 @@ describe("UDropdown.vue", () => {
           options: defaultOptions,
         },
         slots: {
-          default: `<button @click="toggle">Open</button>`,
+          default: `<button>Open</button>`,
         },
       });
 
@@ -282,7 +205,7 @@ describe("UDropdown.vue", () => {
           options: defaultOptions,
         },
         slots: {
-          default: `<button @click="toggle">Open</button>`,
+          default: `<button>Open</button>`,
         },
       });
 
@@ -298,16 +221,16 @@ describe("UDropdown.vue", () => {
           options: defaultOptions,
         },
         slots: {
-          default: `<button @click="toggle">Open</button>`,
+          default: `<button>Open</button>`,
         },
       });
 
       await component.find("button").trigger("click");
       await nextTick();
 
-      const hideOptions = component.vm.hideOptions as () => void;
+      const hide = component.vm.hide as () => void;
 
-      hideOptions();
+      hide();
       await nextTick();
 
       expect(component.emitted("close")).toBeTruthy();
@@ -319,7 +242,7 @@ describe("UDropdown.vue", () => {
           options: defaultOptions,
         },
         slots: {
-          default: `<button @click="toggle">Open</button>`,
+          default: `<button>Open</button>`,
         },
       });
 
@@ -335,7 +258,7 @@ describe("UDropdown.vue", () => {
   });
 
   describe("Exposed methods", () => {
-    it("ToggleOptions – exposes toggleOptions method", () => {
+    it("Toggle – exposes toggle method", () => {
       const component = mount(UDropdown, {
         props: {
           options: defaultOptions,
@@ -345,11 +268,11 @@ describe("UDropdown.vue", () => {
         },
       });
 
-      expect(component.vm.toggleOptions).toBeDefined();
-      expect(typeof component.vm.toggleOptions).toBe("function");
+      expect(component.vm.toggle).toBeDefined();
+      expect(typeof component.vm.toggle).toBe("function");
     });
 
-    it("HideOptions – exposes hideOptions method", () => {
+    it("Hide – exposes hide method", () => {
       const component = mount(UDropdown, {
         props: {
           options: defaultOptions,
@@ -359,8 +282,8 @@ describe("UDropdown.vue", () => {
         },
       });
 
-      expect(component.vm.hideOptions).toBeDefined();
-      expect(typeof component.vm.hideOptions).toBe("function");
+      expect(component.vm.hide).toBeDefined();
+      expect(typeof component.vm.hide).toBe("function");
     });
 
     it("WrapperRef – exposes wrapperRef", () => {

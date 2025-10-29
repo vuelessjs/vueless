@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { nextTick, computed, ref, useId, useTemplateRef } from "vue";
+import { nextTick, computed, ref, useTemplateRef } from "vue";
 import { isEqual } from "lodash-es";
 
 import { useUI } from "../composables/useUI";
@@ -21,7 +21,6 @@ const props = withDefaults(defineProps<Props>(), {
   ...getDefaults<Props, Config>(defaultConfig, COMPONENT_NAME),
   options: () => [],
   modelValue: "",
-  label: "",
 });
 
 const emit = defineEmits([
@@ -63,7 +62,7 @@ const emit = defineEmits([
 
 type UListboxRef = InstanceType<typeof UListbox>;
 
-const isShownOptions = ref(false);
+const isOpened = ref(false);
 const isClickingOption = ref(false);
 const listboxRef = useTemplateRef<UListboxRef>("dropdown-list");
 const wrapperRef = useTemplateRef<HTMLDivElement>("wrapper");
@@ -105,31 +104,10 @@ const selectedOptions = computed(() => {
   ].filter((option) => !!option);
 });
 
-const displayLabel = computed(() => {
-  if (!props.labelDisplayCount || !selectedOptions.value.length) {
-    return props.label;
-  }
+function getFullOptionLabels() {
+  if (!selectedOptions.value) return "";
 
-  const selectedLabels = selectedOptions.value
-    .slice(0, props.labelDisplayCount)
-    .map((option) => option[props.labelKey]);
-  const restLabelCount = selectedOptions.value.length - props.labelDisplayCount;
-
-  if (restLabelCount > 0) {
-    selectedLabels.push(`+${restLabelCount}`);
-  }
-
-  return selectedLabels.join(", ");
-});
-
-function getFullOptionLabels(value: Option | Option[]) {
-  const labelKey = props.labelKey;
-
-  if (Array.isArray(value)) {
-    return value.map((item) => item[labelKey]).join(", ");
-  }
-
-  return "";
+  return selectedOptions.value.map((option) => option[props.labelKey]).join(", ");
 }
 
 function onSearchChange(query: string) {
@@ -141,7 +119,9 @@ function onClickOption(option: Option) {
 
   emit("clickOption", option);
 
-  if (!props.multiple && props.closeOnSelect) hideOptions();
+  if (!props.multiple && props.closeOnSelect) {
+    hide();
+  }
 
   nextTick(() => {
     setTimeout(() => {
@@ -153,23 +133,23 @@ function onClickOption(option: Option) {
 function handleClickOutside() {
   if (isClickingOption.value) return;
 
-  hideOptions();
+  hide();
 }
 
-function toggleOptions() {
+function toggle() {
   if (props.disabled) return;
 
-  isShownOptions.value = !isShownOptions.value;
+  isOpened.value = !isOpened.value;
 
-  if (isShownOptions.value) {
+  if (isOpened.value) {
     nextTick(() => listboxRef.value?.wrapperRef?.focus());
 
     emit("open");
   }
 }
 
-function hideOptions() {
-  isShownOptions.value = false;
+function hide() {
+  isOpened.value = false;
   dropdownSearch.value = "";
 
   emit("close");
@@ -183,28 +163,22 @@ defineExpose({
   wrapperRef,
 
   /**
-   * Hides the dropdown options.
+   * Hides the dropdown.
    * @property {function}
    */
-  hideOptions,
+  hide,
 
   /**
-   * Toggles the dropdown options visibility.
+   * Toggles the dropdown visibility.
    * @property {function}
    */
-  toggleOptions,
+  toggle,
 
   /**
-   * Indicates whether the dropdown options are shown.
+   * Indicates whether the dropdown is opened.
    * @property {boolean}
    */
-  isShownOptions,
-
-  /**
-   * The computed display label for the dropdown.
-   * @property {string}
-   */
-  displayLabel,
+  isOpened,
 
   /**
    * The currently selected options.
@@ -213,13 +187,7 @@ defineExpose({
   selectedOptions,
 
   /**
-   * The unique element ID.
-   * @property {string}
-   */
-  elementId,
-
-  /**
-   * Gets the full option labels as a comma-separated string.
+   * Returns full option labels joined by comma.
    * @property {function}
    */
   getFullOptionLabels,
@@ -231,7 +199,7 @@ defineExpose({
  */
 const mutatedProps = computed(() => ({
   /* component state, not a props */
-  opened: isShownOptions.value,
+  opened: isOpened.value,
 }));
 
 const { getDataTest, wrapperAttrs, listboxAttrs } = useUI<Config>(
@@ -247,41 +215,20 @@ const { getDataTest, wrapperAttrs, listboxAttrs } = useUI<Config>(
     v-click-outside="handleClickOutside"
     v-bind="wrapperAttrs"
     :data-test="getDataTest('wrapper')"
+    @click="toggle"
   >
     <!--
       @slot Use it to add custom trigger element for the dropdown.
       @binding {boolean} opened
-      @binding {string} label
-      @binding {function} toggle
-      @binding {string} element-id
     -->
-    <slot
-      :opened="isShownOptions"
-      :label="displayLabel"
-      :toggle="toggleOptions"
-      :element-id="elementId"
-    />
+    <slot :opened="isOpened" />
 
     <Transition v-bind="config.listboxTransition">
       <!--
         @slot Use it to replace the UListbox with custom dropdown content.
         @binding {boolean} opened
-        @binding {string} label
-        @binding {function} toggle
-        @binding {function} hide
-        @binding {array} selectedOptions
-        @binding {string} elementId
       -->
-      <slot
-        v-if="isShownOptions"
-        name="dropdown"
-        :opened="isShownOptions"
-        :label="displayLabel"
-        :toggle="toggleOptions"
-        :hide="hideOptions"
-        :selected-options="selectedOptions"
-        :element-id="elementId"
-      >
+      <slot v-if="isOpened" name="dropdown" :opened="isOpened">
         <UListbox
           ref="dropdown-list"
           v-model="dropdownValue"
