@@ -30,10 +30,8 @@ describe("UFiles.vue", () => {
     URL.createObjectURL = originalCreateObjectURL;
   });
 
-  // Props tests
   describe("Props", () => {
-    // FileList prop
-    it("renders the correct number of files", () => {
+    it("FileList – renders the correct number of files", () => {
       const component = mount(UFiles, {
         props: {
           fileList,
@@ -45,8 +43,7 @@ describe("UFiles.vue", () => {
       expect(fileComponents.length).toBe(fileList.length);
     });
 
-    // Label prop
-    it("renders the correct label text", () => {
+    it("Label – renders the correct label text", () => {
       const label = "File List";
 
       const component = mount(UFiles, {
@@ -61,8 +58,7 @@ describe("UFiles.vue", () => {
       expect(labelComponent.props("label")).toBe(label);
     });
 
-    // Description prop
-    it("passes the correct description to ULabel", () => {
+    it("Description – passes the correct description to ULabel", () => {
       const description = "List of files";
 
       const component = mount(UFiles, {
@@ -77,8 +73,7 @@ describe("UFiles.vue", () => {
       expect(labelComponent.props("description")).toBe(description);
     });
 
-    // Size prop
-    it("passes the correct size prop to ULabel", () => {
+    it("Size – passes the correct size prop to ULabel", () => {
       const sizes = ["sm", "md", "lg"];
 
       sizes.forEach((size) => {
@@ -95,8 +90,7 @@ describe("UFiles.vue", () => {
       });
     });
 
-    // Removable prop
-    it("passes removable prop to UFile components", () => {
+    it("Removable – passes removable prop to UFile components", () => {
       const removable = true;
       const fileList = [createMockFile("file1.pdf")];
 
@@ -112,8 +106,7 @@ describe("UFiles.vue", () => {
       expect(fileComponent.props("removable")).toBe(removable);
     });
 
-    // DataTest prop
-    it("applies the correct data-test attribute to file items", () => {
+    it("DataTest – applies the correct data-test attribute to file items", () => {
       const dataTest = "test-files";
       const fileList = [createMockFile("file1.pdf")];
 
@@ -129,8 +122,7 @@ describe("UFiles.vue", () => {
       expect(fileComponent.attributes("data-test")).toBe(`${dataTest}-item-0`);
     });
 
-    // Image file detection
-    it("detects image files and sets imageUrl prop", () => {
+    it("Image – detects image files and sets imageUrl prop", () => {
       const imageFile = createMockFile("image.jpg", "image/jpeg");
       const fileList = [imageFile];
 
@@ -146,10 +138,8 @@ describe("UFiles.vue", () => {
     });
   });
 
-  // Slots tests
   describe("Slots", () => {
-    // Default slot
-    it("renders content from default slot", () => {
+    it("Default – renders content from default slot", () => {
       const slotContent = "Custom Content";
 
       const component = mount(UFiles, {
@@ -164,8 +154,7 @@ describe("UFiles.vue", () => {
       expect(component.text()).toContain(slotContent);
     });
 
-    // Label slot
-    it("renders content from label slot", () => {
+    it("Label – renders content from label slot", () => {
       const label = "File List";
       const slotText = "Custom Label";
       const slotClass = "label-content";
@@ -184,8 +173,7 @@ describe("UFiles.vue", () => {
       expect(component.find(`.${slotClass}`).text()).toBe(slotText);
     });
 
-    // Before-file slot
-    it("renders content from before-file slot", () => {
+    it("Before – renders content from before-file slot", () => {
       const slotText = "Before";
       const slotClass = "before-content";
 
@@ -206,8 +194,7 @@ describe("UFiles.vue", () => {
       expect(component.find(`.${slotClass}`).text()).toBe(`${slotText}0`);
     });
 
-    // After-file slot
-    it("renders content from after-file slot", () => {
+    it("After – renders content from after-file slot", () => {
       const slotText = "After";
       const slotClass = "after-content";
 
@@ -228,8 +215,7 @@ describe("UFiles.vue", () => {
       expect(component.find(`.${slotClass}`).text()).toBe(`${slotText}0`);
     });
 
-    // File slot with bindings
-    it("provides correct bindings to file slot", () => {
+    it("File – provides correct bindings to file slot", () => {
       const fileName = "file1.pdf";
       const fileIndex = "0";
       const fileList = [createMockFile(fileName)];
@@ -266,10 +252,8 @@ describe("UFiles.vue", () => {
     });
   });
 
-  // Events tests
   describe("Events", () => {
-    // Remove event
-    it("emits remove event when file is removed", async () => {
+    it("Remove – emits remove event when file is removed", async () => {
       const fileList = [createMockFile("file1.pdf")];
       const fileId = "test-id";
       const removable = true;
@@ -291,10 +275,8 @@ describe("UFiles.vue", () => {
     });
   });
 
-  // Exposed refs tests
   describe("Exposed refs", () => {
-    // itemsRef
-    it("exposes itemsRef", () => {
+    it("itemsRef – exposes itemsRef", () => {
       const component = mount(UFiles, {
         props: {
           fileList: [],

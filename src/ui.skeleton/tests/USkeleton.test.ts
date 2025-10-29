@@ -4,10 +4,8 @@ import { describe, it, expect } from "vitest";
 import USkeleton from "../USkeleton.vue";
 
 describe("USkeleton.vue", () => {
-  // Props tests
   describe("Props", () => {
-    // DataTest prop
-    it("applies the correct data-test attribute", () => {
+    it("DataTest – applies the correct data-test attribute", () => {
       const dataTest = "test-skeleton";
 
       const component = mount(USkeleton, {
@@ -20,10 +18,8 @@ describe("USkeleton.vue", () => {
     });
   });
 
-  // Slots tests
   describe("Slots", () => {
-    // Default slot
-    it("renders content from default slot", () => {
+    it("Default – renders content from default slot", () => {
       const slotContent = "Custom Content";
       const slotClass = "custom-content";
 

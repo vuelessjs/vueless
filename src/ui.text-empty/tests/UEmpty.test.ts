@@ -8,10 +8,8 @@ import UHeader from "../../ui.text-header/UHeader.vue";
 import type { Props } from "../types";
 
 describe("UEmpty.vue", () => {
-  // Props tests
   describe("Props", () => {
-    // Size prop
-    it("applies the correct size class", async () => {
+    it("Size – applies the correct size class", async () => {
       const size = {
         sm: "2xl",
         md: "3xl",
@@ -32,8 +30,7 @@ describe("UEmpty.vue", () => {
       });
     });
 
-    // Icon prop default
-    it("renders default icon when icon prop is not provided", () => {
+    it("Icon – renders default icon when icon prop is not provided", () => {
       const defaultIcon = "emoji_food_beverage";
 
       const component = mount(UEmpty, {});
@@ -43,8 +40,7 @@ describe("UEmpty.vue", () => {
       expect(iconComponent.props("name")).toBe(defaultIcon);
     });
 
-    // Icon prop true
-    it("renders default icon when icon prop is true", () => {
+    it("Icon – renders default icon when icon prop is true", () => {
       const placeholderIcon = true;
       const defaultIcon = "emoji_food_beverage";
 
@@ -60,8 +56,7 @@ describe("UEmpty.vue", () => {
       expect(iconComponent.props("name")).toBe(defaultIcon);
     });
 
-    // Icon prop string
-    it("renders custom icon when icon prop is a string", () => {
+    it("Icon – renders custom icon when icon prop is a string", () => {
       const customIcon = "close";
 
       const component = mount(UEmpty, {
@@ -76,8 +71,7 @@ describe("UEmpty.vue", () => {
       expect(iconComponent.props("name")).toBe(customIcon);
     });
 
-    // Icon prop false
-    it("does not render icon when icon prop is false", () => {
+    it("Icon – does not render icon when icon prop is false", () => {
       const placeholderIcon = false;
 
       const component = mount(UEmpty, {
@@ -91,8 +85,7 @@ describe("UEmpty.vue", () => {
       expect(iconComponent.exists()).toBe(placeholderIcon);
     });
 
-    // Title prop
-    it("renders the correct title text", () => {
+    it("Title – renders the correct title text", () => {
       const title = "Empty State Title";
 
       const component = mount(UEmpty, {
@@ -107,8 +100,7 @@ describe("UEmpty.vue", () => {
       expect(headerComponent.props("label")).toBe(title);
     });
 
-    // Description prop
-    it("renders the correct description text", () => {
+    it("Description – renders the correct description text", () => {
       const description = "Empty State Description";
 
       const component = mount(UEmpty, {
@@ -120,8 +112,7 @@ describe("UEmpty.vue", () => {
       expect(component.text()).toContain(description);
     });
 
-    // DataTest prop
-    it("applies the correct data-test attribute", () => {
+    it("DataTest – applies the correct data-test attribute", () => {
       const dataTest = "test-empty";
 
       const component = mount(UEmpty, {
@@ -134,10 +125,8 @@ describe("UEmpty.vue", () => {
     });
   });
 
-  // Slots tests
   describe("Slots", () => {
-    // Default slot
-    it("renders content from default slot", () => {
+    it("Default – renders content from default slot", () => {
       const slotContent = "Custom Content";
 
       const component = mount(UEmpty, {
@@ -149,8 +138,7 @@ describe("UEmpty.vue", () => {
       expect(component.text()).toContain(slotContent);
     });
 
-    // Default slot overrides title and description
-    it("default slot overrides title and description", () => {
+    it("Default – default slot overrides title and description", () => {
       const title = "Empty State Title";
       const description = "Empty State Description";
       const slotContent = "Custom Content";
@@ -171,8 +159,7 @@ describe("UEmpty.vue", () => {
       expect(component.text()).not.toContain(description);
     });
 
-    // Header slot
-    it("renders content from header slot", () => {
+    it("Header – renders content from header slot", () => {
       const slotText = "Custom Header";
       const slotClass = "header-content";
 
@@ -186,8 +173,7 @@ describe("UEmpty.vue", () => {
       expect(component.find(`.${slotClass}`).text()).toBe(slotText);
     });
 
-    // Header slot overrides default icon
-    it("header slot overrides default icon", () => {
+    it("Header – header slot overrides default icon", () => {
       const slotContent = "Custom Header";
 
       const component = mount(UEmpty, {
@@ -200,8 +186,7 @@ describe("UEmpty.vue", () => {
       expect(component.findComponent(UIcon).exists()).toBe(false);
     });
 
-    // Footer slot
-    it("renders content from footer slot", () => {
+    it("Footer – renders content from footer slot", () => {
       const slotText = "Custom Footer";
       const slotClass = "footer-content";
 
@@ -216,10 +201,8 @@ describe("UEmpty.vue", () => {
     });
   });
 
-  // Exposed refs tests
   describe("Exposed refs", () => {
-    // wrapperRef
-    it("exposes wrapperRef", () => {
+    it("wrapperRef – exposes wrapperRef", () => {
       const component = mount(UEmpty, {});
 
       expect(component.vm.wrapperRef).toBeDefined();

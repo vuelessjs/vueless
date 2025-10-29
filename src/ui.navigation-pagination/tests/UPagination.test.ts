@@ -8,10 +8,8 @@ import UIcon from "../../ui.image-icon/UIcon.vue";
 import type { Props } from "../types";
 
 describe("UPagination.vue", () => {
-  // Props tests
   describe("Props", () => {
-    // Variant prop
-    it("applies the correct variant to buttons", async () => {
+    it("Variant – applies the correct variant to buttons", async () => {
       const variants = ["solid", "outlined", "subtle", "soft", "ghost"];
 
       variants.forEach((variant) => {
@@ -32,8 +30,7 @@ describe("UPagination.vue", () => {
       });
     });
 
-    // Size prop
-    it("applies the correct size to buttons", async () => {
+    it("Size – applies the correct size to buttons", async () => {
       const sizes = {
         sm: "text-small",
         md: "text-medium",
@@ -59,8 +56,7 @@ describe("UPagination.vue", () => {
       });
     });
 
-    // ModelValue prop
-    it("correctly highlights the current page", () => {
+    it("ModelValue – correctly highlights the current page", () => {
       const currentPage = 3;
 
       const component = mount(UPagination, {
@@ -78,8 +74,7 @@ describe("UPagination.vue", () => {
       expect(activeButton?.props("variant")).toBe("solid");
     });
 
-    // Total and perPage props
-    it("calculates the correct number of pages", () => {
+    it("Total – calculates the correct number of pages", () => {
       const total = 100;
       const perPage = 10;
 
@@ -104,8 +99,7 @@ describe("UPagination.vue", () => {
       expect(pageButtons.length).toBeLessThanOrEqual(expectedAmountOfButtons);
     });
 
-    // Limit prop
-    it("respects the limit of visible pages", () => {
+    it("Limit – respects the limit of visible pages", () => {
       const limit = 3;
 
       const component = mount(UPagination, {
@@ -127,8 +121,7 @@ describe("UPagination.vue", () => {
       expect(pageButtons.length).toBeLessThanOrEqual(limit);
     });
 
-    // FirstLabel, PrevLabel, NextLabel, LastLabel props
-    it("displays custom navigation labels", () => {
+    it("FirstLabel, PrevLabel, NextLabel, LastLabel – displays custom navigation labels", () => {
       const firstLabel = "First";
       const prevLabel = "Prev";
       const nextLabel = "Next";
@@ -154,8 +147,7 @@ describe("UPagination.vue", () => {
       expect(buttons[buttons.length - 1].text()).toBe(lastLabel);
     });
 
-    // Disabled prop
-    it("disables all buttons when disabled prop is true", () => {
+    it("Disabled – disables all buttons when disabled prop is true", () => {
       const disabled = true;
 
       const component = mount(UPagination, {
@@ -181,8 +173,7 @@ describe("UPagination.vue", () => {
       });
     });
 
-    // Ellipsis prop
-    it("shows ellipsis when ellipsis prop is true", () => {
+    it("Ellipsis – shows ellipsis when ellipsis prop is true", () => {
       const ellipsis = true;
       const expectedEllipsis = "…";
 
@@ -199,8 +190,7 @@ describe("UPagination.vue", () => {
       expect(component.html()).toContain(expectedEllipsis);
     });
 
-    // ShowFirst and ShowLast props
-    it("hides first/last buttons when showFirst/showLast props are false", () => {
+    it("ShowFirst – hides first/last buttons when showFirst/showLast props are false", () => {
       const component = mount(UPagination, {
         props: {
           modelValue: 5,
@@ -220,8 +210,7 @@ describe("UPagination.vue", () => {
       expect(lastButton.findComponent(UIcon).props("name")).toContain("chevron_right");
     });
 
-    // DataTest prop
-    it("applies the correct data-test attribute", () => {
+    it("DataTest – applies the correct data-test attribute", () => {
       const dataTest = "test-pagination";
 
       const component = mount(UPagination, {
@@ -240,10 +229,8 @@ describe("UPagination.vue", () => {
     });
   });
 
-  // Slots tests
   describe("Slots", () => {
-    // First slot
-    it("renders content from first slot", () => {
+    it("First – renders content from first slot", () => {
       const slotContent = "Custom First";
       const slotClass = "first-content";
 
@@ -262,8 +249,7 @@ describe("UPagination.vue", () => {
       expect(component.find(`.${slotClass}`).text()).toBe(slotContent);
     });
 
-    // Prev slot
-    it("renders content from prev slot", () => {
+    it("Prev – renders content from prev slot", () => {
       const slotContent = "Custom Prev";
       const slotClass = "prev-content";
 
@@ -282,8 +268,7 @@ describe("UPagination.vue", () => {
       expect(component.find(`.${slotClass}`).text()).toBe(slotContent);
     });
 
-    // Ellipsis slot
-    it("renders content from ellipsis slot", () => {
+    it("Ellipsis – renders content from ellipsis slot", () => {
       const slotContent = "......";
       const slotClass = "ellipsis-content";
 
@@ -303,8 +288,7 @@ describe("UPagination.vue", () => {
       expect(component.find(`.${slotClass}`).text()).toBe(slotContent);
     });
 
-    // Next slot
-    it("renders content from next slot", () => {
+    it("Next – renders content from next slot", () => {
       const slotContent = "Custom Next";
       const slotClass = "next-content";
 
@@ -323,8 +307,7 @@ describe("UPagination.vue", () => {
       expect(component.find(`.${slotClass}`).text()).toBe(slotContent);
     });
 
-    // Last slot
-    it("renders content from last slot", () => {
+    it("Last – renders content from last slot", () => {
       const slotContent = "Custom Last";
       const slotClass = "last-content";
 
@@ -344,10 +327,8 @@ describe("UPagination.vue", () => {
     });
   });
 
-  // Events tests
   describe("Events", () => {
-    // Update:modelValue event
-    it("emits update:modelValue event when page is changed", async () => {
+    it("Update:modelValue – emits update:modelValue event when page is changed", async () => {
       const component = mount(UPagination, {
         props: {
           modelValue: 1,
@@ -370,8 +351,7 @@ describe("UPagination.vue", () => {
       expect(component.emitted("update:modelValue")?.[0]).toEqual([2]); // Second button value
     });
 
-    // Navigation button clicks
-    it("navigates to correct pages when navigation buttons are clicked", async () => {
+    it("Navigation – navigates to correct pages when navigation buttons are clicked", async () => {
       const component = mount(UPagination, {
         props: {
           modelValue: 5,
@@ -400,10 +380,8 @@ describe("UPagination.vue", () => {
     });
   });
 
-  // Exposed refs tests
   describe("Exposed refs", () => {
-    // paginationRef
-    it("exposes paginationRef", () => {
+    it("paginationRef – exposes paginationRef", () => {
       const component = mount(UPagination, {
         props: {
           modelValue: 1,

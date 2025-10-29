@@ -7,10 +7,8 @@ import UIcon from "../../ui.image-icon/UIcon.vue";
 import type { Props } from "../types";
 
 describe("ULoader.vue", () => {
-  // Props tests
   describe("Props", () => {
-    // Loading prop - true
-    it("shows loader when loading prop is true", () => {
+    it("Loading – shows loader when loading prop is true", () => {
       const loading = true;
 
       const component = mount(ULoader, {
@@ -22,8 +20,7 @@ describe("ULoader.vue", () => {
       expect(component.find("[vl-key='loader']").exists()).toBe(true);
     });
 
-    // Loading prop - false
-    it("hides loader when loading prop is false", () => {
+    it("Loading – hides loader when loading prop is false", () => {
       const loading = false;
 
       const component = mount(ULoader, {
@@ -35,8 +32,7 @@ describe("ULoader.vue", () => {
       expect(component.find("[vl-key='loader']").exists()).toBe(false);
     });
 
-    // Color prop
-    it("applies the correct color to the loader", () => {
+    it("Color – applies the correct color to the loader", () => {
       const colors = [
         "primary",
         "secondary",
@@ -69,8 +65,7 @@ describe("ULoader.vue", () => {
       });
     });
 
-    // Size prop
-    it("applies the correct size to the loader", () => {
+    it("Size – applies the correct size to the loader", () => {
       const sizeVariants = {
         sm: "vueless-loader-ellipse-sm",
         md: "vueless-loader-ellipse-md",
@@ -94,8 +89,7 @@ describe("ULoader.vue", () => {
       });
     });
 
-    // Variant prop - dots (default)
-    it("renders dots variant by default", () => {
+    it("Variant – renders dots variant by default", () => {
       const component = mount(ULoader, {
         props: {
           loading: true,
@@ -106,8 +100,7 @@ describe("ULoader.vue", () => {
       expect(component.findComponent(UIcon).exists()).toBe(false);
     });
 
-    // Variant prop - spinner
-    it("renders spinner variant when variant prop is 'spinner'", () => {
+    it("Variant – renders spinner variant when variant prop is 'spinner'", () => {
       const component = mount(ULoader, {
         props: {
           loading: true,
@@ -119,8 +112,7 @@ describe("ULoader.vue", () => {
       expect(component.findAll("[vl-key='ellipse']").length).toBe(0);
     });
 
-    // Variant prop - spinner with color
-    it("applies color to spinner variant", () => {
+    it("Variant – applies color to spinner variant", () => {
       const component = mount(ULoader, {
         props: {
           loading: true,
@@ -132,8 +124,7 @@ describe("ULoader.vue", () => {
       expect(component.findComponent(UIcon).props("color")).toBe("error");
     });
 
-    // Variant prop - spinner with size
-    it("applies correct size to spinner variant", () => {
+    it("Variant – applies correct size to spinner variant", () => {
       const sizeVariants = {
         sm: "sm",
         md: "md",
@@ -153,8 +144,7 @@ describe("ULoader.vue", () => {
       });
     });
 
-    // Variant prop - spinner with animate-spin class
-    it("renders spinner variant with correct icon name", () => {
+    it("Variant – renders spinner variant with correct icon name", () => {
       const component = mount(ULoader, {
         props: {
           loading: true,
@@ -165,8 +155,7 @@ describe("ULoader.vue", () => {
       expect(component.findComponent(UIcon).exists()).toBe(true);
     });
 
-    // DataTest prop
-    it("applies the correct data-test attribute", () => {
+    it("Data Test – applies the correct data-test attribute", () => {
       const dataTest = "test-loader";
 
       const component = mount(ULoader, {
@@ -180,10 +169,8 @@ describe("ULoader.vue", () => {
     });
   });
 
-  // Slots tests
   describe("Slots", () => {
-    // Default slot
-    it("renders content from default slot", () => {
+    it("Default – renders content from default slot", () => {
       const slotContent = "Custom Loader";
       const slotClass = "custom-loader";
 
@@ -202,10 +189,8 @@ describe("ULoader.vue", () => {
     });
   });
 
-  // Exposed refs tests
   describe("Exposed refs", () => {
-    // loaderRef
-    it("exposes loaderRef", () => {
+    it("loaderRef – exposes loaderRef", () => {
       const component = mount(ULoader, {
         props: {
           loading: true,
