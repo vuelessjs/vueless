@@ -2,6 +2,8 @@
 
 Vueless UI provides first-class TypeScript support, ensuring you get full type safety, autocompletion, and IntelliSense across your entire project.
 
+## Vue and Nuxt
+
 Add a reference to the Vueless module types in your project’s global type declarations:
 
 {% code title="env.d.ts" %}
@@ -14,22 +16,43 @@ Add a reference to the Vueless module types in your project’s global type decl
 
 {% code title="tsconfig.json" %}
 ```json
-"compilerOptions": {
-  ...
-  "types": [
-    "vueless/modules",
-  ]
-},
+{
+  "compilerOptions": {
+    ...
+    "types": [
+      "vueless/modules",
+    ]
+  },
+}
 ```
 {% endcode %}
 
-If you are using Nuxt.js, add this rule to override the default Nuxt TypeScript preset:
+## Vue
+
+Add type declarations for components to provide prop autocompletion in IDEs.
 
 {% code title="tsconfig.json" %}
 ```json
-"compilerOptions": {
-  ...
-  "noUncheckedIndexedAccess": false,
+{
+  "include": [
+    ...
+    "components.d.ts",
+  ],
+}
+```
+{% endcode %}
+
+## Nuxt
+
+Add this rule to override the default Nuxt TypeScript preset:
+
+{% code title="tsconfig.json" %}
+```json
+{
+  "compilerOptions": {
+    ...
+    "noUncheckedIndexedAccess": false,
+  }
 }
 ```
 {% endcode %}
