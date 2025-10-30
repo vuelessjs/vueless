@@ -51,11 +51,11 @@ const EnumTemplate: StoryFn<ULoaderOverlayArgs> = (args: ULoaderOverlayArgs, { a
     const selectModel = ref(null);
 
     const options = computed(() => {
-      return argTypes?.[args.enum]?.options?.map((label, value) => ({ label, value }));
+      return argTypes?.[args.enum]?.options?.map((label, id) => ({ label, id }));
     });
 
     const selectedValue = computed(() => {
-      return options.value?.find((option) => option.value === selectModel.value)?.label;
+      return options.value?.find((option) => option.id === selectModel.value)?.label;
     });
 
     return {

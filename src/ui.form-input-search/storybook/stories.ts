@@ -155,9 +155,9 @@ export const Slots: StoryFn<UInputSearchArgs> = (args) => ({
   components: { UInputSearch, UCol, URow, UIcon, UDropdownButton, UText },
   setup() {
     const aiVersions = [
-      { label: "GPT-4o", value: "gpt-4o" },
-      { label: "GPT-4o-mini", value: "gpt-4o-mini" },
-      { label: "GPT-4", value: "gpt-4" },
+      { label: "GPT-4o", id: "gpt-4o" },
+      { label: "GPT-4o-mini", id: "gpt-4o-mini" },
+      { label: "GPT-4", id: "gpt-4" },
     ];
 
     return { args, aiVersions };
