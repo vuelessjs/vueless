@@ -142,8 +142,8 @@ export const Slots: StoryFn<UInputPasswordArgs> = (args) => ({
   components: { UInputPassword, URow, UButton, UDropdownButton },
   setup() {
     const wifiTypes = [
-      { label: "WPA2", id: "wpa2" },
-      { label: "WPA3", id: "wpa3" },
+      { label: "WPA2", value: "wpa2" },
+      { label: "WPA3", value: "wpa3" },
     ];
 
     return { args, wifiTypes };

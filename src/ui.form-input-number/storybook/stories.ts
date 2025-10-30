@@ -203,9 +203,9 @@ export const Slots: StoryFn<UInputNumberArgs> = (args) => ({
   components: { UInputNumber, URow, UButton, UDropdownButton, UText },
   setup() {
     const currencies = [
-      { label: "USD", id: "usd" },
-      { label: "EUR", id: "eur" },
-      { label: "UAH", id: "uah" },
+      { label: "USD", value: "usd" },
+      { label: "EUR", value: "eur" },
+      { label: "UAH", value: "uah" },
     ];
 
     const currency = ref("usd");
