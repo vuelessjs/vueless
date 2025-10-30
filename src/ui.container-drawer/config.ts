@@ -42,7 +42,7 @@ export default /*tw*/ {
     leaveToClass: "opacity-0",
   },
   innerWrapper: {
-    base: "h-full relative", // add overflow-y
+    base: "h-full relative",
     variants: {
       inset: {
         true: "m-4 h-[calc(100%-2rem)]",
@@ -60,6 +60,8 @@ export default /*tw*/ {
   beforeTitle: "flex items-center gap-3",
   titleFallback: "flex flex-col",
   title: "{UHeader}",
+  closeIcon: "{UIcon}",
+  closeButton: "{UButton} h-fit",
   description: "mt-1.5 text-medium font-normal text-lifted",
   body: {
     base: "px-6 pb-6 text-medium",
@@ -79,7 +81,7 @@ export default /*tw*/ {
   footerLeft: "flex flex-col md:flex-row gap-4 w-full",
   footerRight: "flex flex-col md:flex-row gap-4 w-full justify-end",
   drawerWrapper: {
-    base: "flex border absolute select-none cursor-grab active:cursor-grabbing overflow-x-hidden overflow-y-auto",
+    base: "flex border absolute select-none cursor-grab active:cursor-grabbing overflow-x-hidden",
     variants: {
       variant: {
         solid: "bg-default border-transparent",
@@ -99,7 +101,7 @@ export default /*tw*/ {
       },
     },
   },
-  drawer: "",
+  drawer: "overflow-y-auto",
   handleWrapper: {
     base: "flex items-center justify-center bg-inherit",
     variants: {
@@ -124,6 +126,10 @@ export default /*tw*/ {
     inset: false,
     handle: true,
     closeOnEsc: true,
+    closeOnCross: true,
+    closeOnHandle: true,
     closeOnOverlay: true,
+    /* icons */
+    closeIcon: "close",
   },
 };

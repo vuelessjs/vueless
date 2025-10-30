@@ -51,6 +51,16 @@ export interface Props {
   closeOnEsc?: boolean;
 
   /**
+   * Allow closing drawer by dragging the handle.
+   */
+  closeOnHandle?: boolean;
+
+  /**
+   * Allow closing drawer by clicking on close cross.
+   */
+  closeOnCross?: boolean;
+
+  /**
    * Unique element id.
    */
   id?: string;
