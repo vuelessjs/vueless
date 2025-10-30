@@ -318,7 +318,7 @@ watchEffect(() => {
           @binding {string} icon-name
         -->
         <slot name="right" :icon-name="iconName">
-          <UIcon :name="iconName" color="neutral" v-bind="rightIconAttrs" />
+          <UIcon :name="iconName" color="neutral" v-bind="rightIconAttrs" @click="activate" />
         </slot>
       </template>
     </UInput>
