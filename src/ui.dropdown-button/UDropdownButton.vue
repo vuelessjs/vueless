@@ -102,7 +102,7 @@ const mutatedProps = computed(() => ({
   opened: dropdownRef.value?.isOpened ?? false,
 }));
 
-const { getDataTest, config, dropdownButtonAttrs, toggleIconAttrs } = useUI<Config>(
+const { getDataTest, config, wrapperAttrs, dropdownButtonAttrs, toggleIconAttrs } = useUI<Config>(
   defaultConfig,
   mutatedProps,
   "dropdownButton",
@@ -124,13 +124,13 @@ const { getDataTest, config, dropdownButtonAttrs, toggleIconAttrs } = useUI<Conf
     :options-limit="optionsLimit"
     :visible-options="visibleOptions"
     :color="color"
-    :size="size"
     :searchable="searchable"
     :close-on-select="closeOnSelect"
     :multiple="multiple"
     :disabled="disabled"
     :x-position="xPosition"
     :y-position="yPosition"
+    v-bind="wrapperAttrs"
     :data-test="dataTest"
     @click-option="(option) => emit('clickOption', option)"
     @update:model-value="(value) => emit('update:modelValue', value)"

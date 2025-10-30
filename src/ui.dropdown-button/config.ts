@@ -1,9 +1,19 @@
 export default /*tw*/ {
   wrapper: {
-    base: "relative inline-block h-max",
+    base: "{UDropdown}",
     variants: {
       block: {
         true: "w-full",
+      },
+    },
+    defaults: {
+      size: {
+        "2xs": "sm",
+        xs: "sm",
+        sm: "md",
+        md: "md",
+        lg: "lg",
+        xl: "lg",
       },
     },
   },
@@ -21,29 +31,6 @@ export default /*tw*/ {
       },
     },
     compoundVariants: [{ opened: true, class: "rotate-180" }],
-  },
-  listbox: {
-    base: "{UListbox} w-fit",
-    variants: {
-      yPosition: {
-        top: "bottom-full mb-1.5",
-        bottom: "top-full mt-1.5",
-      },
-      xPosition: {
-        left: "left-0",
-        right: "right-0",
-      },
-    },
-    defaults: {
-      size: {
-        "2xs": "sm",
-        xs: "sm",
-        sm: "md",
-        md: "md",
-        lg: "lg",
-        xl: "lg",
-      },
-    },
   },
   defaults: {
     color: "primary",
