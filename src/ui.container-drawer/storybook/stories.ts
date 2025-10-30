@@ -69,54 +69,6 @@ const defaultTemplate = `
       <USkeletonInput label label-align="top" />
       <USkeletonInput label label-align="top" />
     </UCol>
-
-    <USkeletonText />
-
-    <URow
-      align="center"
-      justify="between"
-      gap="sm"
-    >
-      <USkeleton class="h-12" />
-      <USkeleton class="h-12" />
-    </URow>
-
-    <UCol gap="sm" block>
-      <USkeletonInput label label-align="top" />
-      <USkeletonInput label label-align="top" />
-    </UCol>
-
-    <USkeletonText />
-
-    <URow
-      align="center"
-      justify="between"
-      gap="sm"
-    >
-      <USkeleton class="h-12" />
-      <USkeleton class="h-12" />
-    </URow>
-
-    <UCol gap="sm" block>
-      <USkeletonInput label label-align="top" />
-      <USkeletonInput label label-align="top" />
-    </UCol>
-
-    <USkeletonText />
-
-    <URow
-      align="center"
-      justify="between"
-      gap="sm"
-    >
-      <USkeleton class="h-12" />
-      <USkeleton class="h-12" />
-    </URow>
-
-    <UCol gap="sm" block>
-      <USkeletonInput label label-align="top" />
-      <USkeletonInput label label-align="top" />
-    </UCol>
   </UCol>
 `;
 
