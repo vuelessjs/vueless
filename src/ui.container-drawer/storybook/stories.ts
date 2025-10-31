@@ -159,9 +159,6 @@ NoCloseOnEscAndOverlay.args = {
 export const NoCloseOnCross = DefaultTemplate.bind({});
 NoCloseOnCross.args = { closeOnCross: false };
 
-export const NoCloseOnHandle = DefaultTemplate.bind({});
-NoCloseOnHandle.args = { closeOnHandle: false };
-
 export const Position = EnumTemplate.bind({});
 Position.args = { enum: "position", modelValues: {} };
 

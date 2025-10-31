@@ -81,7 +81,7 @@ export default /*tw*/ {
   footerLeft: "flex flex-col md:flex-row gap-4 w-full",
   footerRight: "flex flex-col md:flex-row gap-4 w-full justify-end",
   drawerWrapper: {
-    base: "flex border absolute select-none cursor-grab active:cursor-grabbing overflow-x-hidden",
+    base: "flex border absolute select-none overflow-x-hidden",
     variants: {
       variant: {
         solid: "bg-default border-transparent",
@@ -103,7 +103,7 @@ export default /*tw*/ {
   },
   drawer: "overflow-y-auto",
   handleWrapper: {
-    base: "flex items-center justify-center bg-inherit",
+    base: "flex items-center justify-center bg-inherit cursor-grab active:cursor-grabbing",
     variants: {
       position: {
         top: "w-full h-11",
@@ -114,7 +114,7 @@ export default /*tw*/ {
     },
   },
   handle: {
-    base: "rounded-large cursor-pointer bg-lifted hover:bg-accented transition",
+    base: "rounded-large cursor-grab active:cursor-grabbing bg-lifted hover:bg-accented transition",
     compoundVariants: [
       { position: ["top", "bottom"], class: "w-11 h-1.5" },
       { position: ["left", "right"], class: "w-1.5 h-11" },
@@ -127,7 +127,6 @@ export default /*tw*/ {
     handle: true,
     closeOnEsc: true,
     closeOnCross: true,
-    closeOnHandle: true,
     closeOnOverlay: true,
     /* icons */
     closeIcon: "close",

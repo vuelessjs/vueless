@@ -698,68 +698,6 @@ describe("UDrawer", () => {
         expect(drawerElement.exists()).toBe(true);
       }
     });
-
-    it("CloseOnHandle – prevents closing when drag starts from handle and false", async () => {
-      const component = mount(UDrawer, {
-        props: {
-          modelValue: true,
-          position: "left",
-          closeOnHandle: false,
-        },
-      });
-
-      const drawer = component.find('[vl-key="drawerWrapper"]');
-      const handleWrapper = component.find('[vl-key="handleWrapper"]');
-
-      // Ensure geometry for threshold
-      vi.spyOn(drawer.element, "getBoundingClientRect").mockReturnValue({
-        width: 300,
-        height: 400,
-        top: 0,
-        left: 0,
-        right: 300,
-        bottom: 400,
-      } as DOMRect);
-
-      await handleWrapper.trigger("mousedown", { clientX: 100, clientY: 100 });
-
-      // Move far to exceed threshold (> width/2)
-      document.dispatchEvent(new MouseEvent("mousemove", { clientX: -200, clientY: 100 }));
-      document.dispatchEvent(new MouseEvent("mouseup"));
-
-      // Drawer should still be present
-      expect(component.find('[vl-key="drawer"]').exists()).toBe(true);
-      expect(component.emitted("update:modelValue")).toBeFalsy();
-    });
-
-    it("CloseOnHandle – allows closing when drag starts from handle and true", async () => {
-      const component = mount(UDrawer, {
-        props: {
-          modelValue: true,
-          position: "left",
-          closeOnHandle: true,
-        },
-      });
-
-      const drawer = component.find('[vl-key="drawerWrapper"]');
-      const handleWrapper = component.find('[vl-key="handleWrapper"]');
-
-      vi.spyOn(drawer.element, "getBoundingClientRect").mockReturnValue({
-        width: 300,
-        height: 400,
-        top: 0,
-        left: 0,
-        right: 300,
-        bottom: 400,
-      } as DOMRect);
-
-      await handleWrapper.trigger("mousedown", { clientX: 100, clientY: 100 });
-      document.dispatchEvent(new MouseEvent("mousemove", { clientX: -200, clientY: 100 }));
-      document.dispatchEvent(new MouseEvent("mouseup"));
-
-      expect(component.emitted("update:modelValue")).toBeTruthy();
-      expect(component.emitted("update:modelValue")?.[0]).toEqual([false]);
-    });
   });
 
   // Exposed refs tests

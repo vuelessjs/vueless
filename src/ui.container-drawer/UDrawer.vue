@@ -207,9 +207,9 @@ function onDragStart(e: MouseEvent | TouchEvent) {
 
   const targetNode = e.target as Node;
 
-  isDraggingFromHandle.value = Boolean(
-    handleWrapperRef.value && targetNode && handleWrapperRef.value.contains(targetNode),
-  );
+  isDraggingFromHandle.value = !!handleWrapperRef.value?.contains(targetNode);
+
+  if (!props.handle || !isDraggingFromHandle.value) return;
 
   document.addEventListener("mousemove", onDragMove);
   document.addEventListener("mouseup", onDragEnd);
@@ -219,8 +219,6 @@ function onDragStart(e: MouseEvent | TouchEvent) {
 
 function onDragMove(e: MouseEvent | TouchEvent) {
   e.preventDefault();
-
-  if (isDraggingFromHandle.value && !props.closeOnHandle) return;
 
   const clientX = "touches" in e ? e.touches[0].clientX : e.clientX;
   const clientY = "touches" in e ? e.touches[0].clientY : e.clientY;
