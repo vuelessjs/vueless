@@ -13,7 +13,7 @@ import UCard from "../../ui.container-card/UCard.vue";
 import URow from "../../ui.container-row/URow.vue";
 import UCol from "../../ui.container-col/UCol.vue";
 
-import type { Meta, StoryFn } from "@storybook/vue3";
+import type { Meta, StoryFn } from "@storybook/vue3-vite";
 import type { Props } from "../types";
 
 interface UCollapsibleArgs extends Props {
@@ -21,29 +21,41 @@ interface UCollapsibleArgs extends Props {
   enum: "yPosition" | "xPosition";
 }
 
+const defaultTemplate = `
+  <template #default="{ opened }">
+    <UButton :label="opened ? 'Close' : 'Open'" />
+  </template>
+
+  <template #content>
+    <UCard title="Collapsible Content" description="This is the collapsible content area." />
+  </template>
+`;
+
 export default {
-  id: "5070",
+  id: "5270",
   title: "Containers / Collapsible",
   component: UCollapsible,
+  args: {
+    slotTemplate: defaultTemplate,
+  },
   argTypes: {
     ...getArgTypes(UCollapsible.__name),
   },
   parameters: {
     docs: {
       ...getDocsDescription(UCollapsible.__name),
+      story: {
+        height: "300px",
+      },
     },
   },
 } as Meta;
 
 const DefaultTemplate: StoryFn<UCollapsibleArgs> = (args: UCollapsibleArgs) => ({
   components: { UCollapsible, UButton, UCard },
-  setup() {
-    const slots = getSlotNames(UCollapsible.__name);
-
-    return { args, slots };
-  },
+  setup: () => ({ args, slots: getSlotNames(UCollapsible.__name) }),
   template: `
-    <UCollapsible v-bind="args">
+    <UCollapsible v-bind="args" v-model:open="args.open">
       ${args.slotTemplate || getSlotsFragment("")}
     </UCollapsible>
   `,
@@ -51,41 +63,26 @@ const DefaultTemplate: StoryFn<UCollapsibleArgs> = (args: UCollapsibleArgs) => (
 
 const EnumTemplate: StoryFn<UCollapsibleArgs> = (args: UCollapsibleArgs, { argTypes }) => ({
   components: { UCollapsible, UButton, UCard, URow },
-  setup() {
-    return { args, argTypes, getArgs };
-  },
+  setup: () => ({ args, argTypes, getArgs }),
   template: `
-    <URow gap="3xl">
+    <URow>
       <UCollapsible
         v-for="option in argTypes?.[args.enum]?.options"
         v-bind="getArgs(args, option)"
+        v-model:open="args.open"
         :key="option"
       >
-        <template #default="{ opened }">
-          <UButton :label="opened ? 'Close' : 'Open'" />
-        </template>
-        <template #content>
-          <UCard title="Collapsible Content" description="This is the collapsible content area." />
-        </template>
+        ${args.slotTemplate}
       </UCollapsible>
     </URow>
   `,
 });
 
 export const Default = DefaultTemplate.bind({});
-Default.args = {
-  slotTemplate: `
-    <template #default="{ opened }">
-      <UButton :label="opened ? 'Close' : 'Open'" />
-    </template>
-    <template #content>
-      <UCard title="Collapsible Content" description="This is the collapsible content area." />
-    </template>
-  `,
-};
+Default.args = {};
 
 export const YPositions = EnumTemplate.bind({});
-YPositions.args = { enum: "yPosition" };
+YPositions.args = { enum: "yPosition", slotTemplate: defaultTemplate };
 
 export const XPositions = EnumTemplate.bind({});
 XPositions.args = { enum: "xPosition" };
@@ -262,49 +259,3 @@ CustomContent.parameters = {
     },
   },
 };
-
-export const Events: StoryFn<UCollapsibleArgs> = (args) => ({
-  components: { UCollapsible, UButton, UCard, UCol },
-  setup() {
-    const events = ref<string[]>([]);
-
-    function onOpen() {
-      events.value.push(`Opened at ${new Date().toLocaleTimeString()}`);
-    }
-
-    function onClose() {
-      events.value.push(`Closed at ${new Date().toLocaleTimeString()}`);
-    }
-
-    function clearEvents() {
-      events.value = [];
-    }
-
-    return { args, events, onOpen, onClose, clearEvents };
-  },
-  template: `
-    <UCol gap="md">
-      <UCollapsible @open="onOpen" @close="onClose">
-        <template #default="{ opened }">
-          <UButton :label="opened ? 'Close' : 'Open'" />
-        </template>
-        <template #content>
-          <UCard title="Event Demo" description="Toggle this collapsible to see events below." />
-        </template>
-      </UCollapsible>
-
-      <div class="mt-4">
-        <div class="flex justify-between items-center mb-2">
-          <h3 class="font-semibold">Events Log:</h3>
-          <UButton label="Clear" size="sm" variant="outlined" @click="clearEvents" />
-        </div>
-        <div class="border rounded p-3 bg-gray-50 min-h-[100px]">
-          <div v-if="events.length === 0" class="text-gray-400 text-sm">No events yet...</div>
-          <div v-for="(event, index) in events" :key="index" class="text-sm py-1">
-            {{ event }}
-          </div>
-        </div>
-      </div>
-    </UCol>
-  `,
-});

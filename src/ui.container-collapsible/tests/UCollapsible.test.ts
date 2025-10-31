@@ -5,6 +5,7 @@ import { nextTick, ref } from "vue";
 import UCollapsible from "../UCollapsible.vue";
 
 import type { Props } from "../types";
+import type { UnknownObject } from "../../types";
 
 const TransitionStub = {
   name: "Transition",
@@ -21,7 +22,7 @@ const globalMountOptions = {
   },
 };
 
-function mountCollapsible(options: any = {}) {
+function mountCollapsible(options: UnknownObject = {}) {
   return mount(UCollapsible, {
     ...globalMountOptions,
     ...options,

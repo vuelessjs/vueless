@@ -43,8 +43,13 @@ const elementId = props.id || useId();
 
 const isOpened = computed({
   get: () => props.open ?? internalIsOpened.value,
-  set: (value) => () =>
-    props.open !== undefined ? emit("update:open", value) : (internalIsOpened.value = value),
+  set: (value) => {
+    if (props.open !== undefined) {
+      emit("update:open", value);
+    } else {
+      internalIsOpened.value = value;
+    }
+  },
 });
 
 function handleClickOutside() {
@@ -82,9 +87,7 @@ function onContentClick() {
     isClickingContent.value = true;
 
     nextTick(() => {
-      setTimeout(() => {
-        isClickingContent.value = false;
-      }, 10);
+      isClickingContent.value = false;
     });
 
     return;
@@ -166,6 +169,10 @@ const { getDataTest, config, wrapperAttrs, contentAttrs } = useUI<Config>(
         :data-test="getDataTest('content')"
         @click.stop="onContentClick"
       >
+        <!--
+          @slot Use it to add some content need to be shown.
+          @binding {boolean} opened
+        -->
         <slot name="content" :opened="isOpened" />
       </div>
     </Transition>
