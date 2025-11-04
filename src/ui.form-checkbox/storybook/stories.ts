@@ -158,9 +158,7 @@ export const BottomSlot = DefaultTemplate.bind({});
 BottomSlot.args = {
   slotTemplate: `
     <template #bottom>
-      <UChip icon="arrow_outward" size="sm" class="mt-2">
-        <ULink label="Learn more" size="sm" class="mr-1.5" />
-      </UChip>
+      <ULink label="Learn more" size="sm" class="mr-1.5" />
     </template>
   `,
 };

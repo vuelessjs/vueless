@@ -32,7 +32,6 @@ export default /*tw*/ {
   body: "{USkeleton} rounded-small",
   defaults: {
     size: "md",
-    variant: "default",
     headerLines: 0,
     textLines: 3,
   },

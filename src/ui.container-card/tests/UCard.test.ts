@@ -7,10 +7,8 @@ import UHeader from "../../ui.text-header/UHeader.vue";
 import type { Props } from "../types";
 
 describe("UCard", () => {
-  // Props
   describe("Props", () => {
-    // Title prop
-    it("renders with title prop", () => {
+    it("Title – renders with title prop", () => {
       const title = "Card Title";
 
       const component = mount(UCard, {
@@ -25,15 +23,13 @@ describe("UCard", () => {
       expect(header.props("label")).toBe(title);
     });
 
-    // Title prop - Header visibility without props or slots
-    it("does not show header when no title or slots are provided", () => {
+    it("Title – does not show header when no title or slots are provided", () => {
       const component = mount(UCard);
 
       expect(component.findComponent(UHeader).exists()).toBe(false);
     });
 
-    // Description prop
-    it("renders with description prop", () => {
+    it("Description – renders with description prop", () => {
       const title = "Card Title";
       const description = "Card Description";
 
@@ -47,8 +43,7 @@ describe("UCard", () => {
       expect(component.find("[vl-key='description']").text()).toContain(description);
     });
 
-    // Variant prop
-    it("applies correct variant classes", () => {
+    it("Variant – applies correct variant classes", () => {
       const variants = {
         solid: "bg-default border-transparent",
         outlined: "bg-default border-muted",
@@ -67,8 +62,7 @@ describe("UCard", () => {
       });
     });
 
-    // DataTest prop
-    it("applies data-test attribute", () => {
+    it("Data Test – applies data-test attribute", () => {
       const dataTest = "card-test";
 
       const component = mount(UCard, {
@@ -81,10 +75,8 @@ describe("UCard", () => {
     });
   });
 
-  // Slots
   describe("Slots", () => {
-    // Default slot
-    it("renders content in default slot", () => {
+    it("Default – renders content in default slot", () => {
       const slotClass = "default-content";
       const slotContent = "Default Content";
 
@@ -98,8 +90,7 @@ describe("UCard", () => {
       expect(component.find(`.${slotClass}`).text()).toBe(slotContent);
     });
 
-    // Title slot
-    it("renders custom content in title slot", () => {
+    it("Title – renders custom content in title slot", () => {
       const title = "Original Title";
       const slotClass = "custom-title";
       const slotContent = "Custom Title";
@@ -118,8 +109,7 @@ describe("UCard", () => {
       expect(component.findComponent(UHeader).exists()).toBe(false);
     });
 
-    // Before-title slot
-    it("renders content in before-title slot", () => {
+    it("Before-title – renders content in before-title slot", () => {
       const title = "Card Title";
       const slotClass = "before-title";
       const slotContent = "Before Title";
@@ -137,8 +127,7 @@ describe("UCard", () => {
       expect(component.find(`.${slotClass}`).text()).toBe(slotContent);
     });
 
-    // After-title slot
-    it("renders content in after-title slot", () => {
+    it("After-title – renders content in after-title slot", () => {
       const title = "Card Title";
       const slotClass = "after-title";
       const slotContent = "After Title";
@@ -156,8 +145,7 @@ describe("UCard", () => {
       expect(component.find(`.${slotClass}`).text()).toBe(slotContent);
     });
 
-    // Actions slot
-    it("renders content in actions slot", () => {
+    it("Actions – renders content in actions slot", () => {
       const title = "Card Title";
       const slotClass = "actions";
       const slotContent = "Actions";
@@ -175,8 +163,7 @@ describe("UCard", () => {
       expect(component.find(`.${slotClass}`).text()).toBe(slotContent);
     });
 
-    // Footer-left slot
-    it("renders content in footer-left slot", () => {
+    it("Footer-left – renders content in footer-left slot", () => {
       const slotClass = "footer-left";
       const slotContent = "Footer Left";
 
@@ -191,8 +178,7 @@ describe("UCard", () => {
       expect(component.text()).toContain(slotContent);
     });
 
-    // Footer-right slot
-    it("renders content in footer-right slot", () => {
+    it("Footer-right – renders content in footer-right slot", () => {
       const slotClass = "footer-right";
       const slotContent = "Footer Right";
 
@@ -207,8 +193,7 @@ describe("UCard", () => {
       expect(component.text()).toContain(slotContent);
     });
 
-    // Footer visibility without slots
-    it("does not show footer when no footer slots are provided", () => {
+    it("Footer – does not show footer when no footer slots are provided", () => {
       const component = mount(UCard);
 
       expect(component.find("[vl-key='footerLeft']").exists()).toBe(false);
@@ -216,10 +201,8 @@ describe("UCard", () => {
     });
   });
 
-  // Exposed refs
   describe("Exposed refs", () => {
-    // WrapperRef
-    it("exposes wrapperRef", () => {
+    it("wrapperRef – exposes wrapperRef", () => {
       const component = mount(UCard);
 
       expect(component.vm.wrapperRef).toBeDefined();

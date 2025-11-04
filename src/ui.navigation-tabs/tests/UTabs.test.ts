@@ -15,10 +15,8 @@ describe("UTabs.vue", () => {
     { value: "tab3", label: "Tab 3" },
   ];
 
-  // Props tests
   describe("Props", () => {
-    // ModelValue prop
-    it("correctly sets the selected tab", () => {
+    it("ModelValue – correctly sets the selected tab", () => {
       const modelValue = "tab2";
       const expectedActiveClass = "border-primary";
 
@@ -41,8 +39,7 @@ describe("UTabs.vue", () => {
       expect(activeTab.classes()).toContain(expectedActiveClass);
     });
 
-    // Options prop
-    it("renders the correct number of tabs from options", () => {
+    it("Options – renders the correct number of tabs from options", () => {
       const component = mount(UTabs, {
         props: {
           options,
@@ -61,8 +58,7 @@ describe("UTabs.vue", () => {
       });
     });
 
-    // Size prop
-    it("applies the correct size to tabs", () => {
+    it("Size – applies the correct size to tabs", () => {
       const sizes = ["2xs", "xs", "sm", "md", "lg", "xl"];
 
       sizes.forEach((size) => {
@@ -84,8 +80,7 @@ describe("UTabs.vue", () => {
       });
     });
 
-    // Scrollable prop
-    it("applies scrollable class when scrollable prop is true", () => {
+    it("Scrollable – applies scrollable class when scrollable prop is true", () => {
       const scrollable = true;
 
       const component = mount(UTabs, {
@@ -102,8 +97,7 @@ describe("UTabs.vue", () => {
       expect(tabsContainer.classes()).toContain("scroll-smooth");
     });
 
-    // Scroll buttons
-    it("shows scroll buttons when scrollable and content overflows", async () => {
+    it("Scroll – shows scroll buttons when scrollable and content overflows", async () => {
       const manyOptions: UTabsOption[] = Array.from({ length: 10 }, (_, i) => ({
         value: `tab${i}`,
         label: `Tab ${i}`,
@@ -140,8 +134,7 @@ describe("UTabs.vue", () => {
       expect(nextButton).toBeDefined();
     });
 
-    // Block prop
-    it("provides block value to tabs", () => {
+    it("Block – provides block value to tabs", () => {
       const block = true;
 
       const component = mount(UTabs, {
@@ -161,8 +154,7 @@ describe("UTabs.vue", () => {
       expect(button.props("block")).toBe(block);
     });
 
-    // Square prop
-    it("provides square value to tabs", () => {
+    it("Square – provides square value to tabs", () => {
       const square = true;
 
       const component = mount(UTabs, {
@@ -182,8 +174,7 @@ describe("UTabs.vue", () => {
       expect(button.props("square")).toBe(square);
     });
 
-    // DataTest prop
-    it("applies the correct data-test attribute", () => {
+    it("DataTest – applies the correct data-test attribute", () => {
       const dataTest = "test-tabs";
       const singleOption = [options[0]];
 
@@ -207,10 +198,8 @@ describe("UTabs.vue", () => {
     });
   });
 
-  // Slots tests
   describe("Slots", () => {
-    // Default slot
-    it("renders content from default slot", () => {
+    it("Default – renders content from default slot", () => {
       const slotContent = "Custom Tabs";
       const slotClass = "custom-tabs";
 
@@ -224,8 +213,7 @@ describe("UTabs.vue", () => {
       expect(component.find(`.${slotClass}`).text()).toBe(slotContent);
     });
 
-    // Prev slot
-    it("renders content from prev slot when scrollable", async () => {
+    it("Prev – renders content from prev slot when scrollable", async () => {
       const slotContent = "Prev";
       const slotClass = "prev-content";
       const dataTest = "test-tabs";
@@ -261,8 +249,7 @@ describe("UTabs.vue", () => {
       expect(component.find(`.${slotClass}`).text()).toBe(slotContent);
     });
 
-    // Next slot
-    it("renders content from next slot when scrollable", async () => {
+    it("Next – renders content from next slot when scrollable", async () => {
       const slotContent = "Next";
       const slotClass = "next-content";
       const dataTest = "test-tabs";
@@ -299,10 +286,8 @@ describe("UTabs.vue", () => {
     });
   });
 
-  // Events tests
   describe("Events", () => {
-    // Update:modelValue event
-    it("emits update:modelValue event when tab is clicked", async () => {
+    it("Update:modelValue – emits update:modelValue event when tab is clicked", async () => {
       const component = mount(UTabs, {
         props: {
           options,
@@ -321,10 +306,8 @@ describe("UTabs.vue", () => {
     });
   });
 
-  // Exposed refs tests
   describe("Exposed refs", () => {
-    // wrapperRef
-    it("exposes wrapperRef", () => {
+    it("wrapperRef – exposes wrapperRef", () => {
       const singleOption = [options[0]];
 
       const component = mount(UTabs, {

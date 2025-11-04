@@ -8,10 +8,8 @@ import UIcon from "../../ui.image-icon/UIcon.vue";
 import type { Props } from "../types";
 
 describe("UChip.vue", () => {
-  // Props tests
   describe("Props", () => {
-    // Icon prop
-    it("renders UIcon when icon prop is provided", () => {
+    it("Icon – renders UIcon when icon prop is provided", () => {
       const icon = "close";
 
       const component = mount(UChip, {
@@ -28,8 +26,7 @@ describe("UChip.vue", () => {
       expect(nestedUDotComponents.length).toBe(0);
     });
 
-    // Default to UDot when no icon
-    it("renders UDot when no icon prop is provided", () => {
+    it("Default – renders UDot when no icon prop is provided", () => {
       const component = mount(UChip, {});
 
       const nestedUIconComponents = component.findAllComponents(UIcon);
@@ -39,8 +36,7 @@ describe("UChip.vue", () => {
       expect(nestedUDotComponents.length).toBe(1);
     });
 
-    // Color prop for UDot component
-    it("applies the correct color class to UDot component", async () => {
+    it("Color – applies the correct color class to UDot component", async () => {
       const colors = [
         "primary",
         "secondary",
@@ -68,8 +64,7 @@ describe("UChip.vue", () => {
       });
     });
 
-    // Color prop for UIcon component
-    it("applies the correct color class to UIcon component", async () => {
+    it("Color – applies the correct color class to UIcon component", async () => {
       const colors = [
         "primary",
         "secondary",
@@ -98,8 +93,7 @@ describe("UChip.vue", () => {
       });
     });
 
-    // Size prop
-    it("applies the correct size class", async () => {
+    it("Size – applies the correct size class", async () => {
       const sizes = ["3xs", "2xs", "xs", "sm", "md", "lg", "xl", "2xl"];
 
       sizes.forEach((size) => {
@@ -115,8 +109,7 @@ describe("UChip.vue", () => {
       });
     });
 
-    // xPosition prop
-    it("applies the correct xPosition class", async () => {
+    it("X Position – applies the correct xPosition class", async () => {
       const xPositions = {
         left: "left-px",
         right: "right-px",
@@ -135,8 +128,7 @@ describe("UChip.vue", () => {
       });
     });
 
-    // yPosition prop
-    it("applies the correct yPosition class", async () => {
+    it("Y Position – applies the correct yPosition class", async () => {
       const yPositions = {
         top: "top-px",
         bottom: "bottom-px",
@@ -155,8 +147,7 @@ describe("UChip.vue", () => {
       });
     });
 
-    // Inset prop - when false
-    it("applies transform classes when inset prop is false", async () => {
+    it("Inset – applies transform classes when inset prop is false", async () => {
       const inset = false;
       const yPosition = "top";
       const xPosition = "right";
@@ -175,8 +166,7 @@ describe("UChip.vue", () => {
       expect(chipWrapper.attributes("class")).toContain("translate-x-1/2");
     });
 
-    // Inset prop - when true
-    it("does not apply transform classes when inset prop is true", async () => {
+    it("Inset – does not apply transform classes when inset prop is true", async () => {
       const inset = true;
       const yPosition = "top";
       const xPosition = "right";
@@ -195,8 +185,7 @@ describe("UChip.vue", () => {
       expect(chipWrapper.attributes("class")).not.toContain("translate-x-1/2");
     });
 
-    // DataTest prop
-    it("applies the correct data-test attribute", () => {
+    it("DataTest – applies the correct data-test attribute", () => {
       const dataTest = "test-chip";
 
       const component = mount(UChip, {
@@ -209,10 +198,8 @@ describe("UChip.vue", () => {
     });
   });
 
-  // Slots tests
   describe("Slots", () => {
-    // Default slot
-    it("renders content from default slot", () => {
+    it("Default – renders content from default slot", () => {
       const slotContent = "Custom Content";
 
       const component = mount(UChip, {
@@ -224,8 +211,7 @@ describe("UChip.vue", () => {
       expect(component.text()).toContain(slotContent);
     });
 
-    // Chip slot
-    it("renders content from chip slot", () => {
+    it("Chip – renders content from chip slot", () => {
       const slotText = "Custom Chip";
       const slotClass = "custom-chip";
 
@@ -242,10 +228,8 @@ describe("UChip.vue", () => {
     });
   });
 
-  // Exposed refs tests
   describe("Exposed refs", () => {
-    // wrapperRef
-    it("exposes wrapperRef", () => {
+    it("wrapperRef – exposes wrapperRef", () => {
       const component = mount(UChip, {});
 
       expect(component.vm.wrapperRef).toBeDefined();

@@ -7,10 +7,8 @@ import type { Props } from "../types";
 import type { ComponentPublicInstance } from "vue";
 
 describe("UDot.vue", () => {
-  // Props tests
   describe("Props", () => {
-    // Size prop
-    it("applies the correct size class", () => {
+    it("Size – applies the correct size class", () => {
       const sizes = {
         xs: "size-1",
         sm: "size-1.5",
@@ -30,8 +28,7 @@ describe("UDot.vue", () => {
       });
     });
 
-    // Color prop
-    it("applies the correct color class", () => {
+    it("Color – applies the correct color class", () => {
       const colors = [
         "primary",
         "secondary",
@@ -55,8 +52,7 @@ describe("UDot.vue", () => {
       });
     });
 
-    // DataTest prop
-    it("applies the correct data-test attribute", () => {
+    it("DataTest – applies the correct data-test attribute", () => {
       const dataTest = "test-dot";
 
       const component = mount(UDot, {
@@ -69,10 +65,8 @@ describe("UDot.vue", () => {
     });
   });
 
-  // Exposed refs tests
   describe("Exposed refs", () => {
-    // dotRef
-    it("exposes dotRef", () => {
+    it("dotRef – exposes dotRef", () => {
       const component = mount(UDot);
 
       expect(

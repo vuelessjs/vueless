@@ -16,10 +16,8 @@ describe("ULoaderOverlay.vue", () => {
     },
   };
 
-  // Props tests
   describe("Props", () => {
-    // Loading prop - true
-    it("shows overlay when loading prop is true", () => {
+    it("Loading – shows overlay when loading prop is true", () => {
       const loading = true;
 
       const component = mount(ULoaderOverlay, {
@@ -33,8 +31,7 @@ describe("ULoaderOverlay.vue", () => {
       expect(component.findComponent(ULoader).exists()).toBe(true);
     });
 
-    // Loading prop - false
-    it("hides overlay when loading prop is false", () => {
+    it("Loading – hides overlay when loading prop is false", () => {
       const loading = false;
 
       const component = mount(ULoaderOverlay, {
@@ -47,8 +44,7 @@ describe("ULoaderOverlay.vue", () => {
       expect(component.find("[vl-key='overlay']").exists()).toBe(false);
     });
 
-    // Color prop
-    it("applies the correct color to the loader", () => {
+    it("Color – applies the correct color to the loader", () => {
       const colors = [
         "primary",
         "secondary",
@@ -76,8 +72,7 @@ describe("ULoaderOverlay.vue", () => {
       });
     });
 
-    // DataTest prop
-    it("applies the correct data-test attribute", () => {
+    it("DataTest – applies the correct data-test attribute", () => {
       const dataTest = "test-loader-overlay";
 
       const component = mount(ULoaderOverlay, {
@@ -92,10 +87,8 @@ describe("ULoaderOverlay.vue", () => {
     });
   });
 
-  // Slots tests
   describe("Slots", () => {
-    // Default slot
-    it("renders content from default slot", () => {
+    it("Default – renders content from default slot", () => {
       const slotContent = "Custom Loader";
       const slotClass = "custom-loader";
 
@@ -151,10 +144,8 @@ describe("ULoaderOverlay.vue", () => {
     });
   });
 
-  // Exposed refs tests
   describe("Exposed refs", () => {
-    // overlayRef
-    it("exposes overlayRef", () => {
+    it("overlayRef – exposes overlayRef", () => {
       const component = mount(ULoaderOverlay, {
         props: {
           loading,

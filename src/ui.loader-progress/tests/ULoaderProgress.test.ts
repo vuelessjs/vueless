@@ -28,10 +28,8 @@ describe("ULoaderProgress.vue", () => {
     vi.useRealTimers();
   });
 
-  // Props tests
   describe("Props", () => {
-    // Loading prop
-    it("accepts loading prop and starts the loader", () => {
+    it("Loading – accepts loading prop and starts the loader", () => {
       const loadings = [true, false];
 
       loadings.forEach(async (loading) => {
@@ -47,8 +45,7 @@ describe("ULoaderProgress.vue", () => {
       });
     });
 
-    // Color prop
-    it("applies the correct color class", () => {
+    it("Color – applies the correct color class", () => {
       const colors = [
         "primary",
         "secondary",
@@ -75,8 +72,7 @@ describe("ULoaderProgress.vue", () => {
       });
     });
 
-    // Size prop
-    it("applies the correct size class", () => {
+    it("Size – applies the correct size class", () => {
       const sizes = {
         xs: "h-px",
         sm: "h-0.5",
@@ -98,8 +94,7 @@ describe("ULoaderProgress.vue", () => {
       });
     });
 
-    // DataTest prop
-    it("accepts dataTest prop", () => {
+    it("DataTest – accepts dataTest prop", () => {
       const dataTest = "test-loader-progress";
 
       const component = mount(ULoaderProgress, {
@@ -113,10 +108,8 @@ describe("ULoaderProgress.vue", () => {
     });
   });
 
-  // Exposed methods and refs tests
   describe("Exposed methods and refs", () => {
-    // start method
-    it("exposes start method", () => {
+    it("start – exposes start method", () => {
       const expectedType = "function";
 
       const component = mount(ULoaderProgress, {
@@ -128,8 +121,7 @@ describe("ULoaderProgress.vue", () => {
       expect(() => component.vm.start()).not.toThrow();
     });
 
-    // stop method
-    it("exposes stop method", () => {
+    it("stop – exposes stop method", () => {
       const expectedType = "function";
 
       const component = mount(ULoaderProgress, {
@@ -141,8 +133,7 @@ describe("ULoaderProgress.vue", () => {
       expect(() => component.vm.stop()).not.toThrow();
     });
 
-    // isLoading computed property
-    it("exposes isLoading computed property", () => {
+    it("isLoading – exposes isLoading computed property", () => {
       const component = mount(ULoaderProgress, {
         global,
       });
@@ -150,8 +141,7 @@ describe("ULoaderProgress.vue", () => {
       expect(component.vm.isLoading).toBeDefined();
     });
 
-    // progressRef
-    it("exposes progressRef", () => {
+    it("progressRef – progressRef – exposes progressRef", () => {
       const component = mount(ULoaderProgress, {
         props: {
           loading,

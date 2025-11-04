@@ -6,10 +6,8 @@ import UGroups from "../UGroups.vue";
 import type { Props } from "../types";
 
 describe("UGroups.vue", () => {
-  // Props tests
   describe("Props", () => {
-    // Gap prop
-    it("applies correct gap classes", () => {
+    it("Gap – applies correct gap classes", () => {
       const gaps = {
         none: "gap-0",
         xs: "gap-8",
@@ -30,8 +28,7 @@ describe("UGroups.vue", () => {
       });
     });
 
-    // DataTest prop
-    it("applies the correct data-test attribute", () => {
+    it("Data Test – applies the correct data-test attribute", () => {
       const dataTest = "groups-test";
 
       const component = mount(UGroups, {
@@ -44,10 +41,8 @@ describe("UGroups.vue", () => {
     });
   });
 
-  // Slots tests
   describe("Slots", () => {
-    // Default slot
-    it("renders content in default slot", () => {
+    it("Default – renders content in default slot", () => {
       const slotClass = "default-content";
       const slotContent = "Default Content";
 
@@ -62,10 +57,8 @@ describe("UGroups.vue", () => {
     });
   });
 
-  // Exposed refs tests
   describe("Exposed refs", () => {
-    // wrapperRef
-    it("exposes wrapperRef", () => {
+    it("wrapperRef – exposes wrapperRef", () => {
       const component = mount(UGroups);
 
       expect(component.vm.wrapperRef).toBeDefined();

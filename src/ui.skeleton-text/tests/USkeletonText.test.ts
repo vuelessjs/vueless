@@ -7,10 +7,8 @@ import USkeleton from "../../ui.skeleton/USkeleton.vue";
 import type { Props } from "../types";
 
 describe("USkeletonText.vue", () => {
-  // Props tests
   describe("Props", () => {
-    // HeaderLines prop
-    it("renders the correct number of header lines", () => {
+    it("HeaderLines – renders the correct number of header lines", () => {
       const headerLines = 3;
 
       const component = mount(USkeletonText, {
@@ -26,8 +24,7 @@ describe("USkeletonText.vue", () => {
       expect(headerSkeletons.length).toBe(headerLines);
     });
 
-    // TextLines prop
-    it("renders the correct number of text lines", () => {
+    it("TextLines – renders the correct number of text lines", () => {
       const textLines = 5;
 
       const component = mount(USkeletonText, {
@@ -41,8 +38,7 @@ describe("USkeletonText.vue", () => {
       expect(textSkeletons.length).toBe(textLines);
     });
 
-    // Size prop - Header
-    it("applies the correct size class to header skeletons", () => {
+    it("Size – applies the correct size class to header skeletons", () => {
       const size = {
         xs: "h-4.5",
         sm: "h-5",
@@ -67,8 +63,7 @@ describe("USkeletonText.vue", () => {
       });
     });
 
-    // Size prop - Text
-    it("applies the correct size class to text skeletons", () => {
+    it("Size – applies the correct size class to text skeletons", () => {
       const size = {
         xs: "h-3.5",
         sm: "h-4.5",
@@ -93,29 +88,7 @@ describe("USkeletonText.vue", () => {
       });
     });
 
-    // Variant prop
-    it("passes the correct variant to skeleton components", () => {
-      const variants = ["light", "default", "dark"];
-
-      variants.forEach((variant) => {
-        const component = mount(USkeletonText, {
-          props: {
-            variant: variant as Props["variant"],
-            headerLines: 1,
-            textLines: 1,
-          },
-        });
-
-        const headerSkeleton = component.find("[vl-key='headerWrapper']").findComponent(USkeleton);
-        const textSkeleton = component.find("[vl-key='textWrapper']").findComponent(USkeleton);
-
-        expect(headerSkeleton.props("variant")).toBe(variant);
-        expect(textSkeleton.props("variant")).toBe(variant);
-      });
-    });
-
-    // DataTest prop
-    it("applies the correct data-test attribute", () => {
+    it("DataTest – applies the correct data-test attribute", () => {
       const dataTest = "test-skeleton-text";
 
       const component = mount(USkeletonText, {

@@ -11,9 +11,8 @@ describe("UAccordion", () => {
     { value: "b", title: "B" },
   ];
 
-  // Props
   describe("Props", () => {
-    it("renders items from options", () => {
+    it("Options – renders items from options", () => {
       const component = mount(UAccordion, {
         props: { options },
       });
@@ -23,7 +22,7 @@ describe("UAccordion", () => {
       expect(items.length).toBe(options.length);
     });
 
-    it("passes base props down to items", () => {
+    it("Base Props – passes base props down to items", () => {
       const component = mount(UAccordion, {
         props: { size: "md", disabled: true, options },
       });
@@ -34,7 +33,7 @@ describe("UAccordion", () => {
       expect(item.props("disabled")).toBe(true);
     });
 
-    it("applies data-test attribute to wrapper", () => {
+    it("Data Test – applies data-test attribute to wrapper", () => {
       const dataTest = "accordion-test";
 
       const component = mount(UAccordion, {
@@ -45,9 +44,8 @@ describe("UAccordion", () => {
     });
   });
 
-  // Exposed refs
   describe("Exposed refs", () => {
-    it("exposes accordionRef", () => {
+    it("accordionRef – exposes accordionRef", () => {
       const component = mount(UAccordion);
 
       expect(component.vm.accordionRef).toBeDefined();
@@ -55,9 +53,8 @@ describe("UAccordion", () => {
     });
   });
 
-  // Events
   describe("Events", () => {
-    it("emits update:modelValue when an item is toggled (single)", async () => {
+    it("Model Value – emits update:modelValue when an item is toggled (single)", async () => {
       const modelValue = ref<string | null>(null);
 
       const component = mount(UAccordion, {
@@ -86,7 +83,7 @@ describe("UAccordion", () => {
       expect(updates2?.[1]).toEqual([null]);
     });
 
-    it("emits update:modelValue with arrays when multiple=true", async () => {
+    it("Model Value – emits update:modelValue with arrays when multiple=true", async () => {
       const modelValue = ref<string[]>([]);
 
       const component = mount(UAccordion, {

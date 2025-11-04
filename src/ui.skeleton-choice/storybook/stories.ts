@@ -8,7 +8,7 @@ import USkeleton from "../../ui.skeleton/USkeleton.vue";
 import type { Props } from "../types";
 
 interface SkeletonChoiceArgs extends Props {
-  enum: "variant" | "size" | "labelAlign" | "type";
+  enum: "size" | "labelAlign" | "type";
 }
 
 export default {
@@ -73,9 +73,6 @@ LabelAlign.args = { enum: "labelAlign" };
 export const Sizes = EnumVariantTemplate.bind({});
 Sizes.args = { enum: "size" };
 
-export const Variant = EnumVariantTemplate.bind({});
-Variant.args = { enum: "variant" };
-
 export const LabelSlot: StoryFn<SkeletonChoiceArgs> = (args) => ({
   components: { USkeletonChoice, USkeleton, UCol },
   setup() {
@@ -85,8 +82,8 @@ export const LabelSlot: StoryFn<SkeletonChoiceArgs> = (args) => ({
     <USkeletonChoice v-bind="args">
       <template #label>
         <UCol gap="2xs">
-          <USkeleton class="h-3 w-36 rounded-small" variant="dark" />
-          <USkeleton class="h-1.5 rounded-small" variant="dark" />
+          <USkeleton class="h-3 w-36 rounded-small" />
+          <USkeleton class="h-1.5 rounded-small" />
         </UCol>
       </template>
     </USkeletonChoice>

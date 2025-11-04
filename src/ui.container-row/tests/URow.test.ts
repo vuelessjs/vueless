@@ -6,10 +6,8 @@ import URow from "../URow.vue";
 import type { Props } from "../types";
 
 describe("URow.vue", () => {
-  // Props tests
   describe("Props", () => {
-    // Gap prop
-    it("applies the correct gap class", () => {
+    it("Gap – applies the correct gap class", () => {
       const gapClasses = {
         none: "gap-0",
         "2xs": "gap-1",
@@ -32,8 +30,7 @@ describe("URow.vue", () => {
       });
     });
 
-    // Align prop
-    it("applies the correct align class", () => {
+    it("Align – applies the correct align class", () => {
       const alignClasses = {
         end: "items-end",
         start: "items-start",
@@ -53,8 +50,7 @@ describe("URow.vue", () => {
       });
     });
 
-    // Content prop
-    it("applies the correct content class", () => {
+    it("Content – applies the correct content class", () => {
       const contentClasses = {
         end: "content-end",
         start: "content-start",
@@ -78,8 +74,7 @@ describe("URow.vue", () => {
       });
     });
 
-    // Justify prop
-    it("applies the correct justify class", () => {
+    it("Justify – applies the correct justify class", () => {
       const justifyClasses = {
         end: "justify-end",
         start: "justify-start",
@@ -100,8 +95,7 @@ describe("URow.vue", () => {
       });
     });
 
-    // Reverse prop
-    it("applies the correct reverse class", () => {
+    it("Reverse – applies the correct reverse class", () => {
       const reverseClasses = {
         false: "flex-row",
         true: "flex-row-reverse",
@@ -118,8 +112,7 @@ describe("URow.vue", () => {
       });
     });
 
-    // Wrap prop
-    it("applies the correct wrap class", () => {
+    it("Wrap – applies the correct wrap class", () => {
       const wrap = true;
       const expectedClasses = "flex-wrap";
 
@@ -132,8 +125,7 @@ describe("URow.vue", () => {
       expect(component.attributes("class")).toContain(expectedClasses);
     });
 
-    // Block prop
-    it("applies the correct block class", () => {
+    it("Block – applies the correct block class", () => {
       const block = true;
       const expectedClasses = "w-full";
 
@@ -146,8 +138,7 @@ describe("URow.vue", () => {
       expect(component.attributes("class")).toContain(expectedClasses);
     });
 
-    // Tag prop
-    it("renders the correct HTML tag", () => {
+    it("Tag – renders the correct HTML tag", () => {
       const tags = ["div", "section", "article", "main", "aside", "nav", "span"];
 
       tags.forEach((tag) => {
@@ -161,8 +152,7 @@ describe("URow.vue", () => {
       });
     });
 
-    // DataTest prop
-    it("applies the correct data-test attribute", () => {
+    it("Data Test – applies the correct data-test attribute", () => {
       const dataTest = "test-row";
 
       const component = mount(URow, {
@@ -175,10 +165,8 @@ describe("URow.vue", () => {
     });
   });
 
-  // Slots tests
   describe("Slots", () => {
-    // Default slot
-    it("renders content from default slot", () => {
+    it("Default – renders content from default slot", () => {
       const slotContent = "Custom Content";
 
       const component = mount(URow, {
@@ -191,10 +179,8 @@ describe("URow.vue", () => {
     });
   });
 
-  // Exposed refs tests
   describe("Exposed refs", () => {
-    // wrapperRef
-    it("exposes wrapperRef", () => {
+    it("wrapperRef – exposes wrapperRef", () => {
       const component = mount(URow);
 
       expect(component.vm.wrapperRef).toBeDefined();

@@ -5,10 +5,8 @@ import UGroup from "../UGroup.vue";
 import UHeader from "../../ui.text-header/UHeader.vue";
 
 describe("UGroup", () => {
-  // Props
   describe("Props", () => {
-    // Title prop
-    it("renders with title prop", () => {
+    it("Title – renders with title prop", () => {
       const title = "Group Title";
 
       const component = mount(UGroup, {
@@ -23,8 +21,7 @@ describe("UGroup", () => {
       expect(header.props("label")).toBe(title);
     });
 
-    // Title prop - no header without a title
-    it("does not show header when title prop is not provided", () => {
+    it("Title – does not show header when title prop is not provided", () => {
       const component = mount(UGroup);
 
       const header = component.findComponent(UHeader);
@@ -32,8 +29,7 @@ describe("UGroup", () => {
       expect(header.exists()).toBe(false);
     });
 
-    // Upperlined prop
-    it("applies upperlined class when upperlined prop is true", () => {
+    it("Upperlined – applies upperlined class when upperlined prop is true", () => {
       const upperlined = true;
       const title = "Group Title";
       const expectedClass = "border-t";
@@ -51,8 +47,7 @@ describe("UGroup", () => {
       expect(header.classes()).toContain(expectedClass);
     });
 
-    // Underlined prop
-    it("applies underlined class when underlined prop is true", () => {
+    it("Underlined – applies underlined class when underlined prop is true", () => {
       const underlined = true;
       const title = "Group Title";
       const expectedClass = "border-b";
@@ -70,8 +65,7 @@ describe("UGroup", () => {
       expect(header.classes()).toContain(expectedClass);
     });
 
-    // DataTest prop
-    it("applies data-test attribute", () => {
+    it("Data Test – applies data-test attribute", () => {
       const dataTest = "group-test";
 
       const component = mount(UGroup, {
@@ -84,10 +78,8 @@ describe("UGroup", () => {
     });
   });
 
-  // Slots
   describe("Slots", () => {
-    // Default slot
-    it("renders content in default slot", () => {
+    it("Default – renders content in default slot", () => {
       const slotClass = "default-content";
       const slotContent = "Default Content";
 
@@ -101,8 +93,7 @@ describe("UGroup", () => {
       expect(component.text()).toContain(slotContent);
     });
 
-    // Title slot
-    it("renders custom content in title slot", () => {
+    it("Title – renders custom content in title slot", () => {
       const title = "Group Title";
       const slotClass = "custom-title";
       const slotContent = "Custom Title";
@@ -119,7 +110,7 @@ describe("UGroup", () => {
       expect(component.findComponent(UHeader).exists()).toBe(false);
     });
 
-    it("provides title binding to title slot", () => {
+    it("Title – provides title binding to title slot", () => {
       const title = "Group Title";
 
       const component = mount(UGroup, {
@@ -139,8 +130,7 @@ describe("UGroup", () => {
       expect(titleElement.attributes("data-title")).toBe(title);
     });
 
-    // Before-title slot
-    it("renders content in before-title slot", () => {
+    it("Before-title – renders content in before-title slot", () => {
       const title = "Group Title";
       const slotClass = "before-title";
       const slotContent = "Before Title";
@@ -156,8 +146,7 @@ describe("UGroup", () => {
       expect(component.text()).toContain(slotContent);
     });
 
-    // After-title slot
-    it("renders content in after-title slot", () => {
+    it("After-title – renders content in after-title slot", () => {
       const title = "Group Title";
       const slotClass = "after-title";
       const slotContent = "After Title";
@@ -173,8 +162,7 @@ describe("UGroup", () => {
       expect(component.text()).toContain(slotContent);
     });
 
-    // Actions slot
-    it("renders content in actions slot", () => {
+    it("Actions – renders content in actions slot", () => {
       const title = "Group Title";
       const slotClass = "actions";
       const slotContent = "Actions";
@@ -191,10 +179,8 @@ describe("UGroup", () => {
     });
   });
 
-  // Exposed refs
   describe("Exposed refs", () => {
-    // WrapperRef
-    it("exposes wrapperRef", () => {
+    it("wrapperRef – exposes wrapperRef", () => {
       const component = mount(UGroup);
 
       expect(component.vm.wrapperRef).toBeDefined();

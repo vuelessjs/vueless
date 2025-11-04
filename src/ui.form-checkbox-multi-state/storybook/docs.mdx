@@ -3,6 +3,7 @@ import { getSource } from "../../utils/storybook";
 
 import * as stories from "./stories";
 import defaultConfig from "../config?raw"
+import CheckboxOptionKeys from "../../ui.form-checkbox/storybook/optionKeys.mdx"
 
 <Meta of={stories} />
 <Title of={stories} />
@@ -11,6 +12,8 @@ import defaultConfig from "../config?raw"
 <Primary of={stories}  />
 <Controls of={stories.Default} />
 <Stories of={stories} />
+
+<CheckboxOptionKeys />
 
 ## Default config
 <Source code={getSource(defaultConfig)} language="jsx" dark />

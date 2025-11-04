@@ -7,10 +7,8 @@ import UStepperProgress from "../UStepperProgress.vue";
 import type { Props } from "../types";
 
 describe("UProgress.vue", () => {
-  // Props tests
   describe("Props", () => {
-    // Value prop
-    it("sets the correct value for progress", () => {
+    it("Value – sets the correct value for progress", () => {
       const value = 50;
       const max = 100;
 
@@ -28,8 +26,7 @@ describe("UProgress.vue", () => {
       expect(progressElement.attributes("max")).toBe(max.toString());
     });
 
-    // Max prop (number)
-    it("sets the correct max value for progress", () => {
+    it("Max – sets the correct max value for progress", () => {
       const value = 5;
       const max = 10;
 
@@ -46,8 +43,7 @@ describe("UProgress.vue", () => {
       expect(progressElement.attributes("max")).toBe(max.toString());
     });
 
-    // Max prop (array)
-    it("handles array of steps for max prop", () => {
+    it("Max – handles array of steps for max prop", () => {
       const value = 1;
       const max = ["Step 1", "Step 2", "Step 3"];
 
@@ -65,8 +61,7 @@ describe("UProgress.vue", () => {
       expect(activeStep.text()).toBe(max[value]);
     });
 
-    // Size prop
-    it("applies the correct size class", () => {
+    it("Size – applies the correct size class", () => {
       const size = {
         xs: "h-0.5",
         sm: "h-1",
@@ -91,8 +86,7 @@ describe("UProgress.vue", () => {
       });
     });
 
-    // Color prop
-    it("applies the correct color class", () => {
+    it("Color – applies the correct color class", () => {
       const colors = [
         "primary",
         "secondary",
@@ -121,8 +115,7 @@ describe("UProgress.vue", () => {
       });
     });
 
-    // Variant prop
-    it("renders the correct component based on variant", () => {
+    it("Variant – renders the correct component based on variant", () => {
       const value = 50;
       const max = 100;
       const variants = ["progress", "stepper"];
@@ -146,8 +139,7 @@ describe("UProgress.vue", () => {
       });
     });
 
-    // Indicator prop
-    it("shows indicator when indicator prop is true", () => {
+    it("Indicator – shows indicator when indicator prop is true", () => {
       const value = 50;
       const indicator = true;
 
@@ -169,8 +161,7 @@ describe("UProgress.vue", () => {
       expect(indicatorElement.attributes("style")).toContain(expectedWidth);
     });
 
-    // DataTest prop
-    it("applies the correct data-test attribute", () => {
+    it("DataTest – applies the correct data-test attribute", () => {
       const value = 1;
       const dataTest = "test-progress";
 
@@ -186,10 +177,8 @@ describe("UProgress.vue", () => {
     });
   });
 
-  // Slots tests
   describe("Slots", () => {
-    // Indicator slot
-    it("renders content from indicator slot", () => {
+    it("Indicator – renders content from indicator slot", () => {
       const value = 50;
       const slotContent = "Custom Indicator";
       const slotClass = "indicator-content";
@@ -209,8 +198,7 @@ describe("UProgress.vue", () => {
       expect(component.find(`.${slotClass}`).text()).toBe(slotContent);
     });
 
-    // Step slot
-    it("renders content from step slot", () => {
+    it("Step – renders content from step slot", () => {
       const value = 1;
       const max = ["Step 1", "Step 2", "Step 3"];
       const slotContent = "Custom Step";
@@ -232,10 +220,8 @@ describe("UProgress.vue", () => {
     });
   });
 
-  // Exposed refs tests
   describe("Exposed refs", () => {
-    // wrapperRef
-    it("exposes wrapperRef", () => {
+    it("wrapperRef – exposes wrapperRef", () => {
       const value = 50;
 
       const component = mount(UProgress, {

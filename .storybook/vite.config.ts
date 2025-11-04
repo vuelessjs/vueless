@@ -1,5 +1,9 @@
-import path from "node:path";
 import { defineConfig } from "vite";
+import { dirname, resolve } from "node:path";
+import { fileURLToPath } from "node:url";
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
 
 // Plugins
 import Vue from "@vitejs/plugin-vue";
@@ -15,7 +19,7 @@ export default defineConfig({
       "prettier2",
       "prettier2/parser-html",
       "@storybook/addon-docs/blocks",
-      "storybook/theming/create",
+      "storybook/theming",
       "storybook/internal/docs-tools",
       "@storybook/addon-themes",
       "@storybook/vue3-vite",
@@ -25,7 +29,7 @@ export default defineConfig({
   resolve: {
     alias: {
       /* this resolves the `storyDarkModeDecorator` issue */
-      vueless: path.resolve(__dirname, "../src"),
+      vueless: resolve(__dirname, "../src"),
     },
   },
 });

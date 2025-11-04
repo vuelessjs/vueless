@@ -13,10 +13,8 @@ describe("UNumber.vue", () => {
     value = 1234.56;
   });
 
-  // Props tests
   describe("Props", () => {
-    // Size prop
-    it("applies the correct size class", async () => {
+    it("Size – applies the correct size class", async () => {
       const sizeClasses = {
         xs: "text-tiny",
         sm: "text-small",
@@ -35,8 +33,7 @@ describe("UNumber.vue", () => {
       });
     });
 
-    // Color prop
-    it("applies the correct color class", async () => {
+    it("Color – applies the correct color class", async () => {
       const colors = [
         "primary",
         "secondary",
@@ -60,8 +57,7 @@ describe("UNumber.vue", () => {
       });
     });
 
-    // Value prop
-    it("renders the correct number value", () => {
+    it("Value – renders the correct number value", () => {
       const expectedFormattedNumber = "1 234,56";
 
       const component = mount(UNumber, {
@@ -73,8 +69,7 @@ describe("UNumber.vue", () => {
       expect(component.text()).toContain(expectedFormattedNumber);
     });
 
-    // Sign prop
-    it("renders the correct sign based on sign prop", () => {
+    it("Sign – renders the correct sign based on sign prop", () => {
       const testNegativeValue = -123;
 
       // Auto sign (negative value)
@@ -135,8 +130,7 @@ describe("UNumber.vue", () => {
       expect(unsignedComponent.text()).not.toContain(MATH_SIGN.PLUS);
     });
 
-    // Currency prop
-    it("renders the currency symbol", () => {
+    it("Currency – renders the currency symbol", () => {
       const currency = "$";
 
       const component = mount(UNumber, {
@@ -149,8 +143,7 @@ describe("UNumber.vue", () => {
       expect(component.text()).toContain(currency);
     });
 
-    // CurrencyAlign prop
-    it("aligns currency correctly based on currencyAlign prop", () => {
+    it("CurrencyAlign – aligns currency correctly based on currencyAlign prop", () => {
       const currency = "$";
 
       const alignTests = [
@@ -171,8 +164,7 @@ describe("UNumber.vue", () => {
       });
     });
 
-    // CurrencySpace prop
-    it("adds space between currency and number when currencySpace is true", () => {
+    it("CurrencySpace – adds space between currency and number when currencySpace is true", () => {
       const currency = "$";
 
       const spaceTests = [
@@ -200,8 +192,7 @@ describe("UNumber.vue", () => {
       });
     });
 
-    // MinFractionDigits prop
-    it("adds zeros to meet the minimum fraction digits requirement", () => {
+    it("MinFractionDigits – adds zeros to meet the minimum fraction digits requirement", () => {
       const value = 123;
       const minFractionDigits = 2;
       const expectedMinFractionResult = "123,00";
@@ -216,8 +207,7 @@ describe("UNumber.vue", () => {
       expect(component.text()).toContain(expectedMinFractionResult);
     });
 
-    // MaxFractionDigits prop
-    it("rounds the fraction to the maximum number of digits", () => {
+    it("MaxFractionDigits – rounds the fraction to the maximum number of digits", () => {
       const value = 123.456789;
       const maxFractionDigits = 2;
       const expectedMaxFractionResult = "123,46"; // Rounded from .456789 to 2 digits
@@ -236,8 +226,7 @@ describe("UNumber.vue", () => {
       expect(component.text()).not.toContain(originalDecimalPart);
     });
 
-    // DecimalSeparator prop
-    it("uses the correct decimal separator", () => {
+    it("DecimalSeparator – uses the correct decimal separator", () => {
       const value = 123.45;
       const decimalSeparator = ",";
       const expectedFormattedNumber = "123,45";
@@ -252,8 +241,7 @@ describe("UNumber.vue", () => {
       expect(component.text()).toContain(expectedFormattedNumber);
     });
 
-    // ThousandsSeparator prop
-    it("uses the correct thousands separator", () => {
+    it("ThousandsSeparator – uses the correct thousands separator", () => {
       const value = 1234567.89;
       const thousandsSeparator = " ";
       const expectedFormattedInteger = "1 234 567";
@@ -268,8 +256,7 @@ describe("UNumber.vue", () => {
       expect(component.text()).toContain(expectedFormattedInteger);
     });
 
-    // Align prop
-    it("applies the correct align class", () => {
+    it("Align – applies the correct align class", () => {
       const alignClasses = {
         left: "justify-start",
         right: "justify-end",
@@ -286,8 +273,7 @@ describe("UNumber.vue", () => {
       });
     });
 
-    // DataTest prop
-    it("applies the correct data-test attribute", () => {
+    it("DataTest – applies the correct data-test attribute", () => {
       const testDataTest = "test-number";
 
       const component = mount(UNumber, {
@@ -300,10 +286,8 @@ describe("UNumber.vue", () => {
     });
   });
 
-  // Slots tests
   describe("Slots", () => {
-    // Left slot
-    it("renders content from left slot", () => {
+    it("Left – renders content from left slot", () => {
       const slotText = "Left";
       const slotClass = "left-content";
 
@@ -320,8 +304,7 @@ describe("UNumber.vue", () => {
       expect(component.find(`.${slotClass}`).text()).toBe(slotText);
     });
 
-    // Right slot
-    it("renders content from right slot", () => {
+    it("Right – renders content from right slot", () => {
       const slotText = "Right";
       const slotClass = "right-content";
 
@@ -339,10 +322,8 @@ describe("UNumber.vue", () => {
     });
   });
 
-  // Exposed refs tests
   describe("Exposed refs", () => {
-    // wrapperRef
-    it("exposes wrapperRef", () => {
+    it("wrapperRef – exposes wrapperRef", () => {
       const component = mount(UNumber, {});
 
       expect(component.vm.wrapperRef).toBeDefined();

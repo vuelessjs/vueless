@@ -26,11 +26,6 @@ export interface Props {
   type?: "checkbox" | "radio";
 
   /**
-   * Brightness variant.
-   */
-  variant?: "light" | "default" | "dark";
-
-  /**
    * Component config object.
    */
   config?: ComponentConfig<Config>;

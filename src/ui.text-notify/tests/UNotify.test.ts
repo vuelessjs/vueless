@@ -46,10 +46,8 @@ describe("UNotify.vue", () => {
     dispatchNotifyEvent("notifyClearAll", {} as Notification);
   });
 
-  // Props tests
   describe("Props", () => {
-    // XPosition prop
-    it("applies the correct xPosition style", async () => {
+    it("X Position – applies the correct xPosition style", async () => {
       const positions = ["left", "center", "right"];
 
       for (const position of positions) {
@@ -73,8 +71,7 @@ describe("UNotify.vue", () => {
       }
     });
 
-    // YPosition prop
-    it("applies the correct yPosition style", async () => {
+    it("Y Position – applies the correct yPosition style", async () => {
       const positions = ["top", "bottom"];
 
       for (const position of positions) {
@@ -93,8 +90,7 @@ describe("UNotify.vue", () => {
       }
     });
 
-    // DataTest prop
-    it("applies the correct data-test attribute", () => {
+    it("DataTest – applies the correct data-test attribute", () => {
       const dataTest = "test-notify";
 
       const component = mountWithLocale({
@@ -107,8 +103,7 @@ describe("UNotify.vue", () => {
 
   // Event handling tests
   describe("Event Handling", () => {
-    // notifyStart event
-    it("adds notification when notifyStart event is dispatched", async () => {
+    it("notifyStart – adds notification when notifyStart event is dispatched", async () => {
       const component = mountWithLocale();
 
       dispatchNotifyEvent("notifyStart", mockNotification);
@@ -118,8 +113,7 @@ describe("UNotify.vue", () => {
       expect(component.text()).toContain(mockNotification.description);
     });
 
-    // notifyEnd event
-    it("removes notification when notifyEnd event is dispatched", async () => {
+    it("notifyEnd – removes notification when notifyEnd event is dispatched", async () => {
       const component = mountWithLocale();
 
       // Add notification
@@ -145,8 +139,7 @@ describe("UNotify.vue", () => {
       expect(finalCount).toBeLessThan(initialCount);
     });
 
-    // notifyClearAll event
-    it("clears all notifications when notifyClearAll event is dispatched", async () => {
+    it("notifyClearAll – clears all notifications when notifyClearAll event is dispatched", async () => {
       const component = mountWithLocale();
 
       // Add multiple notifications
@@ -176,8 +169,7 @@ describe("UNotify.vue", () => {
       expect(component.text()).not.toContain("Notification 2");
     });
 
-    // Close button click
-    it("removes notification when close button is clicked", async () => {
+    it("Close – removes notification when close button is clicked", async () => {
       const component = mountWithLocale();
 
       // Add notification
@@ -203,8 +195,7 @@ describe("UNotify.vue", () => {
 
   // Notification type tests
   describe("Notification Types", () => {
-    // Success notification
-    it("renders success notification with correct icon", async () => {
+    it("Success – renders success notification with correct icon", async () => {
       const component = mountWithLocale();
 
       dispatchNotifyEvent("notifyStart", {
@@ -223,8 +214,7 @@ describe("UNotify.vue", () => {
       expect(successIcon).toBeDefined();
     });
 
-    // Warning notification
-    it("renders warning notification with correct icon", async () => {
+    it("Warning – renders warning notification with correct icon", async () => {
       const component = mountWithLocale();
 
       dispatchNotifyEvent("notifyStart", {
@@ -243,8 +233,7 @@ describe("UNotify.vue", () => {
       expect(warningIcon).toBeDefined();
     });
 
-    // Error notification
-    it("renders error notification with correct icon", async () => {
+    it("Error – renders error notification with correct icon", async () => {
       const component = mountWithLocale();
 
       dispatchNotifyEvent("notifyStart", {
@@ -263,8 +252,7 @@ describe("UNotify.vue", () => {
       expect(errorIcon).toBeDefined();
     });
 
-    // Info notification
-    it("renders info notification with correct icon", async () => {
+    it("Info – renders info notification with correct icon", async () => {
       const component = mountWithLocale();
 
       dispatchNotifyEvent("notifyStart", {
@@ -284,10 +272,8 @@ describe("UNotify.vue", () => {
     });
   });
 
-  // Exposed refs tests
   describe("Exposed refs", () => {
-    // notificationRef
-    it("exposes notificationRef", () => {
+    it("notificationRef – exposes notificationRef", () => {
       const component = mountWithLocale();
 
       expect(component.vm.notificationRef).toBeDefined();

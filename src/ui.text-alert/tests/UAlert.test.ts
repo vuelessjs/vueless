@@ -9,10 +9,8 @@ import UText from "../../ui.text-block/UText.vue";
 import type { Props } from "../types";
 
 describe("UAlert.vue", () => {
-  // Props tests
   describe("Props", () => {
-    // Variant prop
-    it("applies the correct variant class", async () => {
+    it("Variant – applies the correct variant class", async () => {
       const variants = {
         solid: "text-inverted bg-primary",
         outlined: "text-primary border-primary",
@@ -32,8 +30,7 @@ describe("UAlert.vue", () => {
       });
     });
 
-    // Size prop
-    it("applies the correct size class", async () => {
+    it("Size – applies the correct size class", async () => {
       const size = {
         xs: "text-tiny",
         sm: "text-small",
@@ -53,8 +50,7 @@ describe("UAlert.vue", () => {
       });
     });
 
-    // Color prop
-    it("applies the correct color class", async () => {
+    it("Color – applies the correct color class", async () => {
       const colors = [
         "primary",
         "secondary",
@@ -78,8 +74,7 @@ describe("UAlert.vue", () => {
       });
     });
 
-    // Title prop
-    it("renders the correct title text", () => {
+    it("Title – renders the correct title text", () => {
       const title = "Alert Title";
 
       const component = mount(UAlert, {
@@ -91,8 +86,7 @@ describe("UAlert.vue", () => {
       expect(component.text()).toContain(title);
     });
 
-    // Description prop
-    it("renders the correct description text", () => {
+    it("Description – renders the correct description text", () => {
       const description = "Alert Description";
 
       const component = mount(UAlert, {
@@ -104,8 +98,7 @@ describe("UAlert.vue", () => {
       expect(component.text()).toContain(description);
     });
 
-    // Icon prop
-    it("renders icon when icon prop is provided", () => {
+    it("Icon – renders icon when icon prop is provided", () => {
       const icon = "info";
 
       const component = mount(UAlert, {
@@ -122,8 +115,7 @@ describe("UAlert.vue", () => {
       expect(alertIcon).toBeDefined();
     });
 
-    // Closable prop
-    it("renders close button when closable prop is true", () => {
+    it("Closable – renders close button when closable prop is true", () => {
       const closable = true;
 
       const component = mount(UAlert, {
@@ -137,8 +129,7 @@ describe("UAlert.vue", () => {
       expect(closeButton.exists()).toBe(true);
     });
 
-    // Timeout prop
-    it("auto-closes after timeout", async () => {
+    it("Timeout – auto-closes after timeout", async () => {
       vi.useFakeTimers();
 
       const timeout = 1000;
@@ -159,8 +150,7 @@ describe("UAlert.vue", () => {
       vi.useRealTimers();
     });
 
-    // DataTest prop
-    it("applies the correct data-test attribute", () => {
+    it("Data Test – applies the correct data-test attribute", () => {
       const dataTest = "test-alert";
 
       const component = mount(UAlert, {
@@ -173,10 +163,8 @@ describe("UAlert.vue", () => {
     });
   });
 
-  // Slots tests
   describe("Slots", () => {
-    // Default slot
-    it("renders content from default slot", () => {
+    it("Default – renders content from default slot", () => {
       const slotContent = "Custom Content";
 
       const component = mount(UAlert, {
@@ -188,8 +176,7 @@ describe("UAlert.vue", () => {
       expect(component.text()).toContain(slotContent);
     });
 
-    // Title slot
-    it("renders content from title slot", () => {
+    it("Title – renders content from title slot", () => {
       const title = "Alert Title";
       const slotText = "Custom Title";
       const slotClass = "title-content";
@@ -208,8 +195,7 @@ describe("UAlert.vue", () => {
       expect(component.find(`.${slotClass}`).text()).toBe(slotText);
     });
 
-    // Description slot
-    it("renders content from description slot", () => {
+    it("Description – renders content from description slot", () => {
       const description = "Alert Description";
       const slotText = "Custom Description";
       const slotClass = "description-content";
@@ -228,8 +214,7 @@ describe("UAlert.vue", () => {
       expect(component.find(`.${slotClass}`).text()).toBe(slotText);
     });
 
-    // Left slot
-    it("renders content from left slot", () => {
+    it("Left – renders content from left slot", () => {
       const slotText = "Left";
       const slotClass = "left-content";
 
@@ -243,8 +228,7 @@ describe("UAlert.vue", () => {
       expect(component.find(`.${slotClass}`).text()).toBe(slotText);
     });
 
-    // Close slot
-    it("renders content from close slot", () => {
+    it("Close – renders content from close slot", () => {
       const slotText = "Close";
       const slotClass = "close-content";
 
@@ -261,8 +245,7 @@ describe("UAlert.vue", () => {
       expect(component.find(`.${slotClass}`).text()).toBe(slotText);
     });
 
-    // Slot bindings
-    it("provides correct bindings to slots", () => {
+    it("Slot – provides correct bindings to slots", () => {
       const title = "Alert Title";
       const description = "Alert Description";
       const icon = "info";
@@ -303,10 +286,8 @@ describe("UAlert.vue", () => {
     });
   });
 
-  // Events tests
   describe("Events", () => {
-    // Hidden event
-    it("emits hidden event when close button is clicked", async () => {
+    it("Hide – emits hidden event when close button is clicked", async () => {
       const component = mount(UAlert, {
         props: {
           closable: true,
@@ -319,10 +300,8 @@ describe("UAlert.vue", () => {
     });
   });
 
-  // Exposed refs tests
   describe("Exposed refs", () => {
-    // wrapperRef
-    it("exposes wrapperRef", () => {
+    it("wrapperRef – exposes wrapperRef", () => {
       const component = mount(UAlert, {});
 
       expect(component.vm.wrapperRef).toBeDefined();

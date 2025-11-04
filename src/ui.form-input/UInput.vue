@@ -176,9 +176,7 @@ function onKeydown(event: KeyboardEvent) {
   emit("keydown", event);
 }
 
-function onSlotClick(event: MouseEvent) {
-  if (event.target !== event.currentTarget) return;
-
+function onClickIcon() {
   inputRef.value?.focus();
 }
 
@@ -297,14 +295,19 @@ const {
         v-if="hasSlotContent($slots['left'], { iconName: leftIcon }) || leftIcon"
         v-bind="leftSlotAttrs"
         ref="leftSlotWrapper"
-        @click="onSlotClick"
       >
         <!--
           @slot Use it to add something before the text.
           @binding {string} icon-name
         -->
         <slot name="left" :icon-name="leftIcon">
-          <UIcon v-if="leftIcon" color="neutral" :name="leftIcon" v-bind="leftIconAttrs" />
+          <UIcon
+            v-if="leftIcon"
+            color="neutral"
+            :name="leftIcon"
+            v-bind="leftIconAttrs"
+            @click="onClickIcon"
+          />
         </slot>
       </span>
 
@@ -335,14 +338,19 @@ const {
       <span
         v-if="hasSlotContent($slots['right'], { iconName: rightIcon }) || rightIcon"
         v-bind="rightSlotAttrs"
-        @click="onSlotClick"
       >
         <!--
           @slot Use it to add something after the text.
           @binding {string} icon-name
         -->
         <slot name="right" :icon-name="rightIcon">
-          <UIcon v-if="rightIcon" color="neutral" :name="rightIcon" v-bind="rightIconAttrs" />
+          <UIcon
+            v-if="rightIcon"
+            color="neutral"
+            :name="rightIcon"
+            v-bind="rightIconAttrs"
+            @click="onClickIcon"
+          />
         </slot>
       </span>
     </div>

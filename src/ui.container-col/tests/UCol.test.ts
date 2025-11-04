@@ -6,10 +6,8 @@ import UCol from "../UCol.vue";
 import type { Props } from "../types";
 
 describe("UCol.vue", () => {
-  // Props tests
   describe("Props", () => {
-    // Gap prop
-    it("applies the correct gap class", () => {
+    it("Gap – applies the correct gap class", () => {
       const gapClasses = {
         none: "gap-0",
         "3xs": "gap-0.5",
@@ -34,8 +32,7 @@ describe("UCol.vue", () => {
       });
     });
 
-    // Align prop
-    it("applies the correct align class", () => {
+    it("Align – applies the correct align class", () => {
       const alignClasses = {
         start: "items-start",
         end: "items-end",
@@ -55,8 +52,7 @@ describe("UCol.vue", () => {
       });
     });
 
-    // Content prop
-    it("applies the correct content class", () => {
+    it("Content – applies the correct content class", () => {
       const contentClasses = {
         start: "content-start",
         end: "content-end",
@@ -80,8 +76,7 @@ describe("UCol.vue", () => {
       });
     });
 
-    // Justify prop
-    it("applies the correct justify class", () => {
+    it("Justify – applies the correct justify class", () => {
       const justifyClasses = {
         start: "justify-start",
         end: "justify-end",
@@ -102,8 +97,7 @@ describe("UCol.vue", () => {
       });
     });
 
-    // Reverse prop
-    it("applies the correct reverse class", () => {
+    it("Reverse – applies the correct reverse class", () => {
       const reverseClasses = {
         true: "flex-col-reverse",
         false: "flex-col",
@@ -120,8 +114,7 @@ describe("UCol.vue", () => {
       });
     });
 
-    // Wrap prop
-    it("applies the correct wrap class", () => {
+    it("Wrap – applies the correct wrap class", () => {
       const wrap = true;
       const expectedClasses = "flex-wrap";
 
@@ -134,8 +127,7 @@ describe("UCol.vue", () => {
       expect(component.attributes("class")).toContain(expectedClasses);
     });
 
-    // Block prop
-    it("applies the correct block class", () => {
+    it("Block – applies the correct block class", () => {
       const block = true;
       const expectedClasses = "w-full";
 
@@ -148,8 +140,7 @@ describe("UCol.vue", () => {
       expect(component.attributes("class")).toContain(expectedClasses);
     });
 
-    // Tag prop
-    it("renders the correct HTML tag", () => {
+    it("Tag – renders the correct HTML tag", () => {
       const tags = ["div", "section", "article", "main", "aside", "nav", "span"];
 
       tags.forEach((tag) => {
@@ -163,8 +154,7 @@ describe("UCol.vue", () => {
       });
     });
 
-    // DataTest prop
-    it("applies the correct data-test attribute", () => {
+    it("Data Test – applies the correct data-test attribute", () => {
       const dataTest = "col-test";
 
       const component = mount(UCol, {
@@ -177,10 +167,8 @@ describe("UCol.vue", () => {
     });
   });
 
-  // Slots tests
   describe("Slots", () => {
-    // Default slot
-    it("renders content from default slot", () => {
+    it("Default – renders content from default slot", () => {
       const slotContent = "Custom Content";
 
       const component = mount(UCol, {
@@ -193,10 +181,8 @@ describe("UCol.vue", () => {
     });
   });
 
-  // Exposed refs tests
   describe("Exposed refs", () => {
-    // wrapperRef
-    it("exposes wrapperRef", () => {
+    it("wrapperRef – exposes wrapperRef", () => {
       const component = mount(UCol);
 
       expect(component.vm.wrapperRef).toBeDefined();

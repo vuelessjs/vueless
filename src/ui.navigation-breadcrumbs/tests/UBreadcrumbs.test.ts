@@ -31,10 +31,8 @@ const mountWithRouter = (component: unknown, options: UnknownObject) => {
 };
 
 describe("UBreadcrumbs.vue", () => {
-  // Props tests
   describe("Props", () => {
-    // Links prop
-    it("renders the correct number of links", () => {
+    it("Links – renders the correct number of links", () => {
       const links: UBreadcrumb[] = [
         { label: "Home", to: "/" },
         { label: "Products", to: "/products" },
@@ -57,8 +55,7 @@ describe("UBreadcrumbs.vue", () => {
       });
     });
 
-    // Empty links array
-    it("renders nothing when links array is empty", () => {
+    it("Empty – renders nothing when links array is empty", () => {
       const component = mountWithRouter(UBreadcrumbs, {
         props: {
           links: [],
@@ -70,8 +67,7 @@ describe("UBreadcrumbs.vue", () => {
       expect(linkComponents.length).toBe(0);
     });
 
-    // Disabled link
-    it("disables link when disabled key is true", () => {
+    it("Disabled – disables link when disabled key is true", () => {
       const links: UBreadcrumb[] = [
         { label: "Home", to: "/", disabled: true },
         { label: "Products", to: "/products" },
@@ -89,8 +85,7 @@ describe("UBreadcrumbs.vue", () => {
       expect(linkComponents[1].props("disabled")).toBe(false);
     });
 
-    // Link without to or href
-    it("disables link when it has no to or href", () => {
+    it("Link – disables link when it has no to or href", () => {
       const links: UBreadcrumb[] = [{ label: "Home" }, { label: "Products", to: "/products" }];
 
       const component = mountWithRouter(UBreadcrumbs, {
@@ -105,8 +100,7 @@ describe("UBreadcrumbs.vue", () => {
       expect(linkComponents[1].props("disabled")).toBe(false);
     });
 
-    // Size prop
-    it("applies the correct size to links", () => {
+    it("Size – applies the correct size to links", () => {
       const sizes = ["sm", "md", "lg"];
       const links: UBreadcrumb[] = [
         { label: "Home", to: "/" },
@@ -130,8 +124,7 @@ describe("UBreadcrumbs.vue", () => {
       });
     });
 
-    // Color prop
-    it("applies the correct color to links", () => {
+    it("Color – applies the correct color to links", () => {
       const colors = [
         "primary",
         "secondary",
@@ -166,8 +159,7 @@ describe("UBreadcrumbs.vue", () => {
       });
     });
 
-    // Target prop
-    it("applies the correct target to links", () => {
+    it("Target – applies the correct target to links", () => {
       const target = "_blank";
       const links: UBreadcrumb[] = [
         { label: "Home", to: "/" },
@@ -189,8 +181,7 @@ describe("UBreadcrumbs.vue", () => {
       });
     });
 
-    // Underlined prop
-    it("applies underlined style to links when underlined prop is true", () => {
+    it("Underlined – applies underlined style to links when underlined prop is true", () => {
       const underlined = true;
       const links: UBreadcrumb[] = [
         { label: "Home", to: "/" },
@@ -212,8 +203,7 @@ describe("UBreadcrumbs.vue", () => {
       });
     });
 
-    // Dashed prop
-    it("applies dashed style to links when dashed prop is true", () => {
+    it("Dashed – applies dashed style to links when dashed prop is true", () => {
       const dashed = true;
       const links: UBreadcrumb[] = [
         { label: "Home", to: "/" },
@@ -235,8 +225,7 @@ describe("UBreadcrumbs.vue", () => {
       });
     });
 
-    // DataTest prop
-    it("applies the correct data-test attribute", () => {
+    it("DataTest – applies the correct data-test attribute", () => {
       const dataTest = "test-breadcrumbs";
       const links: UBreadcrumb[] = [
         { label: "Home", to: "/" },
@@ -258,8 +247,7 @@ describe("UBreadcrumbs.vue", () => {
       });
     });
 
-    // Link with icon
-    it("renders icon when link has icon prop", () => {
+    it("Link – renders icon when link has icon prop", () => {
       const links: UBreadcrumb[] = [
         { label: "Home", to: "/", icon: "home" },
         { label: "Products", to: "/products" },
@@ -278,8 +266,7 @@ describe("UBreadcrumbs.vue", () => {
       expect(iconComponents[0].props("name")).toBe("home");
     });
 
-    // Divider icon
-    it("renders divider icons between links", () => {
+    it("Divider – renders divider icons between links", () => {
       const links: UBreadcrumb[] = [
         { label: "Home", to: "/" },
         { label: "Products", to: "/products" },
@@ -301,10 +288,8 @@ describe("UBreadcrumbs.vue", () => {
     });
   });
 
-  // Slots tests
   describe("Slots", () => {
-    // Before-link slot
-    it("renders content from before-link slot", () => {
+    it("Before – renders content from before-link slot", () => {
       const links: UBreadcrumb[] = [
         { label: "Home", to: "/", icon: "home" },
         { label: "Products", to: "/products" },
@@ -325,8 +310,7 @@ describe("UBreadcrumbs.vue", () => {
       expect(component.find(`.${slotClass}`).text()).toBe(slotContent);
     });
 
-    // After-link slot
-    it("renders content from after-link slot", () => {
+    it("After – renders content from after-link slot", () => {
       const links: UBreadcrumb[] = [
         { label: "Home", to: "/", icon: "home" },
         { label: "Products", to: "/products" },
@@ -347,8 +331,7 @@ describe("UBreadcrumbs.vue", () => {
       expect(component.find(`.${slotClass}`).text()).toBe(slotContent);
     });
 
-    // Label slot
-    it("renders content from label slot", () => {
+    it("Label – renders content from label slot", () => {
       const links: UBreadcrumb[] = [
         { label: "Home", to: "/" },
         { label: "Products", to: "/products" },
@@ -369,8 +352,7 @@ describe("UBreadcrumbs.vue", () => {
       expect(component.find(`.${slotClass}`).text()).toBe(slotContent);
     });
 
-    // Divider slot
-    it("renders content from divider slot", () => {
+    it("Divider – renders content from divider slot", () => {
       const links: UBreadcrumb[] = [
         { label: "Home", to: "/" },
         { label: "Products", to: "/products" },
@@ -392,10 +374,8 @@ describe("UBreadcrumbs.vue", () => {
     });
   });
 
-  // Events tests
   describe("Events", () => {
-    // clickLink event
-    it("emits clickLink event when link is clicked", async () => {
+    it("clickLink – emits clickLink event when link is clicked", async () => {
       const links: UBreadcrumb[] = [
         { label: "Home", to: "/" },
         { label: "Products", to: "/products" },
@@ -418,10 +398,8 @@ describe("UBreadcrumbs.vue", () => {
     });
   });
 
-  // Exposed refs tests
   describe("Exposed refs", () => {
-    // breadcrumbsRef
-    it("exposes breadcrumbsRef", () => {
+    it("breadcrumbsRef – exposes breadcrumbsRef", () => {
       const links: UBreadcrumb[] = [
         { label: "Home", to: "/" },
         { label: "Products", to: "/products" },

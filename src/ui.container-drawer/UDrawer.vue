@@ -6,6 +6,8 @@ import { getDefaults } from "../utils/ui";
 import { hasSlotContent } from "../utils/helper";
 
 import UHeader from "../ui.text-header/UHeader.vue";
+import UButton from "../ui.button/UButton.vue";
+import UIcon from "../ui.image-icon/UIcon.vue";
 
 import defaultConfig from "./config";
 import { COMPONENT_NAME } from "./constants";
@@ -38,8 +40,10 @@ const slots = useSlots();
 
 const wrapperRef = useTemplateRef<HTMLDivElement>("wrapper");
 const drawerRef = useTemplateRef<HTMLDivElement>("drawer");
+const handleWrapperRef = useTemplateRef<HTMLDivElement>("handleWrapper");
 
 const isDragging = ref(false);
+const isDraggingFromHandle = ref(false);
 const dragStartPosition = ref({ x: 0, y: 0 });
 const dragCurrentPosition = ref({ x: 0, y: 0 });
 const minDragDistance = 10;
@@ -201,6 +205,12 @@ function onDragStart(e: MouseEvent | TouchEvent) {
   dragStartPosition.value = { x: clientX, y: clientY };
   dragCurrentPosition.value = { x: clientX, y: clientY };
 
+  const targetNode = e.target as Node;
+
+  isDraggingFromHandle.value = !!handleWrapperRef.value?.contains(targetNode);
+
+  if (!props.handle || !isDraggingFromHandle.value) return;
+
   document.addEventListener("mousemove", onDragMove);
   document.addEventListener("mouseup", onDragEnd);
   document.addEventListener("touchmove", onDragMove, { passive: false });
@@ -282,6 +292,8 @@ const {
   footerRightAttrs,
   beforeTitleAttrs,
   titleFallbackAttrs,
+  closeButtonAttrs,
+  closeIconAttrs,
 } = useUI<Config>(defaultConfig);
 </script>
 
@@ -329,9 +341,29 @@ const {
 
               <!--
                 @slot Use it to add something instead of the close button.
+                @binding {string} icon-name
                 @binding {function} close
               -->
-              <slot name="actions" :close="closeDrawer" />
+              <slot name="actions" :icon-name="config.defaults.closeIcon" :close="closeDrawer">
+                <UButton
+                  v-if="closeOnCross"
+                  size="2xs"
+                  square
+                  color="grayscale"
+                  variant="ghost"
+                  v-bind="closeButtonAttrs"
+                  @click="closeDrawer"
+                >
+                  <UIcon
+                    interactive
+                    size="sm"
+                    color="grayscale"
+                    :name="config.defaults.closeIcon"
+                    v-bind="closeIconAttrs"
+                    :data-test="getDataTest('close')"
+                  />
+                </UButton>
+              </slot>
             </div>
 
             <div v-bind="bodyAttrs">
@@ -352,7 +384,7 @@ const {
             </div>
           </div>
 
-          <div v-if="handle" v-bind="handleWrapperAttrs">
+          <div v-if="handle" v-bind="handleWrapperAttrs" ref="handleWrapper">
             <!-- @slot Use it to add something instead of the default handle. -->
             <slot name="handle">
               <div v-bind="handleAttrs" />

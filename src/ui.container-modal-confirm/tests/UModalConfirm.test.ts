@@ -11,10 +11,8 @@ describe("UModalConfirm", () => {
   // Define common test value
   const modelValue = true;
 
-  // Props tests
   describe("Props", () => {
-    // ModelValue prop
-    it("renders when modelValue is true", () => {
+    it("Model Value – renders when modelValue is true", () => {
       const component = mount(UModalConfirm, {
         props: {
           modelValue,
@@ -27,7 +25,7 @@ describe("UModalConfirm", () => {
       expect(modal.props("modelValue")).toBe(modelValue);
     });
 
-    it("does not render modal content when modelValue is false", () => {
+    it("Model Value – does not render modal content when modelValue is false", () => {
       const modelValue = false;
 
       const component = mount(UModalConfirm, {
@@ -42,8 +40,7 @@ describe("UModalConfirm", () => {
       expect(modal.props("modelValue")).toBe(modelValue);
     });
 
-    // Title prop
-    it("passes title prop to UModal", () => {
+    it("Title – passes title prop to UModal", () => {
       const title = "Confirm Modal Title";
       const component = mount(UModalConfirm, {
         props: {
@@ -57,8 +54,7 @@ describe("UModalConfirm", () => {
       expect(modal.props("title")).toBe(title);
     });
 
-    // Description prop
-    it("passes description prop to UModal", () => {
+    it("Description – passes description prop to UModal", () => {
       const description = "Confirm Modal Description";
 
       const component = mount(UModalConfirm, {
@@ -73,8 +69,7 @@ describe("UModalConfirm", () => {
       expect(modal.props("description")).toBe(description);
     });
 
-    // ConfirmLabel prop
-    it("renders with custom confirmLabel prop", () => {
+    it("Confirm Label – renders with custom confirmLabel prop", () => {
       const confirmLabel = "Custom Confirm";
       const component = mount(UModalConfirm, {
         props: {
@@ -87,8 +82,7 @@ describe("UModalConfirm", () => {
       expect(component.find("[vl-key='confirmButton']").text()).toBe(confirmLabel);
     });
 
-    // ConfirmColor prop
-    it("applies correct confirmColor to confirm button", () => {
+    it("Confirm Color – applies correct confirmColor to confirm button", () => {
       const colors = [
         "primary",
         "secondary",
@@ -113,8 +107,7 @@ describe("UModalConfirm", () => {
       });
     });
 
-    // ConfirmDisabled prop
-    it("disables confirm button when confirmDisabled is true", () => {
+    it("Confirm Disabled – disables confirm button when confirmDisabled is true", () => {
       const component = mount(UModalConfirm, {
         props: {
           modelValue,
@@ -125,8 +118,7 @@ describe("UModalConfirm", () => {
       expect(component.find("[vl-key='confirmButton']").attributes("disabled")).toBeDefined();
     });
 
-    // CancelHidden prop
-    it("hides cancel button when cancelHidden is true", () => {
+    it("Cancel Hidden – hides cancel button when cancelHidden is true", () => {
       const cancelHidden = true;
 
       const component = mount(UModalConfirm, {
@@ -143,8 +135,7 @@ describe("UModalConfirm", () => {
       expect(cancelButton).toBeUndefined();
     });
 
-    // Variant prop
-    it("passes variant prop to UModal", () => {
+    it("Variant – passes variant prop to UModal", () => {
       const variants = ["solid", "outlined", "subtle", "soft", "inverted"];
 
       variants.forEach((variant) => {
@@ -161,8 +152,7 @@ describe("UModalConfirm", () => {
       });
     });
 
-    // Size prop
-    it("passes size prop to UModal", () => {
+    it("Size – passes size prop to UModal", () => {
       const sizes = ["xs", "sm", "md", "lg", "xl", "2xl", "3xl", "4xl", "5xl"];
 
       sizes.forEach((size) => {
@@ -179,8 +169,7 @@ describe("UModalConfirm", () => {
       });
     });
 
-    // CloseOnCross prop
-    it("passes closeOnCross prop to UModal", () => {
+    it("Close On Cross – passes closeOnCross prop to UModal", () => {
       const component = mount(UModalConfirm, {
         props: {
           modelValue,
@@ -193,8 +182,7 @@ describe("UModalConfirm", () => {
       expect(modal.props("closeOnCross")).toBe(false);
     });
 
-    // CloseOnOverlay prop
-    it("passes closeOnOverlay prop to UModal", () => {
+    it("Close On Overlay – passes closeOnOverlay prop to UModal", () => {
       const component = mount(UModalConfirm, {
         props: {
           modelValue,
@@ -221,8 +209,7 @@ describe("UModalConfirm", () => {
       expect(modal.props("closeOnEsc")).toBe(false);
     });
 
-    // Inner prop
-    it("passes inner prop to UModal", () => {
+    it("Inner – passes inner prop to UModal", () => {
       const component = mount(UModalConfirm, {
         props: {
           modelValue,
@@ -235,8 +222,7 @@ describe("UModalConfirm", () => {
       expect(modal.props("inner")).toBe(true);
     });
 
-    // Divided prop
-    it("passes divided prop to UModal", () => {
+    it("Divided – passes divided prop to UModal", () => {
       const component = mount(UModalConfirm, {
         props: {
           modelValue,
@@ -249,8 +235,7 @@ describe("UModalConfirm", () => {
       expect(modal.props("divided")).toBe(true);
     });
 
-    // DataTest prop
-    it("applies data-test attribute", () => {
+    it("Data Test – applies data-test attribute", () => {
       const dataTest = "modal-confirm-test";
       const component = mount(UModalConfirm, {
         props: {
@@ -264,10 +249,8 @@ describe("UModalConfirm", () => {
     });
   });
 
-  // Slots tests
   describe("Slots", () => {
-    // Default slot
-    it("passes default slot content to UModal", () => {
+    it("Default – passes default slot content to UModal", () => {
       const slotClass = "default-content";
       const slotContent = "Default Content";
 
@@ -288,8 +271,7 @@ describe("UModalConfirm", () => {
       expect(modal.text()).toContain(slotContent);
     });
 
-    // Before-title slot
-    it("passes before-title slot content to UModal", () => {
+    it("Before-title – passes before-title slot content to UModal", () => {
       const slotClass = "before-title";
       const slotContent = "Before Title";
 
@@ -310,8 +292,7 @@ describe("UModalConfirm", () => {
       expect(modal.text()).toContain(slotContent);
     });
 
-    // Title slot
-    it("passes title slot content to UModal", () => {
+    it("Title – passes title slot content to UModal", () => {
       const slotClass = "title-content";
       const slotContent = "Title Content";
 
@@ -332,8 +313,7 @@ describe("UModalConfirm", () => {
       expect(modal.text()).toContain(slotContent);
     });
 
-    // After-title slot
-    it("passes after-title slot content to UModal", () => {
+    it("After-title – passes after-title slot content to UModal", () => {
       const slotClass = "after-title";
       const slotContent = "After Title";
 
@@ -354,8 +334,7 @@ describe("UModalConfirm", () => {
       expect(modal.text()).toContain(slotContent);
     });
 
-    // Actions slot
-    it("passes actions slot content to UModal", () => {
+    it("Actions – passes actions slot content to UModal", () => {
       const slotClass = "actions-content";
       const slotContent = "Actions Content";
 
@@ -376,8 +355,7 @@ describe("UModalConfirm", () => {
       expect(modal.text()).toContain(slotContent);
     });
 
-    // Footer-left slot
-    it("renders custom content in footer-left slot instead of default buttons", () => {
+    it("Footer-left – renders custom content in footer-left slot instead of default buttons", () => {
       const slotClass = "footer-left";
       const slotContent = "Footer Left";
 
@@ -405,8 +383,7 @@ describe("UModalConfirm", () => {
       expect(confirmButton).toBeUndefined();
     });
 
-    // Footer-right slot
-    it("passes footer-right slot content to UModal", () => {
+    it("Footer-right – passes footer-right slot content to UModal", () => {
       const slotClass = "footer-right";
       const slotContent = "Footer Right";
       const component = mount(UModalConfirm, {
@@ -427,10 +404,8 @@ describe("UModalConfirm", () => {
     });
   });
 
-  // Events tests
   describe("Events", () => {
-    // Update:modelValue event
-    it("emits update:modelValue event when close button is clicked", async () => {
+    it("Update Model Value – emits update:modelValue event when close button is clicked", async () => {
       const component = mount(UModalConfirm, {
         props: {
           modelValue,
@@ -447,8 +422,7 @@ describe("UModalConfirm", () => {
       expect(component.emitted("update:modelValue")?.[0]).toEqual([false]);
     });
 
-    // Confirm event
-    it("emits confirm event when confirm button is clicked", async () => {
+    it("Confirm – emits confirm event when confirm button is clicked", async () => {
       const component = mount(UModalConfirm, {
         props: {
           modelValue,
@@ -468,8 +442,7 @@ describe("UModalConfirm", () => {
       expect(component.emitted("update:modelValue")?.[0]).toEqual([false]);
     });
 
-    // Close event
-    it("emits close event when cancel button is clicked", async () => {
+    it("Close – emits close event when cancel button is clicked", async () => {
       const component = mount(UModalConfirm, {
         props: {
           modelValue,
@@ -490,17 +463,15 @@ describe("UModalConfirm", () => {
     });
   });
 
-  // Exposed refs tests
   describe("Exposed refs", () => {
-    // modal
-    it("exposes modal ref", () => {
+    it("modalRef – exposes modal ref", () => {
       const component = mount(UModalConfirm, {
         props: {
           modelValue,
         },
       });
 
-      expect(component.vm.modal).toBeDefined();
+      expect(component.vm.modalRef).toBeDefined();
     });
   });
 });

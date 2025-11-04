@@ -6,10 +6,8 @@ import UHeader from "../UHeader.vue";
 import type { Props } from "../types";
 
 describe("UHeader.vue", () => {
-  // Props tests
   describe("Props", () => {
-    // Size prop
-    it("applies the correct size class", async () => {
+    it("Size – applies the correct size class", async () => {
       const size = {
         xs: "text-lg",
         sm: "text-xl",
@@ -30,8 +28,7 @@ describe("UHeader.vue", () => {
       });
     });
 
-    // Color prop
-    it("applies the correct color class", async () => {
+    it("Color – applies the correct color class", async () => {
       const colors = [
         "primary",
         "secondary",
@@ -58,8 +55,7 @@ describe("UHeader.vue", () => {
       });
     });
 
-    // Variant prop
-    it("applies the correct variant class", async () => {
+    it("Variant – applies the correct variant class", async () => {
       const variants = {
         default: "text-primary",
         lifted: "text-primary-lifted",
@@ -79,8 +75,7 @@ describe("UHeader.vue", () => {
       });
     });
 
-    // Weight prop
-    it("applies the correct weight class", async () => {
+    it("Weight – applies the correct weight class", async () => {
       const weights = {
         light: "font-light",
         normal: "font-normal",
@@ -100,8 +95,7 @@ describe("UHeader.vue", () => {
       });
     });
 
-    // Label prop
-    it("renders the correct label text", () => {
+    it("Label – renders the correct label text", () => {
       const label = "Header Text";
 
       const component = mount(UHeader, {
@@ -113,8 +107,7 @@ describe("UHeader.vue", () => {
       expect(component.text()).toBe(label);
     });
 
-    // Tag prop
-    it("renders the correct HTML tag", () => {
+    it("Tag – renders the correct HTML tag", () => {
       const tags = ["h1", "h2", "h3", "h4", "h5", "h6", "div", "span"];
 
       tags.forEach((tag) => {
@@ -128,8 +121,7 @@ describe("UHeader.vue", () => {
       });
     });
 
-    // Line prop
-    it("applies line class when line prop is true", () => {
+    it("Line – applies line class when line prop is true", () => {
       const line = true;
       const lineClasses = "leading-none";
 
@@ -142,8 +134,7 @@ describe("UHeader.vue", () => {
       expect(component.attributes("class")).toContain(lineClasses);
     });
 
-    // DataTest prop
-    it("applies the correct data-test attribute", () => {
+    it("DataTest – applies the correct data-test attribute", () => {
       const dataTest = "test-header";
 
       const component = mount(UHeader, {
@@ -156,10 +147,8 @@ describe("UHeader.vue", () => {
     });
   });
 
-  // Slots tests
   describe("Slots", () => {
-    // Default slot
-    it("renders content from default slot", () => {
+    it("Default – renders content from default slot", () => {
       const slotContent = "Custom Content";
       const label = "Header";
 
@@ -177,10 +166,8 @@ describe("UHeader.vue", () => {
     });
   });
 
-  // Exposed refs tests
   describe("Exposed refs", () => {
-    // headerRef
-    it("exposes headerRef", () => {
+    it("headerRef – exposes headerRef", () => {
       const component = mount(UHeader, {});
 
       expect(component.vm.headerRef).toBeDefined();

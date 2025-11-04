@@ -39,7 +39,6 @@ export default /*tw*/ {
   },
   defaults: {
     type: "radio",
-    variant: "default",
     labelAlign: "left",
     size: "md",
     label: true,

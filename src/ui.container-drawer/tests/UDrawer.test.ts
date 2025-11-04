@@ -210,6 +210,40 @@ describe("UDrawer", () => {
 
       expect(drawerWrapper.attributes("data-test")).toBe(dataTest);
     });
+
+    it("CloseOnCross – shows cross by default and closes on click when true", async () => {
+      const component = mount(UDrawer, {
+        props: {
+          modelValue: true,
+          title: "Drawer Title",
+          closeOnCross: true,
+        },
+      });
+
+      const closeButton = component.find('[vl-key="closeButton"]');
+
+      expect(closeButton.exists()).toBe(true);
+
+      await closeButton.trigger("click");
+
+      expect(component.emitted("update:modelValue")).toBeTruthy();
+      expect(component.emitted("update:modelValue")?.[0]).toEqual([false]);
+      expect(component.emitted("close")).toBeTruthy();
+    });
+
+    it("CloseOnCross – hides cross when false", () => {
+      const component = mount(UDrawer, {
+        props: {
+          modelValue: true,
+          title: "Drawer Title",
+          closeOnCross: false,
+        },
+      });
+
+      const closeButton = component.find('[vl-key="closeButton"]');
+
+      expect(closeButton.exists()).toBe(false);
+    });
   });
 
   // Slots tests
@@ -545,26 +579,29 @@ describe("UDrawer", () => {
 
   // Drag functionality tests
   describe("Drag Functionality", () => {
-    it("Cursor – applies drag cursor classes when drawer is draggable", () => {
+    it("Cursor – applies drag cursor classes when handle is enabled", () => {
       const component = mount(UDrawer, {
         props: {
           modelValue: true,
+          handle: true,
         },
       });
 
-      const drawer = component.find("[vl-key='drawerWrapper']");
+      const handleWrapper = component.find("[vl-key='handleWrapper']");
 
-      expect(drawer.attributes("class")).toContain("cursor-grab");
+      expect(handleWrapper.attributes("class")).toContain("cursor-grab");
     });
 
-    it("Mouse Drag – handles drag start", async () => {
+    it("Mouse Drag – handles drag start from handle", async () => {
       const component = mount(UDrawer, {
         props: {
           modelValue: true,
+          handle: true,
         },
       });
 
       const drawer = component.find("[vl-key='drawerWrapper']");
+      const handleWrapper = component.find("[vl-key='handleWrapper']");
 
       // Mock getBoundingClientRect
       const mockRect = {
@@ -578,23 +615,25 @@ describe("UDrawer", () => {
 
       vi.spyOn(drawer.element, "getBoundingClientRect").mockReturnValue(mockRect as DOMRect);
 
-      await drawer.trigger("mousedown", {
+      await handleWrapper.trigger("mousedown", {
         clientX: 100,
         clientY: 100,
       });
 
-      // Check if drag state is initialized (drag should not start until minimum distance)
-      expect(drawer.attributes("class")).toContain("cursor-grab");
+      // Check if handle has drag cursor class
+      expect(handleWrapper.attributes("class")).toContain("cursor-grab");
     });
 
-    it("Touch Drag – handles drag start", async () => {
+    it("Touch Drag – handles drag start from handle", async () => {
       const component = mount(UDrawer, {
         props: {
           modelValue: true,
+          handle: true,
         },
       });
 
       const drawer = component.find("[vl-key='drawerWrapper']");
+      const handleWrapper = component.find("[vl-key='handleWrapper']");
 
       // Mock getBoundingClientRect
       const mockRect = {
@@ -608,12 +647,12 @@ describe("UDrawer", () => {
 
       vi.spyOn(drawer.element, "getBoundingClientRect").mockReturnValue(mockRect as DOMRect);
 
-      await drawer.trigger("touchstart", {
+      await handleWrapper.trigger("touchstart", {
         touches: [{ clientX: 100, clientY: 100 }],
       });
 
-      // Check if drag state is initialized (drag should not start until minimum distance)
-      expect(drawer.attributes("class")).toContain("cursor-grab");
+      // Check if handle has drag cursor class
+      expect(handleWrapper.attributes("class")).toContain("cursor-grab");
     });
 
     it("Transform – applies drag transform styles during drag", async () => {

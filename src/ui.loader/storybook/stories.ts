@@ -16,7 +16,7 @@ import type { Props } from "../types";
 
 interface ULoaderArgs extends Props {
   slotTemplate?: string;
-  enum: "size" | "color";
+  enum: "size" | "color" | "variant";
 }
 
 export default {
@@ -81,6 +81,9 @@ const LoadingTemplate: StoryFn<ULoaderArgs> = (args: ULoaderArgs) => ({
 
 export const Default = DefaultTemplate.bind({});
 Default.args = {};
+
+export const Variants = EnumTemplate.bind({});
+Variants.args = { enum: "variant" };
 
 export const Sizes = EnumTemplate.bind({});
 Sizes.args = { enum: "size" };

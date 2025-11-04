@@ -7,10 +7,8 @@ import USkeleton from "../../ui.skeleton/USkeleton.vue";
 import type { Props } from "../types";
 
 describe("USkeletonChoice.vue", () => {
-  // Props tests
   describe("Props", () => {
-    // Label prop - true
-    it("renders label skeleton when label prop is true", () => {
+    it("Label – renders label skeleton when label prop is true", () => {
       const label = true;
 
       const component = mount(USkeletonChoice, {
@@ -24,8 +22,7 @@ describe("USkeletonChoice.vue", () => {
       expect(skeletons.length).toBe(2); // Input and label skeletons
     });
 
-    // Label prop - false: Only input skeleton
-    it("does not render label skeleton when label prop is false", () => {
+    it("Label – does not render label skeleton when label prop is false", () => {
       const label = false;
 
       const component = mount(USkeletonChoice, {
@@ -39,8 +36,7 @@ describe("USkeletonChoice.vue", () => {
       expect(skeletons.length).toBe(1); // Only input skeleton
     });
 
-    // Size prop
-    it("applies the correct size class to wrapper", () => {
+    it("Size – applies the correct size class to wrapper", () => {
       const size = {
         sm: "gap-2",
         md: "gap-2.5",
@@ -99,8 +95,7 @@ describe("USkeletonChoice.vue", () => {
       });
     });
 
-    // LabelAlign prop
-    it("applies the correct labelAlign class to wrapper", () => {
+    it("LabelAlign – applies the correct labelAlign class to wrapper", () => {
       const labelAlign = {
         left: "flex-row",
         right: "flex-row-reverse",
@@ -117,8 +112,7 @@ describe("USkeletonChoice.vue", () => {
       });
     });
 
-    // Type prop
-    it("applies the correct type class to input", () => {
+    it("Type – applies the correct type class to input", () => {
       const type = {
         checkbox: "rounded-small",
         radio: "rounded-full",
@@ -137,27 +131,7 @@ describe("USkeletonChoice.vue", () => {
       });
     });
 
-    // Variant prop
-    it("passes the correct variant to skeleton components", () => {
-      const variants = ["light", "default", "dark"];
-
-      variants.forEach((variant) => {
-        const component = mount(USkeletonChoice, {
-          props: {
-            variant: variant as Props["variant"],
-          },
-        });
-
-        const inputSkeleton = component.findAllComponents(USkeleton)[0];
-        const labelSkeleton = component.findAllComponents(USkeleton)[1];
-
-        expect(inputSkeleton.props("variant")).toBe(variant);
-        expect(labelSkeleton.props("variant")).toBe(variant);
-      });
-    });
-
-    // DataTest prop
-    it("applies the correct data-test attribute", () => {
+    it("DataTest – applies the correct data-test attribute", () => {
       const dataTest = "test-skeleton-choice";
 
       const component = mount(USkeletonChoice, {
@@ -170,10 +144,8 @@ describe("USkeletonChoice.vue", () => {
     });
   });
 
-  // Slots tests
   describe("Slots", () => {
-    // Label slot
-    it("renders content from label slot", () => {
+    it("Label – renders content from label slot", () => {
       const slotContent = "Custom Label";
       const slotClass = "custom-label";
 

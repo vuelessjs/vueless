@@ -16,10 +16,8 @@ describe("UTab.vue", () => {
     getUTabsSize: "md",
   };
 
-  // Props tests
   describe("Props", () => {
-    // Label prop
-    it("renders the correct label text", () => {
+    it("Label – renders the correct label text", () => {
       const label = "Tab Item";
 
       const component = mount(UTab, {
@@ -35,8 +33,7 @@ describe("UTab.vue", () => {
       expect(component.text()).toBe(label);
     });
 
-    // Value prop
-    it("uses the provided value for tab identity", async () => {
+    it("Value – uses the provided value for tab identity", async () => {
       const value = "tab1";
       const setUTabsSelectedItem = vi.fn();
 
@@ -57,8 +54,7 @@ describe("UTab.vue", () => {
       expect(setUTabsSelectedItem).toHaveBeenCalledWith(value);
     });
 
-    // Icon prop
-    it("passes icon prop to UButton", () => {
+    it("Icon – passes icon prop to UButton", () => {
       const icon = "home";
 
       const component = mount(UTab, {
@@ -77,8 +73,7 @@ describe("UTab.vue", () => {
       expect(button.props("icon")).toBe(icon);
     });
 
-    // Left Icon prop
-    it("passes leftIcon prop to UButton", () => {
+    it("Left – passes leftIcon prop to UButton", () => {
       const leftIcon = "arrow-left";
 
       const component = mount(UTab, {
@@ -97,8 +92,7 @@ describe("UTab.vue", () => {
       expect(button.props("leftIcon")).toBe(leftIcon);
     });
 
-    // Right Icon prop
-    it("passes rightIcon prop to UButton", () => {
+    it("Right – passes rightIcon prop to UButton", () => {
       const rightIcon = "arrow-right";
 
       const component = mount(UTab, {
@@ -117,8 +111,7 @@ describe("UTab.vue", () => {
       expect(button.props("rightIcon")).toBe(rightIcon);
     });
 
-    // Disabled prop
-    it("passes disabled prop to UButton", () => {
+    it("Disabled – passes disabled prop to UButton", () => {
       const disabled = true;
 
       const component = mount(UTab, {
@@ -137,8 +130,7 @@ describe("UTab.vue", () => {
       expect(button.props("disabled")).toBe(disabled);
     });
 
-    // DataTest prop
-    it("applies the correct data-test attribute", () => {
+    it("DataTest – applies the correct data-test attribute", () => {
       const dataTest = "test-tab";
 
       const component = mount(UTab, {
@@ -158,8 +150,7 @@ describe("UTab.vue", () => {
 
   // Active state tests
   describe("Active state", () => {
-    // Active state
-    it("applies active classes when tab is selected", () => {
+    it("Active – applies active classes when tab is selected", () => {
       const value = "tab1";
       const expectedClass = "border-primary";
 
@@ -181,8 +172,7 @@ describe("UTab.vue", () => {
       expect(button.attributes("class")).toContain(expectedClass);
     });
 
-    // Inactive state
-    it("applies inactive classes when tab is not selected", () => {
+    it("Inactive – applies inactive classes when tab is not selected", () => {
       const value = "tab1";
       const expectedClass = "border-transparent";
       const nonExpectedClass = "border-primary";
@@ -206,8 +196,7 @@ describe("UTab.vue", () => {
       expect(button.attributes("class")).not.toContain(nonExpectedClass);
     });
 
-    // Disabled does not activate
-    it("does not call setUTabsSelectedItem when disabled", async () => {
+    it("Disabled – does not call setUTabsSelectedItem when disabled", async () => {
       const disabled = true;
       const setUTabsSelectedItem = vi.fn();
 
@@ -232,8 +221,7 @@ describe("UTab.vue", () => {
 
   // Injected props tests
   describe("Injected props", () => {
-    // Size prop from UTabs
-    it("uses the size from UTabs provider", () => {
+    it("Size – uses the size from UTabs provider", () => {
       const size = "lg";
 
       const component = mount(UTab, {
@@ -254,8 +242,7 @@ describe("UTab.vue", () => {
       expect(button.props("size")).toBe(size);
     });
 
-    // Block prop from UTabs
-    it("uses the block prop from UTabs provider", () => {
+    it("Block – uses the block prop from UTabs provider", () => {
       const block = true;
 
       const component = mount(UTab, {
@@ -276,8 +263,7 @@ describe("UTab.vue", () => {
       expect(button.props("block")).toBe(block);
     });
 
-    // Square prop from UTabs
-    it("uses the square prop from UTabs provider", () => {
+    it("Square – uses the square prop from UTabs provider", () => {
       const square = true;
 
       const component = mount(UTab, {
@@ -298,8 +284,7 @@ describe("UTab.vue", () => {
       expect(button.props("square")).toBe(square);
     });
 
-    // Scrollable prop from UTabs
-    it("applies correct classes based on scrollable prop from UTabs", () => {
+    it("Scrollable – applies correct classes based on scrollable prop from UTabs", () => {
       const scrollable = false;
       const expectedClasses = "-mb-px";
 
@@ -322,10 +307,8 @@ describe("UTab.vue", () => {
     });
   });
 
-  // Slots tests
   describe("Slots", () => {
-    // Left slot
-    it("renders content from left slot", () => {
+    it("Left – renders content from left slot", () => {
       const label = "Tab Item";
       const slotText = "Left";
       const slotClass = "left-content";
@@ -348,8 +331,7 @@ describe("UTab.vue", () => {
       expect(component.find(`.${slotClass}`).text()).toBe(slotText);
     });
 
-    // Label slot
-    it("renders content from label slot", () => {
+    it("Label – renders content from label slot", () => {
       const label = "Tab Item";
       const slotText = "Custom Label";
       const slotClass = "label-content";
@@ -372,8 +354,7 @@ describe("UTab.vue", () => {
       expect(component.find(`.${slotClass}`).text()).toBe(slotText);
     });
 
-    // Right slot
-    it("renders content from right slot", () => {
+    it("Right – renders content from right slot", () => {
       const label = "Tab Item";
       const slotText = "Right";
       const slotClass = "right-content";
@@ -396,8 +377,7 @@ describe("UTab.vue", () => {
       expect(component.find(`.${slotClass}`).text()).toBe(slotText);
     });
 
-    // Slot binding - active state
-    it("passes active state to slots", () => {
+    it("Slot – passes active state to slots", () => {
       const value = "tab1";
 
       const component = mount(UTab, {
@@ -419,8 +399,7 @@ describe("UTab.vue", () => {
       expect(component.find('[data-active="true"]').exists()).toBe(true);
     });
 
-    // Slot binding - icon-name
-    it("passes icon-name to slots", () => {
+    it("Slot – passes icon-name to slots", () => {
       const leftIcon = "home";
 
       const component = mount(UTab, {
@@ -441,10 +420,8 @@ describe("UTab.vue", () => {
     });
   });
 
-  // Events tests
   describe("Events", () => {
-    // Click event
-    it("calls setUTabsSelectedItem when clicked", async () => {
+    it("Click – calls setUTabsSelectedItem when clicked", async () => {
       const value = "tab1";
       const setUTabsSelectedItem = vi.fn();
 
@@ -466,10 +443,8 @@ describe("UTab.vue", () => {
     });
   });
 
-  // Exposed refs tests
   describe("Exposed refs", () => {
-    // button ref
-    it("exposes button ref", () => {
+    it("button – exposes button ref", () => {
       const component = mount(UTab, {
         props: {
           label: "Tab Item",

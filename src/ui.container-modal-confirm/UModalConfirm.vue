@@ -42,7 +42,7 @@ const emit = defineEmits([
 
 const confirmModalRef = useTemplateRef<InstanceType<typeof UModal>>("confirmModal");
 
-const modal = computed(() => {
+const modalRef = computed(() => {
   return confirmModalRef.value?.wrapperRef || null;
 });
 
@@ -80,7 +80,7 @@ defineExpose({
    * A reference to the UModal's wrapper element for direct DOM manipulation.
    * @property {InstanceType<typeof UModal>}
    */
-  modal,
+  modalRef,
 });
 
 /**

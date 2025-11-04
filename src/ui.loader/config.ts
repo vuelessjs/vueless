@@ -1,6 +1,6 @@
 export default /*tw*/ {
   loader: {
-    base: "relative flex items-center",
+    base: "relative flex items-center justify-center",
     variants: {
       size: {
         sm: "h-1.5 w-9",
@@ -49,9 +49,22 @@ export default /*tw*/ {
       },
     },
   },
+  spinnerIcon: {
+    base: "{UIcon} animate-spin",
+    defaults: {
+      size: {
+        sm: "sm",
+        md: "md",
+        lg: "lg",
+      },
+    },
+  },
   defaults: {
     color: "primary",
+    variant: "dots",
     size: "md",
     loading: false,
+    /* icons */
+    spinnerIcon: "progress_activity",
   },
 };

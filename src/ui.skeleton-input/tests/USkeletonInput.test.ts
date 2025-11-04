@@ -7,10 +7,8 @@ import USkeleton from "../../ui.skeleton/USkeleton.vue";
 import type { Props } from "../types";
 
 describe("USkeletonInput.vue", () => {
-  // Props tests
   describe("Props", () => {
-    // Label prop
-    it("renders label skeleton when label prop is true and labelAlign is not topInside", () => {
+    it("Label – renders label skeleton when label prop is true and labelAlign is not topInside", () => {
       const label = true;
       const labelAlign = "top";
 
@@ -29,8 +27,7 @@ describe("USkeletonInput.vue", () => {
       expect(skeletons.length).toBe(expectedComponentAmount);
     });
 
-    // Label prop - no label
-    it("does not render label skeleton when label prop is false", () => {
+    it("Label – does not render label skeleton when label prop is false", () => {
       const label = false;
       const labelAlign = "top";
 
@@ -49,8 +46,7 @@ describe("USkeletonInput.vue", () => {
       expect(skeletons.length).toBe(expectedComponentAmount);
     });
 
-    // Label prop - no label if labelAlign is topInside
-    it("does not render label skeleton when labelAlign is topInside", () => {
+    it("Label – does not render label skeleton when labelAlign is topInside", () => {
       const label = true;
       const labelAlign = "topInside";
 
@@ -69,8 +65,7 @@ describe("USkeletonInput.vue", () => {
       expect(skeletons.length).toBe(expectedComponentAmount);
     });
 
-    // Size prop - input
-    it("applies the correct size class to input for input type", () => {
+    it("Size – applies the correct size class to input for input type", () => {
       const size = {
         sm: "h-11",
         md: "h-12.5",
@@ -92,8 +87,7 @@ describe("USkeletonInput.vue", () => {
       });
     });
 
-    // Size prop - textarea
-    it("applies the correct size class to input for textarea type", () => {
+    it("Size – applies the correct size class to input for textarea type", () => {
       const size = {
         sm: "h-15.75",
         md: "h-18",
@@ -115,8 +109,7 @@ describe("USkeletonInput.vue", () => {
       });
     });
 
-    // Size prop - label
-    it("applies the correct size class to label", () => {
+    it("Size – applies the correct size class to label", () => {
       const size = {
         sm: "h-3",
         md: "h-3.5",
@@ -137,8 +130,7 @@ describe("USkeletonInput.vue", () => {
       });
     });
 
-    // LabelAlign prop
-    it("applies the correct labelAlign class to wrapper", () => {
+    it("LabelAlign – applies the correct labelAlign class to wrapper", () => {
       const labelAlign = {
         top: "flex-col",
         left: "flex-row",
@@ -156,8 +148,7 @@ describe("USkeletonInput.vue", () => {
       });
     });
 
-    // Type prop
-    it("applies the correct type class to input", () => {
+    it("Type – applies the correct type class to input", () => {
       const type = {
         input: "h-8.5", // Using md size and top labelAlign as default
         textarea: "h-14.5", // Using md size and top labelAlign as default
@@ -178,32 +169,7 @@ describe("USkeletonInput.vue", () => {
       });
     });
 
-    // Variant prop
-    it("passes the correct variant to skeleton components", () => {
-      const variants = {
-        light: "light",
-        default: "default",
-        dark: "dark",
-      };
-
-      Object.entries(variants).forEach(([variant, expectedVariant]) => {
-        const component = mount(USkeletonInput, {
-          props: {
-            variant: variant as Props["variant"],
-            labelAlign: "top", // To ensure label is rendered
-          },
-        });
-
-        const skeletons = component.findAllComponents(USkeleton);
-
-        skeletons.forEach((skeleton) => {
-          expect(skeleton.props("variant")).toBe(expectedVariant);
-        });
-      });
-    });
-
-    // DataTest prop
-    it("applies the correct data-test attribute", () => {
+    it("DataTest – applies the correct data-test attribute", () => {
       const dataTest = "test-skeleton-input";
 
       const component = mount(USkeletonInput, {
@@ -216,10 +182,8 @@ describe("USkeletonInput.vue", () => {
     });
   });
 
-  // Slots tests
   describe("Slots", () => {
-    // Label slot
-    it("renders content from label slot", () => {
+    it("Label – renders content from label slot", () => {
       const slotContent = "Custom Label";
       const slotClass = "custom-label";
 
@@ -238,8 +202,7 @@ describe("USkeletonInput.vue", () => {
       expect(component.findAllComponents(USkeleton).length).toBe(1); // Only input skeleton, not label skeleton
     });
 
-    // Default slot
-    it("renders content from default slot", () => {
+    it("Default – renders content from default slot", () => {
       const slotContent = "Custom Content";
       const slotClass = "custom-content";
 

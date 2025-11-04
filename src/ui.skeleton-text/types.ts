@@ -21,11 +21,6 @@ export interface Props {
   size?: "xs" | "sm" | "md" | "lg" | "xl" | "2xl";
 
   /**
-   * Brightness variant.
-   */
-  variant?: "light" | "default" | "dark";
-
-  /**
    * Component config object.
    */
   config?: ComponentConfig<Config>;
