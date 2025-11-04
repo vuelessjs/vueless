@@ -94,6 +94,7 @@ const {
       <ULoader
         :loading="loading"
         color="inherit"
+        variant="spinner"
         v-bind="loaderAttrs"
         :data-test="getDataTest('loader')"
       />
