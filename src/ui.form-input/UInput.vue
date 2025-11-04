@@ -354,5 +354,12 @@ const {
         </slot>
       </span>
     </div>
+
+    <template #bottom>
+      <!--
+        @slot Use it to add something below the input.
+      -->
+      <slot name="bottom" />
+    </template>
   </ULabel>
 </template>

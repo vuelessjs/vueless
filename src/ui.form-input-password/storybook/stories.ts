@@ -138,6 +138,82 @@ export const IconProps: StoryFn<UInputPasswordArgs> = (args) => ({
   `,
 });
 
+export const PasswordStrength: StoryFn<UInputPasswordArgs> = (args: UInputPasswordArgs) => ({
+  components: { UInputPassword, UCol },
+  setup() {
+    const weakPassword = ref("abc");
+    const fairPassword = ref("password123");
+    const goodPassword = ref("Password123");
+    const strongPassword = ref("P@ssw0rd!2024");
+
+    return { args, weakPassword, fairPassword, goodPassword, strongPassword };
+  },
+  template: `
+    <UCol>
+      <UInputPassword
+        v-model="weakPassword"
+        label="Weak Password"
+        placeholder="Try: abc"
+        strength-progress
+        class="max-w-96"
+      />
+      <UInputPassword
+        v-model="fairPassword"
+        label="Fair Password"
+        placeholder="Try: password123"
+        strength-progress
+        class="max-w-96"
+      />
+      <UInputPassword
+        v-model="goodPassword"
+        label="Good Password"
+        placeholder="Try: Password123"
+        strength-progress
+        class="max-w-96"
+      />
+      <UInputPassword
+        v-model="strongPassword"
+        label="Strong Password"
+        placeholder="Try: P@ssw0rd!2024"
+        strength-progress
+        class="max-w-96"
+      />
+    </UCol>
+  `,
+});
+PasswordStrength.parameters = {
+  docs: {
+    description: {
+      story:
+        "Password strength indicator shows real-time feedback based on password complexity. " +
+        "The indicator uses different colors (red for weak, orange for fair, yellow for good, " +
+        "green for strong) and a progress bar to visualize the strength.",
+    },
+  },
+};
+
+export const PasswordStrengthCustomLabels = DefaultTemplate.bind({});
+PasswordStrengthCustomLabels.args = {
+  strengthProgress: true,
+  modelValue: "P@ssw0rd!2024",
+  label: "Password with Custom Labels",
+  config: {
+    i18n: {
+      weak: "Too Weak",
+      fair: "Could Be Better",
+      good: "Almost There",
+      strong: "Excellent!",
+    },
+  },
+};
+PasswordStrengthCustomLabels.parameters = {
+  docs: {
+    description: {
+      story: "You can customize the strength labels using the `config.i18n` property.",
+    },
+  },
+};
+
 export const Slots: StoryFn<UInputPasswordArgs> = (args) => ({
   components: { UInputPassword, URow, UButton, UDropdownButton },
   setup() {

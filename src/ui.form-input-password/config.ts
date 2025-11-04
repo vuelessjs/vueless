@@ -16,11 +16,19 @@ export default /*tw*/ {
       },
     },
   },
+  strengthProgress: "{UProgress} mt-2",
+  i18n: {
+    weak: "Weak",
+    fair: "Fair",
+    good: "Good",
+    strong: "Strong",
+  },
   defaults: {
     size: "md",
     labelAlign: "topInside",
     readonly: false,
     disabled: false,
+    strengthProgress: false,
     /* icons */
     passwordVisibleIcon: "visibility-fill",
     passwordHiddenIcon: "visibility_off-fill",

@@ -4,6 +4,7 @@ import { describe, it, expect } from "vitest";
 import UInputPassword from "../UInputPassword.vue";
 import UInput from "../../ui.form-input/UInput.vue";
 import UIcon from "../../ui.image-icon/UIcon.vue";
+import UProgress from "../../ui.navigation-progress/UProgress.vue";
 
 import type { Props } from "../types";
 
@@ -298,6 +299,186 @@ describe("UInputPassword.vue", () => {
       await toggleButton.trigger("click");
 
       expect(component.html()).toContain(`Icon: ${visibilityIcon}`);
+    });
+  });
+
+  describe("Password Strength", () => {
+    it("Strength Progress – does not show strength indicator by default", () => {
+      const component = mount(UInputPassword, {
+        props: {
+          modelValue: "password123",
+        },
+      });
+
+      expect(component.findComponent(UProgress).exists()).toBe(false);
+    });
+
+    it("Strength Progress – shows strength indicator when strengthProgress is true", () => {
+      const component = mount(UInputPassword, {
+        props: {
+          modelValue: "password123",
+          strengthProgress: true,
+        },
+      });
+
+      expect(component.findComponent(UProgress).exists()).toBe(true);
+    });
+
+    it("Strength Progress – does not show strength indicator when password is empty", () => {
+      const component = mount(UInputPassword, {
+        props: {
+          modelValue: "",
+          strengthProgress: true,
+        },
+      });
+
+      expect(component.findComponent(UProgress).exists()).toBe(false);
+    });
+
+    it("Strength Progress – updates strength when password changes", async () => {
+      const component = mount(UInputPassword, {
+        props: {
+          modelValue: "weak",
+          strengthProgress: true,
+        },
+      });
+
+      await flushPromises();
+
+      const progressBefore = component.getComponent(UProgress);
+
+      expect(progressBefore.props("value")).toBe(0);
+      expect(progressBefore.props("color")).toBe("error");
+
+      await component.setProps({ modelValue: "P@ssw0rd!2024" });
+      await flushPromises();
+
+      const progressAfter = component.getComponent(UProgress);
+
+      expect(progressAfter.props("value")).toBe(3);
+      expect(progressAfter.props("color")).toBe("success");
+    });
+
+    it("Strength Progress – displays correct strength levels", async () => {
+      const testCases = [
+        { password: "abc", expectedValue: 0, expectedColor: "error" },
+        { password: "password123", expectedValue: 1, expectedColor: "warning" },
+        { password: "Password", expectedValue: 2, expectedColor: "notice" },
+        { password: "P@ssw0rd!2024", expectedValue: 3, expectedColor: "success" },
+      ];
+
+      for (const testCase of testCases) {
+        const component = mount(UInputPassword, {
+          props: {
+            modelValue: testCase.password,
+            strengthProgress: true,
+          },
+        });
+
+        await flushPromises();
+
+        const progress = component.getComponent(UProgress);
+
+        expect(progress.props("value")).toBe(testCase.expectedValue);
+        expect(progress.props("color")).toBe(testCase.expectedColor);
+      }
+    });
+
+    it("Strength Progress – passes correct max array with labels", () => {
+      const component = mount(UInputPassword, {
+        props: {
+          modelValue: "password123",
+          strengthProgress: true,
+        },
+      });
+
+      const progress = component.getComponent(UProgress);
+      const maxProp = progress.props("max");
+
+      expect(Array.isArray(maxProp)).toBe(true);
+      expect(maxProp).toHaveLength(4);
+      expect(maxProp).toEqual(["Weak", "Fair", "Good", "Strong"]);
+    });
+
+    it("Strength Progress – uses custom i18n labels", () => {
+      const component = mount(UInputPassword, {
+        props: {
+          modelValue: "P@ssw0rd!2024",
+          strengthProgress: true,
+          config: {
+            i18n: {
+              weak: "Too Weak",
+              fair: "Could Be Better",
+              good: "Almost There",
+              strong: "Excellent!",
+            },
+          },
+        },
+      });
+
+      const progress = component.getComponent(UProgress);
+      const maxProp = progress.props("max");
+
+      expect(maxProp).toEqual(["Too Weak", "Could Be Better", "Almost There", "Excellent!"]);
+    });
+
+    it("Strength Progress – applies correct data-test attributes", () => {
+      const dataTest = "password-field";
+
+      const component = mount(UInputPassword, {
+        props: {
+          modelValue: "password123",
+          strengthProgress: true,
+          dataTest,
+        },
+      });
+
+      expect(component.get(`[data-test='${dataTest}-strength-progress']`)).toBeTruthy();
+    });
+
+    it("Strength Slot – allows custom strength indicator via slot", () => {
+      const testClass = "custom-strength";
+
+      const component = mount(UInputPassword, {
+        props: {
+          modelValue: "password123",
+          strengthProgress: true,
+        },
+        slots: {
+          strength: `<div class='${testClass}'>Custom Strength Indicator</div>`,
+        },
+      });
+
+      expect(component.get(`.${testClass}`)).toBeTruthy();
+      expect(component.html()).toContain("Custom Strength Indicator");
+    });
+
+    it("Strength Slot – exposes strength object", () => {
+      const component = mount(UInputPassword, {
+        props: {
+          modelValue: "P@ssw0rd!2024",
+          strengthProgress: true,
+        },
+        slots: {
+          strength: `Level: {{ params.strength.level }}`,
+        },
+      });
+
+      expect(component.html()).toContain("Level: strong");
+    });
+
+    it("Strength Slot – exposes labels array", () => {
+      const component = mount(UInputPassword, {
+        props: {
+          modelValue: "password123",
+          strengthProgress: true,
+        },
+        slots: {
+          strength: `Labels: {{ params.labels.join(', ') }}`,
+        },
+      });
+
+      expect(component.html()).toContain("Labels: Weak, Fair, Good, Strong");
     });
   });
 });

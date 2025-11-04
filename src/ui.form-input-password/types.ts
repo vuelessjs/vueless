@@ -61,6 +61,11 @@ export interface Props {
   disabled?: boolean;
 
   /**
+   * Show password strength indicator.
+   */
+  strengthProgress?: boolean;
+
+  /**
    * Unique element id.
    */
   id?: string;

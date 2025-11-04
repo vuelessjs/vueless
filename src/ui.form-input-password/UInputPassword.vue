@@ -3,12 +3,15 @@ import { ref, computed, useId, useTemplateRef, nextTick } from "vue";
 
 import { useUI } from "../composables/useUI";
 import { getDefaults } from "../utils/ui";
+import { usePasswordStrength } from "./usePasswordStrength";
+import { useComponentLocaleMessages } from "../composables/useComponentLocaleMassages";
 
 import defaultConfig from "./config";
 import { COMPONENT_NAME } from "./constants";
 
 import UInput from "../ui.form-input/UInput.vue";
 import UIcon from "../ui.image-icon/UIcon.vue";
+import UProgress from "../ui.navigation-progress/UProgress.vue";
 
 import type { Props, Config } from "./types";
 
@@ -60,6 +63,27 @@ const passwordIcon = computed(() => {
     : config.value.defaults.passwordHiddenIcon || "";
 });
 
+const { strength } = usePasswordStrength(localValue);
+
+const { localeMessages } = useComponentLocaleMessages<typeof defaultConfig.i18n>(
+  COMPONENT_NAME,
+  defaultConfig.i18n,
+  props?.config?.i18n,
+);
+
+const strengthLabels = computed(() => [
+  localeMessages.value.weak,
+  localeMessages.value.fair,
+  localeMessages.value.good,
+  localeMessages.value.strong,
+]);
+
+const strengthValue = computed(() => {
+  const levels = { weak: 0, fair: 1, good: 2, strong: 3 };
+
+  return levels[strength.value.level];
+});
+
 async function onClickShowPassword() {
   isShownPassword.value = !isShownPassword.value;
 
@@ -84,8 +108,14 @@ const mutatedProps = computed(() => ({
   /* Add mutated props or non-props component state below */
 }));
 
-const { getDataTest, config, passwordInputAttrs, passwordIconAttrs, passwordIconWrapperAttrs } =
-  useUI<Config>(defaultConfig, mutatedProps);
+const {
+  getDataTest,
+  config,
+  passwordInputAttrs,
+  passwordIconAttrs,
+  passwordIconWrapperAttrs,
+  strengthProgressAttrs,
+} = useUI<Config>(defaultConfig, mutatedProps);
 </script>
 
 <template>
@@ -142,6 +172,24 @@ const { getDataTest, config, passwordInputAttrs, passwordIconAttrs, passwordIcon
           />
         </slot>
       </div>
+    </template>
+
+    <template v-if="strengthProgress && localValue" #bottom>
+      <!--
+        @slot Use it to add something instead of the password strength indicator.
+        @binding {object} strength
+        @binding {array} labels
+      -->
+      <slot name="strength" :strength="strength" :labels="strengthLabels">
+        <UProgress
+          :value="strengthValue"
+          :max="strengthLabels"
+          :color="strength.color"
+          :size="size"
+          v-bind="strengthProgressAttrs"
+          :data-test="getDataTest('strength-progress')"
+        />
+      </slot>
     </template>
   </UInput>
 </template>
