@@ -28,6 +28,12 @@
   [type='checkbox']:checked {
     @apply !bg-none;
   }
+
+  input:-webkit-autofill,
+  input:-webkit-autofill:focus {
+    -webkit-box-shadow: 0 0 0px 1000px var(--vl-bg) inset !important;
+    -webkit-text-fill-color: var(--vl-text) !important;
+  }
 }
 
 /* ------ Tailwind theme settings ------ */
