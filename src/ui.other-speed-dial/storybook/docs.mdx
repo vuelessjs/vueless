@@ -1,0 +1,61 @@
+import { Meta, Title, Description, Canvas, ArgTypes, Source } from "@storybook/blocks";
+import * as stories from "./stories";
+import defaultConfig from "../config";
+import { getSource } from "../../utils/storybook";
+
+<Meta of={stories} />
+
+<Title />
+
+<Description />
+
+## Usage
+
+The `USpeedDial` component is a floating action button (FAB) that expands to reveal multiple quick actions. It supports flexible positioning, smooth animations, and full accessibility.
+
+<Canvas of={stories.Default} />
+
+## Direction
+
+Control the direction in which action items expand using the `direction` prop. Available options: `up`, `down`, `left`, `right`, and `circle`.
+
+<Canvas of={stories.Direction} />
+
+## Size
+
+Control the size of the speed dial using the `size` prop.
+
+<Canvas of={stories.Size} />
+
+## Trigger Mode
+
+The speed dial can be triggered by click (default) or hover.
+
+<Canvas of={stories.Trigger} />
+
+## With Mask
+
+Show an overlay mask when the speed dial is open.
+
+<Canvas of={stories.WithMask} />
+
+## Custom Color
+
+Customize the main button color.
+
+<Canvas of={stories.CustomColor} />
+
+## Custom Icon
+
+Customize the main button icon.
+
+<Canvas of={stories.CustomIcon} />
+
+## API
+
+<ArgTypes />
+
+## Default config
+
+<Source code={getSource(defaultConfig)} language="jsx" dark />
+

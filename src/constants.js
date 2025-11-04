@@ -328,6 +328,7 @@ export const COMPONENTS = {
   /* Other */
   UDot: "ui.other-dot",
   UChip: "ui.other-chip",
+  USpeedDial: "ui.other-speed-dial",
   UThemeColorToggle: "ui.other-theme-color-toggle",
 };
 
