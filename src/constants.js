@@ -300,6 +300,7 @@ export const COMPONENTS = {
   UModalConfirm: "ui.container-modal-confirm",
   UPage: "ui.container-page",
   UDrawer: "ui.container-drawer",
+  USplitter: "ui.container-splitter",
 
   /* Images and Icons */
   UIcon: "ui.image-icon",
