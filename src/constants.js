@@ -274,6 +274,7 @@ export const COMPONENTS = {
   UDatePicker: "ui.form-date-picker",
   UDatePickerRange: "ui.form-date-picker-range",
   UColorToggle: "ui.form-color-toggle",
+  UKnob: "ui.form-knob",
   ULabel: "ui.form-label",
 
   /* Text & Content */
