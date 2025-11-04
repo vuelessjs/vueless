@@ -32,4 +32,3 @@ export const themeConfig = {
     brandImageDark: "./images/logo-dark.svg",
   },
 };
-
