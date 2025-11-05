@@ -44,6 +44,12 @@ describe("UTableRow.vue", () => {
   } as Config;
 
   function getDefaultProps(overrides = {}) {
+    const columnPositions = new Map<string, number>();
+
+    columnPositions.set("name", 0);
+    columnPositions.set("email", 100);
+    columnPositions.set("role", 200);
+
     return {
       row: defaultRow,
       columns: defaultColumns,
@@ -56,6 +62,7 @@ describe("UTableRow.vue", () => {
       config: defaultConfig,
       isChecked: false,
       isExpanded: false,
+      columnPositions,
       ...overrides,
     };
   }
