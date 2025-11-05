@@ -174,9 +174,14 @@ const colsCount = computed(() => {
   return normalizedColumns.value.length + 1;
 });
 
-const isShownActionsHeader = computed(
-  () => hasSlotContent(slots["header-actions"]) && Boolean(localSelectedRows.value.length),
-);
+const isShownActionsHeader = computed(() => {
+  const hasSelectedRows = Boolean(localSelectedRows.value.length);
+  const hasHedaerActions = hasSlotContent(slots["header-actions"], {
+    "selected-rows": localSelectedRows.value,
+  });
+
+  return hasSelectedRows && hasHedaerActions;
+});
 
 const isHeaderSticky = computed(() => {
   const positionForFixHeader =
@@ -804,7 +809,7 @@ const {
                 @binding {number} index
               -->
               <slot
-                v-if="hasSlotContent($slots[`header-${column.key}`])"
+                v-if="hasSlotContent($slots[`header-${column.key}`], { column, index })"
                 :name="`header-${column.key}`"
                 :column="column"
                 :index="index"

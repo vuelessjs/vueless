@@ -514,7 +514,7 @@ export const StickyColumns: StoryFn<UTableArgs> = (args: UTableArgs) => ({
   template: `
     <UTable v-bind="args">
       <template #header-orderId="{ column }">
-        <span>{{ column?.label }}</span>
+        <span>{{ column.label }}</span>
         <span class="inline-flex items-center gap-1 ml-2">
           <UIcon
             name="keep"
@@ -528,7 +528,7 @@ export const StickyColumns: StoryFn<UTableArgs> = (args: UTableArgs) => ({
       </template>
 
       <template #header-customerName="{ column }">
-        <span>{{ column?.label }}</span>
+        <span>{{ column.label }}</span>
         <span class="inline-flex items-center gap-1 ml-2">
           <UIcon
             name="keep"
@@ -543,7 +543,7 @@ export const StickyColumns: StoryFn<UTableArgs> = (args: UTableArgs) => ({
       </template>
 
       <template #header-email="{ column }">
-        <span>{{ column?.label }}</span>
+        <span>{{ column.label }}</span>
         <span class="inline-flex items-center gap-1 ml-2">
           <UIcon
             name="keep"
@@ -557,7 +557,7 @@ export const StickyColumns: StoryFn<UTableArgs> = (args: UTableArgs) => ({
       </template>
 
       <template #header-totalPrice="{ column }">
-        <span>{{ column?.label }}</span>
+        <span>{{ column.label }}</span>
         <span class="inline-flex items-center gap-1 ml-2">
           <UIcon
             name="keep"
@@ -570,16 +570,16 @@ export const StickyColumns: StoryFn<UTableArgs> = (args: UTableArgs) => ({
         </span>
       </template>
 
-      <template #header-actions="{ column }">
-        <span>{{ column?.label }}</span>
+      <template #header-action="{ column }">
+        <span>{{ column.label }}</span>
         <span class="inline-flex items-center gap-1 ml-2">
           <UIcon
             name="keep"
             size="xs"
             interactive
-            v-tooltip="isPinned('actions', 'right') ? 'Unpin right' : 'Pin right'"
-            :color="isPinned('actions', 'right') ? 'primary' : 'inherit'"
-            @click.stop="toggleRight('actions')"
+            v-tooltip="isPinned('action', 'right') ? 'Unpin right' : 'Pin right'"
+            :color="isPinned('action', 'right') ? 'primary' : 'inherit'"
+            @click.stop="toggleRight('action')"
           />
         </span>
       </template>
@@ -597,7 +597,7 @@ export const StickyColumns: StoryFn<UTableArgs> = (args: UTableArgs) => ({
         />
       </template>
 
-      <template #cell-actions>
+      <template #cell-action>
         <UButton label="View" size="xs" variant="ghost" />
       </template>
     </UTable>
@@ -614,7 +614,7 @@ StickyColumns.args = {
     { key: "country", label: "Country", thClass: "min-w-[150px]" },
     { key: "status", label: "Status", thClass: "min-w-[120px]" },
     { key: "totalPrice", label: "Total Price", thClass: "min-w-[120px]" },
-    { key: "actions", label: "Actions", sticky: "right", thClass: "min-w-[100px]" },
+    { key: "action", label: "Actions", sticky: "right", thClass: "min-w-[100px]" },
   ],
   rows: [
     {
@@ -628,7 +628,7 @@ StickyColumns.args = {
       country: "USA",
       status: "Delivered",
       totalPrice: "$245.99",
-      actions: "View",
+      action: "View",
     },
     {
       id: "row-2",
@@ -641,7 +641,7 @@ StickyColumns.args = {
       country: "USA",
       status: "Pending",
       totalPrice: "$189.50",
-      actions: "View",
+      action: "View",
     },
     {
       id: "row-3",
@@ -654,7 +654,7 @@ StickyColumns.args = {
       country: "USA",
       status: "Shipped",
       totalPrice: "$312.75",
-      actions: "View",
+      action: "View",
     },
     {
       id: "row-4",
@@ -667,7 +667,7 @@ StickyColumns.args = {
       country: "USA",
       status: "Cancelled",
       totalPrice: "$156.20",
-      actions: "View",
+      action: "View",
     },
     {
       id: "row-5",
@@ -680,7 +680,7 @@ StickyColumns.args = {
       country: "USA",
       status: "Delivered",
       totalPrice: "$428.90",
-      actions: "View",
+      action: "View",
     },
   ],
 };
@@ -709,7 +709,7 @@ export const HeaderKeySlot = DefaultTemplate.bind({});
 HeaderKeySlot.args = {
   slotTemplate: `
     <template #header-status="{ column }">
-      <UBadge :label="column?.label" />
+      <UBadge :label="column.label" />
     </template>
   `,
 };
@@ -838,9 +838,9 @@ ExpandSlot.args = {
   slotTemplate: `
     <template #expand="{ expanded }">
       <UButton
-        :icon="expanded ? 'remove' : 'add'"
-        variant="ghost"
-        size="xs"
+        :icon="expanded ? 'keyboard_arrow_up' : 'keyboard_arrow_down'"
+        variant="soft"
+        size="2xs"
         square
       />
     </template>
