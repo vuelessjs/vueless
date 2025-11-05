@@ -956,7 +956,7 @@ EmptyStateSlot.args = {
   },
   slotTemplate: `
     <template #empty-state>
-      <ULoader loading size="lg" :config="{ loader: 'mx-auto mb-4' }" />
+      <ULoader loading :config="{ loader: 'mx-auto mb-4' }" />
       <p class="text-center">Fetching latest data, please wait...</p>
     </template>
   `,

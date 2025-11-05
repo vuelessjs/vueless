@@ -106,7 +106,7 @@ export default /*tw*/ {
     },
   },
   stickyFooterRow: `
-    fixed bottom-0 -ml-px border-b border-solid border-muted bg-default
+    fixed bottom-0 -ml-px border border-solid border-muted bg-default
     collapse group-[*]/footer-fixed:[visibility:inherit]
   `,
   i18n: {
