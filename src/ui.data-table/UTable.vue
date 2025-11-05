@@ -176,11 +176,11 @@ const colsCount = computed(() => {
 
 const isShownActionsHeader = computed(() => {
   const hasSelectedRows = Boolean(localSelectedRows.value.length);
-  const hasHedaerActions = hasSlotContent(slots["header-actions"], {
+  const hasHeaderActions = hasSlotContent(slots["header-actions"], {
     "selected-rows": localSelectedRows.value,
   });
 
-  return hasSelectedRows && hasHedaerActions;
+  return hasSelectedRows && hasHeaderActions;
 });
 
 const isHeaderSticky = computed(() => {
