@@ -40,7 +40,9 @@ import type {
   Config,
   DateDivider,
   FlatRow,
+  ColumnObject,
 } from "./types";
+import { StickySide } from "./types";
 
 defineOptions({ inheritAttrs: false });
 
@@ -166,13 +168,20 @@ const visibleColumns = computed(() => {
   return normalizedColumns.value.filter((column) => column.isShown !== false);
 });
 
+const columnPositions = ref<Map<string, number>>(new Map());
+
 const colsCount = computed(() => {
   return normalizedColumns.value.length + 1;
 });
 
-const isShownActionsHeader = computed(
-  () => hasSlotContent(slots["header-actions"]) && Boolean(localSelectedRows.value.length),
-);
+const isShownActionsHeader = computed(() => {
+  const hasSelectedRows = Boolean(localSelectedRows.value.length);
+  const hasHeaderActions = hasSlotContent(slots["header-actions"], {
+    "selected-rows": localSelectedRows.value,
+  });
+
+  return hasSelectedRows && hasHeaderActions;
+});
 
 const isHeaderSticky = computed(() => {
   const positionForFixHeader =
@@ -212,6 +221,8 @@ const tableRowAttrs = computed(() => ({
   bodyCellNestedIconWrapperAttrs,
   bodyRowCheckedAttrs,
   bodyRowAttrs,
+  bodyCellStickyLeftAttrs,
+  bodyCellStickyRightAttrs,
 }));
 
 watch(localSelectedRows, onChangeLocalSelectedRows, { deep: true });
@@ -223,15 +234,19 @@ watch(isFooterSticky, (newValue) =>
   newValue ? nextTick(setFooterCellWidth) : setFooterCellWidth(null),
 );
 
-onMounted(() => {
+onMounted(async () => {
   document.addEventListener("keyup", onKeyupEsc);
   document.addEventListener("scroll", onScroll, { passive: true });
   window.addEventListener("resize", onWindowResize);
+
+  await nextTick();
+  calculateStickyColumnPositions();
 });
 
 onUpdated(() => {
   tableHeight.value = Number(tableWrapperRef.value?.offsetHeight);
   tableWidth.value = Number(tableWrapperRef.value?.offsetWidth);
+  calculateStickyColumnPositions();
 });
 
 onBeforeUnmount(() => {
@@ -257,6 +272,106 @@ function onWindowResize() {
 
   setHeaderCellWidth();
   setFooterCellWidth();
+  calculateStickyColumnPositions();
+}
+
+function calculateStickyColumnPositions() {
+  if (!headerRowRef.value) return;
+
+  const headerCells = [...headerRowRef.value.children] as HTMLElement[];
+  const positions = new Map<string, number>();
+  let leftOffset = 0;
+
+  if (props.selectable) {
+    leftOffset = headerCells[0]?.offsetWidth || 0;
+  }
+
+  visibleColumns.value.forEach((column, index) => {
+    const cellIndex = props.selectable ? index + 1 : index;
+    const cell = headerCells[cellIndex];
+
+    if (!cell) return;
+
+    if (column.sticky === StickySide.Left) {
+      positions.set(column.key, leftOffset);
+      leftOffset += cell.offsetWidth;
+    }
+  });
+
+  let rightOffset = 0;
+
+  for (let i = visibleColumns.value.length - 1; i >= 0; i--) {
+    const column = visibleColumns.value[i];
+    const cellIndex = props.selectable ? i + 1 : i;
+    const cell = headerCells[cellIndex];
+
+    if (!cell) continue;
+
+    if (column.sticky === StickySide.Right) {
+      positions.set(column.key, rightOffset);
+      rightOffset += cell.offsetWidth;
+    }
+  }
+
+  let hasChanged = positions.size !== columnPositions.value.size;
+
+  if (!hasChanged) {
+    for (const [key, value] of positions) {
+      if (columnPositions.value.get(key) !== value) {
+        hasChanged = true;
+        break;
+      }
+    }
+  }
+
+  if (hasChanged) {
+    columnPositions.value = positions;
+  }
+}
+
+function getStickyColumnStyle(column: ColumnObject) {
+  const position = columnPositions.value.get(column.key);
+
+  if (position === undefined) return {};
+
+  if (column.sticky === StickySide.Left) {
+    return { left: `${position / PX_IN_REM}rem` };
+  }
+
+  if (column.sticky === StickySide.Right) {
+    return { right: `${position / PX_IN_REM}rem` };
+  }
+
+  return {};
+}
+
+function getStickyColumnClass(column: ColumnObject) {
+  if (column.sticky === StickySide.Left) {
+    return headerCellStickyLeftAttrs.value.class as string;
+  }
+
+  if (column.sticky === StickySide.Right) {
+    return headerCellStickyRightAttrs.value.class as string;
+  }
+
+  return "";
+}
+
+function getHeaderCheckboxCellClass() {
+  return cx([
+    headerCellCheckboxAttrs.value.class as string,
+    visibleColumns.value[0]?.sticky === StickySide.Left
+      ? (headerCellStickyLeftAttrs.value.class as string)
+      : "",
+  ]);
+}
+
+function getHeaderCellClass(column: ColumnObject) {
+  return cx([
+    headerCellBaseAttrs.value.class as string,
+    column.thClass,
+    getStickyColumnClass(column),
+  ]);
 }
 
 function getDateDividerData(rowDate: string | Date | undefined) {
@@ -510,6 +625,10 @@ const {
   bodyCellNestedIconWrapperAttrs,
   bodyRowCheckedAttrs,
   bodyRowAttrs,
+  headerCellStickyLeftAttrs,
+  headerCellStickyRightAttrs,
+  bodyCellStickyLeftAttrs,
+  bodyCellStickyRightAttrs,
 } = useUI<Config>(defaultConfig, mutatedProps);
 </script>
 
@@ -652,7 +771,12 @@ const {
           </tr>
 
           <tr ref="header-row" v-bind="headerRowAttrs">
-            <th v-if="selectable" v-bind="headerCellCheckboxAttrs">
+            <th
+              v-if="selectable"
+              v-bind="headerCellCheckboxAttrs"
+              :class="getHeaderCheckboxCellClass()"
+              :style="visibleColumns[0]?.sticky === StickySide.Left ? { left: '0' } : {}"
+            >
               <UCheckbox
                 v-model="selectAll"
                 size="md"
@@ -676,7 +800,8 @@ const {
               v-for="(column, index) in visibleColumns"
               :key="index"
               v-bind="headerCellBaseAttrs"
-              :class="cx([(headerCellBaseAttrs as any).class, column.thClass])"
+              :class="getHeaderCellClass(column)"
+              :style="getStickyColumnStyle(column)"
             >
               <!--
                 @slot Use it to customize needed header cell.
@@ -684,7 +809,7 @@ const {
                 @binding {number} index
               -->
               <slot
-                v-if="hasSlotContent($slots[`header-${column.key}`])"
+                v-if="hasSlotContent($slots[`header-${column.key}`], { column, index })"
                 :name="`header-${column.key}`"
                 :column="column"
                 :index="index"
@@ -754,6 +879,7 @@ const {
               :data-test="getDataTest('row')"
               :is-expanded="localExpandedRows.includes(row.id)"
               :is-checked="isRowSelected(row)"
+              :column-positions="columnPositions"
               @click="onClickRow"
               @dblclick="onDoubleClickRow"
               @click-cell="onClickCell"

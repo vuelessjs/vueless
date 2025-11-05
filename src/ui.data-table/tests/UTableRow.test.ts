@@ -34,6 +34,8 @@ describe("UTableRow.vue", () => {
     bodyCellNestedIconWrapperAttrs: ref({ class: "icon-wrapper" }),
     bodyRowCheckedAttrs: ref({ class: "row-checked" }),
     bodyRowAttrs: ref({ class: "row-base" }),
+    bodyCellStickyLeftAttrs: ref({ class: "sticky-left" }),
+    bodyCellStickyRightAttrs: ref({ class: "sticky-right" }),
   };
 
   const defaultConfig = {
@@ -44,6 +46,12 @@ describe("UTableRow.vue", () => {
   } as Config;
 
   function getDefaultProps(overrides = {}) {
+    const columnPositions = new Map<string, number>();
+
+    columnPositions.set("name", 0);
+    columnPositions.set("email", 100);
+    columnPositions.set("role", 200);
+
     return {
       row: defaultRow,
       columns: defaultColumns,
@@ -56,6 +64,7 @@ describe("UTableRow.vue", () => {
       config: defaultConfig,
       isChecked: false,
       isExpanded: false,
+      columnPositions,
       ...overrides,
     };
   }
