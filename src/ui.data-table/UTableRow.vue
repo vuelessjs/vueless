@@ -14,7 +14,8 @@ import UCheckbox from "../ui.form-checkbox/UCheckbox.vue";
 
 import defaultConfig from "./config";
 
-import type { Cell, CellObject, Row, UTableRowProps, Config } from "./types";
+import { StickySide } from "./types";
+import type { Cell, CellObject, Row, UTableRowProps, Config, ColumnObject } from "./types";
 
 const NESTED_ROW_SHIFT_REM = 1.5;
 const LAST_NESTED_ROW_SHIFT_REM = 1;
@@ -166,6 +167,34 @@ function onInputCheckbox(row: Row) {
   emit("toggleCheckbox", row);
 }
 
+function getStickyColumnStyle(column: ColumnObject) {
+  const position = props.columnPositions.get(column.key);
+
+  if (position === undefined) return {};
+
+  if (column.sticky === StickySide.Left) {
+    return { left: `${position / PX_IN_REM}rem` };
+  }
+
+  if (column.sticky === StickySide.Right) {
+    return { right: `${position / PX_IN_REM}rem` };
+  }
+
+  return {};
+}
+
+function getStickyColumnClass(column: ColumnObject) {
+  if (column.sticky === StickySide.Left) {
+    return props.attrs.bodyCellStickyLeftAttrs.value.class as string;
+  }
+
+  if (column.sticky === StickySide.Right) {
+    return props.attrs.bodyCellStickyRightAttrs.value.class as string;
+  }
+
+  return "";
+}
+
 const { getDataTest } = useUI<Config>(defaultConfig);
 </script>
 
@@ -179,8 +208,17 @@ const { getDataTest } = useUI<Config>(defaultConfig);
   >
     <td
       v-if="selectable"
-      :style="getNestedCheckboxShift()"
+      :style="{
+        ...getNestedCheckboxShift(),
+        ...(columns[0]?.sticky === StickySide.Left ? { left: '0' } : {}),
+      }"
       v-bind="attrs.bodyCellCheckboxAttrs.value"
+      :class="
+        cx([
+          attrs.bodyCellCheckboxAttrs.value.class,
+          columns[0]?.sticky === StickySide.Left ? attrs.bodyCellStickyLeftAttrs.value.class : '',
+        ])
+      "
       @click.stop
       @dblclick.stop
     >
@@ -198,7 +236,14 @@ const { getDataTest } = useUI<Config>(defaultConfig);
       v-for="(value, key, index) in mapRowColumns(row, columns)"
       :key="index"
       v-bind="attrs.bodyCellBaseAttrs.value"
-      :class="cx([columns[index].tdClass, getCellClasses(row, String(key))])"
+      :class="
+        cx([
+          columns[index].tdClass,
+          getCellClasses(row, String(key)),
+          getStickyColumnClass(columns[index]),
+        ])
+      "
+      :style="getStickyColumnStyle(columns[index])"
       @click="onClickCell(value, row, key)"
     >
       <div

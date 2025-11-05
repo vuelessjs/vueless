@@ -39,11 +39,16 @@ export interface FlatRow extends Row {
   parentRowId?: RowId;
   nestedLevel: number;
 }
+export enum StickySide {
+  Left = "left",
+  Right = "right",
+}
 
 export interface ColumnObject {
   key: string;
   label?: string;
   isShown?: boolean;
+  sticky?: "left" | "right";
   class?: string | ((value: unknown | string, row: Row) => string);
   tdClass?: string;
   thClass?: string;
@@ -129,6 +134,8 @@ export interface UTableRowAttrs {
   bodyCellNestedIconWrapperAttrs: Ref<UnknownObject>;
   bodyRowCheckedAttrs: Ref<UnknownObject>;
   bodyRowAttrs: Ref<UnknownObject>;
+  bodyCellStickyLeftAttrs: Ref<UnknownObject>;
+  bodyCellStickyRightAttrs: Ref<UnknownObject>;
 }
 
 export interface UTableRowProps {
@@ -143,4 +150,5 @@ export interface UTableRowProps {
   config: Config;
   isChecked: boolean;
   isExpanded: boolean;
+  columnPositions: Map<string, number>;
 }
