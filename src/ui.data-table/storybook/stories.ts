@@ -480,7 +480,7 @@ DateDividerCustomLabel.parameters = {
 };
 
 export const StickyColumns: StoryFn<UTableArgs> = (args: UTableArgs) => ({
-  components: { UTable, UBadge, UButton, UIcon },
+  components: { UTable, URow, UBadge, UButton, UIcon },
   directives: { tooltip },
   setup() {
     function toggleLeft(key: string) {
@@ -514,8 +514,8 @@ export const StickyColumns: StoryFn<UTableArgs> = (args: UTableArgs) => ({
   template: `
     <UTable v-bind="args">
       <template #header-orderId="{ column }">
-        <span>{{ column.label }}</span>
-        <span class="inline-flex items-center gap-1 ml-2">
+        <URow gap="2xs" align="center">
+          <div>{{ column.label }}</div>
           <UIcon
             name="keep"
             size="xs"
@@ -524,12 +524,12 @@ export const StickyColumns: StoryFn<UTableArgs> = (args: UTableArgs) => ({
             :color="isPinned('orderId', 'left') ? 'primary' : 'inherit'"
             @click.stop="toggleLeft('orderId')"
           />
-        </span>
+        </URow>
       </template>
 
       <template #header-customerName="{ column }">
-        <span>{{ column.label }}</span>
-        <span class="inline-flex items-center gap-1 ml-2">
+        <URow gap="2xs" align="center">
+          <div>{{ column.label }}</div>
           <UIcon
             name="keep"
             size="xs"
@@ -538,13 +538,12 @@ export const StickyColumns: StoryFn<UTableArgs> = (args: UTableArgs) => ({
             :color="isPinned('customerName', 'left') ? 'primary' : 'inherit'"
             @click.stop="toggleLeft('customerName')"
           />
-
-        </span>
+        </URow>
       </template>
 
       <template #header-email="{ column }">
-        <span>{{ column.label }}</span>
-        <span class="inline-flex items-center gap-1 ml-2">
+        <URow gap="2xs" align="center">
+          <div>{{ column.label }}</div>
           <UIcon
             name="keep"
             size="xs"
@@ -553,12 +552,12 @@ export const StickyColumns: StoryFn<UTableArgs> = (args: UTableArgs) => ({
             :color="isPinned('email', 'left') ? 'primary' : 'inherit'"
             @click.stop="toggleLeft('email')"
           />
-        </span>
+        </URow>
       </template>
 
       <template #header-totalPrice="{ column }">
-        <span>{{ column.label }}</span>
-        <span class="inline-flex items-center gap-1 ml-2">
+        <URow gap="2xs" align="center">
+          <div>{{ column.label }}</div>
           <UIcon
             name="keep"
             size="xs"
@@ -567,12 +566,12 @@ export const StickyColumns: StoryFn<UTableArgs> = (args: UTableArgs) => ({
             :color="isPinned('totalPrice', 'right') ? 'primary' : 'inherit'"
             @click.stop="toggleRight('totalPrice')"
           />
-        </span>
+        </URow>
       </template>
 
       <template #header-action="{ column }">
-        <span>{{ column.label }}</span>
-        <span class="inline-flex items-center gap-1 ml-2">
+        <URow gap="2xs" align="center">
+          <div>{{ column.label }}</div>
           <UIcon
             name="keep"
             size="xs"
@@ -581,7 +580,7 @@ export const StickyColumns: StoryFn<UTableArgs> = (args: UTableArgs) => ({
             :color="isPinned('action', 'right') ? 'primary' : 'inherit'"
             @click.stop="toggleRight('action')"
           />
-        </span>
+        </URow>
       </template>
 
       <template #cell-status="{ value }">
@@ -598,7 +597,7 @@ export const StickyColumns: StoryFn<UTableArgs> = (args: UTableArgs) => ({
       </template>
 
       <template #cell-action>
-        <UButton label="View" size="xs" variant="ghost" />
+        <UButton label="View" size="xs" variant="soft" />
       </template>
     </UTable>
   `,
