@@ -34,6 +34,8 @@ describe("UTableRow.vue", () => {
     bodyCellNestedIconWrapperAttrs: ref({ class: "icon-wrapper" }),
     bodyRowCheckedAttrs: ref({ class: "row-checked" }),
     bodyRowAttrs: ref({ class: "row-base" }),
+    bodyCellStickyLeftAttrs: ref({ class: "sticky-left" }),
+    bodyCellStickyRightAttrs: ref({ class: "sticky-right" }),
   };
 
   const defaultConfig = {
