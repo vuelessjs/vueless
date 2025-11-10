@@ -39,7 +39,7 @@ export default /*tw*/ {
     base: "{UIcon} transition duration-300",
     variants: {
       opened: {
-        true: "group-[*]/group:rotate-180",
+        true: "group-[*]/item:rotate-180",
       },
     },
   },
