@@ -2,7 +2,7 @@
 
 # Vueless UI
 
-A UI library with Open Architecture for Vue.js 3 and Nuxt.js 3 / 4, powered by [Storybook v9](https://storybook.js.org) and [Tailwind CSS v4](https://tailwindcss.com).
+A UI library with Open Architecture for Vue.js 3 and Nuxt.js 3 / 4, powered by [Storybook v10](https://storybook.js.org) and [Tailwind CSS v4](https://tailwindcss.com).
 
 **With Vueless UI, you’re free to:**
 - 🪄️ Customize any component
