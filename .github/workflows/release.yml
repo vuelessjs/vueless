@@ -15,6 +15,8 @@ on:
     branches: [ beta ]
   pull_request:
     types: [ opened, synchronize, reopened ]
+  repository_dispatch:
+    types: [ vueless-storybook-release ]
 
 permissions: write-all
 
@@ -158,10 +160,42 @@ jobs:
           event-type: vueless-release
           client-payload: '{"release_type": "${{ github.event.inputs.release_type }}"}'
 
+  update-storybook:
+    name: 'Update: Storybook'
+    if: github.event_name == 'repository_dispatch' && github.event.action == 'vueless-storybook-release'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+          fetch-depth: 0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: 'npm'
+      - run: npm install -g npm@latest
+      - run: npm ci
+      - run: npm install -D @vueless/storybook@latest
+      - run: |
+          git config user.name "${GITHUB_ACTOR}"
+          git config user.email "${GITHUB_ACTOR}@users.noreply.github.com"
+          git add package.json package-lock.json
+          if git diff --cached --quiet; then
+            echo "No changes to commit"
+          else
+            git commit -m "chore: update @vueless/storybook to the latest version"
+            git push origin main
+          fi
+
   update-beta:
     name: 'Update Beta'
-    if: github.event_name == 'workflow_dispatch' && github.ref_name == 'main'
-    needs: release
+    if: |
+      always() &&
+      ((github.event_name == 'workflow_dispatch' && github.ref_name == 'main' && needs.release.result == 'success') ||
+      (github.event_name == 'repository_dispatch' && github.event.action == 'vueless-storybook-release' && needs.update-storybook.result == 'success'))
+    needs: [release, update-storybook]
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
