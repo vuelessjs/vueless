@@ -1,6 +1,6 @@
 export default /*tw*/ {
   wrapper: {
-    base: "group cursor-pointer py-5 first:pt-0 last:pb-0",
+    base: "group/item cursor-pointer py-5 first:pt-0 last:pb-0",
     variants: {
       disabled: {
         true: "cursor-not-allowed text-default/(--vl-disabled-opacity)",
@@ -39,7 +39,7 @@ export default /*tw*/ {
     base: "{UIcon} transition duration-300",
     variants: {
       opened: {
-        true: "group-[*]:rotate-180",
+        true: "group-[*]/item:rotate-180",
       },
     },
   },

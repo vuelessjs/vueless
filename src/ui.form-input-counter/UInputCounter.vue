@@ -154,6 +154,24 @@ function onInput() {
   setInputSize();
 }
 
+function onKeyDown(event: KeyboardEvent) {
+  if (event.key === "ArrowUp") {
+    event.preventDefault();
+
+    if (!isAddButtonDisabled.value && !props.disabled) {
+      onClickAdd();
+    }
+  }
+
+  if (event.key === "ArrowDown") {
+    event.preventDefault();
+
+    if (!isSubtractButtonDisabled.value && !props.disabled) {
+      onClickSubtract();
+    }
+  }
+}
+
 function setInputSize() {
   if (inputComponentRef.value && !props.readonly) {
     inputComponentRef.value.inputRef?.setAttribute(
@@ -222,6 +240,7 @@ const {
       @focus="onFocus"
       @blur="onBlur"
       @input="onInput"
+      @keydown="onKeyDown"
     />
 
     <UButton

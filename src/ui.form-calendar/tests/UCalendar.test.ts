@@ -117,18 +117,18 @@ describe("UCalendar.vue", () => {
       const days = dayView.findAll('[vl-key="day"]');
 
       await days[0].trigger("click");
+
+      expect(component.emitted("update:modelValue")).toBeFalsy();
+
       await days[3].trigger("click");
 
       expect(component.emitted("update:modelValue")).toBeTruthy();
+      expect(component.emitted("update:modelValue")).toHaveLength(1);
 
-      const firstUpdate = component.emitted("update:modelValue")![0][0] as RangeDate;
-      const secondUpdate = component.emitted("update:modelValue")![1][0] as RangeDate;
+      const rangeUpdate = component.emitted("update:modelValue")![0][0] as RangeDate;
 
-      expect(firstUpdate.from).not.toBeNull();
-      expect(firstUpdate.to).toBeNull();
-
-      expect(secondUpdate.from).not.toBeNull();
-      expect(secondUpdate.to).not.toBeNull();
+      expect(rangeUpdate.from).not.toBeNull();
+      expect(rangeUpdate.to).not.toBeNull();
     });
 
     it("Timepicker – shows timepicker when enabled", () => {
@@ -248,16 +248,10 @@ describe("UCalendar.vue", () => {
         props: {
           range: true,
           modelValue: {
-            from: "2023-12-02",
-            to: "2023-12-31",
+            from: null,
+            to: null,
           },
           dateFormat: "Y-m-d",
-        },
-      });
-
-      await component.setProps({
-        "onUpdate:modelValue": (value: RangeDate) => {
-          component.setProps({ modelValue: value });
         },
       });
 
@@ -267,9 +261,9 @@ describe("UCalendar.vue", () => {
       await days[0].trigger("click");
       await days[3].trigger("click");
 
-      expect(component.emitted("update:modelValue")).toHaveLength(3);
+      expect(component.emitted("update:modelValue")).toHaveLength(2);
 
-      const updatedValue = component.emitted("update:modelValue")![2][0] as RangeDate;
+      const updatedValue = component.emitted("update:modelValue")![1][0] as RangeDate;
 
       expect(updatedValue.from).toMatch(dateFormatRegex);
       expect(updatedValue.to).toMatch(dateFormatRegex);

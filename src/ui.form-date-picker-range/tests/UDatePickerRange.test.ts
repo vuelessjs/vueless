@@ -42,7 +42,11 @@ describe("UDatePickerRange.vue", () => {
       const input = component.findComponent(UInput).get("input");
 
       await input.trigger("focus");
-      await component.get("[vl-key='day']").trigger("click");
+
+      const days = component.findAll("[vl-key='day']");
+
+      await days[0].trigger("click");
+      await days[3].trigger("click");
 
       expect(component.emitted("update:modelValue")).toBeTruthy();
     });

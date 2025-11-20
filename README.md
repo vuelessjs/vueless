@@ -2,7 +2,7 @@
 
 # Vueless UI
 
-A UI library with Open Architecture for Vue.js 3 and Nuxt.js 3 / 4, powered by [Storybook v9](https://storybook.js.org) and [Tailwind CSS v4](https://tailwindcss.com).
+A UI library with Open Architecture for Vue.js 3 and Nuxt.js 3 / 4, powered by [Storybook v10](https://storybook.js.org) and [Tailwind CSS v4](https://tailwindcss.com).
 
 **With Vueless UI, you’re free to:**
 - 🪄️ Customize any component
@@ -10,13 +10,14 @@ A UI library with Open Architecture for Vue.js 3 and Nuxt.js 3 / 4, powered by [
 - 🧱 Build your own from scratch
 - 📕 Document it all seamlessly in Storybook
 
-[Documentation](https://docs.vueless.com/) | [UI Components](https://ui.vueless.com/) | [Website](http://vueless.com/)
+[Documentation](https://docs.vueless.com/) | [UI Components](https://ui.vueless.com/) | [Theme Builder](https://my.vueless.com/theme) | [About](http://vueless.com/)
 
 ### Key features
 
 - 🧩 65+ crafted UI components (including range date picker, multi-select, and nested table)
 - ✨ Open Architecture lets you customize, copy, extend, and create your own components
 - 📕 Built-in Storybook support
+- 🪩 Theme Builder for runtime theme customization
 - 🌈 Beautiful default UI theme
 - 🌀 Unstyled mode
 - 🌗 Light and dark mode
@@ -29,6 +30,22 @@ A UI library with Open Architecture for Vue.js 3 and Nuxt.js 3 / 4, powered by [
 - 🧿 Uncompiled source in npm for better DX
 - 🧪️ 1300+ unit tests ensuring consistent logic
 - 🛡️ Full TypeScript support with type safety
+
+## Built-In Storybook
+
+No setup, no hacks — just a fully functional Storybook preset ready to test your Vueless UI design system out of the box.
+
+[Demo](https://ui.vueless.com) | [Package](https://www.npmjs.com/package/@vueless/storybook) | [Docs](https://docs.vueless.com/installation/storybook)
+
+![storybook.png](public/images/storybook.png)
+
+## Theme Builder
+
+Customize colors, rounding, and typography at runtime, generate full palettes, and export a ready-to-use theme to your project.
+
+[Try Vueless UI Theme Builder](https://my.vueless.com/theme) 🚀
+
+![theme-builder.png](public/images/theme-builder.png)
 
 ## Quick Start (Vue)
 
