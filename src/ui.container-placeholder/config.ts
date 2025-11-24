@@ -1,39 +1,30 @@
 export default /*tw*/ {
   wrapper: {
-    base: "flex items-center justify-center w-full h-full border-2 border-{color} transition-all",
+    base: `
+      flex items-center justify-center w-full h-full
+      border-solid border-2 border-{color}/15
+    `,
     variants: {
-      color: {
-        neutral: "border-muted",
-      },
       rounded: {
-        true: "rounded-large",
-        false: "",
+        sm: "rounded-small",
+        md: "rounded-medium",
+        lg: "rounded-large",
+        none: "rounded-none",
       },
       dashed: {
         true: "border-dashed",
-        false: "border-solid",
       },
-      inset: {
-        true: "m-4",
-        false: "",
+      dotted: {
+        true: "border-dotted",
       },
     },
   },
-  content: {
-    base: "flex items-center justify-center",
-  },
-  label: {
-    base: "text-small text-{color} select-none",
-    variants: {
-      color: {
-        neutral: "text-lifted",
-      },
-    },
-  },
+  content: "flex items-center justify-center",
+  label: "text-small text-{color} select-none",
   defaults: {
     color: "neutral",
-    rounded: true,
-    dashed: true,
-    inset: false,
+    rounded: "md",
+    dashed: false,
+    dotted: false,
   },
 };
