@@ -115,7 +115,7 @@ export const LayoutExample: StoryFn<PlaceholderArgs> = (args: PlaceholderArgs) =
       <UPlaceholder label="Sidebar" class="w-64" />
       <UCol align="stretch" grow>
         <UPlaceholder label="Header" class="h-16" />
-        <UPlaceholder label="Main Content" class="flex-1" />
+        <UPlaceholder label="Main Content" />
         <UPlaceholder label="Footer" class="h-12" />
       </UCol>
     </URow>
