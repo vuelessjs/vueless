@@ -11,19 +11,19 @@ export interface Props {
   label?: string;
 
   /**
-   * Adds internal margin (16px).
+   * Border radius size.
    */
-  inset?: boolean;
-
-  /**
-   * Adds rounded corners.
-   */
-  rounded?: boolean;
+  rounded?: "sm" | "md" | "lg" | "none";
 
   /**
    * Use dashed border style.
    */
   dashed?: boolean;
+
+  /**
+   * Use dotted border style.
+   */
+  dotted?: boolean;
 
   /**
    * Border color.
