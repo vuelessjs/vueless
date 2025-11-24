@@ -1,149 +1,152 @@
-import { describe, it, expect } from "vitest";
 import { mount } from "@vue/test-utils";
+import { describe, it, expect } from "vitest";
 
 import UPlaceholder from "../UPlaceholder.vue";
 
-describe("UPlaceholder", () => {
-  it("renders default placeholder", () => {
-    const wrapper = mount(UPlaceholder);
+import type { Props } from "../types";
 
-    expect(wrapper.exists()).toBe(true);
-    expect(wrapper.attributes("role")).toBe("region");
-  });
+describe("UPlaceholder.vue", () => {
+  describe("Props", () => {
+    it("Rounded – applies the correct rounded class", () => {
+      const roundedClasses = {
+        sm: "rounded-small",
+        md: "rounded-medium",
+        lg: "rounded-large",
+        none: "rounded-none",
+      };
 
-  it("renders label when provided", () => {
-    const wrapper = mount(UPlaceholder, {
-      props: {
-        label: "Test Label",
-      },
+      Object.entries(roundedClasses).forEach(([rounded, classes]) => {
+        const component = mount(UPlaceholder, {
+          props: {
+            rounded: rounded as Props["rounded"],
+          },
+        });
+
+        expect(component.attributes("class")).toContain(classes);
+      });
     });
 
-    expect(wrapper.text()).toContain("Test Label");
-  });
+    it("Dashed – applies the correct border class", () => {
+      const dashed = true;
+      const expectedClass = "border-dashed";
 
-  it("applies rounded-small class when rounded prop is sm", () => {
-    const wrapper = mount(UPlaceholder, {
-      props: {
-        rounded: "sm",
-      },
+      const component = mount(UPlaceholder, {
+        props: {
+          dashed,
+        },
+      });
+
+      expect(component.attributes("class")).toContain(expectedClass);
     });
 
-    expect(wrapper.classes()).toContain("rounded-small");
-  });
+    it("Dotted – applies the correct border class", () => {
+      const dotted = true;
+      const expectedClass = "border-dotted";
 
-  it("applies rounded-medium class when rounded prop is md", () => {
-    const wrapper = mount(UPlaceholder, {
-      props: {
-        rounded: "md",
-      },
+      const component = mount(UPlaceholder, {
+        props: {
+          dotted,
+        },
+      });
+
+      expect(component.attributes("class")).toContain(expectedClass);
     });
 
-    expect(wrapper.classes()).toContain("rounded-medium");
-  });
+    it("Border – applies solid border class by default", () => {
+      const expectedClass = "border-solid";
 
-  it("applies rounded-large class when rounded prop is lg", () => {
-    const wrapper = mount(UPlaceholder, {
-      props: {
-        rounded: "lg",
-      },
+      const component = mount(UPlaceholder, {
+        props: {
+          dashed: false,
+          dotted: false,
+        },
+      });
+
+      expect(component.attributes("class")).toContain(expectedClass);
     });
 
-    expect(wrapper.classes()).toContain("rounded-large");
-  });
+    it("Color – applies the correct color class", () => {
+      const color = "primary";
 
-  it("applies no rounded class when rounded prop is none", () => {
-    const wrapper = mount(UPlaceholder, {
-      props: {
-        rounded: "none",
-      },
+      const component = mount(UPlaceholder, {
+        props: {
+          color,
+        },
+      });
+
+      expect(component.attributes("class")).toContain(`border-${color}`);
     });
 
-    expect(wrapper.classes()).not.toContain("rounded-small");
-    expect(wrapper.classes()).not.toContain("rounded-medium");
-    expect(wrapper.classes()).not.toContain("rounded-large");
-  });
+    it("Label – renders the correct label text", () => {
+      const label = "Test Label";
 
-  it("applies dashed border class when dashed prop is true", () => {
-    const wrapper = mount(UPlaceholder, {
-      props: {
-        dashed: true,
-      },
+      const component = mount(UPlaceholder, {
+        props: {
+          label,
+        },
+      });
+
+      expect(component.text()).toContain(label);
     });
 
-    expect(wrapper.classes()).toContain("border-dashed");
-  });
+    it("Label – sets aria-label from label prop", () => {
+      const label = "Test Area";
 
-  it("applies dotted border class when dotted prop is true", () => {
-    const wrapper = mount(UPlaceholder, {
-      props: {
-        dotted: true,
-      },
+      const component = mount(UPlaceholder, {
+        props: {
+          label,
+        },
+      });
+
+      expect(component.attributes("aria-label")).toBe(label);
     });
 
-    expect(wrapper.classes()).toContain("border-dotted");
-  });
+    it("Label – sets default aria-label when no label provided", () => {
+      const component = mount(UPlaceholder);
 
-  it("applies solid border class when dashed and dotted props are false", () => {
-    const wrapper = mount(UPlaceholder, {
-      props: {
-        dashed: false,
-        dotted: false,
-      },
+      expect(component.attributes("aria-label")).toBe("Placeholder area");
     });
 
-    expect(wrapper.classes()).toContain("border-solid");
-  });
+    it("Role – applies the correct role attribute", () => {
+      const component = mount(UPlaceholder);
 
-  it("renders slot content", () => {
-    const wrapper = mount(UPlaceholder, {
-      slots: {
-        default: "<div class='custom-content'>Custom Content</div>",
-      },
+      expect(component.attributes("role")).toBe("region");
     });
 
-    expect(wrapper.find(".custom-content").exists()).toBe(true);
-    expect(wrapper.text()).toContain("Custom Content");
-  });
+    it("Data Test – applies the correct data-test attribute", () => {
+      const dataTest = "custom-test-id";
 
-  it("applies color variants", () => {
-    const wrapper = mount(UPlaceholder, {
-      props: {
-        color: "primary",
-      },
+      const component = mount(UPlaceholder, {
+        props: {
+          dataTest,
+        },
+      });
+
+      expect(component.attributes("data-test")).toBe(dataTest);
     });
-
-    expect(wrapper.classes().some((cls) => cls.includes("border-"))).toBe(true);
   });
 
-  it("exposes wrapperRef", () => {
-    const wrapper = mount(UPlaceholder);
+  describe("Slots", () => {
+    it("Default – renders content from default slot", () => {
+      const slotContent = "Custom Content";
+      const slotClass = "custom-content";
 
-    expect(wrapper.vm.wrapperRef).toBeDefined();
-  });
+      const component = mount(UPlaceholder, {
+        slots: {
+          default: `<div class='${slotClass}'>${slotContent}</div>`,
+        },
+      });
 
-  it("sets aria-label from label prop", () => {
-    const wrapper = mount(UPlaceholder, {
-      props: {
-        label: "Test Area",
-      },
+      expect(component.find(`.${slotClass}`).exists()).toBe(true);
+      expect(component.text()).toContain(slotContent);
     });
-
-    expect(wrapper.attributes("aria-label")).toBe("Test Area");
   });
 
-  it("sets default aria-label when no label provided", () => {
-    const wrapper = mount(UPlaceholder);
+  describe("Exposed refs", () => {
+    it("wrapperRef – exposes wrapperRef", () => {
+      const component = mount(UPlaceholder);
 
-    expect(wrapper.attributes("aria-label")).toBe("Placeholder area");
-  });
-
-  it("applies data-test attribute", () => {
-    const wrapper = mount(UPlaceholder, {
-      props: {
-        dataTest: "custom-test-id",
-      },
+      expect(component.vm.wrapperRef).toBeDefined();
     });
-
-    expect(wrapper.attributes("data-test")).toBe("custom-test-id");
   });
 });
