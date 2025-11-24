@@ -20,9 +20,19 @@ export default /*tw*/ {
     },
   },
   content: "flex items-center justify-center",
-  label: "text-small text-{color} select-none",
+  label: {
+    base: "text-{color} select-none",
+    variants: {
+      size: {
+        sm: "text-small",
+        md: "text-medium",
+        lg: "text-large",
+      },
+    },
+  },
   defaults: {
     color: "neutral",
+    size: "md",
     rounded: "md",
     dashed: false,
     dotted: false,

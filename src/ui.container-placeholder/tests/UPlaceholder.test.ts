@@ -7,6 +7,27 @@ import type { Props } from "../types";
 
 describe("UPlaceholder.vue", () => {
   describe("Props", () => {
+    it("Size – applies the correct size class", () => {
+      const sizeClasses = {
+        sm: "text-small",
+        md: "text-medium",
+        lg: "text-large",
+      };
+
+      Object.entries(sizeClasses).forEach(([size, classes]) => {
+        const component = mount(UPlaceholder, {
+          props: {
+            size: size as Props["size"],
+            label: "Test",
+          },
+        });
+
+        const labelElement = component.find("span");
+
+        expect(labelElement.attributes("class")).toContain(classes);
+      });
+    });
+
     it("Rounded – applies the correct rounded class", () => {
       const roundedClasses = {
         sm: "rounded-small",

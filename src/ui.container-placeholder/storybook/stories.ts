@@ -68,6 +68,9 @@ Default.args = {};
 export const NoLabel = DefaultTemplate.bind({});
 NoLabel.args = { label: "" };
 
+export const Sizes = EnumTemplate.bind({});
+Sizes.args = { enum: "size", label: "{enumValue}" };
+
 export const Rounded = EnumTemplate.bind({});
 Rounded.args = { enum: "rounded", label: "{enumValue}" };
 
