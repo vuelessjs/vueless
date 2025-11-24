@@ -21,24 +21,46 @@ describe("UPlaceholder", () => {
     expect(wrapper.text()).toContain("Test Label");
   });
 
-  it("applies inset class when inset prop is true", () => {
+  it("applies rounded-small class when rounded prop is sm", () => {
     const wrapper = mount(UPlaceholder, {
       props: {
-        inset: true,
+        rounded: "sm",
       },
     });
 
-    expect(wrapper.classes()).toContain("m-4");
+    expect(wrapper.classes()).toContain("rounded-small");
   });
 
-  it("applies rounded class when rounded prop is true", () => {
+  it("applies rounded-medium class when rounded prop is md", () => {
     const wrapper = mount(UPlaceholder, {
       props: {
-        rounded: true,
+        rounded: "md",
+      },
+    });
+
+    expect(wrapper.classes()).toContain("rounded-medium");
+  });
+
+  it("applies rounded-large class when rounded prop is lg", () => {
+    const wrapper = mount(UPlaceholder, {
+      props: {
+        rounded: "lg",
       },
     });
 
     expect(wrapper.classes()).toContain("rounded-large");
+  });
+
+  it("applies no rounded class when rounded prop is none", () => {
+    const wrapper = mount(UPlaceholder, {
+      props: {
+        rounded: "none",
+      },
+    });
+
+    expect(wrapper.classes()).not.toContain("rounded-small");
+    expect(wrapper.classes()).not.toContain("rounded-medium");
+    expect(wrapper.classes()).not.toContain("rounded-large");
   });
 
   it("applies dashed border class when dashed prop is true", () => {
@@ -51,10 +73,21 @@ describe("UPlaceholder", () => {
     expect(wrapper.classes()).toContain("border-dashed");
   });
 
-  it("applies solid border class when dashed prop is false", () => {
+  it("applies dotted border class when dotted prop is true", () => {
+    const wrapper = mount(UPlaceholder, {
+      props: {
+        dotted: true,
+      },
+    });
+
+    expect(wrapper.classes()).toContain("border-dotted");
+  });
+
+  it("applies solid border class when dashed and dotted props are false", () => {
     const wrapper = mount(UPlaceholder, {
       props: {
         dashed: false,
+        dotted: false,
       },
     });
 
