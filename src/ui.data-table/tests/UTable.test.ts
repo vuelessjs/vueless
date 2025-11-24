@@ -4,7 +4,7 @@ import { nextTick } from "vue";
 
 import UTable from "../UTable.vue";
 import UTableRow from "../UTableRow.vue";
-import UEmpty from "../../ui.text-empty/UEmpty.vue";
+import UEmpty from "../../ui.container-empty/UEmpty.vue";
 import ULoaderProgress from "../../ui.loader-progress/ULoaderProgress.vue";
 import UDivider from "../../ui.container-divider/UDivider.vue";
 import {

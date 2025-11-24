@@ -45,7 +45,7 @@ export { default as UGroup } from "./ui.container-group/UGroup.vue";
 export { default as UGroups } from "./ui.container-groups/UGroups.vue";
 export { default as UAccordion } from "./ui.container-accordion/UAccordion.vue";
 export { default as UAccordionItem } from "./ui.container-accordion-item/UAccordionItem.vue";
-export { default as UEmpty } from "./ui.text-empty/UEmpty.vue";
+export { default as UEmpty } from "./ui.container-empty/UEmpty.vue";
 export { default as UPlaceholder } from "./ui.container-placeholder/UPlaceholder.vue";
 export { default as UCard } from "./ui.container-card/UCard.vue";
 export { default as UModal } from "./ui.container-modal/UModal.vue";

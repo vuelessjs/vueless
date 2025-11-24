@@ -1,6 +1,6 @@
 import UTextDefaultConfig from "./ui.text-block/config";
 import UAlertDefaultConfig from "./ui.text-alert/config";
-import UEmptyDefaultConfig from "./ui.text-empty/config";
+import UEmptyDefaultConfig from "./ui.container-empty/config";
 import UFileDefaultConfig from "./ui.text-file/config";
 import UFilesDefaultConfig from "./ui.text-files/config";
 import UHeaderDefaultConfig from "./ui.text-header/config";
