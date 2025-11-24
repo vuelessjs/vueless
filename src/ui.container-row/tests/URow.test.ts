@@ -138,6 +138,32 @@ describe("URow.vue", () => {
       expect(component.attributes("class")).toContain(expectedClasses);
     });
 
+    it("Grow – applies the correct grow class", () => {
+      const grow = true;
+      const expectedClasses = "flex-grow";
+
+      const component = mount(URow, {
+        props: {
+          grow,
+        },
+      });
+
+      expect(component.attributes("class")).toContain(expectedClasses);
+    });
+
+    it("Shrink – applies the correct shrink class", () => {
+      const shrink = true;
+      const expectedClasses = "flex-shrink";
+
+      const component = mount(URow, {
+        props: {
+          shrink,
+        },
+      });
+
+      expect(component.attributes("class")).toContain(expectedClasses);
+    });
+
     it("Tag – renders the correct HTML tag", () => {
       const tags = ["div", "section", "article", "main", "aside", "nav", "span"];
 
