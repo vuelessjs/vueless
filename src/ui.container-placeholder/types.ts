@@ -11,6 +11,11 @@ export interface Props {
   label?: string;
 
   /**
+   * Label text size.
+   */
+  size?: "sm" | "md" | "lg";
+
+  /**
    * Border radius size.
    */
   rounded?: "sm" | "md" | "lg" | "none";
