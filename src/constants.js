@@ -284,7 +284,6 @@ export const COMPONENTS = {
   UNumber: "ui.text-number",
   UFile: "ui.text-file",
   UFiles: "ui.text-files",
-  UEmpty: "ui.text-empty",
   UBadge: "ui.text-badge",
 
   /* Containers */
@@ -295,6 +294,8 @@ export const COMPONENTS = {
   UGroups: "ui.container-groups",
   UAccordion: "ui.container-accordion",
   UAccordionItem: "ui.container-accordion-item",
+  UEmpty: "ui.text-empty",
+  UPlaceholder: "ui.other-placeholder",
   UCard: "ui.container-card",
   UModal: "ui.container-modal",
   UModalConfirm: "ui.container-modal-confirm",
@@ -329,7 +330,6 @@ export const COMPONENTS = {
   /* Other */
   UDot: "ui.other-dot",
   UChip: "ui.other-chip",
-  UPlaceholder: "ui.other-placeholder",
   UThemeColorToggle: "ui.other-theme-color-toggle",
 };
 
