@@ -10,8 +10,8 @@ interface PlaceholderArgs extends Props {
 }
 
 export default {
-  id: "9100",
-  title: "Other / Placeholder",
+  id: "5057",
+  title: "Containers / Placeholder",
   args: {},
   argTypes: {
     ...getArgTypes(UPlaceholder.__name),
