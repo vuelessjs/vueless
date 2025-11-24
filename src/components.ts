@@ -46,12 +46,11 @@ export { default as UGroups } from "./ui.container-groups/UGroups.vue";
 export { default as UAccordion } from "./ui.container-accordion/UAccordion.vue";
 export { default as UAccordionItem } from "./ui.container-accordion-item/UAccordionItem.vue";
 export { default as UEmpty } from "./ui.text-empty/UEmpty.vue";
-export { default as UPlaceholder } from "./ui.other-placeholder/UPlaceholder.vue";
+export { default as UPlaceholder } from "./ui.container-placeholder/UPlaceholder.vue";
 export { default as UCard } from "./ui.container-card/UCard.vue";
 export { default as UModal } from "./ui.container-modal/UModal.vue";
 export { default as UModalConfirm } from "./ui.container-modal-confirm/UModalConfirm.vue";
 export { default as UDrawer } from "./ui.container-drawer/UDrawer.vue";
-export { default as USplitter } from "./ui.container-splitter/USplitter.vue";
 export { default as UPage } from "./ui.container-page/UPage.vue";
 /* Images and Icons */
 export { default as UIcon } from "./ui.image-icon/UIcon.vue";

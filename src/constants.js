@@ -295,13 +295,12 @@ export const COMPONENTS = {
   UAccordion: "ui.container-accordion",
   UAccordionItem: "ui.container-accordion-item",
   UEmpty: "ui.text-empty",
-  UPlaceholder: "ui.other-placeholder",
+  UPlaceholder: "ui.container-placeholder",
   UCard: "ui.container-card",
   UModal: "ui.container-modal",
   UModalConfirm: "ui.container-modal-confirm",
   UPage: "ui.container-page",
   UDrawer: "ui.container-drawer",
-  USplitter: "ui.container-splitter",
 
   /* Images and Icons */
   UIcon: "ui.image-icon",
