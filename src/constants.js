@@ -294,7 +294,7 @@ export const COMPONENTS = {
   UGroups: "ui.container-groups",
   UAccordion: "ui.container-accordion",
   UAccordionItem: "ui.container-accordion-item",
-  UEmpty: "ui.text-empty",
+  UEmpty: "ui.container-empty",
   UPlaceholder: "ui.container-placeholder",
   UCard: "ui.container-card",
   UModal: "ui.container-modal",
