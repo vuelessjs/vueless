@@ -143,7 +143,6 @@ describe("UCalendar.vue", () => {
       const dayView = component.findComponent(DayView);
       const days = dayView.findAll('[vl-key="day"]');
 
-      // Click the same day twice
       await days[5].trigger("click");
       await days[5].trigger("click");
 
