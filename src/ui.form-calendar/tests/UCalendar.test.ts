@@ -131,6 +131,32 @@ describe("UCalendar.vue", () => {
       expect(rangeUpdate.to).not.toBeNull();
     });
 
+    it("Range – allows selecting the same day for from and to", async () => {
+      const component = mount(UCalendar, {
+        props: {
+          range: true,
+          modelValue: { from: null, to: null },
+          dateFormat: "Y-m-d",
+        },
+      });
+
+      const dayView = component.findComponent(DayView);
+      const days = dayView.findAll('[vl-key="day"]');
+
+      // Click the same day twice
+      await days[5].trigger("click");
+      await days[5].trigger("click");
+
+      expect(component.emitted("update:modelValue")).toBeTruthy();
+      expect(component.emitted("update:modelValue")).toHaveLength(2);
+
+      const rangeUpdate = component.emitted("update:modelValue")![1][0] as RangeDate;
+
+      expect(rangeUpdate.from).not.toBeNull();
+      expect(rangeUpdate.to).not.toBeNull();
+      expect(rangeUpdate.from).toBe(rangeUpdate.to);
+    });
+
     it("Timepicker – shows timepicker when enabled", () => {
       const component = mount(UCalendar, {
         props: {

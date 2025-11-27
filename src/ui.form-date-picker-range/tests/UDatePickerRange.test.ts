@@ -440,6 +440,37 @@ describe("UDatePickerRange.vue", () => {
 
       expect(component.find("[vl-key='datepickerCalendar']").exists()).toBe(true);
     });
+
+    it("Menu – allows selecting the same day for from and to in range mode", async () => {
+      const component = mount(UDatePickerRange, {
+        props: {
+          variant: "input",
+          modelValue: { from: null, to: null },
+          dateFormat: "Y-m-d",
+          "onUpdate:modelValue": (value: RangeDate) => {
+            component.setProps({ modelValue: value });
+          },
+        },
+      });
+
+      const input = component.findComponent(UInput).get("input");
+
+      await input.trigger("focus");
+
+      const days = component.findAll("[vl-key='day']");
+
+      await days[10].trigger("click");
+      await days[10].trigger("click");
+
+      expect(component.emitted("update:modelValue")).toBeTruthy();
+
+      const emittedValues = component.emitted("update:modelValue")!;
+      const lastEmittedValue = emittedValues[emittedValues.length - 1][0] as RangeDate;
+
+      expect(lastEmittedValue.from).not.toBeNull();
+      expect(lastEmittedValue.to).not.toBeNull();
+      expect(lastEmittedValue.from).toBe(lastEmittedValue.to);
+    });
   });
 
   describe("Range Navigation", () => {
