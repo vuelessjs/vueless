@@ -6,7 +6,7 @@ import {
   getDocsDescription,
 } from "../../utils/storybook";
 
-import UEmpty from "../../ui.text-empty/UEmpty.vue";
+import UEmpty from "../../ui.container-empty/UEmpty.vue";
 import UButton from "../../ui.button/UButton.vue";
 import UIcon from "../../ui.image-icon/UIcon.vue";
 import URow from "../../ui.container-row/URow.vue";
@@ -25,8 +25,8 @@ interface UEmptyArgs extends Props {
 }
 
 export default {
-  id: "4090",
-  title: "Text & Content / Empty",
+  id: "5055",
+  title: "Containers / Empty",
   component: UEmpty,
   args: {
     title: "No contacts",
@@ -95,12 +95,15 @@ DefaultSlot.args = {
   `,
 };
 
+export const PlaceholderIcon = DefaultTemplate.bind({});
+PlaceholderIcon.args = { placeholderIcon: "inbox", title: "No messages" };
+
 export const FooterSlot = DefaultTemplate.bind({});
 FooterSlot.args = {
   slotTemplate: `
     <template #footer>
       <UButton
-        label="Add new one"
+        label="Add"
         size="sm"
         color="grayscale"
         variant="soft"

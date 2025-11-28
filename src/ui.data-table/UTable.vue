@@ -12,7 +12,7 @@ import {
 } from "vue";
 import { isEqual } from "lodash-es";
 
-import UEmpty from "../ui.text-empty/UEmpty.vue";
+import UEmpty from "../ui.container-empty/UEmpty.vue";
 import UCheckbox from "../ui.form-checkbox/UCheckbox.vue";
 import ULoaderProgress from "../ui.loader-progress/ULoaderProgress.vue";
 import UTableRow from "./UTableRow.vue";

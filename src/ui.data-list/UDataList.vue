@@ -7,7 +7,7 @@ import { getDefaults } from "../utils/ui";
 import { hasSlotContent } from "../utils/helper";
 
 import UIcon from "../ui.image-icon/UIcon.vue";
-import UEmpty from "../ui.text-empty/UEmpty.vue";
+import UEmpty from "../ui.container-empty/UEmpty.vue";
 
 import { COMPONENT_NAME } from "./constants";
 import defaultConfig from "./config";

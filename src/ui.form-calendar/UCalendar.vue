@@ -90,6 +90,12 @@ const emit = defineEmits([
    * @property {string} value
    */
   "userDateChange",
+
+  /**
+   * Triggers when range date values (from or to) change.
+   * @property {object} value
+   */
+  "change-range",
 ]);
 
 const wrapperRef = useTemplateRef<HTMLDivElement>("wrapper");
@@ -253,6 +259,7 @@ const localValue = computed({
       if (newDate && newDateTo) {
         tempRangeValue.value = null;
         emit("update:modelValue", newRangeDate);
+        emit("change-range", newRangeDate);
       }
     } else {
       emit("update:modelValue", newDate);
@@ -453,15 +460,11 @@ function onInputDate(newDate: Date | null) {
   }
 
   if (props.range && isRangeDate(localValue.value)) {
-    const localFromTime =
-      localValue.value?.from instanceof Date ? localValue.value?.from.getTime() : 0;
-
-    const isSameAsFrom = newDate.getTime() === localFromTime;
     const isNewDateLessFromDate = localValue.value.from && newDate < localValue.value.from;
     const areToAndFromDateExists = localValue.value.to && localValue.value.from;
     const hasFrom = localValue.value.from;
 
-    const isFullReset = isSameAsFrom || isNewDateLessFromDate || areToAndFromDateExists || !hasFrom;
+    const isFullReset = isNewDateLessFromDate || areToAndFromDateExists || !hasFrom;
 
     const updatedValue = isFullReset
       ? { from: newDate, to: null }
@@ -472,8 +475,10 @@ function onInputDate(newDate: Date | null) {
       localValue.value = updatedValue;
 
       emit("input", updatedValue);
+      emit("change-range", updatedValue);
     } else {
       tempRangeValue.value = updatedValue;
+      emit("change-range", updatedValue);
     }
   } else {
     localValue.value = newDate;
