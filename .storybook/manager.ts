@@ -1,5 +1,5 @@
 import { addons } from "storybook/manager-api";
-import { getThemeDark, getThemeLight } from "@vueless/storybook";
+import { getThemeDark, getThemeLight } from "@vueless/storybook/themes";
 
 /* Theme styles */
 import "./theme/theme.css";
