@@ -2,7 +2,7 @@ import { mount, VueWrapper } from "@vue/test-utils";
 import { describe, it, expect } from "vitest";
 
 import UDataList from "../UDataList.vue";
-import UEmpty from "../../ui.text-empty/UEmpty.vue";
+import UEmpty from "../../ui.container-empty/UEmpty.vue";
 import UIcon from "../../ui.image-icon/UIcon.vue";
 import draggable from "vuedraggable";
 

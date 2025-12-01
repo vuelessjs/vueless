@@ -764,7 +764,7 @@ watchEffect(() => {
           v-bind="datepickerCalendarAttrs as KeyAttrsWithConfig<UCalendarConfig>"
           range
           :data-test="getDataTest('calendar')"
-          @input="onInputCalendar"
+          @change-range="onInputCalendar"
         />
       </div>
     </Transition>

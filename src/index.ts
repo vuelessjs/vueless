@@ -21,9 +21,18 @@ export {
   createDebounce,
   hasSlotContent,
 } from "./utils/helper";
+export {
+  cx,
+  cva,
+  compose,
+  setColor,
+  getDefaults,
+  vuelessConfig,
+  setVuelessConfig,
+  getMergedConfig as mergeConfigs,
+} from "./utils/ui";
 export { addToRequestQueue, removeFromRequestQueue } from "./utils/requestQueue";
 export { isMac, isPWA, isIOS, isAndroid, isMobileApp, isWindows } from "./utils/platform";
-export { cx, cva, compose, getDefaults, setVuelessConfig, setColor, vuelessConfig } from "./utils/ui";
 export { getTheme, setTheme, resetTheme, normalizeThemeConfig, cssVar, setRootCSSVariables } from "./utils/theme";
 export { getArgs, getArgTypes, getSlotNames, getSlotsFragment, getSource, getDocsDescription } from "./utils/storybook";
 /* adapters */
@@ -35,7 +44,7 @@ export { useLocale } from "./composables/useLocale";
 export { useUI } from "./composables/useUI";
 export { useDarkMode } from "./composables/useDarkMode";
 export { useRequestQueue } from "./composables/useRequestQueue";
-export { useBreakpoint } from "./composables/useBreakpoint";
+export { useBreakpoint, r } from "./composables/useBreakpoint";
 export { useLoaderOverlay } from "./ui.loader-overlay/useLoaderOverlay";
 export { useLoaderProgress } from "./ui.loader-progress/useLoaderProgress";
 export { useMutationObserver } from "./composables/useMutationObserver";
