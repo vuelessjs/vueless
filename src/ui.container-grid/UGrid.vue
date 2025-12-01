@@ -24,29 +24,16 @@ defineExpose({
   wrapperRef,
 });
 
-const gridColsClasses = computed(() => {
+const gridStyle = computed(() => {
   if (props.responsive) {
-    return "[grid-template-columns:repeat(auto-fit,minmax(200px,1fr))]";
+    return {
+      gridTemplateColumns: "repeat(auto-fit,minmax(200px,1fr))",
+    };
   }
 
-  if (!props.cols) {
-    return "";
-  }
-
-  const parts = props.cols.split(" ");
-  const classes: string[] = [];
-
-  for (const part of parts) {
-    if (part.includes(":")) {
-      const [bp, val] = part.split(":");
-
-      classes.push(`${bp}:grid-cols-${val}`);
-    } else {
-      classes.push(`grid-cols-${part}`);
-    }
-  }
-
-  return classes.join(" ");
+  return {
+    gridTemplateColumns: `repeat(${props.cols}, minmax(0, 1fr))`,
+  };
 });
 
 /**
@@ -61,7 +48,7 @@ const { getDataTest, wrapperAttrs } = useUI<Config>(defaultConfig);
     :is="tag"
     ref="wrapper"
     v-bind="wrapperAttrs"
-    :class="gridColsClasses"
+    :style="gridStyle"
     :data-test="getDataTest()"
   >
     <!-- @slot Use it to add grid items. -->

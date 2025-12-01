@@ -45,12 +45,9 @@ export default /*tw*/ {
         center: "justify-items-center",
         stretch: "justify-items-stretch",
       },
-      dense: {
-        true: "grid-flow-dense",
-      },
     },
   },
-  defaultVariants: {
+  defaults: {
     tag: "div",
   },
 };

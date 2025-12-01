@@ -41,11 +41,6 @@ export interface Props {
   responsive?: boolean;
 
   /**
-   * Compact layout flow.
-   */
-  dense?: boolean;
-
-  /**
    * Allows changing HTML tag.
    */
   tag?: string;
