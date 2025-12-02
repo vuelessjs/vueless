@@ -6,9 +6,14 @@ export type Config = typeof defaultConfig;
 
 export interface Props {
   /**
-   * Number of columns or responsive config (e.g. '1 sm:2 md:4').
+   * Number of columns.
    */
   cols?: string;
+
+  /**
+   * Number of rows.
+   */
+  rows?: string;
 
   /**
    * Gap between items.
@@ -31,14 +36,43 @@ export interface Props {
   align?: "start" | "end" | "center" | "stretch" | "baseline";
 
   /**
-   * Horizontal alignment (justify-items).
+   * Items vertical align for multi-row grid containers (align-content).
    */
-  justify?: "start" | "end" | "center" | "stretch";
+  content?:
+    | "start"
+    | "end"
+    | "center"
+    | "around"
+    | "evenly"
+    | "between"
+    | "normal"
+    | "stretch"
+    | "baseline";
 
   /**
-   * Enables auto-fit responsive behavior.
+   * Control how grid items are aligned along their inline axis (justify-items).
    */
-  responsive?: boolean;
+  justify?: "start" | "end" | "end-safe" | "center" | "center-safe" | "stretch";
+
+  /**
+   * Control how content is justified and aligned within the grid (place-content).
+   */
+  placeContent?:
+    | "start"
+    | "end"
+    | "end-safe"
+    | "center"
+    | "center-safe"
+    | "around"
+    | "evenly"
+    | "between"
+    | "stretch"
+    | "baseline";
+
+  /**
+   * Control how items are justified and aligned within the grid (place-items).
+   */
+  placeItems?: "start" | "end" | "end-safe" | "center" | "center-safe" | "stretch" | "baseline";
 
   /**
    * Allows changing HTML tag.

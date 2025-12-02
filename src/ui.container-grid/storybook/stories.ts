@@ -16,7 +16,15 @@ import type { Props } from "../types";
 
 interface UGridArgs extends Props {
   slotTemplate?: string;
-  enum: "gap" | "rowGap" | "colGap" | "align" | "justify";
+  enum:
+    | "gap"
+    | "rowGap"
+    | "colGap"
+    | "align"
+    | "content"
+    | "justify"
+    | "placeContent"
+    | "placeItems";
 }
 
 export default {
@@ -34,15 +42,9 @@ export default {
 } as Meta;
 
 const defaultTemplate = `
-  <UPlaceholder label="1" class="h-20" />
-  <UPlaceholder label="2" class="h-20" />
-  <UPlaceholder label="3" class="h-20" />
-  <UPlaceholder label="4" class="h-20" />
-  <UPlaceholder label="5" class="h-20" />
-  <UPlaceholder label="6" class="h-20" />
-  <UPlaceholder label="7" class="h-20" />
-  <UPlaceholder label="8" class="h-20" />
-  <UPlaceholder label="9" class="h-20" />
+  <UPlaceholder label="1" class="min-h-10 col-span-1 row-span-3" />
+  <UPlaceholder label="2" class="min-h-10 col-span-3 row-span-1" />
+  <UPlaceholder label="3" class="min-h-10 col-span-3 row-span-2" />
 `;
 
 function createPlaceholders(cls = "h-auto") {
@@ -86,12 +88,19 @@ const EnumTemplate: StoryFn<UGridArgs> = (args: UGridArgs, { argTypes }) => ({
 });
 
 export const Default = DefaultTemplate.bind({});
-Default.args = { cols: "4", gap: "md" };
+Default.args = { cols: "4", rows: "3", gap: "md" };
 
 export const Gap = EnumTemplate.bind({});
 Gap.args = {
   enum: "gap",
   slotTemplate: createPlaceholders(),
+};
+Gap.parameters = {
+  docs: {
+    description: {
+      story: "Gap between items.",
+    },
+  },
 };
 
 export const RowGap = EnumTemplate.bind({});
@@ -99,18 +108,69 @@ RowGap.args = {
   enum: "rowGap",
   slotTemplate: createPlaceholders(),
 };
+Gap.parameters = {
+  docs: {
+    description: {
+      story: "Vertical gap override.",
+    },
+  },
+};
 
 export const ColGap = EnumTemplate.bind({});
 ColGap.args = {
   enum: "colGap",
-  slotTemplate: createPlaceholders("w-auto min-w-20"),
+  slotTemplate: createPlaceholders("min-w-20"),
+};
+Gap.parameters = {
+  docs: {
+    description: {
+      story: "Horizontal gap override.",
+    },
+  },
 };
 
 export const Align = EnumTemplate.bind({});
 Align.args = {
   enum: "align",
   slotTemplate: createPlaceholders(),
-  config: { wrapper: "h-40" },
+  config: { wrapper: "h-40 !content-normal" },
+};
+Align.parameters = {
+  docs: {
+    description: {
+      story: "Vertical alignment (align-items).",
+    },
+  },
+};
+
+export const Content: StoryFn<UGridArgs> = (args: UGridArgs, { argTypes }) => ({
+  components: { UGrid, UText, UPlaceholder, UCol },
+  setup: () => ({ args, argTypes, getArgs }),
+  template: `
+    <UCol gap="lg" block>
+      <UGrid
+        v-for="option in argTypes?.[args.enum]?.options"
+        v-bind="getArgs(args, option)"
+        :key="option"
+        cols="3"
+        class="h-52 w-full border border-primary border-dashed rounded-medium p-4"
+      >
+        <UPlaceholder :label="option" />
+        <UPlaceholder :label="option" />
+        <UPlaceholder :label="option" />
+        <UPlaceholder :label="option" />
+        <UPlaceholder :label="option" />
+      </UGrid>
+    </UCol>
+  `,
+});
+Content.args = { enum: "content", gap: "md" };
+Content.parameters = {
+  docs: {
+    description: {
+      story: "Items vertical align for multi-row grid containers (align-content).",
+    },
+  },
 };
 
 export const Justify = EnumTemplate.bind({});
@@ -118,16 +178,10 @@ Justify.args = {
   enum: "justify",
   slotTemplate: createPlaceholders("w-auto min-w-20"),
 };
-
-export const Responsive: StoryFn<UGridArgs> = (args: UGridArgs) => ({
-  components: { UGrid },
-  setup: () => ({ args }),
-  template: `
-    <UGrid cols="1 sm:2 md:3 lg:4" gap="md">
-      <div v-for="n in 8" :key="n" class="bg-gray-200 dark:bg-gray-700 h-20 rounded flex items-center justify-center">
-        {{ n }}
-      </div>
-    </UGrid>
-  `,
-});
-Responsive.args = {};
+Justify.parameters = {
+  docs: {
+    description: {
+      story: "Horizontal alignment (justify-items).",
+    },
+  },
+};
