@@ -25,6 +25,8 @@ interface UGridArgs extends Props {
     | "justify"
     | "placeContent"
     | "placeItems";
+  class?: string;
+  itemClass?: string;
 }
 
 export default {
@@ -47,17 +49,6 @@ const defaultTemplate = `
   <UPlaceholder label="3" class="min-h-10 col-span-3 row-span-2" />
 `;
 
-function createPlaceholders(cls = "h-auto") {
-  return `
-    <UPlaceholder :label="option" class="${cls}" />
-    <UPlaceholder :label="option" class="${cls}" />
-    <UPlaceholder :label="option" class="${cls}" />
-    <UPlaceholder :label="option" class="${cls}" />
-    <UPlaceholder :label="option" class="${cls}" />
-    <UPlaceholder :label="option" class="${cls}" />
-  `;
-}
-
 const DefaultTemplate: StoryFn<UGridArgs> = (args: UGridArgs) => ({
   components: { UGrid, UPlaceholder },
   setup: () => ({ args, slots: getSlotNames(UGrid.__name) }),
@@ -79,9 +70,14 @@ const EnumTemplate: StoryFn<UGridArgs> = (args: UGridArgs, { argTypes }) => ({
         :key="option"
         cols="3"
         class="border border-primary border-dashed rounded p-4 w-full"
-        :config="args.config"
+        :class="args.class"
       >
-        ${args.slotTemplate}
+        <UPlaceholder :label="option" class="h-auto" :class="args.itemClass" />
+        <UPlaceholder :label="option" class="h-auto" :class="args.itemClass" />
+        <UPlaceholder :label="option" class="h-auto" :class="args.itemClass" />
+        <UPlaceholder :label="option" class="h-auto" :class="args.itemClass" />
+        <UPlaceholder :label="option" class="h-auto" :class="args.itemClass" />
+        <UPlaceholder :label="option" class="h-auto" :class="args.itemClass" />
       </UGrid>
     </UCol>
   `,
@@ -91,10 +87,7 @@ export const Default = DefaultTemplate.bind({});
 Default.args = { cols: "4", rows: "3", gap: "md" };
 
 export const Gap = EnumTemplate.bind({});
-Gap.args = {
-  enum: "gap",
-  slotTemplate: createPlaceholders(),
-};
+Gap.args = { enum: "gap" };
 Gap.parameters = {
   docs: {
     description: {
@@ -104,10 +97,7 @@ Gap.parameters = {
 };
 
 export const RowGap = EnumTemplate.bind({});
-RowGap.args = {
-  enum: "rowGap",
-  slotTemplate: createPlaceholders(),
-};
+RowGap.args = { enum: "rowGap" };
 Gap.parameters = {
   docs: {
     description: {
@@ -117,10 +107,7 @@ Gap.parameters = {
 };
 
 export const ColGap = EnumTemplate.bind({});
-ColGap.args = {
-  enum: "colGap",
-  slotTemplate: createPlaceholders("min-w-20"),
-};
+ColGap.args = { enum: "colGap" };
 Gap.parameters = {
   docs: {
     description: {
@@ -129,11 +116,20 @@ Gap.parameters = {
   },
 };
 
+export const Justify = EnumTemplate.bind({});
+Justify.args = { enum: "justify", itemClass: "w-auto min-w-20" };
+Justify.parameters = {
+  docs: {
+    description: {
+      story: "Horizontal alignment (justify-items).",
+    },
+  },
+};
+
 export const Align = EnumTemplate.bind({});
 Align.args = {
   enum: "align",
-  slotTemplate: createPlaceholders(),
-  config: { wrapper: "h-40 !content-normal" },
+  class: "h-40 !content-normal",
 };
 Align.parameters = {
   docs: {
@@ -173,15 +169,78 @@ Content.parameters = {
   },
 };
 
-export const Justify = EnumTemplate.bind({});
-Justify.args = {
-  enum: "justify",
-  slotTemplate: createPlaceholders("w-auto min-w-20"),
-};
-Justify.parameters = {
+export const PlaceContent: StoryFn<UGridArgs> = (args: UGridArgs, { argTypes }) => ({
+  components: { UGrid, UText, UPlaceholder, UCol },
+  setup: () => {
+    function getItemClass(option: string) {
+      return option === "stretch" ? "w-auto" : "size-14";
+    }
+
+    function getGridClass(option: string) {
+      return option === "stretch" ? "grid-cols-2" : "grid-cols-[repeat(2,56px)]";
+    }
+
+    return { args, argTypes, getArgs, getItemClass, getGridClass };
+  },
+  template: `
+    <UCol block gap="lg">
+      <UGrid
+        v-for="option in argTypes?.[args.enum]?.options"
+        v-bind="getArgs(args, option)"
+        :key="option"
+        class="border border-primary border-dashed rounded p-4 w-full h-56"
+        :class="getGridClass(option)"
+      >
+        <UPlaceholder :label="option" :class="getItemClass(option)" />
+        <UPlaceholder :label="option" :class="getItemClass(option)" />
+        <UPlaceholder :label="option" :class="getItemClass(option)" />
+        <UPlaceholder :label="option" :class="getItemClass(option)" />
+      </UGrid>
+    </UCol>
+  `,
+});
+PlaceContent.args = { enum: "placeContent" };
+PlaceContent.parameters = {
   docs: {
     description: {
-      story: "Horizontal alignment (justify-items).",
+      story: "Control how content is justified and aligned within the grid (place-content).",
+    },
+  },
+};
+
+export const PlaceItems: StoryFn<UGridArgs> = (args: UGridArgs, { argTypes }) => ({
+  components: { UGrid, UText, UPlaceholder, UCol },
+  setup: () => {
+    function getItemClass(option: string) {
+      return option === "stretch" ? "w-auto" : "size-14";
+    }
+
+    return { args, argTypes, getArgs, getItemClass };
+  },
+  template: `
+    <UCol block gap="lg">
+      <UGrid
+        v-for="option in argTypes?.[args.enum]?.options"
+        v-bind="getArgs(args, option)"
+        :key="option"
+        cols="3"
+        class="border border-primary border-dashed rounded p-4 w-full h-56"
+      >
+        <UPlaceholder :label="option" :class="getItemClass(option)" />
+        <UPlaceholder :label="option" :class="getItemClass(option)" />
+        <UPlaceholder :label="option" :class="getItemClass(option)" />
+        <UPlaceholder :label="option" :class="getItemClass(option)" />
+        <UPlaceholder :label="option" :class="getItemClass(option)" />
+        <UPlaceholder :label="option" :class="getItemClass(option)" />
+      </UGrid>
+    </UCol>
+  `,
+});
+PlaceItems.args = { enum: "placeItems" };
+PlaceItems.parameters = {
+  docs: {
+    description: {
+      story: "Control how items are justified and aligned within the grid (place-items).",
     },
   },
 };
