@@ -98,7 +98,7 @@ Gap.parameters = {
 
 export const RowGap = EnumTemplate.bind({});
 RowGap.args = { enum: "rowGap" };
-Gap.parameters = {
+RowGap.parameters = {
   docs: {
     description: {
       story: "Vertical gap override.",
@@ -108,7 +108,7 @@ Gap.parameters = {
 
 export const ColGap = EnumTemplate.bind({});
 ColGap.args = { enum: "colGap" };
-Gap.parameters = {
+ColGap.parameters = {
   docs: {
     description: {
       story: "Horizontal gap override.",
