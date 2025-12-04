@@ -33,7 +33,7 @@ export interface Props {
   /**
    * Vertical alignment (align-items).
    */
-  align?: "start" | "end" | "center" | "stretch" | "baseline";
+  align?: "start" | "end" | "center" | "stretch" | "baseline" | "normal";
 
   /**
    * Items vertical align for multi-row grid containers (align-content).
@@ -52,7 +52,7 @@ export interface Props {
   /**
    * Control how grid items are aligned along their inline axis (justify-items).
    */
-  justify?: "start" | "end" | "end-safe" | "center" | "center-safe" | "stretch";
+  justify?: "start" | "end" | "end-safe" | "center" | "center-safe" | "stretch" | "normal";
 
   /**
    * Control how content is justified and aligned within the grid (place-content).

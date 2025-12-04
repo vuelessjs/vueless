@@ -66,6 +66,7 @@ export default /*tw*/ {
         center: "items-center",
         stretch: "items-stretch",
         baseline: "items-baseline",
+        normal: "items-normal",
       },
       content: {
         start: "content-start",
@@ -85,6 +86,7 @@ export default /*tw*/ {
         center: "justify-items-center",
         "center-safe": "justify-items-center-safe",
         stretch: "justify-items-stretch",
+        normal: "justify-items-normal",
       },
       placeContent: {
         start: "place-content-start",
@@ -111,6 +113,11 @@ export default /*tw*/ {
   },
   defaults: {
     gap: "md",
+    align: "normal",
+    content: "normal",
+    justify: "normal",
+    placeContent: "start",
+    placeItems: "start",
     tag: "div",
   },
 };
