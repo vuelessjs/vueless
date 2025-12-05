@@ -131,6 +131,31 @@ describe("UCalendar.vue", () => {
       expect(rangeUpdate.to).not.toBeNull();
     });
 
+    it("Range – allows selecting the same day for from and to", async () => {
+      const component = mount(UCalendar, {
+        props: {
+          range: true,
+          modelValue: { from: null, to: null },
+          dateFormat: "Y-m-d",
+        },
+      });
+
+      const dayView = component.findComponent(DayView);
+      const days = dayView.findAll('[vl-key="day"]');
+
+      await days[5].trigger("click");
+      await days[5].trigger("click");
+
+      expect(component.emitted("update:modelValue")).toBeTruthy();
+      expect(component.emitted("update:modelValue")).toHaveLength(2);
+
+      const rangeUpdate = component.emitted("update:modelValue")![1][0] as RangeDate;
+
+      expect(rangeUpdate.from).not.toBeNull();
+      expect(rangeUpdate.to).not.toBeNull();
+      expect(rangeUpdate.from).toBe(rangeUpdate.to);
+    });
+
     it("Timepicker – shows timepicker when enabled", () => {
       const component = mount(UCalendar, {
         props: {
@@ -517,6 +542,94 @@ describe("UCalendar.vue", () => {
       });
 
       expect(component.emitted("userDateChange")).toBeTruthy();
+    });
+
+    it("ChangeRange – emits when first date is selected in range mode", async () => {
+      const component = mount(UCalendar, {
+        props: {
+          range: true,
+          modelValue: { from: null, to: null },
+          dateFormat: "Y-m-d",
+        },
+      });
+
+      const dayView = component.findComponent(DayView);
+      const days = dayView.findAll('[vl-key="day"]');
+
+      await days[0].trigger("click");
+
+      expect(component.emitted("change-range")).toBeTruthy();
+      expect(component.emitted("change-range")![0][0]).toHaveProperty("from");
+      expect(component.emitted("change-range")![0][0]).toHaveProperty("to");
+    });
+
+    it("ChangeRange – emits when both dates are selected in range mode", async () => {
+      const component = mount(UCalendar, {
+        props: {
+          range: true,
+          modelValue: { from: null, to: null },
+          dateFormat: "Y-m-d",
+        },
+      });
+
+      const dayView = component.findComponent(DayView);
+      const days = dayView.findAll('[vl-key="day"]');
+
+      await days[0].trigger("click");
+      await days[3].trigger("click");
+
+      const changeRangeEvents = component.emitted("change-range");
+
+      expect(changeRangeEvents).toBeTruthy();
+      expect(changeRangeEvents!.length).toBeGreaterThan(0);
+
+      const lastEvent = changeRangeEvents![changeRangeEvents!.length - 1][0] as RangeDate;
+
+      expect(lastEvent.from).not.toBeNull();
+      expect(lastEvent.to).not.toBeNull();
+    });
+
+    it("ChangeRange – emits when same date is selected twice in range mode", async () => {
+      const component = mount(UCalendar, {
+        props: {
+          range: true,
+          modelValue: { from: null, to: null },
+          dateFormat: "Y-m-d",
+        },
+      });
+
+      const dayView = component.findComponent(DayView);
+      const days = dayView.findAll('[vl-key="day"]');
+
+      await days[5].trigger("click");
+      await days[5].trigger("click");
+
+      const changeRangeEvents = component.emitted("change-range");
+
+      expect(changeRangeEvents).toBeTruthy();
+
+      const lastEvent = changeRangeEvents![changeRangeEvents!.length - 1][0] as RangeDate;
+
+      expect(lastEvent.from).not.toBeNull();
+      expect(lastEvent.to).not.toBeNull();
+      expect(lastEvent.from).toBe(lastEvent.to);
+    });
+
+    it("ChangeRange – does not emit when range mode is disabled", async () => {
+      const component = mount(UCalendar, {
+        props: {
+          range: false,
+          modelValue: null,
+          dateFormat: "Y-m-d",
+        },
+      });
+
+      const dayView = component.findComponent(DayView);
+      const day = dayView.find('[vl-key="day"]');
+
+      await day.trigger("click");
+
+      expect(component.emitted("change-range")).toBeFalsy();
     });
   });
 
