@@ -1,18 +1,18 @@
 <script setup lang="ts">
 import { useId, ref, computed, watchEffect, useTemplateRef } from "vue";
 
-import useUI from "../composables/useUI.ts";
-import { getDefaults } from "../utils/ui.ts";
-import { createDebounce } from "../utils/helper.ts";
+import { useUI } from "../composables/useUI";
+import { getDefaults } from "../utils/ui";
+import { createDebounce } from "../utils/helper";
 
 import UIcon from "../ui.image-icon/UIcon.vue";
 import UInput from "../ui.form-input/UInput.vue";
 import UButton from "../ui.button/UButton.vue";
 
-import { COMPONENT_NAME } from "./constants.ts";
-import defaultConfig from "./config.ts";
+import { COMPONENT_NAME } from "./constants";
+import defaultConfig from "./config";
 
-import type { Props, Config } from "./types.ts";
+import type { Props, Config } from "./types";
 
 defineOptions({ inheritAttrs: false });
 

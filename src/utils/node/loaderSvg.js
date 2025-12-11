@@ -2,13 +2,15 @@ import fs from "node:fs";
 import { compileTemplate } from "vue/compiler-sfc";
 import { optimize as optimizeSvg } from "svgo";
 
+import { getVuelessConfig } from "./vuelessConfig.js";
 import { DEFAULT_SVGO_CONFIG } from "../../constants.js";
 
 export async function loadSvg(id, options) {
-  const {
+  let {
+    basePath = "",
     defaultImport = "url",
+    svgoConfig = {},
     svgo = true,
-    svgoConfig = DEFAULT_SVGO_CONFIG,
     debug = false,
   } = options;
   const svgRegex = /\.svg(\?(raw|url|component|skipsvgo))?$/;
@@ -45,7 +47,11 @@ export async function loadSvg(id, options) {
   }
 
   if (svgo !== false && query !== "skipsvgo") {
+    const vuelessConfig = getVuelessConfig(basePath);
+    const isLucideLibrary = vuelessConfig.components?.UIcon?.defaults?.library === "lucide-static";
+
     svg = optimizeSvg(svg, {
+      ...(isLucideLibrary ? {} : DEFAULT_SVGO_CONFIG),
       ...svgoConfig,
       svgPath,
     }).data;

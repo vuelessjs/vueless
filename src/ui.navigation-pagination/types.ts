@@ -1,5 +1,5 @@
-import defaultConfig from "./config.ts";
-import type { ComponentConfig } from "../types.ts";
+import defaultConfig from "./config";
+import type { ComponentConfig } from "../types";
 
 export type Config = typeof defaultConfig;
 
@@ -27,7 +27,7 @@ export interface Props {
   /**
    * Pagination variant.
    */
-  variant?: "solid" | "outlined" | "soft" | "ghost";
+  variant?: "solid" | "outlined" | "subtle" | "soft" | "ghost";
 
   /**
    * Pagination size.

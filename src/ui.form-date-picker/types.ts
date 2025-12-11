@@ -1,6 +1,6 @@
-import defaultConfig from "./config.ts";
+import defaultConfig from "./config";
 
-import type { ComponentConfig } from "../types.ts";
+import type { ComponentConfig } from "../types";
 
 export type Locale = typeof defaultConfig.i18n;
 export type Config = typeof defaultConfig;

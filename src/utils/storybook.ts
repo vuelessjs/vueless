@@ -1,4 +1,4 @@
-import { COMPONENTS } from "../constants.js";
+import { COMPONENTS } from "../constants";
 
 import type {
   WebTypes,
@@ -8,7 +8,7 @@ import type {
   SlotBinding,
   ExposeProperty,
   UnknownObject,
-} from "../types.ts";
+} from "../types";
 
 interface Types {
   [key: string]: ArgType | undefined;
@@ -33,7 +33,7 @@ interface TableConfig {
 
 type ComponentNames = keyof typeof COMPONENTS;
 
-/* Load Web-Types from the project root. */
+/* Load Web-Types from cache. */
 const [webTypes]: WebTypes[] = Object.values(
   import.meta.glob("/node_modules/.cache/vueless/web-types.json", {
     eager: true,
@@ -304,7 +304,7 @@ export function getArgTypes(componentName: string | undefined) {
       description: event.description,
     };
 
-    if (import.meta.env.STORYBOOK_FULL) {
+    if (import.meta.env.DEV) {
       const eventName = "on" + event.name.charAt(0).toUpperCase() + event.name.slice(1);
 
       types[eventName] = {
@@ -334,7 +334,7 @@ export function getSlotsFragment(defaultTemplate: string) {
 /**
  * Create story param config to show component description with a link on GitHub.
  */
-export function getDocsDescription(componentName: string | undefined) {
+export function getDocsDescription(componentName: string | undefined, afterText = "") {
   if (!componentName) {
     return {};
   }
@@ -342,7 +342,7 @@ export function getDocsDescription(componentName: string | undefined) {
   let viewOnGitHub = "";
 
   if (COMPONENTS[componentName as ComponentNames]) {
-    viewOnGitHub = `| <a href="https://github.com/vuelessjs/vueless/tree/main/src/${COMPONENTS[componentName as ComponentNames]}" target="_blank">View on GitHub</a>`;
+    viewOnGitHub = `| <a href="https://github.com/vuelessjs/vueless/tree/main/src/${COMPONENTS[componentName as ComponentNames]}" target="_blank">View on GitHub</a><br/>${afterText}`;
   }
 
   return {
@@ -408,4 +408,8 @@ export function getEnumVariantDescription(message = "Hover over a variant to see
       },
     },
   };
+}
+
+export function trimText(text: string) {
+  return text.replace(/\s+/g, " ").trim();
 }

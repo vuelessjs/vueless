@@ -1,16 +1,16 @@
 <script setup lang="ts">
-import { ref, computed, useId } from "vue";
+import { ref, computed, useId, useTemplateRef, nextTick } from "vue";
 
-import useUI from "../composables/useUI.ts";
-import { getDefaults } from "../utils/ui.ts";
+import { useUI } from "../composables/useUI";
+import { getDefaults } from "../utils/ui";
 
-import defaultConfig from "./config.ts";
-import { COMPONENT_NAME } from "./constants.ts";
+import defaultConfig from "./config";
+import { COMPONENT_NAME } from "./constants";
 
 import UInput from "../ui.form-input/UInput.vue";
 import UIcon from "../ui.image-icon/UIcon.vue";
 
-import type { Props, Config } from "./types.ts";
+import type { Props, Config } from "./types";
 
 defineOptions({ inheritAttrs: false });
 
@@ -21,15 +21,28 @@ const props = withDefaults(defineProps<Props>(), {
 
 const emit = defineEmits([
   /**
-   * Triggers when the input value is changes.
+   * Triggers when the input value is changed.
    * @property {string} modelValue
    * @property {number} modelValue
    */
   "update:modelValue",
+
+  /**
+   * Triggers when the input gains focus.
+   * @property {FocusEvent} event
+   */
+  "focus",
+
+  /**
+   * Triggers when the input loses focus.
+   * @property {FocusEvent} event
+   */
+  "blur",
 ]);
 
 const elementId = props.id || useId();
 
+const inputRef = useTemplateRef<InstanceType<typeof UInput>>("input");
 const isShownPassword = ref(false);
 
 const localValue = computed({
@@ -47,8 +60,20 @@ const passwordIcon = computed(() => {
     : config.value.defaults.passwordHiddenIcon || "";
 });
 
-function onClickShowPassword() {
+async function onClickShowPassword() {
   isShownPassword.value = !isShownPassword.value;
+
+  await nextTick();
+
+  inputRef.value?.inputRef?.focus();
+}
+
+function onFocus(event: FocusEvent) {
+  emit("focus", event);
+}
+
+function onBlur(event: FocusEvent) {
+  emit("blur", event);
 }
 
 /**
@@ -65,7 +90,8 @@ const { getDataTest, config, passwordInputAttrs, passwordIconAttrs, passwordIcon
 
 <template>
   <UInput
-    :id="id"
+    :id="elementId"
+    ref="input"
     v-model="localValue"
     :type="inputType"
     :label="label"
@@ -79,6 +105,9 @@ const { getDataTest, config, passwordInputAttrs, passwordIconAttrs, passwordIcon
     :readonly="readonly"
     :disabled="disabled"
     v-bind="passwordInputAttrs"
+    :data-test="getDataTest()"
+    @focus="onFocus"
+    @blur="onBlur"
   >
     <template #left>
       <!--
@@ -88,30 +117,31 @@ const { getDataTest, config, passwordInputAttrs, passwordIconAttrs, passwordIcon
       <slot name="left" :icon-name="leftIcon" />
     </template>
 
+    <template #label>
+      <!--
+        @slot Use this to add custom content instead of the label.
+        @binding {string} label
+      -->
+      <slot name="label" :label="label" />
+    </template>
+
     <template #right>
-      <label v-bind="passwordIconWrapperAttrs" :for="elementId">
+      <div v-bind="passwordIconWrapperAttrs" @click="onClickShowPassword">
         <!--
           @slot Use it to add something instead of the password icon.
           @binding {string} icon-name
           @binding {boolean} visible
-          @binding {function} toggle
         -->
-        <slot
-          name="right"
-          :icon-name="passwordIcon"
-          :visible="isShownPassword"
-          :toggle="onClickShowPassword"
-        >
+        <slot name="right" :icon-name="passwordIcon" :visible="isShownPassword">
           <UIcon
             :name="passwordIcon"
             color="neutral"
             interactive
             v-bind="passwordIconAttrs"
             :data-test="getDataTest('password-icon')"
-            @click="onClickShowPassword"
           />
         </slot>
-      </label>
+      </div>
     </template>
   </UInput>
 </template>

@@ -5,7 +5,7 @@ import {
   getSlotNames,
   getSlotsFragment,
   getDocsDescription,
-} from "../../utils/storybook.ts";
+} from "../../utils/storybook";
 
 import UToggle from "../../ui.button-toggle/UToggle.vue";
 import UIcon from "../../ui.image-icon/UIcon.vue";
@@ -14,8 +14,8 @@ import UBadge from "../../ui.text-badge/UBadge.vue";
 import UDot from "../../ui.other-dot/UDot.vue";
 import ULabel from "../../ui.form-label/ULabel.vue";
 
-import type { Meta, StoryFn } from "@storybook/vue3";
-import type { Props } from "../types.ts";
+import type { Meta, StoryFn } from "@storybook/vue3-vite";
+import type { Props } from "../types";
 
 interface UToggleArgs extends Props {
   slotTemplate?: string;
@@ -23,9 +23,10 @@ interface UToggleArgs extends Props {
 }
 
 export default {
-  components: { UIcon },
+  id: "1030",
   title: "Buttons & Links / Toggle",
   component: UToggle,
+  components: { UIcon },
   args: {
     modelValue: "11",
     options: [
@@ -57,14 +58,14 @@ const DefaultTemplate: StoryFn<UToggleArgs> = (args: UToggleArgs) => ({
 
 const EnumTemplate: StoryFn<UToggleArgs> = (args: UToggleArgs, { argTypes }) => ({
   components: { UToggle, URow },
-  setup: () => ({ args, argTypes, getArgs, values: ref(argTypes.size?.options) }),
+  setup: () => ({ args, argTypes, getArgs }),
   template: `
     <URow>
       <UToggle
         v-for="option in argTypes?.[args.enum]?.options"
         v-bind="getArgs(args, option)"
         :key="option"
-        v-model="values[option]"
+        v-model="args.modelValue"
         class="w-auto"
       />
     </URow>
@@ -78,6 +79,7 @@ export const Sizes = EnumTemplate.bind({});
 Sizes.args = {
   name: "sizeTemplate",
   enum: "size",
+  modelValue: 1,
   options: [
     { value: 1, label: "{enumValue}" },
     { value: 2, label: "{enumValue}" },

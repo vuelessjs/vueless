@@ -1,12 +1,13 @@
 export default /*tw*/ {
   wrapper: {
-    base: "p-4 md:p-6 border rounded-large w-full text-medium",
+    base: "p-4 md:p-6 border border-solid rounded-large w-full text-medium",
     variants: {
       variant: {
         solid: "bg-default border-transparent",
         outlined: "bg-default border-muted",
         subtle: "bg-muted border-default/50",
         soft: "bg-muted border-transparent",
+        inverted: "bg-inverted border-transparent",
       },
     },
   },
@@ -23,6 +24,7 @@ export default /*tw*/ {
         outlined: "border-muted",
         subtle: "border-default/50",
         soft: "border-default/50",
+        inverted: "border-default/50",
       },
     },
   },

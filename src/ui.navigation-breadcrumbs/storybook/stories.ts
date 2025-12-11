@@ -1,4 +1,10 @@
-import { getArgs, getArgTypes, getSlotNames, getSlotsFragment } from "../../utils/storybook.ts";
+import {
+  getArgs,
+  getArgTypes,
+  getSlotNames,
+  getSlotsFragment,
+  getDocsDescription,
+} from "../../utils/storybook";
 
 import UBreadcrumbs from "../../ui.navigation-breadcrumbs/UBreadcrumbs.vue";
 import UCol from "../../ui.container-col/UCol.vue";
@@ -9,8 +15,8 @@ import UIcon from "../../ui.image-icon/UIcon.vue";
 import ULabel from "../../ui.form-label/ULabel.vue";
 import UText from "../../ui.text-block/UText.vue";
 
-import type { Meta, StoryFn } from "@storybook/vue3";
-import type { Props } from "../types.ts";
+import type { Meta, StoryFn } from "@storybook/vue3-vite";
+import type { Props } from "../types";
 
 interface UBreadcrumbsArgs extends Props {
   slotTemplate?: string;
@@ -35,6 +41,11 @@ export default {
   },
   argTypes: {
     ...getArgTypes(UBreadcrumbs.__name),
+  },
+  parameters: {
+    docs: {
+      ...getDocsDescription(UBreadcrumbs.__name),
+    },
   },
 } as Meta;
 
@@ -73,24 +84,26 @@ export const UnderlineVariants: StoryFn<UBreadcrumbsArgs> = (args: UBreadcrumbsA
   components: { UBreadcrumbs, UText, UCol },
   setup: () => ({ args }),
   template: `
-    <UCol>
-      <UText>Default</UText>
-      <UBreadcrumbs :links="args.links" />
-    </UCol>
+    <UCol gap="lg">
+      <UCol gap="none">
+        <UText label="Default" weight="semibold" variant="lifted" />
+        <UBreadcrumbs :links="args.links" />
+      </UCol>
 
-    <UCol>
-      <UText>Dashed</UText>
-      <UBreadcrumbs :links="args.links" dashed />
-    </UCol>
+      <UCol gap="none">
+        <UText label="Dashed" weight="semibold" variant="lifted" />
+        <UBreadcrumbs :links="args.links" dashed />
+      </UCol>
 
-    <UCol>
-      <UText>Underlined</UText>
-      <UBreadcrumbs :links="args.links" underlined />
-    </UCol>
+      <UCol gap="none">
+        <UText label="Underlined" weight="semibold" variant="lifted" />
+        <UBreadcrumbs :links="args.links" underlined />
+      </UCol>
 
-    <UCol>
-      <UText>Without Underline</UText>
-      <UBreadcrumbs :links="args.links" :underlined="false" />
+      <UCol gap="none">
+        <UText label="Without Underline" weight="semibold" variant="lifted" />
+        <UBreadcrumbs :links="args.links" :underlined="false" />
+      </UCol>
     </UCol>
   `,
 });
@@ -106,15 +119,6 @@ LinkStates.args = {
       disabled: true,
     },
   ],
-};
-LinkStates.parameters = {
-  docs: {
-    description: {
-      story:
-        // eslint-disable-next-line vue/max-len
-        "A breadcrumb is automatically disabled, if: <br /> - it does not have both `route` and `href` properties; <br /> - it has `disabled` property set to `true`.",
-    },
-  },
 };
 
 export const LinkIcon = DefaultTemplate.bind({});
@@ -134,15 +138,24 @@ LinkIcon.parameters = {
   },
 };
 
-export const IconSlot = DefaultTemplate.bind({});
-IconSlot.args = {
+export const Slots = DefaultTemplate.bind({});
+Slots.args = {
   slotTemplate: `
-    <template #icon="{ index }">
+    <template #before-link="{ index }">
       <UBadge
         v-if="index === 1"
         label="Info"
         color="success"
         size="sm"
+      />
+    </template>
+
+    <template #after-link="{ index }">
+      <UIcon
+        v-if="index === 2"
+        name="brightness_1"
+        color="primary"
+        size="xs"
       />
     </template>
   `,
@@ -152,7 +165,7 @@ export const LabelSlot = DefaultTemplate.bind({});
 LabelSlot.args = {
   slotTemplate: `
     <template #label="{ label, index }">
-      <UButton v-if="index === 0" :label="label" size="2xs" />
+      <UButton v-if="index === 0" :label="label" size="2xs" variant="soft" />
     </template>
   `,
 };
@@ -160,8 +173,8 @@ LabelSlot.args = {
 export const DividerSlot = DefaultTemplate.bind({});
 DividerSlot.args = {
   slotTemplate: `
-    <template #divider="{ index }">
-      <UIcon v-if="index === 1" name="double_arrow" size="xs" />
+    <template #divider>
+      <UIcon name="double_arrow" size="xs" />
     </template>
   `,
 };

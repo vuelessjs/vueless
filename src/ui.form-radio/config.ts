@@ -3,12 +3,12 @@ export default /*tw*/ {
   radio: {
     base: `
       bg-default cursor-pointer transition
-      border border-default outline-transparent
+      border border-solid border-default rounded-full outline-transparent
+      appearance-none p-0 print:color-adjust-exact inline-block align-middle bg-origin-border select-none shrink-0
       hover:border-lifted hover:checked:border-{color}
       active:border-{color} active:bg-{color}/15
       checked:bg-{color} checked:border-{color}
       checked:bg-radial-[circle_at_50%_50%] from-(--vl-bg) from-28% to-transparent to-32%
-      focus:ring-0 focus:ring-offset-0
       focus-visible:outline-{color} focus-visible:outline-medium focus-visible:outline-offset-2 focus-visible:transition
       disabled:border-default disabled:bg-lifted disabled:cursor-not-allowed
       disabled:checked:bg-{color}/(--vl-disabled-opacity) disabled:checked:border-transparent

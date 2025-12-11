@@ -31,7 +31,7 @@ export default /*tw*/ {
   menu: {
     base: `
       absolute z-40 mb-3 w-80 overflow-hidden rounded-medium
-      border border-default bg-default p-2 shadow-sm focus:outline-hidden
+      border border-solid border-default bg-default p-2 shadow-sm focus:outline-hidden
     `,
     variants: {
       openDirectionX: {

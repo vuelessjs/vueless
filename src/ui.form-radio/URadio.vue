@@ -1,16 +1,16 @@
 <script setup lang="ts">
 import { computed, inject, onMounted, ref, watchEffect, toValue, useId } from "vue";
 
-import useUI from "../composables/useUI.ts";
-import { getDefaults } from "../utils/ui.ts";
+import { useUI } from "../composables/useUI";
+import { getDefaults } from "../utils/ui";
 
 import ULabel from "../ui.form-label/ULabel.vue";
 
-import defaultConfig from "./config.ts";
+import defaultConfig from "./config";
 
-import { COMPONENT_NAME } from "./constants.ts";
-import type { Props, LocalValueType, Config } from "./types.ts";
-import type { SetRadioGroupSelectedItem } from "../ui.form-radio-group/types.ts";
+import { COMPONENT_NAME } from "./constants";
+import type { Props, LocalValueType, Config } from "./types";
+import type { SetRadioGroupSelectedItem } from "../ui.form-radio-group/types";
 import { isEqual } from "lodash-es";
 
 defineOptions({ inheritAttrs: false });
@@ -82,14 +82,12 @@ watchEffect(() => {
   emit("update:modelValue", props.value);
 });
 
-function onChange(event: Event) {
-  const target = event.target as HTMLInputElement;
-
+function onChange() {
   if (setRadioGroupSelectedItem) {
     setRadioGroupSelectedItem(props.value ?? "");
   }
 
-  emit("update:modelValue", target.value);
+  emit("update:modelValue", props.value);
 }
 
 /**
@@ -115,7 +113,6 @@ const { getDataTest, radioLabelAttrs, radioAttrs } = useUI<Config>(defaultConfig
     :align="labelAlign"
     :disabled="radioDisabled"
     :description="description"
-    interactive
     v-bind="radioLabelAttrs"
     :data-test="getDataTest('label')"
   >

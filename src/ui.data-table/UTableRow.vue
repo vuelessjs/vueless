@@ -1,20 +1,21 @@
 <script setup lang="ts">
 import { computed, onMounted, useTemplateRef } from "vue";
-import { cx } from "../utils/ui.ts";
-import { hasSlotContent, isEmptyValue } from "../utils/helper.ts";
+import { cx } from "../utils/ui";
+import { hasSlotContent, isEmptyValue } from "../utils/helper";
 
-import { PX_IN_REM } from "../constants.js";
-import { mapRowColumns } from "./utilTable.ts";
+import { PX_IN_REM } from "../constants";
+import { mapRowColumns } from "./utilTable";
 
-import { useMutationObserver } from "../composables/useMutationObserver.ts";
-import useUI from "../composables/useUI.ts";
+import { useMutationObserver } from "../composables/useMutationObserver";
+import { useUI } from "../composables/useUI";
 
 import UIcon from "../ui.image-icon/UIcon.vue";
 import UCheckbox from "../ui.form-checkbox/UCheckbox.vue";
 
-import defaultConfig from "./config.ts";
+import defaultConfig from "./config";
 
-import type { Cell, CellObject, Row, UTableRowProps, Config } from "./types.ts";
+import { StickySide } from "./types";
+import type { Cell, CellObject, Row, UTableRowProps, Config, ColumnObject } from "./types";
 
 const NESTED_ROW_SHIFT_REM = 1.5;
 const LAST_NESTED_ROW_SHIFT_REM = 1;
@@ -83,13 +84,13 @@ function getCellClasses(row: Row, key: string) {
   return cellClasses instanceof Function ? cellClasses(cell.value, row) : cellClasses;
 }
 
-function getCellContentClasses(row: Row, key: string) {
+function getCellContentClass(row: Row, key: string) {
   const cell = row[key] as CellObject;
-  const cellContentClasses = cell?.contentClasses || "";
+  const cellContentClass = cell?.contentClass || "";
 
-  return cellContentClasses instanceof Function
-    ? cellContentClasses(cell.value, row)
-    : cellContentClasses;
+  return cellContentClass instanceof Function
+    ? cellContentClass(cell.value, row)
+    : cellContentClass;
 }
 
 function formatCellValue(value: Cell) {
@@ -166,6 +167,34 @@ function onInputCheckbox(row: Row) {
   emit("toggleCheckbox", row);
 }
 
+function getStickyColumnStyle(column: ColumnObject) {
+  const position = props.columnPositions.get(column.key);
+
+  if (position === undefined) return {};
+
+  if (column.sticky === StickySide.Left) {
+    return { left: `${position / PX_IN_REM}rem` };
+  }
+
+  if (column.sticky === StickySide.Right) {
+    return { right: `${position / PX_IN_REM}rem` };
+  }
+
+  return {};
+}
+
+function getStickyColumnClass(column: ColumnObject) {
+  if (column.sticky === StickySide.Left) {
+    return props.attrs.bodyCellStickyLeftAttrs.value.class as string;
+  }
+
+  if (column.sticky === StickySide.Right) {
+    return props.attrs.bodyCellStickyRightAttrs.value.class as string;
+  }
+
+  return "";
+}
+
 const { getDataTest } = useUI<Config>(defaultConfig);
 </script>
 
@@ -179,8 +208,17 @@ const { getDataTest } = useUI<Config>(defaultConfig);
   >
     <td
       v-if="selectable"
-      :style="getNestedCheckboxShift()"
+      :style="{
+        ...getNestedCheckboxShift(),
+        ...(columns[0]?.sticky === StickySide.Left ? { left: '0' } : {}),
+      }"
       v-bind="attrs.bodyCellCheckboxAttrs.value"
+      :class="
+        cx([
+          attrs.bodyCellCheckboxAttrs.value.class,
+          columns[0]?.sticky === StickySide.Left ? attrs.bodyCellStickyLeftAttrs.value.class : '',
+        ])
+      "
       @click.stop
       @dblclick.stop
     >
@@ -198,7 +236,14 @@ const { getDataTest } = useUI<Config>(defaultConfig);
       v-for="(value, key, index) in mapRowColumns(row, columns)"
       :key="index"
       v-bind="attrs.bodyCellBaseAttrs.value"
-      :class="cx([columns[index].tdClass, getCellClasses(row, String(key))])"
+      :class="
+        cx([
+          columns[index].tdClass,
+          getCellClasses(row, String(key)),
+          getStickyColumnClass(columns[index]),
+        ])
+      "
+      :style="getStickyColumnStyle(columns[index])"
       @click="onClickCell(value, row, key)"
     >
       <div
@@ -234,7 +279,7 @@ const { getDataTest } = useUI<Config>(defaultConfig);
             ref="cell"
             v-bind="attrs.bodyCellContentAttrs.value"
             :class="
-              cx([attrs.bodyCellContentAttrs.value.class, getCellContentClasses(row, String(key))])
+              cx([attrs.bodyCellContentAttrs.value.class, getCellContentClass(row, String(key))])
             "
             :data-test="getDataTest(`${key}-cell`)"
           >
@@ -249,7 +294,7 @@ const { getDataTest } = useUI<Config>(defaultConfig);
             v-bind="attrs.bodyCellContentAttrs.value"
             ref="cell"
             :class="
-              cx([attrs.bodyCellContentAttrs.value.class, getCellContentClasses(row, String(key))])
+              cx([attrs.bodyCellContentAttrs.value.class, getCellContentClass(row, String(key))])
             "
             :data-test="getDataTest(`${key}-cell`)"
           >

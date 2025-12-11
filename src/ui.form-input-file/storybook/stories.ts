@@ -1,18 +1,22 @@
+import { ref } from "vue";
+
 import {
   getArgs,
   getArgTypes,
   getSlotNames,
   getSlotsFragment,
   getDocsDescription,
-} from "../../utils/storybook.ts";
+} from "../../utils/storybook";
 
 import UInputFile from "../../ui.form-input-file/UInputFile.vue";
 import UCol from "../../ui.container-col/UCol.vue";
 import UBadge from "../../ui.text-badge/UBadge.vue";
 import UIcon from "../../ui.image-icon/UIcon.vue";
+import URow from "../../ui.container-row/URow.vue";
+import UText from "../../ui.text-block/UText.vue";
 
-import type { Meta, StoryFn } from "@storybook/vue3";
-import type { Props } from "../types.ts";
+import type { Meta, StoryFn } from "@storybook/vue3-vite";
+import type { Props } from "../types";
 
 interface UInputFileArgs extends Props {
   slotTemplate?: string;
@@ -25,7 +29,6 @@ export default {
   component: UInputFile,
   args: {
     label: "Choose a file to upload",
-    files: [],
   },
   argTypes: {
     ...getArgTypes(UInputFile.__name),
@@ -38,10 +41,10 @@ export default {
 } as Meta;
 
 const DefaultTemplate: StoryFn<UInputFileArgs> = (args: UInputFileArgs) => ({
-  components: { UInputFile, UBadge },
-  setup: () => ({ args, slots: getSlotNames(UInputFile.__name) }),
+  components: { UInputFile },
+  setup: () => ({ args, slots: getSlotNames(UInputFile.__name), files: ref([]) }),
   template: `
-    <UInputFile v-bind="args" v-model="args.files">
+    <UInputFile v-bind="args" v-model="files">
       ${args.slotTemplate || getSlotsFragment("")}
     </UInputFile>
   `,
@@ -49,13 +52,14 @@ const DefaultTemplate: StoryFn<UInputFileArgs> = (args: UInputFileArgs) => ({
 
 const EnumTemplate: StoryFn<UInputFileArgs> = (args: UInputFileArgs, { argTypes }) => ({
   components: { UInputFile, UCol },
-  setup: () => ({ args, argTypes, getArgs }),
+  setup: () => ({ args, argTypes, getArgs, files: ref([]) }),
   template: `
-    <UCol gap="xl">
+    <UCol gap="2xl">
       <UInputFile
         v-for="option in argTypes?.[args.enum]?.options"
         v-bind="getArgs(args, option)"
         :key="option"
+        v-model="files"
       />
     </UCol>
   `,
@@ -84,59 +88,74 @@ MaxFileSize.args = {
 
 export const AllowedFileTypes = DefaultTemplate.bind({});
 AllowedFileTypes.args = {
-  allowedFileTypes: ["png", "jpeg"],
+  allowedFileTypes: [".png", ".jpeg"],
   description: "Only png and jpeg formats are allowed.",
 };
 
 export const Sizes = EnumTemplate.bind({});
-Sizes.args = { enum: "size", label: "{enumValue}" };
+Sizes.args = { enum: "size" };
 
 export const LabelAlign = EnumTemplate.bind({});
-LabelAlign.args = { enum: "labelAlign", label: "{enumValue}" };
+LabelAlign.args = { enum: "labelAlign", description: "{enumValue}" };
 
 export const LabelSlot = DefaultTemplate.bind({});
 LabelSlot.args = {
   slotTemplate: `
     <template #label="{ label }">
-      <UBadge :label="label" />
+      {{ label }}
+      <span class="text-red-500">*</span>
     </template>
   `,
 };
 
 export const Slots: StoryFn<UInputFileArgs> = (args) => ({
-  components: { UInputFile, UCol, UBadge, UIcon },
+  components: { UInputFile, UCol, UBadge, UIcon, URow, UText },
   setup() {
     return { args };
   },
   template: `
-    <UCol>
+    <UCol gap="xl">
       <UInputFile
         v-bind="args"
         v-model="args.files"
-        label="Slot Top"
+        label="Top Slot"
+        :allowedFileTypes="['.jpeg', '.png']"
+        :maxFileSize="2"
       >
         <template #top>
-          <UBadge label="Pending Review..." />
+          <URow align="center" gap="2xs">
+            <UIcon name="info" size="xs" color="neutral" />
+            <UText variant="lifted">Recommended size: 400x400px, max 2MB</UText>
+          </URow>
         </template>
       </UInputFile>
 
       <UInputFile
         v-bind="args"
         v-model="args.files"
-        label="Slot Left"
+        label="Left Slot"
+        :allowedFileTypes="['.pdf', '.doc', '.docx']"
       >
         <template #left>
-          <UIcon name="info" color="warning" />
+          <URow align="center" gap="2xs">
+            <UIcon name="description" size="xs" color="neutral" />
+            <UText label="PDF, DOC, DOCX" variant="lifted" size="xs" :wrap="false" />
+          </URow>
         </template>
       </UInputFile>
 
       <UInputFile
         v-bind="args"
         v-model="args.files"
-        label="Slot Bottom"
+        label="Bottom Slot"
+        multiple
+        :allowedFileTypes="['.png', '.jpeg']"
       >
         <template #bottom>
-          <UBadge label="An antivirus check will be performed after file upload." />
+          <URow align="center" gap="2xs">
+            <UIcon name="schedule" size="xs" color="neutral" />
+            <UText label="Processing may take a few moments for multiple files" variant="lifted" />
+          </URow>
         </template>
       </UInputFile>
     </UCol>

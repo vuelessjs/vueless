@@ -1,6 +1,6 @@
-# Storybook docs
+# Storybook
 
-If you going to debug component stylings in a more easier way you can use our [Storybook](https://storybook.js.org/) preset to style and test components in isolation.
+To work with components in a more easier way, use our preset for [Storybook](https://storybook.js.org/) to style and test components in isolation.
 
 ## Installation
 
@@ -10,28 +10,28 @@ If you going to debug component stylings in a more easier way you can use our [S
 {% tab title="npm" %}
 ```bash
 npm install -D @vueless/storybook
-npx @vueless/storybook
+npx @vueless/storybook init
 ```
 {% endtab %}
 
 {% tab title="yarn" %}
 ```bash
 yarn add -D @vueless/storybook
-yarn @vueless/storybook
+yarn vueless-storybook init
 ```
 {% endtab %}
 
 {% tab title="pnpm" %}
 ```bash
-pnpm add -D @vueless/storybook --pnpm
-pnpm exec @vueless/storybook
+pnpm add -D @vueless/storybook
+pnpm exec @vueless/storybook init
 ```
 {% endtab %}
 
 {% tab title="bun" %}
 ```bash
-bun add @vueless/storybook -d
-bunx @vueless/storybook
+bun add -D @vueless/storybook
+bunx @vueless/storybook init
 ```
 {% endtab %}
 {% endtabs %}
@@ -40,7 +40,6 @@ Which:
 
 * creates `.storybook` folder with all needed configuration in the project's root.
 * adds commands into the project `package.json` to run and build Storybook locally.
-* creates `.npmrc` config (for `pnpm` project only).
 
 {% hint style="info" %}
 If the `.storybook` folder already exists, the command will back it up by renaming it to `.storybook-backup-{timestamp}`. You should migrate your custom configuration (if any) and remove the backup folder manually afterward.
@@ -48,7 +47,7 @@ If the `.storybook` folder already exists, the command will back it up by renami
 
 2\. Run the Storybook ✨
 
-```
+```bash
 npm run sb:dev
 ```
 
@@ -65,26 +64,38 @@ npm run sb:build
 npm run sb:preview
 ```
 
-## Hiding unused components in Storybook
+## Hide unused components in Storybook
 
-If you don’t plan to use certain Vueless components, you can hide them from Storybook by setting the `storybook` key to `false` in the specific component’s config.
+If you don’t plan to use certain Vueless components, you can hide them from Storybook by setting the component name key to `false` in the specific component’s config.
 
 For example, if you don’t plan to use `UPagination` and `UBadge` in your project, you can configure them as follows:
 
 {% code title="vueless.config.{js,ts}" %}
 ```js
 export default {
-  component: {
-    UPagination: {
-      storybook: false,
-    },
-    UBadge: {
-      storybook: false,
-    },
+  components: {
+    UPagination: false,
+    UBadge: false,
   },
 };
 ```
 {% endcode %}
 
+Or, if you want to hide certain Vueless components while keeping their custom configs, set the `storybook` key to `false` in the specific component’s config.
 
-
+{% code title="vueless.config.{js,ts}" %}
+```js
+export default {
+  components: {
+    UPagination: {
+      storybook: false,
+      ...
+    },
+    UBadge: {
+      storybook: false,
+      ...
+    },
+  },
+};
+```
+{% endcode %}

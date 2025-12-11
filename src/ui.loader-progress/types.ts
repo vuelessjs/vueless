@@ -1,5 +1,11 @@
-import defaultConfig from "./config.ts";
-import type { ComponentConfig } from "../types.ts";
+import defaultConfig from "./config";
+import type { ComponentConfig } from "../types";
+
+declare global {
+  interface Window {
+    __VuelessLoaderProgressInstanceCount?: number;
+  }
+}
 
 export type Config = typeof defaultConfig;
 
@@ -21,7 +27,7 @@ export interface Props {
   /**
    * API resource names (endpoint URIs).
    */
-  resources?: string | string[] | "any" | ["any"];
+  resources?: string | string[] | "any";
 
   /**
    * Loader progress size.

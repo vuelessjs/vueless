@@ -1,67 +1,68 @@
-import UTextDefaultConfig from "./ui.text-block/config.ts";
-import UAlertDefaultConfig from "./ui.text-alert/config.ts";
-import UEmptyDefaultConfig from "./ui.text-empty/config.ts";
-import UFileDefaultConfig from "./ui.text-file/config.ts";
-import UFilesDefaultConfig from "./ui.text-files/config.ts";
-import UHeaderDefaultConfig from "./ui.text-header/config.ts";
-import UNotifyDefaultConfig from "./ui.text-notify/config.ts";
-import UNumberDefaultConfig from "./ui.text-number/config.ts";
-import UDotDefaultConfig from "./ui.other-dot/config.ts";
-import UChipDefaultConfig from "./ui.other-chip/config.ts";
-import UButtonDefaultConfig from "./ui.button/config.ts";
-import ULinkDefaultConfig from "./ui.button-link/config.ts";
-import UToggleDefaultConfig from "./ui.button-toggle/config.ts";
-import UBadgeDefaultConfig from "./ui.text-badge/config.ts";
-import UCalendarDefaultConfig from "./ui.form-calendar/config.ts";
-import UDatePickerConfig from "./ui.form-date-picker/config.ts";
-import UDatePickerRangeConfig from "./ui.form-date-picker-range/config.ts";
-import UDataTableConfig from "./ui.data-table/config.ts";
-import UDropdownBadgeConfig from "./ui.dropdown-badge/config.ts";
-import UDropdownButtonConfig from "./ui.dropdown-button/config.ts";
-import UDropdownLinkConfig from "./ui.dropdown-link/config.ts";
-import UAccordionConfig from "./ui.container-accordion/config.ts";
-import UCardConfig from "./ui.container-card/config.ts";
-import UColConfig from "./ui.container-col/config.ts";
-import UDividerConfig from "./ui.container-divider/config.ts";
-import UGroupConfig from "./ui.container-group/config.ts";
-import UModalConfig from "./ui.container-modal/config.ts";
-import UModalConfirmConfig from "./ui.container-modal-confirm/config.ts";
-import UPageConfig from "./ui.container-page/config.ts";
-import URowConfig from "./ui.container-row/config.ts";
-import ULoaderConfig from "./ui.loader/config.ts";
-import ULoaderOverlayConfig from "./ui.loader-overlay/config.ts";
-import ULoaderProgressConfig from "./ui.loader-progress/config.ts";
-import UPaginationConfig from "./ui.navigation-pagination/config.ts";
-import UProgressConfig from "./ui.navigation-progress/config.ts";
-import UTabConfig from "./ui.navigation-tab/config.ts";
-import UTabsConfig from "./ui.navigation-tabs/config.ts";
-import UBreadcrumbsConfig from "./ui.navigation-breadcrumbs/config.ts";
-import UAvatarConfig from "./ui.image-avatar/config.ts";
-import UIconConfig from "./ui.image-icon/config.ts";
-import UCheckboxConfig from "./ui.form-checkbox/config.ts";
-import UCheckboxGroupConfig from "./ui.form-checkbox-group/config.ts";
-import UCheckboxMultiStateConfig from "./ui.form-checkbox-multi-state/config.ts";
-import URadioConfig from "./ui.form-radio/config.ts";
-import URadioGroupConfig from "./ui.form-radio-group/config.ts";
-import USwitchConfig from "./ui.form-switch/config.ts";
-import UTextareaConfig from "./ui.form-textarea/config.ts";
-import ULabelConfig from "./ui.form-label/config.ts";
-import UColorPickerConfig from "./ui.other-theme-color-toggle/config.ts";
-import UInputConfig from "./ui.form-input/config.ts";
-import UInputCounterConfig from "./ui.form-input-counter/config.ts";
-import UInputPasswordConfig from "./ui.form-input-password/config.ts";
-import UInputRatingConfig from "./ui.form-input-rating/config.ts";
-import UInputSearchConfig from "./ui.form-input-search/config.ts";
-import UInputFileConfig from "./ui.form-input-file/config.ts";
-import UInputNumberConfig from "./ui.form-input-number/config.ts";
-import UDataListConfig from "./ui.data-list/config.ts";
-import USelectConfig from "./ui.form-select/config.ts";
-import UListboxConfig from "./ui.form-listbox/config.ts";
+import UTextDefaultConfig from "./ui.text-block/config";
+import UAlertDefaultConfig from "./ui.text-alert/config";
+import UEmptyDefaultConfig from "./ui.container-empty/config";
+import UFileDefaultConfig from "./ui.text-file/config";
+import UFilesDefaultConfig from "./ui.text-files/config";
+import UHeaderDefaultConfig from "./ui.text-header/config";
+import UNotifyDefaultConfig from "./ui.text-notify/config";
+import UNumberDefaultConfig from "./ui.text-number/config";
+import UDotDefaultConfig from "./ui.other-dot/config";
+import UChipDefaultConfig from "./ui.other-chip/config";
+import UButtonDefaultConfig from "./ui.button/config";
+import ULinkDefaultConfig from "./ui.button-link/config";
+import UToggleDefaultConfig from "./ui.button-toggle/config";
+import UBadgeDefaultConfig from "./ui.text-badge/config";
+import UCalendarDefaultConfig from "./ui.form-calendar/config";
+import UDatePickerConfig from "./ui.form-date-picker/config";
+import UDatePickerRangeConfig from "./ui.form-date-picker-range/config";
+import UDataTableConfig from "./ui.data-table/config";
+import UDropdownBadgeConfig from "./ui.dropdown-badge/config";
+import UDropdownButtonConfig from "./ui.dropdown-button/config";
+import UDropdownLinkConfig from "./ui.dropdown-link/config";
+import UAccordionConfig from "./ui.container-accordion/config";
+import UAccordionItemConfig from "./ui.container-accordion-item/config";
+import UCardConfig from "./ui.container-card/config";
+import UColConfig from "./ui.container-col/config";
+import UDividerConfig from "./ui.container-divider/config";
+import UGroupConfig from "./ui.container-group/config";
+import UModalConfig from "./ui.container-modal/config";
+import UModalConfirmConfig from "./ui.container-modal-confirm/config";
+import UDrawerConfig from "./ui.container-drawer/config";
+import UPageConfig from "./ui.container-page/config";
+import URowConfig from "./ui.container-row/config";
+import ULoaderConfig from "./ui.loader/config";
+import ULoaderOverlayConfig from "./ui.loader-overlay/config";
+import ULoaderProgressConfig from "./ui.loader-progress/config";
+import UPaginationConfig from "./ui.navigation-pagination/config";
+import UProgressConfig from "./ui.navigation-progress/config";
+import UTabConfig from "./ui.navigation-tab/config";
+import UTabsConfig from "./ui.navigation-tabs/config";
+import UBreadcrumbsConfig from "./ui.navigation-breadcrumbs/config";
+import UAvatarConfig from "./ui.image-avatar/config";
+import UIconConfig from "./ui.image-icon/config";
+import UCheckboxConfig from "./ui.form-checkbox/config";
+import UCheckboxGroupConfig from "./ui.form-checkbox-group/config";
+import UCheckboxMultiStateConfig from "./ui.form-checkbox-multi-state/config";
+import URadioConfig from "./ui.form-radio/config";
+import URadioGroupConfig from "./ui.form-radio-group/config";
+import USwitchConfig from "./ui.form-switch/config";
+import UTextareaConfig from "./ui.form-textarea/config";
+import ULabelConfig from "./ui.form-label/config";
+import UColorToggleConfig from "./ui.form-color-toggle/config";
+import UInputConfig from "./ui.form-input/config";
+import UInputCounterConfig from "./ui.form-input-counter/config";
+import UInputPasswordConfig from "./ui.form-input-password/config";
+import UInputRatingConfig from "./ui.form-input-rating/config";
+import UInputSearchConfig from "./ui.form-input-search/config";
+import UInputFileConfig from "./ui.form-input-file/config";
+import UInputNumberConfig from "./ui.form-input-number/config";
+import UDataListConfig from "./ui.data-list/config";
+import USelectConfig from "./ui.form-select/config";
+import UListboxConfig from "./ui.form-listbox/config";
 
 import type { Props } from "tippy.js";
 import type { Config as TailwindConfig } from "tailwindcss";
-import type { ComputedRef, Ref, ComponentInternalInstance } from "vue";
-import type { LocaleOptions } from "./adapter.locale/vueless.ts";
+import type { ComputedRef, Ref, ComponentInternalInstance, TransitionProps } from "vue";
 
 export enum ColorMode {
   Dark = "dark",
@@ -102,17 +103,27 @@ export interface ThemeConfig {
   /**
    * Default components font size.
    */
-  text?: number | ThemeConfigText;
+  text?: number | Partial<ThemeConfigText>;
 
   /**
    * Default components rounding (border-radius).
    */
-  rounding?: number | ThemeConfigRounding;
+  rounding?: number | Partial<ThemeConfigRounding>;
 
   /**
    * Default components outline width.
    */
-  outline?: number | ThemeConfigOutline;
+  outline?: number | Partial<ThemeConfigOutline>;
+
+  /**
+   * Default components spacing.
+   */
+  spacing?: number;
+
+  /**
+   * Default components letter spacing.
+   */
+  letterSpacing?: number;
 
   /**
    * Default components opacity for disabled state (in percents).
@@ -123,6 +134,11 @@ export interface ThemeConfig {
    * Default color mode.
    */
   colorMode?: `${ColorMode}`;
+
+  /**
+   * Defines the color mode to auto.
+   */
+  isColorModeAuto?: boolean;
 
   /**
    * Light theme design system CSS variables.
@@ -180,9 +196,15 @@ export interface Config extends ThemeConfig {
   tailwindMerge?: UnknownObject;
 }
 
+export type MergedThemeConfig = Omit<ThemeConfig, "text | outline | rounding"> & {
+  text: Partial<ThemeConfigText>;
+  outline: Partial<ThemeConfigOutline>;
+  rounding: Partial<ThemeConfigRounding>;
+};
+
 export type UnknownObject = Record<string, unknown>;
 export type UnknownArray = unknown[];
-export type UnknownType = string | number | boolean | UnknownObject | undefined | null;
+export type UnknownType = string | number | boolean | UnknownObject | undefined | null | unknown;
 
 export type ComponentNames = keyof Components & string; // keys union
 
@@ -198,8 +220,22 @@ export type StateColors =
   | "grayscale"
   | string;
 
-export type NeutralColors = "slate" | "gray" | "zinc" | "neutral" | "stone" | string;
-export type PrimaryColors =
+export interface ColorShades {
+  50: string;
+  100: string;
+  200: string;
+  300: string;
+  400: string;
+  500: string;
+  600: string;
+  700: string;
+  800: string;
+  900: string;
+  950: string;
+}
+
+export type NeutralColorName = "slate" | "gray" | "zinc" | "neutral" | "stone" | string;
+export type PrimaryColorName =
   | "red"
   | "orange"
   | "amber"
@@ -219,8 +255,12 @@ export type PrimaryColors =
   | "rose"
   | string;
 
+export type NeutralColors = NeutralColorName | Partial<ColorShades>;
+export type PrimaryColors = PrimaryColorName | Partial<ColorShades>;
+
 export interface Directives {
   tooltip?: Partial<Props>;
+  clickOutside?: Partial<Props>;
 }
 
 export interface Components {
@@ -247,6 +287,7 @@ export interface Components {
   UDropdownLink: Partial<typeof UDropdownLinkConfig>;
   UListbox: Partial<typeof UListboxConfig>;
   UAccordion: Partial<typeof UAccordionConfig>;
+  UAccordionItem: Partial<typeof UAccordionItemConfig>;
   UCard: Partial<typeof UCardConfig>;
   UCol: Partial<typeof UColConfig>;
   UDivider: Partial<typeof UDividerConfig>;
@@ -254,6 +295,7 @@ export interface Components {
   UModal: Partial<typeof UModalConfig>;
   UModalConfirm: Partial<typeof UModalConfirmConfig>;
   UPage: Partial<typeof UPageConfig>;
+  UDrawer: Partial<typeof UDrawerConfig>;
   URow: Partial<typeof URowConfig>;
   ULoader: Partial<typeof ULoaderConfig>;
   ULoaderOverlay: Partial<typeof ULoaderOverlayConfig>;
@@ -273,7 +315,7 @@ export interface Components {
   USwitch: Partial<typeof USwitchConfig>;
   UTextarea: Partial<typeof UTextareaConfig>;
   ULabel: Partial<typeof ULabelConfig>;
-  UColorPicker: Partial<typeof UColorPickerConfig>;
+  UColorToggle: Partial<typeof UColorToggleConfig>;
   UInput: Partial<typeof UInputConfig>;
   UInputCounter: Partial<typeof UInputCounterConfig>;
   UInputPassword: Partial<typeof UInputPasswordConfig>;
@@ -290,7 +332,7 @@ export interface Components {
 export type ComponentConfig<T> = Partial<{
   [K in keyof T]: K extends string
     ? K extends `${string}transition${string}` | `${string}Transition${string}`
-      ? Transition
+      ? TransitionProps
       : K extends "i18n"
         ? T[K]
         : T[K] | string | UnknownObject
@@ -305,19 +347,22 @@ export interface NestedComponent {
   [key: string]: Record<string, string | UnknownObject> | string | undefined;
 }
 
-export type Defaults = {
+export type ComponentDefaults = {
   color?: string;
-  [key: string]: unknown | UnknownObject;
+  [key: string]: UnknownType;
 };
 
-export interface Transition {
-  enterFromClass?: string;
-  enterActiveClass?: string;
-  enterToClass?: string;
-  leaveFromClass?: string;
-  leaveActiveClass?: string;
-  leaveToClass?: string;
-}
+export type ComponentCustomProps = {
+  [key: string]: ComponentCustomProp;
+};
+
+export type ComponentCustomProp = {
+  required?: boolean;
+  ignore?: boolean;
+  values?: string[];
+  default?: UnknownType;
+  description?: string;
+};
 
 export interface CVA {
   base?: string;
@@ -364,6 +409,27 @@ export interface VueAttrs {
 export interface CreateVuelessOptions extends Config {
   i18n?: LocaleOptions;
   config?: Config;
+}
+
+export interface LocaleOptions {
+  messages?: LocaleMessages;
+  locale?: string;
+  fallback?: string;
+  adapter?: LocaleInstance;
+}
+
+export interface LocaleInstance {
+  name: string;
+  messages: LocaleMessages | Ref<LocaleMessages>;
+  locale: string | Ref<string>;
+  fallback: string | Ref<string>;
+  t: (key: string, ...params: unknown[]) => string;
+  n: (value: number) => string;
+  tm: <TMassages>(key: string) => Partial<TMassages>;
+}
+
+export interface LocaleMessages {
+  [key: string]: LocaleMessages | string;
 }
 
 export interface VuelessCssVariables {
@@ -453,7 +519,7 @@ export interface VuelessCssVariables {
   "--vl-bg-accented": string;
   "--vl-bg-muted": string;
   "--vl-bg-inverted": string;
-  /* Amy other design system CSS variables */
+  /* Any other design system CSS variables */
   [key: string]: string;
 }
 

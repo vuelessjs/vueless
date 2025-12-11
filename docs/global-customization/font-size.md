@@ -20,7 +20,7 @@ If you define only the `text`  (`medium`) value, `tiny`, `small` and `large` siz
 If you want to use custom values for `tiny`, `small` and `large` font-sizes, you can define them manually.
 
 <pre class="language-js" data-title="vueless.config.{js,ts}"><code class="lang-js">export default {
-  rounding: {
+  text: {
     xs: 12,
     sm: 13,
     md: 14,

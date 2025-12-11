@@ -1,12 +1,12 @@
-import defaultConfig from "./config.ts";
+import defaultConfig from "./config";
 
 import type { DefineComponent, SVGAttributes } from "vue";
 
-import type { ComponentConfig } from "../types.ts";
+import type { ComponentConfig } from "../types";
 
 export type Config = typeof defaultConfig;
 
-export type IconLibraries = "@material-symbols" | "bootstrap-icons" | "heroicons" | "custom-icons";
+export type IconLibraries = "@material-symbols" | "bootstrap-icons" | "heroicons" | "custom";
 
 export interface Props {
   /**

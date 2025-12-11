@@ -1,82 +1,105 @@
+import path from "node:path";
 import fs from "node:fs/promises";
 import { existsSync } from "node:fs";
-import path from "node:path";
 
-import { vuelessConfig } from "./vuelessConfig.js";
+import { removeFolderIfEmpty } from "./helper.js";
+import { getVuelessConfig } from "./vuelessConfig.js";
 
-import { COMPONENTS, GRAYSCALE_COLOR, INHERIT_COLOR, PRIMARY_COLOR } from "../../constants.js";
+import {
+  CACHE_DIR,
+  COMPONENTS,
+  TEXT_COLOR,
+  INHERIT_COLOR,
+  PRIMARY_COLOR,
+  GRAYSCALE_COLOR,
+  VUELESS_CACHE_DIR,
+} from "../../constants.js";
+import { buildWebTypes } from "./webTypes.js";
 
+/* local constants */
+const SAFE_COLORS = [PRIMARY_COLOR, GRAYSCALE_COLOR, INHERIT_COLOR, TEXT_COLOR];
 const OPTIONAL_MARK = "?";
 const CLOSING_BRACKET = "}";
 const IGNORE_PROP = "@ignore";
 const CUSTOM_PROP = "@custom";
+const DEFAULT_PROP_TYPE = "string";
 
+/* regular expressions */
 const PROPS_INTERFACE_REG_EXP = /export\s+interface\s+Props(?:<[^>]+>)?\s*{([^}]*)}/s;
 const UNION_SYMBOLS_REG_EXP = /[?|:"|;]/g;
 const WORD_IN_QUOTE_REG_EXP = /"([^"]+)"/g;
 
-const DEFAULT_SAFE_COLORS = [PRIMARY_COLOR, GRAYSCALE_COLOR, INHERIT_COLOR];
+/**
+ * Updates custom PropTypes for components based on provided configuration and colors.
+ *
+ * @param {Object} options Configuration options.
+ * @param {string} options.vuelessSrcDir The source directory for Vueless components.
+ * @param {string} options.basePath The base path for retrieving the Vueless configuration file.
+ * @return {Promise<void>} Resolves when custom PropTypes for all components are updated successfully.
+ */
+export async function setCustomPropTypes({ vuelessSrcDir, basePath } = {}) {
+  const vuelessConfig = await getVuelessConfig(basePath);
 
-export async function setCustomPropTypes(srcDir) {
+  const hasCustomColors = vuelessConfig.colors?.length;
+  const hasCustomColorProp = !!Object.values(vuelessConfig.components || {}).find(
+    (component) => component.props?.color,
+  );
+
+  let componentsWithColorProp = [];
+
+  /* Build web-types.json to get list of components with color prop */
+  if (hasCustomColors || hasCustomColorProp) {
+    await buildWebTypes({ vuelessSrcDir, basePath });
+
+    componentsWithColorProp = await getComponentsWithColors();
+  }
+
   for await (const [componentName, componentDir] of Object.entries(COMPONENTS)) {
     let componentGlobalConfig = vuelessConfig.components?.[componentName];
+    const hasDefaultColorProp = componentsWithColorProp.some((item) => item.name === componentName);
 
-    if (vuelessConfig.colors && vuelessConfig.colors.length && componentGlobalConfig) {
-      const customProps = componentGlobalConfig.props || [];
-      const colorPropsIndex = customProps.findIndex((prop) => prop.name === "color");
-      const isCustomColorProp = colorPropsIndex !== -1;
+    /* Skip components without props and without global colors in config */
+    if (!componentGlobalConfig?.props && !(hasCustomColors && hasDefaultColorProp)) {
+      continue;
+    }
 
-      const modifiedCustomColorProp = isCustomColorProp
-        ? customProps.with(colorPropsIndex, {
-            ...customProps[colorPropsIndex],
-            name: "color",
+    /* Add colors to the default or custom color prop */
+    if (componentGlobalConfig?.props?.color || (hasCustomColors && hasDefaultColorProp)) {
+      // eslint-disable-next-line prettier/prettier
+      const defaultColors = componentsWithColorProp.find((component) => component.name === componentName)?.colors || [];
+      const safelistedColors = defaultColors.filter((color) => SAFE_COLORS.includes(color));
+
+      componentGlobalConfig = {
+        ...(componentGlobalConfig || {}),
+        props: {
+          ...(componentGlobalConfig?.props || {}),
+          color: {
+            ...(componentGlobalConfig?.props?.color || {}),
             values: [
               ...new Set([
-                ...(customProps[colorPropsIndex]?.values || []),
-                ...vuelessConfig.colors,
-                ...DEFAULT_SAFE_COLORS,
+                ...(componentGlobalConfig?.props?.color?.values || []),
+                ...(vuelessConfig.colors || []),
+                ...safelistedColors,
               ]),
             ],
-          })
-        : undefined;
-
-      const customPropsWithColor = [
-        ...customProps,
-        {
-          name: "color",
-          values: [...new Set([...vuelessConfig.colors, ...DEFAULT_SAFE_COLORS])],
-          required: false,
-        },
-      ];
-
-      componentGlobalConfig = {
-        ...componentGlobalConfig,
-        props: isCustomColorProp ? modifiedCustomColorProp : customPropsWithColor,
-      };
-    }
-
-    if (vuelessConfig.colors && vuelessConfig.colors.length && !componentGlobalConfig) {
-      componentGlobalConfig = {
-        props: [
-          {
-            name: "color",
-            values: [...new Set([...vuelessConfig.colors, ...DEFAULT_SAFE_COLORS])],
-            required: false,
           },
-        ],
+        },
       };
     }
 
-    const isCustomProps = componentGlobalConfig && componentGlobalConfig.props;
-    const isHiddenStories = componentGlobalConfig && componentGlobalConfig.storybook === false;
+    const cachePath = path.join(vuelessSrcDir, componentDir);
 
-    if (isCustomProps && !isHiddenStories) {
-      await cacheComponentTypes(path.join(srcDir, componentDir));
-      await modifyComponentTypes(path.join(srcDir, componentDir), componentGlobalConfig.props);
-    }
+    await cacheComponentTypes(cachePath);
+    await modifyComponentTypes(cachePath, componentGlobalConfig.props);
   }
 }
 
+/**
+ * Removes custom prop types definitions for components.
+ *
+ * @param {string} srcDir - The source directory containing the component directories.
+ * @return {Promise<void>} - A promise that resolves when custom prop types have been removed.
+ */
 export async function removeCustomPropTypes(srcDir) {
   for await (const componentDir of Object.values(COMPONENTS)) {
     await restoreComponentTypes(path.join(srcDir, componentDir));
@@ -84,27 +107,82 @@ export async function removeCustomPropTypes(srcDir) {
   }
 }
 
+/**
+ * Retrieves a list of components that have a "color" prop from the `web-types.json` file.
+ *
+ * @return {Promise<Array<string>>} A promise that resolves with an array of component names.
+ */
+async function getComponentsWithColors() {
+  const webTypesPath = path.join(VUELESS_CACHE_DIR, "web-types.json");
+
+  if (!existsSync(webTypesPath)) {
+    return [];
+  }
+
+  const webTypesContent = await fs.readFile(webTypesPath, "utf8");
+  const webTypes = JSON.parse(webTypesContent);
+
+  if (!webTypes.contributions?.html?.tags) {
+    return [];
+  }
+
+  return webTypes.contributions.html.tags
+    .filter((component) => component?.attributes.some((attribute) => attribute.name === "color"))
+    .map((component) => ({
+      name: component.name,
+      colors: component.attributes.find((attribute) => attribute.name === "color")?.enum,
+    }));
+}
+
+/**
+ * Caches the component types by copying a source file to a specified cache directory.
+ *
+ * @param {string} filePath - The directory path where the source file is located and the cache directory will be created.
+ * @return {Promise<void>} A promise that resolves when the file has been successfully copied, or immediately if no action is taken.
+ */
 async function cacheComponentTypes(filePath) {
-  const cacheDir = path.join(filePath, ".cache");
+  const cacheDir = path.join(filePath, CACHE_DIR);
   const sourceFile = path.join(filePath, "types.ts");
   const destFile = path.join(cacheDir, "types.ts");
 
-  if (existsSync(cacheDir)) {
+  if (existsSync(destFile) || !existsSync(sourceFile)) {
     return;
   }
 
-  if (existsSync(sourceFile)) {
+  if (!existsSync(cacheDir)) {
     await fs.mkdir(cacheDir);
-    await fs.cp(sourceFile, destFile);
   }
+
+  await fs.cp(sourceFile, destFile);
 }
 
+/**
+ * Clears the cached component types by removing the specified cache file
+ * and deleting the corresponding folder if it is empty.
+ *
+ * @param {string} filePath - The base file path where the cache directory resides.
+ * @return {Promise<void>} A promise that resolves when the cache has been cleared.
+ */
 async function clearComponentTypesCache(filePath) {
-  await fs.rm(path.join(filePath, ".cache"), { force: true, recursive: true });
+  const cacheDir = path.join(filePath, CACHE_DIR);
+  const sourceFile = path.join(cacheDir, "types.ts");
+
+  if (existsSync(sourceFile)) {
+    await fs.rm(sourceFile, { force: true });
+  }
+
+  await removeFolderIfEmpty(cacheDir);
 }
 
+/**
+ * Restores the component type definitions by copying a cached file to the destination.
+ *
+ * @param {string} filePath - The directory path where the component types should be restored.
+ * This path serves as the base for locating the cached file and the destination file.
+ * @return {Promise<void>} A promise that resolves when the component types have been successfully restored.
+ */
 async function restoreComponentTypes(filePath) {
-  const cacheDir = path.join(filePath, ".cache");
+  const cacheDir = path.join(filePath, CACHE_DIR);
   const sourceFile = path.join(cacheDir, "types.ts");
   const destFile = path.join(filePath, "types.ts");
 
@@ -113,6 +191,14 @@ async function restoreComponentTypes(filePath) {
   }
 }
 
+/**
+ * Extracts and processes the values from multiple lines based on the given indices.
+ *
+ * @param {Array<string>} lines - The array of lines to process.
+ * @param {number} propIndex - The index from which to start slicing the lines.
+ * @param {number} propEndIndex - The index until which to slice the lines (inclusive).
+ * @return {Array<string>} An array of strings with processed values, trimmed of unnecessary symbols.
+ */
 function getMultiLineUnionValues(lines, propIndex, propEndIndex) {
   return lines
     .slice(propIndex)
@@ -120,6 +206,15 @@ function getMultiLineUnionValues(lines, propIndex, propEndIndex) {
     .map((item) => item.replace(UNION_SYMBOLS_REG_EXP, "").trim());
 }
 
+/**
+ * Extracts and returns inline union values from the specified lines of text,
+ * based on provided property indices.
+ *
+ * @param {string[]} lines - The array of string lines to extract union values from.
+ * @param {number} propIndex - The starting index in the lines array from where extraction begins.
+ * @param {number} propEndIndex - The ending index in the lines array up to which extraction is performed.
+ * @return {string[]} An array of extracted union values, or an empty array if no matches are found.
+ */
 function getInlineUnionValues(lines, propIndex, propEndIndex) {
   const types = lines
     .slice(propIndex)
@@ -148,10 +243,8 @@ async function modifyComponentTypes(filePath, props) {
 
     const lines = propsInterface.split("\n");
 
-    for (const prop of props) {
-      const { name, type, values = [], description, required, ignore } = prop;
-
-      if (!name) return;
+    for (const name in props) {
+      const { type, values = [], description, required, ignore } = props[name];
 
       /* Find line with prop. */
       const propRegex = new RegExp(`^\\s*${name}[?:]?\\s*:`);
@@ -177,7 +270,7 @@ async function modifyComponentTypes(filePath, props) {
         .includes("@extendOnly");
 
       const propDescription = description?.replaceAll(/[\n\s]+/g, " ").trim() || "–"; // removes new lines and double spaces.
-      const propType = unionType.length ? unionType : type;
+      const propType = unionType.length ? unionType : type || DEFAULT_PROP_TYPE;
 
       /* Add ignore JSDoc property. */
       if (ignore) {
@@ -192,7 +285,6 @@ async function modifyComponentTypes(filePath, props) {
         if (unionType.length && (isAssignableValue || !isExtendOnly)) {
           // Remove multiline union types;
           lines.splice(propIndex + 1, propEndIndex);
-
           lines.splice(propIndex, 1, `  ${name}${defaultOptionalMark}: ${propType};`);
         }
 
@@ -219,7 +311,7 @@ async function modifyComponentTypes(filePath, props) {
         `   * ${propDescription}`,
         `   * ${CUSTOM_PROP}`,
         `   */`,
-        `  ${name}${optionalMark}: ${type};`,
+        `  ${name}${optionalMark}: ${type || DEFAULT_PROP_TYPE};`,
       ];
 
       lines.splice(closingBracketIndex, 0, ...propDefinition);

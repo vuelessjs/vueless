@@ -1,14 +1,14 @@
 <script setup lang="ts">
-import { computed, useTemplateRef } from "vue";
+import { computed, useTemplateRef, useSlots, useId } from "vue";
 
-import useUI from "../composables/useUI.ts";
-import { getDefaults } from "../utils/ui.ts";
-import { hasSlotContent } from "../utils/helper.ts";
+import { useUI } from "../composables/useUI";
+import { getDefaults } from "../utils/ui";
+import { hasSlotContent } from "../utils/helper";
 
-import defaultConfig from "./config.ts";
-import { COMPONENT_NAME, PLACEMENT } from "./constants.ts";
+import defaultConfig from "./config";
+import { COMPONENT_NAME, PLACEMENT } from "./constants";
 
-import type { Props, Config } from "./types.ts";
+import type { Props, Config } from "./types";
 
 defineOptions({ inheritAttrs: false });
 
@@ -24,11 +24,19 @@ const emit = defineEmits([
   "click",
 ]);
 
+const slots = useSlots();
+
+const elementId = props.id || useId();
+
 const wrapperRef = useTemplateRef<HTMLDivElement>("wrapper");
 const labelRef = useTemplateRef<HTMLLabelElement>("label");
 
 const isHorizontalPlacement = computed(() => {
   return props.align === PLACEMENT.left || props.align === PLACEMENT.right;
+});
+
+const tag = computed(() => {
+  return props.for ? "label" : "div";
 });
 
 const isTopWithDescPlacement = computed(() => {
@@ -71,12 +79,12 @@ defineExpose({
  */
 const mutatedProps = computed(() => ({
   error: Boolean(props.error) && !props.disabled,
+  label: Boolean(props.label) || hasSlotContent(slots["label"], { label: props.label }),
+  for: Boolean(props.for),
 }));
 
-const { getDataTest, wrapperAttrs, contentAttrs, labelAttrs, descriptionAttrs } = useUI<Config>(
-  defaultConfig,
-  mutatedProps,
-);
+const { getDataTest, wrapperAttrs, contentAttrs, labelAttrs, descriptionAttrs, errorAttrs } =
+  useUI<Config>(defaultConfig, mutatedProps);
 </script>
 
 <template>
@@ -92,9 +100,11 @@ const { getDataTest, wrapperAttrs, contentAttrs, labelAttrs, descriptionAttrs } 
     </div>
 
     <!-- `v-bind` isn't assigned, because the div is system -->
-    <div v-if="label || hasSlotContent($slots['label'], { label }) || error || description">
-      <label
-        v-if="label || hasSlotContent($slots['label'], { label })"
+    <div v-if="label || hasSlotContent(slots['label'], { label }) || error || description">
+      <component
+        :is="tag"
+        v-if="label || hasSlotContent(slots['label'], { label })"
+        :id="elementId"
         ref="label"
         :for="props.for"
         v-bind="labelAttrs"
@@ -108,11 +118,11 @@ const { getDataTest, wrapperAttrs, contentAttrs, labelAttrs, descriptionAttrs } 
         <slot name="label" :label="label">
           {{ label }}
         </slot>
-      </label>
+      </component>
 
       <div
         v-if="isShownError"
-        v-bind="descriptionAttrs"
+        v-bind="errorAttrs"
         :data-test="getDataTest('error')"
         v-text="error"
       />
@@ -130,8 +140,10 @@ const { getDataTest, wrapperAttrs, contentAttrs, labelAttrs, descriptionAttrs } 
   </div>
 
   <div v-else ref="wrapper" v-bind="wrapperAttrs">
-    <label
-      v-if="label || hasSlotContent($slots['label'])"
+    <component
+      :is="tag"
+      v-if="label || hasSlotContent(slots['label'], { label })"
+      :id="elementId"
       v-bind="labelAttrs"
       ref="label"
       :for="props.for"
@@ -145,19 +157,14 @@ const { getDataTest, wrapperAttrs, contentAttrs, labelAttrs, descriptionAttrs } 
       <slot name="label" :label="label">
         {{ label }}
       </slot>
-    </label>
+    </component>
 
     <div v-bind="contentAttrs" :data-test="getDataTest('content')">
       <!-- @slot Use it to add label content. -->
       <slot />
     </div>
 
-    <div
-      v-if="isShownError"
-      v-bind="descriptionAttrs"
-      :data-test="getDataTest('error')"
-      v-text="error"
-    />
+    <div v-if="isShownError" v-bind="errorAttrs" :data-test="getDataTest('error')" v-text="error" />
 
     <div
       v-if="description && !isShownError"

@@ -14,9 +14,10 @@ export default /*tw*/ {
         "2xl": "h-11.5",
       },
     },
+    compoundVariants: [{ textLines: 0, headerLines: 1, class: "last:max-w-full" }],
   },
   text: {
-    base: "{USkeleton} rounded-small last:max-w-4/5",
+    base: "{USkeleton} rounded-small only:max-w-full last:max-w-4/5",
     variants: {
       size: {
         xs: "h-3.5",
@@ -31,8 +32,7 @@ export default /*tw*/ {
   body: "{USkeleton} rounded-small",
   defaults: {
     size: "md",
-    variant: "default",
     headerLines: 0,
-    textLines: 4,
+    textLines: 3,
   },
 };

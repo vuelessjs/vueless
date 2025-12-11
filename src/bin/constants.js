@@ -1,7 +1,5 @@
-export const SRC_COMPONENTS_PATH = "/src/components";
-export const COMPONENTS_PATH = "/components";
+export const DEFAULT_VUELESS_CONFIG_CONTENT = `import { componentConfigs } from "./.vueless";
 
-export const DEFAULT_VUELESS_CONFIG_CONTENT = `
 export default {
   /**
    * Global settings.
@@ -11,8 +9,22 @@ export default {
   text: 14,
   outline: 2,
   rounding: 8,
+  spacing: 4,
+  letterSpacing: 0,
   disabledOpacity: 50,
   colorMode: "auto",
+
+  /**
+   * Component settings.
+   */
+  components: /*tw*/ {
+    ...componentConfigs,
+  },
+
+  /**
+   * Directive settings.
+   */
+  directives: {},
 
   /**
    * Light theme CSS variable settings.
@@ -153,22 +165,5 @@ export default {
     "--vl-bg-accented": "--vl-neutral-700",
     "--vl-bg-inverted": "--vl-neutral-100",
   },
-
-  /**
-   * Directive settings.
-   */
-  directives: {},
-
-  /**
-   * Component settings.
-   */
-  components: /*tw*/ {},
-
-  /**
-   * TailwindMerge settings for custom Tailwind CSS classes.
-   * All lists of rules available here:
-   * https://github.com/dcastil/tailwind-merge/blob/main/src/lib/default-config.ts
-   */
-  tailwindMerge: {},
 };
 `;

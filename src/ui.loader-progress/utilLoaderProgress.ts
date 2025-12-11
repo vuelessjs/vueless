@@ -1,3 +1,15 @@
+export function loaderProgressOn(request: string | string[]): void {
+  const loaderProgressOnEvent = new CustomEvent("loaderProgressOn", { detail: { request } });
+
+  window.dispatchEvent(loaderProgressOnEvent);
+}
+
+export function loaderProgressOff(request: string | string[]): void {
+  const loaderProgressOffEvent = new CustomEvent("loaderProgressOff", { detail: { request } });
+
+  window.dispatchEvent(loaderProgressOffEvent);
+}
+
 export function clamp(n: number, min: number, max: number): number {
   if (n < min) {
     return min;
@@ -29,21 +41,3 @@ export const queue = (() => {
     }
   };
 })();
-
-export function loaderProgressOn(resource: string): void {
-  const loaderProgressOnEvent = new CustomEvent("loaderProgressOn", { detail: { resource } });
-
-  window.dispatchEvent(loaderProgressOnEvent);
-}
-
-export function loaderProgressOff(resource: string): void {
-  const loaderProgressOffEvent = new CustomEvent("loaderProgressOff", { detail: { resource } });
-
-  window.dispatchEvent(loaderProgressOffEvent);
-}
-
-export function getRequestWithoutQuery(request: string | URL): string {
-  const [requestWithoutQuery] = String(request).split("?");
-
-  return requestWithoutQuery;
-}

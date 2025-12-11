@@ -1,6 +1,6 @@
-import defaultConfig from "./config.ts";
+import defaultConfig from "./config";
 
-import type { ComponentConfig } from "../types.ts";
+import type { ComponentConfig } from "../types";
 
 export type Config = typeof defaultConfig;
 
@@ -48,6 +48,21 @@ export interface Props {
    * Make the Row expand to fill the entire width of its container.
    */
   block?: boolean;
+
+  /**
+   * Allow flex item to grow to fill available space (flex-grow).
+   */
+  grow?: boolean;
+
+  /**
+   * Allow flex item to shrink if necessary (flex-shrink).
+   */
+  shrink?: boolean;
+
+  /**
+   * Allows changing HTML tag.
+   */
+  tag?: string;
 
   /**
    * Component config object.

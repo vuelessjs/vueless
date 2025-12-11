@@ -1,15 +1,15 @@
 export default /*tw*/ {
-  wrapper: "relative inline-block",
-  dropdownButton: {
-    base: "{UButton} justify-between",
+  wrapper: {
+    base: "relative inline-block h-max",
     variants: {
-      opened: {
-        true: "group",
+      block: {
+        true: "w-full",
       },
     },
   },
+  dropdownButton: "{UButton} justify-between",
   toggleIcon: {
-    base: "{UIcon} transition duration-300 group-[*]:rotate-180 -mr-1",
+    base: "{UIcon} transition duration-300 -mr-1",
     defaults: {
       size: {
         "2xs": "2xs",
@@ -20,6 +20,7 @@ export default /*tw*/ {
         xl: "sm",
       },
     },
+    compoundVariants: [{ opened: true, class: "rotate-180" }],
   },
   listbox: {
     base: "{UListbox} w-fit",
@@ -49,15 +50,20 @@ export default /*tw*/ {
     size: "md",
     variant: "solid",
     labelKey: "label",
-    valueKey: "id",
+    valueKey: "value",
+    groupLabelKey: "label",
     yPosition: "bottom",
     xPosition: "left",
+    optionsLimit: 0,
+    visibleOptions: 8,
+    labelDisplayCount: 2,
     searchable: false,
     round: false,
+    block: false,
     square: false,
     disabled: false,
     multiple: false,
-    labelDisplayCount: 2,
+    closeOnSelect: true,
     /* icons */
     toggleIcon: "keyboard_arrow_down",
   },

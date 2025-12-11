@@ -1,101 +1,122 @@
 <script setup lang="ts">
-import { computed, ref, useId, useTemplateRef } from "vue";
+import { computed, provide, useTemplateRef, ref, watch, onMounted } from "vue";
 
-import useUI from "../composables/useUI.ts";
-import { getDefaults } from "../utils/ui.ts";
+import { useUI } from "../composables/useUI";
+import { getDefaults } from "../utils/ui";
 
-import UIcon from "../ui.image-icon/UIcon.vue";
-import UDivider from "../ui.container-divider/UDivider.vue";
+import UAccordionItem from "../ui.container-accordion-item/UAccordionItem.vue";
 
-import { COMPONENT_NAME } from "./constants.ts";
-import defaultConfig from "./config.ts";
+import { COMPONENT_NAME } from "./constants";
+import defaultConfig from "./config";
 
-import type { Props, Config } from "./types.ts";
+import type { Props, Config, SetAccordionSelectedItem } from "./types";
 
 defineOptions({ inheritAttrs: false });
 
 const props = withDefaults(defineProps<Props>(), {
   ...getDefaults<Props, Config>(defaultConfig, COMPONENT_NAME),
+  modelValue: () => [],
+  options: () => [],
 });
 
 const emit = defineEmits([
   /**
-   * Triggers when the accordion item is toggled.
-   * @property {string} elementId
-   * @property {boolean} isOpened
+   * Triggers when the value attribute changes.
+   * @property {string} value
    */
-  "click",
+  "update:modelValue",
 ]);
 
-const wrapperRef = useTemplateRef<HTMLDivElement>("wrapper");
+const accordionRef = useTemplateRef<HTMLDivElement>("accordion");
 
-const isOpened = ref(false);
+const internalValue = ref<string | string[] | null>(props.multiple ? [] : null);
 
-const elementId = props.id || useId();
+const isControlled = computed(() => props.modelValue !== undefined);
 
-const toggleIconName = computed(() => {
-  if (typeof props.toggleIcon === "string") {
-    return props.toggleIcon;
-  }
+const selectedItem = computed({
+  get: () => (isControlled.value ? props.modelValue! : internalValue.value),
+  set: (value) => {
+    if (!isControlled.value) internalValue.value = value;
 
-  return props.toggleIcon ? config.value.defaults.toggleIcon : "";
+    emit("update:modelValue", value);
+  },
 });
 
-function onClickItem() {
-  isOpened.value = !isOpened.value;
+onMounted(() => {
+  const initiallyOpened = props.options
+    .filter((option) => option.opened)
+    .map((option) => option.value);
 
-  emit("click", elementId, isOpened.value);
-}
+  if (initiallyOpened.length > 0) {
+    selectedItem.value = props.multiple ? initiallyOpened : initiallyOpened[0];
+  }
+});
+
+provide<SetAccordionSelectedItem>("setAccordionSelectedItem", (value, opened) => {
+  if (props.multiple) {
+    let current: string[] = [];
+
+    if (selectedItem.value) {
+      current = Array.isArray(selectedItem.value) ? [...selectedItem.value] : [selectedItem.value];
+    }
+
+    if (opened && !current.includes(value)) {
+      current.push(value);
+    } else {
+      const index = current.indexOf(value);
+
+      if (index !== -1) {
+        current.splice(index, 1);
+      }
+    }
+
+    selectedItem.value = current;
+
+    return;
+  }
+
+  selectedItem.value = opened ? value : null;
+});
+
+provide("getAccordionSelectedItem", () => selectedItem.value ?? null);
+provide("getAccordionSize", () => props.size);
+provide("getAccordionDisabled", () => props.disabled);
+
+watch(
+  () => props.multiple,
+  (isMultiple) => {
+    if (!isControlled.value) {
+      internalValue.value = isMultiple ? [] : null;
+    }
+  },
+);
 
 defineExpose({
   /**
    * A reference to the component's wrapper element for direct DOM manipulation.
    * @property {HTMLDivElement}
    */
-  wrapperRef,
+  accordionRef,
 });
 
-const mutatedProps = computed(() => ({
-  /* component state, not a props */
-  opened: isOpened.value,
-}));
-
-const {
-  getDataTest,
-  config,
-  wrapperAttrs,
-  descriptionAttrs,
-  bodyAttrs,
-  titleAttrs,
-  toggleIconAttrs,
-  accordionDividerAttrs,
-} = useUI<Config>(defaultConfig, mutatedProps);
+const { getDataTest, accordionItemAttrs, accordionAttrs } = useUI<Config>(defaultConfig);
 </script>
 
 <template>
-  <div ref="wrapper" v-bind="wrapperAttrs" :data-test="getDataTest()" @click="onClickItem">
-    <div v-bind="bodyAttrs">
-      <div v-bind="titleAttrs">
-        {{ title }}
-        <!--
-          @slot Use it to add something instead of the toggle icon.
-          @binding {string} icon-name
-          @binding {boolean} opened
-        -->
-        <slot name="toggle" :icon-name="toggleIconName" :opened="isOpened">
-          <UIcon
-            v-if="toggleIconName"
-            :name="toggleIconName"
-            :size="size"
-            color="neutral"
-            v-bind="toggleIconAttrs"
-          />
-        </slot>
-      </div>
-
-      <div :id="`description-${elementId}`" v-bind="descriptionAttrs" v-text="description" />
-    </div>
-
-    <UDivider v-bind="accordionDividerAttrs" />
+  <div ref="accordion" v-bind="accordionAttrs" :data-test="getDataTest()">
+    <!-- @slot Use it to add UAccordionItem directly. -->
+    <slot>
+      <UAccordionItem
+        v-for="(option, index) in options"
+        :key="index"
+        :value="option.value"
+        :title="option.title"
+        :description="option.description"
+        :size="size"
+        :disabled="disabled"
+        v-bind="accordionItemAttrs"
+        :data-test="getDataTest(`item-${index}`)"
+      />
+    </slot>
   </div>
 </template>

@@ -11,7 +11,7 @@ import { cwd } from "node:process";
 import { rm, cp } from "node:fs/promises";
 import { createRequire } from "module";
 
-import { vuelessConfig } from "./vuelessConfig.js";
+import { getVuelessConfig } from "./vuelessConfig.js";
 import { getDirFiles, getMergedComponentConfig } from "./helper.js";
 import {
   ICONS_DIR,
@@ -34,8 +34,9 @@ let uIconDefaults = {};
  * @param {string} env
  * @param {boolean} debug
  * @param {Array} targetFiles
+ * @param {string} basePath
  */
-export async function createIconsCache({ env, debug = false, targetFiles = [] } = {}) {
+export async function createIconsCache({ env, debug = false, targetFiles = [], basePath } = {}) {
   const isInternalEnv = env === INTERNAL_ENV;
   const isStorybookEnv = env === STORYBOOK_ENV;
 
@@ -55,6 +56,8 @@ export async function createIconsCache({ env, debug = false, targetFiles = [] } 
     ...vuelessMergedConfigFiles,
   ];
 
+  const vuelessConfig = await getVuelessConfig(basePath);
+
   if (isInternalEnv) {
     const storybookFiles = [];
     const internalFiles = [];
@@ -65,30 +68,32 @@ export async function createIconsCache({ env, debug = false, targetFiles = [] } 
         : internalFiles.push(file);
     }
 
-    await findAndCopyIcons(storybookFiles, STORYBOOK_ICONS_LIBRARY, debug);
-    await findAndCopyIcons(internalFiles, INTERNAL_ICONS_LIBRARY, debug);
+    await findAndCopyIcons(storybookFiles, STORYBOOK_ICONS_LIBRARY, vuelessConfig, debug);
+    await findAndCopyIcons(internalFiles, INTERNAL_ICONS_LIBRARY, vuelessConfig, debug);
   }
 
   if (!isInternalEnv) {
     await cachePackageIcons(isStorybookEnv);
-    await findAndCopyIcons(files, uIconDefaults.library, debug);
+    await findAndCopyIcons(files, uIconDefaults.library, vuelessConfig, debug);
   }
 }
 
 /**
  * Remove cached icons.
- * @param {string} mirrorCacheDir
+ * @param {string} basePath
+ * @param {boolean} isVuelessEnv
  * @returns {Promise<void>}
  */
-export async function removeIconsCache(mirrorCacheDir) {
+export async function removeIconsCache(basePath, isVuelessEnv = false) {
   const cachePath = path.join(cwd(), ICONS_CACHED_DIR);
 
   if (fs.existsSync(cachePath)) {
     await rm(cachePath, { recursive: true, force: true });
   }
 
-  if (mirrorCacheDir) {
-    const mirrorCacheIconsPath = path.join(cwd(), mirrorCacheDir, ICONS_DIR);
+  if (basePath) {
+    const iconsDir = isVuelessEnv ? ICONS_DIR : ICONS_CACHED_DIR;
+    const mirrorCacheIconsPath = path.join(cwd(), basePath, iconsDir);
 
     if (fs.existsSync(mirrorCacheIconsPath)) {
       await rm(mirrorCacheIconsPath, { recursive: true, force: true });
@@ -98,14 +103,16 @@ export async function removeIconsCache(mirrorCacheDir) {
 
 /**
  * Copy cached icons in the provided folder by path.
- * @param {string} mirrorCacheDir
+ * @param {string} basePath
+ * @param {boolean} isVuelessEnv
  * @returns {Promise<void>}
  */
-export async function copyIconsCache(mirrorCacheDir) {
+export async function copyIconsCache(basePath, isVuelessEnv = false) {
   const cachePath = path.join(cwd(), ICONS_CACHED_DIR);
 
-  if (mirrorCacheDir && fs.existsSync(cachePath)) {
-    const mirrorPath = path.join(cwd(), mirrorCacheDir, ICONS_DIR);
+  if (basePath && fs.existsSync(cachePath)) {
+    const iconsDir = isVuelessEnv ? ICONS_DIR : ICONS_CACHED_DIR;
+    const mirrorPath = path.join(cwd(), basePath, iconsDir);
 
     await cp(cachePath, mirrorPath, { recursive: true });
   }
@@ -118,41 +125,35 @@ export async function copyIconsCache(mirrorCacheDir) {
  *
  * @return {string} A string containing the export statement for the cached SVG icons as an array to be used in Vite.
  */
-export function generateIconExports() {
+export async function generateIconExports() {
   const cachePath = path.join(cwd(), ICONS_CACHED_DIR);
-  const files = walkSvgFiles(cachePath);
+  const files = await getDirFiles(cachePath, ".svg", {
+    recursive: true,
+  });
 
-  const entries = files
-    .map((relativePath) => {
-      const fullImportPath = path.resolve(cachePath, relativePath).replace(/\\/g, "/");
-      const virtualPath = path.join(cwd(), ICONS_CACHED_DIR, relativePath);
+  const entries = files.map((filePath) => {
+    const fullImportPath = path.resolve(filePath).replace(/\\/g, "/");
+    const virtualPath = filePath.replace(/\\/g, "/");
 
-      return `  ["${virtualPath}", import("${fullImportPath}?component")]`;
-    })
-    .join(",\n");
+    return `  ["${virtualPath}", import("${fullImportPath}?component")]`;
+  });
 
-  return `export const cachedIcons = [\n${entries}\n];`;
+  return `export const cachedIcons = [\n${entries.join(",\n")}\n];`;
 }
 
 /**
  * Reloads the server when the icons cache is updated. This function sets up a file system watcher
  * on the icons cache directory and triggers a full server reload whenever files are added or removed.
  * @param {Object} server - The vite server instance to be reloaded.
- * @param watcher
  */
+export function reloadServerOnIconsCacheUpdate(server) {
+  const module = server.moduleGraph.getModuleById(RESOLVED_ICONS_VIRTUAL_MODULE_ID);
 
-export function reloadServerOnIconsCacheUpdate(server, watcher) {
-  function reloadServer() {
-    const module = server.moduleGraph.getModuleById(RESOLVED_ICONS_VIRTUAL_MODULE_ID);
-
-    if (module) {
-      server.moduleGraph.invalidateModule(module);
-    }
-
-    server.ws.send({ type: "full-reload", path: "*" });
+  if (module) {
+    server.moduleGraph.invalidateModule(module);
   }
 
-  watcher.on("add", reloadServer).on("unlink", reloadServer);
+  server.ws.send({ type: "full-reload", path: "*" });
 }
 
 /**
@@ -182,9 +183,10 @@ async function cachePackageIcons(isStorybookEnv) {
  * Scan the project for icon names and copy found icons to the cache.
  * @param {Array} files
  * @param {string} library
+ * @param {object} vuelessConfig
  * @param {boolean} debug
  */
-async function findAndCopyIcons(files, library, debug) {
+async function findAndCopyIcons(files, library, vuelessConfig, debug) {
   const safelistIcons = vuelessConfig.components?.["UIcon"]?.safelistIcons;
 
   const validIconNamesRegex = /^(?!icon$|name$)[a-z0-9_-]+$/;
@@ -293,7 +295,17 @@ async function copyIcon(name, library) {
     const require = createRequire(import.meta.url);
 
     fs.mkdirSync(path.dirname(destinationPath), { recursive: true });
-    await cp(require.resolve(sourcePath), destinationPath);
+
+    try {
+      await fs.promises.copyFile(require.resolve(sourcePath), destinationPath);
+    } catch (err) {
+      if (err.code === "EEXIST" || err.code === "EBUSY") {
+        // Another process/thread already copied or Windows locked temporarily
+        return;
+      }
+
+      throw err;
+    }
   }
 }
 
@@ -325,7 +337,11 @@ function getIconLibraryPaths(name, library) {
     sourcePath = path.join(cwd(), NODE_MODULES_DIR, library, "24", fillVariant, `${iconName}.svg`);
   }
 
-  if (library === "custom-icons") {
+  if (library === "lucide-static") {
+    sourcePath = path.join(cwd(), NODE_MODULES_DIR, library, "icons", `${name}.svg`);
+  }
+
+  if (library === "custom") {
     sourcePath = path.join(cwd(), uIconDefaults.path, `${name}.svg`);
   }
 
@@ -336,34 +352,51 @@ function getIconLibraryPaths(name, library) {
 }
 
 /**
- * Recursively walks through the specified directory and its subdirectories to find all `.svg` files.
- * Returns an array of file paths relative to the provided base directory.
- *
- * @param {string} dir - The directory to start searching for `.svg` files.
- * @param {string} [baseDir=dir] - The base directory used for calculating relative file paths.
- * @return {string[]} An array of relative file paths for all `.svg` files found.
+ * Extract icon-related lines from file content for change detection
+ * @param {string} content - File content to analyze
+ * @returns {string[]} - Array of lines containing icon-related code
  */
-function walkSvgFiles(dir, baseDir = dir) {
-  let results = [];
+export function extractIconLines(content) {
+  const lines = content.split("\n");
+  const iconPatterns = [
+    // UIcon component usage
+    /<UIcon\b/,
+    // Other components with icon props
+    /\b\w*[Ii]con\w*\s*[:=]/,
+    // Icon usage in objects
+    /\w*icon\w*:\s*['"]/,
+    // Template literals with icon references
+    /\$\{[^}]*?icon[^}]*?\}/,
+    // Dynamic icon imports
+    /import\s+.*?\.svg/,
+    // Icon component definitions
+    /name\s*[:=]\s*['"][^'"]*icon/i,
+  ];
 
-  if (!fs.existsSync(dir)) {
-    return results;
+  return lines.filter((line) => {
+    const trimmedLine = line.trim();
+
+    return iconPatterns.some((pattern) => pattern.test(trimmedLine));
+  });
+}
+
+/**
+ * Compare text lines between two file versions
+ * @param {string[]} currentLines - Current line
+ * @param {string[]} previousLines - Previous line
+ * @returns {boolean} - True if there are changes in lines
+ */
+export function isIconChanged(currentLines, previousLines) {
+  if (currentLines.length !== previousLines.length) {
+    return true;
   }
 
-  const list = fs.readdirSync(dir);
-
-  for (const file of list) {
-    const fullPath = path.join(dir, file);
-    const stat = fs.statSync(fullPath);
-
-    if (stat && stat.isDirectory()) {
-      results = results.concat(walkSvgFiles(fullPath, baseDir));
-    } else if (file.endsWith(".svg")) {
-      const relative = path.relative(baseDir, fullPath);
-
-      results.push(relative.replace(/\\/g, "/"));
+  // Compare each line
+  for (let i = 0; i < currentLines.length; i++) {
+    if (currentLines[i].trim() !== previousLines[i].trim()) {
+      return true;
     }
   }
 
-  return results;
+  return false;
 }

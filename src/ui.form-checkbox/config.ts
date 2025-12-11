@@ -1,39 +1,38 @@
 export default /*tw*/ {
   checkboxLabel: "{ULabel}",
+  checkboxBase: {
+    base: "rounded-small cursor-pointer transition",
+    variants: {
+      size: {
+        sm: "size-4 -ml-4",
+        md: "size-5 -ml-5",
+        lg: "size-6 -ml-6",
+      },
+    },
+  },
   checkbox: {
     base: `
-      bg-default cursor-pointer transition
-      border border-default rounded-small outline-transparent
+      {>checkboxBase} ml-0 bg-default border border-solid border-default outline-transparent
+      appearance-none p-0 print:color-adjust-exact inline-block align-middle bg-origin-border select-none shrink-0
       hover:border-lifted
       active:border-{color} active:bg-{color}/15
       checked:text-{color}
-      focus:ring-0 focus:ring-offset-0
       focus-visible:outline-{color} focus-visible:outline-medium focus-visible:outline-offset-2 focus-visible:transition
       disabled:border-default disabled:bg-lifted disabled:cursor-not-allowed
       disabled:checked:bg-{color}/(--vl-disabled-opacity) disabled:checked:border-transparent
     `,
     variants: {
-      size: {
-        sm: "size-4",
-        md: "size-5",
-        lg: "size-6",
-      },
       error: {
-        true: "!border-error focus:outline-error",
+        true: "!border-error focus-visible:outline-error",
       },
     },
   },
   checked: {
     base: `
-      flex items-center justify-center absolute rounded-small cursor-pointer transition
+      {>checkboxBase} flex items-center justify-center relative
       bg-{color} hover:bg-{color}-lifted active:bg-{color}-accented
     `,
     variants: {
-      size: {
-        sm: "size-4",
-        md: "size-5",
-        lg: "size-6",
-      },
       disabled: {
         true: "!bg-{color}/(--vl-disabled-opacity) cursor-not-allowed",
       },
@@ -48,6 +47,12 @@ export default /*tw*/ {
         lg: "sm",
       },
     },
+  },
+  partiallyChecked: "{>checked}",
+  partiallyCheckedIcon: "{>checkedIcon}",
+  i18n: {
+    /* These are used for a11y. */
+    checkbox: "Checkbox",
   },
   defaults: {
     color: "primary",

@@ -4,15 +4,13 @@ import {
   getSlotNames,
   getSlotsFragment,
   getDocsDescription,
-  getEnumVariantDescription,
-} from "../../utils/storybook.ts";
+} from "../../utils/storybook";
 
 import UIcon from "../../ui.image-icon/UIcon.vue";
 import URow from "../../ui.container-row/URow.vue";
-import tooltip from "../../directives/tooltip/vTooltip.ts";
 
-import type { Meta, StoryFn } from "@storybook/vue3";
-import type { Props } from "../types.ts";
+import type { Meta, StoryFn } from "@storybook/vue3-vite";
+import type { Props } from "../types";
 
 interface UIconArgs extends Props {
   slotTemplate?: string;
@@ -20,7 +18,7 @@ interface UIconArgs extends Props {
 }
 
 /*
- * This needs for icon auto-caching, please keep it,
+ * This is needed for icon auto-caching, please keep it,
  * an object key which contains the `icon` word is required.
  */
 const icons = {
@@ -46,7 +44,6 @@ export default {
 
 const DefaultTemplate: StoryFn<UIconArgs> = (args: UIconArgs) => ({
   components: { UIcon },
-  directives: { tooltip },
   setup: () => ({ args, slots: getSlotNames(UIcon.__name) }),
   template: `
     <UIcon v-bind="args">
@@ -57,7 +54,6 @@ const DefaultTemplate: StoryFn<UIconArgs> = (args: UIconArgs) => ({
 
 const EnumTemplate: StoryFn<UIconArgs> = (args: UIconArgs, { argTypes }) => ({
   components: { UIcon, URow },
-  directives: { tooltip },
   setup: () => ({ args, argTypes, getArgs }),
   template: `
     <URow>
@@ -65,7 +61,6 @@ const EnumTemplate: StoryFn<UIconArgs> = (args: UIconArgs, { argTypes }) => ({
         v-for="option in argTypes?.[args.enum]?.options"
         v-bind="getArgs(args, option)"
         :key="option"
-        v-tooltip="option"
       />
     </URow>
   `,
@@ -99,15 +94,12 @@ import Beverage from "./src/assets/icons/beverage.svg?component";
 
 export const Colors = EnumTemplate.bind({});
 Colors.args = { enum: "color" };
-Colors.parameters = getEnumVariantDescription();
 
 export const Sizes = EnumTemplate.bind({});
 Sizes.args = { enum: "size" };
-Sizes.parameters = getEnumVariantDescription();
 
 export const Variants = EnumTemplate.bind({});
 Variants.args = { enum: "variant", color: "success" };
-Variants.parameters = getEnumVariantDescription();
 
 export const Interactive = DefaultTemplate.bind({});
 Interactive.args = { interactive: true };

@@ -1,12 +1,15 @@
-import { vuelessConfig } from "./vuelessConfig.js";
+import { getVuelessConfig } from "./vuelessConfig.js";
 
-export async function buildWebTypes(srcDir) {
+export async function buildWebTypes({ vuelessSrcDir, basePath } = {}) {
   try {
-    const { default: build } = await import("@vueless/storybook/webTypes/index.js");
+    const vuelessConfig = await getVuelessConfig(basePath);
+    const { buildWebTypes: build } = await import("@vueless/storybook");
 
-    await build(vuelessConfig, srcDir);
+    await build(vuelessConfig, vuelessSrcDir);
   } catch (error) {
-    // eslint-disable-next-line no-console
-    console.warn(error);
+    if (error.code !== "ERR_MODULE_NOT_FOUND") {
+      // eslint-disable-next-line no-console
+      console.warn(error);
+    }
   }
 }

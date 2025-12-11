@@ -1,5 +1,7 @@
 export default /*tw*/ {
-  wrapper: "p-3 w-[19rem] border border-default rounded-medium bg-default shadow-sm overflow-hidden focus:outline-hidden",
+  wrapper: `
+    p-3 w-[19rem] bg-default shadow-sm overflow-hidden focus:outline-hidden
+    border border-solid border-default rounded-medium`,
   navigation: "mb-2 pb-2 border-b border-muted flex items-center justify-between",
   viewSwitchButton: {
     base: "{UButton}",
@@ -36,11 +38,9 @@ export default /*tw*/ {
   anotherMonthDay: "{>day} {>anotherMonthDate} font-normal",
   anotherMonthDayInRange: "{>day} {>dateInRange} {>anotherMonthDate} font-normal",
   firstDayInRange: "{>day} {>edgeDateInRange} {>firstDateInRange}",
-  anotherMonthFirstDayInRange: "{>day} {>anotherMonthDay} {>edgeDateInRange} {>firstDateInRange}",
+  anotherMonthFirstDayInRange: "{>day} {>edgeDateInRange} {>firstDateInRange}",
   lastDayInRange: "{>day} {>edgeDateInRange} {>lastDateInRange}",
-  currentLastDayInRange: "{>day} {>edgeDateInRange} {>lastDateInRange} {>currentDate}",
-  currentFirstDayInRange: "{>day} {>edgeDateInRange} {>firstDateInRange} {>currentDate}",
-  anotherMonthLastDayInRange: "{>day} {>anotherMonthDay} {>edgeDateInRange} {>lastDateInRange}",
+  anotherMonthLastDayInRange: "{>day} {>edgeDateInRange} {>lastDateInRange}",
   selectedDay: "{>day} {>selectedDate}",
   activeDay: "{>day} {>activeDate}",
   monthView: "grid grid-rows-1 grid-cols-3 justify-items-center gap-1",
@@ -56,11 +56,11 @@ export default /*tw*/ {
   timepicker: "mt-2 pl-1 pt-3 text-medium flex items-stretch justify-between gap-2 border-t border-muted",
   timepickerLabel: "w-full self-center",
   timepickerInputWrapper: `
-    flex items-center rounded-medium border border-default
+    flex items-center rounded-medium border border-solid border-default
     hover:focus-within:border-primary focus-within:border-primary
     focus-within:outline focus-within:outline-small focus-within:outline-primary
   `,
-  timepickerInput: "w-10 border-none px-1.5 py-1.5 text-center text-medium focus:ring-0 focus:outline-none bg-default",
+  timepickerInput: "w-10 border-none px-1.5 py-1.5 text-center text-medium focus:outline-none bg-default",
   timepickerInputHours: "{>timepickerInput} rounded-l-medium",
   timepickerInputMinutes: "{>timepickerInput}",
   timepickerInputSeconds: "{>timepickerInput} rounded-r-medium",
@@ -144,6 +144,11 @@ export default /*tw*/ {
     },
     timeLabel: "Time",
     okLabel: "Ok",
+    /* These are used for a11y. */
+    previousYear: "Previous Year",
+    nextYear: "Next Year",
+    previousMonth: "Previous Month",
+    nextMonth: "Next Month",
   },
   defaults: {
     userDateFormat: "j F, Y",
@@ -154,7 +159,6 @@ export default /*tw*/ {
     range: false,
     timepicker: false,
     /* icons */
-    viewSwitchIcon: "keyboard_arrow_down",
     nextYearIcon: "keyboard_double_arrow_right",
     prevYearIcon: "keyboard_double_arrow_left",
     nextIcon: "keyboard_arrow_right",

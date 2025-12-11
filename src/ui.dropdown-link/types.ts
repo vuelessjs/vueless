@@ -1,7 +1,7 @@
-import defaultConfig from "./config.ts";
+import defaultConfig from "./config";
 
-import type { Option } from "../ui.form-listbox/types.ts";
-import type { ComponentConfig, UnknownObject } from "../types.ts";
+import type { Option } from "../ui.form-listbox/types";
+import type { ComponentConfig, UnknownObject } from "../types";
 
 export type Config = typeof defaultConfig;
 
@@ -37,6 +37,26 @@ export interface Props {
   valueKey?: string;
 
   /**
+   * Set a name of the property containing the group label.
+   */
+  groupLabelKey?: string;
+
+  /**
+   * Set a name of the property containing the group values.
+   */
+  groupValueKey?: string;
+
+  /**
+   * Number of options displayed in the dropdown.
+   */
+  optionsLimit?: number;
+
+  /**
+   * Number of options you can see without a scroll.
+   */
+  visibleOptions?: number;
+
+  /**
    * Link color.
    */
   color?:
@@ -64,6 +84,16 @@ export interface Props {
    * Shows input to search value in a list.
    */
   searchable?: boolean;
+
+  /**
+   * Search input model value for the dropdown list.
+   */
+  search?: string;
+
+  /**
+   * Close dropdown on option select.
+   */
+  closeOnSelect?: boolean;
 
   /**
    * Allows multiple selection.

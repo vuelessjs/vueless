@@ -1,13 +1,15 @@
 <script setup lang="ts">
 import { useTemplateRef } from "vue";
 
-import useUI from "../composables/useUI.ts";
-import { getDefaults } from "../utils/ui.ts";
+import { useUI } from "../composables/useUI";
+import { getDefaults } from "../utils/ui";
 
-import { COMPONENT_NAME, ELLIPSES_AMOUNT } from "./constants.ts";
-import defaultConfig from "./config.ts";
+import UIcon from "../ui.image-icon/UIcon.vue";
 
-import type { Props, Config } from "./types.ts";
+import { COMPONENT_NAME, ELLIPSES_AMOUNT } from "./constants";
+import defaultConfig from "./config";
+
+import type { Props, Config } from "./types";
 
 defineOptions({ inheritAttrs: false });
 
@@ -29,7 +31,8 @@ defineExpose({
  * Get element / nested component attributes for each config token ✨
  * Applies: `class`, `config`, redefined default `props` and dev `vl-...` attributes.
  */
-const { getDataTest, config, loaderAttrs, ellipseAttrs } = useUI<Config>(defaultConfig);
+const { getDataTest, config, loaderAttrs, ellipseAttrs, spinnerIconAttrs } =
+  useUI<Config>(defaultConfig);
 </script>
 
 <template>
@@ -37,7 +40,12 @@ const { getDataTest, config, loaderAttrs, ellipseAttrs } = useUI<Config>(default
     <div v-if="loading" ref="loader" v-bind="loaderAttrs" :data-test="getDataTest()">
       <!-- @slot Use it to add something instead of the default loader. -->
       <slot>
-        <div v-for="ellipse in ELLIPSES_AMOUNT" :key="ellipse" v-bind="ellipseAttrs" />
+        <template v-if="variant === 'spinner'">
+          <UIcon :name="config.defaults.spinnerIcon" :color="color" v-bind="spinnerIconAttrs" />
+        </template>
+        <template v-else>
+          <div v-for="ellipse in ELLIPSES_AMOUNT" :key="ellipse" v-bind="ellipseAttrs" />
+        </template>
       </slot>
     </div>
   </Transition>

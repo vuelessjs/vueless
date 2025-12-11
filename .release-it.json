@@ -1,21 +1,37 @@
 {
   "git": {
-    "tag": false,
+    "tag": true,
     "tagName": "v${version}",
     "commitMessage": "Release v${version} / [no ci]",
     "requireUpstream": false,
     "requireCleanWorkingDir": false
   },
   "github": {
-    "release": false
+    "release": true
   },
   "npm": {
-    "publish": false,
+    "publish": true,
+    "skipChecks": true,
     "publishPath": "./dist"
   },
   "plugins": {
     "@release-it/bumper": {
       "out": "dist/*.json"
+    },
+    "@release-it/conventional-changelog": {
+      "infile": false,
+      "ignoreRecommendedBump": true,
+      "preset": {
+        "name": "conventionalcommits",
+        "types": [
+          { "type": "feat", "section": "✨ Features" },
+          { "type": "fix", "section": "🐛 Bug Fixes" },
+          { "type": "perf", "section": "🚀 Performance" }
+        ]
+      },
+      "writerOpts": {
+        "noteGroupTitle": "🚨 Breaking Changes"
+      }
     }
   },
   "hooks": {

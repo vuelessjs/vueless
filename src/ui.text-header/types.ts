@@ -1,5 +1,5 @@
-import defaultConfig from "./config.ts";
-import type { ComponentConfig } from "../types.ts";
+import defaultConfig from "./config";
+import type { ComponentConfig } from "../types";
 
 export type Config = typeof defaultConfig;
 
@@ -15,9 +15,20 @@ export interface Props {
   size?: "xs" | "sm" | "md" | "lg" | "xl" | "2xl";
 
   /**
+   * Text variant.
+   */
+  variant?: "default" | "accented" | "lifted" | "muted";
+
+  /**
+   * Font weight.
+   */
+  weight?: "light" | "normal" | "medium" | "semibold" | "bold";
+
+  /**
    * Header color.
    */
   color?:
+    | "text" // the default design system text color
     | "primary"
     | "secondary"
     | "error"
@@ -26,7 +37,8 @@ export interface Props {
     | "info"
     | "notice"
     | "neutral"
-    | "grayscale";
+    | "grayscale"
+    | "inherit";
 
   /**
    * Allows changing HTML tag.

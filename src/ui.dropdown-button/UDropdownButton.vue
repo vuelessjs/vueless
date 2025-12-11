@@ -1,21 +1,21 @@
 <script setup lang="ts">
-import { nextTick, computed, provide, ref, useId, useTemplateRef } from "vue";
+import { nextTick, computed, ref, useId, useTemplateRef } from "vue";
 import { isEqual } from "lodash-es";
 
-import useUI from "../composables/useUI.ts";
-import { getDefaults } from "../utils/ui.ts";
+import { useUI } from "../composables/useUI";
+import { getDefaults } from "../utils/ui";
 
 import UIcon from "../ui.image-icon/UIcon.vue";
 import UButton from "../ui.button/UButton.vue";
 import UListbox from "../ui.form-listbox/UListbox.vue";
 
-import { vClickOutside } from "../directives";
+import vClickOutside from "../v.click-outside/vClickOutside";
 
-import defaultConfig from "./config.ts";
-import { COMPONENT_NAME } from "./constants.ts";
+import defaultConfig from "./config";
+import { COMPONENT_NAME } from "./constants";
 
-import type { Props, Config } from "./types.ts";
-import type { Option, SelectedValue } from "../ui.form-listbox/types.ts";
+import type { Props, Config } from "./types";
+import type { Option, SelectedValue } from "../ui.form-listbox/types";
 
 defineOptions({ inheritAttrs: false });
 
@@ -39,13 +39,34 @@ const emit = defineEmits([
    * @property {number} value
    */
   "update:modelValue",
-]);
 
-provide("hideDropdownOptions", hideOptions);
+  /**
+   * Triggers when a dropdown list is opened.
+   */
+  "open",
+
+  /**
+   * Triggers when a dropdown list is closed.
+   */
+  "close",
+
+  /**
+   * Triggers when the search value is changed.
+   * @property {string} query
+   */
+  "searchChange",
+
+  /**
+   * Triggers when the search v-model updates.
+   * @property {string} query
+   */
+  "update:search",
+]);
 
 type UListboxRef = InstanceType<typeof UListbox>;
 
 const isShownOptions = ref(false);
+const isClickingOption = ref(false);
 const listboxRef = useTemplateRef<UListboxRef>("dropdown-list");
 const wrapperRef = useTemplateRef<HTMLDivElement>("wrapper");
 
@@ -60,6 +81,11 @@ const dropdownValue = computed({
     return props.modelValue;
   },
   set: (value) => emit("update:modelValue", value),
+});
+
+const dropdownSearch = computed({
+  get: () => props.search ?? "",
+  set: (value: string) => emit("update:search", value),
 });
 
 const selectedOptions = computed(() => {
@@ -82,7 +108,7 @@ const selectedOptions = computed(() => {
 });
 
 const buttonLabel = computed(() => {
-  if (!selectedOptions.value.length) {
+  if (!props.labelDisplayCount || !selectedOptions.value.length) {
     return props.label;
   }
 
@@ -91,7 +117,7 @@ const buttonLabel = computed(() => {
     .map((option) => option[props.labelKey]);
   const restLabelCount = selectedOptions.value.length - props.labelDisplayCount;
 
-  if (selectedLabels.length > 1 && restLabelCount > 0) {
+  if (restLabelCount > 0) {
     selectedLabels.push(`+${restLabelCount}`);
   }
 
@@ -106,6 +132,10 @@ const toggleIconName = computed(() => {
   return props.toggleIcon ? config.value.defaults.toggleIcon : "";
 });
 
+function onSearchChange(query: string) {
+  emit("searchChange", query);
+}
+
 function getFullOptionLabels(value: Option | Option[]) {
   const labelKey = props.labelKey;
 
@@ -117,7 +147,21 @@ function getFullOptionLabels(value: Option | Option[]) {
 }
 
 function onClickOption(option: Option) {
+  isClickingOption.value = true;
+
   emit("clickOption", option);
+
+  if (!props.multiple && props.closeOnSelect) hideOptions();
+
+  nextTick(() => {
+    setTimeout(() => {
+      isClickingOption.value = false;
+    }, 10);
+  });
+}
+
+function handleClickOutside() {
+  if (isClickingOption.value) return;
 
   hideOptions();
 }
@@ -127,11 +171,16 @@ function onClickButton() {
 
   if (isShownOptions.value) {
     nextTick(() => listboxRef.value?.wrapperRef?.focus());
+
+    emit("open");
   }
 }
 
 function hideOptions() {
   isShownOptions.value = false;
+  dropdownSearch.value = "";
+
+  emit("close");
 }
 
 defineExpose({
@@ -140,6 +189,12 @@ defineExpose({
    * @property {HTMLDivElement}
    */
   wrapperRef,
+
+  /**
+   * Hides the dropdown options.
+   * @property {function}
+   */
+  hideOptions,
 });
 
 /**
@@ -156,12 +211,18 @@ const { getDataTest, config, dropdownButtonAttrs, listboxAttrs, toggleIconAttrs,
 </script>
 
 <template>
-  <div ref="wrapper" v-click-outside="hideOptions" v-bind="wrapperAttrs">
+  <div
+    ref="wrapper"
+    v-click-outside="handleClickOutside"
+    v-bind="wrapperAttrs"
+    :data-test="getDataTest('wrapper')"
+  >
     <UButton
       :id="elementId"
       :label="buttonLabel"
       :size="size"
       :color="color"
+      :block="block"
       :round="round"
       :square="square"
       :variant="variant"
@@ -209,15 +270,54 @@ const { getDataTest, config, dropdownButtonAttrs, listboxAttrs, toggleIconAttrs,
       v-if="isShownOptions"
       ref="dropdown-list"
       v-model="dropdownValue"
+      v-model:search="dropdownSearch"
       :searchable="searchable"
       :multiple="multiple"
       :color="color"
       :options="options"
+      :options-limit="optionsLimit"
+      :visible-options="visibleOptions"
       :label-key="labelKey"
       :value-key="valueKey"
+      :group-label-key="groupLabelKey"
+      :group-value-key="groupValueKey"
       v-bind="listboxAttrs"
       :data-test="getDataTest('list')"
       @click-option="onClickOption"
-    />
+      @search-change="onSearchChange"
+      @update:search="(value) => emit('update:search', value)"
+    >
+      <template #before-option="{ option, index }">
+        <!--
+            @slot Use it to add something before option.
+            @binding {object} option
+            @binding {number} index
+          -->
+        <slot name="before-option" :option="option" :index="index" />
+      </template>
+
+      <template #option="{ option, index }">
+        <!--
+            @slot Use it to customize the option.
+            @binding {object} option
+            @binding {number} index
+          -->
+        <slot name="option" :option="option" :index="index" />
+      </template>
+
+      <template #after-option="{ option, index }">
+        <!--
+            @slot Use it to add something after option.
+            @binding {object} option
+            @binding {number} index
+          -->
+        <slot name="after-option" :option="option" :index="index" />
+      </template>
+
+      <template #empty>
+        <!-- @slot Use it to add something instead of empty state. -->
+        <slot name="empty" />
+      </template>
+    </UListbox>
   </div>
 </template>

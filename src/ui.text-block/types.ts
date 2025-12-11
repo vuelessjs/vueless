@@ -1,13 +1,13 @@
-import defaultConfig from "./config.ts";
-import type { ComponentConfig } from "../types.ts";
+import defaultConfig from "./config";
+import type { ComponentConfig } from "../types";
 
 export type Config = typeof defaultConfig;
 
 export interface Props {
   /**
-   * HTML markdown or plain text.
+   * Text label.
    */
-  html?: string;
+  label?: string;
 
   /**
    * Text size.
@@ -20,9 +20,45 @@ export interface Props {
   align?: "left" | "center" | "right";
 
   /**
+   * Text variant.
+   */
+  variant?: "default" | "accented" | "lifted" | "muted" | "inverted";
+
+  /**
+   * Font weight.
+   */
+  weight?: "light" | "normal" | "medium" | "semibold" | "bold";
+
+  /**
+   * Text color.
+   */
+  color?:
+    | "text" // the default design system text color
+    | "primary"
+    | "secondary"
+    | "error"
+    | "warning"
+    | "success"
+    | "info"
+    | "notice"
+    | "neutral"
+    | "grayscale"
+    | "inherit";
+
+  /**
+   * Allows changing HTML tag.
+   */
+  tag?: string;
+
+  /**
    * Removes text line height (useful for 1-line text).
    */
   line?: boolean;
+
+  /**
+   * Enables text wrapping.
+   */
+  wrap?: boolean;
 
   /**
    * Component config object.

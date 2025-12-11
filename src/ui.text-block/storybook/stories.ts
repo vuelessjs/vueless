@@ -1,31 +1,35 @@
 import {
+  trimText,
   getArgs,
   getArgTypes,
   getSlotNames,
   getSlotsFragment,
   getDocsDescription,
-  getEnumVariantDescription,
-} from "../../utils/storybook.ts";
+} from "../../utils/storybook";
 
 import UText from "../../ui.text-block/UText.vue";
 import URow from "../../ui.container-row/URow.vue";
 import UCol from "../../ui.container-col/UCol.vue";
 import UBadge from "../../ui.text-badge/UBadge.vue";
 
-import tooltip from "../../directives/tooltip/vTooltip.ts";
-
-import type { Meta, StoryFn } from "@storybook/vue3";
-import type { Props } from "../types.ts";
+import type { Meta, StoryFn } from "@storybook/vue3-vite";
+import type { Props } from "../types";
 
 interface UTextArgs extends Props {
   slotTemplate?: string;
-  enum: "size" | "align";
+  enum: "size" | "align" | "variant" | "color" | "weight";
+  class?: string;
 }
 
 export default {
   id: "4020",
   title: "Text & Content / Text",
   component: UText,
+  args: {
+    label: trimText(`
+      Easily customize your UI with flexible components.
+    `),
+  },
   argTypes: {
     ...getArgTypes(UText.__name),
   },
@@ -34,29 +38,20 @@ export default {
       ...getDocsDescription(UText.__name),
     },
   },
-  args: {},
 } as Meta;
-
-const defaultTemplate = `
-  <p>
-    <b>To proceed with your registration</b>, please enter your <u>email address</u> in the field below.
-    <i>A verification link</i> will be sent to your inbox shortly.
-  </p>
-`;
 
 const DefaultTemplate: StoryFn<UTextArgs> = (args: UTextArgs) => ({
   components: { UText, URow, UBadge },
   setup: () => ({ args, slots: getSlotNames(UText.__name) }),
   template: `
     <UText v-bind="args">
-      ${args.slotTemplate || getSlotsFragment(defaultTemplate)}
+      ${args.slotTemplate || getSlotsFragment("")}
     </UText>
   `,
 });
 
 const EnumTemplate: StoryFn<UTextArgs> = (args: UTextArgs, { argTypes }) => ({
   components: { UText, UCol },
-  directives: { tooltip },
   setup: () => ({ args, argTypes, getArgs }),
   template: `
     <UCol>
@@ -64,11 +59,7 @@ const EnumTemplate: StoryFn<UTextArgs> = (args: UTextArgs, { argTypes }) => ({
         v-for="option in argTypes?.[args.enum]?.options"
         v-bind="getArgs(args, option)"
         :key="option"
-        v-tooltip="option"
-        class="w-full"
-      >
-        ${args.slotTemplate || defaultTemplate}
-      </UText>
+      />
     </UCol>
   `,
 });
@@ -77,49 +68,85 @@ export const Default = DefaultTemplate.bind({});
 Default.args = {};
 
 export const Align = EnumTemplate.bind({});
-Align.args = { enum: "align" };
-Align.parameters = getEnumVariantDescription();
+Align.args = { enum: "align", class: "w-full" };
+
+export const Weight: StoryFn<UTextArgs> = (args: UTextArgs, { argTypes }) => ({
+  components: { UText, UCol },
+  setup: () => ({ args, argTypes, getArgs }),
+  template: `
+    <UCol>
+      <UText v-bind="args" weight="normal" />
+
+      <UText v-bind="args" weight="medium" />
+
+      <UText v-bind="args" weight="bold" />
+    </UCol>
+  `,
+});
 
 export const Sizes = EnumTemplate.bind({});
 Sizes.args = { enum: "size" };
-Sizes.parameters = getEnumVariantDescription();
 
-export const Line = DefaultTemplate.bind({});
-Line.args = {
-  line: true,
-};
-Line.parameters = {
-  docs: {
-    description: {
-      story: "Removes text line height (useful for 1-line text).",
-    },
-  },
-};
+export const Color = EnumTemplate.bind({});
+Color.args = { enum: "color" };
 
-export const Paragraphs = DefaultTemplate.bind({});
-Paragraphs.args = {
-  slotTemplate: `
-    <template #default>
-      <p>
-        In a world where technology evolves at an unprecedented pace, staying
-        updated with the latest advancements is crucial for success. Companies
-        that adapt quickly to new trends often find themselves at the forefront
-        of their industries, leading to increased innovation and productivity.
-        However, it's not just about adopting new tools but also about integrating
-        them seamlessly into existing workflows to maximize their potential.
-      </p>
+export const Variant = EnumTemplate.bind({});
+Variant.args = { enum: "variant" };
 
-      <p>
-        Employees must be encouraged to continuously learn and develop new skills,
-        ensuring they can leverage these technological advancements effectively.
-        This not only enhances their professional growth but also contributes to
-        the overall success of the organization. By fostering a culture of
-        continuous improvement, businesses can navigate the challenges of a
-        rapidly changing landscape and emerge stronger and more competitive.
-      </p>
-    </template>
+export const Line: StoryFn<UTextArgs> = (args: UTextArgs) => ({
+  components: { UText, UCol },
+  setup: () => ({ args }),
+  template: `
+    <UCol>
+      <UText>
+        <div class="rounded-medium border border-primary border-dashed w-fit">
+          Text with default library line height.
+        </div>
+      </UText>
+
+      <UText line>
+        <div class="rounded-medium border border-primary border-dashed w-fit">
+          Text with line height equal to its font size.
+        </div>
+      </UText>
+    </UCol>
   `,
-};
+});
+Line.args = {};
+
+export const Tag: StoryFn<UTextArgs> = (args: UTextArgs) => ({
+  components: { UText, UCol },
+  setup: () => ({ args }),
+  template: `
+    <UCol>
+      <UText tag="p" label="This is a paragraph tag" />
+      <UText tag="span" label="This is a span tag" />
+      <UText tag="div" label="This is a div tag (default)" />
+    </UCol>
+  `,
+});
+Tag.args = {};
+
+export const Wrap: StoryFn<UTextArgs> = (args: UTextArgs) => ({
+  components: { UText, UCol },
+  setup: () => ({ args }),
+  template: `
+    <UCol>
+      <UText>
+        <div class="rounded-medium border border-primary border-dashed w-32">
+          Text with wrapping enabled (default behavior).
+        </div>
+      </UText>
+
+      <UText :wrap="false">
+        <div class="rounded-medium border border-primary border-dashed w-32">
+          Text with wrapping disabled (text-nowrap).
+        </div>
+      </UText>
+    </UCol>
+  `,
+});
+Wrap.args = {};
 
 export const List = DefaultTemplate.bind({});
 List.args = {
@@ -141,11 +168,23 @@ List.args = {
   `,
 };
 
+export const FormattedText = DefaultTemplate.bind({});
+FormattedText.args = {
+  slotTemplate: `
+    <p>
+      <b>To proceed with your registration</b>, please enter your <u>email address</u> in the field below.
+      <i>A verification link</i> will be sent to your inbox shortly.
+    </p>
+  `,
+};
+
 export const DefaultSlot = DefaultTemplate.bind({});
 DefaultSlot.args = {
   slotTemplate: `
-    <p>To proceed with your registration, please enter your
-    <UBadge label="email address" v-bind="args" color="success" /> in the field below.
-    A verification link will be sent to your inbox shortly.</p>
+    <template #default>
+      <p>To proceed with your registration, please enter your
+      <UBadge label="email address" color="success" variant="subtle" /> in the field below.
+      A verification link will be sent to your inbox shortly.</p>
+    </template>
   `,
 };

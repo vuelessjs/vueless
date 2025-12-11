@@ -4,16 +4,14 @@ import {
   getSlotNames,
   getSlotsFragment,
   getDocsDescription,
-} from "../../utils/storybook.ts";
+} from "../../utils/storybook";
 
 import ULoaderOverlay from "../ULoaderOverlay.vue";
 import UButton from "../../ui.button/UButton.vue";
 import USelect from "../../ui.form-select/USelect.vue";
 
-import { useLoaderOverlay } from "../useLoaderOverlay.ts";
-
-import type { Meta, StoryFn } from "@storybook/vue3";
-import type { Props } from "../types.ts";
+import type { Meta, StoryFn } from "@storybook/vue3-vite";
+import type { Props } from "../types";
 
 interface ULoaderOverlayArgs extends Props {
   slotTemplate?: string;
@@ -53,11 +51,11 @@ const EnumTemplate: StoryFn<ULoaderOverlayArgs> = (args: ULoaderOverlayArgs, { a
     const selectModel = ref(null);
 
     const options = computed(() => {
-      return argTypes?.[args.enum]?.options?.map((label, id) => ({ label, id }));
+      return argTypes?.[args.enum]?.options?.map((label, value) => ({ label, value }));
     });
 
     const selectedValue = computed(() => {
-      return options.value?.find((option) => option.id === selectModel.value)?.label;
+      return options.value?.find((option) => option.value === selectModel.value)?.label;
     });
 
     return {
@@ -83,7 +81,15 @@ const EnumTemplate: StoryFn<ULoaderOverlayArgs> = (args: ULoaderOverlayArgs, { a
 const LoadingTemplate: StoryFn<ULoaderOverlayArgs> = (args: ULoaderOverlayArgs) => ({
   components: { ULoaderOverlay, UButton },
   setup() {
-    const { isLoading, loaderOverlayOn, loaderOverlayOff } = useLoaderOverlay();
+    const isLoading = ref(true);
+
+    function loaderOverlayOn() {
+      isLoading.value = true;
+    }
+
+    function loaderOverlayOff() {
+      isLoading.value = false;
+    }
 
     return { args, isLoading, loaderOverlayOn, loaderOverlayOff };
   },

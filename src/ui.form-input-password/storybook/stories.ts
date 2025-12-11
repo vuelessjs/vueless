@@ -1,23 +1,26 @@
+import { ref } from "vue";
+
 import {
   getArgs,
   getArgTypes,
   getSlotNames,
   getSlotsFragment,
   getDocsDescription,
-} from "../../utils/storybook.ts";
+} from "../../utils/storybook";
 
 import UInputPassword from "../UInputPassword.vue";
 import UCol from "../../ui.container-col/UCol.vue";
 import URow from "../../ui.container-row/URow.vue";
 import UButton from "../../ui.button/UButton.vue";
-import UAvatar from "../../ui.image-avatar/UAvatar.vue";
+import UDropdownButton from "../../ui.dropdown-button/UDropdownButton.vue";
 
-import type { Meta, StoryFn } from "@storybook/vue3";
-import type { Props } from "../types.ts";
+import type { Meta, StoryFn } from "@storybook/vue3-vite";
+import type { Props } from "../types";
 
 interface UInputPasswordArgs extends Props {
   slotTemplate?: string;
   enum: "labelAlign" | "size";
+  wrapperClass?: string;
 }
 
 export default {
@@ -25,7 +28,8 @@ export default {
   title: "Form Inputs & Controls / Input Password",
   component: UInputPassword,
   args: {
-    modelValue: "",
+    modelValue: "VuelessUI",
+    label: "Password",
   },
   argTypes: {
     ...getArgTypes(UInputPassword.__name),
@@ -55,7 +59,7 @@ const EnumTemplate: StoryFn<UInputPasswordArgs> = (args: UInputPasswordArgs, { a
   components: { UInputPassword, UCol },
   setup: () => ({ args, argTypes, getArgs }),
   template: `
-    <UCol>
+    <UCol :class="args.wrapperClass">
       <UInputPassword
         v-for="option in argTypes?.[args.enum]?.options"
         v-bind="getArgs(args, option)"
@@ -70,20 +74,24 @@ const EnumTemplate: StoryFn<UInputPasswordArgs> = (args: UInputPasswordArgs, { a
 export const Default = DefaultTemplate.bind({});
 Default.args = {};
 
-export const Label = DefaultTemplate.bind({});
-Label.args = { label: "Password" };
-
 export const Placeholder = DefaultTemplate.bind({});
-Placeholder.args = { placeholder: "Enter your password" };
+Placeholder.args = { placeholder: "Enter your password", modelValue: "" };
 
 export const Description = DefaultTemplate.bind({});
 Description.args = { description: "Use at least 8 characters, including a number and a symbol." };
 
-export const Error = DefaultTemplate.bind({});
-Error.args = {
-  modelValue: "1234",
-  error: "Password is too weak. Try adding a symbol or more characters.",
-};
+export const Error: StoryFn<UInputPasswordArgs> = (args: UInputPasswordArgs) => ({
+  components: { UInputPassword },
+  setup: () => ({ args, modelValue: ref("") }),
+  template: `
+    <UInputPassword
+      v-bind="args"
+      v-model="modelValue"
+      class="!max-w-96"
+      :error="modelValue ? '' : 'Invalid password.'"
+    />
+  `,
+});
 
 export const ReadOnly = DefaultTemplate.bind({});
 ReadOnly.args = { readonly: true, modelValue: "VuelessUI" };
@@ -98,7 +106,12 @@ export const Sizes = EnumTemplate.bind({});
 Sizes.args = { enum: "size", label: "{enumValue}" };
 
 export const LabelAlign = EnumTemplate.bind({});
-LabelAlign.args = { enum: "labelAlign", label: "{enumValue}" };
+LabelAlign.args = {
+  enum: "labelAlign",
+  label: "{enumValue}",
+  description: "Use at least 8 characters, including a number and a symbol.",
+  wrapperClass: "gap-16",
+};
 
 export const IconProps: StoryFn<UInputPasswordArgs> = (args) => ({
   components: { UInputPassword, URow },
@@ -126,34 +139,58 @@ export const IconProps: StoryFn<UInputPasswordArgs> = (args) => ({
 });
 
 export const Slots: StoryFn<UInputPasswordArgs> = (args) => ({
-  components: { UInputPassword, URow, UButton, UAvatar },
+  components: { UInputPassword, URow, UButton, UDropdownButton },
   setup() {
-    return { args };
+    const wifiTypes = [
+      { label: "WPA2", value: "wpa2" },
+      { label: "WPA3", value: "wpa3" },
+    ];
+
+    return { args, wifiTypes };
   },
   template: `
-    <URow>
+    <URow align="stretch">
       <UInputPassword
         v-bind="args"
         v-model="args.modelValue"
-        :config="{ passwordInput: { leftSlot: 'pl-0' } }"
+        label="Enter your password"
+        :config="{ passwordInput: { wrapper: 'pl-0' } }"
       >
+        <template #label="{ label }">
+          {{ label }}
+          <span class="text-red-500">*</span>
+        </template>
+
         <template #left>
-          <UAvatar />
+          <UDropdownButton
+            v-model="args.wifiType"
+            :options="wifiTypes"
+            label="Wifi type"
+            size="sm"
+            variant="soft"
+            class="rounded-r-none h-[49px]"
+          />
         </template>
       </UInputPassword>
 
       <UInputPassword
         v-bind="args"
         v-model="args.modelValue"
-        :config="{ passwordInput: { rightSlot: 'pr-0' } }"
+        label="Enter your password"
+        :config="{ passwordInput: { wrapper: 'pr-0' } }"
       >
+        <template #label="{ label }">
+          {{ label }}
+          <span class="text-red-500">*</span>
+        </template>
+
         <template #right="{ visible, toggle }">
           <UButton
             :label="visible ? 'Hide' : 'Show'"
             color="neutral"
             variant="ghost"
             size="sm"
-            class="rounded-l-none h-full"
+            class="rounded-l-none h-[49px] min-w-[69px]"
             @click="toggle"
           />
         </template>
@@ -161,3 +198,10 @@ export const Slots: StoryFn<UInputPasswordArgs> = (args) => ({
     </URow>
   `,
 });
+Slots.parameters = {
+  docs: {
+    story: {
+      height: "200px",
+    },
+  },
+};

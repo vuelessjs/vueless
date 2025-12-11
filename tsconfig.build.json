@@ -1,0 +1,13 @@
+{
+  "extends": "./tsconfig.app.json",
+  "include": ["dist/constants.js", "dist/bin/constants.js", "dist/utils/node/*.js"],
+  "exclude": ["src/**/*.d.ts"],
+  "compilerOptions": {
+    "allowJs": true,
+    "noEmit": false,
+    "declaration": true,
+    "emitDeclarationOnly": true,
+    "rootDir": "./dist",
+    "outDir": "./dist"
+  }
+}

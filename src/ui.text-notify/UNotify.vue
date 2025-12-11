@@ -1,16 +1,23 @@
 <script setup lang="ts">
 import { onBeforeUnmount, onMounted, ref, useTemplateRef } from "vue";
 
-import useUI from "../composables/useUI.ts";
-import { getDefaults, vuelessConfig } from "../utils/ui.ts";
-import { useComponentLocaleMessages } from "../composables/useComponentLocaleMassages.ts";
+import { useUI } from "../composables/useUI";
+import { getDefaults, vuelessConfig } from "../utils/ui";
+import { useComponentLocaleMessages } from "../composables/useComponentLocaleMassages";
 
-import defaultConfig from "./config.ts";
-import { COMPONENT_NAME, NotificationType, NotificationPosition } from "./constants.ts";
+import defaultConfig from "./config";
+import { COMPONENT_NAME, NotificationType, NotificationPosition } from "./constants";
 
 import UIcon from "../ui.image-icon/UIcon.vue";
 
-import type { Props, Config, NotifyEvent, Notification, NotificationsWrapperRef } from "./types.ts";
+import type {
+  Props,
+  Config,
+  NotifyEvent,
+  NotifyClearAllEvent,
+  Notification,
+  NotificationsWrapperRef,
+} from "./types";
 
 defineOptions({ inheritAttrs: false });
 
@@ -48,16 +55,22 @@ onBeforeUnmount(() => {
 });
 
 function onNotifyStart(event: NotifyEvent) {
-  notifications.value.push({ ...event.detail });
+  if (event.detail.notifyId === props.notifyId || (!event.detail.notifyId && !props.notifyId)) {
+    notifications.value.push({ ...event.detail });
+  }
 }
 
 function onNotifyEnd(event: NotifyEvent) {
-  notifications.value = notifications.value.filter(
-    (notification) => notification.id !== event.detail.id,
-  );
+  if (event.detail.notifyId === props.notifyId || (!event.detail.notifyId && !props.notifyId)) {
+    notifications.value = notifications.value.filter(
+      (notification) => notification.id !== event.detail.id,
+    );
+  }
 }
 
-function onClearAll() {
+function onClearAll(event: NotifyClearAllEvent) {
+  if (event.detail?.notifyId !== props.notifyId) return;
+
   notifications.value = [];
 }
 
@@ -119,6 +132,10 @@ function getBodyAttrs(type: Notification["type"]) {
   if (type === NotificationType.Error) {
     return bodyErrorAttrs.value;
   }
+
+  if (type === NotificationType.Info) {
+    return bodyInfoAttrs.value;
+  }
 }
 
 defineExpose({
@@ -140,12 +157,14 @@ const {
   bodySuccessAttrs,
   bodyWarningAttrs,
   bodyErrorAttrs,
+  bodyInfoAttrs,
   contentAttrs,
   labelAttrs,
   descriptionAttrs,
   successIconAttrs,
   warningIconAttrs,
   errorIconAttrs,
+  infoIconAttrs,
   closeIconAttrs,
 } = useUI<Config>(defaultConfig);
 </script>
@@ -169,7 +188,7 @@ const {
         size="md"
         :name="config.defaults.successIcon"
         v-bind="successIconAttrs"
-        data-test="type-notify"
+        :data-test="getDataTest('type-success')"
       />
 
       <UIcon
@@ -177,15 +196,23 @@ const {
         size="md"
         :name="config.defaults.warningIcon"
         v-bind="warningIconAttrs"
-        data-test="type-notify"
+        :data-test="getDataTest('type-warning')"
       />
 
       <UIcon
         v-else-if="notification.type === NotificationType.Error"
-        data-test="type-notify"
+        :data-test="getDataTest('type-error')"
         size="md"
         :name="config.defaults.errorIcon"
         v-bind="errorIconAttrs"
+      />
+
+      <UIcon
+        v-else-if="notification.type === NotificationType.Info"
+        :data-test="getDataTest('type-info')"
+        size="md"
+        :name="config.defaults.infoIcon"
+        v-bind="infoIconAttrs"
       />
 
       <div v-bind="contentAttrs">

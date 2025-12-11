@@ -1,9 +1,9 @@
-import { revFormat, formats } from "./utilFormatting.ts";
-import { getDateFromUnixTimestamp } from "./utilDate.ts";
+import { revFormat, formats } from "./utilFormatting";
+import { getDateFromUnixTimestamp } from "./utilDate";
 
-import { TOKEN_REG_EXP, YEARS_PER_VIEW } from "./constants.ts";
+import { SEPARATOR, TOKEN_REG_EXP } from "./constants";
 
-import type { DateLocale } from "./utilFormatting.ts";
+import type { DateLocale } from "./utilFormatting";
 
 type UnknownFunction = (...args: unknown[]) => unknown;
 
@@ -86,7 +86,7 @@ export function parseDate<TLocale extends DateLocale>(
   }
 
   if (!(parsedDate instanceof Date && !isNaN(parsedDate.getTime()))) {
-    throw new Error(`Invalid date provided: ${originalDate}`);
+    throw new Error(`[vueless] Invalid date provided: ${originalDate}`);
   }
 
   if (timeless === true) {
@@ -158,7 +158,7 @@ export function dateIsOutOfRange<TLocale extends DateLocale>(
   dateFormat: string | null = null,
 ) {
   if ((!dateFormat && typeof min === "string") || (!dateFormat && typeof max === "string")) {
-    throw new Error("strings needs a date format");
+    throw new Error("[vueless] strings needs a date format.");
   }
 
   const minDate =
@@ -182,10 +182,6 @@ export function dateIsOutOfRange<TLocale extends DateLocale>(
   return false;
 }
 
-export function getYearsRange(date: Date) {
-  const currentYear = date.getFullYear();
-  const from = currentYear - Math.floor(currentYear % YEARS_PER_VIEW);
-  const to = from + YEARS_PER_VIEW - 1;
-
-  return [from, to];
+export function getYearsRangeLabel(years: Date[]) {
+  return `${years.at(0)?.getFullYear()} ${SEPARATOR} ${years.at(-1)?.getFullYear()}`;
 }

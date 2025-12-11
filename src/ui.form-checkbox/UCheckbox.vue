@@ -1,18 +1,19 @@
 <script setup lang="ts">
-import { inject, ref, onMounted, computed, watchEffect, toValue, useId } from "vue";
+import { inject, ref, onMounted, computed, watchEffect, toValue, useId, useSlots } from "vue";
 import { isEqual } from "lodash-es";
 
-import useUI from "../composables/useUI.ts";
-import { getDefaults } from "../utils/ui.ts";
+import { useUI } from "../composables/useUI";
+import { getDefaults } from "../utils/ui";
+import { useComponentLocaleMessages } from "../composables/useComponentLocaleMassages";
 
 import UIcon from "../ui.image-icon/UIcon.vue";
 import ULabel from "../ui.form-label/ULabel.vue";
 
-import defaultConfig from "./config.ts";
-import { COMPONENT_NAME } from "./constants.ts";
+import defaultConfig from "./config";
+import { COMPONENT_NAME } from "./constants";
 
-import type { UnknownObject } from "../types.ts";
-import type { Props, Config } from "./types.ts";
+import type { UnknownObject } from "../types";
+import type { Props, Config } from "./types";
 
 defineOptions({ inheritAttrs: false });
 
@@ -48,11 +49,23 @@ const emit = defineEmits([
   "input",
 ]);
 
+const { localeMessages } = useComponentLocaleMessages<typeof defaultConfig.i18n>(
+  COMPONENT_NAME,
+  defaultConfig.i18n,
+  props?.config?.i18n,
+);
+
+const slots = useSlots();
+
 const checkboxName = ref("");
 const checkboxSize = ref(props.size);
 const checkboxColor = ref(props.color);
 
 const elementId = props.id || useId();
+
+const hasLabel = computed(() => Boolean(props.label || slots.label));
+
+const inputAriaLabelledBy = computed(() => (hasLabel.value ? elementId : undefined));
 
 const isBinary = computed(() => !Array.isArray(props.modelValue));
 const isCheckboxInGroup = computed(() => Boolean(toValue(getCheckboxGroupName)));
@@ -108,6 +121,10 @@ function onChange() {
   emit("input", newModelValue);
 }
 
+function onIconClick() {
+  document.getElementById(elementId)?.click();
+}
+
 /**
  * Get element / nested component attributes for each config token ✨
  * Applies: `class`, `config`, redefined default `props` and dev `vl-...` attributes.
@@ -119,8 +136,16 @@ const mutatedProps = computed(() => ({
   error: Boolean(props.error),
 }));
 
-const { getDataTest, config, checkboxAttrs, checkedAttrs, checkboxLabelAttrs, checkedIconAttrs } =
-  useUI<Config>(defaultConfig, mutatedProps);
+const {
+  getDataTest,
+  config,
+  checkboxAttrs,
+  checkedAttrs,
+  partiallyCheckedAttrs,
+  checkboxLabelAttrs,
+  checkedIconAttrs,
+  partiallyCheckedIconAttrs,
+} = useUI<Config>(defaultConfig, mutatedProps);
 </script>
 
 <template>
@@ -153,18 +178,27 @@ const { getDataTest, config, checkboxAttrs, checkedAttrs, checkboxLabelAttrs, ch
       :name="checkboxName"
       :checked="isChecked"
       :disabled="disabled"
+      :aria-labelledby="inputAriaLabelledBy"
+      :aria-label="!hasLabel ? localeMessages.checkbox : undefined"
       v-bind="checkboxAttrs"
       :data-test="getDataTest()"
       @change="onChange"
     />
 
-    <label v-if="isChecked" v-bind="checkedAttrs" :for="elementId">
+    <div
+      v-if="isChecked"
+      v-bind="partial ? partiallyCheckedAttrs : checkedAttrs"
+      @click="onIconClick"
+    >
       <UIcon
-        :name="partial ? config.defaults.partiallyCheckedIcon : config.defaults.checkedIcon"
+        v-if="partial"
+        :name="config.defaults.partiallyCheckedIcon"
         color="inherit"
-        v-bind="checkedIconAttrs"
+        v-bind="partiallyCheckedIconAttrs"
       />
-    </label>
+
+      <UIcon v-else :name="config.defaults.checkedIcon" color="inherit" v-bind="checkedIconAttrs" />
+    </div>
 
     <template #bottom>
       <!-- @slot Use it to add something below the checkbox. -->

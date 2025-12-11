@@ -5,7 +5,7 @@ import {
   getSlotNames,
   getSlotsFragment,
   getDocsDescription,
-} from "../../utils/storybook.ts";
+} from "../../utils/storybook";
 
 import UModalConfirm from "../../ui.container-modal-confirm/UModalConfirm.vue";
 import UModal from "../../ui.container-modal/UModal.vue";
@@ -13,16 +13,17 @@ import UButton from "../../ui.button/UButton.vue";
 import UHeader from "../../ui.text-header/UHeader.vue";
 import UIcon from "../../ui.image-icon/UIcon.vue";
 import URow from "../../ui.container-row/URow.vue";
-import UBadge from "../../ui.text-badge/UBadge.vue";
+import UCol from "../../ui.container-col/UCol.vue";
+import UText from "../../ui.text-block/UText.vue";
 
-import type { Meta, StoryFn } from "@storybook/vue3";
-import type { Props } from "../types.ts";
-import type { UnknownObject } from "../../types.ts";
+import type { Meta, StoryFn } from "@storybook/vue3-vite";
+import type { Props } from "../types";
+import type { UnknownObject } from "../../types";
 
 interface UModalConfirmArgs extends Props {
   width: string;
   slotTemplate?: string;
-  enum: "size" | "confirmColor";
+  enum: "size" | "variant" | "confirmColor";
   modelValues?: UnknownObject;
 }
 
@@ -31,9 +32,9 @@ export default {
   title: "Containers / Modal Confirm",
   component: UModalConfirm,
   args: {
-    title: "Confirm Subscription Upgrade?",
+    title: "Confirm Subscription Upgrade",
     confirmLabel: "Confirm",
-    modelValue: false,
+    modelValue: true,
   },
   argTypes: {
     ...getArgTypes(UModalConfirm.__name),
@@ -52,11 +53,19 @@ const defaultTemplate = `
   You are about to complete the subscription upgrade. Any unsaved changes or unfinished processes will be lost.
 `;
 
+function resetBodyOverflow(delay = 500) {
+  setTimeout(() => {
+    document.body.style.overflow = "auto";
+  }, delay);
+}
+
 const DefaultTemplate: StoryFn<UModalConfirmArgs> = (args: UModalConfirmArgs) => ({
-  components: { UModalConfirm, UButton, UHeader, UIcon, UModal, UBadge },
+  components: { UModalConfirm, UButton, UHeader, UIcon, UModal },
   setup() {
     function onClick() {
       args.modelValue = true;
+
+      resetBodyOverflow();
     }
 
     const slots = getSlotNames(UModalConfirm.__name);
@@ -69,8 +78,32 @@ const DefaultTemplate: StoryFn<UModalConfirmArgs> = (args: UModalConfirmArgs) =>
         ${args.slotTemplate || getSlotsFragment(defaultTemplate)}
       </UModalConfirm>
 
-      <UButton label="Show modal" @click="onClick"/>
+      <UButton label="Show modal" @click="onClick" />
     </div>
+  `,
+});
+
+const EnumTemplate: StoryFn<UModalConfirmArgs> = (args: UModalConfirmArgs, { argTypes }) => ({
+  components: { UModalConfirm, UButton, URow },
+  setup: () => ({ args, argTypes, getArgs }),
+  template: `
+    <URow>
+      <UButton
+        v-for="option in argTypes?.[args.enum]?.options"
+        :key="option"
+        :label="option"
+        @click="args.modelValues[option] = !args.modelValues[option]"
+      />
+
+      <UModalConfirm
+        v-for="option in argTypes?.[args.enum]?.options"
+        :key="option"
+        v-bind="getArgs(args, option)"
+        v-model="args.modelValues[option]"
+      >
+        ${defaultTemplate}
+      </UModalConfirm>
+    </URow>
   `,
 });
 
@@ -80,6 +113,12 @@ Default.args = {};
 export const Description = DefaultTemplate.bind({});
 Description.args = {
   description: "Are you sure you want to upgrade? Your new plan will take effect immediately.",
+};
+
+export const NoCloseOnEscAndOverlay = DefaultTemplate.bind({});
+NoCloseOnEscAndOverlay.args = {
+  closeOnEsc: false,
+  closeOnOverlay: false,
 };
 
 export const ConfirmLabel = DefaultTemplate.bind({});
@@ -93,17 +132,21 @@ ConfirmLabel.parameters = {
 };
 
 export const Inner: StoryFn<UModalConfirmArgs> = (args: UModalConfirmArgs) => ({
-  components: { UModalConfirm, UButton, UModal },
+  components: { UModalConfirm, UButton, UModal, UCol, UText },
   setup() {
-    const showMainModal = ref(false);
-    const showInnerModal = ref(false);
+    const showMainModal = ref(true);
+    const showInnerModal = ref(true);
 
     function openMainModal() {
       showMainModal.value = true;
+
+      resetBodyOverflow();
     }
 
     function openInnerModal() {
       showInnerModal.value = true;
+
+      resetBodyOverflow();
     }
 
     return { args, showMainModal, showInnerModal, openMainModal, openInnerModal };
@@ -111,23 +154,33 @@ export const Inner: StoryFn<UModalConfirmArgs> = (args: UModalConfirmArgs) => ({
   template: `
     <div>
       <UModalConfirm v-bind="args" v-model="showMainModal">
-        <p>
-          Are you sure you want to cancel your subscription?
-          This action will remove access to premium features and cannot be undone.
-        </p>
-        <UButton label="View Plan Details" @click="openInnerModal"/>
+        <UCol gap="sm">
+          <UText>
+            Are you sure you want to cancel your subscription?
+            This action will remove access to premium features and cannot be undone.
+          </UText>
 
-        <UModal
+          <UButton
+            label="View Plan Details"
+            variant="outlined"
+            color="neutral"
+            size="sm"
+            @click="openInnerModal"
+          />
+        </UCol>
+
+        <UModalConfirm
           v-model="showInnerModal"
           title="Current Plan Details"
           description="
             Your current plan includes unlimited access to premium content,
             priority support, and exclusive features.
           "
+          confirm-label="Agree"
           inner
         >
-          <p>Consider downgrading instead of canceling</p>
-        </UModal>
+          <UText label="Click Agree to proceed with subscription upgrade." />
+        </UModalConfirm>
       </UModalConfirm>
 
       <UButton label="Manage Subscription" @click="openMainModal"/>
@@ -165,30 +218,11 @@ WithoutCancelButton.args = { cancelHidden: true };
 export const DisableConfirmButton = DefaultTemplate.bind({});
 DisableConfirmButton.args = { confirmDisabled: true };
 
-export const Sizes: StoryFn<UModalConfirmArgs> = (args: UModalConfirmArgs, { argTypes }) => ({
-  components: { UModalConfirm, UButton, URow },
-  setup: () => ({ args, argTypes, getArgs }),
-  template: `
-    <URow>
-      <UButton
-        v-for="option in argTypes?.[args.enum]?.options"
-        :key="option"
-        :label="option"
-        @click="args.modelValues[option] = !args.modelValues[option]"
-      />
-
-      <UModalConfirm
-        v-for="option in argTypes?.[args.enum]?.options"
-        :key="option"
-        v-bind="getArgs(args, option)"
-        v-model="args.modelValues[option]"
-      >
-        ${defaultTemplate}
-      </UModalConfirm>
-    </URow>
-  `,
-});
+export const Sizes = EnumTemplate.bind({});
 Sizes.args = { enum: "size", modelValues: {} };
+
+export const Variant = EnumTemplate.bind({});
+Variant.args = { enum: "variant", modelValues: {} };
 
 export const Colors: StoryFn<UModalConfirmArgs> = (args: UModalConfirmArgs, { argTypes }) => ({
   components: { UModalConfirm, UButton, URow },
@@ -220,7 +254,7 @@ export const BeforeTitleSlot = DefaultTemplate.bind({});
 BeforeTitleSlot.args = {
   slotTemplate: `
     <template #before-title>
-      <UIcon name="account_circle" size="sm" />
+      <UIcon name="account_circle" size="sm" color="primary" />
     </template>
     <template #default>
       You are about to complete the subscription upgrade. Any unsaved changes or unfinished processes will be lost.
@@ -231,8 +265,8 @@ BeforeTitleSlot.args = {
 export const TitleSlot = DefaultTemplate.bind({});
 TitleSlot.args = {
   slotTemplate: `
-    <template #title>
-      <UBadge label="Subscription Upgrade" size="lg" />
+    <template #title="{ title }">
+      <UHeader :label="title" color="primary" />
     </template>
     <template #default>
       You are about to complete the subscription upgrade. Any unsaved changes or unfinished processes will be lost.
@@ -244,7 +278,7 @@ export const AfterTitleSlot = DefaultTemplate.bind({});
 AfterTitleSlot.args = {
   slotTemplate: `
     <template #after-title>
-      <UIcon name="verified" size="sm" />
+      <UIcon name="verified" size="sm" color="primary" />
     </template>
     <template #default>
       You are about to complete the subscription upgrade. Any unsaved changes or unfinished processes will be lost.
@@ -257,7 +291,13 @@ ActionsSlot.args = {
   config: { confirmModal: { closeButton: "p-0" } },
   slotTemplate: `
     <template #actions="{ close }">
-      <UButton size="sm" color="grayscale" label="Close" @click="close" />
+      <UButton
+        label="Close"
+        color="grayscale"
+        variant="subtle"
+        size="sm"
+        @click="close"
+      />
     </template>
     <template #default>
       You are about to complete the subscription upgrade. Any unsaved changes or unfinished processes will be lost.

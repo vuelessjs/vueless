@@ -1,9 +1,18 @@
 export default /*tw*/ {
-  selectLabel: "{ULabel}",
+  selectLabel: {
+    base: "{ULabel}",
+    content: "w-full",
+    variants: {
+      labelAlign: {
+        right: "w-full",
+        left: "w-full",
+      },
+    },
+  },
   wrapper: {
     base: `
       flex flex-row-reverse justify-between w-full min-h-full box-border relative
-      rounded-medium border border-default bg-default outline-transparent
+      rounded-medium border border-solid border-default bg-default outline-transparent
       hover:border-lifted hover:transition hover:focus-within:border-primary focus-within:border-primary
       focus-within:outline focus-within:outline-small focus-within:outline-primary focus-within:transition
     `,
@@ -90,21 +99,7 @@ export default /*tw*/ {
       },
     },
   },
-  afterToggle: {
-    base: "{>toggle} mr-2.5 items-start cursor-auto",
-    variants: {
-      size: {
-        sm: "pt-0.5",
-        md: "pt-1",
-        lg: "pt-1.5",
-      },
-    },
-    compoundVariants: [
-      { labelAlign: "topInside", size: "sm", class: "pt-2" },
-      { labelAlign: "topInside", size: "md", class: "pt-3" },
-      { labelAlign: "topInside", size: "lg", class: "pt-4" },
-    ],
-  },
+  afterToggle: "{>toggle} mr-2.5 items-center cursor-auto",
   toggle: {
     base: "flex items-center",
     compoundVariants: [
@@ -123,7 +118,7 @@ export default /*tw*/ {
   clear: "{>toggle}",
   clearIcon: "{UIcon} {>selectIcon}",
   placeholder: {
-    base: "flex items-center text-muted !leading-none",
+    base: "flex items-center text-muted !leading-none shrink-0",
     variants: {
       size: {
         sm: "text-small",
@@ -143,7 +138,7 @@ export default /*tw*/ {
     size: "md",
     labelAlign: "topInside",
     openDirection: "auto",
-    valueKey: "id",
+    valueKey: "value",
     labelKey: "label",
     groupLabelKey: "label",
     multipleVariant: "inline",
@@ -152,10 +147,12 @@ export default /*tw*/ {
     visibleOptions: 8,
     labelDisplayCount: 2,
     multiple: false,
+    readonly: false,
     disabled: false,
     searchable: false,
     clearable: true,
     addOption: false,
+    closeOnSelect: true,
     /* icons */
     toggleIcon: "keyboard_arrow_down",
     clearIcon: "close_small",

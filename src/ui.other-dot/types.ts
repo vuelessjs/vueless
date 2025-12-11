@@ -1,5 +1,5 @@
-import defaultConfig from "./config.ts";
-import type { ComponentConfig } from "../types.ts";
+import defaultConfig from "./config";
+import type { ComponentConfig } from "../types";
 
 export type Config = typeof defaultConfig;
 
@@ -21,7 +21,7 @@ export interface Props {
   /**
    * Dot size.
    */
-  size?: "3xs" | "2xs" | "xs" | "sm" | "md" | "lg" | "xl" | "2xl";
+  size?: "xs" | "sm" | "md" | "lg" | "xl";
 
   /**
    * Component config object.

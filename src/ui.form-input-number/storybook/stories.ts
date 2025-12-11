@@ -1,24 +1,27 @@
+import { ref } from "vue";
 import {
   getArgs,
   getArgTypes,
   getSlotNames,
   getSlotsFragment,
   getDocsDescription,
-} from "../../utils/storybook.ts";
+} from "../../utils/storybook";
 
 import UInputNumber from "../UInputNumber.vue";
 import UCol from "../../ui.container-col/UCol.vue";
 import UIcon from "../../ui.image-icon/UIcon.vue";
 import UButton from "../../ui.button/UButton.vue";
 import URow from "../../ui.container-row/URow.vue";
-import UAvatar from "../../ui.image-avatar/UAvatar.vue";
+import UDropdownButton from "../../ui.dropdown-button/UDropdownButton.vue";
+import UText from "../../ui.text-block/UText.vue";
 
-import type { Meta, StoryFn } from "@storybook/vue3";
-import type { Props } from "../types.ts";
+import type { Meta, StoryFn } from "@storybook/vue3-vite";
+import type { Props } from "../types";
 
 interface UInputNumberArgs extends Props {
   slotTemplate?: string;
   enum: "labelAlign" | "size";
+  wrapperClass?: string;
 }
 
 const argTypes = getArgTypes(UInputNumber.__name);
@@ -64,7 +67,7 @@ const EnumTemplate: StoryFn<UInputNumberArgs> = (args: UInputNumberArgs, { argTy
   components: { UInputNumber, UCol },
   setup: () => ({ args, argTypes, getArgs }),
   template: `
-    <UCol>
+    <UCol :class="args.wrapperClass">
       <UInputNumber
         v-for="option in argTypes?.[args.enum]?.options"
         v-bind="getArgs(args, option)"
@@ -85,11 +88,18 @@ Placeholder.args = { placeholder: "Enter amount in USD" };
 export const Description = DefaultTemplate.bind({});
 Description.args = { description: "Please enter the transaction amount." };
 
-export const Error = DefaultTemplate.bind({});
-Error.args = {
-  modelValue: -245000.42,
-  error: "Invalid amount. Please enter a positive number with up to two decimal places.",
-};
+export const Error: StoryFn<UInputNumberArgs> = (args: UInputNumberArgs) => ({
+  components: { UInputNumber },
+  setup: () => ({ args, modelValue: ref(null) }),
+  template: `
+    <UInputNumber
+      v-bind="args"
+      v-model="modelValue"
+      class="!max-w-96"
+      :error="modelValue ? '' : 'Invalid amount.'"
+    />
+  `,
+});
 
 export const ReadOnly = DefaultTemplate.bind({});
 ReadOnly.args = { readonly: true };
@@ -104,7 +114,12 @@ export const Sizes = EnumTemplate.bind({});
 Sizes.args = { enum: "size", label: "{enumValue}" };
 
 export const LabelAlign = EnumTemplate.bind({});
-LabelAlign.args = { enum: "labelAlign", label: "{enumValue}" };
+LabelAlign.args = {
+  enum: "labelAlign",
+  label: "{enumValue}",
+  description: "Please enter the transaction amount.",
+  wrapperClass: "gap-16",
+};
 
 export const LimitFractionDigits = DefaultTemplate.bind({});
 LimitFractionDigits.args = {
@@ -133,7 +148,7 @@ DecimalSeparator.parameters = {
 };
 
 export const ThousandsSeparator = DefaultTemplate.bind({});
-ThousandsSeparator.args = { thousandsSeparator: "-" };
+ThousandsSeparator.args = { thousandsSeparator: "." };
 ThousandsSeparator.parameters = {
   docs: {
     description: {
@@ -185,23 +200,51 @@ export const IconProps: StoryFn<UInputNumberArgs> = (args) => ({
 });
 
 export const Slots: StoryFn<UInputNumberArgs> = (args) => ({
-  components: { UInputNumber, URow, UButton, UAvatar },
+  components: { UInputNumber, URow, UButton, UDropdownButton, UText },
   setup() {
-    return { args };
+    const currencies = [
+      { label: "USD", value: "usd" },
+      { label: "EUR", value: "eur" },
+      { label: "UAH", value: "uah" },
+    ];
+
+    const currency = ref("usd");
+
+    return { args, currency, currencies };
   },
   template: `
-    <URow>
-      <UInputNumber v-bind="args">
+    <URow class="gap-4">
+      <UInputNumber
+        label="Left slot"
+        placeholder="Enter discount amount"
+        :config="{ numberInput: { wrapper: 'pl-0' } }"
+      >
         <template #left>
-          <UAvatar />
+          <UDropdownButton
+            v-model="currency"
+            :options="currencies"
+            size="sm"
+            variant="soft"
+            class="rounded-r-none h-[49px]"
+          />
         </template>
       </UInputNumber>
 
-      <UInputNumber v-bind="args" :config="{ moneyInput: { rightSlot: 'pr-0' } }">
+      <UInputNumber
+        label="Right slot"
+        placeholder="Enter your annual payment"
+      >
         <template #right>
-          <UButton label="Calculate" size="sm" class="rounded-l-none h-full" />
+          <UText label="%, per year" variant="lifted" size="sm" :wrap="false" />
         </template>
       </UInputNumber>
     </URow>
   `,
 });
+Slots.parameters = {
+  docs: {
+    story: {
+      height: "250px",
+    },
+  },
+};

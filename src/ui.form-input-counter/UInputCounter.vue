@@ -1,17 +1,18 @@
 <script setup lang="ts">
 import { ref, computed, useTemplateRef, watch } from "vue";
 
-import useUI from "../composables/useUI.ts";
-import { getDefaults } from "../utils/ui.ts";
+import { useUI } from "../composables/useUI";
+import { getDefaults } from "../utils/ui";
+import { useComponentLocaleMessages } from "../composables/useComponentLocaleMassages";
 
 import UIcon from "../ui.image-icon/UIcon.vue";
 import UButton from "../ui.button/UButton.vue";
 import UInputNumber from "../ui.form-input-number/UInputNumber.vue";
 
-import defaultConfig from "./config.ts";
-import { COMPONENT_NAME } from "./constants.ts";
+import defaultConfig from "./config";
+import { COMPONENT_NAME } from "./constants";
 
-import type { Props, Config } from "./types.ts";
+import type { Props, Config } from "./types";
 import type { Ref } from "vue";
 import type UInput from "../ui.form-input/UInput.vue";
 
@@ -27,7 +28,25 @@ const emit = defineEmits([
    * @property {number} modelValue
    */
   "update:modelValue",
+
+  /**
+   * Triggers when the input gains focus.
+   * @property {FocusEvent} event
+   */
+  "focus",
+
+  /**
+   * Triggers when the input loses focus.
+   * @property {FocusEvent} event
+   */
+  "blur",
 ]);
+
+const { localeMessages } = useComponentLocaleMessages<typeof defaultConfig.i18n>(
+  COMPONENT_NAME,
+  defaultConfig.i18n,
+  props?.config?.i18n,
+);
 
 const inputComponentRef = useTemplateRef<InstanceType<typeof UInput>>("inputComponent");
 
@@ -120,18 +139,45 @@ function onMouseLeave() {
   clearIntervals();
 }
 
-function onBlur() {
+function onFocus(event: FocusEvent) {
+  emit("focus", event);
+}
+
+function onBlur(event: FocusEvent) {
   if (Number(count.value) > props.max) count.value = props.max;
   if (Number(count.value) < props.min) count.value = props.min;
+
+  emit("blur", event);
 }
 
 function onInput() {
   setInputSize();
 }
 
+function onKeyDown(event: KeyboardEvent) {
+  if (event.key === "ArrowUp") {
+    event.preventDefault();
+
+    if (!isAddButtonDisabled.value && !props.disabled) {
+      onClickAdd();
+    }
+  }
+
+  if (event.key === "ArrowDown") {
+    event.preventDefault();
+
+    if (!isSubtractButtonDisabled.value && !props.disabled) {
+      onClickSubtract();
+    }
+  }
+}
+
 function setInputSize() {
   if (inputComponentRef.value && !props.readonly) {
-    inputComponentRef.value.input.size = inputComponentRef?.value?.input?.value.length || 1;
+    inputComponentRef.value.inputRef?.setAttribute(
+      "size",
+      String(inputComponentRef.value.inputRef?.value?.length) || "1",
+    );
   }
 }
 
@@ -153,13 +199,14 @@ const {
 </script>
 
 <template>
-  <div v-bind="wrapperAttrs">
+  <div v-bind="wrapperAttrs" :data-test="getDataTest()">
     <UButton
       round
       square
       :size="size"
       variant="outlined"
       :disabled="isSubtractButtonDisabled || disabled"
+      :aria-label="localeMessages.subtract"
       v-bind="subtractButtonAttrs"
       :data-test="getDataTest('subtract')"
       @click.prevent
@@ -175,7 +222,7 @@ const {
       />
     </UButton>
 
-    <div v-if="readonly" v-bind="counterTextAttrs" v-text="count" />
+    <div v-if="props.readonly" v-bind="counterTextAttrs" v-text="count" />
 
     <UInputNumber
       v-else
@@ -184,9 +231,16 @@ const {
       :size="size"
       :disabled="disabled"
       :readonly="readonly"
+      :min-fraction-digits="minFractionDigits"
+      :max-fraction-digits="maxFractionDigits"
+      :decimal-separator="decimalSeparator"
+      :thousands-separator="thousandsSeparator"
+      :prefix="prefix"
       v-bind="counterInputAttrs"
+      @focus="onFocus"
       @blur="onBlur"
       @input="onInput"
+      @keydown="onKeyDown"
     />
 
     <UButton
@@ -194,6 +248,7 @@ const {
       square
       variant="outlined"
       :disabled="isAddButtonDisabled || disabled"
+      :aria-label="localeMessages.add"
       v-bind="addButtonAttrs"
       :data-test="getDataTest('add')"
       @click.prevent

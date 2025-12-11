@@ -19,6 +19,7 @@ export default /*tw*/ {
   nextButton: "{>paginationButton}",
   inactiveButton: "{>paginationButton}",
   activeButton: "{>paginationButton}",
+  ellipsis: "{>paginationButton} {>inactiveButton}",
   paginationIcon: {
     base: "{UIcon}",
     defaults: {
@@ -33,6 +34,15 @@ export default /*tw*/ {
   firstIcon: "{>paginationIcon}",
   prevIcon: "{>paginationIcon}",
   nextIcon: "{>paginationIcon}",
+  /* These are used for a11y. */
+  i18n: {
+    first: "Go to first page",
+    last: "Go to last page",
+    prev: "Go to previous page",
+    next: "Go to next page",
+    currentPage: "Current page, page",
+    goToPage: "Go to page",
+  },
   defaults: {
     variant: "solid",
     size: "md",

@@ -4,7 +4,7 @@ import { describe, it, expect, beforeAll } from "vitest";
 import UBadge from "../UBadge.vue";
 import UIcon from "../../ui.image-icon/UIcon.vue";
 
-import type { Props } from "../types.ts";
+import type { Props } from "../types";
 
 describe("UBadge.vue", () => {
   let label: string;
@@ -13,10 +13,8 @@ describe("UBadge.vue", () => {
     label = "Badge";
   });
 
-  // Props tests
   describe("Props", () => {
-    // Variant prop
-    it("applies the correct variant class", async () => {
+    it("Variant – applies the correct variant class", async () => {
       const variants = {
         solid: "text-inverted bg-primary",
         outlined: "border-primary text-primary",
@@ -36,8 +34,7 @@ describe("UBadge.vue", () => {
       });
     });
 
-    // Size prop
-    it("applies the correct size class", async () => {
+    it("Size – applies the correct size class", async () => {
       const size = {
         sm: "text-tiny",
         md: "text-small",
@@ -55,8 +52,7 @@ describe("UBadge.vue", () => {
       });
     });
 
-    // Color prop
-    it("applies the correct color class", async () => {
+    it("Color – applies the correct color class", async () => {
       const colors = [
         "primary",
         "secondary",
@@ -80,8 +76,7 @@ describe("UBadge.vue", () => {
       });
     });
 
-    // Label prop
-    it("renders the correct label text", () => {
+    it("Label – renders the correct label text", () => {
       const component = mount(UBadge, {
         props: {
           label,
@@ -91,8 +86,7 @@ describe("UBadge.vue", () => {
       expect(component.text()).toBe(label);
     });
 
-    // Icon prop
-    it("renders icon when icon prop is provided", () => {
+    it("Icon – renders icon when icon prop is provided", () => {
       const icon = "close";
 
       const component = mount(UBadge, {
@@ -108,8 +102,7 @@ describe("UBadge.vue", () => {
       expect(nestedUIconComponents[0].props("name")).toBe(icon);
     });
 
-    // Left Icon prop
-    it("renders left icon when leftIcon prop is provided", () => {
+    it("Left – renders left icon when leftIcon prop is provided", () => {
       const leftIcon = "close";
       const label = "Badge";
 
@@ -127,8 +120,7 @@ describe("UBadge.vue", () => {
       expect(nestedUIconComponents[0].props("name")).toBe(leftIcon);
     });
 
-    // Right Icon prop
-    it("renders right icon when rightIcon prop is provided", () => {
+    it("Right – renders right icon when rightIcon prop is provided", () => {
       const rightIcon = "close";
       const label = "Badge";
 
@@ -146,8 +138,7 @@ describe("UBadge.vue", () => {
       expect(nestedUIconComponents[0].props("name")).toBe(rightIcon);
     });
 
-    // Round prop
-    it("applies round class when round prop is true", () => {
+    it("Round – applies round class when round prop is true", () => {
       const round = true;
       const roundClasses = "rounded-full";
 
@@ -160,8 +151,7 @@ describe("UBadge.vue", () => {
       expect(component.attributes("class")).toContain(roundClasses);
     });
 
-    // Tabindex prop
-    it("applies the correct tabindex attribute", () => {
+    it("Tabindex – applies the correct tabindex attribute", () => {
       const tabindex = "2";
 
       const component = mount(UBadge, {
@@ -173,8 +163,7 @@ describe("UBadge.vue", () => {
       expect(component.attributes("tabindex")).toBe(tabindex);
     });
 
-    // DataTest prop
-    it("applies the correct data-test attribute", () => {
+    it("DataTest – applies the correct data-test attribute", () => {
       const dataTest = "test-badge";
 
       const component = mount(UBadge, {
@@ -187,10 +176,8 @@ describe("UBadge.vue", () => {
     });
   });
 
-  // Slots tests
   describe("Slots", () => {
-    // Default slot
-    it("renders content from default slot", () => {
+    it("Default – renders content from default slot", () => {
       const slotContent = "Custom Content";
       const label = "Badge";
 
@@ -207,8 +194,7 @@ describe("UBadge.vue", () => {
       expect(component.text()).toContain(slotContent);
     });
 
-    // Left slot
-    it("renders content from left slot", () => {
+    it("Left – renders content from left slot", () => {
       const slotText = "Left";
       const slotClass = "left-content";
 
@@ -226,8 +212,7 @@ describe("UBadge.vue", () => {
       expect(component.find(`.${slotClass}`).text()).toBe(slotText);
     });
 
-    // Right slot
-    it("renders content from right slot", () => {
+    it("Right – renders content from right slot", () => {
       const slotText = "Right";
       const slotClass = "right-content";
 
@@ -245,8 +230,7 @@ describe("UBadge.vue", () => {
       expect(component.find(`.${slotClass}`).text()).toBe(slotText);
     });
 
-    // Slot bindings
-    it("provides correct bindings to slots", () => {
+    it("Slot – provides correct bindings to slots", () => {
       const icon = "star";
       const labelClass = "badge-label";
       const iconClass = "badge-icon";
@@ -271,10 +255,8 @@ describe("UBadge.vue", () => {
     });
   });
 
-  // Events tests
   describe("Events", () => {
-    // Click event
-    it("emits click event when clicked", async () => {
+    it("Click – emits click event when clicked", async () => {
       const component = mount(UBadge, {});
 
       await component.trigger("click");
@@ -282,8 +264,7 @@ describe("UBadge.vue", () => {
       expect(component.emitted("click")).toBeTruthy();
     });
 
-    // Focus event
-    it("emits focus event when focused", async () => {
+    it("Focus – emits focus event when focused", async () => {
       const component = mount(UBadge, {});
 
       await component.trigger("focus");
@@ -291,8 +272,7 @@ describe("UBadge.vue", () => {
       expect(component.emitted("focus")).toBeTruthy();
     });
 
-    // Blur event
-    it("emits blur event when blurred", async () => {
+    it("Blur – emits blur event when blurred", async () => {
       const component = mount(UBadge, {});
 
       await component.trigger("blur");
@@ -300,8 +280,7 @@ describe("UBadge.vue", () => {
       expect(component.emitted("blur")).toBeTruthy();
     });
 
-    // Keydown event
-    it("emits keydown event when key is pressed", async () => {
+    it("Keydown – emits keydown event when key is pressed", async () => {
       const component = mount(UBadge, {});
 
       await component.trigger("keydown");
@@ -310,10 +289,8 @@ describe("UBadge.vue", () => {
     });
   });
 
-  // Exposed refs tests
   describe("Exposed refs", () => {
-    // wrapperRef
-    it("exposes wrapperRef", () => {
+    it("wrapperRef – exposes wrapperRef", () => {
       const component = mount(UBadge, {});
 
       expect(component.vm.wrapperRef).toBeDefined();

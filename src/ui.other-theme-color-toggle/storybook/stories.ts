@@ -4,28 +4,31 @@ import {
   getSlotNames,
   getSlotsFragment,
   getDocsDescription,
-} from "../../utils/storybook.ts";
+} from "../../utils/storybook";
+import { getTheme } from "../../utils/theme";
 
 import UThemeColorToggle from "../UThemeColorToggle.vue";
 import UCol from "../../ui.container-col/UCol.vue";
 import URow from "../../ui.container-row/URow.vue";
 import UButton from "../../ui.button/UButton.vue";
 
-import type { Meta, StoryFn } from "@storybook/vue3";
-import type { Props } from "../types.ts";
+import type { Meta, StoryFn } from "@storybook/vue3-vite";
+import type { Props } from "../types";
 
 interface UThemeColorToggleArgs extends Props {
   slotTemplate?: string;
   enum: "size";
 }
 
+const theme = getTheme();
+
 export default {
   id: "100030",
   title: "Other / Theme Color Toggle",
   component: UThemeColorToggle,
   args: {
-    primary: "",
-    neutral: "",
+    primary: theme.primary,
+    neutral: theme.neutral,
     primaryColors: {
       grayscale: "bg-grayscale",
       red: "bg-red-600",

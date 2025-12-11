@@ -3,8 +3,8 @@ import { computed, watch, ref, nextTick, provide, useId, useTemplateRef, watchEf
 
 import { merge } from "lodash-es";
 
-import useUI from "../composables/useUI.ts";
-import { getDefaults } from "../utils/ui.ts";
+import { useUI } from "../composables/useUI";
+import { getDefaults } from "../utils/ui";
 
 import UIcon from "../ui.image-icon/UIcon.vue";
 import UInput from "../ui.form-input/UInput.vue";
@@ -13,7 +13,7 @@ import UDatePickerRangePeriodMenu from "./UDatePickerRangePeriodMenu.vue";
 import UDatePickerRangeInputs from "./UDatePickerRangeInputs.vue";
 import UButton from "../ui.button/UButton.vue";
 
-import { vClickOutside } from "../directives";
+import vClickOutside from "../v.click-outside/vClickOutside";
 
 import {
   addDays,
@@ -29,9 +29,9 @@ import {
   getStartOfYear,
   getDatesDifference,
   isSameDay,
-} from "../ui.form-calendar/utilDate.ts";
+} from "../ui.form-calendar/utilDate";
 
-import { formatDate, parseDate, dateIsOutOfRange } from "../ui.form-calendar/utilCalendar.ts";
+import { formatDate, parseDate, dateIsOutOfRange } from "../ui.form-calendar/utilCalendar";
 
 import {
   getWeekDateList,
@@ -39,13 +39,13 @@ import {
   getQuartersDateList,
   getMonthsDateList,
   type DatePeriodRange,
-} from "./utilDateRange.ts";
+} from "./utilDateRange";
 
-import { Direction, useAutoPosition } from "../composables/useAutoPosition.ts";
-import { useLocale } from "./useLocale.ts";
-import { useUserFormat } from "./useUserFormat.ts";
+import { Direction, useAutoPosition } from "../composables/useAutoPosition";
+import { useLocale } from "./useLocale";
+import { useUserFormat } from "./useUserFormat";
 
-import defaultConfig from "./config.ts";
+import defaultConfig from "./config";
 import {
   COMPONENT_NAME,
   DATE_PICKER_BUTTON_TYPE,
@@ -53,7 +53,7 @@ import {
   INPUT_RANGE_FORMAT,
   ShiftAction,
   Period,
-} from "./constants.ts";
+} from "./constants";
 
 import type { Ref, WritableComputedRef } from "vue";
 import type {
@@ -64,9 +64,9 @@ import type {
   UDatePickerRangeInputsAttrs,
   UDatePickerRangePeriodMenuAttrs,
   Config,
-} from "./types.ts";
-import type { RangeDate, Config as UCalendarConfig } from "../ui.form-calendar/types.ts";
-import type { ComponentExposed, KeyAttrsWithConfig } from "../types.ts";
+} from "./types";
+import type { RangeDate, Config as UCalendarConfig } from "../ui.form-calendar/types";
+import type { ComponentExposed, KeyAttrsWithConfig } from "../types";
 
 defineOptions({ inheritAttrs: false });
 
@@ -170,10 +170,6 @@ const localValue: WritableComputedRef<RangeDate> = computed({
     };
   },
   set: (value) => {
-    if (value.from && value.to && !props.dateFormat) {
-      emit("update:modelValue", value);
-    }
-
     const parsedDateFrom = parseDate<SortedLocale>(
       value.from || null,
       props.dateFormat,
@@ -181,13 +177,25 @@ const localValue: WritableComputedRef<RangeDate> = computed({
     );
     const parsedDateTo = parseDate<SortedLocale>(value.to || null, props.dateFormat, locale.value);
 
-    if (value.from && value.to && props.dateFormat) {
-      const newValue = {
-        from: formatDate(parsedDateFrom, props.dateFormat, locale.value),
-        to: formatDate(parsedDateTo, props.dateFormat, locale.value),
-      };
+    if (!value.from && !value.to) {
+      emit("update:modelValue", { from: null, to: null });
+    } else {
+      let from = null;
+      let to = null;
 
-      emit("update:modelValue", newValue);
+      if (parsedDateFrom) {
+        from = props.dateFormat
+          ? formatDate(parsedDateFrom, props.dateFormat, locale.value)
+          : parsedDateFrom;
+      }
+
+      if (parsedDateTo) {
+        to = props.dateFormat
+          ? formatDate(parsedDateTo, props.dateFormat, locale.value)
+          : parsedDateTo;
+      }
+
+      emit("update:modelValue", { from, to });
     }
 
     activeDate.value = props.dateFormat ? parsedDateFrom || new Date() : value.from || new Date();
@@ -224,16 +232,12 @@ const { userFormatDate } = useUserFormat(
   props.userDateFormat,
 );
 
-watch(
-  calendarValue,
-  () => {
-    localValue.value = {
-      from: calendarValue.value.from,
-      to: calendarValue.value.to,
-    };
-  },
-  { deep: true },
-);
+watch(calendarValue, () => {
+  localValue.value = {
+    from: calendarValue.value.from,
+    to: calendarValue.value.to,
+  };
+});
 
 watch(
   () => props.modelValue,
@@ -307,7 +311,7 @@ function activate() {
     adjustPositionY();
     adjustPositionX();
 
-    menuRef.value?.focus();
+    menuRef.value?.focus({ preventScroll: true });
   });
 }
 
@@ -567,6 +571,7 @@ const mutatedProps = computed(() => ({
 }));
 
 const {
+  getDataTest,
   config,
   wrapperAttrs,
   rightIconAttrs,
@@ -612,7 +617,7 @@ watchEffect(() => {
 </script>
 
 <template>
-  <div v-bind="wrapperAttrs" ref="wrapper">
+  <div v-bind="wrapperAttrs" ref="wrapper" :data-test="getDataTest()">
     <UInput
       v-if="isVariant.input"
       :id="elementId"
@@ -630,6 +635,7 @@ watchEffect(() => {
       no-autocomplete
       readonly
       v-bind="isShownMenu ? datepickerInputActiveAttrs : datepickerInputAttrs"
+      :data-test="getDataTest('input')"
       @focus="activate"
       @keydown.esc="deactivate"
     >
@@ -647,7 +653,7 @@ watchEffect(() => {
           @binding {string} icon-name
         -->
         <slot name="right" :icon-name="iconName">
-          <UIcon :name="iconName" color="neutral" v-bind="rightIconAttrs" />
+          <UIcon :name="iconName" color="neutral" v-bind="rightIconAttrs" @click="activate" />
         </slot>
       </template>
     </UInput>
@@ -661,6 +667,7 @@ watchEffect(() => {
         variant="soft"
         :icon="config.defaults.prevIcon"
         v-bind="rangeButtonShiftAttrs"
+        :data-test="getDataTest('button-prev')"
         @click="onClickShiftRange(ShiftAction.Prev)"
       />
 
@@ -673,6 +680,7 @@ watchEffect(() => {
         :label="userFormatDate"
         variant="soft"
         v-bind="rangeButtonSelectAttrs"
+        :data-test="getDataTest('button')"
         @click="activate"
       />
 
@@ -684,6 +692,7 @@ watchEffect(() => {
         variant="soft"
         :icon="config.defaults.nextIcon"
         v-bind="rangeButtonShiftAttrs"
+        :data-test="getDataTest('button-next')"
         @click="onClickShiftRange(ShiftAction.Next)"
       />
     </div>
@@ -695,6 +704,7 @@ watchEffect(() => {
         v-click-outside="[deactivate, clickOutsideOptions]"
         tabindex="-1"
         v-bind="menuAttrs"
+        :data-test="getDataTest('menu')"
         @keydown.esc="deactivate"
       >
         <UDatePickerRangePeriodMenu
@@ -710,6 +720,7 @@ watchEffect(() => {
           :min-date="minDate"
           :max-date="maxDate"
           :attrs="rangePeriodMenuAttrs as unknown as UDatePickerRangePeriodMenuAttrs"
+          :data-test="getDataTest('period-menu')"
           @toggle-menu="isShownMenu = !isShownMenu"
           @close-menu="isShownMenu = false"
           @click-prev="onClickShiftDatesList(ShiftAction.Prev)"
@@ -732,9 +743,14 @@ watchEffect(() => {
           :date-format="dateFormat"
           :config="config"
           :attrs="rangeInputsAttrs as unknown as UDatePickerRangeInputsAttrs"
+          :data-test="getDataTest('range-inputs')"
         />
 
-        <div v-if="inputRangeToError || inputRangeFromError" v-bind="rangeInputErrorAttrs">
+        <div
+          v-if="inputRangeToError || inputRangeFromError"
+          v-bind="rangeInputErrorAttrs"
+          :data-test="getDataTest('error')"
+        >
           {{ inputRangeToError || inputRangeFromError }}
         </div>
 
@@ -747,7 +763,8 @@ watchEffect(() => {
           :date-format="dateFormat"
           v-bind="datepickerCalendarAttrs as KeyAttrsWithConfig<UCalendarConfig>"
           range
-          @input="onInputCalendar"
+          :data-test="getDataTest('calendar')"
+          @change-range="onInputCalendar"
         />
       </div>
     </Transition>

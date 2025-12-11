@@ -9,18 +9,24 @@ export const NEUTRAL_COLOR = "neutral";
 export const SECONDARY_COLOR = "secondary";
 export const GRAYSCALE_COLOR = "grayscale";
 export const INHERIT_COLOR = "inherit";
+export const TEXT_COLOR = "text"; // the default design system text color
 
 /* Vueless keys */
 export const TEXT = "text";
 export const OUTLINE = "outline";
 export const ROUNDING = "rounding";
 export const DISABLED_OPACITY = "disabled-opacity";
+export const SPACING = "spacing";
+export const LETTER_SPACING = "letter-spacing";
+export const LIGHT_THEME = "light-theme";
+export const DARK_THEME = "dark-theme";
 
 /* Vueless color mode keys */
 export const COLOR_MODE_KEY = "vl-color-mode";
 export const AUTO_MODE_KEY = "vl-auto-mode";
 export const DARK_MODE_CLASS = "vl-dark";
 export const LIGHT_MODE_CLASS = "vl-light";
+export const THEME_TOKENS = "vueless-theme-tokens";
 
 /* Vueless defaults */
 export const DEFAULT_PRIMARY_COLOR = GRAYSCALE_COLOR;
@@ -34,7 +40,9 @@ export const OUTLINE_INCREMENT = 1; /* pixels */
 export const DEFAULT_ROUNDING = 8; /* pixels */
 export const ROUNDING_DECREMENT = 4; /* pixels */
 export const ROUNDING_INCREMENT = 6; /* pixels */
+export const DEFAULT_SPACING = 4; /* pixels */
 export const DEFAULT_DISABLED_OPACITY = 50; /* presents */
+export const DEFAULT_LETTER_SPACING = 0; /* em */
 
 /* Vueless supported color shades */
 export const PRIMARY_COLORS = [
@@ -67,6 +75,7 @@ export const STATE_COLORS = [
   NEUTRAL_COLOR,
   GRAYSCALE_COLOR,
 ];
+export const LAYOUT_COLORS = ["text", "border", "bg"];
 export const NEUTRAL_COLORS = ["slate", "gray", "zinc", "neutral", "stone"];
 export const COLOR_SHADES = [50, 100, 200, 300, 400, 500, 600, 700, 800, 900, 950];
 
@@ -219,11 +228,18 @@ export const SYSTEM_CONFIG_KEY = {
   unstyled: "unstyled",
   transition: "transition",
   colors: "colors",
+  props: "props",
   ...CVA_CONFIG_KEY,
 };
 
 /* UIcon non-props defaults */
 export const ICON_NON_PROPS_DEFAULTS = ["library", "path", "style", "weight"];
+
+/* Directive to folder mapping. */
+export const DIRECTIVES = {
+  vTooltip: "v.tooltip",
+  vClickOutside: "v.click-outside",
+};
 
 /* Component to folder mapping. */
 export const COMPONENTS = {
@@ -257,7 +273,7 @@ export const COMPONENTS = {
   UCalendar: "ui.form-calendar",
   UDatePicker: "ui.form-date-picker",
   UDatePickerRange: "ui.form-date-picker-range",
-  UColorPicker: "ui.form-color-picker",
+  UColorToggle: "ui.form-color-toggle",
   ULabel: "ui.form-label",
 
   /* Text & Content */
@@ -268,20 +284,24 @@ export const COMPONENTS = {
   UNumber: "ui.text-number",
   UFile: "ui.text-file",
   UFiles: "ui.text-files",
-  UEmpty: "ui.text-empty",
   UBadge: "ui.text-badge",
 
   /* Containers */
   UDivider: "ui.container-divider",
   UCol: "ui.container-col",
   URow: "ui.container-row",
+  UGrid: "ui.container-grid",
   UGroup: "ui.container-group",
   UGroups: "ui.container-groups",
   UAccordion: "ui.container-accordion",
+  UAccordionItem: "ui.container-accordion-item",
+  UEmpty: "ui.container-empty",
+  UPlaceholder: "ui.container-placeholder",
   UCard: "ui.container-card",
   UModal: "ui.container-modal",
   UModalConfirm: "ui.container-modal-confirm",
   UPage: "ui.container-page",
+  UDrawer: "ui.container-drawer",
 
   /* Images and Icons */
   UIcon: "ui.image-icon",
@@ -358,14 +378,15 @@ export const TAILWIND_MERGE_EXTENSION = {
 export const DEFAULT_SVGO_CONFIG = {
   plugins: [
     {
-      name: "preset-default",
+      name: "removeAttrs",
       params: {
-        overrides: {
-          removeViewBox: false,
-          convertColors: {
-            currentColor: true,
-          },
-        },
+        attrs: "(fill)",
+      },
+    },
+    {
+      name: "addAttributesToSVGElement",
+      params: {
+        attributes: [{ fill: "currentColor" }],
       },
     },
   ],
@@ -380,10 +401,12 @@ export const VUELESS_LIBRARY = "vueless";
 export const INTERNAL_ICONS_LIBRARY = "internal";
 export const STORYBOOK_ICONS_LIBRARY = "storybook";
 
+export const SRC_DIR = "src";
+export const CACHE_DIR = ".cache";
 export const NODE_MODULES_DIR = "node_modules";
 export const VUELESS_PACKAGE_DIR = `${NODE_MODULES_DIR}/vueless`;
-export const VUELESS_CACHE_DIR = `${NODE_MODULES_DIR}/.cache/vueless`;
-export const VUELESS_LOCAL_DIR = "src";
+export const VUELESS_CACHE_DIR = `${NODE_MODULES_DIR}/${CACHE_DIR}/vueless`;
+export const VUELESS_LOCAL_DIR = SRC_DIR;
 export const ICONS_DIR = "icons";
 export const ICONS_VUELESS_DIR = `${VUELESS_PACKAGE_DIR}/${ICONS_DIR}`;
 export const ICONS_CACHED_DIR = `${VUELESS_CACHE_DIR}/${ICONS_DIR}`;
@@ -391,10 +414,14 @@ export const ICONS_CACHED_DIR = `${VUELESS_CACHE_DIR}/${ICONS_DIR}`;
 export const ICONS_VIRTUAL_MODULE_ID = "virtual:vueless/icons";
 export const RESOLVED_ICONS_VIRTUAL_MODULE_ID = `\0${ICONS_VIRTUAL_MODULE_ID}`;
 
-export const VUELESS_TAILWIND_SAFELIST = `${VUELESS_CACHE_DIR}/safelist.txt`;
+export const VUELESS_TAILWIND_SAFELIST = `${VUELESS_CACHE_DIR}/tailwind/safelist.txt`;
 export const VUELESS_CONFIGS_CACHED_DIR = `${VUELESS_CACHE_DIR}/configs`;
 export const VUELESS_MERGED_CONFIGS_CACHED_DIR = `${VUELESS_CACHE_DIR}/mergedConfigs`;
 export const VUELESS_CONFIG_FILE_NAME = "vueless.config";
+export const CONFIG_INDEX_FILE_NAME = "index";
+export const VUELESS_CONFIG_DIR = ".vueless";
+export const VUELESS_USER_COMPONENTS_DIR = `${VUELESS_CONFIG_DIR}/components`;
+export const SRC_USER_COMPONENTS_DIR = `${SRC_DIR}/components`;
 
 /* System error codes */
 export const DEFAULT_EXIT_CODE = 0;
@@ -408,3 +435,17 @@ export const DYNAMIC_COLOR_PATTERN = "{color}";
 export const JAVASCRIPT_EXT = ".js";
 export const TYPESCRIPT_EXT = ".ts";
 export const VUE_EXT = ".vue";
+
+export const SUPPRESS_TS_CHECK = `/* eslint-disable */
+// @ts-nocheck`;
+
+export const COMPONENTS_INDEX_COMMENT = `/**
+ * ⚠️ This file is auto-generated — do not edit it manually.
+ * It gets updated automatically whenever the Vite server restarts.
+ *
+ * This file imports all config files from the current directory and subdirectories.
+ * Only files following the naming pattern "U[Component].[ts|js]" will be included.
+ * Example: "UButton.ts"
+ */`;
+
+export const COMPONENTS_INDEX_EXPORT = `export const componentConfigs = {};`;

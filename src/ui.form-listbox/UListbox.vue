@@ -2,23 +2,23 @@
 import { watch, computed, useId, ref, useTemplateRef, nextTick } from "vue";
 import { isEqual } from "lodash-es";
 
-import useUI from "../composables/useUI.ts";
-import { getDefaults } from "../utils/ui.ts";
-import { isMac } from "../utils/platform.ts";
-import { filterOptions, filterGroups } from "./utilListbox.ts";
-import { useComponentLocaleMessages } from "../composables/useComponentLocaleMassages.ts";
+import { useUI } from "../composables/useUI";
+import { getDefaults } from "../utils/ui";
+import { isMac } from "../utils/platform";
+import { filterOptions, filterGroups } from "./utilListbox";
+import { useComponentLocaleMessages } from "../composables/useComponentLocaleMassages";
 
 import UIcon from "../ui.image-icon/UIcon.vue";
 import UButton from "../ui.button/UButton.vue";
 import UDivider from "../ui.container-divider/UDivider.vue";
 import UInputSearch from "../ui.form-input-search/UInputSearch.vue";
 
-import usePointer from "./usePointer.ts";
+import usePointer from "./usePointer";
 
-import defaultConfig from "./config.ts";
-import { COMPONENT_NAME } from "./constants.ts";
+import defaultConfig from "./config";
+import { COMPONENT_NAME } from "./constants";
 
-import type { Option, Props, Config, SelectedValue } from "./types.ts";
+import type { Option, Props, Config, SelectedValue } from "./types";
 
 defineOptions({ inheritAttrs: false });
 
@@ -49,6 +49,7 @@ const emit = defineEmits([
 
   /**
    * Triggers when the search input value changes.
+   * @property {string} value
    */
   "searchChange",
 
@@ -56,6 +57,12 @@ const emit = defineEmits([
    * Triggers when the search input loses focus.
    */
   "searchBlur",
+
+  /**
+   * Triggers when the search v-model updates.
+   * @property {string} query
+   */
+  "update:search",
 ]);
 
 const wrapperRef = useTemplateRef<HTMLDivElement>("wrapper");
@@ -66,7 +73,7 @@ const addOptionRef = useTemplateRef<HTMLLIElement>("add-option");
 
 const wrapperMaxHeight = ref("");
 
-const search = ref("");
+const localSearch = ref(props.search ?? "");
 
 const { pointer, pointerDirty, pointerSet, pointerBackward, pointerForward, pointerReset } =
   usePointer(props.options, optionsRef, wrapperRef);
@@ -79,6 +86,15 @@ const { localeMessages } = useComponentLocaleMessages<typeof defaultConfig.i18n>
   props?.config?.i18n,
 );
 
+const searchModel = computed({
+  get: () => localSearch.value,
+  set: (value: string) => {
+    emit("update:search", value);
+
+    localSearch.value = value ?? "";
+  },
+});
+
 const selectedValue = computed({
   get: () => {
     if (props.multiple && !Array.isArray(props.modelValue)) {
@@ -87,19 +103,28 @@ const selectedValue = computed({
 
     return props.modelValue;
   },
-  set: (value) => {
-    if (search.value) search.value = "";
-
-    emit("update:modelValue", value);
-  },
+  set: (value) => emit("update:modelValue", value),
 });
 
 const addOptionKeyCombination = computed(() => {
   return isMac ? "(⌘ + Enter)" : "(Ctrl + Enter)";
 });
 
+const listboxAriaMultiselectable = computed(() => props.multiple || undefined);
+
+const listboxAriaActivedescendant = computed(() =>
+  pointer.value >= 0 ? `${elementId}-${pointer.value}` : undefined,
+);
+
+const getOptionAriaSelected = (option: Option) => {
+  if (option && option.groupLabel) return undefined;
+  if (option.divider) return undefined;
+
+  return !!isSelectedOption(option);
+};
+
 const filteredOptions = computed(() => {
-  const normalizedSearch = search.value.toLowerCase().trim();
+  const normalizedSearch = searchModel.value.toLowerCase().trim();
 
   let options = [...props.options];
 
@@ -117,7 +142,7 @@ const filteredOptions = computed(() => {
 });
 
 watch(
-  () => [props.options, props.size, props.visibleOptions, props.searchable],
+  () => [props.options, props.size, props.visibleOptions, props.searchable, searchModel.value],
   () => {
     nextTick(() => {
       const options = [
@@ -139,22 +164,7 @@ watch(
           const marginTop = parseFloat(styles.marginTop || "0");
           const marginBottom = parseFloat(styles.marginBottom || "0");
 
-          const [childDiv] = el.getElementsByTagName("div");
-          const childStyles = childDiv && window.getComputedStyle(childDiv);
-          const childMarginTop = parseFloat(childStyles?.marginTop || "0");
-          const childMarginBottom = parseFloat(childStyles?.marginBottom || "0");
-          const childPaddingTop = parseFloat(childStyles?.paddingTop || "0");
-          const childPaddingBottom = parseFloat(childStyles?.paddingBottom || "0");
-
-          return (
-            elHeight +
-            marginTop +
-            marginBottom +
-            childMarginTop +
-            childMarginBottom +
-            childPaddingTop +
-            childPaddingBottom
-          );
+          return elHeight + marginTop + marginBottom;
         })
         .reduce((acc, cur) => acc + cur, 0);
 
@@ -165,29 +175,44 @@ watch(
       const wrapperBorderBottom = parseFloat(wrapperStyle.borderBottomWidth || "0");
       const wrapperGap = parseFloat(wrapperStyle.gap || "0");
 
+      const addOptionHeight = addOptionRef.value?.getBoundingClientRect().height || 0;
+
       const inputEl = listboxInputRef.value?.input as HTMLInputElement | undefined;
       let listboxInputHeight = 0;
-      let listboxInputPaddingTop = 0;
-      let listboxInputPaddingBottom = 0;
+
+      let listboxInputWrapperPaddingTop = 0;
+      let listboxInputBorderTop = 0;
+      let listboxInputBorderBottom = 0;
 
       if (inputEl) {
         const listboxInputStyle = getComputedStyle(inputEl);
+        const listboxInputLabelStyle = inputEl.parentElement
+          ? getComputedStyle(inputEl.parentElement)
+          : undefined;
+        const listboxInputWrapperStyle = getComputedStyle(
+          inputEl.parentElement?.parentElement?.parentElement as Element,
+        );
 
         listboxInputHeight = parseFloat(listboxInputStyle.height || "0");
-        listboxInputPaddingTop = parseFloat(listboxInputStyle.paddingTop || "0");
-        listboxInputPaddingBottom = parseFloat(listboxInputStyle.paddingBottom || "0");
+
+        listboxInputWrapperPaddingTop = parseFloat(listboxInputWrapperStyle.paddingTop || "0");
+
+        listboxInputBorderTop = parseFloat(listboxInputLabelStyle?.borderTop || "0");
+        listboxInputBorderBottom = parseFloat(listboxInputLabelStyle?.borderBottom || "0");
       }
 
       wrapperMaxHeight.value = `${
         maxHeight +
-        wrapperGap +
+        addOptionHeight +
+        (props.searchable ? wrapperGap : 0) +
         wrapperPaddingTop +
         wrapperPaddingBottom +
         wrapperBorderTop +
         wrapperBorderBottom +
         listboxInputHeight +
-        listboxInputPaddingTop +
-        listboxInputPaddingBottom
+        listboxInputBorderTop +
+        listboxInputBorderBottom +
+        listboxInputWrapperPaddingTop
       }px`;
     });
   },
@@ -321,12 +346,16 @@ function onClickOption(rawOption: Option) {
 }
 
 function onInputSearchBlur(event: FocusEvent) {
-  if (props.searchable) {
-    emit("searchBlur", event);
-  }
+  emit("searchBlur", event);
 }
 
 defineExpose({
+  /**
+   * Current pointer index value.
+   * @property {Ref<number>}
+   */
+  pointer,
+
   /**
    * Allows setting the pointer to a specific index.
    * @property {Function}
@@ -385,7 +414,6 @@ const {
   config,
   wrapperAttrs,
   listboxInputAttrs,
-  searchAttrs,
   listAttrs,
   listItemAttrs,
   addOptionLabelWrapperAttrs,
@@ -417,31 +445,36 @@ const {
     @keydown.self.up.prevent="pointerBackward"
     @keydown.enter.stop.self="addPointerElement('Enter')"
   >
-    <div v-if="searchable" v-bind="searchAttrs">
-      <UInputSearch
-        :id="elementId"
-        ref="listbox-input"
-        v-model="search"
-        :placeholder="localeMessages.search"
-        :size="size"
-        :debounce="debounce"
-        v-bind="listboxInputAttrs"
-        :data-test="getDataTest('search')"
-        @blur="onInputSearchBlur"
-        @keydown.self.down.prevent="onKeydownDown"
-        @keydown.self.up.prevent="onKeydownUp"
-        @update:model-value="onSearchChange"
-      />
-    </div>
+    <UInputSearch
+      v-if="searchable"
+      :id="elementId"
+      ref="listbox-input"
+      v-model="searchModel"
+      :placeholder="localeMessages.search"
+      :size="size"
+      :debounce="debounce"
+      v-bind="listboxInputAttrs"
+      :data-test="getDataTest('search')"
+      @blur="onInputSearchBlur"
+      @keydown.self.down.prevent="onKeydownDown"
+      @keydown.self.up.prevent="onKeydownUp"
+      @update:model-value="onSearchChange"
+    />
 
-    <ul :id="`listbox-${elementId}`" v-bind="listAttrs" role="listbox">
+    <ul
+      v-bind="listAttrs"
+      role="listbox"
+      :aria-multiselectable="listboxAriaMultiselectable"
+      :aria-activedescendant="listboxAriaActivedescendant"
+    >
       <li
         v-for="(option, index) of filteredOptions"
-        :id="`${elementId}-${index}`"
         :key="index"
         v-bind="listItemAttrs"
         ref="option"
         :role="!(option && option.groupLabel) ? 'option' : undefined"
+        :aria-selected="getOptionAriaSelected(option)"
+        :aria-disabled="Boolean(option.disabled) || undefined"
         :data-group-label="Boolean(option.groupLabel)"
       >
         <UDivider v-if="option.divider" v-bind="optionDividerAttrs" />
@@ -475,7 +508,7 @@ const {
             <span
               :style="getMarginForSubCategory(option.level)"
               v-bind="optionContentAttrs"
-              :title="String(option.label)"
+              :title="String(option[labelKey])"
               v-text="option[labelKey]"
             />
           </slot>
@@ -497,10 +530,18 @@ const {
 
         <!-- group title -->
         <template v-if="option && (option.groupLabel || option.isSubGroup) && !option.isHidden">
-          <div v-if="option.groupLabel" v-bind="groupAttrs" v-text="option.groupLabel" />
+          <div
+            v-if="option.groupLabel"
+            role="group"
+            :aria-label="option.groupLabel"
+            v-bind="groupAttrs"
+            v-text="option.groupLabel"
+          />
 
           <div
             v-else-if="option.isSubGroup"
+            role="group"
+            :aria-label="String(option[labelKey])"
             :style="getMarginForSubCategory(option.level)"
             v-bind="subGroupAttrs"
             v-text="option[labelKey]"
@@ -508,13 +549,7 @@ const {
         </template>
       </li>
 
-      <li
-        v-if="!filteredOptions.length"
-        :id="`${elementId}-empty`"
-        ref="empty-option"
-        role="option"
-        v-bind="optionAttrs"
-      >
+      <li v-if="!filteredOptions.length" ref="empty-option" role="option" v-bind="optionAttrs">
         <!-- @slot Use it to add something instead of empty state. -->
         <slot name="empty">
           <span v-bind="optionContentAttrs" v-text="localeMessages.noDataToShow" />
@@ -524,7 +559,6 @@ const {
       <!-- Add button -->
       <template v-if="addOption">
         <li
-          :id="`${elementId}-addOption`"
           ref="add-option"
           role="option"
           v-bind="addOptionLabelWrapperAttrs"

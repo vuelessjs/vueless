@@ -1,5 +1,5 @@
-import defaultConfig from "./config.ts";
-import type { ComponentConfig, UnknownObject } from "../types.ts";
+import defaultConfig from "./config";
+import type { ComponentConfig, UnknownObject } from "../types";
 
 export type Config = typeof defaultConfig;
 export type OnClickOption = (option: Omit<Option, "onClick">) => void;
@@ -23,6 +23,11 @@ export interface Props {
    * Selected item.
    */
   modelValue?: string | number | UnknownObject | (string | number | UnknownObject)[];
+
+  /**
+   * Search input model value.
+   */
+  search?: string;
 
   /**
    * List options.

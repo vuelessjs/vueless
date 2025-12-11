@@ -1,10 +1,12 @@
+import { ref } from "vue";
+
 import {
   getArgs,
   getArgTypes,
   getSlotNames,
   getSlotsFragment,
   getDocsDescription,
-} from "../../utils/storybook.ts";
+} from "../../utils/storybook";
 
 import UPage from "../../ui.container-page/UPage.vue";
 import UCard from "../../ui.container-card/UCard.vue";
@@ -15,10 +17,12 @@ import UTextarea from "../../ui.form-textarea/UTextarea.vue";
 import UButton from "../../ui.button/UButton.vue";
 import UIcon from "../../ui.image-icon/UIcon.vue";
 import UHeader from "../../ui.text-header/UHeader.vue";
-import UBadge from "../../ui.text-badge/UBadge.vue";
+import UInputPassword from "../../ui.form-input-password/UInputPassword.vue";
+import UCheckbox from "../../ui.form-checkbox/UCheckbox.vue";
+import UDivider from "../../ui.container-divider/UDivider.vue";
 
-import type { Meta, StoryFn } from "@storybook/vue3";
-import type { Props } from "../types.ts";
+import type { Meta, StoryFn } from "@storybook/vue3-vite";
+import type { Props } from "../types";
 
 interface UPageArgs extends Props {
   slotTemplate?: string;
@@ -30,7 +34,7 @@ export default {
   title: "Containers / Page",
   component: UPage,
   args: {
-    title: "User Profile",
+    title: "Join Our Community",
   },
   argTypes: {
     ...getArgTypes(UPage.__name),
@@ -44,17 +48,56 @@ export default {
 } as Meta;
 
 const defaultTemplate = `
-  <UCard title="Profile Information">
-    <UCol align="stretch">
-      <URow>
-        <UInput label="Full Name" placeholder="John Doe" />
-        <UInput label="Email Address" type="email" placeholder="john.doe@example.com" />
+  <UCard
+    title="Sign Up"
+    description="Enter your email below to get started and create your account."
+    class="flex flex-col max-w-[500px]"
+  >
+    <UCol
+      justify="between"
+      align="stretch"
+      class="h-full"
+    >
+      <URow
+        align="center"
+        justify="between"
+        gap="sm"
+      >
+        <UButton
+          label="GitHub"
+          variant="outlined"
+          block
+          class="!leading-none"
+        />
+
+        <UButton
+          label="Google"
+          variant="outlined"
+          block
+          class="!leading-none"
+        />
       </URow>
 
-      <UTextarea label="Message" placeholder="Enter your message here..." rows="4" />
+      <UDivider label="OR CONTINUE WITH" />
+
+      <UCol gap="sm" class="w-full">
+        <UInput
+          label="Email"
+          placeholder="johndoe@example.com"
+          type="email"
+        />
+        <UInputPassword v-model="password" label="Password" />
+      </UCol>
+
+      <UCheckbox v-model="remember" label="Remember me" />
+
+      <UButton label="Create account" block />
     </UCol>
   </UCard>
 `;
+
+const password = ref("");
+const remember = ref(false);
 
 const DefaultTemplate: StoryFn<UPageArgs> = (args: UPageArgs) => ({
   components: {
@@ -67,8 +110,11 @@ const DefaultTemplate: StoryFn<UPageArgs> = (args: UPageArgs) => ({
     UButton,
     UIcon,
     UHeader,
+    UInputPassword,
+    UCheckbox,
+    UDivider,
   },
-  setup: () => ({ args, slots: getSlotNames(UPage.__name) }),
+  setup: () => ({ args, slots: getSlotNames(UPage.__name), password, remember }),
   template: `
     <UPage v-bind="args">
       ${args.slotTemplate || getSlotsFragment(defaultTemplate)}
@@ -77,17 +123,30 @@ const DefaultTemplate: StoryFn<UPageArgs> = (args: UPageArgs) => ({
 });
 
 const EnumTemplate: StoryFn<UPageArgs> = (args: UPageArgs, { argTypes }) => ({
-  components: { UPage, UCard, URow, UCol, UInput, UTextarea },
-  setup: () => ({ args, argTypes, getArgs }),
+  components: {
+    UPage,
+    UCard,
+    URow,
+    UCol,
+    UInput,
+    UTextarea,
+    UInputPassword,
+    UCheckbox,
+    UDivider,
+    UButton,
+  },
+  setup: () => ({ args, argTypes, getArgs, password, remember }),
   template: `
-    <UPage
-      v-for="option in argTypes?.[args.enum]?.options"
-      v-bind="getArgs(args, option)"
-      :key="option"
-      :config="{ wrapper: 'min-h-max', page: 'min-h-max' }"
-    >
-      ${defaultTemplate}
-    </UPage>
+    <UCol class="p-4 bg-primary/5">
+      <UPage
+        v-for="option in argTypes?.[args.enum]?.options"
+        v-bind="getArgs(args, option)"
+        :key="option"
+        :config="{ wrapper: 'min-h-max', page: 'min-h-max mb-4' }"
+      >
+        ${defaultTemplate}
+      </UPage>
+    </UCol>
   `,
 });
 
@@ -99,13 +158,38 @@ Description.args = {
   description: "Manage your profile details and update your personal information.",
 };
 
-export const BackLink = DefaultTemplate.bind({});
-BackLink.args = {
-  backLabel: "Back",
-  backTo: {
-    path: "/",
+export const BackLink: StoryFn<UPageArgs> = (args: UPageArgs) => ({
+  components: {
+    UPage,
+    UCard,
+    URow,
+    UCol,
+    UInput,
+    UTextarea,
+    UButton,
+    UIcon,
+    UHeader,
+    UInputPassword,
+    UCheckbox,
+    UDivider,
   },
-};
+  setup: () => ({
+    args,
+    showAlert: () => alert("You clicked on a back link!"),
+    password,
+    remember,
+  }),
+  template: `
+    <UPage
+      v-bind="args"
+      backLabel="Back"
+      :backTo="{ path: '/' }"
+      @back="showAlert"
+    >
+      ${defaultTemplate}
+    </UPage>
+  `,
+});
 BackLink.parameters = {
   docs: {
     description: {
@@ -115,11 +199,11 @@ BackLink.parameters = {
   },
 };
 
-export const TitleSize = EnumTemplate.bind({});
-TitleSize.args = { enum: "titleSize", description: "{enumValue}" };
+export const TitleSize = DefaultTemplate.bind({});
+TitleSize.args = { titleSize: "2xl" };
 
-export const Sizes = EnumTemplate.bind({});
-Sizes.args = { enum: "size", description: "{enumValue}" };
+export const Sizes = DefaultTemplate.bind({});
+Sizes.args = { size: "2xl" };
 Sizes.parameters = {
   docs: {
     description: {
@@ -138,59 +222,65 @@ Variant.parameters = {
   },
 };
 
-export const Slots: StoryFn<UPageArgs> = (args) => ({
-  components: { UPage, UIcon, URow, UCol, UButton, UBadge, UTextarea, UCard, UInput },
-  setup() {
-    args.config = { wrapper: "min-h-max", page: "min-h-max" };
-
-    return { args };
-  },
-  template: `
-    <UCol gap="lg">
-      <UPage v-bind="args" description="Before Title Slot">
-        <template #before-title>
-          <UIcon name="account_circle" />
-        </template>
-        ${defaultTemplate}
-      </UPage>
-
-      <UPage v-bind="args">
-        <template #title>
-          <UBadge label="Title Slot" size="lg" />
-        </template>
-        ${defaultTemplate}
-      </UPage>
-
-      <UPage v-bind="args" description="After Title Slot">
-        <template #after-title>
-          <UIcon name="verified" />
-        </template>
-        ${defaultTemplate}
-      </UPage>
-
-      <UPage v-bind="args" description="Actions Slot">
-        <template #actions>
-          <URow class="max-w-fit">
-            <UButton size="sm" variant="outlined" label="Clear" />
-            <UButton size="sm" label="Submit" />
-          </URow>
-        </template>
-        ${defaultTemplate}
-      </UPage>
-
-      <UPage v-bind="args" description="Footer Left Slot">
-        ${defaultTemplate}
-        <template #footer-left>
-          <UButton size="sm" label="Cancel" />
-        </template>
-      </UPage>
-
-      <UPage v-bind="args" description="Footer Right Slot">
-        ${defaultTemplate}
-        <template #footer-right>
-          <UButton size="sm" label="Save Changes" />
-        </template>
-      </UPage>
-    </UCol>
+export const BeforeTitleSlot = DefaultTemplate.bind({});
+BeforeTitleSlot.args = {
+  slotTemplate: `
+    <template #before-title>
+      <UIcon name="account_circle" color="primary" />
+    </template>
+    ${defaultTemplate}
   `,
-});
+};
+
+export const TitleSlot = DefaultTemplate.bind({});
+TitleSlot.args = {
+  slotTemplate: `
+    <template #title="{ title }">
+      <UHeader :label="title" color="primary" />
+    </template>
+    ${defaultTemplate}
+  `,
+};
+
+export const AfterTitleSlot = DefaultTemplate.bind({});
+AfterTitleSlot.args = {
+  slotTemplate: `
+    <template #after-title>
+      <UIcon name="verified" color="primary" />
+    </template>
+    ${defaultTemplate}
+  `,
+};
+
+export const ActionsSlot = DefaultTemplate.bind({});
+ActionsSlot.args = {
+  slotTemplate: `
+    <template #actions>
+      <URow class="max-w-fit">
+        <UButton size="sm" variant="outlined" label="Clear" />
+        <UButton size="sm" label="Submit" />
+      </URow>
+    </template>
+    ${defaultTemplate}
+  `,
+};
+
+export const FooterLeftSlot = DefaultTemplate.bind({});
+FooterLeftSlot.args = {
+  slotTemplate: `
+    ${defaultTemplate}
+    <template #footer-left>
+      <UButton size="sm" label="Cancel" variant="subtle" />
+    </template>
+  `,
+};
+
+export const FooterRightSlot = DefaultTemplate.bind({});
+FooterRightSlot.args = {
+  slotTemplate: `
+    ${defaultTemplate}
+    <template #footer-right>
+      <UButton size="sm" label="Skip this step" variant="subtle" />
+    </template>
+  `,
+};

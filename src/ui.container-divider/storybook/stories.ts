@@ -4,14 +4,14 @@ import {
   getSlotNames,
   getSlotsFragment,
   getDocsDescription,
-} from "../../utils/storybook.ts";
+} from "../../utils/storybook";
 
 import URow from "../../ui.container-row/URow.vue";
 import UDivider from "../../ui.container-divider/UDivider.vue";
 import UCol from "../../ui.container-col/UCol.vue";
 
-import type { Meta, StoryFn } from "@storybook/vue3";
-import type { Props } from "../types.ts";
+import type { Meta, StoryFn } from "@storybook/vue3-vite";
+import type { Props } from "../types";
 
 interface UDividerArgs extends Props {
   slotTemplate?: string;
@@ -57,16 +57,11 @@ const EnumTemplate: StoryFn<UDividerArgs> = (args: UDividerArgs, { argTypes }) =
   setup: () => ({ args, argTypes, getArgs }),
   template: `
     <URow gap="xl">
-      <UCol
+      <UDivider
         v-for="option in argTypes?.[args.enum]?.options"
         :key="option"
-        gap="none"
-        class="w-1/4"
-      >
-        <p>{{ option }}</p>
-        <UDivider v-bind="getArgs(args, option)" />
-        <p>{{ option }}</p>
-      </UCol>
+        v-bind="getArgs(args, option)"
+      />
     </URow>
   `,
 });
@@ -92,10 +87,22 @@ Dashed.args = { dashed: true, size: "sm" };
 export const Dotted = DefaultTemplate.bind({});
 Dotted.args = { dotted: true, size: "sm" };
 
-export const Vertical = DefaultTemplate.bind({});
-Vertical.args = {
-  vertical: true,
-  config: {
-    wrapper: "!h-32",
-  },
-};
+export const Vertical: StoryFn<UDividerArgs> = (args: UDividerArgs) => ({
+  components: { UDivider, URow },
+  setup: () => ({ args }),
+  template: `
+    <URow>
+      <p class="text-justify">
+        Understanding your clients' needs is essential for building long-term business relationships.
+        By analyzing customer behavior and feedback, companies can tailor their services to provide more value.
+      </p>
+
+      <UDivider vertical class="h-24" />
+
+      <p class="text-justify">
+        Businesses that prioritize customer satisfaction see higher retention rates and increased referrals.
+        Implementing a structured follow-up process can help maintain strong client engagement and trust.
+      </p>
+    </URow>
+  `,
+});

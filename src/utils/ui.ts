@@ -2,12 +2,18 @@ import { merge } from "lodash-es";
 import { defineConfig } from "cva";
 import { extendTailwindMerge } from "tailwind-merge";
 
-import { isCSR } from "./helper.ts";
-import { createGetMergedConfig } from "./node/mergeConfigs.js";
-import { COMPONENT_NAME as U_ICON } from "../ui.image-icon/constants.ts";
-import { ICON_NON_PROPS_DEFAULTS, TAILWIND_MERGE_EXTENSION } from "../constants.js";
+import { isCSR, isSSR } from "./helper";
+import { createGetMergedConfig } from "./node/mergeConfigs";
+import { COMPONENT_NAME as U_ICON } from "../ui.image-icon/constants";
+import { ICON_NON_PROPS_DEFAULTS, TAILWIND_MERGE_EXTENSION } from "../constants";
 
-import type { Config, Defaults, UnknownObject, ComponentNames } from "../types.ts";
+import type {
+  Config,
+  UnknownObject,
+  ComponentNames,
+  ComponentDefaults,
+  ComponentCustomProps,
+} from "../types";
 
 interface MergedConfigOptions {
   defaultConfig: unknown;
@@ -33,11 +39,22 @@ export function setVuelessConfig(config?: Config) {
 if (isCSR) {
   vuelessConfig =
     Object.values(
-      import.meta.glob(["/vueless.config.{js,ts}", "/**/vueless.config.{js,ts}"], {
+      import.meta.glob(["/vueless.config.{js,ts}"], {
         eager: true,
         import: "default",
       }),
     )[0] || {};
+}
+
+if (isSSR) {
+  (async () => {
+    try {
+      // @ts-expect-error: vueless.config.{js,ts} is optional
+      vuelessConfig = (await import(/* @vite-ignore */ "/vueless.config")).default;
+    } catch {
+      vuelessConfig = {};
+    }
+  })();
 }
 
 /**
@@ -76,10 +93,14 @@ export const cva = ({ base = "", variants = {}, compoundVariants = [], defaultVa
  * Return default values for component props, icons, etc..
  */
 export function getDefaults<Props, Config>(defaultConfig: Config, name: ComponentNames) {
-  const componentDefaults = (defaultConfig as UnknownObject).defaults || {};
+  const componentDefaults = (defaultConfig as Config & UnknownObject).defaults || {};
   const globalDefaults = vuelessConfig.components?.[name]?.defaults || {};
 
-  const defaults = merge({}, componentDefaults, globalDefaults) as Props & Defaults;
+  const customProps = vuelessConfig.components?.[name]?.props as ComponentCustomProps;
+  const customPropsDefaults = getCustomPropsDefaults(customProps) || {};
+
+  const defaults = merge({}, componentDefaults, globalDefaults, customPropsDefaults) as Props &
+    ComponentDefaults;
 
   /* Remove non a props defaults. */
   for (const key in defaults) {
@@ -104,4 +125,23 @@ export function getDefaults<Props, Config>(defaultConfig: Config, name: Componen
  */
 export function setColor(classes: string, color: string) {
   return classes?.replace(/{color}/g, color);
+}
+
+/**
+ * Retrieves the default values from the provided component custom properties.
+ */
+export function getCustomPropsDefaults(props: ComponentCustomProps) {
+  const customPropsDefaults: ComponentDefaults = {};
+
+  if (!props) {
+    return customPropsDefaults;
+  }
+
+  for (const [key, value] of Object.entries(props)) {
+    if (value.default) {
+      customPropsDefaults[key] = value.default;
+    }
+  }
+
+  return customPropsDefaults;
 }

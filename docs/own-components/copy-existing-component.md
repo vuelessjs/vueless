@@ -2,12 +2,6 @@
 
 If Vueless customization options are not enough for your needs, you can fully copy and modify any Vueless component.
 
-{% hint style="warning" %}
-However, use this approach only when absolutely necessary, as you will need to manually update the component after each new Vueless release.
-
-**Note:** We do not provide free support for custom components.
-{% endhint %}
-
 {% tabs %}
 {% tab title="npm" %}
 ```bash
@@ -46,7 +40,8 @@ bunx vueless copy <src> <target>
 {% endtab %}
 {% endtabs %}
 
-The component will be created in the project's `/components` folder:
+The component will be created in the `.vueless/components` folder.
 
-* `/src/components/<componentName>` – for Vue
-* `/components/<componentName>` – for Nuxt
+{% hint style="warning" %}
+Use this approach only when absolutely necessary, as you will need to manually update the component after each new Vueless release.
+{% endhint %}

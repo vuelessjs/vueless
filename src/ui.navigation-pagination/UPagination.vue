@@ -2,16 +2,17 @@
 import { computed, useTemplateRef } from "vue";
 import { range } from "lodash-es";
 
-import useUI from "../composables/useUI.ts";
-import { getDefaults } from "../utils/ui.ts";
+import { useUI } from "../composables/useUI";
+import { getDefaults } from "../utils/ui";
+import { useComponentLocaleMessages } from "../composables/useComponentLocaleMassages";
 
 import UButton from "../ui.button/UButton.vue";
 import UIcon from "../ui.image-icon/UIcon.vue";
 
-import defaultConfig from "./config.ts";
-import { COMPONENT_NAME } from "./constants.ts";
+import defaultConfig from "./config";
+import { COMPONENT_NAME } from "./constants";
 
-import type { Props, Config } from "./types.ts";
+import type { Props, Config } from "./types";
 
 defineOptions({ inheritAttrs: false });
 
@@ -29,14 +30,14 @@ const emit = defineEmits([
    * Triggers when current page changes.
    * @property {number} value
    */
-  "change",
-
-  /**
-   * Triggers when current page changes.
-   * @property {number} value
-   */
   "update:modelValue",
 ]);
+
+const { localeMessages } = useComponentLocaleMessages<typeof defaultConfig.i18n>(
+  COMPONENT_NAME,
+  defaultConfig.i18n,
+  props?.config?.i18n,
+);
 
 const paginationRef = useTemplateRef<HTMLDivElement>("pagination");
 
@@ -44,7 +45,6 @@ const currentPage = computed({
   get: () => props.modelValue,
   set: (value) => {
     emit("update:modelValue", value);
-    emit("change", value);
   },
 });
 
@@ -124,6 +124,7 @@ const {
   nextButtonAttrs,
   activeButtonAttrs,
   inactiveButtonAttrs,
+  ellipsisAttrs,
   lastIconAttrs,
   firstIconAttrs,
   prevIconAttrs,
@@ -132,13 +133,14 @@ const {
 </script>
 
 <template>
-  <div ref="pagination" v-bind="paginationAttrs">
+  <div ref="pagination" v-bind="paginationAttrs" :data-test="getDataTest()">
     <UButton
       v-if="showFirst"
       variant="ghost"
       :label="firstLabel"
       :square="!firstLabel"
       :disabled="prevIsDisabled"
+      :aria-label="firstLabel || localeMessages.first"
       v-bind="firstButtonAttrs"
       :data-test="getDataTest('first')"
       @click="goToFirstPage"
@@ -162,6 +164,7 @@ const {
       :label="prevLabel"
       :square="!prevLabel"
       :disabled="prevIsDisabled"
+      :aria-label="prevLabel || localeMessages.prev"
       v-bind="prevButtonAttrs"
       :data-test="getDataTest('prev')"
       @click="goToPrevPage"
@@ -181,13 +184,7 @@ const {
     </UButton>
 
     <template v-for="page in pageButtons" :key="page">
-      <UButton
-        v-if="!isFinite(page.number)"
-        square
-        disabled
-        variant="ghost"
-        v-bind="inactiveButtonAttrs"
-      >
+      <UButton v-if="!isFinite(page.number)" square disabled variant="ghost" v-bind="ellipsisAttrs">
         <!-- @slot Use it to add something instead of the ellipsis. -->
         <slot name="ellipsis">&hellip;</slot>
       </UButton>
@@ -197,6 +194,8 @@ const {
         :variant="variant"
         :label="String(page.number)"
         :disabled="disabled"
+        :aria-label="`${localeMessages.currentPage} ${page.number}`"
+        :aria-current="true"
         v-bind="activeButtonAttrs"
         :data-test="getDataTest('active')"
       />
@@ -206,6 +205,7 @@ const {
         variant="ghost"
         :label="String(page.number)"
         :disabled="disabled"
+        :aria-label="`${localeMessages.goToPage} ${page.number}`"
         v-bind="inactiveButtonAttrs"
         :data-test="getDataTest('inactive')"
         @click="selectPage(page.number)"
@@ -217,6 +217,7 @@ const {
       :label="nextLabel"
       :square="!nextLabel"
       :disabled="nextIsDisabled"
+      :aria-label="nextLabel || localeMessages.next"
       v-bind="nextButtonAttrs"
       :data-test="getDataTest('next')"
       @click="goToNextPage"
@@ -241,6 +242,7 @@ const {
       :label="lastLabel"
       :square="!lastLabel"
       :disabled="nextIsDisabled"
+      :aria-label="lastLabel || localeMessages.last"
       v-bind="lastButtonAttrs"
       :data-test="getDataTest('last')"
       @click="goToLastPage"

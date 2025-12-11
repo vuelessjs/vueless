@@ -1,0 +1,47 @@
+import { Meta, Title, Subtitle, Description, Controls, Stories, Source } from "@storybook/addon-docs/blocks";
+
+import * as stories from "./stories";
+
+<Meta of={stories} />
+<Title of={stories} />
+<Subtitle of={stories} />
+<Description of={stories} />
+<Controls of={stories.Default} />
+<Stories of={stories} />
+
+## Theme Configuration
+You can use the default `vueless` theme or create your own [custom one](https://atomiks.github.io/tippyjs/v6/themes/) via the global Vueless config:
+
+<Source code={`
+  directives: {
+    tooltip: {
+      theme: "custom",
+    },
+  },
+`} language="jsx" dark />
+
+## Customizing Styles
+To customize the default `vueless` or your own custom theme, simply update your CSS as shown below:
+
+<Source code={`
+  .tippy-box[data-theme~="custom"] {
+    background-color: var(--vl-neutral-accented);
+    color: var(--vl-text-inverted);
+  }
+  
+  .tippy-box[data-theme~="custom"][data-placement^="top"] > .tippy-arrow:before {
+    border-top-color: var(--vl-neutral-accented);
+  }
+  
+  .tippy-box[data-theme~="custom"][data-placement^="bottom"] > .tippy-arrow:before {
+    border-bottom-color: var(--vl-neutral-accented);
+  }
+  
+  .tippy-box[data-theme~="custom"][data-placement^="left"] > .tippy-arrow:before {
+    border-left-color: var(--vl-neutral-accented);
+  }
+  
+  .tippy-box[data-theme~="custom"][data-placement^="right"] > .tippy-arrow:before {
+    border-right-color: var(--vl-neutral-accented);
+  }
+`} language="jsx" dark />

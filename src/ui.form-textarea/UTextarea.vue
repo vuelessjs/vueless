@@ -1,18 +1,18 @@
 <script setup lang="ts">
-import { computed, onMounted, ref, watch, useSlots, useId, useTemplateRef } from "vue";
+import { computed, nextTick, onMounted, ref, watch, useSlots, useId, useTemplateRef } from "vue";
 
-import useUI from "../composables/useUI.ts";
-import { getDefaults } from "../utils/ui.ts";
-import { hasSlotContent } from "../utils/helper.ts";
+import { useUI } from "../composables/useUI";
+import { getDefaults } from "../utils/ui";
+import { hasSlotContent } from "../utils/helper";
 
-import { useMutationObserver } from "../composables/useMutationObserver.ts";
+import { useMutationObserver } from "../composables/useMutationObserver";
 
 import ULabel from "../ui.form-label/ULabel.vue";
 
-import { COMPONENT_NAME } from "./constants.ts";
-import defaultConfig from "./config.ts";
+import { COMPONENT_NAME } from "./constants";
+import defaultConfig from "./config";
 
-import type { Props, Config } from "./types.ts";
+import type { Props, Config } from "./types";
 
 defineOptions({ inheritAttrs: false });
 
@@ -63,9 +63,14 @@ const elementId = props.id || useId();
 const textareaRef = useTemplateRef<HTMLTextAreaElement>("textarea");
 const labelComponentRef = useTemplateRef<InstanceType<typeof ULabel>>("labelComponent");
 const leftSlotWrapperRef = useTemplateRef<HTMLDivElement>("leftSlotWrapper");
-const wrapperRef = useTemplateRef<HTMLLabelElement>("wrapper");
+const wrapperRef = useTemplateRef<HTMLDivElement>("wrapper");
 
 const currentRows = ref(Number(props.rows));
+
+const localValue = computed({
+  get: () => props.modelValue,
+  set: (value) => emit("update:modelValue", value),
+});
 
 watch(
   () => props.rows,
@@ -74,41 +79,86 @@ watch(
   },
 );
 
-const localValue = computed({
-  get() {
-    return props.modelValue;
-  },
-  set(value) {
-    emit("update:modelValue", value);
-  },
+watch(
+  () => [props.modelValue, props.autoResize],
+  () => props.autoResize && nextTick(autoResizeTextarea),
+);
+
+watch([() => props.labelAlign, () => props.size], setLabelPosition, { flush: "post" });
+
+onMounted(() => {
+  toggleReadonly(true);
+  setLabelPosition();
+
+  if (props.autoResize) {
+    nextTick(autoResizeTextarea);
+  }
 });
 
-onMounted(() => toggleReadonly(true));
+function autoResizeTextarea() {
+  if (!props.autoResize || props.readonly) return;
 
-function getNewRowCount() {
   const textarea = textareaRef.value;
 
-  if (!textarea) return 0;
+  if (!textarea) return;
 
-  const content = textarea.value;
-  const newlineCount = (content.match(/\n/g) || []).length;
+  textarea.style.height = "auto";
 
-  return Math.max(Number(props.rows), newlineCount + 2);
+  // Calculate the minimum height based on rows prop
+  const computedStyle = getComputedStyle(textarea);
+  const lineHeight = parseFloat(computedStyle.lineHeight);
+  const paddingTop = parseFloat(computedStyle.paddingTop);
+  const paddingBottom = parseFloat(computedStyle.paddingBottom);
+  const minHeight = lineHeight * Number(props.rows) + paddingTop + paddingBottom;
+
+  // Set height to the larger of scrollHeight or minimum height
+  const newHeight = Math.max(textarea.scrollHeight, minHeight);
+
+  textarea.style.height = `${newHeight}px`;
 }
 
-function onEnter() {
-  const newRowCount = getNewRowCount();
+function toggleReadonly(hasReadonly: boolean) {
+  if (props.noAutocomplete && !props.readonly && elementId) {
+    const textarea = document.getElementById(elementId);
 
-  if (newRowCount > currentRows.value && !props.readonly) {
-    currentRows.value = newRowCount;
+    if (textarea) {
+      hasReadonly
+        ? textarea.setAttribute("readonly", "readonly")
+        : textarea.removeAttribute("readonly");
+    }
   }
 }
 
-function onBackspace() {
-  const newRowCount = getNewRowCount() - 1;
+useMutationObserver(wrapperRef, (mutations) => mutations.forEach(setLabelPosition), {
+  childList: true,
+  characterData: true,
+  subtree: true,
+});
 
-  if (newRowCount < currentRows.value && !props.readonly) {
-    currentRows.value = newRowCount;
+function setLabelPosition() {
+  if (props.labelAlign === "top" || !hasSlotContent(slots["left"])) {
+    if (labelComponentRef.value?.labelElement) {
+      labelComponentRef.value.labelElement.style.left = "";
+    }
+
+    return;
+  }
+
+  if (leftSlotWrapperRef.value && textareaRef.value && labelComponentRef.value?.labelElement) {
+    const leftSlotWidth = leftSlotWrapperRef.value.getBoundingClientRect().width;
+    const wrapperElement = textareaRef.value.parentElement;
+
+    let wrapperGap = 0;
+    let wrapperLeftPadding = 0;
+
+    if (wrapperElement) {
+      wrapperGap = parseFloat(getComputedStyle(wrapperElement).gap);
+      wrapperLeftPadding = parseFloat(getComputedStyle(wrapperElement).paddingLeft);
+    }
+
+    if (labelComponentRef.value?.labelElement) {
+      labelComponentRef.value.labelElement.style.left = `${leftSlotWidth + wrapperLeftPadding + wrapperGap}px`;
+    }
   }
 }
 
@@ -142,41 +192,14 @@ function onMousedown() {
   emit("mousedown");
 }
 
-function toggleReadonly(hasReadonly: boolean) {
-  if (props.noAutocomplete && !props.readonly && elementId) {
-    const textarea = document.getElementById(elementId);
-
-    if (textarea) {
-      hasReadonly
-        ? textarea.setAttribute("readonly", "readonly")
-        : textarea.removeAttribute("readonly");
-    }
-  }
+function onSlotClick() {
+  textareaRef.value?.focus();
 }
-
-useMutationObserver(leftSlotWrapperRef, (mutations) => mutations.forEach(setLabelPosition), {
-  childList: true,
-  characterData: true,
-  subtree: true,
-});
-
-function setLabelPosition() {
-  if (props.labelAlign === "top" || !hasSlotContent(slots["left"])) return;
-
-  if (leftSlotWrapperRef.value && textareaRef.value && labelComponentRef.value?.labelElement) {
-    const leftSlotWidth = leftSlotWrapperRef.value.getBoundingClientRect().width;
-    const textareaPaddingLeft = parseFloat(getComputedStyle(textareaRef.value).paddingLeft);
-
-    labelComponentRef.value.labelElement.style.left = `${leftSlotWidth + textareaPaddingLeft}px`;
-  }
-}
-
-onMounted(() => setLabelPosition());
 
 defineExpose({
   /**
    * A reference to the component's wrapper element for direct DOM manipulation.
-   * @property {HTMLLabelElement}
+   * @property {HTMLDivElement}
    */
   wrapperRef,
 
@@ -216,7 +239,6 @@ const {
     :size="size"
     :disabled="disabled"
     :align="labelAlign"
-    interactive
     v-bind="textareaLabelAttrs"
     :data-test="getDataTest('label')"
   >
@@ -228,16 +250,17 @@ const {
       <slot name="label" :label="label" />
     </template>
 
-    <label ref="wrapper" :for="elementId" v-bind="wrapperAttrs">
-      <div
+    <div ref="wrapper" v-bind="wrapperAttrs">
+      <span
         v-if="hasSlotContent($slots['left'])"
         ref="leftSlotWrapper"
         :for="elementId"
         v-bind="leftSlotAttrs"
+        @click="onSlotClick"
       >
         <!-- @slot Use it to add something before the text. -->
         <slot name="left" />
-      </div>
+      </span>
 
       <textarea
         :id="elementId"
@@ -257,14 +280,17 @@ const {
         @mouseleave="onMouseleave"
         @mousedown="onMousedown"
         @click="onClick"
-        @keydown.enter="onEnter"
-        @keyup.delete="onBackspace"
       />
 
-      <div v-if="hasSlotContent($slots['right'])" :for="elementId" v-bind="rightSlotAttrs">
+      <span
+        v-if="hasSlotContent($slots['right'])"
+        :for="elementId"
+        v-bind="rightSlotAttrs"
+        @click="onSlotClick"
+      >
         <!-- @slot Use it to add something after the text. -->
         <slot name="right" />
-      </div>
-    </label>
+      </span>
+    </div>
   </ULabel>
 </template>

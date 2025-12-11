@@ -11,11 +11,16 @@ export default /*tw*/ {
       },
     },
     defaults: {
-      color: "gray",
+      color: "neutral",
     },
   },
   tabButtonActive: {
     base: "{>tabButton} border-primary",
+    variants: {
+      disabled: {
+        true: "border-primary/(--vl-disabled-opacity)",
+      },
+    },
     defaults: {
       color: "primary",
     },

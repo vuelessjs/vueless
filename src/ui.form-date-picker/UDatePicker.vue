@@ -2,30 +2,30 @@
 import { computed, nextTick, ref, useId, useTemplateRef, watchEffect } from "vue";
 import { merge } from "lodash-es";
 
-import useUI from "../composables/useUI.ts";
+import { useUI } from "../composables/useUI";
 
 import UIcon from "../ui.image-icon/UIcon.vue";
 import UInput from "../ui.form-input/UInput.vue";
 import UCalendar from "../ui.form-calendar/UCalendar.vue";
-import { View, LocaleType, ARROW_KEYS, TOKEN_REG_EXP } from "../ui.form-calendar/constants.ts";
+import { View, LocaleType, ARROW_KEYS, TOKEN_REG_EXP } from "../ui.form-calendar/constants";
 
-import { getDefaults } from "../utils/ui.ts";
+import { getDefaults } from "../utils/ui";
 
-import { getSortedLocale } from "../ui.form-calendar/utilDate.ts";
-import { formatDate, parseDate } from "../ui.form-calendar/utilCalendar.ts";
+import { getSortedLocale } from "../ui.form-calendar/utilDate";
+import { formatDate, parseDate } from "../ui.form-calendar/utilCalendar";
 
-import { Direction, useAutoPosition } from "../composables/useAutoPosition.ts";
-import { useComponentLocaleMessages } from "../composables/useComponentLocaleMassages.ts";
+import { Direction, useAutoPosition } from "../composables/useAutoPosition";
+import { useComponentLocaleMessages } from "../composables/useComponentLocaleMassages";
 
-import defaultConfig from "./config.ts";
-import { COMPONENT_NAME } from "./constants.ts";
+import defaultConfig from "./config";
+import { COMPONENT_NAME } from "./constants";
 
-import { vClickOutside } from "../directives";
+import vClickOutside from "../v.click-outside/vClickOutside";
 
-import type { Props, Config, Locale } from "./types.ts";
-import type { ComponentExposed } from "../types.ts";
-import type { Config as UCalendarConfig } from "../ui.form-calendar/types.ts";
-import type { DateLocale } from "../ui.form-calendar/utilFormatting.ts";
+import type { Props, Config, Locale } from "./types";
+import type { ComponentExposed } from "../types";
+import type { Config as UCalendarConfig } from "../ui.form-calendar/types";
+import type { DateLocale } from "../ui.form-calendar/utilFormatting";
 
 defineOptions({ inheritAttrs: false });
 
@@ -255,6 +255,7 @@ const mutatedProps = computed(() => ({
 }));
 
 const {
+  getDataTest,
   config,
   wrapperAttrs,
   rightIconAttrs,
@@ -278,7 +279,7 @@ watchEffect(() => {
 </script>
 
 <template>
-  <div v-bind="wrapperAttrs" ref="wrapper">
+  <div v-bind="wrapperAttrs" ref="wrapper" :data-test="getDataTest()">
     <UInput
       :id="elementId"
       :key="String(userFormatDate)"
@@ -295,6 +296,7 @@ watchEffect(() => {
       :right-icon="rightIcon || config.defaults.calendarIcon"
       no-autocomplete
       v-bind="isShownCalendar ? datepickerInputActiveAttrs : datepickerInputAttrs"
+      :data-test="getDataTest('input')"
       @input="onTextInput"
       @focus="activate"
       @copy="onCopy"
@@ -316,7 +318,7 @@ watchEffect(() => {
           @binding {string} icon-name
         -->
         <slot name="right" :icon-name="iconName">
-          <UIcon :name="iconName" color="neutral" v-bind="rightIconAttrs" />
+          <UIcon :name="iconName" color="neutral" v-bind="rightIconAttrs" @click="activate" />
         </slot>
       </template>
     </UInput>
@@ -337,6 +339,7 @@ watchEffect(() => {
         :max-date="maxDate"
         :min-date="minDate"
         v-bind="datepickerCalendarAttrs"
+        :data-test="getDataTest('calendar')"
         @keydown.esc="deactivate"
         @user-date-change="onUserFormatDateChange"
         @input="onInput"

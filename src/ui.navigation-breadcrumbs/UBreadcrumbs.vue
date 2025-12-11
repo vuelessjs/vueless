@@ -1,17 +1,17 @@
 <script setup lang="ts">
 import { computed, useTemplateRef } from "vue";
 
-import useUI from "../composables/useUI.ts";
-import { getDefaults } from "../utils/ui.ts";
+import { useUI } from "../composables/useUI";
+import { getDefaults } from "../utils/ui";
 
-import defaultConfig from "./config.ts";
-import { COMPONENT_NAME } from "./constants.ts";
+import defaultConfig from "./config";
+import { COMPONENT_NAME } from "./constants";
 
 import ULink from "../ui.button-link/ULink.vue";
 import UIcon from "../ui.image-icon/UIcon.vue";
 
-import type { Props, Config, UBreadcrumb } from "./types.ts";
-import type { ULinkSlotProps } from "../ui.button-link/types.ts";
+import type { Props, Config, UBreadcrumb } from "./types";
+import type { ULinkSlotProps } from "../ui.button-link/types";
 
 defineOptions({ inheritAttrs: false });
 
@@ -35,6 +35,11 @@ const getIconColor = computed(() => {
     link.disabled || (!link.to && !link.href) ? "neutral" : props.color;
 });
 
+const getBreadcrumbLinkAttrs = computed(() => {
+  return (link: UBreadcrumb) =>
+    !link.to && !link.href ? breadcrumbLinkEmptyAttrs.value : breadcrumbLinkAttrs.value;
+});
+
 function onClickLink(link: UBreadcrumb) {
   emit("clickLink", link);
 }
@@ -56,20 +61,21 @@ const {
   config,
   breadcrumbsAttrs,
   breadcrumbLinkAttrs,
+  breadcrumbLinkEmptyAttrs,
   breadcrumbIconAttrs,
   dividerIconAttrs,
 } = useUI<Config>(defaultConfig);
 </script>
 
 <template>
-  <div ref="breadcrumbs" v-bind="breadcrumbsAttrs">
+  <div ref="breadcrumbs" v-bind="breadcrumbsAttrs" :data-test="getDataTest()">
     <template v-for="(link, index) in links" :key="index">
       <!--
         @slot Use it to add something instead of a link icon.
         @binding {string} icon-name
         @binding {number} index
       -->
-      <slot name="icon" :icon-name="link.icon" :index="index">
+      <slot name="before-link" :icon-name="link.icon" :index="index">
         <UIcon
           v-if="link.icon"
           :name="link.icon"
@@ -93,8 +99,8 @@ const {
         :underlined="underlined"
         :dashed="dashed"
         :disabled="link.disabled || (!link.to && !link.href)"
-        v-bind="breadcrumbLinkAttrs"
-        :data-test="getDataTest()"
+        v-bind="getBreadcrumbLinkAttrs(link)"
+        :data-test="getDataTest(`item-${index}`)"
         @click="onClickLink(link)"
       >
         <template #default="slotProps">
@@ -114,6 +120,13 @@ const {
           />
         </template>
       </ULink>
+
+      <!--
+        @slot Use it to add something after a link.
+        @binding {string} icon-name
+        @binding {number} index
+      -->
+      <slot name="after-link" :icon-name="link.icon" :index="index" />
 
       <!--
         @slot Use it to add something instead of the divider.

@@ -1,17 +1,17 @@
 <script setup lang="ts">
 import { computed, ref, watchEffect, useId, watch, useSlots, useTemplateRef } from "vue";
 
-import useUI from "../composables/useUI.ts";
-import { hasSlotContent } from "../utils/helper.ts";
-import { getDefaults } from "../utils/ui.ts";
+import { useUI } from "../composables/useUI";
+import { hasSlotContent } from "../utils/helper";
+import { getDefaults } from "../utils/ui";
 
 import ULoader from "../ui.loader/ULoader.vue";
 import UIcon from "../ui.image-icon/UIcon.vue";
 
-import defaultConfig from "./config.ts";
-import { COMPONENT_NAME } from "./constants.ts";
+import defaultConfig from "./config";
+import { COMPONENT_NAME } from "./constants";
 
-import type { Props, Config } from "./types.ts";
+import type { Props, Config } from "./types";
 
 defineOptions({ inheritAttrs: false });
 
@@ -62,6 +62,7 @@ defineExpose({
  * Applies: `class`, `config`, redefined default `props` and dev `vl-...` attributes.
  */
 const mutatedProps = computed(() => ({
+  icon: Boolean(props.icon) || hasSlotContent(slots["default"]),
   leftIcon: Boolean(props.leftIcon) || hasSlotContent(slots["left"]),
   rightIcon: Boolean(props.rightIcon) || hasSlotContent(slots["right"]),
   label: Boolean(props.label),
@@ -93,6 +94,7 @@ const {
       <ULoader
         :loading="loading"
         color="inherit"
+        variant="spinner"
         v-bind="loaderAttrs"
         :data-test="getDataTest('loader')"
       />
@@ -129,11 +131,6 @@ const {
     </template>
 
     <!-- This is needed to prevent changing button height -->
-    <div
-      v-if="(!label && !hasSlotContent(slots['default']) && !icon) || loading"
-      tabindex="-1"
-      v-bind="invisibleAttrs"
-      v-text="'invisible'"
-    />
+    <div v-if="icon || loading" tabindex="-1" v-bind="invisibleAttrs" v-text="'invisible'" />
   </component>
 </template>

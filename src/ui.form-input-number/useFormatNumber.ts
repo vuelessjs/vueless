@@ -1,10 +1,10 @@
 import { onMounted, nextTick, ref, onBeforeUnmount, toValue, watch, computed, readonly } from "vue";
 
-import { getRawValue, getFormattedValue } from "./utilFormat.ts";
+import { getRawValue, getFormattedValue } from "./utilFormat";
 
-import { RAW_DECIMAL_MARK } from "./constants.ts";
+import { RAW_DECIMAL_MARK } from "./constants";
 
-import type { FormatOptions } from "./types.ts";
+import type { FormatOptions } from "./types";
 
 const digitSet = ["1", "2", "3", "4", "5", "6", "7", "8", "9", "0"];
 const comma = ",";
@@ -44,6 +44,7 @@ export default function useFormatNumber(
   onBeforeUnmount(() => {
     if (inputElement) {
       inputElement.removeEventListener("input", onInput);
+      inputElement.addEventListener("keydown", onKeydown);
     }
   });
 

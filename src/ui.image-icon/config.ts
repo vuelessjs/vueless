@@ -1,6 +1,6 @@
 export default /*tw*/ {
   icon: {
-    base: "text-{color} fill-current shrink-0 grow-0 focus:outline-0",
+    base: "text-{color} shrink-0 grow-0 focus:outline-0",
     variants: {
       variant: {
         light: "brightness-125",
@@ -36,10 +36,11 @@ export default /*tw*/ {
     color: "grayscale",
     size: "md",
     variant: "default",
+    disabled: false,
     interactive: false,
     /* icon library */
     library: "@material-symbols",
-    path: "", // set for `custom-icons` library only.
+    path: "", // set for `custom` library only.
     style: "outlined",
     weight: 500,
   },

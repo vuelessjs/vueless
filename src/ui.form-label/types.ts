@@ -1,6 +1,6 @@
-import defaultConfig from "./config.ts";
+import defaultConfig from "./config";
 
-import type { ComponentConfig } from "../types.ts";
+import type { ComponentConfig } from "../types";
 
 export type Config = typeof defaultConfig;
 
@@ -16,6 +16,11 @@ export interface Props {
   for?: string;
 
   /**
+   * Component id (used for ARIA attributes).
+   */
+  id?: string;
+
+  /**
    * Label description.
    */
   description?: string;
@@ -24,11 +29,6 @@ export interface Props {
    * Label error message.
    */
   error?: string;
-
-  /**
-   * Make the label interactive (cursor pointer on hover).
-   */
-  interactive?: boolean;
 
   /**
    * Label align.

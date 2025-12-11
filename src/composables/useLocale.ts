@@ -1,8 +1,8 @@
 import { inject } from "vue";
-import createVuelessAdapter from "../adapter.locale/vueless.ts";
+import { createVuelessAdapter } from "../adapter.locale/vueless";
 
-import type { LocaleInstance, LocaleOptions } from "../adapter.locale/vueless.ts";
 import type { InjectionKey } from "vue";
+import type { LocaleInstance, LocaleOptions } from "../types";
 
 export const LocaleSymbol: InjectionKey<LocaleInstance> = Symbol.for("vueless:locale");
 

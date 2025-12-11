@@ -42,7 +42,7 @@ export default /*tw*/ {
     },
   },
   labelCrossed: "{>label} line-through",
-  customActions: "space-x-5 opacity-50 flex items-center md:opacity-0 group-hover/item:opacity-100",
+  customActions: "flex items-center gap-5 opacity-50 md:opacity-0 group-hover/item:opacity-100",
   divider: "{UDivider}",
   empty: "{UEmpty}",
   nested: "{UDataList} group/nested ml-6",
@@ -53,9 +53,8 @@ export default /*tw*/ {
   defaults: {
     size: "md",
     labelKey: "label",
-    valueKey: "id",
+    valueKey: "value",
     animationDuration: 200,
-    nesting: false,
     /* icons */
     dragIcon: "drag_indicator",
   },

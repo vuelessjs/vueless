@@ -1,7 +1,7 @@
-import defaultConfig from "./config.ts";
+import defaultConfig from "./config";
 
-import type { ComponentConfig } from "../types.ts";
-import type { DateLocale } from "./utilFormatting.ts";
+import type { ComponentConfig } from "../types";
+import type { DateLocale } from "./utilFormatting";
 
 export type RangeDate =
   | { from: string | null; to: string | null }
@@ -86,11 +86,11 @@ export interface Props<TModelValue extends DateValue> {
 export interface UCalendarViewProps {
   selectedDate: Date | null;
   selectedDateTo: Date | null;
-  activeDate: Date | null;
-  activeMonth: Date | null;
+  activeDate: Date;
   locale: DateLocale;
   dateFormat?: string;
   range: boolean;
+  isArrowKeyDirty: boolean;
   maxDate?: Date | string;
   minDate?: Date | string;
   config: Config;

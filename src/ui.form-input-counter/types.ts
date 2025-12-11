@@ -1,6 +1,6 @@
-import defaultConfig from "./config.ts";
+import defaultConfig from "./config";
 
-import type { ComponentConfig } from "../types.ts";
+import type { ComponentConfig } from "../types";
 
 export type Config = typeof defaultConfig;
 
@@ -24,6 +24,31 @@ export interface Props {
    * Input max value.
    */
   max?: number;
+
+  /**
+   * Minimal number of signs after the decimal separator (fractional part of a number).
+   */
+  minFractionDigits?: number;
+
+  /**
+   * Maximal number of signs after the decimal separator (fractional part of a number).
+   */
+  maxFractionDigits?: number;
+
+  /**
+   * A symbol used to separate the integer part from the fractional part of a number.
+   */
+  decimalSeparator?: string;
+
+  /**
+   *  A symbol used to separate the thousand parts of a number.
+   */
+  thousandsSeparator?: string;
+
+  /**
+   * Prefix to display before input value.
+   */
+  prefix?: string;
 
   /**
    * Input size.

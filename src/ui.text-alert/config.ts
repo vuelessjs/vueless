@@ -1,6 +1,6 @@
 export default /*tw*/ {
   wrapper: {
-    base: "p-4 border-box flex flex-col border rounded-medium",
+    base: "p-4 border-box flex flex-col border border-solid rounded-medium w-full",
     variants: {
       variant: {
         solid: "text-inverted bg-{color} border-transparent",
@@ -41,6 +41,10 @@ export default /*tw*/ {
   },
   closeIcon: "{>icon}",
   alertIcon: "{>icon}",
+  /* These are used for a11y. */
+  i18n: {
+    closeAlert: "Close alert",
+  },
   defaults: {
     variant: "subtle",
     color: "primary",

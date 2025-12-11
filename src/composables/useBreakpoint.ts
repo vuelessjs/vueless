@@ -1,7 +1,7 @@
 import { onMounted, ref, watch, computed, onBeforeUnmount } from "vue";
-import { isSSR } from "../utils/helper.ts";
+import { isSSR } from "../utils/helper";
 
-import type { Ref } from "vue";
+type ResponsiveConfig<T> = Partial<Record<BreakpointName, T>>;
 
 enum BreakpointName {
   Xs = "xs",
@@ -21,12 +21,16 @@ enum BreakpointWidth {
   "2xl" = 1536,
 }
 
-export default function useBreakpoint() {
-  let animationId: number | undefined;
+let isInitialized = false;
+let animationId: number | undefined;
 
-  const windowWidth = ref(0);
-  const currentBreakpoint: Ref<BreakpointName> = ref(BreakpointName.Xs);
+const windowWidth = ref(0);
+const currentBreakpoint = ref(BreakpointName.Xs);
+const BREAKPOINT_KEYS = Object.keys(BreakpointName) as (keyof typeof BreakpointName)[];
 
+watch(windowWidth, setBreakpoint, { immediate: true });
+
+export function useBreakpoint() {
   const isPhone = computed(() => {
     return currentBreakpoint.value === BreakpointName.Xs;
   });
@@ -63,49 +67,13 @@ export default function useBreakpoint() {
     return isDesktop.value || isLargeDesktop.value;
   });
 
-  watch(windowWidth, setBreakpoint, { immediate: true });
-
   onMounted(() => {
-    if (isSSR) return;
-
-    windowWidth.value = window.innerWidth;
-
-    window.addEventListener("resize", resizeListener, { passive: true });
+    initBreakpointListener();
   });
 
   onBeforeUnmount(() => {
-    if (isSSR) return;
-
     window.removeEventListener("resize", resizeListener);
   });
-
-  function resizeListener() {
-    if (isSSR) return;
-
-    if (animationId) {
-      window.cancelAnimationFrame(animationId);
-    }
-
-    animationId = window.requestAnimationFrame(() => {
-      windowWidth.value = window.innerWidth;
-    });
-  }
-
-  function setBreakpoint(newWindowWidth: number) {
-    if (newWindowWidth === undefined) return;
-
-    const breakpoints = [
-      { width: BreakpointWidth["2xl"], name: BreakpointName["2xl"] },
-      { width: BreakpointWidth.Xl, name: BreakpointName.Xl },
-      { width: BreakpointWidth.Lg, name: BreakpointName.Lg },
-      { width: BreakpointWidth.Md, name: BreakpointName.Md },
-      { width: BreakpointWidth.Sm, name: BreakpointName.Sm },
-    ];
-
-    currentBreakpoint.value =
-      breakpoints.find((breakpoint) => newWindowWidth >= breakpoint.width)?.name ||
-      BreakpointName.Xs;
-  }
 
   return {
     isPhone,
@@ -119,4 +87,91 @@ export default function useBreakpoint() {
     isDesktopGroup,
     breakpoint: currentBreakpoint,
   };
+}
+
+/**
+ * Shorthand function that can be used directly in templates.
+ * Returns the appropriate value based on the current breakpoint.
+ * Vue will track the reactive dependency and re-render when the breakpoint changes.
+ *
+ * @example
+ * ```vue
+ * <template>
+ *   <UButton :size="r({ sm: 'sm', md: 'md' })">Click me</UButton>
+ * </template>
+ *
+ * <script setup>
+ * import { r } from "vueless";
+ * </script>
+ * ```
+ */
+export function r<T>(config: ResponsiveConfig<T>): T {
+  initBreakpointListener();
+
+  const definedKeys = BREAKPOINT_KEYS.filter((key) => BreakpointName[key] in config);
+
+  if (!definedKeys.length) {
+    return undefined as T;
+  }
+
+  const currentIndex = BREAKPOINT_KEYS.findIndex(
+    (key) => BreakpointName[key] === currentBreakpoint.value,
+  );
+  const smallestDefinedIndex = BREAKPOINT_KEYS.indexOf(definedKeys[0]);
+  const largestDefinedIndex = BREAKPOINT_KEYS.indexOf(definedKeys[definedKeys.length - 1]);
+
+  if (currentIndex <= smallestDefinedIndex) {
+    return config[BreakpointName[definedKeys[0]]] as T;
+  }
+
+  if (currentIndex >= largestDefinedIndex) {
+    return config[BreakpointName[definedKeys[definedKeys.length - 1]]] as T;
+  }
+
+  for (let i = currentIndex; i >= 0; i--) {
+    const bp = BreakpointName[BREAKPOINT_KEYS[i]];
+
+    if (bp in config) {
+      return config[bp] as T;
+    }
+  }
+
+  return config[BreakpointName[definedKeys[0]]] as T;
+}
+
+function setBreakpoint(newWindowWidth: number) {
+  if (newWindowWidth === undefined) return;
+
+  for (let i = BREAKPOINT_KEYS.length - 1; i >= 0; i--) {
+    const key = BREAKPOINT_KEYS[i];
+
+    if (newWindowWidth >= BreakpointWidth[key]) {
+      currentBreakpoint.value = BreakpointName[key];
+
+      return;
+    }
+  }
+
+  currentBreakpoint.value = BreakpointName.Xs;
+}
+
+function resizeListener() {
+  if (isSSR) return;
+
+  if (animationId) {
+    window.cancelAnimationFrame(animationId);
+  }
+
+  animationId = window.requestAnimationFrame(() => {
+    windowWidth.value = window.innerWidth;
+  });
+}
+
+function initBreakpointListener() {
+  if (isInitialized || isSSR) return;
+
+  isInitialized = true;
+  windowWidth.value = window.innerWidth;
+
+  window.addEventListener("resize", resizeListener, { passive: true });
 }

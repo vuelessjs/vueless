@@ -7,7 +7,7 @@ If you’re using VSCode or JetBrains IDEs (WebStorm, PHPStorm, etc.), you can s
 **Benefits:**
 
 * Autocompletion when typing in the `class` attribute.
-* Autocompletion in objects by prefixing them with `/*tw*/`.
+* Autocompletion in objects by prefixing them with `/*tw*/` or `/* tw */`.
 * Autocompletion inside the `config` prop.
 
 **Example of an SFC with IntelliSense:**
@@ -38,7 +38,8 @@ const config = /*tw*/ {
   "tailwindCSS.classAttributes": ["class", "config"],
   "tailwindCSS.experimental.classRegex": [
     ["config:\\s*{([^)]*)\\s*}", "[\"'`]([^\"'`]*).*?[\"'`]"],
-    ["/\\*tw\\*/\\s*{([^;]*)}", ":\\s*[\"'`]([^\"'`]*).*?[\"'`]"]
+    ["/\\*tw\\*/\\s*{([^;]*)}", ":\\s*[\"'`]([^\"'`]*).*?[\"'`]"],
+    ["/\\* tw \\*/\\s*{([^;]*)}", ":\\s*[\"'`]([^\"'`]*).*?[\"'`]"]
   ]
 }
 ```

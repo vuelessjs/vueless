@@ -17,9 +17,17 @@ export default /*tw*/ {
     leaveFromClass: "opacity-100",
     leaveToClass: "opacity-0",
   },
-  innerWrapper: "py-12 w-full h-full overflow-auto",
+  innerWrapper: {
+    base: "py-12 w-full h-screen scroll-container [scrollbar-gutter:stable]",
+    variants: {
+      wrapperTransitionCompleted: {
+        true: "overflow-y-auto",
+        false: "overflow-y-hidden",
+      },
+    },
+  },
   header: "flex justify-between px-4 md:px-6 py-6",
-  beforeTitle: "flex items-center gap-4",
+  beforeTitle: "flex items-center gap-3",
   titleFallback: "flex flex-col",
   backLinkWrapper: "flex items-center gap-0.5 mb-0.5",
   backLink: "{ULink} flex items-center gap-0.5",
@@ -27,7 +35,7 @@ export default /*tw*/ {
   title: "{UHeader}",
   description: "mt-1.5 text-medium font-normal text-lifted",
   closeIcon: "{UIcon}",
-  closeButton: "{UButton}",
+  closeButton: "{UButton} h-fit",
   body: "px-4 md:px-6 pb-6 text-medium",
   footer: {
     base: "flex justify-between px-4 md:px-6 py-6 max-md:flex-col max-md:gap-4",
@@ -38,7 +46,7 @@ export default /*tw*/ {
       },
     },
     compoundVariants: [
-      { divided: true, variant: ["subtle", "soft"], class: "border-default/50" },
+      { divided: true, variant: ["subtle", "soft", "inverted"], class: "border-default/50" },
       { divided: true, variant: ["solid", "outlined"], class: "border-muted" },
     ],
   },
@@ -52,6 +60,7 @@ export default /*tw*/ {
         outlined: "bg-default border-muted",
         subtle: "bg-muted border-default/50",
         soft: "bg-muted border-transparent",
+        inverted: "bg-inverted border-transparent",
       },
       size: {
         xs: "md:w-[25rem]",
@@ -65,7 +74,7 @@ export default /*tw*/ {
         "5xl": "md:w-[75rem]",
       },
       inner: {
-        true: "!my-[4.5rem]",
+        true: "mt-4",
       },
     },
   },

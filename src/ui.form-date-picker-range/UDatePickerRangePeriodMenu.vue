@@ -6,23 +6,25 @@ import {
   getYearDateList,
   getQuartersDateList,
   getMonthsDateList,
-} from "./utilDateRange.ts";
-import { parseDate } from "../ui.form-calendar/utilCalendar.ts";
+} from "./utilDateRange";
+import { parseDate } from "../ui.form-calendar/utilCalendar";
 
 import UButton from "../ui.button/UButton.vue";
 
-import { Period } from "./constants.ts";
+import { Period } from "./constants";
 
 import type {
   UDatePickerRangePeriodMenuProps,
   IsDatePeriodOutOfRange,
   SortedLocale,
-} from "./types.ts";
-import type { DatePeriodRange } from "./utilDateRange.ts";
+} from "./types";
+import type { DatePeriodRange } from "./utilDateRange";
 
 defineOptions({ internal: true });
 
-const props = defineProps<UDatePickerRangePeriodMenuProps>();
+const props = withDefaults(defineProps<UDatePickerRangePeriodMenuProps>(), {
+  dataTest: null,
+});
 
 const emit = defineEmits(["toggleMenu", "closeMenu", "clickPrev", "clickNext"]);
 
@@ -148,7 +150,7 @@ function getDatePeriodState(date: DatePeriodRange) {
 </script>
 
 <template>
-  <div v-bind="attrs.periodRowAttrs.value">
+  <div v-bind="attrs.periodRowAttrs.value" :data-test="dataTest">
     <template v-for="periodButton in periods" :key="periodButton.name">
       <UButton
         v-if="periodButton.name !== period"

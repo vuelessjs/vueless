@@ -1,17 +1,17 @@
 <script setup lang="ts">
 import { ref, computed, useId, useTemplateRef } from "vue";
 
-import useUI from "../composables/useUI.ts";
-import { getDefaults } from "../utils/ui.ts";
-import { setTheme } from "../utils/theme.ts";
+import { useUI } from "../composables/useUI";
+import { getDefaults } from "../utils/ui";
+import { setTheme } from "../utils/theme";
 
 import UDivider from "../ui.container-divider/UDivider.vue";
-import UColorPicker from "../ui.form-color-picker/UColorPicker.vue";
+import UColorToggle from "../ui.form-color-toggle/UColorToggle.vue";
 
-import { COMPONENT_NAME } from "./constants.ts";
-import defaultConfig from "./config.ts";
+import { COMPONENT_NAME } from "./constants";
+import defaultConfig from "./config";
 
-import type { Props, Config } from "./types.ts";
+import type { Props, Config } from "./types";
 
 defineOptions({ inheritAttrs: false });
 
@@ -75,18 +75,24 @@ defineExpose({
  * Get element / nested component attributes for each config token ✨
  * Applies: `class`, `config`, redefined default `props` and dev `vl-...` attributes.
  */
-const { listAttrs, colorDividerAttrs, primaryColorPickerAttrs, neutralColorPickerAttrs } =
-  useUI<Config>(defaultConfig);
+const {
+  getDataTest,
+  listAttrs,
+  colorDividerAttrs,
+  primaryColorPickerAttrs,
+  neutralColorPickerAttrs,
+} = useUI<Config>(defaultConfig);
 </script>
 
 <template>
-  <div :id="elementId" ref="list" v-bind="listAttrs">
-    <UColorPicker
+  <div :id="elementId" ref="list" v-bind="listAttrs" :data-test="getDataTest()">
+    <UColorToggle
       v-model="selectedPrimaryColor"
       :size="size"
       :colors="primaryColors"
       :labels="primaryLabels"
       v-bind="primaryColorPickerAttrs"
+      :data-test="getDataTest('primary')"
     />
 
     <UDivider
@@ -94,12 +100,13 @@ const { listAttrs, colorDividerAttrs, primaryColorPickerAttrs, neutralColorPicke
       v-bind="colorDividerAttrs"
     />
 
-    <UColorPicker
+    <UColorToggle
       v-model="selectedNeutralColor"
       :size="size"
       :colors="neutralColors"
       :labels="neutralLabels"
       v-bind="neutralColorPickerAttrs"
+      :data-test="getDataTest('neutral')"
     />
   </div>
 </template>

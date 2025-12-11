@@ -1,13 +1,13 @@
-import type { Meta, StoryFn } from "@storybook/vue3";
-import { getArgTypes } from "../../utils/storybook.ts";
+import type { Meta, StoryFn } from "@storybook/vue3-vite";
+import { getArgTypes, getDocsDescription } from "../../utils/storybook";
 
 import USkeleton from "../USkeleton.vue";
 import UCol from "../../ui.container-col/UCol.vue";
 
-import type { Props } from "../types.ts";
+import type { Props } from "../types";
 
 interface SkeletonArgs extends Props {
-  enum: "variant";
+  enum?: string;
 }
 
 export default {
@@ -16,6 +16,11 @@ export default {
   args: {},
   argTypes: {
     ...getArgTypes(USkeleton.__name),
+  },
+  parameters: {
+    docs: {
+      ...getDocsDescription(USkeleton.__name),
+    },
   },
 } as Meta;
 
@@ -27,30 +32,8 @@ const DefaultTemplate: StoryFn<SkeletonArgs> = (args: SkeletonArgs) => ({
   `,
 });
 
-const EnumVariantTemplate: StoryFn<SkeletonArgs> = (args: SkeletonArgs, { argTypes }) => ({
-  components: { USkeleton, UCol },
-  setup() {
-    const filteredOptions = argTypes?.[args.enum]?.options || [];
-
-    return { args, filteredOptions };
-  },
-  template: `
-    <UCol>
-      <USkeleton
-        v-for="(option, index) in filteredOptions"
-        :key="index"
-        v-bind="args"
-        :[args.enum]="option"
-      />
-    </UCol>
-  `,
-});
-
 export const Default = DefaultTemplate.bind({});
 Default.args = {};
-
-export const Variant = EnumVariantTemplate.bind({});
-Variant.args = { enum: "variant" };
 
 export const Slot: StoryFn<SkeletonArgs> = (args) => ({
   components: { USkeleton, UCol },
@@ -59,7 +42,7 @@ export const Slot: StoryFn<SkeletonArgs> = (args) => ({
   },
   template: `
     <USkeleton v-bind="args" class="max-w-96 p-4">
-      <USkeleton class="w-15 h-10" class="rounded-small" variant="dark" />
+      <USkeleton class="w-15 h-10 rounded-small" />
     </USkeleton>
   `,
 });

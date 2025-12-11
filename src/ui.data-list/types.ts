@@ -1,8 +1,8 @@
-import defaultConfig from "./config.ts";
+import defaultConfig from "./config";
 
 import DraggableContext from "vuedraggable";
 
-import type { ComponentConfig, UnknownType } from "../types.ts";
+import type { ComponentConfig, UnknownType } from "../types";
 
 export type Config = typeof defaultConfig;
 
@@ -14,7 +14,6 @@ export interface DragMoveEvent extends DragEvent {
 export interface DataListItem {
   crossed?: boolean;
   actions?: boolean;
-  nesting?: boolean;
   children?: DataListItem[];
   [key: string]: UnknownType | DataListItem[];
 }
@@ -49,11 +48,6 @@ export interface Props {
    * Drag animation duration.
    */
   animationDuration?: number;
-
-  /**
-   * Enable nesting.
-   */
-  nesting?: boolean;
 
   /**
    * Disable empty state for nested elements if empty (internal props).

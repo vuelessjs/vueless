@@ -1,19 +1,19 @@
 <script setup lang="ts">
-import { computed, useSlots, watch, useId, nextTick, useTemplateRef } from "vue";
+import { computed, useSlots, watch, useId, useTemplateRef, nextTick, ref } from "vue";
 
-import useUI from "../composables/useUI.ts";
-import { getDefaults } from "../utils/ui.ts";
-import { hasSlotContent } from "../utils/helper.ts";
+import { useUI } from "../composables/useUI";
+import { getDefaults } from "../utils/ui";
+import { hasSlotContent } from "../utils/helper";
 
 import ULink from "../ui.button-link/ULink.vue";
 import UIcon from "../ui.image-icon/UIcon.vue";
 import UHeader from "../ui.text-header/UHeader.vue";
 import UButton from "../ui.button/UButton.vue";
 
-import defaultConfig from "./config.ts";
-import { COMPONENT_NAME } from "./constants.ts";
+import defaultConfig from "./config";
+import { COMPONENT_NAME } from "./constants";
 
-import type { Props, Config } from "./types.ts";
+import type { Props, Config } from "./types";
 
 defineOptions({ inheritAttrs: false });
 
@@ -47,6 +47,8 @@ const elementId = props.id || useId();
 const slots = useSlots();
 
 const wrapperRef = useTemplateRef<HTMLDivElement>("wrapper");
+
+const isWrapperTransitionComplete = ref(false);
 
 const isShownModal = computed({
   get: () => props.modelValue,
@@ -99,29 +101,28 @@ function trapFocus(e: KeyboardEvent) {
     return;
   }
 
-  // Tab - if focused on last element, move to first
+  // Tab - if focused on the last element, move to the first
   if (!e.shiftKey && document.activeElement === lastElement) {
     e.preventDefault();
     firstElement.focus();
   }
 }
 
-watch(isShownModal, onChangeShownModal);
+watch(isShownModal, (newValue) => {
+  onChangeShownModal(newValue);
+
+  if (!newValue) emit("close");
+});
 
 function onChangeShownModal(newValue: boolean) {
   toggleEventListeners();
   toggleOverflow();
 
   if (newValue) {
-    nextTick(focusModal);
+    nextTick(() => wrapperRef.value?.focus());
+  } else {
+    isWrapperTransitionComplete.value = false;
   }
-}
-
-function focusModal() {
-  const focusableElements = getFocusableElements();
-  const firstFocusableElement = focusableElements.at(0) as HTMLElement;
-
-  focusableElements.length ? firstFocusableElement.focus() : wrapperRef.value?.focus();
 }
 
 function toggleOverflow() {
@@ -180,6 +181,11 @@ defineExpose({
  * Get element / nested component attributes for each config token ✨
  * Applies: `class`, `config`, redefined default `props` and dev `vl-...` attributes.
  */
+const mutatedProps = computed(() => ({
+  /* component state, not a props */
+  wrapperTransitionCompleted: isWrapperTransitionComplete.value,
+}));
+
 const {
   getDataTest,
   config,
@@ -201,7 +207,7 @@ const {
   closeButtonAttrs,
   beforeTitleAttrs,
   titleFallbackAttrs,
-} = useUI<Config>(defaultConfig);
+} = useUI<Config>(defaultConfig, mutatedProps);
 </script>
 
 <template>
@@ -209,7 +215,11 @@ const {
     <div v-if="isShownModal" v-bind="overlayAttrs" />
   </Transition>
 
-  <Transition v-bind="config.wrapperTransition">
+  <Transition
+    v-bind="config.wrapperTransition"
+    @after-enter="isWrapperTransitionComplete = true"
+    @leave="isWrapperTransitionComplete = false"
+  >
     <div
       v-if="isShownModal"
       :id="elementId"
@@ -225,8 +235,11 @@ const {
             <div v-bind="beforeTitleAttrs">
               <!-- @slot Use it to add something before the header title. -->
               <slot name="before-title" />
-              <!-- @slot Use it to add something to the left side of the header. -->
-              <slot name="title">
+              <!--
+                @slot Use it to add something to the left side of the header.
+                @binding {string} title
+              -->
+              <slot name="title" :title="title">
                 <div v-bind="titleFallbackAttrs">
                   <div v-if="isShownArrowButton" v-bind="backLinkWrapperAttrs">
                     <UIcon
@@ -255,10 +268,10 @@ const {
             </div>
 
             <!--
-                @slot Use it to add something instead of the close button.
-                @binding {string} icon-name
-                @binding {function} close
-              -->
+              @slot Use it to add something instead of the close button.
+              @binding {string} icon-name
+              @binding {function} close
+            -->
             <slot name="actions" :icon-name="config.defaults.closeIcon" :close="closeModal">
               <UButton
                 v-if="closeOnCross"

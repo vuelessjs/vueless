@@ -3,13 +3,11 @@ import { describe, it, expect } from "vitest";
 
 import UHeader from "../UHeader.vue";
 
-import type { Props } from "../types.ts";
+import type { Props } from "../types";
 
 describe("UHeader.vue", () => {
-  // Props tests
   describe("Props", () => {
-    // Size prop
-    it("applies the correct size class", async () => {
+    it("Size – applies the correct size class", async () => {
       const size = {
         xs: "text-lg",
         sm: "text-xl",
@@ -30,8 +28,7 @@ describe("UHeader.vue", () => {
       });
     });
 
-    // Color prop
-    it("applies the correct color class", async () => {
+    it("Color – applies the correct color class", async () => {
       const colors = [
         "primary",
         "secondary",
@@ -42,6 +39,7 @@ describe("UHeader.vue", () => {
         "notice",
         "neutral",
         "grayscale",
+        "text",
       ];
 
       colors.forEach((color) => {
@@ -51,12 +49,53 @@ describe("UHeader.vue", () => {
           },
         });
 
-        expect(component.attributes("class")).toContain(color);
+        color === "text"
+          ? expect(component.attributes("class")).toContain("text-default")
+          : expect(component.attributes("class")).toContain(color);
       });
     });
 
-    // Label prop
-    it("renders the correct label text", () => {
+    it("Variant – applies the correct variant class", async () => {
+      const variants = {
+        default: "text-primary",
+        lifted: "text-primary-lifted",
+        accented: "text-primary-accented",
+        muted: "text-primary/(--vl-disabled-opacity)",
+      };
+
+      Object.entries(variants).forEach(([variant, classes]) => {
+        const component = mount(UHeader, {
+          props: {
+            variant: variant as Props["variant"],
+            color: "primary",
+          },
+        });
+
+        expect(component.attributes("class")).toContain(classes);
+      });
+    });
+
+    it("Weight – applies the correct weight class", async () => {
+      const weights = {
+        light: "font-light",
+        normal: "font-normal",
+        medium: "font-medium",
+        semibold: "font-semibold",
+        bold: "font-bold",
+      };
+
+      Object.entries(weights).forEach(([weight, classes]) => {
+        const component = mount(UHeader, {
+          props: {
+            weight: weight as Props["weight"],
+          },
+        });
+
+        expect(component.attributes("class")).toContain(classes);
+      });
+    });
+
+    it("Label – renders the correct label text", () => {
       const label = "Header Text";
 
       const component = mount(UHeader, {
@@ -68,8 +107,7 @@ describe("UHeader.vue", () => {
       expect(component.text()).toBe(label);
     });
 
-    // Tag prop
-    it("renders the correct HTML tag", () => {
+    it("Tag – renders the correct HTML tag", () => {
       const tags = ["h1", "h2", "h3", "h4", "h5", "h6", "div", "span"];
 
       tags.forEach((tag) => {
@@ -83,8 +121,7 @@ describe("UHeader.vue", () => {
       });
     });
 
-    // Line prop
-    it("applies line class when line prop is true", () => {
+    it("Line – applies line class when line prop is true", () => {
       const line = true;
       const lineClasses = "leading-none";
 
@@ -97,8 +134,7 @@ describe("UHeader.vue", () => {
       expect(component.attributes("class")).toContain(lineClasses);
     });
 
-    // DataTest prop
-    it("applies the correct data-test attribute", () => {
+    it("DataTest – applies the correct data-test attribute", () => {
       const dataTest = "test-header";
 
       const component = mount(UHeader, {
@@ -111,10 +147,8 @@ describe("UHeader.vue", () => {
     });
   });
 
-  // Slots tests
   describe("Slots", () => {
-    // Default slot
-    it("renders content from default slot", () => {
+    it("Default – renders content from default slot", () => {
       const slotContent = "Custom Content";
       const label = "Header";
 
@@ -132,10 +166,8 @@ describe("UHeader.vue", () => {
     });
   });
 
-  // Exposed refs tests
   describe("Exposed refs", () => {
-    // headerRef
-    it("exposes headerRef", () => {
+    it("headerRef – exposes headerRef", () => {
       const component = mount(UHeader, {});
 
       expect(component.vm.headerRef).toBeDefined();

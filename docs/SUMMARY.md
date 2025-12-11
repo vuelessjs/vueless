@@ -4,11 +4,12 @@
 
 ## Installation
 
-* [Quick start (Vue)](<README (1).md>)
+* [Quick start (Vue)](installation/vue.md)
 * [Quick start (Nuxt)](installation/nuxt.md)
+* [Storybook](installation/storybook.md)
+* [TypeScript](installation/typescript.md)
 * [Class autocompletion](installation/class-autocompletion.md)
 * [Minimal requirements](installation/minimal-requirements.md)
-* [Storybook docs](installation/storybook.md)
 
 ## Global customization
 
@@ -19,6 +20,7 @@
 * [Focus Outline](global-customization/focus-outline.md)
 * [Font Size](global-customization/font-size.md)
 * [Disabled Opacity](global-customization/disabled-opacity.md)
+* [Letter Spacing](global-customization/letter-spacing.md)
 * [Dark mode](global-customization/dark-mode.md)
 * [Custom tailwind classes](global-customization/custom-tailwind-classes.md)
 
@@ -41,6 +43,7 @@
 * [Vueless component anatomy](own-components/vueless-component-anatomy.md)
 * [Create new component](own-components/create-new-component.md)
 * [Copy existing component](own-components/copy-existing-component.md)
+* [Override existing component](own-components/override-existing-component.md)
 
 ## Svg Icons
 
@@ -51,8 +54,9 @@
 
 ## Helpers
 
-* [Change settings in runtime](helpers/change-settings-in-runtime.md)
+* [Runtime theming](helpers/change-settings-in-runtime.md)
 
 ## Other
 
 * [Vueless Vite Plugins](other/vueless-vite-plugins.md)
+* [Roadmap](other/roadmap.md)

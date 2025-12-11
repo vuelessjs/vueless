@@ -1,15 +1,15 @@
-import defaultConfig from "./config.ts";
+import defaultConfig from "./config";
 
 import type { Ref } from "vue";
-import type { ComponentConfig, UnknownObject } from "../types.ts";
-import type { Config as UDividerConfig } from "../ui.container-divider/types.ts";
+import type { ComponentConfig, UnknownObject } from "../types";
+import type { Config as UDividerConfig } from "../ui.container-divider/types";
 
 export type Config = typeof defaultConfig;
 
 type RowKeys = number | string | boolean | undefined | Date | Row | Row[] | ((row: Row) => string);
 
 export interface CellObject {
-  contentClasses?: string | ((value: unknown | string, row: Row) => string);
+  contentClass?: string | ((value: unknown | string, row: Row) => string);
   class?: string | ((value: unknown | string, row: Row) => string);
   [key: string]: unknown | string;
 }
@@ -37,13 +37,18 @@ export interface Row {
 
 export interface FlatRow extends Row {
   parentRowId?: RowId;
-  nestedLeveL: number;
+  nestedLevel: number;
+}
+export enum StickySide {
+  Left = "left",
+  Right = "right",
 }
 
 export interface ColumnObject {
   key: string;
   label?: string;
   isShown?: boolean;
+  sticky?: "left" | "right";
   class?: string | ((value: unknown | string, row: Row) => string);
   tdClass?: string;
   thClass?: string;
@@ -129,6 +134,8 @@ export interface UTableRowAttrs {
   bodyCellNestedIconWrapperAttrs: Ref<UnknownObject>;
   bodyRowCheckedAttrs: Ref<UnknownObject>;
   bodyRowAttrs: Ref<UnknownObject>;
+  bodyCellStickyLeftAttrs: Ref<UnknownObject>;
+  bodyCellStickyRightAttrs: Ref<UnknownObject>;
 }
 
 export interface UTableRowProps {
@@ -143,4 +150,5 @@ export interface UTableRowProps {
   config: Config;
   isChecked: boolean;
   isExpanded: boolean;
+  columnPositions: Map<string, number>;
 }

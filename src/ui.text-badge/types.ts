@@ -1,5 +1,5 @@
-import defaultConfig from "./config.ts";
-import type { ComponentConfig } from "../types.ts";
+import defaultConfig from "./config";
+import type { ComponentConfig } from "../types";
 
 export type Config = typeof defaultConfig;
 
@@ -57,6 +57,11 @@ export interface Props {
    * Controls the keyboard “Tab” focus order of elements.
    */
   tabindex?: string;
+
+  /**
+   * Unique element id.
+   */
+  id?: string;
 
   /**
    * Component config object.

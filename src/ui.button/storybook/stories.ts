@@ -4,7 +4,7 @@ import {
   getSlotNames,
   getSlotsFragment,
   getDocsDescription,
-} from "../../utils/storybook.ts";
+} from "../../utils/storybook";
 
 import { ref } from "vue";
 
@@ -15,8 +15,8 @@ import UCol from "../../ui.container-col/UCol.vue";
 import UAvatar from "../../ui.image-avatar/UAvatar.vue";
 import UBadge from "../../ui.text-badge/UBadge.vue";
 
-import type { Meta, StoryFn } from "@storybook/vue3";
-import type { Props } from "../types.ts";
+import type { Meta, StoryFn } from "@storybook/vue3-vite";
+import type { Props } from "../types";
 
 interface UButtonArgs extends Props {
   slotTemplate?: string;
@@ -138,7 +138,7 @@ export const Slots: StoryFn<UButtonArgs> = (args) => ({
     <URow>
       <UButton v-bind="args" label="Profile">
         <template #left>
-          <UAvatar src="https://avatar.iran.liara.run/public" size="2xs" rounded="full" />
+          <UAvatar src="https://i.pravatar.cc/300" size="2xs" rounded="full" />
         </template>
       </UButton>
 

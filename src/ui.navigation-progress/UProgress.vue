@@ -1,16 +1,16 @@
 <script setup lang="ts">
 import { computed, useTemplateRef } from "vue";
 
-import useUI from "../composables/useUI.ts";
-import { getDefaults } from "../utils/ui.ts";
+import { useUI } from "../composables/useUI";
+import { getDefaults } from "../utils/ui";
 
-import defaultConfig from "./config.ts";
-import { COMPONENT_NAME, VARIANT } from "./constants.ts";
+import defaultConfig from "./config";
+import { COMPONENT_NAME, VARIANT } from "./constants";
 
 import UStepperProgress from "./UStepperProgress.vue";
 import UHeader from "../ui.text-header/UHeader.vue";
 
-import type { Props, Config } from "./types.ts";
+import type { Props, Config } from "./types";
 
 defineOptions({ inheritAttrs: false });
 
@@ -79,9 +79,14 @@ const {
 </script>
 
 <template>
-  <div ref="wrapper" v-bind="wrapperAttrs">
+  <div ref="wrapper" v-bind="wrapperAttrs" :data-test="getDataTest()">
     <template v-if="isVariant.progress">
-      <div v-if="indicator" v-bind="indicatorAttrs" :style="{ width: progressPercent }">
+      <div
+        v-if="indicator"
+        v-bind="indicatorAttrs"
+        :style="{ width: progressPercent }"
+        :data-test="getDataTest('indicator')"
+      >
         <!--
           @slot Use it to add something instead of the progress indicator.
           @binding {number} percent
@@ -96,7 +101,7 @@ const {
       <progress v-bind="progressAttrs" :max="realMax" :value="value" />
     </template>
 
-    <div v-if="isSteps" v-bind="stepAttrs">
+    <div v-if="isSteps" v-bind="stepAttrs" :data-test="getDataTest('step')">
       <template v-for="(step, index) in max" :key="index">
         <!--
           @slot Use it to add something instead of the progress step label.

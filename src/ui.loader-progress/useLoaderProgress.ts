@@ -1,67 +1,61 @@
-import { inject, onBeforeMount, onBeforeUnmount, readonly, ref } from "vue";
+import { inject, readonly, ref } from "vue";
 
 import type { Ref } from "vue";
 
-import { getRequestWithoutQuery } from "./utilLoaderProgress.ts";
+import { getRequestWithoutQuery } from "../utils/requestQueue";
+
+type LoaderProgress = {
+  isLoading: Readonly<Ref<boolean, boolean>>;
+  loaderProgressOn: (request: string | string[]) => void;
+  loaderProgressOff: (request: string | string[]) => void;
+  progressRequestQueue: Readonly<Ref<readonly string[]>>;
+};
 
 export const LoaderProgressSymbol = Symbol.for("vueless:loader-progress");
 
-type LoaderProgress = {
-  requestQueue: Readonly<Ref<readonly string[]>>;
-  loaderProgressOn: (url: string | string[]) => void;
-  loaderProgressOff: (url: string | string[]) => void;
-};
+const progressRequestQueue = ref<string[]>([]);
 
-const requestQueue = ref<string[]>([]);
+function addToProgressRequestQueue(url: string | string[]): void {
+  Array.isArray(url)
+    ? progressRequestQueue.value.push(...url.map(getRequestWithoutQuery))
+    : progressRequestQueue.value.push(getRequestWithoutQuery(url));
+}
 
-function loaderProgressOn(url: string | string[]): void {
+function removeFromProgressRequestQueue(url: string | string[]): void {
   if (Array.isArray(url)) {
-    requestQueue.value.push(...url.map(getRequestWithoutQuery));
+    url.map(getRequestWithoutQuery).forEach(removeFromProgressRequestQueue);
   } else {
-    requestQueue.value.push(getRequestWithoutQuery(url));
+    progressRequestQueue.value = progressRequestQueue.value.filter(
+      (item) => item !== getRequestWithoutQuery(url),
+    );
   }
 }
 
-function loaderProgressOff(url: string | string[]): void {
-  if (Array.isArray(url)) {
-    url.map(getRequestWithoutQuery).forEach(loaderProgressOff);
-  } else {
-    requestQueue.value = requestQueue.value.filter((item) => item !== getRequestWithoutQuery(url));
-  }
+const isLoading = ref(true);
+
+function loaderProgressOn(request?: string | string[]): void {
+  request ? addToProgressRequestQueue(request) : (isLoading.value = true);
 }
 
-function setLoaderOnHandler(event: CustomEvent<{ resource: string }>) {
-  loaderProgressOn(event.detail.resource);
-}
-
-function setLoaderOffHandler(event: CustomEvent<{ resource: string }>) {
-  loaderProgressOff(event.detail.resource);
+function loaderProgressOff(request?: string | string[]): void {
+  request ? removeFromProgressRequestQueue(request) : (isLoading.value = false);
 }
 
 export function createLoaderProgress(): LoaderProgress {
   return {
-    requestQueue: readonly(requestQueue),
     loaderProgressOn,
     loaderProgressOff,
+    isLoading: readonly(isLoading),
+    progressRequestQueue: readonly(progressRequestQueue) as Readonly<Ref<readonly string[]>>,
   };
 }
 
 export function useLoaderProgress(): LoaderProgress {
   const loaderProgress = inject<LoaderProgress>(LoaderProgressSymbol);
 
-  onBeforeMount(() => {
-    window.addEventListener("loaderProgressOn", setLoaderOnHandler as EventListener);
-    window.addEventListener("loaderProgressOff", setLoaderOffHandler as EventListener);
-  });
-
-  onBeforeUnmount(() => {
-    window.removeEventListener("loaderProgressOn", setLoaderOnHandler as EventListener);
-    window.removeEventListener("loaderProgressOff", setLoaderOffHandler as EventListener);
-  });
-
   if (!loaderProgress) {
     throw new Error(
-      "LoaderProgress not provided. Ensure you are using `provide` with `LoaderProgressSymbol`.",
+      "[vueless] LoaderProgress not provided. Ensure you are using `provide` with `LoaderProgressSymbol`.",
     );
   }
 

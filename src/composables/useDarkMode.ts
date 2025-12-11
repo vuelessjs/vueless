@@ -1,6 +1,6 @@
 import { onMounted, ref, nextTick } from "vue";
-import { COLOR_MODE_KEY, DARK_MODE_CLASS } from "../constants.js";
-import { ColorMode } from "../types.js";
+import { COLOR_MODE_KEY, DARK_MODE_CLASS } from "../constants";
+import { ColorMode } from "../types";
 
 export function useDarkMode() {
   const isDarkMode = ref(false);

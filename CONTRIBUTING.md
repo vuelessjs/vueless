@@ -20,7 +20,7 @@ Contributions are made to this repo via Issues and Pull Requests (PRs). A few ge
 - Search for existing Issues and PRs before creating your own.
 - We work hard to make sure issues are handled in a timely manner but, depending on the impact, it could take a while to investigate the root cause. A friendly ping in the comment thread to the submitter or a contributor can help draw attention if your issue is blocking.
 
-### Issues
+## Issues
 
 Issues should be used to report problems with the library, request a new feature, or to discuss potential changes before a PR is created. 
 When you create a new Issue, a template will be loaded that will guide you through collecting and providing the information we need to investigate.
@@ -28,6 +28,110 @@ When you create a new Issue, a template will be loaded that will guide you throu
 If you find an Issue that addresses the problem you're having, please add your own reproduction information to the existing issue rather than creating a new one. 
 Adding a [reaction](https://github.blog/2016-03-10-add-reactions-to-pull-requests-issues-and-comments/) can also help be indicating to our maintainers 
 that a particular problem is affecting more than just the reporter.
+
+## Commit Message Format
+
+We have very precise rules over how our Git commit messages must be formatted which based on [Conventional Commits](https://www.conventionalcommits.org/en/v1.0.0) and [Angular Commits](https://github.com/angular/angular/blob/main/contributing-docs/commit-message-guidelines.md) specifications.
+This format leads to **easier to read commit history** and makes it analyzable for changelog generation.
+
+Each commit message consists of a **header**, a **body**, and a **footer** separated by blank lines.
+
+```
+<header>
+
+<body>
+
+<footer>
+```
+
+The `header` is mandatory and must conform to the [Commit Message Header](#commit-header) format.
+
+The `body` is optional. When the body is present, it must be at least 20 characters long and must conform to the [Commit Message Body](#commit-body) format.
+
+The `footer` is optional. The [Commit Message Footer](#commit-footer) format describes what the footer is used for and the structure it must have.
+
+
+### <a name="commit-header"></a>Commit Message Header
+
+```
+<type>: <short summary>
+  │       │
+  │       └─⫸ Summary in present tense. Not capitalized. No period (.) at the end.
+  │ 
+  └─⫸ Commit Type: feat | fix | perf | refactor | test | build | chore | ci | docs
+```
+
+The `<type>` and `<summary>` fields are mandatory.
+
+
+#### Type
+
+Must be one of the following:
+
+| Type         | Description                                                                                                                |
+|--------------|----------------------------------------------------------------------------------------------------------------------------|
+| **feat**     | A new feature                                                                                                              |
+| **fix**      | A bug fix                                                                                                                  |
+| **perf**     | A code change that improves performance                                                                                    |
+| **refactor** | A code change that neither fixes a bug nor adds a feature                                                                  |
+| **test**     | Adding missing tests or correcting existing tests                                                                          |
+| **build**    | Changes that affect the build system or external dependencies (example: Update npm packages)                               |
+| **chore**    | Other maintenance tasks that don’t affect the build system or app code (example: update .gitignore, add editorconfig file) |
+| **ci**       | Changes to our CI configuration files and scripts (example: Github Actions)                                                |
+| **docs**     | Documentation only changes                                                                                                 |
+
+#### Summary
+
+Use the summary field to provide a succinct description of the change:
+
+* use the imperative, present tense: "change" not "changed" nor "changes"
+* don't capitalize the first letter
+* no dot (.) at the end
+
+
+### <a name="commit-body"></a>Commit Message Body
+
+Just as in the summary, use the imperative, present tense: "fix" not "fixed" nor "fixes".
+
+Explain the motivation for the change in the commit message body. This commit message should explain **why** you are making the change.
+You can include a comparison of the previous behavior with the new behavior to illustrate the impact of the change.
+
+
+### <a name="commit-footer"></a>Commit Message Footer
+
+The footer can contain information about breaking changes and deprecations and is also the place to reference GitHub issues and other PRs that this commit closes or is related to.
+For example:
+
+```
+BREAKING CHANGE: <breaking change summary>
+
+<breaking change description + migration instructions>
+
+Fixes #<issue number>
+```
+
+or
+
+```
+DEPRECATED: <what is deprecated>
+
+<deprecation description + recommended update path>
+
+Closes #<pr number>
+```
+
+Breaking Change section should start with the phrase `BREAKING CHANGE: ` followed by a *brief* summary of the breaking change, a blank line, and a detailed description of the breaking change that also includes migration instructions.
+
+Similarly, a Deprecation section should start with `DEPRECATED: ` followed by a short description of what is deprecated, a blank line, and a detailed description of the deprecation that also mentions the recommended update path.
+
+### Revert commits
+
+If the commit reverts a previous commit, it should begin with `revert: `, followed by the header of the reverted commit.
+
+The content of the commit message body should contain:
+
+- information about the SHA of the commit being reverted in the following format: `This reverts commit <SHA>`,
+- a clear description of the reason for reverting the commit message.
 
 ### Pull Requests
 

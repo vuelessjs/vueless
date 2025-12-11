@@ -2,14 +2,14 @@
 import { computed, useSlots, useTemplateRef } from "vue";
 import { RouterLink } from "vue-router";
 
-import useUI from "../composables/useUI.ts";
-import { hasSlotContent } from "../utils/helper.ts";
-import { getDefaults } from "../utils/ui.ts";
+import { useUI } from "../composables/useUI";
+import { hasSlotContent } from "../utils/helper";
+import { getDefaults } from "../utils/ui";
 
-import defaultConfig from "./config.ts";
-import { COMPONENT_NAME } from "./constants.ts";
+import defaultConfig from "./config";
+import { COMPONENT_NAME } from "./constants";
 
-import type { Props, Config, ULinkSlotProps } from "./types.ts";
+import type { Props, Config, ULinkSlotProps } from "./types";
 
 defineOptions({ inheritAttrs: false });
 
@@ -21,17 +21,17 @@ const props = withDefaults(defineProps<Props>(), {
 
 const emit = defineEmits([
   /**
-   * Triggers when link is clicked.
+   * Triggers when a link is clicked.
    */
   "click",
 
   /**
-   * Triggers when cursor is on the link.
+   * Triggers when the cursor is on the link.
    */
   "mouseover",
 
   /**
-   * Triggers when link is focused.
+   * Triggers when a link is focused.
    */
   "focus",
 
@@ -41,7 +41,7 @@ const emit = defineEmits([
   "blur",
 
   /**
-   * Triggers when link is clicked.
+   * Triggers when a link is clicked.
    */
   "keydown",
 ]);
@@ -69,6 +69,13 @@ const prefixedHref = computed(() => {
 });
 
 function onClick(event: MouseEvent) {
+  if (props.disabled) {
+    event.preventDefault();
+    event.stopPropagation();
+
+    return;
+  }
+
   emit("click", event);
 }
 

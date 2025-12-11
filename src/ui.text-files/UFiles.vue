@@ -1,18 +1,18 @@
 <script setup lang="ts">
 import { computed, useTemplateRef } from "vue";
 
-import useUI from "../composables/useUI.ts";
-import { getDefaults } from "../utils/ui.ts";
+import { useUI } from "../composables/useUI";
+import { getDefaults } from "../utils/ui";
 
 import UFile from "../ui.text-file/UFile.vue";
 import ULabel from "../ui.form-label/ULabel.vue";
 
-import { COMPONENT_NAME } from "./constants.ts";
-import defaultConfig from "./config.ts";
+import { COMPONENT_NAME } from "./constants";
+import defaultConfig from "./config";
 
-import { getRandomId } from "../utils/helper.ts";
+import { getRandomId } from "../utils/helper";
 
-import type { Props, Config } from "./types.ts";
+import type { Props, Config } from "./types";
 
 defineOptions({ inheritAttrs: false });
 
@@ -69,8 +69,9 @@ const { getDataTest, filesLabelAttrs, itemsAttrs, itemAttrs } = useUI<Config>(de
     :label="label"
     :description="description"
     :size="size"
-    :align="labelAlign"
+    align="topWithDesc"
     v-bind="filesLabelAttrs"
+    :data-test="getDataTest()"
   >
     <template #label>
       <!--
@@ -98,36 +99,35 @@ const { getDataTest, filesLabelAttrs, itemsAttrs, itemAttrs } = useUI<Config>(de
         >
           <template #left>
             <!--
-              @slot Use it to add something left.
+              @slot Use it to add something before the file content.
               @binding {number} index
             -->
-            <slot name="left" :index="index" />
+            <slot name="before-file" :index="index" />
           </template>
 
-          <template #default="{ id, label, url, imageUrl }">
-            <!-- @slot Use it to add a file directly.
-              @binding {string | number} id
-              @binding {string} label
-              @binding {string} url
-              @binding {string} image-url
-              @binding {number} index
-            -->
-            <slot
-              :id="id"
-              name="default"
-              :label="label"
-              :url="url"
-              :image-url="imageUrl"
-              :index="index"
-            />
-          </template>
+          <!--
+            @slot Use it to add a file directly.
+            @binding {string | number} id
+            @binding {string} label
+            @binding {string} url
+            @binding {string} image-url
+            @binding {number} index
+          -->
+          <slot
+            :id="file?.id"
+            name="file"
+            :label="file?.label"
+            :url="file?.url"
+            :image-url="file?.imageUrl"
+            :index="index"
+          />
 
           <template #right>
             <!--
-              @slot Use it to add something right.
+              @slot Use it to add something after the file content.
               @binding {number} index
             -->
-            <slot name="right" :index="index" />
+            <slot name="after-file" :index="index" />
           </template>
         </UFile>
       </slot>

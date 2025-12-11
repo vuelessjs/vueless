@@ -13,15 +13,23 @@ npx vueless init
 {% tab title="yarn" %}
 ```bash
 yarn add @vueless/nuxt
-yarn vueless init
+yarn vueless init --yarn
 ```
+
+{% hint style="info" %}
+Use the `--yarn` flag when working with Yarn 2+ or newer. This will generate a `.yarnrc.yml` file preconfigured with the necessary settings for the Vueless package.
+{% endhint %}
 {% endtab %}
 
 {% tab title="pnpm" %}
 ```bash
 pnpm add @vueless/nuxt
-pnpm exec vueless init
+pnpm exec vueless init --pnpm
 ```
+
+{% hint style="info" %}
+Use the `--pnpm` flag when working with pnpm. This will generate a `.npmrc` file preconfigured with the necessary settings for the Vueless package.
+{% endhint %}
 {% endtab %}
 
 {% tab title="bun" %}

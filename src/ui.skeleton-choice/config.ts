@@ -1,10 +1,10 @@
 export default /*tw*/ {
   wrapper: {
-    base: "w-fit",
+    base: "w-fit items-center",
     variants: {
       labelAlign: {
-        left: "flex items-center",
-        right: "flex flex-row-reverse items-center",
+        left: "flex flex-row",
+        right: "flex flex-row-reverse",
       },
       size: {
         sm: "gap-2",
@@ -20,30 +20,25 @@ export default /*tw*/ {
         radio: "rounded-full",
         checkbox: "rounded-small",
       },
+      size: {
+        sm: "size-4",
+        md: "size-5",
+        lg: "size-6",
+      },
     },
-    compoundVariants: [
-      { labelAlign: "left", size: "sm", class: "size-4" },
-      { labelAlign: "left", size: "md", class: "size-5" },
-      { labelAlign: "left", size: "lg", class: "size-6" },
-      { labelAlign: "right", size: "sm", class: "size-4" },
-      { labelAlign: "right", size: "md", class: "size-5" },
-      { labelAlign: "right", size: "lg", class: "size-6" },
-    ],
   },
   label: {
     base: "{USkeleton} w-25 rounded-small",
-    compoundVariants: [
-      { labelAlign: "left", size: "sm", class: "h-3" },
-      { labelAlign: "left", size: "md", class: "h-3.5" },
-      { labelAlign: "left", size: "lg", class: "h-4" },
-      { labelAlign: "right", size: "sm", class: "h-3" },
-      { labelAlign: "right", size: "md", class: "h-3.5" },
-      { labelAlign: "right", size: "lg", class: "h-4" },
-    ],
+    variants: {
+      size: {
+        sm: "h-3",
+        md: "h-3.5",
+        lg: "h-4",
+      },
+    },
   },
   defaults: {
     type: "radio",
-    variant: "default",
     labelAlign: "left",
     size: "md",
     label: true,

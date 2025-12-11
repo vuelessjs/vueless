@@ -1,18 +1,18 @@
 <script setup lang="ts">
 import { computed, useSlots, onMounted, useTemplateRef } from "vue";
 
-import useUI from "../composables/useUI.ts";
-import { getDefaults } from "../utils/ui.ts";
-import { hasSlotContent } from "../utils/helper.ts";
+import { useUI } from "../composables/useUI";
+import { getDefaults } from "../utils/ui";
+import { hasSlotContent } from "../utils/helper";
 
 import ULink from "../ui.button-link/ULink.vue";
 import UIcon from "../ui.image-icon/UIcon.vue";
 import UHeader from "../ui.text-header/UHeader.vue";
 
-import defaultConfig from "./config.ts";
-import { COMPONENT_NAME } from "./constants.ts";
+import defaultConfig from "./config";
+import { COMPONENT_NAME } from "./constants";
 
-import type { Props, Config } from "./types.ts";
+import type { Props, Config } from "./types";
 
 const slots = useSlots();
 
@@ -109,8 +109,11 @@ const {
           <!-- @slot Use it to add something before the header title. -->
           <slot name="before-title" />
 
-          <!-- @slot Use it to add something to the left side of the header. -->
-          <slot name="title">
+          <!--
+            @slot Use it to add something to the left side of the header.
+            @binding {string} title
+          -->
+          <slot name="title" :title="title">
             <div v-bind="titleFallbackAttrs">
               <div v-if="isShownArrowButton" v-bind="backLinkWrapperAttrs">
                 <UIcon

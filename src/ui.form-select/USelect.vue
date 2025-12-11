@@ -7,20 +7,20 @@ import UListbox from "../ui.form-listbox/UListbox.vue";
 import UBadge from "../ui.text-badge/UBadge.vue";
 import ULink from "../ui.button-link/ULink.vue";
 
-import useUI from "../composables/useUI.ts";
-import { hasSlotContent } from "../utils/helper.ts";
-import { getDefaults } from "../utils/ui.ts";
-import { isMac } from "../utils/platform.ts";
-import { useMutationObserver } from "../composables/useMutationObserver.ts";
-import { getCurrentOption } from "./utilSelect.ts";
-import { useComponentLocaleMessages } from "../composables/useComponentLocaleMassages.ts";
+import { useUI } from "../composables/useUI";
+import { hasSlotContent } from "../utils/helper";
+import { getDefaults } from "../utils/ui";
+import { isMac } from "../utils/platform";
+import { useMutationObserver } from "../composables/useMutationObserver";
+import { getCurrentOption } from "./utilSelect";
+import { useComponentLocaleMessages } from "../composables/useComponentLocaleMassages";
 
-import defaultConfig from "./config.ts";
-import { COMPONENT_NAME, DIRECTION, KEYS, MULTIPLE_VARIANTS } from "./constants.ts";
+import defaultConfig from "./config";
+import { COMPONENT_NAME, DIRECTION, KEYS, MULTIPLE_VARIANTS } from "./constants";
 
-import type { Option, Config as UListboxConfig } from "../ui.form-listbox/types.ts";
-import type { Props, Config } from "./types.ts";
-import type { KeyAttrsWithConfig } from "../types.ts";
+import type { Option, Config as UListboxConfig } from "../ui.form-listbox/types";
+import type { Props, Config } from "./types";
+import type { KeyAttrsWithConfig } from "../types";
 
 defineOptions({ inheritAttrs: false });
 
@@ -33,6 +33,12 @@ const props = withDefaults(defineProps<Props>(), {
 });
 
 const emit = defineEmits([
+  /**
+   * Triggers when the select is clicked.
+   * @property {object} clickEvent
+   */
+  "click",
+
   /**
    * Triggers when a dropdown list is opened.
    * @property {string} elementId
@@ -52,10 +58,21 @@ const emit = defineEmits([
   "searchChange",
 
   /**
-   * Triggers when the option is removed.
+   * Triggers when the search v-model updates.
+   * @property {string} query
+   */
+  "update:search",
+
+  /**
+   * Triggers when the option from multiple select is removed.
    * @property {string} option
    */
-  "remove",
+  "removeOption",
+
+  /**
+   * Triggers when the select is cleared.
+   */
+  "clear",
 
   /**
    * Triggers when an option is selected.
@@ -118,7 +135,7 @@ const dropdownValue = computed({
     emit("update:modelValue", value);
     emit("change", { value, options: props.options });
 
-    if (!props.multiple) deactivate();
+    if (!props.multiple && props.closeOnSelect) deactivate();
   },
 });
 
@@ -170,6 +187,11 @@ const selectedOptionsLabel = computed(() => {
   };
 });
 
+const dropdownSearch = computed({
+  get: () => props.search ?? "",
+  set: (value: string) => emit("update:search", value),
+});
+
 const hiddenSelectedOptionsCount = computed(() => {
   return selectedOptions.value.hidden.length;
 });
@@ -196,6 +218,28 @@ const toggleIconName = computed(() => {
   return props.toggleIcon ? config.value.defaults.toggleIcon : "";
 });
 
+const ariaExpanded = computed(() => isOpen.value);
+
+const ariaActiveDescendant = computed(() => {
+  if (!isOpen.value || !listboxRef.value) return undefined;
+  const pointer = listboxRef.value.pointer;
+
+  if (pointer === undefined || pointer < 0) return undefined;
+
+  return `${elementId}-${pointer}`;
+});
+
+const ariaInvalid = computed(() => Boolean(props.error) ?? undefined);
+
+const ariaLabelledBy = computed(() => (props.label ? elementId : undefined));
+
+const ariaDescribedBy = computed(() => {
+  if (props.error) return `error-${elementId}`;
+  if (props.description) return `description-${elementId}`;
+
+  return undefined;
+});
+
 watch(localValue, setLabelPosition, { deep: true });
 
 onMounted(() => {
@@ -208,6 +252,10 @@ onMounted(() => {
 
 function onSearchChange(query: string) {
   emit("searchChange", query);
+}
+
+function onSearchUpdate(query: string) {
+  emit("update:search", query);
 }
 
 function onKeydownAddOption(event: KeyboardEvent) {
@@ -237,19 +285,20 @@ function toggle() {
 }
 
 function deactivate() {
-  if (!isOpen.value || props.disabled) {
+  if (!isOpen.value || props.disabled || props.readonly) {
     return;
   }
 
   wrapperRef.value?.blur();
 
   isOpen.value = false;
+  dropdownSearch.value = "";
 
   nextTick(() => emit("close", localValue.value, elementId));
 }
 
 function activate() {
-  if (isOpen.value || props.disabled) {
+  if (isOpen.value || props.disabled || props.readonly) {
     return;
   }
 
@@ -325,7 +374,7 @@ function onClickClearItem(event: MouseEvent, option: Option) {
 
   emit("update:modelValue", value);
   emit("change", { value, options: props.options });
-  emit("remove", option);
+  emit("removeOption", option);
 }
 
 function onClickClear() {
@@ -335,7 +384,7 @@ function onClickClear() {
 
   emit("update:modelValue", value);
   emit("change", { value, options: props.options });
-  emit("remove", props.options);
+  emit("clear");
 
   deactivate();
 }
@@ -348,6 +397,10 @@ useMutationObserver(leftSlotWrapperRef, (mutations) => mutations.forEach(setLabe
 
 function setLabelPosition() {
   if (props.labelAlign === "top" || (!hasSlotContent(slots["left"]) && !props.leftIcon)) {
+    if (labelComponentRef.value?.labelElement) {
+      labelComponentRef.value.labelElement.style.left = "";
+    }
+
     return;
   }
 
@@ -465,13 +518,16 @@ const {
     :align="labelAlign"
     :disabled="disabled"
     centred
-    interactive
     v-bind="selectLabelAttrs"
     :data-test="getDataTest()"
     :tabindex="-1"
   >
     <template #label>
-      <div @click="toggle" @mousedown.prevent>
+      <div
+        v-if="label || hasSlotContent($slots['label'], { label })"
+        @click="(emit('click', $event), toggle())"
+        @mousedown.prevent
+      >
         <!--
           @slot Use this to add custom content instead of the label.
           @binding {string} label
@@ -486,7 +542,15 @@ const {
       ref="wrapper"
       :tabindex="searchable || disabled ? -1 : 0"
       role="combobox"
-      :aria-owns="'listbox-' + elementId"
+      :aria-expanded="ariaExpanded"
+      aria-haspopup="listbox"
+      :aria-controls="`listbox-${elementId}`"
+      :aria-activedescendant="ariaActiveDescendant"
+      :aria-disabled="disabled || undefined"
+      :aria-invalid="ariaInvalid"
+      :aria-labelledby="ariaLabelledBy"
+      :aria-describedby="ariaDescribedBy"
+      :aria-autocomplete="searchable ? 'list' : undefined"
       v-bind="wrapperAttrs"
       @focus="activate"
       @blur="onBlur"
@@ -494,6 +558,7 @@ const {
       @keydown.self.up.prevent="listboxRef?.pointerBackward"
       @keydown.enter.tab.stop.self="listboxRef?.addPointerElement()"
       @keyup.esc="deactivate"
+      @click="emit('click', $event)"
     >
       <div
         v-if="hasSlotContent($slots['right'], { iconName: rightIcon }) || rightIcon"
@@ -502,8 +567,14 @@ const {
         <!--
             @slot Use it to add something to the right of input.
             @binding {string} icon-name
+            @binding {array} options
+            @binding {object} options
           -->
-        <slot name="right" :icon-name="rightIcon">
+        <slot
+          name="right"
+          :icon-name="rightIcon"
+          :options="multiple ? selectedOptions.full : selectedOption"
+        >
           <UIcon v-if="rightIcon" :name="rightIcon" v-bind="rightIconAttrs" />
         </slot>
       </div>
@@ -522,7 +593,7 @@ const {
         v-bind="toggleWrapperAttrs"
         :tabindex="-1"
         :data-test="getDataTest('toggle')"
-        @click.stop="toggle"
+        @click="toggle"
       >
         <!--
           @slot Use it to add something instead of the toggle icon.
@@ -583,7 +654,7 @@ const {
             @binding {object} options
           -->
           <slot name="selected-options" :options="multiple ? selectedOptions.full : selectedOption">
-            <span v-if="!multiple" v-bind="selectedLabelsAttrs" @click.stop="toggle">
+            <span v-if="!multiple" v-bind="selectedLabelsAttrs" @click="toggle" @mousedown.prevent>
               <!--
                 @slot Use it to customize selected option.
                 @binding {string} label
@@ -604,7 +675,7 @@ const {
               </slot>
             </span>
 
-            <div v-else v-bind="selectedLabelsAttrs">
+            <div v-else v-bind="selectedLabelsAttrs" @click="toggle" @mousedown.prevent>
               <template v-if="isMultipleInlineVariant">
                 <div :title="selectedOptionsLabel.full" v-bind="selectedLabelAttrs">
                   <template v-for="(option, index) in selectedOptions.visible" :key="index">
@@ -664,7 +735,6 @@ const {
                       :size="size"
                       variant="subtle"
                       v-bind="badgeLabelAttrs"
-                      @click.stop="toggle"
                     >
                       <div v-bind="selectedLabelTextAttrs">
                         {{ option[labelKey] }}
@@ -677,7 +747,7 @@ const {
                           :disabled="disabled"
                           :name="config.defaults.badgeClearIcon"
                           v-bind="badgeClearIconAttrs"
-                          @click.stop="onClickClearItem($event, option)"
+                          @click="onClickClearItem($event, option)"
                         />
                       </template>
                     </UBadge>
@@ -773,7 +843,9 @@ const {
         v-if="isOpen"
         ref="listbox"
         v-model="dropdownValue as string | number"
+        v-model:search="dropdownSearch"
         :searchable="searchable"
+        :options-limit="optionsLimit"
         :multiple="multiple"
         :options="options"
         :disabled="disabled"
@@ -792,7 +864,8 @@ const {
         @focus="activate"
         @blur="onListboxBlur"
         @search-blur="onListboxSearchBlur"
-        @update:model-value="onSearchChange"
+        @search-change="onSearchChange"
+        @update:search="onSearchUpdate"
       >
         <template #before-option="{ option, index }">
           <!--
@@ -820,6 +893,11 @@ const {
           -->
           <slot name="after-option" :option="option" :index="index" />
         </template>
+
+        <template #empty>
+          <!-- @slot Use it to add something instead of empty state. -->
+          <slot name="empty" />
+        </template>
       </UListbox>
 
       <div
@@ -828,10 +906,16 @@ const {
         v-bind="leftSlotAttrs"
       >
         <!--
-            @slot Use it to add something to the left of input.
-            @binding {string} icon-name
-          -->
-        <slot name="left" :icon-name="leftIcon">
+          @slot Use it to add something to the left of input.
+          @binding {string} icon-name
+          @binding {array} options
+          @binding {object} options
+        -->
+        <slot
+          name="left"
+          :icon-name="leftIcon"
+          :options="multiple ? selectedOptions.full : selectedOption"
+        >
           <UIcon v-if="leftIcon" :name="leftIcon" v-bind="leftIconAttrs" />
         </slot>
       </div>

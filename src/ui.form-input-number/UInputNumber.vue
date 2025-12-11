@@ -1,17 +1,17 @@
 <script setup lang="ts">
 import { computed, watch, onMounted, useId, useTemplateRef } from "vue";
 
-import useUI from "../composables/useUI.ts";
-import { getDefaults } from "../utils/ui.ts";
+import { useUI } from "../composables/useUI";
+import { getDefaults } from "../utils/ui";
 
 import UInput from "../ui.form-input/UInput.vue";
 
-import defaultConfig from "./config.ts";
-import useFormatNumber from "./useFormatNumber.ts";
-import { COMPONENT_NAME, RAW_DECIMAL_MARK } from "./constants.ts";
+import defaultConfig from "./config";
+import useFormatNumber from "./useFormatNumber";
+import { COMPONENT_NAME, RAW_DECIMAL_MARK } from "./constants";
 
-import type { Props, Config } from "./types.ts";
-import { getRawValue } from "./utilFormat.ts";
+import type { Props, Config } from "./types";
+import { getRawValue, getFixedNumber } from "./utilFormat";
 
 defineOptions({ inheritAttrs: false });
 
@@ -42,7 +42,14 @@ const emit = defineEmits([
   "keyup",
 
   /**
+   * Triggers when the input gains focus.
+   * @property {FocusEvent} event
+   */
+  "focus",
+
+  /**
    * Triggers when the input loses focus.
+   * @property {FocusEvent} event
    */
   "blur",
 ]);
@@ -97,21 +104,25 @@ watch(
 );
 
 onMounted(() => {
-  if (localValue.value) {
+  if (localValue.value || localValue.value === 0) {
     setValue(stringLocalValue.value);
   }
 });
 
 function onKeyup(event: KeyboardEvent) {
-  const numberValue = !Number.isNaN(parseFloat(rawValue.value)) ? parseFloat(rawValue.value) : "";
+  const numberValue = getFixedNumber(parseFloat(rawValue.value), props.maxFractionDigits || 10);
 
   localValue.value = props.valueType === "number" ? numberValue : rawValue.value || "";
 
   emit("keyup", event);
 }
 
-function onBlur() {
-  emit("blur");
+function onFocus(event: FocusEvent) {
+  emit("focus", event);
+}
+
+function onBlur(event: FocusEvent) {
+  emit("blur", event);
 }
 
 function onInput(value: InputEvent) {
@@ -162,8 +173,9 @@ const { getDataTest, numberInputAttrs } = useUI<Config>(defaultConfig);
     :left-icon="leftIcon"
     :right-icon="rightIcon"
     v-bind="numberInputAttrs"
-    :data-test="getDataTest('base-currency')"
+    :data-test="getDataTest()"
     @keyup="onKeyup"
+    @focus="onFocus"
     @blur="onBlur"
     @input="onInput"
   >

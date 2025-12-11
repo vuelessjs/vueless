@@ -1,6 +1,13 @@
-import { RAW_DECIMAL_MARK } from "./constants.ts";
+import { RAW_DECIMAL_MARK } from "./constants";
 
-import type { FormatOptions } from "./types.ts";
+import type { FormatOptions } from "./types";
+
+export function getFixedNumber(value: number, maxDecimals: number = 10): number | "" {
+  if (!isFinite(value) || isNaN(value)) return "";
+  if (maxDecimals < 0) maxDecimals = 10;
+
+  return parseFloat(value.toFixed(maxDecimals));
+}
 
 export function getRawValue(
   value: string,
@@ -26,6 +33,11 @@ export function getFormattedValue(value: string, options: FormatOptions): string
   const isValidMinFractionDigits = minFractionDigits <= maxFractionDigits;
   const actualMinFractionDigit = isValidMinFractionDigits ? minFractionDigits : maxFractionDigits;
 
+  const numericValue = parseFloat(value);
+  const fixedValue = getFixedNumber(numericValue, Math.max(maxFractionDigits, 10));
+
+  if (fixedValue === "") return prefix;
+
   const intlNumberOptions: Intl.NumberFormatOptions = {
     minimumFractionDigits: actualMinFractionDigit,
     maximumFractionDigits: maxFractionDigits,
@@ -38,14 +50,12 @@ export function getFormattedValue(value: string, options: FormatOptions): string
 
   const intlNumber = new Intl.NumberFormat("en-US", intlNumberOptions);
 
-  const formattedValue = intlNumber
-    .formatToParts(value as Intl.StringNumericLiteral)
-    .map((part) => {
-      if (part.type === "group") part.value = thousandsSeparator;
-      if (part.type === "decimal") part.value = decimalSeparator;
+  const formattedValue = intlNumber.formatToParts(fixedValue).map((part) => {
+    if (part.type === "group") part.value = thousandsSeparator;
+    if (part.type === "decimal") part.value = decimalSeparator;
 
-      return part;
-    });
+    return part;
+  });
 
   formattedValue.unshift({ value: prefix, type: "minusSign" });
 

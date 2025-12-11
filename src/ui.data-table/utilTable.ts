@@ -1,4 +1,4 @@
-import type { Column, ColumnObject, FlatRow, Row, RowData, RowId } from "./types.ts";
+import type { Column, ColumnObject, FlatRow, Row, RowData, RowId } from "./types";
 
 export function normalizeColumns(columns: Column[]): ColumnObject[] {
   return columns.map((column) =>

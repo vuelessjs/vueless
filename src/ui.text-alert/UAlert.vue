@@ -1,18 +1,19 @@
 <script setup lang="ts">
 import { onMounted, ref, computed, useTemplateRef } from "vue";
 
-import useUI from "../composables/useUI.ts";
-import { getDefaults } from "../utils/ui.ts";
-import { hasSlotContent } from "../utils/helper.ts";
+import { useUI } from "../composables/useUI";
+import { getDefaults } from "../utils/ui";
+import { hasSlotContent } from "../utils/helper";
+import { useComponentLocaleMessages } from "../composables/useComponentLocaleMassages";
 
 import UIcon from "../ui.image-icon/UIcon.vue";
 import UButton from "../ui.button/UButton.vue";
 import UText from "../ui.text-block/UText.vue";
 
-import { COMPONENT_NAME } from "./constants.ts";
-import defaultConfig from "./config.ts";
+import { COMPONENT_NAME } from "./constants";
+import defaultConfig from "./config";
 
-import type { Props, Config } from "./types.ts";
+import type { Props, Config } from "./types";
 
 defineOptions({ inheritAttrs: false });
 
@@ -24,8 +25,14 @@ const emit = defineEmits([
   /**
    * Triggers when the alert is hidden.
    */
-  "hidden",
+  "hide",
 ]);
+
+const { localeMessages } = useComponentLocaleMessages<typeof defaultConfig.i18n>(
+  COMPONENT_NAME,
+  defaultConfig.i18n,
+  props?.config?.i18n,
+);
 
 const wrapperRef = useTemplateRef<HTMLDivElement>("wrapper");
 
@@ -39,7 +46,7 @@ onMounted(() => {
 
 function onClickClose() {
   isShownAlert.value = false;
-  emit("hidden");
+  emit("hide");
 }
 
 const closeButtonColor = computed(() => {
@@ -126,6 +133,7 @@ const {
           size="xs"
           :color="closeButtonColor"
           variant="ghost"
+          :aria-label="localeMessages.closeAlert"
           v-bind="closeButtonAttrs"
           :data-test="getDataTest('button')"
           @click="onClickClose"

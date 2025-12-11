@@ -1,11 +1,11 @@
 <script setup lang="ts">
 import { computed } from "vue";
 
-import useUI from "../composables/useUI.ts";
+import { useUI } from "../composables/useUI";
 
-import defaultConfig from "./config.ts";
+import defaultConfig from "./config";
 
-import type { StepperProgressProps, Config } from "./types.ts";
+import type { StepperProgressProps, Config } from "./types";
 
 defineOptions({ internal: true });
 
@@ -21,12 +21,17 @@ const stepperColor = computed(() => {
  * Get element / nested component attributes for each config token ✨
  * Applies: `class`, `config`, redefined default `props` and dev `vl-...` attributes.
  */
-const { stepperCircleAttrs, stepperCountAttrs, stepperGradientAttrs, stepperSvgAttrs } =
-  useUI<Config>(defaultConfig);
+const {
+  getDataTest,
+  stepperCircleAttrs,
+  stepperCountAttrs,
+  stepperGradientAttrs,
+  stepperSvgAttrs,
+} = useUI<Config>(defaultConfig);
 </script>
 
 <template>
-  <svg viewBox="0 0 40 40" v-bind="stepperSvgAttrs">
+  <svg viewBox="0 0 40 40" v-bind="stepperSvgAttrs" :data-test="getDataTest('progress')">
     <defs>
       <linearGradient id="gradient" x1="0%" y1="0%" x2="100%" y2="0%" v-bind="stepperGradientAttrs">
         <stop offset="0%" :stop-color="stepperColor" />

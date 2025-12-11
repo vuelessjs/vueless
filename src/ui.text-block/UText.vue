@@ -1,14 +1,13 @@
 <script setup lang="ts">
 import { useTemplateRef } from "vue";
 
-import useUI from "../composables/useUI.ts";
-import { getDefaults } from "../utils/ui.ts";
-import { hasSlotContent } from "../utils/helper.ts";
+import { useUI } from "../composables/useUI";
+import { getDefaults } from "../utils/ui";
 
-import { COMPONENT_NAME } from "./constants.ts";
-import defaultConfig from "./config.ts";
+import { COMPONENT_NAME } from "./constants";
+import defaultConfig from "./config";
 
-import type { Props, Config } from "./types.ts";
+import type { Props, Config } from "./types";
 
 defineOptions({ inheritAttrs: false });
 
@@ -16,27 +15,28 @@ withDefaults(defineProps<Props>(), {
   ...getDefaults<Props, Config>(defaultConfig, COMPONENT_NAME),
 });
 
-const wrapperRef = useTemplateRef<HTMLDivElement>("wrapper");
+const textRef = useTemplateRef<HTMLElement>("text");
 
 defineExpose({
   /**
    * A reference to the component's wrapper element for direct DOM manipulation.
-   * @property {HTMLDivElement}
+   * @property {HTMLElement}
    */
-  wrapperRef,
+  textRef,
 });
 
 /**
  * Get element / nested component attributes for each config token ✨
  * Applies: `class`, `config`, redefined default `props` and dev `vl-...` attributes.
  */
-const { getDataTest, wrapperAttrs, htmlAttrs } = useUI<Config>(defaultConfig);
+const { getDataTest, textAttrs } = useUI<Config>(defaultConfig);
 </script>
 
 <template>
-  <div ref="wrapper" v-bind="wrapperAttrs" :data-test="getDataTest()">
+  <component :is="tag" ref="text" v-bind="textAttrs" :data-test="getDataTest()">
     <!-- @slot Use it to add something inside. -->
-    <div v-if="!hasSlotContent($slots['default'])" v-bind="htmlAttrs" v-html="html" />
-    <slot />
-  </div>
+    <slot>
+      {{ label }}
+    </slot>
+  </component>
 </template>

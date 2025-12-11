@@ -1,19 +1,19 @@
 <script setup lang="ts">
 import { useTemplateRef } from "vue";
-import draggable from "vuedraggable";
+import draggable from "vuedraggable/src/vuedraggable";
 
-import useUI from "../composables/useUI.ts";
-import { getDefaults } from "../utils/ui.ts";
-import { hasSlotContent } from "../utils/helper.ts";
+import { useUI } from "../composables/useUI";
+import { getDefaults } from "../utils/ui";
+import { hasSlotContent } from "../utils/helper";
 
 import UIcon from "../ui.image-icon/UIcon.vue";
-import UEmpty from "../ui.text-empty/UEmpty.vue";
+import UEmpty from "../ui.container-empty/UEmpty.vue";
 
-import { COMPONENT_NAME } from "./constants.ts";
-import defaultConfig from "./config.ts";
-import { useComponentLocaleMessages } from "../composables/useComponentLocaleMassages.ts";
+import { COMPONENT_NAME } from "./constants";
+import defaultConfig from "./config";
+import { useComponentLocaleMessages } from "../composables/useComponentLocaleMassages";
 
-import type { Props, DragMoveEvent, DataListItem, Config } from "./types.ts";
+import type { Props, DataListItem, Config } from "./types";
 
 defineOptions({ inheritAttrs: false });
 
@@ -40,15 +40,6 @@ const { localeMessages } = useComponentLocaleMessages<typeof defaultConfig.i18n>
 
 function isCrossed(element: DataListItem) {
   return Boolean(element.crossed);
-}
-
-function onDragMove(event: DragMoveEvent): boolean | void {
-  const isDisabledNestingItem = !Boolean(event.draggedContext.element.nesting);
-  const isNestingAction = Boolean(event.relatedContext?.element?.nesting);
-
-  if (isDisabledNestingItem && isNestingAction) {
-    return false;
-  }
 }
 
 function onDragEnd() {
@@ -140,7 +131,6 @@ const {
       :drag-class="config.draggableDrag"
       v-bind="draggableAttrs"
       :data-test="getDataTest()"
-      :move="onDragMove"
       @end="onDragEnd"
     >
       <template #item="{ element }">
@@ -188,8 +178,7 @@ const {
           </div>
 
           <UDataList
-            v-if="nesting && element.nesting"
-            :nesting="nesting"
+            v-if="element.children?.length"
             hide-empty-state-for-nesting
             :list="element.children"
             :group="group"
@@ -197,6 +186,7 @@ const {
             :data-test="getDataTest('table')"
             @drag-sort="onDragEnd"
           >
+            <!-- @vue-ignore -->
             <template #label="slotProps: { item: DataListItem; crossed: boolean }">
               <!--
                 @slot Use it to modify label.
@@ -211,6 +201,7 @@ const {
               </slot>
             </template>
 
+            <!-- @vue-ignore -->
             <template #actions="slotProps: { item: DataListItem }">
               <!--
                 @slot Use it to add custom actions.

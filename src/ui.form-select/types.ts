@@ -1,7 +1,7 @@
-import defaultConfig from "./config.ts";
+import defaultConfig from "./config";
 
-import type { Option } from "../ui.form-listbox/types.ts";
-import type { ComponentConfig } from "../types.ts";
+import type { Option } from "../ui.form-listbox/types";
+import type { ComponentConfig } from "../types";
 
 export type Config = typeof defaultConfig;
 
@@ -50,6 +50,16 @@ export interface Props {
    * Time in milliseconds before search value emit.
    */
   debounce?: number | string;
+
+  /**
+   * Search input model value for the dropdown list.
+   */
+  search?: string;
+
+  /**
+   * Close dropdown on option select.
+   */
+  closeOnSelect?: boolean;
 
   /**
    * Left icon name.
@@ -126,6 +136,11 @@ export interface Props {
    * Allows to search value in a list.
    */
   searchable?: boolean;
+
+  /**
+   * Make select read-only.
+   */
+  readonly?: boolean;
 
   /**
    * Disable the select.

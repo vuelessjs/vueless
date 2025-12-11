@@ -1,18 +1,18 @@
 <script setup lang="ts">
-import { computed, onMounted, useSlots, useId, useTemplateRef } from "vue";
+import { computed, onMounted, useSlots, useId, useTemplateRef, watch } from "vue";
 
-import useUI from "../composables/useUI.ts";
-import { getDefaults } from "../utils/ui.ts";
-import { hasSlotContent } from "../utils/helper.ts";
-import { useMutationObserver } from "../composables/useMutationObserver.ts";
+import { useUI } from "../composables/useUI";
+import { getDefaults } from "../utils/ui";
+import { hasSlotContent } from "../utils/helper";
+import { useMutationObserver } from "../composables/useMutationObserver";
 
 import UIcon from "../ui.image-icon/UIcon.vue";
 import ULabel from "../ui.form-label/ULabel.vue";
 
-import defaultConfig from "./config.ts";
-import { COMPONENT_NAME } from "./constants.ts";
+import defaultConfig from "./config";
+import { COMPONENT_NAME } from "./constants";
 
-import type { Props, Config } from "./types.ts";
+import type { Props, Config } from "./types";
 
 defineOptions({ inheritAttrs: false });
 
@@ -25,7 +25,7 @@ const props = withDefaults(defineProps<Props>(), {
 
 const emit = defineEmits([
   /**
-   * Triggers when the input value is changes.
+   * Triggers when the input value is changed.
    * @property {string} modelValue
    * @property {number} modelValue
    */
@@ -43,6 +43,7 @@ const emit = defineEmits([
 
   /**
    * Triggers when the input gains focus.
+   * @property {FocusEvent} event
    */
   "focus",
 
@@ -53,11 +54,12 @@ const emit = defineEmits([
 
   /**
    * Triggers when the input loses focus.
+   * @property {FocusEvent} event
    */
   "blur",
 
   /**
-   * Triggers when the input value is changes.
+   * Triggers when the input value is changed.
    * @property {string} modelValue
    * @property {number} modelValue
    */
@@ -89,6 +91,7 @@ const VALIDATION_RULES_REG_EX = {
 
 const slots = useSlots();
 
+const wrapperRef = useTemplateRef<HTMLDivElement>("wrapper");
 const inputRef = useTemplateRef<HTMLInputElement>("input");
 const leftSlotWrapperRef = useTemplateRef<HTMLSpanElement>("leftSlotWrapper");
 const labelComponentRef = useTemplateRef<InstanceType<typeof ULabel>>("labelComponent");
@@ -103,7 +106,7 @@ const inputValue = computed({
 const elementId = props.id || useId();
 
 const inputType = computed(() => {
-  return props.noAutocomplete ? "text" : props.type;
+  return props.autocomplete ? props.type : "text";
 });
 
 onMounted(() => {
@@ -173,12 +176,16 @@ function onKeydown(event: KeyboardEvent) {
   emit("keydown", event);
 }
 
+function onClickIcon() {
+  inputRef.value?.focus();
+}
+
 /**
  * This trick prevents default browser autocomplete behavior.
  * @param toggleState { boolean }
  */
 function toggleReadonlyToPreventAutocomplete(toggleState: boolean) {
-  if (props.noAutocomplete && !props.readonly && inputRef.value) {
+  if (!props.autocomplete && !props.readonly && inputRef.value) {
     toggleState
       ? inputRef.value.setAttribute("readonly", "readonly")
       : inputRef.value.removeAttribute("readonly");
@@ -192,25 +199,41 @@ function transformValue(value: string | number, exp: string | RegExp) {
   return matches ? matches.join("") : "";
 }
 
-useMutationObserver(leftSlotWrapperRef, (mutations) => mutations.forEach(setLabelPosition), {
+useMutationObserver(wrapperRef, (mutations) => mutations.forEach(setLabelPosition), {
   childList: true,
   characterData: true,
   subtree: true,
+});
+
+watch([() => props.leftIcon, () => props.labelAlign, () => props.size], setLabelPosition, {
+  flush: "post",
 });
 
 function setLabelPosition() {
   const shouldAlignLabelOnTop = !hasSlotContent(slots["left"]) && !props.leftIcon;
 
   if (props.labelAlign === "top" || shouldAlignLabelOnTop) {
+    if (labelComponentRef.value?.labelElement) {
+      labelComponentRef.value.labelElement.style.left = "";
+    }
+
     return;
   }
 
   if (leftSlotWrapperRef.value && inputRef.value && labelComponentRef.value?.labelElement) {
     const leftSlotOrIconWidth = leftSlotWrapperRef.value.getBoundingClientRect().width;
-    const leftPaddingValue = parseFloat(getComputedStyle(inputRef.value).paddingLeft);
+    const wrapperElement = inputRef.value.parentElement;
+
+    let wrapperGap = 0;
+    let wrapperLeftPadding = 0;
+
+    if (wrapperElement) {
+      wrapperGap = parseFloat(getComputedStyle(wrapperElement).gap);
+      wrapperLeftPadding = parseFloat(getComputedStyle(wrapperElement).paddingLeft);
+    }
 
     if (labelComponentRef.value?.labelElement) {
-      labelComponentRef.value.labelElement.style.left = `${leftSlotOrIconWidth + leftPaddingValue}px`;
+      labelComponentRef.value.labelElement.style.left = `${leftSlotOrIconWidth + wrapperLeftPadding + wrapperGap}px`;
     }
   }
 }
@@ -257,7 +280,6 @@ const {
     :size="size"
     :align="labelAlign"
     centred
-    interactive
     v-bind="inputLabelAttrs"
   >
     <template #label>
@@ -268,7 +290,7 @@ const {
       <slot name="label" :label="label" />
     </template>
 
-    <label :for="elementId" v-bind="wrapperAttrs">
+    <div ref="wrapper" v-bind="wrapperAttrs">
       <span
         v-if="hasSlotContent($slots['left'], { iconName: leftIcon }) || leftIcon"
         v-bind="leftSlotAttrs"
@@ -279,7 +301,13 @@ const {
           @binding {string} icon-name
         -->
         <slot name="left" :icon-name="leftIcon">
-          <UIcon v-if="leftIcon" color="neutral" :name="leftIcon" v-bind="leftIconAttrs" />
+          <UIcon
+            v-if="leftIcon"
+            color="neutral"
+            :name="leftIcon"
+            v-bind="leftIconAttrs"
+            @click="onClickIcon"
+          />
         </slot>
       </span>
 
@@ -293,7 +321,7 @@ const {
         :disabled="disabled"
         :maxlength="maxLength"
         :inputmode="inputmode"
-        :autocomplete="noAutocomplete ? 'off' : 'on'"
+        :autocomplete="autocomplete ? 'on' : 'off'"
         v-bind="inputAttrs"
         :data-test="getDataTest()"
         @focus="onFocus"
@@ -307,7 +335,7 @@ const {
         @keydown="onKeydown"
       />
 
-      <div
+      <span
         v-if="hasSlotContent($slots['right'], { iconName: rightIcon }) || rightIcon"
         v-bind="rightSlotAttrs"
       >
@@ -316,9 +344,15 @@ const {
           @binding {string} icon-name
         -->
         <slot name="right" :icon-name="rightIcon">
-          <UIcon v-if="rightIcon" color="neutral" :name="rightIcon" v-bind="rightIconAttrs" />
+          <UIcon
+            v-if="rightIcon"
+            color="neutral"
+            :name="rightIcon"
+            v-bind="rightIconAttrs"
+            @click="onClickIcon"
+          />
         </slot>
-      </div>
-    </label>
+      </span>
+    </div>
   </ULabel>
 </template>

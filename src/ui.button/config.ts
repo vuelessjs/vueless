@@ -2,7 +2,7 @@ export default /*tw*/ {
   button: {
     base: `
       flex items-center justify-center font-medium !leading-snug whitespace-nowrap
-      border border-transparent transition cursor-pointer
+      border border-solid transition cursor-pointer
       focus-visible:outline-medium focus-visible:outline-offset-2 focus-visible:outline-{color}
       disabled:cursor-not-allowed disabled:outline-0 disabled:outline-offset-0
     `,
@@ -17,7 +17,7 @@ export default /*tw*/ {
       },
       variant: {
         solid: `
-          text-inverted bg-{color}
+          bg-{color} border-transparent text-inverted
           hover:bg-{color}-lifted
           active:bg-{color}-accented
           disabled:!bg-{color}/(--vl-disabled-opacity)
@@ -35,13 +35,13 @@ export default /*tw*/ {
           disabled:!text-{color}/(--vl-disabled-opacity) disabled:!bg-{color}/5 disabled:!border-{color}/10
         `,
         soft: `
-          text-{color} bg-{color}/5
+          text-{color} bg-{color}/5 border-transparent
           hover:text-{color}-lifted hover:bg-{color}-lifted/10
           active:text-{color}-accented active:bg-{color}-accented/15
           disabled:!text-{color}/(--vl-disabled-opacity) disabled:!bg-{color}/5
         `,
         ghost: `
-          text-{color} bg-transparent
+          text-{color} bg-transparent border-transparent
           hover:text-{color}-lifted hover:bg-{color}-lifted/10
           active:text-{color}-accented active:bg-{color}-accented/15
           disabled:!text-{color}/(--vl-disabled-opacity) disabled:!bg-transparent
@@ -54,6 +54,9 @@ export default /*tw*/ {
       loading: {
         true: "gap-0 pointer-events-none",
       },
+      icon: {
+        true: "gap-0",
+      },
       label: {
         false: "gap-0",
       },
@@ -62,6 +65,8 @@ export default /*tw*/ {
       },
     },
     compoundVariants: [
+      { label: false, leftIcon: true, class: "gap-0" },
+      { label: false, rightIcon: true, class: "gap-0" },
       { square: true, size: "2xs", class: "p-1" },
       { square: true, size: "xs", class: "p-1.5" },
       { square: true, size: "sm", class: "p-2" },

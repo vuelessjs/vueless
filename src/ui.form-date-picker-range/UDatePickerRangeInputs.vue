@@ -1,16 +1,16 @@
 <script setup lang="ts" generic="TLocalValue extends RangeDate">
-import { isWrongDateFormat, isWrongMonthNumber, isWrongDayNumber } from "./utilValidation.ts";
+import { isWrongDateFormat, isWrongMonthNumber, isWrongDayNumber } from "./utilValidation";
 import { onBeforeUnmount, useTemplateRef } from "vue";
 
-import { dateIsOutOfRange, parseDate } from "../ui.form-calendar/utilCalendar.ts";
-import { isSameDay } from "../ui.form-calendar/utilDate.ts";
+import { dateIsOutOfRange, parseDate } from "../ui.form-calendar/utilCalendar";
+import { isSameDay } from "../ui.form-calendar/utilDate";
 
 import UInput from "../ui.form-input/UInput.vue";
 
-import { InputRangeType, INPUT_RANGE_FORMAT } from "./constants.ts";
+import { InputRangeType, INPUT_RANGE_FORMAT } from "./constants";
 
-import type { UDatePickerRangeInputsProps } from "./types.ts";
-import type { RangeDate } from "../ui.form-calendar/types.ts";
+import type { UDatePickerRangeInputsProps } from "./types";
+import type { RangeDate } from "../ui.form-calendar/types";
 
 type UInputRef = InstanceType<typeof UInput>;
 
@@ -27,22 +27,15 @@ const inputRangeToError = defineModel<string>("inputRangeToError", { required: t
 const rangeStart = defineModel<string>("rangeStart", { required: true });
 const rangeEnd = defineModel<string>("rangeEnd", { required: true });
 
-function isGraterThanTo(value: string) {
-  if (!value) return false;
+function isFromGreaterThanTo(fromValue: string, toValue: string) {
+  if (!fromValue || !toValue) return false;
 
-  const parsedValue = parseDate(value, INPUT_RANGE_FORMAT, props.locale);
-  const parsedTo = parseDate(localValue.value.to, props.dateFormat, props.locale);
+  const parsedFrom = parseDate(fromValue, INPUT_RANGE_FORMAT, props.locale);
+  const parsedTo = parseDate(toValue, INPUT_RANGE_FORMAT, props.locale);
 
-  return parsedValue && parsedTo && parsedValue > parsedTo;
-}
+  if (!parsedFrom || !parsedTo) return false;
 
-function isSmallerThanFrom(value: string) {
-  if (!value) return false;
-
-  const parsedValue = parseDate(value, INPUT_RANGE_FORMAT, props.locale);
-  const parsedFrom = parseDate(localValue.value.from, props.dateFormat, props.locale);
-
-  return parsedValue && parsedFrom && parsedValue < parsedFrom;
+  return parsedFrom > parsedTo && !isSameDay(parsedFrom, parsedTo);
 }
 
 function validateInput(value: string, type: `${InputRangeType}`) {
@@ -56,18 +49,30 @@ function validateInput(value: string, type: `${InputRangeType}`) {
     error = props.locale.notCorrectMonthNumber;
   } else if (isWrongDayNumber(value) && value) {
     error = props.locale.notCorrectDayNumber;
-  } else if (isGraterThanTo(value) && type === InputRangeType.Start) {
+  } else if (type === InputRangeType.Start && isFromGreaterThanTo(value, rangeEnd.value)) {
     error = props.locale.fromDateGraterThanSecond;
-  } else if (isSmallerThanFrom(value) && type === InputRangeType.End) {
+  } else if (type === InputRangeType.End && isFromGreaterThanTo(rangeStart.value, value)) {
     error = props.locale.toDateSmallerThanFirst;
   }
 
   if (type === InputRangeType.Start) {
     inputRangeFromError.value = error;
+
+    if (!error && rangeEnd.value) {
+      inputRangeToError.value = isFromGreaterThanTo(value, rangeEnd.value)
+        ? props.locale.toDateSmallerThanFirst
+        : "";
+    }
   }
 
   if (type === InputRangeType.End) {
     inputRangeToError.value = error;
+
+    if (!error && rangeStart.value) {
+      inputRangeFromError.value = isFromGreaterThanTo(rangeStart.value, value)
+        ? props.locale.fromDateGraterThanSecond
+        : "";
+    }
   }
 }
 

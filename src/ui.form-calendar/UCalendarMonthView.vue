@@ -1,15 +1,15 @@
 <script setup lang="ts">
 import { computed } from "vue";
 
-import useUI from "../composables/useUI.ts";
+import { useUI } from "../composables/useUI";
 
-import { formatDate, dateIsOutOfRange } from "./utilCalendar.ts";
-import { isSameMonth, getDateWithoutTime, isCurrentMonth } from "./utilDate.ts";
+import { formatDate, dateIsOutOfRange } from "./utilCalendar";
+import { isSameMonth, isCurrentMonth } from "./utilDate";
 
-import defaultConfig from "./config.ts";
-import { MONTHS_PER_VIEW } from "./constants.ts";
+import defaultConfig from "./config";
+import { MONTHS_PER_VIEW } from "./constants";
 
-import type { UCalendarViewProps, Config } from "./types.ts";
+import type { UCalendarViewProps, Config } from "./types";
 
 import UButton from "../ui.button/UButton.vue";
 
@@ -19,26 +19,18 @@ const props = defineProps<UCalendarViewProps>();
 
 const emit = defineEmits(["input"]);
 
-const localSelectedDate = computed(() => {
-  return props.selectedDate === null ? getDateWithoutTime() : props.selectedDate;
-});
-
-const localActiveMonth = computed(
-  () => props.activeMonth || props.activeDate || localSelectedDate.value,
-);
-
 const months = computed(() =>
   Array.from({ length: MONTHS_PER_VIEW }, (_, i) => i).map((monthNumber) => getMonth(monthNumber)),
 );
 
 function getMonth(monthNumber: number) {
-  let newDate = new Date(localActiveMonth.value.valueOf());
+  let newDate = new Date(props.activeDate.valueOf());
 
   newDate.setMonth(monthNumber);
 
   // Means the current day has less days so the extra month is
   // in the following month
-  if (newDate.getDate() !== localActiveMonth.value.getDate()) {
+  if (newDate.getDate() !== props.activeDate.getDate()) {
     // Assign the last day of previous month
     newDate = new Date(newDate.getFullYear(), newDate.getMonth(), 0);
   }
@@ -47,15 +39,19 @@ function getMonth(monthNumber: number) {
 }
 
 function getMonthState(month: Date) {
-  const isSelectedMonth =
-    isSameMonth(month, localSelectedDate.value) && props.selectedDate !== null;
+  const isSelectedMonth = props.selectedDate && isSameMonth(month, props.selectedDate);
   const isPresentMonth = isCurrentMonth(month);
   const isMoreThanOneMonthRange =
     props.range &&
     props.selectedDateTo &&
     props.selectedDate &&
     isMoreThanOneMonthDiff(props.selectedDate, props.selectedDateTo);
-  const isActiveMonth = props.activeMonth && isSameMonth(props.activeMonth, month) && !props.range;
+
+  const isActiveMonth =
+    props.isArrowKeyDirty &&
+    isSameMonth(props.activeDate, month) &&
+    !props.range &&
+    !dateIsOutOfRange(month, props.minDate, props.maxDate, props.locale, props.dateFormat);
 
   return {
     isSelectedMonth,
@@ -95,7 +91,7 @@ const { monthViewAttrs, monthAttrs, currentMonthAttrs, selectedMonthAttrs, activ
         size="md"
         v-bind="selectedMonthAttrs"
         :disabled="dateIsOutOfRange(month, minDate, maxDate, locale, dateFormat)"
-        :label="formatDate(month, 'F', props.locale)"
+        :label="formatDate(month, 'M', props.locale)"
         @click="onClickMonth(month)"
         @mousedown.prevent.capture
       />
@@ -106,7 +102,7 @@ const { monthViewAttrs, monthAttrs, currentMonthAttrs, selectedMonthAttrs, activ
         color="primary"
         v-bind="currentMonthAttrs"
         :disabled="dateIsOutOfRange(month, minDate, maxDate, locale, dateFormat)"
-        :label="formatDate(month, 'F', props.locale)"
+        :label="formatDate(month, 'M', props.locale)"
         @click="onClickMonth(month)"
         @mousedown.prevent.capture
       />
@@ -118,7 +114,7 @@ const { monthViewAttrs, monthAttrs, currentMonthAttrs, selectedMonthAttrs, activ
         size="md"
         v-bind="activeMonthAttrs"
         :disabled="dateIsOutOfRange(month, minDate, maxDate, locale, dateFormat)"
-        :label="formatDate(month, 'F', props.locale)"
+        :label="formatDate(month, 'M', props.locale)"
         @click="onClickMonth(month)"
         @mousedown.prevent.capture
       />
@@ -130,7 +126,7 @@ const { monthViewAttrs, monthAttrs, currentMonthAttrs, selectedMonthAttrs, activ
         size="md"
         v-bind="monthAttrs"
         :disabled="dateIsOutOfRange(month, minDate, maxDate, locale, dateFormat)"
-        :label="formatDate(month, 'F', props.locale)"
+        :label="formatDate(month, 'M', props.locale)"
         @click="onClickMonth(month)"
         @mousedown.prevent.capture
       />

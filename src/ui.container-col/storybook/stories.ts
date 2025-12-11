@@ -4,7 +4,7 @@ import {
   getSlotNames,
   getSlotsFragment,
   getDocsDescription,
-} from "../../utils/storybook.ts";
+} from "../../utils/storybook";
 
 import UCol from "../../ui.container-col/UCol.vue";
 import URow from "../../ui.container-row/URow.vue";
@@ -12,8 +12,8 @@ import UInput from "../../ui.form-input/UInput.vue";
 import UButton from "../../ui.button/UButton.vue";
 import UPage from "../../ui.container-page/UPage.vue";
 
-import type { Meta, StoryFn } from "@storybook/vue3";
-import type { Props } from "../types.ts";
+import type { Meta, StoryFn } from "@storybook/vue3-vite";
+import type { Props } from "../types";
 
 interface UColArgs extends Props {
   slotTemplate?: string;
@@ -36,16 +36,16 @@ export default {
 } as Meta;
 
 const defaultTemplate = `
-  <UInput placeholder="Vasyl" label="Name" class="max-w-96" />
-  <UInput placeholder="Vasylenko" label="Surname" class="max-w-96" />
-  <UInput placeholder="Kyiv" label="City" class="max-w-96" />
+  <UButton label="Button 1" />
+  <UButton label="Button 2" />
+  <UButton label="Button 3" />
 `;
 
 const DefaultTemplate: StoryFn<UColArgs> = (args: UColArgs) => ({
   components: { UCol, UInput, UButton, UPage },
   setup: () => ({ args, slots: getSlotNames(UCol.__name) }),
   template: `
-    <UCol v-bind="args">
+    <UCol v-bind="args" class="border border-primary border-dashed rounded-medium p-4">
       ${args.slotTemplate || getSlotsFragment(defaultTemplate)}
     </UCol>
   `,
@@ -60,7 +60,8 @@ const EnumTemplate: StoryFn<UColArgs> = (args: UColArgs, { argTypes }) => ({
         v-for="option in argTypes?.[args.enum]?.options"
         v-bind="getArgs(args, option)"
         :key="option"
-        class="w-full h-[200px] border border-primary border-dashed rounded-medium p-4"
+        block
+        class="h-[200px] border border-primary border-dashed rounded-medium p-4"
       >
         <UButton :label="args.enum" />
         <UButton :label="option" />
@@ -117,7 +118,8 @@ export const Content: StoryFn<UColArgs> = (args: UColArgs, { argTypes }) => ({
         align="normal"
         gap="xs"
         wrap
-        class="flex-row w-full h-[300px] border border-primary border-dashed rounded-medium p-4"
+        block
+        class="flex-row h-[250px] border border-primary border-dashed rounded-medium p-4"
       >
         <UButton label="content" class="w-[45%]" />
         <UButton :label="option" class="w-[45%]" />
@@ -149,9 +151,11 @@ Justify.parameters = {
 export const DefaultSlot = DefaultTemplate.bind({});
 DefaultSlot.args = {
   slotTemplate: `
-    <template #default>
+    <UInput
+      label="Daily report"
+      placeholder="Provide today's new data..."
+      class="max-w-96"
+    />
     <UButton label="Submit" />
-      <UInput placeholder="Provide today's new data..." label="Daily report" />
-    </template>
   `,
 };

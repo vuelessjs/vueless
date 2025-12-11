@@ -4,14 +4,14 @@ import {
   getSlotNames,
   getSlotsFragment,
   getDocsDescription,
-} from "../../utils/storybook.ts";
+} from "../../utils/storybook";
 
 import UFiles from "../../ui.text-files/UFiles.vue";
 import URow from "../../ui.container-row/URow.vue";
 import UIcon from "../../ui.image-icon/UIcon.vue";
 
-import type { Meta, StoryFn } from "@storybook/vue3";
-import type { Props } from "../types.ts";
+import type { Meta, StoryFn } from "@storybook/vue3-vite";
+import type { Props } from "../types";
 
 interface UFilesArgs extends Props {
   slotTemplate?: string;
@@ -79,25 +79,26 @@ Removable.args = { removable: true };
 export const Sizes = EnumTemplate.bind({});
 Sizes.args = { enum: "size" };
 
-export const LabelAlign = EnumTemplate.bind({});
-LabelAlign.args = {
-  enum: "labelAlign",
-  description: "These files include important documents like reports and employee data.",
-};
-
 export const Slots: StoryFn<UFilesArgs> = (args) => ({
   components: { UFiles, URow, UIcon },
   setup() {
     return { args };
   },
   template: `
-    <UFiles v-bind="args">
-      <template #left="{ index }">
-        <UIcon v-if="index === 0" name="info" color="warning" size="xs" />
-      </template>
-      <template #right="{ index }">
-        <UIcon v-if="index === 1" name="check_circle" color="success" size="xs" />
-      </template>
-    </UFiles>
+    <URow>
+      <UFiles v-bind="args">
+        <template #before-file="{ index }">
+          <UIcon v-if="index === 0" name="info" color="warning" size="xs" />
+          <UIcon v-if="index === 1" name="check_circle" color="success" size="xs" />
+        </template>
+      </UFiles>
+
+      <UFiles v-bind="args">
+        <template #after-file="{ index }">
+          <UIcon v-if="index === 0" name="info" color="warning" size="xs" />
+          <UIcon v-if="index === 1" name="check_circle" color="success" size="xs" />
+        </template>
+      </UFiles>
+    </URow>
   `,
 });

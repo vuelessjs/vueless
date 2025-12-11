@@ -1,18 +1,27 @@
-import defaultConfig from "./config.ts";
-import type { ComponentConfig } from "../types.ts";
+import defaultConfig from "./config";
+import type { ComponentConfig } from "../types";
 
 export type Config = typeof defaultConfig;
 
+export interface UAccordionOption {
+  value: string;
+  title: string;
+  description?: string;
+  opened?: boolean;
+}
+
+export type SetAccordionSelectedItem = (value: string, opened: boolean) => void;
+
 export interface Props {
   /**
-   * Accordion title.
+   * Accordion items state control.
    */
-  title?: string;
+  modelValue?: string | string[] | null;
 
   /**
-   * Accordion description.
+   * Accordion options.
    */
-  description?: string;
+  options?: UAccordionOption[];
 
   /**
    * Accordion size.
@@ -20,9 +29,14 @@ export interface Props {
   size?: "sm" | "md" | "lg";
 
   /**
-   * Accordion toggle icon.
+   * Allow multiple items to be opened at the same time.
    */
-  toggleIcon?: boolean | string;
+  multiple?: boolean;
+
+  /**
+   * Disable an accordion.
+   */
+  disabled?: boolean;
 
   /**
    * Unique element id.

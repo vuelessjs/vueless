@@ -1,25 +1,25 @@
-import { ref } from "vue";
 import {
   getArgs,
   getArgTypes,
   getSlotNames,
   getSlotsFragment,
   getDocsDescription,
-} from "../../utils/storybook.ts";
+} from "../../utils/storybook";
 
 import UTextarea from "../../ui.form-textarea/UTextarea.vue";
 import UIcon from "../../ui.image-icon/UIcon.vue";
 import UCol from "../../ui.container-col/UCol.vue";
 import URow from "../../ui.container-row/URow.vue";
-import UAvatar from "../../ui.image-avatar/UAvatar.vue";
-import tooltip from "../../directives/tooltip/vTooltip.ts";
+import tooltip from "../../v.tooltip/vTooltip";
+import UText from "../../ui.text-block/UText.vue";
 
-import type { Meta, StoryFn } from "@storybook/vue3";
-import type { Props } from "../types.ts";
+import type { Meta, StoryFn } from "@storybook/vue3-vite";
+import type { Props } from "../types";
 
 interface UTextareaArgs extends Props {
   slotTemplate?: string;
   enum: "size" | "labelAlign";
+  wrapperClass?: string;
 }
 
 export default {
@@ -59,7 +59,7 @@ const EnumTemplate: StoryFn<UTextareaArgs> = (args: UTextareaArgs, { argTypes })
   components: { UTextarea, UCol },
   setup: () => ({ args, argTypes, getArgs }),
   template: `
-    <UCol>
+    <UCol :class="args.wrapperClass">
       <UTextarea
         v-for="option in argTypes?.[args.enum]?.options"
         v-bind="getArgs(args, option)"
@@ -80,17 +80,35 @@ Placeholder.args = { modelValue: "", placeholder: "Enter text here..." };
 export const Description = DefaultTemplate.bind({});
 Description.args = { description: "Provide additional details in this field." };
 
-export const Error = DefaultTemplate.bind({});
-Error.args = { modelValue: "", error: "This field is required. Please enter a value." };
+export const Error: StoryFn<UTextareaArgs> = (args: UTextareaArgs) => ({
+  components: { UTextarea, UIcon },
+  setup: () => ({ args }),
+  template: `
+    <UTextarea
+      v-bind="args"
+      v-model="args.modelValue"
+      class="max-w-96"
+      :error="args.modelValue ? '' : 'This field is required. Please enter a value.'"
+    />
+  `,
+});
+Error.args = { modelValue: "" };
+
+export const Readonly = DefaultTemplate.bind({});
+Readonly.args = { readonly: true, modelValue: "Meeting scheduled for Monday at 10 AM." };
 
 export const Disabled = DefaultTemplate.bind({});
 Disabled.args = { disabled: true };
 
 export const LabelAlign = EnumTemplate.bind({});
-LabelAlign.args = { enum: "labelAlign", description: "{enumValue}" };
+LabelAlign.args = {
+  enum: "labelAlign",
+  description: "{enumValue}",
+  wrapperClass: "gap-16",
+};
 
 export const Sizes = EnumTemplate.bind({});
-Sizes.args = { enum: "size", description: "{enumValue}" };
+Sizes.args = { enum: "size" };
 
 export const Resizable = DefaultTemplate.bind({});
 Resizable.args = { resizable: true };
@@ -104,9 +122,6 @@ RowsNumber.parameters = {
     },
   },
 };
-
-export const Readonly = DefaultTemplate.bind({});
-Readonly.args = { readonly: true, modelValue: "Meeting scheduled for Monday at 10 AM." };
 
 export const NoAutocomplete = DefaultTemplate.bind({});
 NoAutocomplete.args = {
@@ -123,18 +138,14 @@ NoAutocomplete.parameters = {
 };
 
 export const Slots: StoryFn<UTextareaArgs> = (args) => ({
-  components: { UTextarea, URow, UIcon, UAvatar },
+  components: { UTextarea, URow, UIcon, UText },
   directives: { tooltip },
-  setup() {
-    const switchModel = ref(false);
-
-    return { args, switchModel };
-  },
+  setup: () => ({ args }),
   template: `
     <URow>
-      <UTextarea v-bind="args">
+      <UTextarea v-bind="args" v-model="args.modelValue" :max-length="300">
         <template #left>
-          <UAvatar />
+          <UText :label="args.modelValue?.length + '/300'" variant="lifted" />
         </template>
       </UTextarea>
 

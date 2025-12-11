@@ -1,5 +1,5 @@
 export default /*tw*/ {
-  wrapper: "flex items-center gap-2",
+  wrapper: "flex items-center gap-2 w-fit",
   counterText: {
     variants: {
       size: {
@@ -10,7 +10,7 @@ export default /*tw*/ {
     },
   },
   counterInput: {
-    base: "{UInputNumber} w-fit",
+    base: "{UInputNumber} w-inherit",
     numberInput: {
       base: "{UInput}",
       input: "text-center",
@@ -19,6 +19,7 @@ export default /*tw*/ {
   actionButton: {
     base: "{UButton}",
     defaults: {
+      color: "neutral",
       size: {
         sm: "2xs",
         md: "xs",
@@ -26,15 +27,25 @@ export default /*tw*/ {
       },
     },
   },
-  addButton: "{UButton} {>actionButton}",
-  subtractButton: "{UButton} {>actionButton}",
+  addButton: "{>actionButton}",
+  subtractButton: "{>actionButton}",
   addIcon: "{UIcon}",
   subtractIcon: "{UIcon}",
+  /* These are used for a11y. */
+  i18n: {
+    add: "Add",
+    subtract: "Subtract",
+  },
   defaults: {
     size: "md",
+    decimalSeparator: ",",
+    thousandsSeparator: " ",
+    prefix: "",
     step: 1,
-    min: 1,
+    min: 0,
     max: 999,
+    minFractionDigits: 0,
+    maxFractionDigits: 2,
     readonly: false,
     disabled: false,
     /* icons */

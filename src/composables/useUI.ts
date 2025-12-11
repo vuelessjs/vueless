@@ -1,30 +1,29 @@
 import { ref, watch, getCurrentInstance, toValue, useAttrs, computed } from "vue";
 import { isEqual } from "lodash-es";
 
-import { cx, cva, setColor, vuelessConfig, getMergedConfig } from "../utils/ui.ts";
-import { isCSR } from "../utils/helper.ts";
+import { cx, cva, setColor, vuelessConfig, getMergedConfig } from "../utils/ui";
 import {
   CVA_CONFIG_KEY,
   SYSTEM_CONFIG_KEY,
   EXTENDS_PATTERN_REG_EXP,
   NESTED_COMPONENT_PATTERN_REG_EXP,
-} from "../constants.js";
+} from "../constants";
 
 import type { Ref, ComputedRef } from "vue";
 import type {
   CVA,
   UseUI,
-  Defaults,
   KeyAttrs,
   KeysAttrs,
+  StateColors,
   MutatedProps,
   UnknownObject,
-  PrimaryColors,
   ComponentNames,
   NestedComponent,
+  ComponentDefaults,
   ComponentConfigFull,
   VuelessComponentInstance,
-} from "../types.ts";
+} from "../types";
 
 /**
  * Merging component configs in a given sequence (bigger number = bigger priority):
@@ -33,11 +32,7 @@ import type {
  * 3. Component config (:config="{...}" props)
  * 4. Component classes (class="...")
  */
-export default function useUI<T>(
-  defaultConfig: T,
-  mutatedProps?: MutatedProps,
-  topLevelClassKey?: string,
-) {
+export function useUI<T>(defaultConfig: T, mutatedProps?: MutatedProps, topLevelClassKey?: string) {
   const { type, props, parent } = getCurrentInstance() as VuelessComponentInstance;
 
   const componentName = type?.internal
@@ -73,7 +68,7 @@ export default function useUI<T>(
     return computed(() => {
       const mutatedPropsValue = toValue(mutatedProps);
       const value = (config.value as ComponentConfigFull<T>)[key];
-      const color = (toValue(mutatedProps || {}).color || props.color) as PrimaryColors;
+      const color = (toValue(mutatedProps || {}).color || props.color) as StateColors;
 
       const isNestedComponent = Boolean(getNestedComponent(value));
 
@@ -141,7 +136,7 @@ export default function useUI<T>(
         keyConfig = config.value[configKey] as NestedComponent;
       }
 
-      const isDev = isCSR && import.meta.env?.DEV;
+      const isDev = import.meta.env?.DEV;
       const isTopLevelKey = (topLevelClassKey || firstClassKey) === configKey;
 
       const extendsClasses = getExtendsClasses(configKey);
@@ -236,7 +231,7 @@ export default function useUI<T>(
      * Use an object where key = parent component prop value, value = nested component prop value.
      * */
     function getDefaults(defaultAttrs: NestedComponent["defaults"]) {
-      const defaults: Defaults = {};
+      const defaults: ComponentDefaults = {};
 
       for (const key in defaultAttrs) {
         defaults[key] =

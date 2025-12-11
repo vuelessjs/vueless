@@ -1,6 +1,6 @@
-import defaultConfig from "./config.ts";
-import type { ComponentConfig } from "../types.ts";
-import { NotificationType } from "./constants.ts";
+import defaultConfig from "./config";
+import type { ComponentConfig } from "../types";
+import { NotificationType } from "./constants";
 
 export type Config = typeof defaultConfig;
 
@@ -9,10 +9,17 @@ export type Notification = {
   type: NotificationType;
   label: string;
   description: string;
+  notifyId?: string;
 };
 
 export interface NotifyEvent extends Event {
   detail: Notification;
+}
+
+export interface NotifyClearAllEvent extends Event {
+  detail: {
+    notifyId?: string;
+  };
 }
 
 export interface NotificationsWrapperRef {
@@ -23,6 +30,7 @@ declare global {
   interface WindowEventMap {
     notifyStart: NotifyEvent;
     notifyEnd: NotifyEvent;
+    notifyClearAll: NotifyClearAllEvent;
   }
 }
 
@@ -36,6 +44,11 @@ export interface Props {
    * A position on the y-axis.
    */
   yPosition?: "top" | "bottom";
+
+  /**
+   * Notification instance id.
+   */
+  notifyId?: string;
 
   /**
    * Component config object.
