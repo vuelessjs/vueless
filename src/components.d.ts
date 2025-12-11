@@ -41,6 +41,7 @@ export { default as UBadge } from "./ui.text-badge/UBadge.vue";
 export { default as UDivider } from "./ui.container-divider/UDivider.vue";
 export { default as UCol } from "./ui.container-col/UCol.vue";
 export { default as URow } from "./ui.container-row/URow.vue";
+export { default as UGrid } from "./ui.container-grid/UGrid.vue";
 export { default as UGroup } from "./ui.container-group/UGroup.vue";
 export { default as UGroups } from "./ui.container-groups/UGroups.vue";
 export { default as UAccordion } from "./ui.container-accordion/UAccordion.vue";
