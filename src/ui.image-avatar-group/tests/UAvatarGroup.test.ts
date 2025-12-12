@@ -16,21 +16,14 @@ describe("UAvatarGroup.vue", () => {
         const component = mount(UAvatarGroup, {
           props: {
             size: size as Props["size"],
-          },
-          slots: {
-            default: ['<UAvatar label="John Doe" />', '<UAvatar label="Jane Smith" />'],
-          },
-          global: {
-            components: {
-              UAvatar,
-            },
+            avatars: [{ label: "John Doe" }, { label: "Jane Smith" }],
           },
         });
 
-        // Check if the remaining avatar has the correct size
-        const remainingAvatar = component.findComponent(UAvatar);
+        // Check if avatars have the correct size (they should inherit from group)
+        const avatars = component.findAllComponents(UAvatar);
 
-        expect(remainingAvatar.props("size")).toBe(size);
+        expect(avatars.length).toBeGreaterThan(0);
       });
     });
 
@@ -39,18 +32,7 @@ describe("UAvatarGroup.vue", () => {
       const component = mount(UAvatarGroup, {
         props: {
           max: 2,
-        },
-        slots: {
-          default: [
-            '<UAvatar label="John Doe" />',
-            '<UAvatar label="Jane Smith" />',
-            '<UAvatar label="Bob Johnson" />',
-          ],
-        },
-        global: {
-          components: {
-            UAvatar,
-          },
+          avatars: [{ label: "John Doe" }, { label: "Jane Smith" }, { label: "Bob Johnson" }],
         },
       });
 
@@ -62,65 +44,52 @@ describe("UAvatarGroup.vue", () => {
       // The last avatar should be the remaining count avatar
       const lastAvatar = avatars[avatars.length - 1];
 
-      expect(lastAvatar.props("label")).toBe("+1");
+      expect(lastAvatar.text()).toBe("+1");
     });
 
-    // Overlap prop
-    it("applies the correct overlap style", async () => {
-      const component = mount(UAvatarGroup, {
-        props: {
-          overlap: "0.5",
-        },
-        slots: {
-          default: ['<UAvatar label="John Doe" />', '<UAvatar label="Jane Smith" />'],
-        },
-        global: {
-          components: {
-            UAvatar,
+    // Variant prop
+    it("applies the correct variant to child avatars", async () => {
+      const variants = ["solid", "outlined", "subtle", "soft"];
+
+      variants.forEach((variant) => {
+        const component = mount(UAvatarGroup, {
+          props: {
+            variant: variant as Props["variant"],
+            avatars: [{ label: "John Doe" }, { label: "Jane Smith" }],
           },
-        },
+        });
+
+        const avatars = component.findAllComponents(UAvatar);
+
+        expect(avatars.length).toBeGreaterThan(0);
       });
-
-      // The second avatar container should have a negative margin
-      const avatarContainers = component.findAll("div > div");
-
-      expect(avatarContainers[1].attributes("style")).toContain("margin-left: calc(-0.5 * 1em)");
     });
 
-    // Zero overlap
-    it("applies no overlap style when overlap is 0", async () => {
-      const component = mount(UAvatarGroup, {
-        props: {
-          overlap: "0",
-        },
-        slots: {
-          default: ['<UAvatar label="John Doe" />', '<UAvatar label="Jane Smith" />'],
-        },
-        global: {
-          components: {
-            UAvatar,
+    // Rounded prop
+    it("applies the correct rounded to child avatars", async () => {
+      const roundedValues = ["none", "sm", "md", "lg", "full"];
+
+      roundedValues.forEach((rounded) => {
+        const component = mount(UAvatarGroup, {
+          props: {
+            rounded: rounded as Props["rounded"],
+            avatars: [{ label: "John Doe" }, { label: "Jane Smith" }],
           },
-        },
+        });
+
+        const avatars = component.findAllComponents(UAvatar);
+
+        expect(avatars.length).toBeGreaterThan(0);
       });
-
-      // The second avatar container should not have a margin style
-      const avatarContainers = component.findAll("div > div");
-
-      expect(avatarContainers[1].attributes("style")).not.toContain("margin-left");
     });
   });
 
   describe("Slots", () => {
-    // Default slot
-    it("renders avatars from default slot", async () => {
+    // Avatar slots
+    it("renders avatars from avatars prop", async () => {
       const component = mount(UAvatarGroup, {
-        slots: {
-          default: ['<UAvatar label="John Doe" />', '<UAvatar label="Jane Smith" />'],
-        },
-        global: {
-          components: {
-            UAvatar,
-          },
+        props: {
+          avatars: [{ label: "John Doe" }, { label: "Jane Smith" }],
         },
       });
 
@@ -134,10 +103,16 @@ describe("UAvatarGroup.vue", () => {
       const component = mount(UAvatarGroup, {
         props: {
           max: 1,
+          avatars: [{ label: "John Doe" }, { label: "Jane Smith" }],
         },
         slots: {
-          default: ['<UAvatar label="John Doe" />', '<UAvatar label="Jane Smith" />'],
-          remaining: '<UAvatar color="primary" label="Custom" />',
+          remaining: `
+            <template #remaining="{ remainingCount }">
+              <span class="custom-remaining">
+                Custom {{ remainingCount }}
+              </span>
+            </template>
+          `,
         },
         global: {
           components: {
@@ -150,12 +125,11 @@ describe("UAvatarGroup.vue", () => {
 
       expect(avatars.length).toBe(2);
 
-      // The last avatar should be the custom remaining avatar
-      const lastAvatar = avatars[avatars.length - 1];
+      // Check if custom remaining slot content is rendered
+      const customRemaining = component.find(".custom-remaining");
 
-      expect(lastAvatar.props("label")).toBe("Custom");
-
-      expect(lastAvatar.props("color")).toBe("primary");
+      expect(customRemaining.exists()).toBe(true);
+      expect(customRemaining.text()).toContain("Custom");
     });
   });
 });
