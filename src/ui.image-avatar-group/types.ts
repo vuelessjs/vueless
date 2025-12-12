@@ -1,10 +1,24 @@
-import defaultConfig from "./config.ts";
+import defaultConfig from "./config";
 
-import type { ComponentConfig } from "../types.ts";
+import type { ComponentConfig } from "../types";
+import type { ChipItem } from "../ui.image-avatar/types";
 
 export type Config = typeof defaultConfig;
 
+export interface AvatarItem {
+  src?: string;
+  label?: string;
+  color?: string;
+  placeholderIcon?: string;
+  chip?: ChipItem;
+}
+
 export interface Props {
+  /**
+   * Avatar items.
+   */
+  avatars?: AvatarItem[];
+
   /**
    * Avatar group size.
    */
@@ -34,11 +48,4 @@ export interface Props {
    * Data-test attribute for automated testing.
    */
   dataTest?: string | null;
-}
-
-export interface AvatarItem {
-  src?: string;
-  label?: string;
-  color?: string;
-  placeholderIcon?: string;
 }

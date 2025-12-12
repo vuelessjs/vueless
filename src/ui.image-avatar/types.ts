@@ -4,6 +4,14 @@ import type { ComponentConfig } from "../types";
 
 export type Config = typeof defaultConfig;
 
+export interface ChipItem {
+  icon?: string;
+  color?: Props["color"];
+  xPosition?: "left" | "right";
+  yPosition?: "top" | "bottom";
+  inset?: boolean;
+}
+
 export interface Props {
   /**
    * Avatar label (username, nickname, etc.).
@@ -48,6 +56,11 @@ export interface Props {
    * Avatar placeholder icon.
    */
   placeholderIcon?: string;
+
+  /**
+   * Avatar chip config.
+   */
+  chip?: ChipItem;
 
   /**
    * Component config object.

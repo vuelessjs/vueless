@@ -162,8 +162,8 @@ NoCloseOnCross.args = { closeOnCross: false };
 export const Position = EnumTemplate.bind({});
 Position.args = { enum: "position", modelValues: {} };
 
-export const Variant = EnumTemplate.bind({});
-Variant.args = { enum: "variant", modelValues: {} };
+export const Variants = EnumTemplate.bind({});
+Variants.args = { enum: "variant", modelValues: {} };
 
 export const BeforeTitleSlot = DefaultTemplate.bind({});
 BeforeTitleSlot.args = {

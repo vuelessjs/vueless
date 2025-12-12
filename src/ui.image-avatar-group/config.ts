@@ -1,10 +1,11 @@
 export default /*tw*/ {
-  avatarGroup: "flex items-center",
-  avatar: "{UAvatar}",
+  avatarGroup: "inline-flex items-center",
+  avatar: "{UAvatar} ring-3 -me-1.5",
+  remaining: "{UAvatar} ring-3",
   defaults: {
     variant: "solid",
     rounded: "md",
     size: "md",
-    max: 5,
+    max: 3,
   },
 };
