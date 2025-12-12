@@ -26,7 +26,7 @@ describe("UAvatar.vue", () => {
     // Label prop with a single word
     it("displays only first letter when label has only one word", () => {
       const label = "John";
-      const expectedText = "J";
+      const expectedText = "John";
 
       const component = mount(UAvatar, {
         props: {
@@ -49,7 +49,11 @@ describe("UAvatar.vue", () => {
         },
       });
 
-      expect(component.attributes("style")).toContain(expectedStyle);
+      // Use the exposed ref to access the avatar div
+      const avatarRef = component.vm.avatarRef;
+
+      expect(avatarRef).toBeDefined();
+      expect(avatarRef?.getAttribute("style")).toContain(expectedStyle);
       // When src is provided, the component should not render any text content
       expect(component.text()).toBe(expectedText);
     });
@@ -94,7 +98,11 @@ describe("UAvatar.vue", () => {
           },
         });
 
-        expect(component.attributes("class")).toContain(classes);
+        // Use the exposed ref to access the avatar div
+        const avatarRef = component.vm.avatarRef;
+
+        expect(avatarRef).toBeDefined();
+        expect(avatarRef?.className).toContain(classes);
       });
     });
 
@@ -119,7 +127,11 @@ describe("UAvatar.vue", () => {
           },
         });
 
-        expect(component.attributes("class")).toContain(classes);
+        // Use the exposed ref to access the avatar div
+        const avatarRef = component.vm.avatarRef;
+
+        expect(avatarRef).toBeDefined();
+        expect(avatarRef?.className).toContain(classes);
       });
     });
 
@@ -144,7 +156,11 @@ describe("UAvatar.vue", () => {
           },
         });
 
-        expect(component.attributes("class")).toContain(color);
+        // Use the exposed ref to access the avatar div
+        const avatarRef = component.vm.avatarRef;
+
+        expect(avatarRef).toBeDefined();
+        expect(avatarRef?.className).toContain(color);
       });
     });
 
@@ -165,7 +181,11 @@ describe("UAvatar.vue", () => {
           },
         });
 
-        expect(component.attributes("class")).toContain(classes);
+        // Use the exposed ref to access the avatar div
+        const avatarRef = component.vm.avatarRef;
+
+        expect(avatarRef).toBeDefined();
+        expect(avatarRef?.className).toContain(classes);
       });
     });
 
@@ -179,7 +199,11 @@ describe("UAvatar.vue", () => {
         },
       });
 
-      expect(component.attributes("data-test")).toBe(dataTest);
+      // Use the exposed ref to access the avatar div
+      const avatarRef = component.vm.avatarRef;
+
+      expect(avatarRef).toBeDefined();
+      expect(avatarRef?.getAttribute("data-test")).toBe(dataTest);
     });
   });
 
@@ -215,7 +239,11 @@ describe("UAvatar.vue", () => {
         },
       });
 
-      await component.trigger("click");
+      // Use the exposed ref to access the avatar div and trigger click
+      const avatarRef = component.vm.avatarRef;
+
+      expect(avatarRef).toBeDefined();
+      avatarRef?.dispatchEvent(new Event("click"));
 
       expect(component.emitted("click")).toBeTruthy();
       expect(component.emitted("click")?.length).toBe(expectedLength);

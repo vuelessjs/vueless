@@ -79,8 +79,8 @@ const MultiEnumTemplate: StoryFn<UButtonArgs> = (args: UButtonArgs, { argTypes }
 export const Default = DefaultTemplate.bind({});
 Default.args = { label: "Button" };
 
-export const Variant = EnumTemplate.bind({});
-Variant.args = { enum: "variant", label: "{enumValue}" };
+export const Variants = EnumTemplate.bind({});
+Variants.args = { enum: "variant", label: "{enumValue}" };
 
 export const Round = EnumTemplate.bind({});
 Round.args = { enum: "variant", label: "{enumValue}", round: true };

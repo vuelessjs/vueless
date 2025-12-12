@@ -212,9 +212,9 @@ Sizes.parameters = {
   },
 };
 
-export const Variant = EnumTemplate.bind({});
-Variant.args = { enum: "variant", description: "{enumValue}" };
-Variant.parameters = {
+export const Variants = EnumTemplate.bind({});
+Variants.args = { enum: "variant", description: "{enumValue}" };
+Variants.parameters = {
   docs: {
     description: {
       story: "Page variant.",

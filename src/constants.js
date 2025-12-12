@@ -306,6 +306,7 @@ export const COMPONENTS = {
   /* Images and Icons */
   UIcon: "ui.image-icon",
   UAvatar: "ui.image-avatar",
+  UAvatarGroup: "ui.image-avatar-group",
 
   /* Data */
   UTable: "ui.data-table",

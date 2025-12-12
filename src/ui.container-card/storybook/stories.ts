@@ -125,8 +125,8 @@ Description.args = {
   description: "Customize your cookie settings to enhance your browsing experience.",
 };
 
-export const Variant = EnumTemplate.bind({});
-Variant.args = { enum: "variant", title: "{enumValue}" };
+export const Variants = EnumTemplate.bind({});
+Variants.args = { enum: "variant", title: "{enumValue}" };
 
 export const BeforeTitleSlot = DefaultTemplate.bind({});
 BeforeTitleSlot.args = {
