@@ -1,3 +1,7 @@
+---
+hidden: true
+---
+
 # Quickstart package update
 
 Update dependancies:
