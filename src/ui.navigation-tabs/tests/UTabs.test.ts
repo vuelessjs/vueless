@@ -1,4 +1,3 @@
-import { h } from "vue";
 import { mount } from "@vue/test-utils";
 import { describe, it, expect } from "vitest";
 
@@ -352,12 +351,13 @@ describe("UTabs.vue", () => {
           modelValue,
         },
         slots: {
-          left: (slotProps) =>
-            h("div", {
-              "data-value": slotProps.item.value,
-              "data-index": slotProps.index,
-              "data-active": slotProps.active,
-            }),
+          left: `
+            <div
+              :data-value="params.item.value"
+              :data-index="params.index"
+              :data-active="params.active"
+            />
+          `,
         },
       });
 
