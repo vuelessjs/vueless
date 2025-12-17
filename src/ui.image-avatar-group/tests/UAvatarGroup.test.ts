@@ -8,8 +8,7 @@ import type { Props } from "../types.ts";
 
 describe("UAvatarGroup.vue", () => {
   describe("Props", () => {
-    // Size prop
-    it("applies the correct size to child avatars", async () => {
+    it("Size – applies the correct size to child avatars", async () => {
       const sizes = ["3xs", "2xs", "xs", "sm", "md", "lg", "xl", "2xl", "3xl"];
 
       sizes.forEach((size) => {
@@ -27,8 +26,7 @@ describe("UAvatarGroup.vue", () => {
       });
     });
 
-    // Max prop
-    it("limits the number of avatars displayed based on max prop", async () => {
+    it("Max – limits the number of avatars displayed based on max prop", async () => {
       const component = mount(UAvatarGroup, {
         props: {
           max: 2,
@@ -47,8 +45,7 @@ describe("UAvatarGroup.vue", () => {
       expect(lastAvatar.text()).toBe("+1");
     });
 
-    // Variant prop
-    it("applies the correct variant to child avatars", async () => {
+    it("Variant – applies the correct variant to child avatars", async () => {
       const variants = ["solid", "outlined", "subtle", "soft"];
 
       variants.forEach((variant) => {
@@ -65,8 +62,7 @@ describe("UAvatarGroup.vue", () => {
       });
     });
 
-    // Rounded prop
-    it("applies the correct rounded to child avatars", async () => {
+    it("Rounded – applies the correct rounded to child avatars", async () => {
       const roundedValues = ["none", "sm", "md", "lg", "full"];
 
       roundedValues.forEach((rounded) => {
@@ -85,8 +81,7 @@ describe("UAvatarGroup.vue", () => {
   });
 
   describe("Slots", () => {
-    // Avatar slots
-    it("renders avatars from avatars prop", async () => {
+    it("Avatars – renders avatars from avatars prop", async () => {
       const component = mount(UAvatarGroup, {
         props: {
           avatars: [{ label: "John Doe" }, { label: "Jane Smith" }],
@@ -98,8 +93,7 @@ describe("UAvatarGroup.vue", () => {
       expect(avatars.length).toBe(2);
     });
 
-    // Remaining slot
-    it("renders custom remaining slot", async () => {
+    it("Remaining – renders custom remaining slot", async () => {
       const component = mount(UAvatarGroup, {
         props: {
           max: 1,

@@ -42,10 +42,6 @@ const avatarRef = useTemplateRef<HTMLDivElement>("avatar");
 const labelFirstLetters = computed(() => {
   if (!props.label) return "";
 
-  if (!props.label.includes(" ")) {
-    return props.label;
-  }
-
   const [firstWord, secondWord] = props.label.split(" ");
 
   const firstWordLetter = firstWord ? firstWord[0].toUpperCase() : "";
