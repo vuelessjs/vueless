@@ -126,4 +126,16 @@ describe("UAvatarGroup.vue", () => {
       expect(customRemaining.text()).toContain("Custom");
     });
   });
+
+  describe("Exposed refs", () => {
+    it("exposes avatarGroupRef", () => {
+      const component = mount(UAvatarGroup, {
+        props: {
+          avatars: [{ label: "John Doe" }],
+        },
+      });
+
+      expect(component.vm.avatarGroupRef).toBeDefined();
+    });
+  });
 });
