@@ -26,7 +26,7 @@ describe("UAvatar.vue", () => {
     // Label prop with a single word
     it("displays only first letter when label has only one word", () => {
       const label = "John";
-      const expectedText = "John";
+      const expectedText = "J";
 
       const component = mount(UAvatar, {
         props: {
