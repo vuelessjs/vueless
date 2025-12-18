@@ -1,5 +1,5 @@
 export default /*tw*/ {
-  wrapper: "absolute overflow-visible md:w-[22rem]",
+  wrapper: "mt-3 absolute overflow-visible md:w-[22rem]",
   transitionGroup: {
     moveClass: "transition duration-500",
     enterActiveClass: "transition duration-500",
