@@ -59,14 +59,22 @@ describe("UNotify.vue", () => {
         dispatchNotifyEvent("notifyStart", mockNotification);
         await component.vm.$nextTick();
 
-        // Check the component's style directly
-        const style = component.attributes("style") || "";
+        // Manually trigger setPosition since waitForPageElement won't find the elements in tests
+        // @ts-expect-error - Accessing private method for testing
+        component.vm.setPosition();
+        await component.vm.$nextTick();
+
+        // Access the internal notifyPositionStyles ref
+        // @ts-expect-error - Accessing private property for testing
+        const positionStyles = component.vm.notifyPositionStyles;
 
         // For center position, we expect a calculated left value
         if (position === "center") {
-          expect(style).toContain("left:");
+          expect(positionStyles).toHaveProperty("left");
+          expect(positionStyles.left).toBeDefined();
         } else {
-          expect(style).toContain(`${position}: 0px`);
+          expect(positionStyles).toHaveProperty(position);
+          expect(positionStyles[position]).toBe("0px");
         }
       }
     });
@@ -83,10 +91,17 @@ describe("UNotify.vue", () => {
         dispatchNotifyEvent("notifyStart", mockNotification);
         await component.vm.$nextTick();
 
-        // Check the component's style directly
-        const style = component.attributes("style") || "";
+        // Manually trigger setPosition since waitForPageElement won't find the elements in tests
+        // @ts-expect-error - Accessing private method for testing
+        component.vm.setPosition();
+        await component.vm.$nextTick();
 
-        expect(style).toContain(`${position}: 0px`);
+        // Access the internal notifyPositionStyles ref
+        // @ts-expect-error - Accessing private property for testing
+        const positionStyles = component.vm.notifyPositionStyles;
+
+        expect(positionStyles).toHaveProperty(position);
+        expect(positionStyles[position]).toBe("0px");
       }
     });
 
