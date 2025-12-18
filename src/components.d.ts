@@ -56,6 +56,7 @@ export { default as UPage } from "./ui.container-page/UPage.vue";
 /* Images and Icons */
 export { default as UIcon } from "./ui.image-icon/UIcon.vue";
 export { default as UAvatar } from "./ui.image-avatar/UAvatar.vue";
+export { default as UAvatarGroup } from "./ui.image-avatar-group/UAvatarGroup.vue";
 /* Data */
 export { default as UTable } from "./ui.data-table/UTable.vue";
 export { default as UDataList } from "./ui.data-list/UDataList.vue";
