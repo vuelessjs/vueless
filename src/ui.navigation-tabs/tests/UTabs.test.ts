@@ -284,6 +284,94 @@ describe("UTabs.vue", () => {
       expect(component.find(`.${slotClass}`).exists()).toBe(true);
       expect(component.find(`.${slotClass}`).text()).toBe(slotContent);
     });
+
+    it("Left – renders content from left slot for each tab", () => {
+      const slotText = "Left";
+      const slotClass = "left-content";
+
+      const component = mount(UTabs, {
+        props: {
+          options,
+        },
+        slots: {
+          left: `<span class="${slotClass}">${slotText}</span>`,
+        },
+      });
+
+      const leftContents = component.findAll(`.${slotClass}`);
+
+      expect(leftContents.length).toBe(options.length);
+      leftContents.forEach((left) => {
+        expect(left.text()).toBe(slotText);
+      });
+    });
+
+    it("Label – renders content from label slot instead of default label", () => {
+      const testOptions: UTabsOption[] = [{ value: "tab1", label: "Tab 1" }];
+      const slotText = "Custom Label";
+      const slotClass = "label-content";
+
+      const component = mount(UTabs, {
+        props: {
+          options: testOptions,
+        },
+        slots: {
+          label: `<span class="${slotClass}">${slotText}</span>`,
+        },
+      });
+
+      expect(component.find(`.${slotClass}`).exists()).toBe(true);
+      expect(component.find(`.${slotClass}`).text()).toBe(slotText);
+      expect(component.text()).not.toContain(testOptions[0].label);
+    });
+
+    it("Right – renders content from right slot", () => {
+      const slotText = "Right";
+      const slotClass = "right-content";
+
+      const component = mount(UTabs, {
+        props: {
+          options,
+        },
+        slots: {
+          right: `<span class="${slotClass}">${slotText}</span>`,
+        },
+      });
+
+      expect(component.findAll(`.${slotClass}`).length).toBe(options.length);
+      expect(component.find(`.${slotClass}`).text()).toBe(slotText);
+    });
+
+    it("Slot – passes item, index and active state to slots", () => {
+      const modelValue = "tab2";
+
+      const component = mount(UTabs, {
+        props: {
+          options,
+          modelValue,
+        },
+        slots: {
+          left: `
+            <div
+              :data-value="params.item.value"
+              :data-index="params.index"
+              :data-active="params.active"
+            />
+          `,
+        },
+      });
+
+      options.forEach((option, index) => {
+        const el = component.find(`[data-value="${option.value}"][data-index="${index}"]`);
+
+        expect(el.exists()).toBe(true);
+      });
+
+      const activeEl = component.find('[data-active="true"]');
+
+      expect(activeEl.exists()).toBe(true);
+      expect(activeEl.attributes("data-value")).toBe(modelValue);
+    });
   });
 
   describe("Events", () => {
