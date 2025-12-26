@@ -74,6 +74,7 @@ export interface UDatePickerRangeInputsProps {
   minDate: string | Date | undefined;
   config: Config;
   attrs: UDatePickerRangeInputsAttrs;
+  dataTest?: string | null;
 }
 
 export interface CustomRangeButton {

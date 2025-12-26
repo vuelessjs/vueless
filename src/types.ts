@@ -39,6 +39,7 @@ import UTabConfig from "./ui.navigation-tab/config";
 import UTabsConfig from "./ui.navigation-tabs/config";
 import UBreadcrumbsConfig from "./ui.navigation-breadcrumbs/config";
 import UAvatarConfig from "./ui.image-avatar/config";
+import UAvatarGroupConfig from "./ui.image-avatar-group/config";
 import UIconConfig from "./ui.image-icon/config";
 import UCheckboxConfig from "./ui.form-checkbox/config";
 import UCheckboxGroupConfig from "./ui.form-checkbox-group/config";
@@ -306,6 +307,7 @@ export interface Components {
   UTabs: Partial<typeof UTabsConfig>;
   UBreadcrumbs: Partial<typeof UBreadcrumbsConfig>;
   UAvatar: Partial<typeof UAvatarConfig>;
+  UAvatarGroup: Partial<typeof UAvatarGroupConfig>;
   UIcon: Partial<typeof UIconConfig>;
   UCheckbox: Partial<typeof UCheckboxConfig>;
   UCheckboxGroup: Partial<typeof UCheckboxGroupConfig>;
