@@ -294,7 +294,7 @@ const {
   titleFallbackAttrs,
   closeButtonAttrs,
   closeIconAttrs,
-} = useUI<Config>(defaultConfig);
+} = useUI<Config>(defaultConfig, undefined, "drawer");
 </script>
 
 <template>
