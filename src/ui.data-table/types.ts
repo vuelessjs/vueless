@@ -6,12 +6,10 @@ import type { Config as UDividerConfig } from "../ui.container-divider/types";
 
 export type Config = typeof defaultConfig;
 
-type RowKeys = number | string | boolean | undefined | Date | Row | Row[] | ((row: Row) => string);
-
 export interface CellObject {
   contentClass?: string | ((value: unknown | string, row: Row) => string);
   class?: string | ((value: unknown | string, row: Row) => string);
-  [key: string]: unknown | string;
+  [key: string]: unknown;
 }
 
 export type RowId = string | number;
@@ -32,7 +30,7 @@ export interface Row {
   rowDate?: string | Date;
   row?: Row | Row[];
   class?: string | ((row: Row) => string);
-  [key: string]: Cell | RowKeys;
+  [key: string]: unknown;
 }
 
 export interface FlatRow extends Row {
