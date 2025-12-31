@@ -13,7 +13,8 @@ export interface CellObject {
 }
 
 export type RowId = string | number;
-export type Cell = CellObject | string;
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export type Cell = CellObject & any;
 
 export interface RowData {
   [key: string]: Cell;
