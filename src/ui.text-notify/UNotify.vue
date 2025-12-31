@@ -44,7 +44,7 @@ onMounted(() => {
   window.addEventListener("notifyEnd", onNotifyEnd);
   window.addEventListener("notifyClearAll", onClearAll);
 
-  setPosition();
+  waitForPageElement();
 });
 
 onBeforeUnmount(() => {
@@ -86,12 +86,37 @@ function getOffsetWidth(selector: string): number {
   return element ? (element as HTMLElement).offsetWidth : 0;
 }
 
+function waitForPageElement() {
+  const positionClasses = vuelessConfig.components?.UNotify?.positionClasses;
+  const pageClass = positionClasses?.page || config.value?.positionClasses?.page;
+  const maxWaitTime = 2000;
+  const startTime = Date.now();
+
+  function checkAndSetPosition() {
+    const element = document.querySelector(pageClass);
+
+    if (element) {
+      setPosition();
+
+      return;
+    }
+
+    if (Date.now() - startTime < maxWaitTime) {
+      requestAnimationFrame(checkAndSetPosition);
+    } else {
+      setPosition();
+    }
+  }
+
+  checkAndSetPosition();
+}
+
 function setPosition() {
   const positionClasses = vuelessConfig.components?.UNotify?.positionClasses;
   const pageClass = positionClasses?.page || config.value?.positionClasses?.page;
   const asideClass = positionClasses?.aside || config.value?.positionClasses?.aside;
-  const pageWidth = getOffsetWidth(`${pageClass}`);
-  const asideWidth = getOffsetWidth(`${asideClass}`);
+  const pageWidth = getOffsetWidth(`.${pageClass}`);
+  const asideWidth = getOffsetWidth(`.${asideClass}`);
   const notifyWidth = notificationsWrapperRef.value?.$el.offsetWidth || 0;
 
   const styles: Record<string, string> = {
@@ -104,13 +129,11 @@ function setPosition() {
   styles[props.yPosition] = "0px";
 
   if (props.xPosition === NotificationPosition.Center) {
-    styles.left = `calc(50% - ${notifyWidth / 2}px)`;
+    styles.left = pageWidth
+      ? `${asideWidth + pageWidth / 2 - notifyWidth / 2}px`
+      : `calc(50% - ${notifyWidth / 2}px)`;
   } else {
     styles[props.xPosition] = "0px";
-  }
-
-  if (pageWidth && props.xPosition !== NotificationPosition.Right) {
-    styles.left = `${asideWidth + pageWidth / 2 - notifyWidth / 2}px`;
   }
 
   notifyPositionStyles.value = styles;

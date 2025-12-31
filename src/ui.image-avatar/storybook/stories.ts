@@ -9,7 +9,6 @@ import {
 import UAvatar from "../../ui.image-avatar/UAvatar.vue";
 import URow from "../../ui.container-row/URow.vue";
 import ULoader from "../../ui.loader/ULoader.vue";
-import tooltip from "../../v.tooltip/vTooltip";
 
 import johnDoeImg from "./assets/john-doe.png";
 
@@ -22,7 +21,7 @@ interface UAvatarArgs extends Props {
 }
 
 export default {
-  id: "6030",
+  id: "6020",
   title: "Images & Icons / Avatar",
   component: UAvatar,
   args: {
@@ -51,7 +50,6 @@ const DefaultTemplate: StoryFn<UAvatarArgs> = (args: UAvatarArgs) => ({
 
 const EnumTemplate: StoryFn<UAvatarArgs> = (args: UAvatarArgs, { argTypes }) => ({
   components: { URow, UAvatar },
-  directives: { tooltip },
   setup: () => ({ args, argTypes, getArgs }),
   template: `
     <URow>
@@ -104,6 +102,22 @@ export const PlaceholderIcon = DefaultTemplate.bind({});
 PlaceholderIcon.args = {
   label: undefined,
   placeholderIcon: "account_circle",
+};
+
+export const Chip = DefaultTemplate.bind({});
+Chip.args = {
+  rounded: "full",
+  chip: {
+    color: "warning",
+    inset: true,
+  },
+};
+Chip.parameters = {
+  docs: {
+    description: {
+      story: "For the full list of chip object properties, see the table below.",
+    },
+  },
 };
 
 export const Variants = EnumTemplate.bind({});
