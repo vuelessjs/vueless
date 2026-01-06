@@ -6,7 +6,7 @@ import UTableRow from "../UTableRow.vue";
 import UIcon from "../../ui.image-icon/UIcon.vue";
 import UCheckbox from "../../ui.form-checkbox/UCheckbox.vue";
 
-import type { FlatRow, ColumnObject, UTableRowAttrs, Config } from "../types";
+import type { FlatRow, ColumnObject, UTableRowAttrs, Config, Row } from "../types";
 
 describe("UTableRow.vue", () => {
   const defaultColumns: ColumnObject[] = [
@@ -135,7 +135,7 @@ describe("UTableRow.vue", () => {
         ...defaultRow,
         name: {
           value: "John Doe",
-          class: (value, row) => `dynamic-${row.role}`,
+          class: (value: unknown, row: Row) => `dynamic-${row.role}`,
           contentClass: (value: unknown) => `content-${value}`,
         },
       };

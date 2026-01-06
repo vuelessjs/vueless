@@ -1,4 +1,3 @@
-import { h } from "vue";
 import { mount } from "@vue/test-utils";
 import { describe, it, expect, vi } from "vitest";
 
@@ -386,7 +385,7 @@ describe("UTab.vue", () => {
           value,
         },
         slots: {
-          left: (props) => h("div", { "data-active": props.active }),
+          left: '<div :data-active="params.active" />',
         },
         global: {
           provide: {
@@ -409,7 +408,7 @@ describe("UTab.vue", () => {
           leftIcon,
         },
         slots: {
-          left: (props) => h("div", { "data-icon-name": props.iconName }),
+          left: '<div :data-icon-name="params.iconName" />',
         },
         global: {
           provide: defaultProvide,

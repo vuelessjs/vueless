@@ -1,7 +1,7 @@
 export default /*tw*/ {
   wrapper: {
     base: `
-      my-2 p-1 flex flex-col gap-1 w-auto absolute z-50 shadow-sm
+      p-1 flex flex-col gap-1 w-auto absolute z-50 shadow-sm
       rounded-medium border border-solid border-default bg-default
       overflow-auto [-webkit-overflow-scrolling:touch]
       focus:outline-hidden
