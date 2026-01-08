@@ -18,17 +18,17 @@ export interface Props {
   /**
    * Gap between items.
    */
-  gap?: "none" | "2xs" | "xs" | "sm" | "md" | "lg" | "xl" | "2xl";
+  gap?: "none" | "3xs" | "2xs" | "xs" | "sm" | "md" | "lg" | "xl" | "2xl" | "3xl";
 
   /**
    * Vertical gap override.
    */
-  rowGap?: "none" | "2xs" | "xs" | "sm" | "md" | "lg" | "xl" | "2xl";
+  rowGap?: "none" | "3xs" | "2xs" | "xs" | "sm" | "md" | "lg" | "xl" | "2xl" | "3xl";
 
   /**
    * Horizontal gap override.
    */
-  colGap?: "none" | "2xs" | "xs" | "sm" | "md" | "lg" | "xl" | "2xl";
+  colGap?: "none" | "3xs" | "2xs" | "xs" | "sm" | "md" | "lg" | "xl" | "2xl" | "3xl";
 
   /**
    * Vertical alignment (align-items).

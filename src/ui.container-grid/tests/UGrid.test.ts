@@ -64,13 +64,15 @@ describe("UGrid.vue", () => {
     it("Gap – applies the correct gap class", () => {
       const gapClasses = {
         none: "gap-0",
+        "3xs": "gap-0.5",
         "2xs": "gap-1",
         xs: "gap-2",
         sm: "gap-3",
         md: "gap-4",
         lg: "gap-5",
         xl: "gap-6",
-        "2xl": "gap-8",
+        "2xl": "gap-7",
+        "3xl": "gap-8",
       };
 
       Object.entries(gapClasses).forEach(([gap, classes]) => {
@@ -87,13 +89,15 @@ describe("UGrid.vue", () => {
     it("Row Gap – applies the correct row gap class", () => {
       const rowGapClasses = {
         none: "gap-y-0",
+        "3xs": "gap-y-0.5",
         "2xs": "gap-y-1",
         xs: "gap-y-2",
         sm: "gap-y-3",
         md: "gap-y-4",
         lg: "gap-y-5",
         xl: "gap-y-6",
-        "2xl": "gap-y-8",
+        "2xl": "gap-y-7",
+        "3xl": "gap-y-8",
       };
 
       Object.entries(rowGapClasses).forEach(([rowGap, classes]) => {
@@ -110,13 +114,15 @@ describe("UGrid.vue", () => {
     it("Col Gap – applies the correct col gap class", () => {
       const colGapClasses = {
         none: "gap-x-0",
+        "3xs": "gap-x-0.5",
         "2xs": "gap-x-1",
         xs: "gap-x-2",
         sm: "gap-x-3",
         md: "gap-x-4",
         lg: "gap-x-5",
         xl: "gap-x-6",
-        "2xl": "gap-x-8",
+        "2xl": "gap-x-7",
+        "3xl": "gap-x-8",
       };
 
       Object.entries(colGapClasses).forEach(([colGap, classes]) => {
