@@ -13,7 +13,6 @@ import {
   TYPESCRIPT_EXT,
   SUPPRESS_TS_CHECK,
   VUELESS_APP_DIR,
-  VUELESS_APP_CONFIGS_DIR,
   COMPONENTS_INDEX_EXPORT,
   COMPONENTS_INDEX_COMMENT,
   VUELESS_CONFIGS_CACHED_DIR,
@@ -252,7 +251,7 @@ export async function detectTypeScript() {
  * @return {Promise<void>} A promise that resolves when the configuration import and index file generation is completed.
  */
 export async function autoImportUserConfigs(basePath = "") {
-  const vuelessConfigDir = path.join(cwd(), basePath, VUELESS_APP_CONFIGS_DIR);
+  const vuelessConfigDir = path.join(cwd(), basePath, VUELESS_APP_DIR);
 
   const indexTsPath = path.join(vuelessConfigDir, `${CONFIG_INDEX_FILE_NAME}${TYPESCRIPT_EXT}`);
   const indexJsPath = path.join(vuelessConfigDir, `${CONFIG_INDEX_FILE_NAME}${JAVASCRIPT_EXT}`);
