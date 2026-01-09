@@ -51,7 +51,7 @@ export async function vuelessInit(options) {
   /* Create a default config file. */
   await createVuelessConfig(destPath);
 
-  /* Create a vueless config directory and index file. */
+  /* Create a vueless app directory and index file. */
   await createVuelessAppDir(fileExt);
 
   /* Create pnpm package manager config. */
