@@ -13,6 +13,7 @@ import {
   JAVASCRIPT_EXT,
   TYPESCRIPT_EXT,
   VUELESS_APP_DIR,
+  VUELESS_APP_CONFIGS_DIR,
   CONFIG_INDEX_FILE_NAME,
   VUELESS_CONFIG_FILE_NAME,
 } from "../../constants.js";
@@ -52,7 +53,7 @@ export async function vuelessInit(options) {
   await createVuelessConfig(destPath);
 
   /* Create a vueless config directory and index file. */
-  await createVuelessConfigDir(fileExt);
+  await createVuelessAppDir(fileExt);
 
   /* Create pnpm package manager config. */
   if (options.includes("--pnpm")) {
@@ -111,21 +112,32 @@ async function createVuelessConfig(destPath) {
 }
 
 /**
- * Creates a Vueless config directory and index file.
+ * Creates a Vueless app directory and index file.
  * @param {string} fileExt - The file extension to use for the index file.
  */
-async function createVuelessConfigDir(fileExt) {
+async function createVuelessAppDir(fileExt) {
   const vuelessDir = path.join(cwd(), VUELESS_APP_DIR);
+  const vuelessConfigsDir = path.join(cwd(), VUELESS_APP_CONFIGS_DIR);
 
-  if (existsSync(vuelessDir)) return;
+  if (existsSync(vuelessConfigsDir)) return;
 
-  mkdirSync(vuelessDir);
+  if (!existsSync(vuelessDir)) {
+    mkdirSync(vuelessDir);
+    console.log(
+      styleText("green", `The '${VUELESS_APP_DIR}' directory was created in the project root.`),
+    );
+  }
+
+  mkdirSync(vuelessConfigsDir, { recursive: true });
   console.log(
-    styleText("green", `The '${VUELESS_APP_DIR}' directory was created in the project root.`),
+    styleText(
+      "green",
+      `The '${VUELESS_APP_CONFIGS_DIR}' directory was created in the project root.`,
+    ),
   );
 
   const indexFileContent = await generateConfigIndexContent();
-  const destPath = path.join(vuelessDir, `${CONFIG_INDEX_FILE_NAME}${fileExt}`);
+  const destPath = path.join(vuelessConfigsDir, `${CONFIG_INDEX_FILE_NAME}${fileExt}`);
 
   await writeFile(destPath, indexFileContent, "utf-8");
 }
