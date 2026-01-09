@@ -420,8 +420,9 @@ export const VUELESS_CONFIGS_CACHED_DIR = `${VUELESS_CACHE_DIR}/configs`;
 export const VUELESS_MERGED_CONFIGS_CACHED_DIR = `${VUELESS_CACHE_DIR}/mergedConfigs`;
 export const VUELESS_CONFIG_FILE_NAME = "vueless.config";
 export const CONFIG_INDEX_FILE_NAME = "index";
-export const VUELESS_CONFIG_DIR = ".vueless";
-export const VUELESS_USER_COMPONENTS_DIR = `${VUELESS_CONFIG_DIR}/components`;
+export const VUELESS_APP_DIR = ".vueless";
+export const VUELESS_APP_CONFIGS_DIR = `${VUELESS_APP_DIR}/configs`;
+export const VUELESS_USER_COMPONENTS_DIR = `${VUELESS_APP_DIR}/components`;
 export const SRC_USER_COMPONENTS_DIR = `${SRC_DIR}/components`;
 
 /* System error codes */

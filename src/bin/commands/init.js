@@ -12,7 +12,7 @@ import { DEFAULT_VUELESS_CONFIG_CONTENT } from "../constants.js";
 import {
   JAVASCRIPT_EXT,
   TYPESCRIPT_EXT,
-  VUELESS_CONFIG_DIR,
+  VUELESS_APP_DIR,
   CONFIG_INDEX_FILE_NAME,
   VUELESS_CONFIG_FILE_NAME,
 } from "../../constants.js";
@@ -115,13 +115,13 @@ async function createVuelessConfig(destPath) {
  * @param {string} fileExt - The file extension to use for the index file.
  */
 async function createVuelessConfigDir(fileExt) {
-  const vuelessDir = path.join(cwd(), VUELESS_CONFIG_DIR);
+  const vuelessDir = path.join(cwd(), VUELESS_APP_DIR);
 
   if (existsSync(vuelessDir)) return;
 
   mkdirSync(vuelessDir);
   console.log(
-    styleText("green", `The '${VUELESS_CONFIG_DIR}' directory was created in the project root.`),
+    styleText("green", `The '${VUELESS_APP_DIR}' directory was created in the project root.`),
   );
 
   const indexFileContent = await generateConfigIndexContent();
