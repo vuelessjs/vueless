@@ -158,13 +158,12 @@ watch(
       const maxHeight = options
         .slice(0, props.visibleOptions)
         .map((el) => {
-          const elHeight = el.getBoundingClientRect().height;
-
           const styles = window.getComputedStyle(el);
+          const height = parseFloat(styles.height || "0");
           const marginTop = parseFloat(styles.marginTop || "0");
           const marginBottom = parseFloat(styles.marginBottom || "0");
 
-          return elHeight + marginTop + marginBottom;
+          return height + marginTop + marginBottom;
         })
         .reduce((acc, cur) => acc + cur, 0);
 
