@@ -18,7 +18,14 @@ export default /*tw*/ {
     },
   },
   toggleIcon: {
-    base: "{UIcon} transition duration-300 -mr-0.5",
+    base: "{UIcon} transition duration-300",
+    variants: {
+      size: {
+        sm: "-ml-0.5 -mr-0.5",
+        md: "-ml-1 -mr-1",
+        lg: "-ml-1 -mr-1.5",
+      },
+    },
     defaults: {
       size: {
         sm: "2xs",

@@ -26,15 +26,25 @@ export default /*tw*/ {
     },
   },
   toggleIcon: {
-    base: "{UIcon} transition duration-300 -mr-1",
+    base: "{UIcon} transition duration-300",
+    variants: {
+      size: {
+        "2xs": "-ml-0.5 -mr-1",
+        xs: "-ml-1 -mr-1",
+        sm: "-ml-1 -mr-1.5",
+        md: "-ml-1 -mr-2",
+        lg: "-ml-1.5 -mr-2.5",
+        xl: "-ml-1.5 -mr-2.5",
+      },
+    },
     defaults: {
       size: {
         "2xs": "2xs",
         xs: "xs",
         sm: "sm",
         md: "sm",
-        lg: "sm",
-        xl: "sm",
+        lg: "md",
+        xl: "md",
       },
     },
     compoundVariants: [{ opened: true, class: "rotate-180" }],
