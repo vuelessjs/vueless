@@ -3,7 +3,6 @@ import { computed, useTemplateRef } from "vue";
 
 import { useUI } from "../composables/useUI";
 import { getDefaults } from "../utils/ui";
-import { useDropdownLabel } from "../ui.dropdown/useDropdownLabel";
 
 import UIcon from "../ui.image-icon/UIcon.vue";
 import ULink from "../ui.button-link/ULink.vue";
@@ -72,13 +71,6 @@ const toggleIconName = computed(() => {
   return props.toggleIcon ? config.value.defaults.toggleIcon : "";
 });
 
-const { displayLabel } = useDropdownLabel({
-  label: () => props.label,
-  labelDisplayCount: () => props.labelDisplayCount,
-  labelKey: () => props.labelKey,
-  selectedOptions: () => dropdownRef.value?.selectedOptions ?? [],
-});
-
 function hide() {
   dropdownRef.value?.hide();
 }
@@ -106,14 +98,11 @@ const mutatedProps = computed(() => ({
   opened: dropdownRef.value?.isOpened ?? false,
 }));
 
-const {
-  config,
-  getDataTest,
-  dropdownLinkAttrs,
-  toggleWrapperAttrs,
-  toggleLinkAttrs,
-  toggleIconAttrs,
-} = useUI<Config>(defaultConfig, mutatedProps, "toggleLink");
+const { config, getDataTest, dropdownLinkAttrs, toggleLinkAttrs, toggleIconAttrs } = useUI<Config>(
+  defaultConfig,
+  mutatedProps,
+  "toggleLink",
+);
 </script>
 
 <template>
@@ -121,6 +110,8 @@ const {
     :id="id"
     ref="dropdown"
     :model-value="modelValue"
+    :label="label"
+    :label-display-count="labelDisplayCount"
     :search="search"
     :y-position="yPosition"
     :x-position="xPosition"
@@ -146,7 +137,7 @@ const {
     @open="emit('open')"
     @close="emit('close')"
   >
-    <template #default="{ opened }">
+    <template #default="{ opened, displayLabel, fullLabel }">
       <!--
         @slot Use it to add something before the label.
         @binding {boolean} opened
@@ -160,7 +151,7 @@ const {
         :dashed="dashed"
         :disabled="disabled"
         :underlined="underlined"
-        :title="dropdownRef?.getFullOptionLabels()"
+        :title="fullLabel"
         v-bind="toggleLinkAttrs"
         tabindex="-1"
         :data-test="getDataTest()"

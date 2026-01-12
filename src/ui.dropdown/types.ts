@@ -12,6 +12,16 @@ export interface Props {
   modelValue?: string | number | UnknownObject | (string | number | UnknownObject)[];
 
   /**
+   * Dropdown label.
+   */
+  label?: string;
+
+  /**
+   * Determines how many selected option labels are shown in the label.
+   */
+  labelDisplayCount?: number;
+
+  /**
    * Options list.
    */
   options?: Option[];

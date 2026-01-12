@@ -20,6 +20,7 @@ const props = withDefaults(defineProps<Props>(), {
   ...getDefaults<Props, Config>(defaultConfig, COMPONENT_NAME),
   options: () => [],
   modelValue: "",
+  label: "",
 });
 
 const emit = defineEmits([
@@ -101,11 +102,30 @@ const selectedOptions = computed(() => {
   ].filter((option) => !!option);
 });
 
-function getFullOptionLabels() {
-  if (!selectedOptions.value) return "";
+const displayLabel = computed(() => {
+  if (!props.labelDisplayCount || !selectedOptions.value.length) {
+    return props.label;
+  }
+
+  const selectedLabels = selectedOptions.value
+    .slice(0, props.labelDisplayCount)
+    .map((option) => option[props.labelKey]);
+  const restLabelCount = selectedOptions.value.length - props.labelDisplayCount;
+
+  if (restLabelCount > 0) {
+    selectedLabels.push(`+${restLabelCount}`);
+  }
+
+  return selectedLabels.join(", ");
+});
+
+const fullLabel = computed(() => {
+  if (!selectedOptions.value.length) {
+    return "";
+  }
 
   return selectedOptions.value.map((option) => option[props.labelKey]).join(", ");
-}
+});
 
 function onSearchChange(query: string) {
   emit("searchChange", query);
@@ -179,10 +199,16 @@ defineExpose({
   selectedOptions,
 
   /**
-   * Returns full option labels joined by comma.
-   * @property {function}
+   * The display label for the dropdown.
+   * @property {string}
    */
-  getFullOptionLabels,
+  displayLabel,
+
+  /**
+   * Returns full option labels joined by comma.
+   * @property {string}
+   */
+  fullLabel,
 });
 
 /*
@@ -219,8 +245,16 @@ const { getDataTest, dropdownAttrs, listboxAttrs } = useUI<Config>(
       <!--
         @slot Use it to add custom trigger element for the dropdown.
         @binding {boolean} opened
+        @binding {string} displayLabel
+        @binding {string} fullLabel
+        @binding {Option[]} selectedOptions
       -->
-      <slot :opened="opened" />
+      <slot
+        :opened="opened"
+        :display-label="displayLabel"
+        :full-label="fullLabel"
+        :selected-options="selectedOptions"
+      />
     </template>
 
     <template #content="{ opened, contentClasses }">

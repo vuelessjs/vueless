@@ -3,7 +3,6 @@ import { computed, useTemplateRef } from "vue";
 
 import { useUI } from "../composables/useUI";
 import { getDefaults } from "../utils/ui";
-import { useDropdownLabel } from "../ui.dropdown/useDropdownLabel";
 
 import UIcon from "../ui.image-icon/UIcon.vue";
 import UBadge from "../ui.text-badge/UBadge.vue";
@@ -72,13 +71,6 @@ const toggleIconName = computed(() => {
   return props.toggleIcon ? config.value.defaults.toggleIcon : "";
 });
 
-const { displayLabel } = useDropdownLabel({
-  label: () => props.label,
-  labelDisplayCount: () => props.labelDisplayCount,
-  labelKey: () => props.labelKey,
-  selectedOptions: () => dropdownRef.value?.selectedOptions ?? [],
-});
-
 function hide() {
   dropdownRef.value?.hide();
 }
@@ -115,6 +107,8 @@ const { getDataTest, config, toggleBadgeAttrs, dropdownBadgeAttrs, toggleIconAtt
     :id="id"
     ref="dropdown"
     :model-value="modelValue"
+    :label="label"
+    :label-display-count="labelDisplayCount"
     :search="search"
     :y-position="yPosition"
     :x-position="xPosition"
@@ -140,14 +134,14 @@ const { getDataTest, config, toggleBadgeAttrs, dropdownBadgeAttrs, toggleIconAtt
     @open="emit('open')"
     @close="emit('close')"
   >
-    <template #default="{ opened }">
+    <template #default="{ opened, displayLabel, fullLabel }">
       <UBadge
         :label="displayLabel"
         :size="size"
         :color="color"
         :variant="variant"
         :round="round"
-        :title="dropdownRef?.getFullOptionLabels()"
+        :title="fullLabel"
         v-bind="toggleBadgeAttrs"
         tabindex="-1"
         :data-test="getDataTest()"
