@@ -294,6 +294,7 @@ export const COMPONENTS = {
   UGrid: "ui.container-grid",
   UGroup: "ui.container-group",
   UGroups: "ui.container-groups",
+  UCollapsible: "ui.container-collapsible",
   UAccordion: "ui.container-accordion",
   UAccordionItem: "ui.container-accordion-item",
   UEmpty: "ui.container-empty",

@@ -55,7 +55,7 @@ const DefaultTemplate: StoryFn<UCollapsibleArgs> = (args: UCollapsibleArgs) => (
   components: { UCollapsible, UButton, UCard },
   setup: () => ({ args, slots: getSlotNames(UCollapsible.__name) }),
   template: `
-    <UCollapsible v-bind="args" v-model:open="args.open">
+    <UCollapsible v-bind="args">
       ${args.slotTemplate || getSlotsFragment("")}
     </UCollapsible>
   `,

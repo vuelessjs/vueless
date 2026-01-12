@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { nextTick, computed, ref, useId, useTemplateRef } from "vue";
+import { nextTick, computed, ref, useId, useTemplateRef, watch } from "vue";
 
 import { useUI } from "../composables/useUI";
 import { getDefaults } from "../utils/ui";
@@ -41,14 +41,21 @@ const isClickingContent = ref(false);
 const wrapperRef = useTemplateRef<HTMLDivElement>("wrapper");
 const elementId = props.id || useId();
 
-const isOpened = computed({
-  get: () => props.open ?? internalIsOpened.value,
-  set: (value) => {
-    if (props.open !== undefined) {
-      emit("update:open", value);
-    } else {
-      internalIsOpened.value = value;
+watch(
+  () => props.open,
+  (newValue) => {
+    if (newValue !== undefined) {
+      internalIsOpened.value = newValue;
     }
+  },
+  { immediate: true },
+);
+
+const isOpened = computed({
+  get: () => internalIsOpened.value,
+  set: (value) => {
+    internalIsOpened.value = value;
+    emit("update:open", value);
   },
 });
 
@@ -172,8 +179,9 @@ const { getDataTest, config, wrapperAttrs, contentAttrs } = useUI<Config>(
         <!--
           @slot Use it to add some content need to be shown.
           @binding {boolean} opened
+          @binding {string} contentClasses
         -->
-        <slot name="content" :opened="isOpened" />
+        <slot name="content" :opened="isOpened" :content-classes="contentAttrs.class" />
       </div>
     </Transition>
   </div>

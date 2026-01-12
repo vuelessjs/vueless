@@ -15,8 +15,8 @@ export default /*tw*/ {
         false: "",
       },
       yPosition: {
-        top: "bottom-full mb-1.5",
-        bottom: "top-full mt-1.5",
+        top: "bottom-full mb-1",
+        bottom: "top-full mt-1",
       },
       xPosition: {
         left: "left-0",
