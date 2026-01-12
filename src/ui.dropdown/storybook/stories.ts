@@ -27,6 +27,7 @@ interface DefaultUDropdownArgs extends Props {
 interface EnumUDropdownArgs extends DefaultUDropdownArgs {
   enum: keyof Pick<Props, "size" | "xPosition" | "yPosition" | "color">;
   class?: string;
+  buttonClass?: string;
 }
 
 export default {
@@ -48,18 +49,22 @@ export default {
     docs: {
       ...getDocsDescription(UDropdown.__name),
       story: {
-        height: "200px",
+        height: "230px",
       },
     },
   },
 } as Meta;
 
+const defaultTemplate = `
+  <UAvatar label="JD" interactive />
+`;
+
 const DefaultTemplate: StoryFn<DefaultUDropdownArgs> = (args: DefaultUDropdownArgs) => ({
-  components: { UDropdown, UButton, UIcon, ULink, UBadge, ULoader, URow, UText, UAvatar },
+  components: { UDropdown, UButton, UIcon, ULink, UBadge, ULoader, URow, UCol, UText, UAvatar },
   setup: () => ({ args, slots: getSlotNames(UDropdown.__name) }),
   template: `
     <UDropdown v-bind="args">
-      ${args.slotTemplate || getSlotsFragment(`<UAvatar label="JD" interactive />`)}
+      ${args.slotTemplate || getSlotsFragment(defaultTemplate)}
     </UDropdown>
   `,
 });
@@ -68,9 +73,8 @@ const SelectableTemplate: StoryFn<DefaultUDropdownArgs> = (args: DefaultUDropdow
   components: { UDropdown, UButton, UIcon, UAvatar },
   setup: () => ({ args, slots: getSlotNames(UDropdown.__name) }),
   template: `
-    <UDropdown v-bind="args" v-model="args.modelValue" #default="{ opened }">
-      <UAvatar label="JD" interactive />
-      ${args.slotTemplate || getSlotsFragment("")}
+    <UDropdown v-bind="args" v-model="args.modelValue">
+      ${args.slotTemplate || getSlotsFragment(defaultTemplate)}
     </UDropdown>
   `,
 });
@@ -86,7 +90,7 @@ const EnumTemplate: StoryFn<EnumUDropdownArgs> = (args: EnumUDropdownArgs, { arg
         :key="option"
         #default="{ opened }"
       >
-        <UAvatar label="JD" interactive />
+        <UButton :[args.enum]="option" :label="option" :class="args.buttonClass" interactive />
       </UDropdown>
     </URow>
   `,
@@ -94,23 +98,23 @@ const EnumTemplate: StoryFn<EnumUDropdownArgs> = (args: EnumUDropdownArgs, { arg
 
 export const Default = DefaultTemplate.bind({});
 Default.args = {};
-Default.parameters = {
-  docs: {
-    story: {
-      height: "250px",
-    },
-  },
-};
 
 export const Disabled = DefaultTemplate.bind({});
 Disabled.args = { disabled: true };
+Disabled.parameters = {
+  docs: {
+    story: {
+      height: "120px",
+    },
+  },
+};
 
 export const Searchable = DefaultTemplate.bind({});
 Searchable.args = { searchable: true };
 Searchable.parameters = {
   docs: {
     story: {
-      height: "250px",
+      height: "270px",
     },
   },
 };
@@ -120,7 +124,7 @@ SearchModelValue.args = { searchable: true, search: "Copy" };
 SearchModelValue.parameters = {
   docs: {
     story: {
-      height: "250px",
+      height: "270px",
     },
   },
 };
@@ -128,28 +132,36 @@ SearchModelValue.parameters = {
 export const NoCloseOnSelect = SelectableTemplate.bind({});
 NoCloseOnSelect.args = {
   modelValue: "pending",
+  closeOnSelect: false,
   options: [
     { label: "Active", value: "active" },
     { label: "Pending", value: "pending" },
     { label: "Archived", value: "archived" },
   ],
-  closeOnSelect: false,
+  slotTemplate: `
+    <template #default>
+      <UButton label="Select status" />
+    </template>
+  `,
 };
 
 export const OptionSelection = SelectableTemplate.bind({});
 OptionSelection.args = {
-  label: "Select status",
   modelValue: "active",
   options: [
     { label: "Active", value: "active" },
     { label: "Pending", value: "pending" },
     { label: "Archived", value: "archived" },
   ],
+  slotTemplate: `
+    <template #default>
+      <UButton label="Select status" />
+    </template>
+  `,
 };
 
 export const MultipleOptionSelection = SelectableTemplate.bind({});
 MultipleOptionSelection.args = {
-  label: "Select status",
   modelValue: ["active", "pending", "archived"],
   multiple: true,
   options: [
@@ -157,22 +169,24 @@ MultipleOptionSelection.args = {
     { label: "Pending", value: "pending" },
     { label: "Archived", value: "archived" },
   ],
+  slotTemplate: `
+    <template #default>
+      <UButton label="Select status" />
+    </template>
+  `,
 };
 
 export const Size = EnumTemplate.bind({});
-Size.args = { enum: "size", label: "{enumValue}" };
+Size.args = { enum: "size" };
 
 export const Color = EnumTemplate.bind({});
-Color.args = { enum: "color", label: "{enumValue}", options: [] };
+Color.args = { enum: "color" };
 
 export const ListboxXPosition = EnumTemplate.bind({});
-ListboxXPosition.args = {
-  enum: "xPosition",
-  label: "{enumValue}",
-};
+ListboxXPosition.args = { enum: "xPosition", buttonClass: "min-w-32" };
 
 export const ListboxYPosition = EnumTemplate.bind({});
-ListboxYPosition.args = { enum: "yPosition", label: "{enumValue}" };
+ListboxYPosition.args = { enum: "yPosition" };
 ListboxYPosition.parameters = {
   storyClasses: "h-[350px] flex items-center px-6 pt-8 pb-12",
 };
@@ -201,11 +215,12 @@ export const EmptySlot = DefaultTemplate.bind({});
 EmptySlot.args = {
   options: [],
   slotTemplate: `
+    ${defaultTemplate}
     <template #empty>
-      <URow align="center">
+      <UCol align="center" gap="xs" class="w-32 p-2">
         <ULoader loading size="sm" />
-        <UText label="Loading, this may take a while..." />
-      </URow>
+        <UText align="center" label="Loading, this may take a while..." />
+      </UCol>
     </template>
   `,
 };
@@ -216,38 +231,47 @@ export const OptionSlots: StoryFn<DefaultUDropdownArgs> = (args) => ({
   template: `
     <URow>
       <UDropdown
-        v-model="args.beforeOptionModel"
         :options="[
-          { label: 'John Doe', value: '1', role: 'Developer', status: 'online', statusColor: 'success' },
-          { label: 'Jane Smith', value: '2', role: 'Designer', status: 'away', statusColor: 'warning' },
-          { label: 'Mike Johnson', value: '3', role: 'Product Manager', status: 'offline', statusColor: 'grayscale' },
+          { label: 'John Doe', value: '1', role: 'Developer' },
+          { label: 'Jane Smith', value: '2', role: 'Designer' },
+          { label: 'Mike Johnson', value: '3', role: 'Product Manager' },
         ]"
-        #default="{ opened }"
       >
         <UAvatar label="JD" interactive />
         <template #before-option="{ option }">
-          <UIcon name="person" size="sm" />
+          <UIcon name="person" size="xs" color="neutral" />
         </template>
       </UDropdown>
 
       <UDropdown
-        v-model="args.optionModel"
         :options="[
           { label: 'John Doe', value: '1', role: 'Developer', status: 'online', statusColor: 'success' },
           { label: 'Jane Smith', value: '2', role: 'Designer', status: 'away', statusColor: 'warning' },
           { label: 'Mike Johnson', value: '3', role: 'Product Manager', status: 'offline', statusColor: 'grayscale' },
         ]"
-        #default="{ opened }"
       >
         <UAvatar label="JD" interactive />
         <template #option="{ option }">
-          <URow align="center" gap="xs">
+          <URow align="center" gap="xs" justify="between" class="w-40">
             <UCol gap="none">
               <UText size="sm">{{ option.label }}</UText>
               <UText variant="lifted" size="xs">{{ option.role }}</UText>
             </UCol>
             <UBadge :label="option.status" :color="option.statusColor" size="sm" variant="subtle" />
           </URow>
+        </template>
+      </UDropdown>
+
+      <UDropdown
+        :options="[
+          { label: 'John Doe', value: '1', verified: true },
+          { label: 'Jane Smith', value: '2', verified: true },
+          { label: 'Mike Johnson', value: '3', verified: false },
+        ]"
+      >
+        <UAvatar label="JD" interactive />
+        <template #after-option="{ option }">
+          <UIcon v-if="option.verified" name="verified" size="xs" color="success" />
         </template>
       </UDropdown>
     </URow>
@@ -257,45 +281,6 @@ OptionSlots.parameters = {
   docs: {
     story: {
       height: "300px",
-    },
-  },
-};
-
-export const CustomDropdownSlot: StoryFn<DefaultUDropdownArgs> = (args) => ({
-  components: { UDropdown, UAvatar, URow, UCol, UText, UButton },
-  setup: () => ({ args }),
-  template: `
-    <UDropdown #default="{ opened }">
-      <UAvatar label="JD" interactive />
-      <template #dropdown="{ opened }">
-        <div class="bg-white rounded-lg shadow-lg p-4 w-64">
-          <URow gap="sm" align="center">
-            <UAvatar label="John Doe" size="lg" />
-            <UCol gap="none">
-              <UText size="md" weight="semibold">John Doe</UText>
-              <UText size="sm" variant="lifted">john.doe@example.com</UText>
-            </UCol>
-          </URow>
-          <div class="border-t border-gray-200 my-3"></div>
-          <UCol gap="xs">
-            <UButton label="Profile" variant="thirdary" size="sm" block />
-            <UButton label="Settings" variant="thirdary" size="sm" block />
-            <UButton label="Logout" variant="thirdary" size="sm" block color="red" />
-          </UCol>
-        </div>
-      </template>
-    </UDropdown>
-  `,
-});
-CustomDropdownSlot.parameters = {
-  docs: {
-    description: {
-      story:
-        "The `dropdown` slot allows you to replace the default UListbox with completely custom content. " +
-        "This is useful for creating custom menus, user profile dropdowns, or any other custom dropdown content.",
-    },
-    story: {
-      height: "350px",
     },
   },
 };

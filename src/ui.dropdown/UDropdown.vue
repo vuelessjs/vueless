@@ -1,13 +1,12 @@
 <script setup lang="ts">
-import { nextTick, computed, ref, useId, useTemplateRef } from "vue";
+import { nextTick, computed, ref, useTemplateRef } from "vue";
 import { isEqual } from "lodash-es";
 
 import { useUI } from "../composables/useUI";
-import { getDefaults } from "../utils/ui";
+import { getDefaults, cx } from "../utils/ui";
 
 import UListbox from "../ui.form-listbox/UListbox.vue";
-
-import vClickOutside from "../v.click-outside/vClickOutside";
+import UCollapsible from "../ui.container-collapsible/UCollapsible.vue";
 
 import defaultConfig from "./config";
 import { COMPONENT_NAME } from "./constants";
@@ -61,13 +60,11 @@ const emit = defineEmits([
 ]);
 
 type UListboxRef = InstanceType<typeof UListbox>;
+type UCollapsibleRef = InstanceType<typeof UCollapsible>;
 
-const isOpened = ref(false);
 const isClickingOption = ref(false);
 const listboxRef = useTemplateRef<UListboxRef>("dropdown-list");
-const wrapperRef = useTemplateRef<HTMLDivElement>("wrapper");
-
-const elementId = props.id || useId();
+const collapsibleRef = useTemplateRef<UCollapsibleRef>("collapsible");
 
 const dropdownValue = computed({
   get: () => {
@@ -119,7 +116,7 @@ function onClickOption(option: Option) {
 
   emit("clickOption", option);
 
-  if (!props.multiple && props.closeOnSelect) {
+  if (props.closeOnSelect) {
     hide();
   }
 
@@ -130,29 +127,24 @@ function onClickOption(option: Option) {
   });
 }
 
-function handleClickOutside() {
-  if (isClickingOption.value) return;
+function onOpen() {
+  nextTick(() => listboxRef.value?.wrapperRef?.focus());
 
-  hide();
+  emit("open");
 }
 
-function toggle() {
-  if (props.disabled) return;
-
-  isOpened.value = !isOpened.value;
-
-  if (isOpened.value) {
-    nextTick(() => listboxRef.value?.wrapperRef?.focus());
-
-    emit("open");
-  }
-}
-
-function hide() {
-  isOpened.value = false;
+function onClose() {
   dropdownSearch.value = "";
 
   emit("close");
+}
+
+function toggle() {
+  collapsibleRef.value?.toggle();
+}
+
+function hide() {
+  collapsibleRef.value?.hide();
 }
 
 defineExpose({
@@ -160,7 +152,7 @@ defineExpose({
    * A reference to the component's wrapper element for direct DOM manipulation.
    * @property {HTMLDivElement}
    */
-  wrapperRef,
+  wrapperRef: computed(() => collapsibleRef.value?.wrapperRef),
 
   /**
    * Hides the dropdown.
@@ -178,7 +170,7 @@ defineExpose({
    * Indicates whether the dropdown is opened.
    * @property {boolean}
    */
-  isOpened,
+  isOpened: computed(() => collapsibleRef.value?.isOpened ?? false),
 
   /**
    * The currently selected options.
@@ -199,7 +191,7 @@ defineExpose({
  */
 const mutatedProps = computed(() => ({
   /* component state, not a props */
-  opened: isOpened.value,
+  opened: collapsibleRef.value?.isOpened ?? false,
 }));
 
 const { getDataTest, wrapperAttrs, listboxAttrs } = useUI<Config>(
@@ -210,30 +202,39 @@ const { getDataTest, wrapperAttrs, listboxAttrs } = useUI<Config>(
 </script>
 
 <template>
-  <div
-    :id="elementId"
-    ref="wrapper"
-    v-click-outside="handleClickOutside"
+  <UCollapsible
+    :id="id"
+    ref="collapsible"
+    :y-position="yPosition"
+    :x-position="xPosition"
+    :close-on-click-outside="!isClickingOption"
+    :close-on-content-click="false"
+    :disabled="disabled"
     v-bind="wrapperAttrs"
-    :data-test="getDataTest('wrapper')"
-    @click="toggle"
+    :data-test="dataTest"
+    @open="onOpen"
+    @close="onClose"
   >
-    <!--
-      @slot Use it to add custom trigger element for the dropdown.
-      @binding {boolean} opened
-    -->
-    <slot :opened="isOpened" />
+    <template #default="{ opened }">
+      <!--
+        @slot Use it to add custom trigger element for the dropdown.
+        @binding {boolean} opened
+      -->
+      <slot :opened="opened" />
+    </template>
 
-    <Transition v-bind="config.listboxTransition">
+    <template #content="{ opened, contentClasses }">
       <!--
         @slot Use it to replace the UListbox with custom dropdown content.
         @binding {boolean} opened
+        @binding {string} contentClasses
       -->
-      <slot v-if="isOpened" name="dropdown" :opened="isOpened">
+      <slot name="dropdown" :opened="opened" :content-classes="contentClasses">
         <UListbox
           ref="dropdown-list"
           v-model="dropdownValue"
           v-model:search="dropdownSearch"
+          :size="size"
           :searchable="searchable"
           :multiple="multiple"
           :color="color"
@@ -245,8 +246,8 @@ const { getDataTest, wrapperAttrs, listboxAttrs } = useUI<Config>(
           :group-label-key="groupLabelKey"
           :group-value-key="groupValueKey"
           v-bind="listboxAttrs"
+          :class="cx([contentClasses, listboxAttrs.class])"
           :data-test="getDataTest('list')"
-          @click.stop
           @click-option="onClickOption"
           @search-change="onSearchChange"
           @update:search="(value) => emit('update:search', value)"
@@ -284,6 +285,6 @@ const { getDataTest, wrapperAttrs, listboxAttrs } = useUI<Config>(
           </template>
         </UListbox>
       </slot>
-    </Transition>
-  </div>
+    </template>
+  </UCollapsible>
 </template>
