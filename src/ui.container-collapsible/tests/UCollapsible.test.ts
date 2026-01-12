@@ -7,26 +7,8 @@ import UCollapsible from "../UCollapsible.vue";
 import type { Props } from "../types";
 import type { UnknownObject } from "../../types";
 
-const TransitionStub = {
-  name: "Transition",
-  setup(_, { slots }) {
-    return () => slots.default?.();
-  },
-};
-
-const globalMountOptions = {
-  global: {
-    stubs: {
-      Transition: TransitionStub,
-    },
-  },
-};
-
 function mountCollapsible(options: UnknownObject = {}) {
-  return mount(UCollapsible, {
-    ...globalMountOptions,
-    ...options,
-  });
+  return mount(UCollapsible, options);
 }
 
 describe("UCollapsible.vue", () => {
@@ -35,7 +17,6 @@ describe("UCollapsible.vue", () => {
       const open = ref(false);
 
       const component = mountCollapsible({
-        ...globalMountOptions,
         props: {
           open: open.value,
           dataTest: "test",
