@@ -151,6 +151,7 @@ const { getDataTest, config, toggleButtonAttrs, dropdownButtonAttrs, toggleIconA
         :disabled="disabled"
         :title="dropdownRef?.getFullOptionLabels()"
         v-bind="toggleButtonAttrs"
+        tabindex="-1"
         :data-test="getDataTest()"
       >
         <template #left>

@@ -149,7 +149,7 @@ const { getDataTest, config, toggleBadgeAttrs, dropdownBadgeAttrs, toggleIconAtt
         :round="round"
         :title="dropdownRef?.getFullOptionLabels()"
         v-bind="toggleBadgeAttrs"
-        tabindex="0"
+        tabindex="-1"
         :data-test="getDataTest()"
       >
         <template #left>

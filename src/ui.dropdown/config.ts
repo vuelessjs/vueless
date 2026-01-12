@@ -1,5 +1,5 @@
 export default /*tw*/ {
-  wrapper: "{UCollapsible}",
+  dropdown: "{UCollapsible}",
   listbox: {
     base: "{UListbox}",
     defaults: {

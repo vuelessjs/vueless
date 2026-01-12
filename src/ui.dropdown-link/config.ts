@@ -1,6 +1,10 @@
 export default /*tw*/ {
   dropdownLink: {
-    base: "{UDropdown}",
+    base: `
+      {UDropdown}
+      inline-flex gap-0.5 items-center justify-between rounded-small h-max
+      focus-visible:outline-offset-4
+    `,
     defaults: {
       size: {
         sm: "sm",
@@ -9,10 +13,6 @@ export default /*tw*/ {
       },
     },
   },
-  toggleWrapper: `
-    inline-flex gap-0.5 items-center justify-between rounded h-max
-    focus-visible:outline focus-visible:outline-medium focus-visible:outline-offset-4 focus-visible:outline-{color}
-  `,
   toggleLink: "{ULink} focus-visible:outline-hidden",
   toggleIcon: {
     base: "{UIcon} block transition duration-300",

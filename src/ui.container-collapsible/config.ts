@@ -1,6 +1,8 @@
 export default /*tw*/ {
   wrapper: {
-    base: "relative inline-block h-max cursor-pointer",
+    base: `
+      relative inline-block h-max rounded-medium transition cursor-pointer outline-transparent
+      focus-visible:outline-medium focus-visible:outline-offset-2 focus-visible:outline-primary`,
     variants: {
       disabled: {
         true: "cursor-not-allowed",

@@ -147,51 +147,49 @@ const {
     @close="emit('close')"
   >
     <template #default="{ opened }">
-      <div tabindex="1" v-bind="toggleWrapperAttrs" :data-test="getDataTest('wrapper')">
-        <!--
-          @slot Use it to add something before the label.
-          @binding {boolean} opened
-        -->
-        <slot name="left" :opened="opened" />
+      <!--
+        @slot Use it to add something before the label.
+        @binding {boolean} opened
+      -->
+      <slot name="left" :opened="opened" />
 
-        <ULink
-          tabindex="-1"
-          :size="size"
-          :label="displayLabel"
+      <ULink
+        :size="size"
+        :label="displayLabel"
+        :color="color"
+        :dashed="dashed"
+        :disabled="disabled"
+        :underlined="underlined"
+        :title="dropdownRef?.getFullOptionLabels()"
+        v-bind="toggleLinkAttrs"
+        tabindex="-1"
+        :data-test="getDataTest()"
+      >
+        <template #default>
+          <!--
+            @slot Use it to add something instead of the default label.
+            @binding {string} label
+            @binding {boolean} opened
+          -->
+          <slot :label="displayLabel" :opened="opened" />
+        </template>
+      </ULink>
+
+      <!--
+        @slot Use it to add something instead of the toggle icon.
+        @binding {boolean} opened
+      -->
+      <slot name="toggle" :opened="opened">
+        <UIcon
+          v-if="toggleIconName"
+          interactive
           :color="color"
-          :dashed="dashed"
           :disabled="disabled"
-          :underlined="underlined"
-          :title="dropdownRef?.getFullOptionLabels()"
-          v-bind="toggleLinkAttrs"
-          :data-test="getDataTest()"
-        >
-          <template #default>
-            <!--
-              @slot Use it to add something instead of the default label.
-              @binding {string} label
-              @binding {boolean} opened
-            -->
-            <slot :label="displayLabel" :opened="opened" />
-          </template>
-        </ULink>
-
-        <!--
-          @slot Use it to add something instead of the toggle icon.
-          @binding {boolean} opened
-        -->
-        <slot name="toggle" :opened="opened">
-          <UIcon
-            v-if="toggleIconName"
-            interactive
-            :color="color"
-            :disabled="disabled"
-            :name="toggleIconName"
-            v-bind="toggleIconAttrs"
-            :data-test="getDataTest('toggle')"
-          />
-        </slot>
-      </div>
+          :name="toggleIconName"
+          v-bind="toggleIconAttrs"
+          :data-test="getDataTest('toggle')"
+        />
+      </slot>
     </template>
 
     <template #before-option="{ option, index }">

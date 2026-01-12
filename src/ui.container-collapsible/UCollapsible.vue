@@ -156,8 +156,10 @@ const { getDataTest, config, wrapperAttrs, contentAttrs } = useUI<Config>(
     ref="wrapper"
     v-click-outside="handleClickOutside"
     v-bind="wrapperAttrs"
-    :data-test="getDataTest('wrapper')"
+    tabindex="0"
+    :data-test="getDataTest()"
     @click="toggle"
+    @keydown.enter="toggle"
   >
     <!--
       @slot Use it to add custom trigger element for the collapsible.

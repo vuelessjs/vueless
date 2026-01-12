@@ -194,7 +194,7 @@ const mutatedProps = computed(() => ({
   opened: collapsibleRef.value?.isOpened ?? false,
 }));
 
-const { getDataTest, wrapperAttrs, listboxAttrs } = useUI<Config>(
+const { getDataTest, dropdownAttrs, listboxAttrs } = useUI<Config>(
   defaultConfig,
   mutatedProps,
   "dropdown",
@@ -210,7 +210,7 @@ const { getDataTest, wrapperAttrs, listboxAttrs } = useUI<Config>(
     :close-on-click-outside="!isClickingOption"
     :close-on-content-click="false"
     :disabled="disabled"
-    v-bind="wrapperAttrs"
+    v-bind="dropdownAttrs"
     :data-test="dataTest"
     @open="onOpen"
     @close="onClose"
