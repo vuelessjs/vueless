@@ -114,8 +114,8 @@ const { getDataTest, config, toggleButtonAttrs, dropdownButtonAttrs, toggleIconA
   <UDropdown
     :id="id"
     ref="dropdown"
-    v-model="modelValue"
-    v-model:search="search"
+    :model-value="modelValue"
+    :search="search"
     :y-position="yPosition"
     :x-position="xPosition"
     :disabled="disabled"
