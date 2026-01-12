@@ -267,7 +267,7 @@ describe("UDropdownButton.vue", () => {
         },
       });
 
-      expect(component.findComponent(UButton).props("id")).toBe(id);
+      expect(component.attributes("id")).toBe(id);
     });
 
     it("DataTest – applies the correct data-test attribute", () => {
@@ -594,9 +594,9 @@ describe("UDropdownButton.vue", () => {
       await component.findComponent(UButton).trigger("click");
       expect(component.findComponent(UListbox).exists()).toBe(true);
 
-      // Directly call the hideOptions function
+      // Directly call the hide function
       // This is equivalent to what happens when clicking outside
-      component.vm.hideOptions();
+      component.vm.hide();
       await component.vm.$nextTick();
 
       // Dropdown should be closed

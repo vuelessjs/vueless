@@ -76,8 +76,12 @@ const { displayLabel } = useDropdownLabel({
   label: () => props.label,
   labelDisplayCount: () => props.labelDisplayCount,
   labelKey: () => props.labelKey,
-  selectedOptions: () => dropdownRef.value?.selectedOptions || [],
+  selectedOptions: () => dropdownRef.value?.selectedOptions ?? [],
 });
+
+function hide() {
+  dropdownRef.value?.hide();
+}
 
 defineExpose({
   /**
@@ -90,7 +94,7 @@ defineExpose({
    * Hides the dropdown.
    * @property {function}
    */
-  hide: () => dropdownRef.value?.hide(),
+  hide,
 });
 
 /*
@@ -102,42 +106,39 @@ const mutatedProps = computed(() => ({
   opened: dropdownRef.value?.isOpened ?? false,
 }));
 
-const { getDataTest, config, dropdownBadgeAttrs, toggleIconAttrs } = useUI<Config>(
-  defaultConfig,
-  mutatedProps,
-  "dropdownBadge",
-);
+const { getDataTest, config, toggleBadgeAttrs, dropdownBadgeAttrs, toggleIconAttrs } =
+  useUI<Config>(defaultConfig, mutatedProps, "toggleBadge");
 </script>
 
 <template>
   <UDropdown
     :id="id"
     ref="dropdown"
-    :model-value="modelValue"
-    :search="search"
-    :label-display-count="labelDisplayCount"
+    v-model="modelValue"
+    v-model:search="search"
+    :y-position="yPosition"
+    :x-position="xPosition"
+    :disabled="disabled"
     :options="options"
+    :options-limit="optionsLimit"
+    :visible-options="visibleOptions"
     :label-key="labelKey"
     :value-key="valueKey"
     :group-label-key="groupLabelKey"
     :group-value-key="groupValueKey"
-    :options-limit="optionsLimit"
-    :visible-options="visibleOptions"
+    :searchable="searchable"
+    :multiple="multiple"
     :color="color"
     :size="size"
-    :searchable="searchable"
     :close-on-select="closeOnSelect"
-    :multiple="multiple"
-    :disabled="disabled"
-    :x-position="xPosition"
-    :y-position="yPosition"
+    v-bind="dropdownBadgeAttrs"
     :data-test="dataTest"
     @click-option="(option) => emit('clickOption', option)"
     @update:model-value="(value) => emit('update:modelValue', value)"
+    @update:search="(value) => emit('update:search', value)"
+    @search-change="(query) => emit('searchChange', query)"
     @open="emit('open')"
     @close="emit('close')"
-    @search-change="(query) => emit('searchChange', query)"
-    @update:search="(value) => emit('update:search', value)"
   >
     <template #default="{ opened }">
       <UBadge
@@ -147,7 +148,7 @@ const { getDataTest, config, dropdownBadgeAttrs, toggleIconAttrs } = useUI<Confi
         :variant="variant"
         :round="round"
         :title="dropdownRef?.getFullOptionLabels()"
-        v-bind="dropdownBadgeAttrs"
+        v-bind="toggleBadgeAttrs"
         tabindex="0"
         :data-test="getDataTest()"
       >

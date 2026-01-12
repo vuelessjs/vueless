@@ -1,6 +1,15 @@
 export default /*tw*/ {
   wrapper: "{UCollapsible}",
-  listbox: "{UListbox}",
+  listbox: {
+    base: "{UListbox}",
+    defaults: {
+      size: {
+        sm: "sm",
+        md: "md",
+        lg: "lg",
+      },
+    },
+  },
   defaults: {
     color: "primary",
     size: "md",

@@ -1,6 +1,15 @@
 export default /*tw*/ {
-  wrapper: "relative inline-block h-max",
   dropdownBadge: {
+    base: "{UDropdown}",
+    defaults: {
+      size: {
+        sm: "sm",
+        md: "md",
+        lg: "lg",
+      },
+    },
+  },
+  toggleBadge: {
     base: "{UBadge}",
     variants: {
       disabled: {
@@ -18,19 +27,6 @@ export default /*tw*/ {
       },
     },
     compoundVariants: [{ opened: true, class: "rotate-180" }],
-  },
-  listbox: {
-    base: "{UListbox} w-fit",
-    variants: {
-      yPosition: {
-        top: "bottom-full mb-1.5",
-        bottom: "top-full mt-1.5",
-      },
-      xPosition: {
-        left: "left-0",
-        right: "right-0",
-      },
-    },
   },
   defaults: {
     color: "primary",

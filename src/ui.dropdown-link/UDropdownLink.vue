@@ -76,8 +76,12 @@ const { displayLabel } = useDropdownLabel({
   label: () => props.label,
   labelDisplayCount: () => props.labelDisplayCount,
   labelKey: () => props.labelKey,
-  selectedOptions: () => dropdownRef.value?.selectedOptions || [],
+  selectedOptions: () => dropdownRef.value?.selectedOptions ?? [],
 });
+
+function hide() {
+  dropdownRef.value?.hide();
+}
 
 defineExpose({
   /**
@@ -90,7 +94,7 @@ defineExpose({
    * Hides the dropdown.
    * @property {function}
    */
-  hide: () => dropdownRef.value?.hide(),
+  hide,
 });
 
 /*
@@ -102,44 +106,48 @@ const mutatedProps = computed(() => ({
   opened: dropdownRef.value?.isOpened ?? false,
 }));
 
-const { config, getDataTest, wrapperAttrs, dropdownLinkAttrs, toggleIconAttrs } = useUI<Config>(
-  defaultConfig,
-  mutatedProps,
-);
+const {
+  config,
+  getDataTest,
+  dropdownLinkAttrs,
+  toggleWrapperAttrs,
+  toggleLinkAttrs,
+  toggleIconAttrs,
+} = useUI<Config>(defaultConfig, mutatedProps, "toggleLink");
 </script>
 
 <template>
   <UDropdown
     :id="id"
     ref="dropdown"
-    :model-value="modelValue"
-    :search="search"
-    :label-display-count="labelDisplayCount"
+    v-model="modelValue"
+    v-model:search="search"
+    :y-position="yPosition"
+    :x-position="xPosition"
+    :disabled="disabled"
     :options="options"
+    :options-limit="optionsLimit"
+    :visible-options="visibleOptions"
     :label-key="labelKey"
     :value-key="valueKey"
     :group-label-key="groupLabelKey"
     :group-value-key="groupValueKey"
-    :options-limit="optionsLimit"
-    :visible-options="visibleOptions"
+    :searchable="searchable"
+    :multiple="multiple"
     :color="color"
     :size="size"
-    :searchable="searchable"
     :close-on-select="closeOnSelect"
-    :multiple="multiple"
-    :disabled="disabled"
-    :x-position="xPosition"
-    :y-position="yPosition"
+    v-bind="dropdownLinkAttrs"
     :data-test="dataTest"
     @click-option="(option) => emit('clickOption', option)"
     @update:model-value="(value) => emit('update:modelValue', value)"
+    @update:search="(value) => emit('update:search', value)"
+    @search-change="(query) => emit('searchChange', query)"
     @open="emit('open')"
     @close="emit('close')"
-    @search-change="(query) => emit('searchChange', query)"
-    @update:search="(value) => emit('update:search', value)"
   >
     <template #default="{ opened }">
-      <div tabindex="1" v-bind="wrapperAttrs" :data-test="getDataTest('wrapper')">
+      <div tabindex="1" v-bind="toggleWrapperAttrs" :data-test="getDataTest('wrapper')">
         <!--
           @slot Use it to add something before the label.
           @binding {boolean} opened
@@ -155,7 +163,7 @@ const { config, getDataTest, wrapperAttrs, dropdownLinkAttrs, toggleIconAttrs } 
           :disabled="disabled"
           :underlined="underlined"
           :title="dropdownRef?.getFullOptionLabels()"
-          v-bind="dropdownLinkAttrs"
+          v-bind="toggleLinkAttrs"
           :data-test="getDataTest()"
         >
           <template #default>
@@ -188,28 +196,28 @@ const { config, getDataTest, wrapperAttrs, dropdownLinkAttrs, toggleIconAttrs } 
 
     <template #before-option="{ option, index }">
       <!--
-          @slot Use it to add something before option.
-          @binding {object} option
-          @binding {number} index
-        -->
+        @slot Use it to add something before option.
+        @binding {object} option
+        @binding {number} index
+      -->
       <slot name="before-option" :option="option" :index="index" />
     </template>
 
     <template #option="{ option, index }">
       <!--
-          @slot Use it to customize the option.
-          @binding {object} option
-          @binding {number} index
-        -->
+        @slot Use it to customize the option.
+        @binding {object} option
+        @binding {number} index
+      -->
       <slot name="option" :option="option" :index="index" />
     </template>
 
     <template #after-option="{ option, index }">
       <!--
-          @slot Use it to add something after option.
-          @binding {object} option
-          @binding {number} index
-        -->
+        @slot Use it to add something after option.
+        @binding {object} option
+        @binding {number} index
+      -->
       <slot name="after-option" :option="option" :index="index" />
     </template>
 

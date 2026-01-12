@@ -1,9 +1,9 @@
 export default /*tw*/ {
-  wrapper: {
+  dropdownButton: {
     base: "{UDropdown}",
     variants: {
       block: {
-        true: "w-full",
+        true: "!block w-full",
       },
     },
     defaults: {
@@ -17,7 +17,14 @@ export default /*tw*/ {
       },
     },
   },
-  dropdownButton: "{UButton} justify-between",
+  toggleButton: {
+    base: "{UButton} justify-between",
+    variants: {
+      block: {
+        true: "w-full",
+      },
+    },
+  },
   toggleIcon: {
     base: "{UIcon} transition duration-300 -mr-1",
     defaults: {
