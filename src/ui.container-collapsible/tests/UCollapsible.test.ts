@@ -52,7 +52,7 @@ describe("UCollapsible.vue", () => {
 
       expect(component.find('[data-test="test-content"]').exists()).toBe(false);
 
-      await component.find('[data-test="test-wrapper"]').trigger("click");
+      await component.find('[data-test="test"]').trigger("click");
       await nextTick();
 
       expect(component.emitted("update:open")).toBeTruthy();
@@ -77,7 +77,7 @@ describe("UCollapsible.vue", () => {
 
       expect(component.find('[data-test="test-content"]').exists()).toBe(false);
 
-      await component.find('[data-test="test-wrapper"]').trigger("click");
+      await component.find('[data-test="test"]').trigger("click");
       await nextTick();
       await flushPromises();
 
@@ -100,7 +100,7 @@ describe("UCollapsible.vue", () => {
       const content = component.find('[data-test="test-content"]');
 
       expect(content.attributes("class")).toContain("bottom-full");
-      expect(content.attributes("class")).toContain("mb-1.5");
+      expect(content.attributes("class")).toContain("mb-1");
     });
 
     it("YPosition – applies correct position class for bottom", () => {
@@ -119,7 +119,7 @@ describe("UCollapsible.vue", () => {
       const content = component.find('[data-test="test-content"]');
 
       expect(content.attributes("class")).toContain("top-full");
-      expect(content.attributes("class")).toContain("mt-1.5");
+      expect(content.attributes("class")).toContain("mt-1");
     });
 
     it("XPosition – applies correct position class for left", () => {
@@ -206,7 +206,7 @@ describe("UCollapsible.vue", () => {
         },
       });
 
-      await component.find('[data-test="test-wrapper"]').trigger("click");
+      await component.find('[data-test="test"]').trigger("click");
       await nextTick();
 
       expect(component.find('[data-test="test-content"]').exists()).toBe(false);
@@ -224,7 +224,7 @@ describe("UCollapsible.vue", () => {
         },
       });
 
-      const wrapper = component.find('[data-test="test-wrapper"]');
+      const wrapper = component.find('[data-test="test"]');
 
       expect(wrapper.attributes("class")).toContain("cursor-not-allowed");
     });
@@ -305,7 +305,7 @@ describe("UCollapsible.vue", () => {
         },
       });
 
-      const wrapper = component.find('[data-test="test-wrapper"]');
+      const wrapper = component.find('[data-test="test"]');
 
       expect(wrapper.attributes("id")).toBe(customId);
     });
@@ -323,7 +323,7 @@ describe("UCollapsible.vue", () => {
         },
       });
 
-      expect(component.find(`[data-test="${dataTest}-wrapper"]`).exists()).toBe(true);
+      expect(component.find(`[data-test="${dataTest}"]`).exists()).toBe(true);
     });
   });
 
@@ -354,7 +354,7 @@ describe("UCollapsible.vue", () => {
 
       expect(component.find(".trigger").text()).toBe("Closed");
 
-      await component.find('[data-test="test-wrapper"]').trigger("click");
+      await component.find('[data-test="test"]').trigger("click");
       await nextTick();
       await flushPromises();
 
@@ -407,7 +407,7 @@ describe("UCollapsible.vue", () => {
         },
       });
 
-      await component.find('[data-test="test-wrapper"]').trigger("click");
+      await component.find('[data-test="test"]').trigger("click");
       await nextTick();
 
       expect(component.emitted("update:open")).toBeTruthy();
@@ -425,7 +425,7 @@ describe("UCollapsible.vue", () => {
         },
       });
 
-      await component.find('[data-test="test-wrapper"]').trigger("click");
+      await component.find('[data-test="test"]').trigger("click");
       await nextTick();
       await flushPromises();
 
@@ -444,7 +444,7 @@ describe("UCollapsible.vue", () => {
         },
       });
 
-      await component.find('[data-test="test-wrapper"]').trigger("click");
+      await component.find('[data-test="test"]').trigger("click");
       await nextTick();
       await flushPromises();
 
