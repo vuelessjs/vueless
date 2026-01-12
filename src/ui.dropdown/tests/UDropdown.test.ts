@@ -60,11 +60,11 @@ describe("UDropdown.vue", () => {
         },
       });
 
-      const wrapper = component.find('[data-test="dropdown-wrapper"]');
+      const collapsible = component.findComponent({ name: "UCollapsible" });
 
-      expect(wrapper.exists()).toBe(true);
+      expect(collapsible.props("disabled")).toBe(true);
 
-      await wrapper.trigger("click");
+      await component.find("button").trigger("click");
       await nextTick();
 
       expect(component.findComponent(UListbox).exists()).toBe(false);
@@ -85,6 +85,207 @@ describe("UDropdown.vue", () => {
       await nextTick();
 
       expect(component.findComponent(UListbox).props("searchable")).toBe(true);
+    });
+
+    it("Size – applies the correct size to listbox", async () => {
+      const sizes = ["sm", "md", "lg"] as const;
+
+      for (const size of sizes) {
+        const component = mount(UDropdown, {
+          props: {
+            size,
+            options: defaultOptions,
+          },
+          slots: {
+            default: `<button>Trigger</button>`,
+          },
+        });
+
+        await component.find("button").trigger("click");
+        await nextTick();
+
+        expect(component.findComponent(UListbox).props("size")).toBe(size);
+      }
+    });
+
+    it("Color – applies the correct color to listbox", async () => {
+      const colors = [
+        "primary",
+        "secondary",
+        "error",
+        "warning",
+        "success",
+        "info",
+        "notice",
+        "neutral",
+        "grayscale",
+      ] as const;
+
+      for (const color of colors) {
+        const component = mount(UDropdown, {
+          props: {
+            color,
+            options: defaultOptions,
+          },
+          slots: {
+            default: `<button>Trigger</button>`,
+          },
+        });
+
+        await component.find("button").trigger("click");
+        await nextTick();
+
+        expect(component.findComponent(UListbox).props("color")).toBe(color);
+      }
+    });
+
+    it("XPosition – passes xPosition prop to collapsible", () => {
+      const component = mount(UDropdown, {
+        props: {
+          xPosition: "right",
+          options: defaultOptions,
+        },
+        slots: {
+          default: `<button>Trigger</button>`,
+        },
+      });
+
+      const collapsible = component.findComponent({ name: "UCollapsible" });
+
+      expect(collapsible.props("xPosition")).toBe("right");
+    });
+
+    it("YPosition – passes yPosition prop to collapsible", () => {
+      const component = mount(UDropdown, {
+        props: {
+          yPosition: "top",
+          options: defaultOptions,
+        },
+        slots: {
+          default: `<button>Trigger</button>`,
+        },
+      });
+
+      const collapsible = component.findComponent({ name: "UCollapsible" });
+
+      expect(collapsible.props("yPosition")).toBe("top");
+    });
+
+    it("LabelKey – uses custom label key for options", async () => {
+      const customOptions = [
+        { id: 1, name: "First" },
+        { id: 2, name: "Second" },
+      ];
+
+      const component = mount(UDropdown, {
+        props: {
+          options: customOptions,
+          labelKey: "name",
+          valueKey: "id",
+          modelValue: 1,
+        },
+        slots: {
+          default: `<button>Trigger</button>`,
+        },
+      });
+
+      await component.find("button").trigger("click");
+      await nextTick();
+
+      expect(component.findComponent(UListbox).props("labelKey")).toBe("name");
+    });
+
+    it("ValueKey – uses custom value key for options", async () => {
+      const customOptions = [
+        { id: 1, name: "First" },
+        { id: 2, name: "Second" },
+      ];
+
+      const component = mount(UDropdown, {
+        props: {
+          options: customOptions,
+          labelKey: "name",
+          valueKey: "id",
+          modelValue: 1,
+        },
+        slots: {
+          default: `<button>Trigger</button>`,
+        },
+      });
+
+      await component.find("button").trigger("click");
+      await nextTick();
+
+      expect(component.findComponent(UListbox).props("valueKey")).toBe("id");
+    });
+
+    it("GroupValueKey – passes groupValueKey prop to listbox", async () => {
+      const component = mount(UDropdown, {
+        props: {
+          groupValueKey: "items",
+          options: defaultOptions,
+        },
+        slots: {
+          default: `<button>Trigger</button>`,
+        },
+      });
+
+      await component.find("button").trigger("click");
+      await nextTick();
+
+      expect(component.findComponent(UListbox).props("groupValueKey")).toBe("items");
+    });
+
+    it("CloseOnSelect – closes dropdown when option is selected and closeOnSelect is true", async () => {
+      const component = mount(UDropdown, {
+        props: {
+          closeOnSelect: true,
+          options: defaultOptions,
+        },
+        slots: {
+          default: `<button>Trigger</button>`,
+        },
+      });
+
+      await component.find("button").trigger("click");
+      await nextTick();
+
+      expect(component.findComponent(UListbox).exists()).toBe(true);
+
+      const listbox = component.findComponent(UListbox);
+
+      await listbox.vm.$emit("click-option", defaultOptions[0]);
+      await nextTick();
+
+      // Give time for the hide function to execute
+      await new Promise((resolve) => setTimeout(resolve, 20));
+      await nextTick();
+
+      expect(component.findComponent(UListbox).exists()).toBe(false);
+    });
+
+    it("CloseOnSelect – keeps dropdown open when option is selected and closeOnSelect is false", async () => {
+      const component = mount(UDropdown, {
+        props: {
+          closeOnSelect: false,
+          options: defaultOptions,
+        },
+        slots: {
+          default: `<button>Trigger</button>`,
+        },
+      });
+
+      await component.find("button").trigger("click");
+      await nextTick();
+
+      expect(component.findComponent(UListbox).exists()).toBe(true);
+
+      const listbox = component.findComponent(UListbox);
+
+      await listbox.vm.$emit("click-option", defaultOptions[0]);
+      await nextTick();
+
+      expect(component.findComponent(UListbox).exists()).toBe(true);
     });
   });
 
@@ -175,6 +376,24 @@ describe("UDropdown.vue", () => {
 
       expect(component.findAll(".after-icon").length).toBeGreaterThan(0);
     });
+
+    it("Dropdown – renders custom dropdown content slot", async () => {
+      const component = mount(UDropdown, {
+        props: {
+          options: defaultOptions,
+        },
+        slots: {
+          default: `<button>Open</button>`,
+          dropdown: `<div class="custom-dropdown">Custom dropdown content</div>`,
+        },
+      });
+
+      await component.find("button").trigger("click");
+      await nextTick();
+
+      expect(component.find(".custom-dropdown").exists()).toBe(true);
+      expect(component.text()).toContain("Custom dropdown content");
+    });
   });
 
   describe("Events", () => {
@@ -255,6 +474,50 @@ describe("UDropdown.vue", () => {
 
       expect(component.emitted("clickOption")).toBeTruthy();
     });
+
+    it("SearchChange – emits searchChange event when search value changes", async () => {
+      const component = mount(UDropdown, {
+        props: {
+          searchable: true,
+          options: defaultOptions,
+        },
+        slots: {
+          default: `<button>Open</button>`,
+        },
+      });
+
+      await component.find("button").trigger("click");
+      await nextTick();
+
+      const listbox = component.findComponent(UListbox);
+
+      await listbox.vm.$emit("search-change", "test query");
+
+      expect(component.emitted("searchChange")).toBeTruthy();
+      expect(component.emitted("searchChange")![0][0]).toBe("test query");
+    });
+
+    it("Update:search – emits update:search event when search value updates", async () => {
+      const component = mount(UDropdown, {
+        props: {
+          searchable: true,
+          options: defaultOptions,
+        },
+        slots: {
+          default: `<button>Open</button>`,
+        },
+      });
+
+      await component.find("button").trigger("click");
+      await nextTick();
+
+      const listbox = component.findComponent(UListbox);
+
+      await listbox.vm.$emit("update:search", "new search");
+
+      expect(component.emitted("update:search")).toBeTruthy();
+      expect(component.emitted("update:search")![0][0]).toBe("new search");
+    });
   });
 
   describe("Exposed methods", () => {
@@ -297,6 +560,72 @@ describe("UDropdown.vue", () => {
       });
 
       expect(component.vm.wrapperRef).toBeDefined();
+    });
+
+    it("IsOpened – exposes isOpened property", async () => {
+      const component = mount(UDropdown, {
+        props: {
+          options: defaultOptions,
+        },
+        slots: {
+          default: `<button>Open</button>`,
+        },
+      });
+
+      expect(component.vm.isOpened).toBe(false);
+
+      await component.find("button").trigger("click");
+      await nextTick();
+
+      expect(component.vm.isOpened).toBe(true);
+    });
+
+    it("SelectedOptions – exposes selectedOptions property", () => {
+      const component = mount(UDropdown, {
+        props: {
+          options: defaultOptions,
+          modelValue: 2,
+        },
+        slots: {
+          default: `<button>Open</button>`,
+        },
+      });
+
+      expect(component.vm.selectedOptions).toBeDefined();
+      expect(component.vm.selectedOptions.length).toBe(1);
+      expect(component.vm.selectedOptions[0].value).toBe(2);
+    });
+
+    it("DisplayLabel – exposes displayLabel property", () => {
+      const component = mount(UDropdown, {
+        props: {
+          options: defaultOptions,
+          modelValue: 2,
+          labelDisplayCount: 1,
+        },
+        slots: {
+          default: `<button>Open</button>`,
+        },
+      });
+
+      expect(component.vm.displayLabel).toBeDefined();
+      expect(component.vm.displayLabel).toBe("Option 2");
+    });
+
+    it("FullLabel – exposes fullLabel property", () => {
+      const component = mount(UDropdown, {
+        props: {
+          options: defaultOptions,
+          modelValue: [1, 2],
+          multiple: true,
+        },
+        slots: {
+          default: `<button>Open</button>`,
+        },
+      });
+
+      expect(component.vm.fullLabel).toBeDefined();
+      expect(component.vm.fullLabel).toBe("Option 1, Option 2");
     });
   });
 });

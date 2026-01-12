@@ -226,7 +226,9 @@ describe("UDropdownBadge.vue", () => {
         },
       });
 
-      expect(component.findComponent(UBadge).props("id")).toBe(id);
+      const dropdown = component.findComponent({ name: "UDropdown" });
+
+      expect(dropdown.props("id")).toBe(id);
     });
 
     it("DataTest – applies the correct data-test attribute", () => {
@@ -331,6 +333,109 @@ describe("UDropdownBadge.vue", () => {
 
       // Dropdown should remain open
       expect(component.findComponent(UListbox).exists()).toBe(true);
+    });
+
+    it("XPosition – passes xPosition prop to dropdown", () => {
+      const component = mount(UDropdownBadge, {
+        props: {
+          xPosition: "right",
+          options: defaultOptions,
+        },
+      });
+
+      const dropdown = component.findComponent({ name: "UDropdown" });
+
+      expect(dropdown.props("xPosition")).toBe("right");
+    });
+
+    it("YPosition – passes yPosition prop to dropdown", () => {
+      const component = mount(UDropdownBadge, {
+        props: {
+          yPosition: "top",
+          options: defaultOptions,
+        },
+      });
+
+      const dropdown = component.findComponent({ name: "UDropdown" });
+
+      expect(dropdown.props("yPosition")).toBe("top");
+    });
+
+    it("LabelKey – uses custom label key for options", () => {
+      const customOptions = [
+        { id: 1, name: "First" },
+        { id: 2, name: "Second" },
+      ];
+
+      const component = mount(UDropdownBadge, {
+        props: {
+          options: customOptions,
+          labelKey: "name",
+          valueKey: "id",
+        },
+      });
+
+      const dropdown = component.findComponent({ name: "UDropdown" });
+
+      expect(dropdown.props("labelKey")).toBe("name");
+    });
+
+    it("ValueKey – uses custom value key for options", () => {
+      const customOptions = [
+        { id: 1, name: "First" },
+        { id: 2, name: "Second" },
+      ];
+
+      const component = mount(UDropdownBadge, {
+        props: {
+          options: customOptions,
+          labelKey: "name",
+          valueKey: "id",
+        },
+      });
+
+      const dropdown = component.findComponent({ name: "UDropdown" });
+
+      expect(dropdown.props("valueKey")).toBe("id");
+    });
+
+    it("GroupValueKey – passes groupValueKey prop to dropdown", () => {
+      const component = mount(UDropdownBadge, {
+        props: {
+          groupValueKey: "items",
+          options: defaultOptions,
+        },
+      });
+
+      const dropdown = component.findComponent({ name: "UDropdown" });
+
+      expect(dropdown.props("groupValueKey")).toBe("items");
+    });
+
+    it("Searchable – passes searchable prop to dropdown", () => {
+      const component = mount(UDropdownBadge, {
+        props: {
+          searchable: true,
+          options: defaultOptions,
+        },
+      });
+
+      const dropdown = component.findComponent({ name: "UDropdown" });
+
+      expect(dropdown.props("searchable")).toBe(true);
+    });
+
+    it("Disabled – applies disabled state correctly", async () => {
+      const component = mount(UDropdownBadge, {
+        props: {
+          disabled: true,
+          options: defaultOptions,
+        },
+      });
+
+      const dropdown = component.findComponent({ name: "UDropdown" });
+
+      expect(dropdown.props("disabled")).toBe(true);
     });
   });
 
@@ -557,13 +662,76 @@ describe("UDropdownBadge.vue", () => {
       await component.findComponent(UBadge).trigger("click");
       expect(component.findComponent(UListbox).exists()).toBe(true);
 
-      // Directly call the hideOptions function
+      // Directly call the hide function
       // This is equivalent to what happens when clicking outside
-      component.vm.hideOptions();
+      component.vm.hide();
       await component.vm.$nextTick();
 
       // Dropdown should be closed
       expect(component.findComponent(UListbox).exists()).toBe(false);
+    });
+
+    it("Open – emits open event when dropdown is opened", async () => {
+      const component = mount(UDropdownBadge, {
+        props: {
+          options: defaultOptions,
+        },
+      });
+
+      await component.findComponent(UBadge).trigger("click");
+
+      expect(component.emitted("open")).toBeTruthy();
+    });
+
+    it("Close – emits close event when dropdown is closed", async () => {
+      const component = mount(UDropdownBadge, {
+        props: {
+          options: defaultOptions,
+        },
+      });
+
+      await component.findComponent(UBadge).trigger("click");
+
+      component.vm.hide();
+      await component.vm.$nextTick();
+
+      expect(component.emitted("close")).toBeTruthy();
+    });
+
+    it("SearchChange – emits searchChange event when search value changes", async () => {
+      const component = mount(UDropdownBadge, {
+        props: {
+          searchable: true,
+          options: defaultOptions,
+        },
+      });
+
+      await component.findComponent(UBadge).trigger("click");
+
+      const dropdown = component.findComponent({ name: "UDropdown" });
+
+      dropdown.vm.$emit("searchChange", "test query");
+
+      expect(component.emitted("searchChange")).toBeTruthy();
+      expect(component.emitted("searchChange")?.[0]).toEqual(["test query"]);
+    });
+
+    it("Update:search – emits update:search event when search value updates", async () => {
+      const component = mount(UDropdownBadge, {
+        props: {
+          searchable: true,
+          options: defaultOptions,
+        },
+      });
+
+      await component.findComponent(UBadge).trigger("click");
+
+      const dropdown = component.findComponent({ name: "UDropdown" });
+
+      dropdown.vm.$emit("update:search", "new search");
+
+      expect(component.emitted("update:search")).toBeTruthy();
+      expect(component.emitted("update:search")?.[0]).toEqual(["new search"]);
     });
   });
 
