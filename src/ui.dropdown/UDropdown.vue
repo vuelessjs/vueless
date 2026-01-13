@@ -1,0 +1,324 @@
+<script setup lang="ts">
+import { nextTick, computed, ref, useTemplateRef } from "vue";
+import { isEqual } from "lodash-es";
+
+import { useUI } from "../composables/useUI";
+import { getDefaults, cx } from "../utils/ui";
+
+import UListbox from "../ui.form-listbox/UListbox.vue";
+import UCollapsible from "../ui.container-collapsible/UCollapsible.vue";
+
+import defaultConfig from "./config";
+import { COMPONENT_NAME } from "./constants";
+
+import type { Props, Config } from "./types";
+import type { Option, SelectedValue } from "../ui.form-listbox/types";
+
+defineOptions({ inheritAttrs: false });
+
+const props = withDefaults(defineProps<Props>(), {
+  ...getDefaults<Props, Config>(defaultConfig, COMPONENT_NAME),
+  options: () => [],
+  modelValue: "",
+  label: "",
+});
+
+const emit = defineEmits([
+  /**
+   * Triggers on a dropdown option click.
+   * @property {string} value
+   */
+  "clickOption",
+
+  /**
+   * Triggers when an option is selected.
+   * @property {string} value
+   * @property {number} value
+   */
+  "update:modelValue",
+
+  /**
+   * Triggers when a dropdown list is opened.
+   */
+  "open",
+
+  /**
+   * Triggers when a dropdown list is closed.
+   */
+  "close",
+
+  /**
+   * Triggers when the search value is changed.
+   * @property {string} query
+   */
+  "searchChange",
+
+  /**
+   * Triggers when the search v-model updates.
+   * @property {string} query
+   */
+  "update:search",
+]);
+
+type UListboxRef = InstanceType<typeof UListbox>;
+type UCollapsibleRef = InstanceType<typeof UCollapsible>;
+
+const isClickingOption = ref(false);
+const listboxRef = useTemplateRef<UListboxRef>("dropdown-list");
+const collapsibleRef = useTemplateRef<UCollapsibleRef>("collapsible");
+
+const dropdownValue = computed({
+  get: () => {
+    if (props.multiple && !Array.isArray(props.modelValue)) {
+      return props.modelValue ? [props.modelValue] : [];
+    }
+
+    return props.modelValue;
+  },
+  set: (value) => emit("update:modelValue", value),
+});
+
+const dropdownSearch = computed({
+  get: () => props.search ?? "",
+  set: (value: string) => emit("update:search", value),
+});
+
+const selectedOptions = computed(() => {
+  if (props.multiple) {
+    return props.options.filter((option) => {
+      return (
+        option[props.valueKey] &&
+        (dropdownValue.value as SelectedValue[]).find((selected) =>
+          isEqual(selected, option[props.valueKey]),
+        )
+      );
+    });
+  }
+
+  return [
+    props.options.find(
+      (option) => option[props.valueKey] && isEqual(option[props.valueKey], dropdownValue.value),
+    ),
+  ].filter((option) => !!option);
+});
+
+const displayLabel = computed(() => {
+  if (!props.labelDisplayCount || !selectedOptions.value.length) {
+    return props.label;
+  }
+
+  const selectedLabels = selectedOptions.value
+    .slice(0, props.labelDisplayCount)
+    .map((option) => option[props.labelKey]);
+  const restLabelCount = selectedOptions.value.length - props.labelDisplayCount;
+
+  if (restLabelCount > 0) {
+    selectedLabels.push(`+${restLabelCount}`);
+  }
+
+  return selectedLabels.join(", ");
+});
+
+const fullLabel = computed(() => {
+  if (!selectedOptions.value.length) {
+    return "";
+  }
+
+  return selectedOptions.value.map((option) => option[props.labelKey]).join(", ");
+});
+
+function onSearchChange(query: string) {
+  emit("searchChange", query);
+}
+
+function onClickOption(option: Option) {
+  isClickingOption.value = true;
+
+  emit("clickOption", option);
+
+  if (props.closeOnSelect) {
+    hide();
+  }
+
+  nextTick(() => {
+    setTimeout(() => {
+      isClickingOption.value = false;
+    }, 10);
+  });
+}
+
+function onOpen() {
+  nextTick(() => listboxRef.value?.wrapperRef?.focus());
+
+  emit("open");
+}
+
+function onClose() {
+  dropdownSearch.value = "";
+
+  emit("close");
+}
+
+function toggle() {
+  collapsibleRef.value?.toggle();
+}
+
+function hide() {
+  collapsibleRef.value?.hide();
+}
+
+defineExpose({
+  /**
+   * A reference to the component's wrapper element for direct DOM manipulation.
+   * @property {HTMLDivElement}
+   */
+  wrapperRef: computed(() => collapsibleRef.value?.wrapperRef),
+
+  /**
+   * Hides the dropdown.
+   * @property {function}
+   */
+  hide,
+
+  /**
+   * Toggles the dropdown visibility.
+   * @property {function}
+   */
+  toggle,
+
+  /**
+   * Indicates whether the dropdown is opened.
+   * @property {boolean}
+   */
+  isOpened: computed(() => collapsibleRef.value?.isOpened ?? false),
+
+  /**
+   * The currently selected options.
+   * @property {Option[]}
+   */
+  selectedOptions,
+
+  /**
+   * The display label for the dropdown.
+   * @property {string}
+   */
+  displayLabel,
+
+  /**
+   * Returns full option labels joined by comma.
+   * @property {string}
+   */
+  fullLabel,
+});
+
+/*
+ * Vueless: Get element / nested component attributes for each config token ✨
+ * Applies: `class`, `config`, redefined default `props` and dev `vl-...` attributes.
+ */
+const mutatedProps = computed(() => ({
+  /* component state, not a props */
+  opened: collapsibleRef.value?.isOpened ?? false,
+}));
+
+const { getDataTest, dropdownAttrs, listboxAttrs } = useUI<Config>(
+  defaultConfig,
+  mutatedProps,
+  "dropdown",
+);
+</script>
+
+<template>
+  <UCollapsible
+    :id="id"
+    ref="collapsible"
+    :y-position="yPosition"
+    :x-position="xPosition"
+    :close-on-click-outside="!isClickingOption"
+    :close-on-content-click="false"
+    :disabled="disabled"
+    v-bind="dropdownAttrs"
+    :data-test="dataTest"
+    @open="onOpen"
+    @close="onClose"
+  >
+    <template #default="{ opened }">
+      <!--
+        @slot Use it to add custom trigger element for the dropdown.
+        @binding {boolean} opened
+        @binding {string} displayLabel
+        @binding {string} fullLabel
+        @binding {Option[]} selectedOptions
+      -->
+      <slot
+        :opened="opened"
+        :display-label="displayLabel"
+        :full-label="fullLabel"
+        :selected-options="selectedOptions"
+      />
+    </template>
+
+    <template #content="{ opened, contentClasses }">
+      <!--
+        @slot Use it to replace the UListbox with custom dropdown content.
+        @binding {boolean} opened
+        @binding {string} contentClasses
+      -->
+      <slot name="dropdown" :opened="opened" :content-classes="contentClasses">
+        <UListbox
+          ref="dropdown-list"
+          v-model="dropdownValue"
+          v-model:search="dropdownSearch"
+          :size="size"
+          :searchable="searchable"
+          :multiple="multiple"
+          :color="color"
+          :options="options"
+          :options-limit="optionsLimit"
+          :visible-options="visibleOptions"
+          :label-key="labelKey"
+          :value-key="valueKey"
+          :group-label-key="groupLabelKey"
+          :group-value-key="groupValueKey"
+          v-bind="listboxAttrs"
+          :class="cx([contentClasses, listboxAttrs.class])"
+          :data-test="getDataTest('list')"
+          @click-option="onClickOption"
+          @search-change="onSearchChange"
+          @update:search="(value) => emit('update:search', value)"
+        >
+          <template #before-option="{ option, index }">
+            <!--
+            @slot Use it to add something before option.
+            @binding {object} option
+            @binding {number} index
+          -->
+            <slot name="before-option" :option="option" :index="index" />
+          </template>
+
+          <template #option="{ option, index }">
+            <!--
+            @slot Use it to customize the option.
+            @binding {object} option
+            @binding {number} index
+          -->
+            <slot name="option" :option="option" :index="index" />
+          </template>
+
+          <template #after-option="{ option, index }">
+            <!--
+            @slot Use it to add something after option.
+            @binding {object} option
+            @binding {number} index
+          -->
+            <slot name="after-option" :option="option" :index="index" />
+          </template>
+
+          <template #empty>
+            <!-- @slot Use it to add something instead of empty state. -->
+            <slot name="empty" />
+          </template>
+        </UListbox>
+      </slot>
+    </template>
+  </UCollapsible>
+</template>

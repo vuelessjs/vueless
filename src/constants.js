@@ -249,6 +249,7 @@ export const COMPONENTS = {
   UToggle: "ui.button-toggle",
 
   /* Dropdowns */
+  UDropdown: "ui.dropdown",
   UDropdownButton: "ui.dropdown-button",
   UDropdownBadge: "ui.dropdown-badge",
   UDropdownLink: "ui.dropdown-link",
@@ -293,6 +294,7 @@ export const COMPONENTS = {
   UGrid: "ui.container-grid",
   UGroup: "ui.container-group",
   UGroups: "ui.container-groups",
+  UCollapsible: "ui.container-collapsible",
   UAccordion: "ui.container-accordion",
   UAccordionItem: "ui.container-accordion-item",
   UEmpty: "ui.container-empty",

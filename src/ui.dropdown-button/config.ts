@@ -1,37 +1,9 @@
 export default /*tw*/ {
-  wrapper: {
-    base: "relative inline-block h-max",
+  dropdownButton: {
+    base: "{UDropdown}",
     variants: {
       block: {
-        true: "w-full",
-      },
-    },
-  },
-  dropdownButton: "{UButton} justify-between",
-  toggleIcon: {
-    base: "{UIcon} transition duration-300 -mr-1",
-    defaults: {
-      size: {
-        "2xs": "2xs",
-        xs: "xs",
-        sm: "sm",
-        md: "sm",
-        lg: "sm",
-        xl: "sm",
-      },
-    },
-    compoundVariants: [{ opened: true, class: "rotate-180" }],
-  },
-  listbox: {
-    base: "{UListbox} w-fit",
-    variants: {
-      yPosition: {
-        top: "bottom-full mb-1.5",
-        bottom: "top-full mt-1.5",
-      },
-      xPosition: {
-        left: "left-0",
-        right: "right-0",
+        true: "!block w-full",
       },
     },
     defaults: {
@@ -44,6 +16,38 @@ export default /*tw*/ {
         xl: "lg",
       },
     },
+  },
+  toggleButton: {
+    base: "{UButton} justify-between",
+    variants: {
+      block: {
+        true: "w-full",
+      },
+    },
+  },
+  toggleIcon: {
+    base: "{UIcon} transition duration-300",
+    variants: {
+      size: {
+        "2xs": "-ml-0.5 -mr-1",
+        xs: "-ml-1 -mr-1",
+        sm: "-ml-1 -mr-1.5",
+        md: "-ml-1 -mr-2",
+        lg: "-ml-1.5 -mr-2.5",
+        xl: "-ml-1.5 -mr-2.5",
+      },
+    },
+    defaults: {
+      size: {
+        "2xs": "2xs",
+        xs: "xs",
+        sm: "sm",
+        md: "sm",
+        lg: "md",
+        xl: "md",
+      },
+    },
+    compoundVariants: [{ opened: true, class: "rotate-180" }],
   },
   defaults: {
     color: "primary",
