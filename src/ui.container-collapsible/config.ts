@@ -10,7 +10,7 @@ export default /*tw*/ {
     },
   },
   content: {
-    base: "z-10 w-fit",
+    base: "z-10 w-max",
     variants: {
       absolute: {
         true: "absolute",

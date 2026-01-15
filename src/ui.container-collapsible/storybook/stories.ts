@@ -12,6 +12,10 @@ import UButton from "../../ui.button/UButton.vue";
 import UCard from "../../ui.container-card/UCard.vue";
 import URow from "../../ui.container-row/URow.vue";
 import UCol from "../../ui.container-col/UCol.vue";
+import UIcon from "../../ui.image-icon/UIcon.vue";
+import UAvatar from "../../ui.image-avatar/UAvatar.vue";
+import UDivider from "../../ui.container-divider/UDivider.vue";
+import UText from "../../ui.text-block/UText.vue";
 
 import type { Meta, StoryFn } from "@storybook/vue3-vite";
 import type { Props } from "../types";
@@ -20,15 +24,55 @@ interface UCollapsibleArgs extends Props {
   slotTemplate?: string;
   enum: "yPosition" | "xPosition";
   class?: string;
+  label?: string;
+  rowClass?: string;
 }
 
 const defaultTemplate = `
-  <template #default="{ opened }">
-    <UButton :label="opened ? 'Close' : 'Open'" />
+  <template #default>
+    <UButton label="John Doe" variant="outlined" size="sm" />
   </template>
 
   <template #content>
-    <UCard title="Collapsible Content" description="This is the collapsible content area." />
+    <UCard class="min-w-[280px] !p-2.5">
+      <URow align="center" gap="sm" class="mb-2">
+        <UAvatar label="John Doe" size="md" />
+        <UCol gap="none">
+          <UText size="sm">John Doe</UText>
+          <UText variant="lifted" size="xs">john.doe@example.com</UText>
+        </UCol>
+      </URow>
+      <UDivider />
+      <UCol gap="2xs" class="mt-2">
+        <UButton
+          label="Settings"
+          variant="subtle"
+          size="sm"
+          left-icon="settings"
+          color="neutral"
+          block
+          class="justify-start"
+        />
+        <UButton
+          label="Help & Support"
+          variant="subtle"
+          size="sm"
+          left-icon="help"
+          color="info"
+          block
+          class="justify-start"
+        />
+        <UButton
+          label="Sign Out"
+          variant="subtle"
+          size="sm"
+          left-icon="logout"
+          color="error"
+          block
+          class="justify-start"
+        />
+      </UCol>
+    </UCard>
   </template>
 `;
 
@@ -53,7 +97,7 @@ export default {
 } as Meta;
 
 const DefaultTemplate: StoryFn<UCollapsibleArgs> = (args: UCollapsibleArgs) => ({
-  components: { UCollapsible, UButton, UCard },
+  components: { UCollapsible, UButton, UCard, UIcon, UAvatar, UDivider, UText, UCol, URow },
   setup: () => ({ args, slots: getSlotNames(UCollapsible.__name) }),
   template: `
     <UCollapsible v-bind="args">
@@ -63,21 +107,65 @@ const DefaultTemplate: StoryFn<UCollapsibleArgs> = (args: UCollapsibleArgs) => (
 });
 
 const EnumTemplate: StoryFn<UCollapsibleArgs> = (args: UCollapsibleArgs, { argTypes }) => ({
-  components: { UCollapsible, UButton, UCard, URow },
+  components: { UCollapsible, UButton, UCard, UIcon, UAvatar, UDivider, UText, UCol, URow },
   setup: () => {
     const openStates = ref<Record<string, boolean>>({});
 
     return { args, argTypes, getArgs, openStates };
   },
   template: `
-    <URow>
+    <URow :class="args.rowClass">
       <UCollapsible
         v-for="option in argTypes?.[args.enum]?.options"
         v-bind="getArgs(args, option)"
         v-model:open="openStates[option]"
         :key="option"
       >
-        ${args.slotTemplate}
+        <template #default>
+          <UButton :label="option" variant="outlined" size="sm" />
+        </template>
+
+        <template #content>
+          <UCard class="min-w-[280px] !p-2.5">
+            <URow align="center" gap="sm" class="mb-2">
+              <UAvatar label="John Doe" size="md" />
+              <UCol gap="none">
+                <UText size="sm">John Doe</UText>
+                <UText variant="lifted" size="xs">john.doe@example.com</UText>
+              </UCol>
+            </URow>
+            <UDivider />
+            <UCol gap="2xs" class="mt-2">
+              <UButton
+                label="Settings"
+                variant="subtle"
+                size="sm"
+                left-icon="settings"
+                color="neutral"
+                block
+                class="justify-start"
+              />
+              <UButton
+                label="Help & Support"
+                variant="subtle"
+                size="sm"
+                left-icon="help"
+                color="info"
+                block
+                class="justify-start"
+              />
+              <UButton
+                label="Sign Out"
+                variant="subtle"
+                size="sm"
+                left-icon="logout"
+                color="error"
+                block
+                class="justify-start"
+              />
+            </UCol>
+          </UCard>
+        </template>
       </UCollapsible>
     </URow>
   `,
@@ -87,33 +175,39 @@ export const Default = DefaultTemplate.bind({});
 Default.args = {};
 
 export const Disabled: StoryFn<UCollapsibleArgs> = (args) => ({
-  components: { UCollapsible, UButton, UCard },
+  components: { UCollapsible, UButton, UCard, UDivider, UText, UIcon, UCol, URow },
   setup() {
     return { args };
   },
   template: `
     <UCollapsible disabled>
-      <template #default="{ opened }">
-        <UButton :label="opened ? 'Close' : 'Open'" disabled />
-      </template>
-      <template #content>
-        <UCard title="Disabled Content" description="This content cannot be shown." />
-      </template>
+      <UButton label="John Doe" disabled variant="subtle" size="sm" />
     </UCollapsible>
   `,
 });
+Disabled.parameters = {
+  docs: {
+    story: {
+      height: "120px",
+    },
+  },
+};
 
 export const XPosition = EnumTemplate.bind({});
-XPosition.args = { enum: "xPosition" };
+XPosition.args = {
+  enum: "xPosition",
+  label: "{enumValue}",
+  rowClass: "w-full justify-center gap-96",
+};
 
 export const YPosition = EnumTemplate.bind({});
-YPosition.args = { enum: "yPosition" };
+YPosition.args = { enum: "yPosition", label: "{enumValue}" };
 YPosition.parameters = {
-  storyClasses: "h-[450px] flex items-center px-6 pt-8 pb-12",
+  storyClasses: "h-[500px] flex items-center px-6 pt-8 pb-12",
 };
 
 export const NonAbsolute: StoryFn<UCollapsibleArgs> = (args) => ({
-  components: { UCollapsible, UButton, UCard, UCol },
+  components: { UCollapsible, UButton, UCard, UCol, UDivider, UText },
   setup() {
     return { args };
   },
