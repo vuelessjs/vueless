@@ -56,7 +56,7 @@ export default {
 } as Meta;
 
 const defaultTemplate = `
-  <UAvatar label="JD" interactive />
+  <UAvatar label="John Doe" />
 `;
 
 const DefaultTemplate: StoryFn<DefaultUDropdownArgs> = (args: DefaultUDropdownArgs) => ({
@@ -90,7 +90,7 @@ const EnumTemplate: StoryFn<EnumUDropdownArgs> = (args: EnumUDropdownArgs, { arg
         :key="option"
         #default="{ opened }"
       >
-        <UButton :[args.enum]="option" :label="option" :class="args.buttonClass" interactive />
+        <UButton :[args.enum]="option" :label="option" :class="args.buttonClass" />
       </UDropdown>
     </URow>
   `,
@@ -237,7 +237,7 @@ export const OptionSlots: StoryFn<DefaultUDropdownArgs> = (args) => ({
           { label: 'Mike Johnson', value: '3', role: 'Product Manager' },
         ]"
       >
-        <UAvatar label="JD" interactive />
+        <UAvatar label="John Doe" />
         <template #before-option="{ option }">
           <UIcon name="person" size="xs" color="neutral" />
         </template>
@@ -250,7 +250,7 @@ export const OptionSlots: StoryFn<DefaultUDropdownArgs> = (args) => ({
           { label: 'Mike Johnson', value: '3', role: 'Product Manager', status: 'offline', statusColor: 'grayscale' },
         ]"
       >
-        <UAvatar label="JD" interactive />
+        <UAvatar label="Jane Smith" />
         <template #option="{ option }">
           <URow align="center" gap="xs" justify="between" class="w-40">
             <UCol gap="none">
@@ -269,7 +269,7 @@ export const OptionSlots: StoryFn<DefaultUDropdownArgs> = (args) => ({
           { label: 'Mike Johnson', value: '3', verified: false },
         ]"
       >
-        <UAvatar label="JD" interactive />
+        <UAvatar label="Mike Johnson" />
         <template #after-option="{ option }">
           <UIcon v-if="option.verified" name="verified" size="xs" color="success" />
         </template>

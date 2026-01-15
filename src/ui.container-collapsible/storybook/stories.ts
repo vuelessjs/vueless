@@ -12,6 +12,10 @@ import UButton from "../../ui.button/UButton.vue";
 import UCard from "../../ui.container-card/UCard.vue";
 import URow from "../../ui.container-row/URow.vue";
 import UCol from "../../ui.container-col/UCol.vue";
+import UIcon from "../../ui.image-icon/UIcon.vue";
+import UAvatar from "../../ui.image-avatar/UAvatar.vue";
+import UDivider from "../../ui.container-divider/UDivider.vue";
+import UText from "../../ui.text-block/UText.vue";
 
 import type { Meta, StoryFn } from "@storybook/vue3-vite";
 import type { Props } from "../types";
@@ -19,15 +23,56 @@ import type { Props } from "../types";
 interface UCollapsibleArgs extends Props {
   slotTemplate?: string;
   enum: "yPosition" | "xPosition";
+  class?: string;
+  label?: string;
+  rowClass?: string;
 }
 
 const defaultTemplate = `
-  <template #default="{ opened }">
-    <UButton :label="opened ? 'Close' : 'Open'" />
+  <template #default>
+    <UButton label="John Doe" variant="outlined" size="sm" />
   </template>
 
   <template #content>
-    <UCard title="Collapsible Content" description="This is the collapsible content area." />
+    <UCard class="min-w-[280px] !p-2.5">
+      <URow align="center" gap="sm" class="mb-2">
+        <UAvatar label="John Doe" size="md" />
+        <UCol gap="none">
+          <UText size="sm">John Doe</UText>
+          <UText variant="lifted" size="xs">john.doe@example.com</UText>
+        </UCol>
+      </URow>
+      <UDivider />
+      <UCol gap="2xs" class="mt-2">
+        <UButton
+          label="Settings"
+          variant="subtle"
+          size="sm"
+          left-icon="settings"
+          color="neutral"
+          block
+          class="justify-start"
+        />
+        <UButton
+          label="Help & Support"
+          variant="subtle"
+          size="sm"
+          left-icon="help"
+          color="info"
+          block
+          class="justify-start"
+        />
+        <UButton
+          label="Sign Out"
+          variant="subtle"
+          size="sm"
+          left-icon="logout"
+          color="error"
+          block
+          class="justify-start"
+        />
+      </UCol>
+    </UCard>
   </template>
 `;
 
@@ -52,7 +97,7 @@ export default {
 } as Meta;
 
 const DefaultTemplate: StoryFn<UCollapsibleArgs> = (args: UCollapsibleArgs) => ({
-  components: { UCollapsible, UButton, UCard },
+  components: { UCollapsible, UButton, UCard, UIcon, UAvatar, UDivider, UText, UCol, URow },
   setup: () => ({ args, slots: getSlotNames(UCollapsible.__name) }),
   template: `
     <UCollapsible v-bind="args">
@@ -62,17 +107,65 @@ const DefaultTemplate: StoryFn<UCollapsibleArgs> = (args: UCollapsibleArgs) => (
 });
 
 const EnumTemplate: StoryFn<UCollapsibleArgs> = (args: UCollapsibleArgs, { argTypes }) => ({
-  components: { UCollapsible, UButton, UCard, URow },
-  setup: () => ({ args, argTypes, getArgs }),
+  components: { UCollapsible, UButton, UCard, UIcon, UAvatar, UDivider, UText, UCol, URow },
+  setup: () => {
+    const openStates = ref<Record<string, boolean>>({});
+
+    return { args, argTypes, getArgs, openStates };
+  },
   template: `
-    <URow>
+    <URow :class="args.rowClass">
       <UCollapsible
         v-for="option in argTypes?.[args.enum]?.options"
         v-bind="getArgs(args, option)"
-        v-model:open="args.open"
+        v-model:open="openStates[option]"
         :key="option"
       >
-        ${args.slotTemplate}
+        <template #default>
+          <UButton :label="option" variant="outlined" size="sm" />
+        </template>
+
+        <template #content>
+          <UCard class="min-w-[280px] !p-2.5">
+            <URow align="center" gap="sm" class="mb-2">
+              <UAvatar label="John Doe" size="md" />
+              <UCol gap="none">
+                <UText size="sm">John Doe</UText>
+                <UText variant="lifted" size="xs">john.doe@example.com</UText>
+              </UCol>
+            </URow>
+            <UDivider />
+            <UCol gap="2xs" class="mt-2">
+              <UButton
+                label="Settings"
+                variant="subtle"
+                size="sm"
+                left-icon="settings"
+                color="neutral"
+                block
+                class="justify-start"
+              />
+              <UButton
+                label="Help & Support"
+                variant="subtle"
+                size="sm"
+                left-icon="help"
+                color="info"
+                block
+                class="justify-start"
+              />
+              <UButton
+                label="Sign Out"
+                variant="subtle"
+                size="sm"
+                left-icon="logout"
+                color="error"
+                block
+                class="justify-start"
+              />
+            </UCol>
+          </UCard>
+        </template>
       </UCollapsible>
     </URow>
   `,
@@ -81,14 +174,40 @@ const EnumTemplate: StoryFn<UCollapsibleArgs> = (args: UCollapsibleArgs, { argTy
 export const Default = DefaultTemplate.bind({});
 Default.args = {};
 
-export const YPositions = EnumTemplate.bind({});
-YPositions.args = { enum: "yPosition", slotTemplate: defaultTemplate };
+export const Disabled: StoryFn<UCollapsibleArgs> = (args) => ({
+  components: { UCollapsible, UButton, UCard, UDivider, UText, UIcon, UCol, URow },
+  setup() {
+    return { args };
+  },
+  template: `
+    <UCollapsible disabled>
+      <UButton label="John Doe" disabled variant="subtle" size="sm" />
+    </UCollapsible>
+  `,
+});
+Disabled.parameters = {
+  docs: {
+    story: {
+      height: "120px",
+    },
+  },
+};
 
-export const XPositions = EnumTemplate.bind({});
-XPositions.args = { enum: "xPosition" };
+export const XPosition = EnumTemplate.bind({});
+XPosition.args = {
+  enum: "xPosition",
+  label: "{enumValue}",
+  rowClass: "w-full justify-center gap-96",
+};
+
+export const YPosition = EnumTemplate.bind({});
+YPosition.args = { enum: "yPosition", label: "{enumValue}" };
+YPosition.parameters = {
+  storyClasses: "h-[500px] flex items-center px-6 pt-8 pb-12",
+};
 
 export const NonAbsolute: StoryFn<UCollapsibleArgs> = (args) => ({
-  components: { UCollapsible, UButton, UCard, UCol },
+  components: { UCollapsible, UButton, UCard, UCol, UDivider, UText },
   setup() {
     return { args };
   },
@@ -112,150 +231,8 @@ export const NonAbsolute: StoryFn<UCollapsibleArgs> = (args) => ({
   `,
 });
 
-export const VModel: StoryFn<UCollapsibleArgs> = (args) => ({
-  components: { UCollapsible, UButton, UCard, URow },
-  setup() {
-    const isOpen = ref(false);
+export const NoCloseOnOutside = DefaultTemplate.bind({});
+NoCloseOnOutside.args = { closeOnOutside: false };
 
-    function toggle() {
-      isOpen.value = !isOpen.value;
-    }
-
-    return { args, isOpen, toggle };
-  },
-  template: `
-    <UCol gap="md">
-      <URow gap="md">
-        <UButton label="Toggle Collapsible" @click="toggle" />
-        <UButton :label="isOpen ? 'Close' : 'Open'" variant="outlined" @click="isOpen = !isOpen" />
-      </URow>
-
-      <UCollapsible v-model:open="isOpen">
-        <template #default="{ opened }">
-          <UButton :label="opened ? 'Opened' : 'Closed'" color="secondary" />
-        </template>
-        <template #content>
-          <UCard
-            title="Controlled Content"
-            description="This collapsible is controlled by v-model. Use the buttons above to toggle it."
-          />
-        </template>
-      </UCollapsible>
-    </UCol>
-  `,
-});
-
-export const CloseOnOutside: StoryFn<UCollapsibleArgs> = (args) => ({
-  components: { UCollapsible, UButton, UCard },
-  setup() {
-    return { args };
-  },
-  template: `
-    <div class="p-8">
-      <p class="mb-4 text-sm text-gray-600">Click outside the collapsible content to close it.</p>
-      <UCollapsible close-on-outside>
-        <template #default="{ opened }">
-          <UButton :label="opened ? 'Close' : 'Open'" />
-        </template>
-        <template #content>
-          <UCard
-            title="Click Outside to Close"
-            description="This collapsible will close when you click outside of it."
-          />
-        </template>
-      </UCollapsible>
-    </div>
-  `,
-});
-
-export const CloseOnContent: StoryFn<UCollapsibleArgs> = (args) => ({
-  components: { UCollapsible, UButton, UCard },
-  setup() {
-    return { args };
-  },
-  template: `
-    <div class="p-8">
-      <p class="mb-4 text-sm text-gray-600">Click on the content to close the collapsible.</p>
-      <UCollapsible close-on-content>
-        <template #default="{ opened }">
-          <UButton :label="opened ? 'Close' : 'Open'" />
-        </template>
-        <template #content>
-          <UCard
-            title="Click Content to Close"
-            description="Click anywhere on this card to close the collapsible."
-          />
-        </template>
-      </UCollapsible>
-    </div>
-  `,
-});
-
-export const Disabled: StoryFn<UCollapsibleArgs> = (args) => ({
-  components: { UCollapsible, UButton, UCard },
-  setup() {
-    return { args };
-  },
-  template: `
-    <UCollapsible disabled>
-      <template #default="{ opened }">
-        <UButton :label="opened ? 'Close' : 'Open'" disabled />
-      </template>
-      <template #content>
-        <UCard title="Disabled Content" description="This content cannot be shown." />
-      </template>
-    </UCollapsible>
-  `,
-});
-
-export const CustomContent: StoryFn<UCollapsibleArgs> = (args) => ({
-  components: { UCollapsible, UButton, UCard, URow },
-  setup() {
-    return { args };
-  },
-  template: `
-    <URow gap="xl">
-      <UCollapsible>
-        <template #default="{ opened }">
-          <UButton
-            :label="opened ? 'Hide Menu' : 'Show Menu'"
-            :left-icon="opened ? 'expand_less' : 'expand_more'"
-          />
-        </template>
-        <template #content>
-          <UCard class="w-64">
-            <div class="p-4 space-y-2">
-              <div class="hover:bg-gray-100 p-2 rounded cursor-pointer">Menu Item 1</div>
-              <div class="hover:bg-gray-100 p-2 rounded cursor-pointer">Menu Item 2</div>
-              <div class="hover:bg-gray-100 p-2 rounded cursor-pointer">Menu Item 3</div>
-              <div class="hover:bg-gray-100 p-2 rounded cursor-pointer">Menu Item 4</div>
-            </div>
-          </UCard>
-        </template>
-      </UCollapsible>
-
-      <UCollapsible y-position="top">
-        <template #default="{ opened }">
-          <UButton
-            :label="opened ? 'Hide Tooltip' : 'Show Tooltip'"
-            variant="outlined"
-          />
-        </template>
-        <template #content>
-          <UCard class="w-48">
-            <div class="p-3 text-sm">
-              This is a tooltip-like collapsible that appears above the trigger.
-            </div>
-          </UCard>
-        </template>
-      </UCollapsible>
-    </URow>
-  `,
-});
-CustomContent.parameters = {
-  docs: {
-    story: {
-      height: "300px",
-    },
-  },
-};
+export const CloseOnContent = DefaultTemplate.bind({});
+CloseOnContent.args = { closeOnContent: true };
