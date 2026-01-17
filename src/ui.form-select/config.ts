@@ -51,6 +51,9 @@ export default /*tw*/ {
         md: "text-medium",
         lg: "text-large",
       },
+      label: {
+        false: "py-px",
+      },
       disabled: {
         true: "opacity-(--vl-disabled-opacity)",
       },
