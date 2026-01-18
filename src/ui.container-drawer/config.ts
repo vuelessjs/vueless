@@ -32,7 +32,7 @@ export default /*tw*/ {
     leaveFromClass: "opacity-100 translate-x-0",
     leaveToClass: "opacity-0 translate-x-full",
   },
-  overlay: "fixed inset-0 z-40 bg-inverted/15 dark:bg-lifted/75 backdrop-blur-md",
+  overlay: "fixed inset-0 z-40 bg-inverted/15 dark:bg-lifted/75",
   overlayTransition: {
     enterActiveClass: "ease-out duration-300",
     enterFromClass: "opacity-0",
