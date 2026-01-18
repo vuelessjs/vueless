@@ -81,7 +81,7 @@ export default /*tw*/ {
   footerLeft: "flex flex-col md:flex-row gap-4 w-full",
   footerRight: "flex flex-col md:flex-row gap-4 w-full justify-end",
   drawerWrapper: {
-    base: "flex border absolute select-none overflow-x-hidden",
+    base: "flex border absolute overflow-x-hidden",
     variants: {
       variant: {
         solid: "bg-default border-transparent",
@@ -103,7 +103,7 @@ export default /*tw*/ {
   },
   drawer: "overflow-y-auto",
   handleWrapper: {
-    base: "flex items-center justify-center bg-inherit cursor-grab active:cursor-grabbing",
+    base: "flex items-center justify-center bg-inherit cursor-grab active:cursor-grabbing select-none",
     variants: {
       position: {
         top: "w-full h-11",
