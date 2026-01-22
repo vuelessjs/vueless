@@ -133,9 +133,9 @@ export async function generateIconExports() {
 
   const entries = files.map((filePath) => {
     const fullImportPath = path.resolve(filePath).replace(/\\/g, "/");
-    const virtualPath = filePath.replace(/\\/g, "/");
+    const relativePath = path.relative(cwd(), filePath).replace(/\\/g, "/");
 
-    return `  ["${virtualPath}", import("${fullImportPath}?component")]`;
+    return `  ["${relativePath}", import("${fullImportPath}?component")]`;
   });
 
   return `export const cachedIcons = [\n${entries.join(",\n")}\n];`;
