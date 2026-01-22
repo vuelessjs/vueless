@@ -1,21 +1,17 @@
 <script setup lang="ts">
-import { nextTick, computed, ref, useId, useTemplateRef } from "vue";
-import { isEqual } from "lodash-es";
+import { computed, useTemplateRef } from "vue";
 
 import { useUI } from "../composables/useUI";
 import { getDefaults } from "../utils/ui";
 
 import UIcon from "../ui.image-icon/UIcon.vue";
 import ULink from "../ui.button-link/ULink.vue";
-import ULisbox from "../ui.form-listbox/UListbox.vue";
-
-import vClickOutside from "../v.click-outside/vClickOutside";
+import UDropdown from "../ui.dropdown/UDropdown.vue";
 
 import { COMPONENT_NAME } from "./constants";
 import defaultConfig from "./config";
 
 import type { Props, Config } from "./types";
-import type { Option, SelectedValue } from "../ui.form-listbox/types";
 
 defineOptions({ inheritAttrs: false });
 
@@ -63,66 +59,9 @@ const emit = defineEmits([
   "update:search",
 ]);
 
-type ULisboxRef = InstanceType<typeof ULisbox>;
+type UDropdownRef = InstanceType<typeof UDropdown>;
 
-const isShownOptions = ref(false);
-const isClickingOption = ref(false);
-const listboxRef = useTemplateRef<ULisboxRef>("dropdown-list");
-const wrapperRef = useTemplateRef<HTMLDivElement>("wrapper");
-
-const elementId = props.id || useId();
-
-const dropdownValue = computed({
-  get: () => {
-    if (props.multiple && !Array.isArray(props.modelValue)) {
-      return props.modelValue ? [props.modelValue] : [];
-    }
-
-    return props.modelValue;
-  },
-  set: (value) => emit("update:modelValue", value),
-});
-
-const dropdownSearch = computed({
-  get: () => props.search ?? "",
-  set: (value: string) => emit("update:search", value),
-});
-
-const selectedOptions = computed(() => {
-  if (props.multiple) {
-    return props.options.filter((option) => {
-      return (
-        option[props.valueKey] &&
-        (dropdownValue.value as SelectedValue[]).find((selected) =>
-          isEqual(selected, option[props.valueKey]),
-        )
-      );
-    });
-  }
-
-  return [
-    props.options.find(
-      (option) => option[props.valueKey] && isEqual(option[props.valueKey], dropdownValue.value),
-    ),
-  ].filter((option) => !!option);
-});
-
-const linkLabel = computed(() => {
-  if (!props.labelDisplayCount || !selectedOptions.value.length) {
-    return props.label;
-  }
-
-  const selectedLabels = selectedOptions.value
-    .slice(0, props.labelDisplayCount)
-    .map((option) => option[props.labelKey]);
-  const restLabelCount = selectedOptions.value.length - props.labelDisplayCount;
-
-  if (restLabelCount > 0) {
-    selectedLabels.push(`+${restLabelCount}`);
-  }
-
-  return selectedLabels.join(", ");
-});
+const dropdownRef = useTemplateRef<UDropdownRef>("dropdown");
 
 const toggleIconName = computed(() => {
   if (typeof props.toggleIcon === "string") {
@@ -132,197 +71,148 @@ const toggleIconName = computed(() => {
   return props.toggleIcon ? config.value.defaults.toggleIcon : "";
 });
 
-function getFullOptionLabels(value: Option | Option[]) {
-  const labelKey = props.labelKey;
-
-  if (Array.isArray(value)) {
-    return value.map((item) => item[labelKey]).join(", ");
-  }
-
-  return "";
-}
-
-function onSearchChange(query: string) {
-  emit("searchChange", query);
-}
-
-function onClickLink() {
-  if (props.disabled) return;
-
-  isShownOptions.value = !isShownOptions.value;
-
-  if (isShownOptions.value) {
-    nextTick(() => listboxRef.value?.wrapperRef?.focus());
-
-    emit("open");
-  }
-}
-
-function hideOptions() {
-  isShownOptions.value = false;
-  dropdownSearch.value = "";
-
-  emit("close");
-}
-
-function onClickOption(option: Option) {
-  isClickingOption.value = true;
-
-  emit("clickOption", option);
-
-  if (!props.multiple && props.closeOnSelect) hideOptions();
-
-  nextTick(() => {
-    setTimeout(() => {
-      isClickingOption.value = false;
-    }, 10);
-  });
-}
-
-function handleClickOutside() {
-  if (isClickingOption.value) return;
-
-  hideOptions();
+function hide() {
+  dropdownRef.value?.hide();
 }
 
 defineExpose({
   /**
-   * A reference to the component's wrapper element for direct DOM manipulation.
+   * A reference to the dropdown wrapper element for direct DOM manipulation.
    * @property {HTMLDivElement}
    */
-  wrapperRef,
+  wrapperRef: computed(() => dropdownRef.value?.wrapperRef),
 
   /**
-   * Hides the dropdown options.
+   * Hides the dropdown.
    * @property {function}
    */
-  hideOptions,
+  hide,
 });
 
-/**
- * Get element / nested component attributes for each config token ✨
+/*
+ * Vueless: Get element / nested component attributes for each config token ✨
  * Applies: `class`, `config`, redefined default `props` and dev `vl-...` attributes.
  */
 const mutatedProps = computed(() => ({
   /* component state, not a props */
-  opened: isShownOptions.value,
+  opened: dropdownRef.value?.isOpened ?? false,
 }));
 
-const { config, getDataTest, wrapperAttrs, dropdownLinkAttrs, listboxAttrs, toggleIconAttrs } =
-  useUI<Config>(defaultConfig, mutatedProps);
+const { config, getDataTest, dropdownLinkAttrs, toggleLinkAttrs, toggleIconAttrs } = useUI<Config>(
+  defaultConfig,
+  mutatedProps,
+  "toggleLink",
+);
 </script>
 
 <template>
-  <div
-    ref="wrapper"
-    v-click-outside="handleClickOutside"
-    tabindex="1"
-    v-bind="wrapperAttrs"
-    :data-test="getDataTest('wrapper')"
-    @keydown.enter="onClickLink"
-    @keydown.space.prevent="onClickLink"
+  <UDropdown
+    :id="id"
+    ref="dropdown"
+    :model-value="modelValue"
+    :label="label"
+    :label-display-count="labelDisplayCount"
+    :search="search"
+    :y-position="yPosition"
+    :x-position="xPosition"
+    :disabled="disabled"
+    :options="options"
+    :options-limit="optionsLimit"
+    :visible-options="visibleOptions"
+    :label-key="labelKey"
+    :value-key="valueKey"
+    :group-label-key="groupLabelKey"
+    :group-value-key="groupValueKey"
+    :searchable="searchable"
+    :multiple="multiple"
+    :color="color"
+    :size="size"
+    :close-on-select="closeOnSelect"
+    v-bind="dropdownLinkAttrs"
+    :data-test="dataTest"
+    @click-option="(option) => emit('clickOption', option)"
+    @update:model-value="(value) => emit('update:modelValue', value)"
+    @update:search="(value) => emit('update:search', value)"
+    @search-change="(query) => emit('searchChange', query)"
+    @open="emit('open')"
+    @close="emit('close')"
   >
-    <!--
-      @slot Use it to add something before the label.
-      @binding {boolean} opened
-    -->
-    <slot name="left" :opened="isShownOptions" />
+    <template #default="{ opened, displayLabel, fullLabel }">
+      <!--
+        @slot Use it to add something before the label.
+        @binding {boolean} opened
+      -->
+      <slot name="left" :opened="opened" />
 
-    <ULink
-      :id="elementId"
-      tabindex="-1"
-      :size="size"
-      :label="linkLabel"
-      :color="color"
-      :dashed="dashed"
-      :disabled="disabled"
-      :underlined="underlined"
-      :title="getFullOptionLabels(selectedOptions)"
-      v-bind="dropdownLinkAttrs"
-      :data-test="getDataTest()"
-      @click="onClickLink"
-    >
-      <template #default>
-        <!--
-          @slot Use it to add something instead of the default label.
-          @binding {string} label
-          @binding {boolean} opened
-        -->
-        <slot :label="linkLabel" :opened="isShownOptions" />
-      </template>
-    </ULink>
-
-    <!--
-      @slot Use it to add something instead of the toggle icon.
-      @binding {boolean} opened
-      @binding {function} toggle
-    -->
-    <slot name="toggle" :opened="isShownOptions" :toggle="onClickLink">
-      <UIcon
-        v-if="toggleIconName"
-        interactive
+      <ULink
+        :size="size"
+        :label="displayLabel"
         :color="color"
+        :dashed="dashed"
         :disabled="disabled"
-        :name="toggleIconName"
-        v-bind="toggleIconAttrs"
-        :data-test="getDataTest('toggle')"
-        @click="onClickLink"
-      />
-    </slot>
-
-    <ULisbox
-      v-if="isShownOptions"
-      ref="dropdown-list"
-      v-model="dropdownValue"
-      v-model:search="dropdownSearch"
-      :searchable="searchable"
-      :multiple="multiple"
-      :size="size"
-      :color="color"
-      :options="options"
-      :options-limit="optionsLimit"
-      :visible-options="visibleOptions"
-      :label-key="labelKey"
-      :value-key="valueKey"
-      :group-label-key="groupLabelKey"
-      :group-value-key="groupValueKey"
-      v-bind="listboxAttrs"
-      :data-test="getDataTest('list')"
-      @click-option="onClickOption"
-      @search-change="onSearchChange"
-      @update:search="(value) => emit('update:search', value)"
-    >
-      <template #before-option="{ option, index }">
-        <!--
-            @slot Use it to add something before option.
-            @binding {object} option
-            @binding {number} index
+        :underlined="underlined"
+        :title="fullLabel"
+        v-bind="toggleLinkAttrs"
+        tabindex="-1"
+        :data-test="getDataTest()"
+      >
+        <template #default>
+          <!--
+            @slot Use it to add something instead of the default label.
+            @binding {string} label
+            @binding {boolean} opened
           -->
-        <slot name="before-option" :option="option" :index="index" />
-      </template>
+          <slot :label="displayLabel" :opened="opened" />
+        </template>
+      </ULink>
 
-      <template #option="{ option, index }">
-        <!--
-            @slot Use it to customize the option.
-            @binding {object} option
-            @binding {number} index
-          -->
-        <slot name="option" :option="option" :index="index" />
-      </template>
+      <!--
+        @slot Use it to add something instead of the toggle icon.
+        @binding {boolean} opened
+      -->
+      <slot name="toggle" :opened="opened">
+        <UIcon
+          v-if="toggleIconName"
+          interactive
+          :color="color"
+          :disabled="disabled"
+          :name="toggleIconName"
+          v-bind="toggleIconAttrs"
+          :data-test="getDataTest('toggle')"
+        />
+      </slot>
+    </template>
 
-      <template #after-option="{ option, index }">
-        <!--
-            @slot Use it to add something after option.
-            @binding {object} option
-            @binding {number} index
-          -->
-        <slot name="after-option" :option="option" :index="index" />
-      </template>
+    <template #before-option="{ option, index }">
+      <!--
+        @slot Use it to add something before option.
+        @binding {object} option
+        @binding {number} index
+      -->
+      <slot name="before-option" :option="option" :index="index" />
+    </template>
 
-      <template #empty>
-        <!-- @slot Use it to add something instead of empty state. -->
-        <slot name="empty" />
-      </template>
-    </ULisbox>
-  </div>
+    <template #option="{ option, index }">
+      <!--
+        @slot Use it to customize the option.
+        @binding {object} option
+        @binding {number} index
+      -->
+      <slot name="option" :option="option" :index="index" />
+    </template>
+
+    <template #after-option="{ option, index }">
+      <!--
+        @slot Use it to add something after option.
+        @binding {object} option
+        @binding {number} index
+      -->
+      <slot name="after-option" :option="option" :index="index" />
+    </template>
+
+    <template #empty>
+      <!-- @slot Use it to add something instead of empty state. -->
+      <slot name="empty" />
+    </template>
+  </UDropdown>
 </template>

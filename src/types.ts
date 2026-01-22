@@ -1,6 +1,6 @@
 import UTextDefaultConfig from "./ui.text-block/config";
 import UAlertDefaultConfig from "./ui.text-alert/config";
-import UEmptyDefaultConfig from "./ui.text-empty/config";
+import UEmptyDefaultConfig from "./ui.container-empty/config";
 import UFileDefaultConfig from "./ui.text-file/config";
 import UFilesDefaultConfig from "./ui.text-files/config";
 import UHeaderDefaultConfig from "./ui.text-header/config";
@@ -39,6 +39,7 @@ import UTabConfig from "./ui.navigation-tab/config";
 import UTabsConfig from "./ui.navigation-tabs/config";
 import UBreadcrumbsConfig from "./ui.navigation-breadcrumbs/config";
 import UAvatarConfig from "./ui.image-avatar/config";
+import UAvatarGroupConfig from "./ui.image-avatar-group/config";
 import UIconConfig from "./ui.image-icon/config";
 import UCheckboxConfig from "./ui.form-checkbox/config";
 import UCheckboxGroupConfig from "./ui.form-checkbox-group/config";
@@ -306,6 +307,7 @@ export interface Components {
   UTabs: Partial<typeof UTabsConfig>;
   UBreadcrumbs: Partial<typeof UBreadcrumbsConfig>;
   UAvatar: Partial<typeof UAvatarConfig>;
+  UAvatarGroup: Partial<typeof UAvatarGroupConfig>;
   UIcon: Partial<typeof UIconConfig>;
   UCheckbox: Partial<typeof UCheckboxConfig>;
   UCheckboxGroup: Partial<typeof UCheckboxGroupConfig>;

@@ -6,16 +6,15 @@ import type { Config as UDividerConfig } from "../ui.container-divider/types";
 
 export type Config = typeof defaultConfig;
 
-type RowKeys = number | string | boolean | undefined | Date | Row | Row[] | ((row: Row) => string);
-
 export interface CellObject {
   contentClass?: string | ((value: unknown | string, row: Row) => string);
   class?: string | ((value: unknown | string, row: Row) => string);
-  [key: string]: unknown | string;
+  [key: string]: unknown;
 }
 
 export type RowId = string | number;
-export type Cell = CellObject | string;
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export type Cell = CellObject & any;
 
 export interface RowData {
   [key: string]: Cell;
@@ -32,18 +31,23 @@ export interface Row {
   rowDate?: string | Date;
   row?: Row | Row[];
   class?: string | ((row: Row) => string);
-  [key: string]: Cell | RowKeys;
+  [key: string]: unknown;
 }
 
 export interface FlatRow extends Row {
   parentRowId?: RowId;
   nestedLevel: number;
 }
+export enum StickySide {
+  Left = "left",
+  Right = "right",
+}
 
 export interface ColumnObject {
   key: string;
   label?: string;
   isShown?: boolean;
+  sticky?: "left" | "right";
   class?: string | ((value: unknown | string, row: Row) => string);
   tdClass?: string;
   thClass?: string;
@@ -129,6 +133,8 @@ export interface UTableRowAttrs {
   bodyCellNestedIconWrapperAttrs: Ref<UnknownObject>;
   bodyRowCheckedAttrs: Ref<UnknownObject>;
   bodyRowAttrs: Ref<UnknownObject>;
+  bodyCellStickyLeftAttrs: Ref<UnknownObject>;
+  bodyCellStickyRightAttrs: Ref<UnknownObject>;
 }
 
 export interface UTableRowProps {
@@ -143,4 +149,5 @@ export interface UTableRowProps {
   config: Config;
   isChecked: boolean;
   isExpanded: boolean;
+  columnPositions: Map<string, number>;
 }

@@ -36,17 +36,20 @@ export { default as UNotify } from "./ui.text-notify/UNotify.vue";
 export { default as UNumber } from "./ui.text-number/UNumber.vue";
 export { default as UFile } from "./ui.text-file/UFile.vue";
 export { default as UFiles } from "./ui.text-files/UFiles.vue";
-export { default as UEmpty } from "./ui.text-empty/UEmpty.vue";
 export { default as UBadge } from "./ui.text-badge/UBadge.vue";
 export { default as UKey } from "./ui.text-key/UKey.vue";
 /* Containers */
 export { default as UDivider } from "./ui.container-divider/UDivider.vue";
 export { default as UCol } from "./ui.container-col/UCol.vue";
 export { default as URow } from "./ui.container-row/URow.vue";
+export { default as UGrid } from "./ui.container-grid/UGrid.vue";
 export { default as UGroup } from "./ui.container-group/UGroup.vue";
 export { default as UGroups } from "./ui.container-groups/UGroups.vue";
+export { default as UCollapsible } from "./ui.container-collapsible/UCollapsible.vue";
 export { default as UAccordion } from "./ui.container-accordion/UAccordion.vue";
 export { default as UAccordionItem } from "./ui.container-accordion-item/UAccordionItem.vue";
+export { default as UEmpty } from "./ui.container-empty/UEmpty.vue";
+export { default as UPlaceholder } from "./ui.container-placeholder/UPlaceholder.vue";
 export { default as UCard } from "./ui.container-card/UCard.vue";
 export { default as UModal } from "./ui.container-modal/UModal.vue";
 export { default as UModalConfirm } from "./ui.container-modal-confirm/UModalConfirm.vue";
@@ -55,6 +58,7 @@ export { default as UPage } from "./ui.container-page/UPage.vue";
 /* Images and Icons */
 export { default as UIcon } from "./ui.image-icon/UIcon.vue";
 export { default as UAvatar } from "./ui.image-avatar/UAvatar.vue";
+export { default as UAvatarGroup } from "./ui.image-avatar-group/UAvatarGroup.vue";
 /* Data */
 export { default as UTable } from "./ui.data-table/UTable.vue";
 export { default as UDataList } from "./ui.data-list/UDataList.vue";

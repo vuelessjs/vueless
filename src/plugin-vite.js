@@ -24,7 +24,7 @@ import { overrideComponents, restoreComponents } from "./utils/node/componentOve
 import {
   getNuxtDirs,
   getVueDirs,
-  getVuelessConfigDirs,
+  getVuelessAppDirs,
   cacheMergedConfigs,
   autoImportUserConfigs,
 } from "./utils/node/helper.js";
@@ -77,7 +77,7 @@ export const Vueless = function (options = {}) {
 
   const targetFiles = [
     ...(include || []),
-    ...getVuelessConfigDirs(),
+    ...getVuelessAppDirs(),
     ...(isNuxtModuleEnv ? getNuxtDirs() : getVueDirs()),
   ];
 

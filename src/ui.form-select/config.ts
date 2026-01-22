@@ -51,6 +51,9 @@ export default /*tw*/ {
         md: "text-medium",
         lg: "text-large",
       },
+      label: {
+        false: "py-px",
+      },
       disabled: {
         true: "opacity-(--vl-disabled-opacity)",
       },
@@ -127,7 +130,7 @@ export default /*tw*/ {
       },
     },
   },
-  listbox: "{UListbox} group-[*]/top:bottom-full group-[*]/top:top-auto top-full w-full",
+  listbox: "{UListbox} my-1.5 group-[*]/top:bottom-full group-[*]/top:top-auto top-full w-full",
   i18n: {
     listIsEmpty: "List is empty.",
     noDataToShow: "No data to show.",

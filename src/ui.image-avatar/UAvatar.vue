@@ -1,10 +1,11 @@
 <script setup lang="ts">
-import { computed, useTemplateRef } from "vue";
+import { computed, inject, useTemplateRef } from "vue";
 
 import { useUI } from "../composables/useUI";
 import { getDefaults } from "../utils/ui";
 
 import UIcon from "../ui.image-icon/UIcon.vue";
+import UChip from "../ui.other-chip/UChip.vue";
 
 import { COMPONENT_NAME } from "./constants";
 import defaultConfig from "./config";
@@ -16,6 +17,7 @@ defineOptions({ inheritAttrs: false });
 const props = withDefaults(defineProps<Props>(), {
   ...getDefaults<Props, Config>(defaultConfig, COMPONENT_NAME),
   label: "",
+  chip: () => ({}),
 });
 
 const emit = defineEmits([
@@ -24,6 +26,16 @@ const emit = defineEmits([
    */
   "click",
 ]);
+
+const getAvatarGroupSize = inject<() => Props["size"]>("getAvatarGroupSize", () => undefined);
+const getAvatarGroupVariant = inject<() => Props["variant"]>(
+  "getAvatarGroupVariant",
+  () => undefined,
+);
+const getAvatarGroupRounded = inject<() => Props["rounded"]>(
+  "getAvatarGroupRounded",
+  () => undefined,
+);
 
 const avatarRef = useTemplateRef<HTMLDivElement>("avatar");
 
@@ -41,6 +53,8 @@ const labelFirstLetters = computed(() => {
 const backgroundImage = computed(() => {
   return props.src ? `background-image: url(${props.src});` : "";
 });
+
+const hasChip = computed(() => props.chip != null && Boolean(Object.keys(props.chip).length));
 
 function onClick(event: MouseEvent) {
   emit("click", event);
@@ -65,38 +79,51 @@ defineExpose({
 const mutatedProps = computed(() => ({
   /* component state, not a props */
   src: Boolean(props.src),
+  size: getAvatarGroupSize() || props.size,
+  variant: getAvatarGroupVariant() || props.variant,
+  rounded: getAvatarGroupRounded() || props.rounded,
 }));
 
-const { getDataTest, config, avatarAttrs, placeholderIconAttrs } = useUI<Config>(
-  defaultConfig,
-  mutatedProps,
-);
+const { getDataTest, config, avatarAttrs, placeholderIconAttrs, chipAttrs, hiddenAttrs } =
+  useUI<Config>(defaultConfig, mutatedProps);
 </script>
 
 <template>
-  <div
-    ref="avatar"
-    :title="label"
-    :style="backgroundImage"
-    v-bind="avatarAttrs"
-    :data-test="getDataTest()"
-    @click="onClick"
+  <UChip
+    :icon="chip.icon"
+    :color="chip.color"
+    :inset="chip.inset"
+    :x-position="chip.xPosition"
+    :y-position="chip.yPosition"
+    v-bind="chipAttrs"
   >
-    <template v-if="!backgroundImage">
-      <!--
-        @slot Use it to add something instead of the avatar image placeholder.
-        @binding {string} icon-name
-      -->
-      <slot name="placeholder" :icon-name="placeholderIconName">
-        <template v-if="labelFirstLetters">{{ labelFirstLetters }}</template>
-        <UIcon
-          v-else
-          :size="size"
-          color="inherit"
-          :name="placeholderIconName"
-          v-bind="placeholderIconAttrs"
-        />
-      </slot>
+    <div
+      ref="avatar"
+      :title="label"
+      :style="backgroundImage"
+      v-bind="avatarAttrs"
+      :data-test="getDataTest()"
+      @click="onClick"
+    >
+      <template v-if="!backgroundImage">
+        <!--
+          @slot Use it to add something instead of the avatar image placeholder.
+          @binding {string} icon-name
+        -->
+        <slot name="placeholder" :icon-name="placeholderIconName">
+          <template v-if="labelFirstLetters">{{ labelFirstLetters }}</template>
+          <UIcon
+            v-else
+            :size="size"
+            color="inherit"
+            :name="placeholderIconName"
+            v-bind="placeholderIconAttrs"
+          />
+        </slot>
+      </template>
+    </div>
+    <template v-if="!hasChip" #chip>
+      <span v-bind="hiddenAttrs">&nbsp;</span>
     </template>
-  </div>
+  </UChip>
 </template>

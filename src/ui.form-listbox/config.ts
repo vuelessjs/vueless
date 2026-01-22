@@ -1,21 +1,21 @@
 export default /*tw*/ {
   wrapper: {
     base: `
-      my-2 p-1 flex flex-col gap-1 w-auto absolute z-50 shadow-sm
+      p-1 flex flex-col gap-1 w-auto absolute z-50 shadow-sm
       rounded-medium border border-solid border-default bg-default
       overflow-auto [-webkit-overflow-scrolling:touch]
       focus:outline-hidden
     `,
     variants: {
       searchable: {
-        true: "pt-0",
+        true: "pt-0 min-w-64",
       },
     },
   },
   listboxInput: {
     base: "{UInputSearch} sticky top-0 pt-1 bg-default z-10",
     searchInput: {
-      wrapper: "px-2 rounded-small focus-within:outline-0 hover:focus-within:border-lifted focus-within:border-lifted",
+      wrapper: "pl-2 pr-1 rounded-none border-0 border-b focus-within:outline-0 !border-default",
     },
   },
   selectIcon: {

@@ -96,15 +96,8 @@ export function getWeekDateList(date: Date, monthShortLocales: string[] = []) {
     const firstDayOfWeek = startOfWeekDate.getDate();
     const lastDayOfWeek = endOfWeekDate.getDate();
 
-    const isDayInPreviousMonth = week === 0 && firstDayOfWeek > 1;
-    const isLastWeek = week + day === weeksInMonth;
-
-    let monthFirstDayOfWeek = 0;
+    const monthFirstDayOfWeek = startOfWeekDate.getMonth();
     const monthLastDayOfWeek = endOfWeekDate.getMonth();
-
-    if (isDayInPreviousMonth || isLastWeek) {
-      monthFirstDayOfWeek = startOfWeekDate.getMonth();
-    }
 
     const title = `${firstDayOfWeek} ${
       monthShortLocales[monthFirstDayOfWeek] || ""

@@ -8,7 +8,7 @@ export interface Props {
   /**
    * The distance between nested elements.
    */
-  gap?: "none" | "2xs" | "xs" | "sm" | "md" | "lg" | "xl" | "2xl";
+  gap?: "none" | "3xs" | "2xs" | "xs" | "sm" | "md" | "lg" | "xl" | "2xl" | "3xl";
 
   /**
    * Items vertical align (align-items).
@@ -48,6 +48,16 @@ export interface Props {
    * Make the Row expand to fill the entire width of its container.
    */
   block?: boolean;
+
+  /**
+   * Allow flex item to grow to fill available space (flex-grow).
+   */
+  grow?: boolean;
+
+  /**
+   * Allow flex item to shrink if necessary (flex-shrink).
+   */
+  shrink?: boolean;
 
   /**
    * Allows changing HTML tag.
