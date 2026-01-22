@@ -37,6 +37,7 @@ export { default as UNumber } from "./ui.text-number/UNumber.vue";
 export { default as UFile } from "./ui.text-file/UFile.vue";
 export { default as UFiles } from "./ui.text-files/UFiles.vue";
 export { default as UBadge } from "./ui.text-badge/UBadge.vue";
+export { default as UKey } from "./ui.text-key/UKey.vue";
 /* Containers */
 export { default as UDivider } from "./ui.container-divider/UDivider.vue";
 export { default as UCol } from "./ui.container-col/UCol.vue";

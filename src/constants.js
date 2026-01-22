@@ -286,6 +286,7 @@ export const COMPONENTS = {
   UFile: "ui.text-file",
   UFiles: "ui.text-files",
   UBadge: "ui.text-badge",
+  UKey: "ui.text-key",
 
   /* Containers */
   UDivider: "ui.container-divider",
