@@ -1,11 +1,8 @@
 export default /*tw*/ {
   key: {
     base: `
-      inline-flex items-center justify-center
-      px-1.5 min-w-5 h-5
-      border border-solid rounded-small
-      font-medium font-mono text-tiny
-      !leading-none outline-hidden
+      inline-flex items-center justify-center gap-1 border border-solid
+      rounded-small font-medium font-mono !leading-none outline-hidden
     `,
     variants: {
       variant: {
@@ -15,9 +12,9 @@ export default /*tw*/ {
         soft: "border-transparent text-{color} bg-{color}/10",
       },
       size: {
-        sm: "px-1 min-w-4 h-4 text-2xs",
-        md: "px-1.5 min-w-5 h-5 text-tiny",
-        lg: "px-2 min-w-6 h-6 text-small",
+        sm: "px-1 min-w-5 h-5 text-tiny",
+        md: "px-1.5 min-w-6 h-6 text-tiny",
+        lg: "px-1.5 min-w-7 h-7 text-small",
       },
     },
   },

@@ -25,12 +25,27 @@ defineExpose({
   keyRef,
 });
 
+const keys = computed(() => {
+  if (!props.value) return [];
+
+  if (props.value.includes(" + ")) {
+    return props.value.split(" + ").map((key) => key.trim());
+  }
+
+  return [props.value];
+});
+
+const getDisplayValue = (key: string) => {
+  const lowerValue = key.toLowerCase();
+
+  return KEY_SYMBOLS[lowerValue as keyof typeof KEY_SYMBOLS] || key;
+};
+
 const displayValue = computed(() => {
-  if (!props.value) return "";
+  if (keys.value.length === 0) return "";
+  if (keys.value.length === 1) return getDisplayValue(keys.value[0]);
 
-  const lowerValue = props.value.toLowerCase();
-
-  return KEY_SYMBOLS[lowerValue as keyof typeof KEY_SYMBOLS] || props.value;
+  return keys.value.map(getDisplayValue).join(" + ");
 });
 
 const { getDataTest, keyAttrs } = useUI<Config>(defaultConfig);
@@ -43,7 +58,14 @@ const { getDataTest, keyAttrs } = useUI<Config>(defaultConfig);
       @binding {string} value
     -->
     <slot :value="displayValue">
-      {{ displayValue }}
+      <template v-if="keys.length > 1">
+        <template v-for="(key, index) in keys" :key="index">
+          {{ getDisplayValue(key) }}<span v-if="index < keys.length - 1">+</span>
+        </template>
+      </template>
+      <template v-else>
+        {{ displayValue }}
+      </template>
     </slot>
   </kbd>
 </template>

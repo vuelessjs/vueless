@@ -24,7 +24,7 @@ export default {
   title: "Text & Content / Key",
   component: UKey,
   args: {
-    value: "K",
+    value: "⌘",
   },
   argTypes: {
     ...getArgTypes(UKey.__name),
@@ -130,23 +130,9 @@ export const Shortcuts: StoryFn<UKeyArgs> = (args) => ({
   },
   template: `
     <UCol>
-      <URow>
-        <UKey value="command" />
-        <span>+</span>
-        <UKey value="K" />
-      </URow>
-      <URow>
-        <UKey value="ctrl" />
-        <span>+</span>
-        <UKey value="shift" />
-        <span>+</span>
-        <UKey value="P" />
-      </URow>
-      <URow>
-        <UKey value="alt" />
-        <span>+</span>
-        <UKey value="F4" />
-      </URow>
+      <UKey value="command + K" />
+      <UKey value="ctrl + shift + P" />
+      <UKey value="alt + F4" />
     </UCol>
   `,
 });
@@ -158,9 +144,9 @@ export const Slots: StoryFn<UKeyArgs> = (args) => ({
   },
   template: `
     <URow>
-      <UKey value="K">
+      <UKey value="command + K">
         <template #default="{ value }">
-          Custom: {{ value }}
+          Shortcut: {{ value }}
         </template>
       </UKey>
     </URow>
