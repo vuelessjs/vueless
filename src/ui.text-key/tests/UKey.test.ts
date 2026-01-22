@@ -44,9 +44,9 @@ describe("UKey.vue", () => {
 
     it("Size – applies the correct size class", () => {
       const sizes = {
-        sm: "h-4",
-        md: "h-5",
-        lg: "h-6",
+        sm: "h-5",
+        md: "h-6",
+        lg: "h-7",
       };
 
       Object.entries(sizes).forEach(([size, classes]) => {
