@@ -37,6 +37,7 @@ export { default as UNumber } from "./ui.text-number/UNumber.vue";
 export { default as UFile } from "./ui.text-file/UFile.vue";
 export { default as UFiles } from "./ui.text-files/UFiles.vue";
 export { default as UBadge } from "./ui.text-badge/UBadge.vue";
+export { default as UKey } from "./ui.text-key/UKey.vue";
 /* Containers */
 export { default as UDivider } from "./ui.container-divider/UDivider.vue";
 export { default as UCol } from "./ui.container-col/UCol.vue";
@@ -44,6 +45,7 @@ export { default as URow } from "./ui.container-row/URow.vue";
 export { default as UGrid } from "./ui.container-grid/UGrid.vue";
 export { default as UGroup } from "./ui.container-group/UGroup.vue";
 export { default as UGroups } from "./ui.container-groups/UGroups.vue";
+export { default as UCollapsible } from "./ui.container-collapsible/UCollapsible.vue";
 export { default as UAccordion } from "./ui.container-accordion/UAccordion.vue";
 export { default as UAccordionItem } from "./ui.container-accordion-item/UAccordionItem.vue";
 export { default as UEmpty } from "./ui.container-empty/UEmpty.vue";

@@ -12,7 +12,8 @@ import {
   JAVASCRIPT_EXT,
   TYPESCRIPT_EXT,
   SUPPRESS_TS_CHECK,
-  VUELESS_CONFIG_DIR,
+  VUELESS_APP_DIR,
+  VUELESS_APP_CONFIGS_DIR,
   COMPONENTS_INDEX_EXPORT,
   COMPONENTS_INDEX_COMMENT,
   VUELESS_CONFIGS_CACHED_DIR,
@@ -108,8 +109,8 @@ export function getVueDirs() {
  * Retrieves an array of directory paths and specific file paths within the current working directory related to a Vueless project.
  * @return {string[]}.
  */
-export function getVuelessConfigDirs() {
-  return [path.join(cwd(), VUELESS_CONFIG_DIR)];
+export function getVuelessAppDirs() {
+  return [path.join(cwd(), VUELESS_APP_DIR)];
 }
 
 /**
@@ -251,10 +252,11 @@ export async function detectTypeScript() {
  * @return {Promise<void>} A promise that resolves when the configuration import and index file generation is completed.
  */
 export async function autoImportUserConfigs(basePath = "") {
-  const vuelessConfigDir = path.join(cwd(), basePath, VUELESS_CONFIG_DIR);
+  const vuelessAppDir = path.join(cwd(), basePath, VUELESS_APP_DIR);
+  const vuelessConfigDir = path.join(cwd(), basePath, VUELESS_APP_CONFIGS_DIR);
 
-  const indexTsPath = path.join(vuelessConfigDir, `${CONFIG_INDEX_FILE_NAME}${TYPESCRIPT_EXT}`);
-  const indexJsPath = path.join(vuelessConfigDir, `${CONFIG_INDEX_FILE_NAME}${JAVASCRIPT_EXT}`);
+  const indexTsPath = path.join(vuelessAppDir, `${CONFIG_INDEX_FILE_NAME}${TYPESCRIPT_EXT}`);
+  const indexJsPath = path.join(vuelessAppDir, `${CONFIG_INDEX_FILE_NAME}${JAVASCRIPT_EXT}`);
 
   const hasTypeScript = await detectTypeScript();
 
@@ -281,7 +283,7 @@ export async function autoImportUserConfigs(basePath = "") {
   if (componentConfigFiles.length) {
     for (const configFilePath of componentConfigFiles) {
       const fileName = path.basename(configFilePath, path.extname(configFilePath));
-      const relativePath = path.relative(vuelessConfigDir, configFilePath);
+      const relativePath = path.relative(vuelessAppDir, configFilePath);
       const importPath = "./" + relativePath.replace(/\\/g, "/");
 
       imports.push(`import ${fileName} from "${importPath}";`);
@@ -289,8 +291,8 @@ export async function autoImportUserConfigs(basePath = "") {
     }
   }
 
-  if (!existsSync(vuelessConfigDir)) {
-    await mkdir(vuelessConfigDir, { recursive: true });
+  if (!existsSync(vuelessAppDir)) {
+    await mkdir(vuelessAppDir, { recursive: true });
   }
 
   const indexFileContent = await generateConfigIndexContent(imports, componentEntries);

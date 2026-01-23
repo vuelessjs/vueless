@@ -8,7 +8,7 @@ export interface Props {
   /**
    * The distance between nested elements.
    */
-  gap?: "none" | "2xs" | "xs" | "sm" | "md" | "lg" | "xl" | "2xl";
+  gap?: "none" | "3xs" | "2xs" | "xs" | "sm" | "md" | "lg" | "xl" | "2xl" | "3xl";
 
   /**
    * Items vertical align (align-items).

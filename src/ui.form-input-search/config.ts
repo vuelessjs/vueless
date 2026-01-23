@@ -15,7 +15,7 @@ export default /*tw*/ {
     },
   },
   clearIcon: "{>inputIcon}",
-  searchIcon: "{>inputIcon}",
+  searchIcon: "{>inputIcon} -mr-1",
   searchButton: {
     base: "{UButton} rounded-l-none ml-2",
     defaults: {
