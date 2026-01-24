@@ -83,10 +83,9 @@ export const Vueless = function (options = {}) {
 
   /* if server stopped by developer (Ctrl+C) */
   process.on("SIGINT", async () => {
-    if (isInternalEnv || isStorybookEnv) {
-      await removeCustomPropTypes(vuelessSrcDir);
-      await restoreComponents(vuelessSrcDir);
-    }
+    /* remove `.cache` folder in components and restore changes */
+    await removeCustomPropTypes(vuelessSrcDir);
+    await restoreComponents(vuelessSrcDir);
 
     /* remove cached icons */
     await removeIconsCache(basePath);
