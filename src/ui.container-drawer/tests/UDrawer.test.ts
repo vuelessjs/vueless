@@ -165,6 +165,7 @@ describe("UDrawer", () => {
 
         expect(innerWrapper.exists()).toBe(true);
 
+        await innerWrapper.trigger("mousedown");
         await innerWrapper.trigger("click");
         await sleep(500);
 
@@ -537,6 +538,7 @@ describe("UDrawer", () => {
 
         const innerWrapper = component.find("[vl-key='innerWrapper']");
 
+        await innerWrapper.trigger("mousedown");
         await innerWrapper.trigger("click");
 
         if (value) {
@@ -548,6 +550,27 @@ describe("UDrawer", () => {
           expect(component.emitted("close")).toBeFalsy();
         }
       });
+    });
+
+    it("CloseOnOverlay – does not close when mousedown on drawer and mouseup on overlay", async () => {
+      const component = mount(UDrawer, {
+        props: {
+          modelValue: true,
+          closeOnOverlay: true,
+        },
+      });
+
+      const drawer = component.find("[vl-key='drawer']");
+      const innerWrapper = component.find("[vl-key='innerWrapper']");
+
+      // Mousedown on drawer content
+      await drawer.trigger("mousedown");
+      // Click (mouseup) on overlay
+      await innerWrapper.trigger("click");
+
+      // Drawer should NOT close
+      expect(component.emitted("update:modelValue")).toBeFalsy();
+      expect(component.emitted("close")).toBeFalsy();
     });
 
     it("CloseOnEsc – emits events when escape key is pressed based on prop", () => {

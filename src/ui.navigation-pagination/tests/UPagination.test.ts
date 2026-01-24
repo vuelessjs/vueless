@@ -378,6 +378,29 @@ describe("UPagination.vue", () => {
       await buttons[buttons.length - 1].trigger("click");
       expect(component.emitted("update:modelValue")?.[3]).toEqual([10]);
     });
+
+    it("Change – emits change event when page is changed", async () => {
+      const component = mount(UPagination, {
+        props: {
+          modelValue: 1,
+          total: 100,
+          perPage: 10,
+        },
+      });
+
+      // Find the second page button and click it
+      const pageButtons = component.findAllComponents(UButton).filter((button) => {
+        const text = button.text();
+
+        return text && !isNaN(Number(text));
+      });
+
+      // Second button
+      await pageButtons[1].trigger("click");
+
+      expect(component.emitted("change")).toBeTruthy();
+      expect(component.emitted("change")?.[0]).toEqual([2]); // Second button value
+    });
   });
 
   describe("Exposed refs", () => {
