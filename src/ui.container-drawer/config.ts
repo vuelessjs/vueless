@@ -122,7 +122,7 @@ export default /*tw*/ {
   },
   defaults: {
     variant: "solid",
-    position: "left",
+    position: "right",
     inset: false,
     handle: true,
     closeOnEsc: true,
