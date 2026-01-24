@@ -106,18 +106,18 @@ export default /*tw*/ {
     base: "flex items-center justify-center bg-inherit cursor-grab active:cursor-grabbing select-none",
     variants: {
       position: {
-        top: "w-full h-11",
-        bottom: "w-full h-11",
-        left: "w-11 h-auto",
-        right: "w-11 h-auto",
+        top: "w-full h-6",
+        bottom: "w-full h-6",
+        left: "w-6 h-auto",
+        right: "w-6 h-auto",
       },
     },
   },
   handle: {
     base: "rounded-large cursor-grab active:cursor-grabbing bg-lifted hover:bg-accented transition",
     compoundVariants: [
-      { position: ["top", "bottom"], class: "w-11 h-1.5" },
-      { position: ["left", "right"], class: "w-1.5 h-11" },
+      { position: ["top", "bottom"], class: "w-10 h-1" },
+      { position: ["left", "right"], class: "w-1 h-10" },
     ],
   },
   defaults: {
