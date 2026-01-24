@@ -18,7 +18,7 @@ export default /*tw*/ {
     leaveToClass: "opacity-0",
   },
   innerWrapper: {
-    base: "py-12 w-full h-screen scroll-container [scrollbar-gutter:stable]",
+    base: "py-12 w-full h-max scroll-container [scrollbar-gutter:stable]",
     variants: {
       wrapperTransitionCompleted: {
         true: "overflow-y-auto",

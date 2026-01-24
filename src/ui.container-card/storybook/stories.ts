@@ -128,6 +128,17 @@ Description.args = {
 export const Variants = EnumTemplate.bind({});
 Variants.args = { enum: "variant", title: "{enumValue}" };
 
+export const NoDivided = DefaultTemplate.bind({});
+NoDivided.args = {
+  divided: false,
+  slotTemplate: `
+    <template #footer-left>
+      <UButton size="sm" label="Save" variant="subtle" />
+    </template>
+    ${defaultTemplate}
+  `,
+};
+
 export const BeforeTitleSlot = DefaultTemplate.bind({});
 BeforeTitleSlot.args = {
   slotTemplate: `

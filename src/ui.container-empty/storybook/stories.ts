@@ -30,6 +30,7 @@ export default {
   component: UEmpty,
   args: {
     title: "No contacts",
+    description: "There are no contacts in the list.",
   },
   argTypes: {
     ...getArgTypes(UEmpty.__name),
@@ -67,9 +68,6 @@ const EnumTemplate: StoryFn<UEmptyArgs> = (args: UEmptyArgs, { argTypes }) => ({
 
 export const Default = DefaultTemplate.bind({});
 Default.args = {};
-
-export const Description = DefaultTemplate.bind({});
-Description.args = { description: "There are no contacts in the list." };
 
 export const Sizes = EnumTemplate.bind({});
 Sizes.args = { enum: "size" };
