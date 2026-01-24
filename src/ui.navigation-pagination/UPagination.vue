@@ -27,10 +27,15 @@ const props = withDefaults(defineProps<Props>(), {
 
 const emit = defineEmits([
   /**
-   * Triggers when current page changes.
+   * Triggers when the current page changes.
    * @property {number} value
    */
   "update:modelValue",
+  /**
+   * Triggers when pagination is changed.
+   * @property {number} value
+   */
+  "change",
 ]);
 
 const { localeMessages } = useComponentLocaleMessages<typeof defaultConfig.i18n>(
@@ -45,6 +50,7 @@ const currentPage = computed({
   get: () => props.modelValue,
   set: (value) => {
     emit("update:modelValue", value);
+    emit("change", value);
   },
 });
 
