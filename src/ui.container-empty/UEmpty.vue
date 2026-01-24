@@ -11,6 +11,8 @@ import { COMPONENT_NAME } from "./constants";
 import defaultConfig from "./config";
 
 import type { Props, Config } from "./types";
+import { hasSlotContent } from "../utils/helper";
+import UText from "../ui.text-block/UText.vue";
 
 defineOptions({ inheritAttrs: false });
 
@@ -47,6 +49,7 @@ const {
   descriptionAttrs,
   wrapperAttrs,
   headerAttrs,
+  contentAttrs,
   footerAttrs,
   emptyIconWrapperAttrs,
   emptyIconAttrs,
@@ -73,11 +76,19 @@ const {
       @binding {string} description
     -->
     <slot :title="title" :description="description">
-      <UHeader v-if="title" :label="title" v-bind="titleAttrs" />
-      <div v-if="description" v-bind="descriptionAttrs" v-text="description" />
+      <div v-bind="contentAttrs">
+        <UHeader v-if="title" :label="title" v-bind="titleAttrs" />
+        <UText
+          v-if="description"
+          align="center"
+          :size="size"
+          :label="description"
+          v-bind="descriptionAttrs"
+        />
+      </div>
     </slot>
 
-    <div v-bind="footerAttrs">
+    <div v-if="hasSlotContent($slots['footer'])" v-bind="footerAttrs">
       <!-- @slot Use it to add something to the footer. -->
       <slot name="footer" />
     </div>
