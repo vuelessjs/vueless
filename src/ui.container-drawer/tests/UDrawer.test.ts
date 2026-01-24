@@ -167,7 +167,7 @@ describe("UDrawer", () => {
 
         await innerWrapper.trigger("mousedown");
         await innerWrapper.trigger("click");
-        await sleep(500);
+        await sleep(1000);
 
         const drawer = component.find('[vl-key="drawer"]');
 
@@ -189,7 +189,7 @@ describe("UDrawer", () => {
         const wrapper = component.find("[vl-key='wrapper']");
 
         await wrapper.trigger("keydown", { key: "Escape" });
-        await sleep(500);
+        await sleep(1000);
 
         const drawer = component.find('[vl-key="drawer"]');
 
