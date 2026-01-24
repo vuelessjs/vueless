@@ -137,27 +137,29 @@ const EnumTemplate: StoryFn<UDrawerArgs> = (args: UDrawerArgs, { argTypes }) => 
 });
 
 export const Default = DefaultTemplate.bind({});
-Default.args = {};
+Default.args = { modelValue: true };
 
 export const Description = DefaultTemplate.bind({});
 Description.args = {
+  modelValue: true,
   description: "Enter your email below to get started and create your account.",
 };
 
 export const NoHandle = DefaultTemplate.bind({});
-NoHandle.args = { handle: false };
+NoHandle.args = { modelValue: true, handle: false };
 
 export const Inset = DefaultTemplate.bind({});
-Inset.args = { inset: true };
+Inset.args = { modelValue: true, inset: true };
 
 export const NoCloseOnEscAndOverlay = DefaultTemplate.bind({});
 NoCloseOnEscAndOverlay.args = {
+  modelValue: true,
   closeOnEsc: false,
   closeOnOverlay: false,
 };
 
 export const NoCloseOnCross = DefaultTemplate.bind({});
-NoCloseOnCross.args = { closeOnCross: false };
+NoCloseOnCross.args = { modelValue: true, closeOnCross: false };
 
 export const Position = EnumTemplate.bind({});
 Position.args = { enum: "position", modelValues: {} };
@@ -167,6 +169,7 @@ Variants.args = { enum: "variant", modelValues: {} };
 
 export const BeforeTitleSlot = DefaultTemplate.bind({});
 BeforeTitleSlot.args = {
+  modelValue: true,
   slotTemplate: `
     <template #before-title>
       <UIcon name="account_circle" size="sm" color="primary" />
@@ -179,6 +182,7 @@ BeforeTitleSlot.args = {
 
 export const TitleSlot = DefaultTemplate.bind({});
 TitleSlot.args = {
+  modelValue: true,
   slotTemplate: `
     <template #title="{ title }">
       <UHeader :label="title" color="primary" />
@@ -191,6 +195,7 @@ TitleSlot.args = {
 
 export const AfterTitleSlot = DefaultTemplate.bind({});
 AfterTitleSlot.args = {
+  modelValue: true,
   slotTemplate: `
     <template #after-title>
       <UIcon name="verified" size="sm" color="primary" />
@@ -203,6 +208,7 @@ AfterTitleSlot.args = {
 
 export const ActionsSlot = DefaultTemplate.bind({});
 ActionsSlot.args = {
+  modelValue: true,
   slotTemplate: `
     <template #actions="{ close }">
       <UButton
@@ -221,6 +227,7 @@ ActionsSlot.args = {
 
 export const HandleSlot = DefaultTemplate.bind({});
 HandleSlot.args = {
+  modelValue: true,
   slotTemplate: `
     <template #default>
       ${defaultTemplate}
@@ -233,6 +240,7 @@ HandleSlot.args = {
 
 export const FooterLeftSlot = DefaultTemplate.bind({});
 FooterLeftSlot.args = {
+  modelValue: true,
   slotTemplate: `
     <template #default>
       ${defaultTemplate}
@@ -246,6 +254,7 @@ FooterLeftSlot.args = {
 
 export const FooterRightSlot = DefaultTemplate.bind({});
 FooterRightSlot.args = {
+  modelValue: true,
   slotTemplate: `
     <template #default>
       ${defaultTemplate}
