@@ -20,6 +20,11 @@ export interface Props {
   variant?: "solid" | "outlined" | "subtle" | "soft" | "inverted";
 
   /**
+   * Show divider between content and footer.
+   */
+  divided?: boolean;
+
+  /**
    * Component config object.
    */
   config?: ComponentConfig<Config>;
