@@ -33,7 +33,6 @@ import {
   JAVASCRIPT_EXT,
   TYPESCRIPT_EXT,
   INTERNAL_ENV,
-  STORYBOOK_ENV,
   NUXT_MODULE_ENV,
   VUELESS_LOCAL_DIR,
   VUELESS_PACKAGE_DIR,
@@ -67,7 +66,6 @@ export const Vueless = function (options = {}) {
   const { debug, env, include, basePath } = options;
 
   const isInternalEnv = env === INTERNAL_ENV;
-  const isStorybookEnv = env === STORYBOOK_ENV;
   const isNuxtModuleEnv = env === NUXT_MODULE_ENV;
 
   const vuelessSrcDir = isInternalEnv ? VUELESS_LOCAL_DIR : VUELESS_PACKAGE_DIR;
