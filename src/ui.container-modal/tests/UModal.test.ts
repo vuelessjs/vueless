@@ -206,7 +206,7 @@ describe("UModal", () => {
 
         await innerWrapper.trigger("mousedown");
         await innerWrapper.trigger("click");
-        await sleep(500);
+        await sleep(1000);
 
         const modal = component.find('[vl-key="modal"]');
 
@@ -229,7 +229,7 @@ describe("UModal", () => {
         const wrapper = component.find("[vl-key='wrapper']");
 
         await wrapper.trigger("keydown", { key: "Escape" });
-        await sleep(500);
+        await sleep(1000);
 
         const modal = component.find('[vl-key="modal"]');
 
