@@ -1,9 +1,9 @@
 export default /*tw*/ {
-  wrapper: "mt-3 absolute overflow-visible md:w-[22rem]",
+  wrapper: "first:mt-6 mt-3 mx-6 md:mx-4 z-9999 fixed overflow-visible md:w-[22rem]",
   transitionGroup: {
     moveClass: "transition duration-500",
     enterActiveClass: "transition duration-500",
-    leaveActiveClass: "transition duration-500 absolute",
+    leaveActiveClass: "transition duration-500",
     enterFromClass: "opacity-0",
     leaveToClass: "opacity-0",
   },
@@ -17,7 +17,7 @@ export default /*tw*/ {
   bodyInfo: "{>body} bg-radial-[circle_at_0%_50%] from-info/25 from-2.17% to-transparent",
   content: "w-full flex flex-col max-w-full text-medium text-inverted",
   label: "mb-0.5 font-medium",
-  description: "break-words font-normal",
+  description: "wrap-break-word font-normal",
   statusIcon: "{UIcon} brightness-125 dark:brightness-75",
   successIcon: "{UIcon} {>statusIcon} text-success",
   warningIcon: "{UIcon} {>statusIcon} text-warning",
