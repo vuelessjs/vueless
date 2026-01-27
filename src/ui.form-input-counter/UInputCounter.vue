@@ -231,6 +231,7 @@ const {
       :size="size"
       :disabled="disabled"
       :readonly="readonly"
+      :debounce="debounce"
       :min-fraction-digits="minFractionDigits"
       :max-fraction-digits="maxFractionDigits"
       :decimal-separator="decimalSeparator"

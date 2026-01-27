@@ -115,6 +115,11 @@ export interface Props {
   id?: string;
 
   /**
+   * Time in milliseconds before value emit.
+   */
+  debounce?: number | string;
+
+  /**
    * Component config object.
    */
   config?: ComponentConfig<Config>;

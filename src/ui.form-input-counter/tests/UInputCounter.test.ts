@@ -4,6 +4,7 @@ import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
 import UInputCounter from "../UInputCounter.vue";
 import UButton from "../../ui.button/UButton.vue";
 import UInputNumber from "../../ui.form-input-number/UInputNumber.vue";
+import UInput from "../../ui.form-input/UInput.vue";
 
 import type { Props } from "../types";
 
@@ -347,6 +348,32 @@ describe("UInputCounter.vue", () => {
 
         expect(component.get(`[data-test='test-${testCase}']`)).toBeTruthy();
       });
+    });
+
+    it("Debounce – passes debounce to UInputNumber and emits update:modelValue after delay", async () => {
+      const debounceTime = 300;
+      const initialValue = 42;
+
+      const component = mount(UInputCounter, {
+        props: {
+          modelValue: initialValue,
+          debounce: debounceTime,
+        },
+      });
+
+      await flushPromises();
+
+      expect(component.getComponent(UInputNumber).props("debounce")).toBe(debounceTime);
+
+      await component.getComponent(UInputNumber).findComponent(UInput).trigger("keyup");
+
+      expect(component.emitted("update:modelValue")).toBeUndefined();
+
+      vi.advanceTimersByTime(debounceTime);
+      await flushPromises();
+
+      expect(component.emitted("update:modelValue")).toBeDefined();
+      expect(component.emitted("update:modelValue")![0][0]).toBe(initialValue);
     });
   });
 });
