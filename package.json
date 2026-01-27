@@ -32,14 +32,14 @@
     "vueless": "./bin/index.js"
   },
   "dependencies": {
-    "@tailwindcss/postcss": "^4.1.11",
-    "@tailwindcss/vite": "^4.1.11",
+    "@tailwindcss/postcss": "^4.1.18",
+    "@tailwindcss/vite": "^4.1.18",
     "@types/lodash-es": "^4.17.12",
     "cva": "^1.0.0-beta.4",
     "lodash-es": "^4.17.21",
     "svgo": "^4.0.0",
-    "tailwind-merge": "^3.3.1",
-    "tailwindcss": "^4.1.11",
+    "tailwind-merge": "^3.4.0",
+    "tailwindcss": "^4.1.18",
     "tippy.js": "^6.3.7",
     "unplugin-vue-components": "^28.8.0",
     "vuedraggable": "4.1.0"
@@ -47,7 +47,7 @@
   "devDependencies": {
     "@material-symbols/svg-500": "^0.35.0",
     "@release-it/bumper": "^7.0.5",
-    "@release-it/conventional-changelog": "^10.0.1",
+    "@release-it/conventional-changelog": "^10.0.4",
     "@tsconfig/node20": "^20.1.6",
     "@types/jsdom": "^21.1.7",
     "@types/node": "^24.1.0",
@@ -64,7 +64,7 @@
     "globals": "^16.3.0",
     "jsdom": "^26.1.0",
     "prettier": "^3.6.2",
-    "release-it": "^19.0.4",
+    "release-it": "^19.2.4",
     "typescript": "^5.8.3",
     "vite": "^7.1.9",
     "vitest": "^3.2.4",
