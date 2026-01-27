@@ -36,6 +36,7 @@ export default {
   args: {
     title: "Sign Up",
     modelValue: true,
+    config: { innerWrapper: "h-max" },
   },
   argTypes: {
     ...getArgTypes(UModal.__name),
