@@ -18,7 +18,7 @@ export default /*tw*/ {
     `,
     variants: {
       error: {
-        true: "!border-error focus-within:outline-error",
+        true: "border-error! focus-within:outline-error",
       },
       disabled: {
         true: `
@@ -44,7 +44,7 @@ export default /*tw*/ {
     compoundVariants: [{ labelAlign: "topInside", label: true, class: "pt-0" }],
   },
   selectedLabels: {
-    base: "w-full !leading-none items-center whitespace-nowrap",
+    base: "w-full leading-none! items-center whitespace-nowrap",
     variants: {
       size: {
         sm: "text-small",
@@ -121,7 +121,7 @@ export default /*tw*/ {
   clear: "{>toggle}",
   clearIcon: "{UIcon} {>selectIcon}",
   placeholder: {
-    base: "flex items-center text-muted !leading-none shrink-0",
+    base: "flex items-center text-muted leading-none! shrink-0",
     variants: {
       size: {
         sm: "text-small",

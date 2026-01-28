@@ -19,7 +19,7 @@ export default /*tw*/ {
   stickyHeaderCell: "{>headerCellBase} flex-none whitespace-nowrap",
   stickyHeaderCheckbox: "{UCheckbox}",
   stickyHeaderCounter: {
-    base: "{>headerCounterBase} absolute top-4 left-11 bg-gradient-to-r from-(--vl-bg) from-80%",
+    base: "{>headerCounterBase} absolute top-4 left-11 bg-linear-to-r from-(--vl-bg) from-80%",
     variants: {
       compact: {
         true: "top-3",
@@ -54,17 +54,17 @@ export default /*tw*/ {
   body: "group/body divide-none",
   bodyRow: "bg-default hover:bg-muted",
   bodyRowChecked: "bg-lifted transition",
-  beforeBodyRow: "!p-0",
-  beforeBodyRowChecked: "{>bodyRowChecked} !p-0",
+  beforeBodyRow: "p-0!",
+  beforeBodyRowChecked: "{>bodyRowChecked} p-0!",
   beforeBodyRowCell: "{>bodyCellBase} py-1",
-  afterBodyRow: "!p-0",
+  afterBodyRow: "p-0!",
   bodyRowDateDivider: "first:hidden",
   bodyRowCheckedDateDivider: "{>bodyRowChecked} {>bodyRowChecked}",
   bodyCellBase: {
     base: "p-4 truncate align-top",
     variants: {
       compact: {
-        true: "px-4 py-3 last:px-4 last:py-3 first:!px-4 first:py-3",
+        true: "px-4 py-3 last:px-4 last:py-3 first:px-4! first:py-3",
       },
     },
   },
@@ -85,7 +85,7 @@ export default /*tw*/ {
   },
   bodySelectedDateDivider: {
     base: "{>bodyDateDivider}",
-    label: "!bg-lifted transition",
+    label: "bg-lifted! transition",
   },
   bodyEmptyState: "{UEmpty} my-8",
   bodyEmptyStateCell: "",

@@ -1,7 +1,7 @@
 export default /*tw*/ {
   button: {
     base: `
-      flex items-center justify-center font-medium !leading-snug whitespace-nowrap
+      flex items-center justify-center font-medium leading-snug! whitespace-nowrap
       border border-solid transition cursor-pointer
       focus-visible:outline-medium focus-visible:outline-offset-2 focus-visible:outline-{color}
       disabled:cursor-not-allowed disabled:outline-0 disabled:outline-offset-0
@@ -20,31 +20,31 @@ export default /*tw*/ {
           bg-{color} border-transparent text-inverted
           hover:bg-{color}-lifted
           active:bg-{color}-accented
-          disabled:!bg-{color}/(--vl-disabled-opacity)
+          disabled:bg-{color}/(--vl-disabled-opacity)!
         `,
         outlined: `
           text-{color} border-{color}
           hover:text-{color}-lifted hover:border-{color}-lifted hover:bg-{color}-lifted/10
           active:text-{color}-accented active:border-{color}-accented active:bg-{color}-accented/15
-          disabled:!text-{color}/(--vl-disabled-opacity) disabled:!bg-{color}/5 disabled:!border-{color}/(--vl-disabled-opacity)
+          disabled:text-{color}/(--vl-disabled-opacity)! disabled:bg-{color}/5! disabled:border-{color}/(--vl-disabled-opacity)!
         `,
         subtle: `
           text-{color} bg-{color}/5 border-{color}/15
           hover:text-{color}-lifted hover:bg-{color}-lifted/10
           active:text-{color}-accented active:bg-{color}-accented/15
-          disabled:!text-{color}/(--vl-disabled-opacity) disabled:!bg-{color}/5 disabled:!border-{color}/10
+          disabled:text-{color}/(--vl-disabled-opacity)! disabled:bg-{color}/5! disabled:border-{color}/10!
         `,
         soft: `
           text-{color} bg-{color}/5 border-transparent
           hover:text-{color}-lifted hover:bg-{color}-lifted/10
           active:text-{color}-accented active:bg-{color}-accented/15
-          disabled:!text-{color}/(--vl-disabled-opacity) disabled:!bg-{color}/5
+          disabled:text-{color}/(--vl-disabled-opacity)! disabled:bg-{color}/5!
         `,
         ghost: `
           text-{color} bg-transparent border-transparent
           hover:text-{color}-lifted hover:bg-{color}-lifted/10
           active:text-{color}-accented active:bg-{color}-accented/15
-          disabled:!text-{color}/(--vl-disabled-opacity) disabled:!bg-transparent
+          disabled:text-{color}/(--vl-disabled-opacity)! disabled:bg-transparent!
         `,
       },
       round: {
