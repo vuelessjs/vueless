@@ -1,6 +1,6 @@
 export default /*tw*/ {
   wrapper: {
-    base: "flex items-center text-default !leading-none",
+    base: "flex items-center text-default leading-none!",
     variants: {
       size: {
         sm: "gap-1.5",

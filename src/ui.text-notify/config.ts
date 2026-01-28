@@ -23,7 +23,7 @@ export default /*tw*/ {
   warningIcon: "{UIcon} {>statusIcon} text-warning",
   errorIcon: "{UIcon} {>statusIcon} text-error",
   infoIcon: "{UIcon} {>statusIcon} text-info",
-  closeIcon: "{UIcon} !text-inverted opacity-75",
+  closeIcon: "{UIcon} text-inverted! opacity-75",
   positionClasses: {
     page: "UNotifyPage",
     aside: "UNotifyAside",

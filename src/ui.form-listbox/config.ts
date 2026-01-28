@@ -15,7 +15,7 @@ export default /*tw*/ {
   listboxInput: {
     base: "{UInputSearch} sticky top-0 pt-1 bg-default z-10",
     searchInput: {
-      wrapper: "pl-2 pr-1 rounded-none border-0 border-b focus-within:outline-0 !border-default",
+      wrapper: "pl-2 pr-1 rounded-none border-0 border-b focus-within:outline-0 border-default!",
     },
   },
   selectIcon: {
@@ -38,7 +38,7 @@ export default /*tw*/ {
   option: {
     base: `
       rounded-small px-2 py-2 flex gap-2 items-center align-middle whitespace-nowrap cursor-pointer
-      font-normal !leading-snug
+      font-normal leading-snug!
       hover:bg-{color}/5 active:bg-{color}/10
       overflow-hidden text-ellipsis text-default
     `,
@@ -59,7 +59,7 @@ export default /*tw*/ {
   optionDisabledActive: "{>optionActive} {>optionDisabled}",
   optionContent: "w-full truncate",
   groupBase: {
-    base: "px-2 pb-2.5 font-medium !leading-none text-muted truncate",
+    base: "px-2 pb-2.5 font-medium leading-none! text-muted truncate",
     variants: {
       size: {
         sm: "text-tiny",
@@ -78,7 +78,7 @@ export default /*tw*/ {
   addOptionLabelWrapper: "{>option} -mb-[1.375rem] active:bg-lifted",
   addOptionLabel: "leading-none font-medium",
   addOptionLabelHotkey: "text-lifted",
-  addOptionButton: "{UButton} !leading-none sticky left-[calc(100%-2.15rem)] bottom-2 p-1",
+  addOptionButton: "{UButton} leading-none! sticky left-[calc(100%-2.15rem)] bottom-2 p-1",
   addOptionIcon: "{UIcon} bg-transparent",
   selectedIcon: {
     base: "{UIcon}",
