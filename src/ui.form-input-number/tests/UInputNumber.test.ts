@@ -1,5 +1,5 @@
 import { flushPromises, mount } from "@vue/test-utils";
-import { describe, it, expect, vi } from "vitest";
+import { describe, it, expect } from "vitest";
 
 import UInputNumber from "../UInputNumber.vue";
 import UInput from "../../ui.form-input/UInput.vue";
@@ -283,34 +283,6 @@ describe("UInputNumber.vue", () => {
       });
 
       expect(component.getComponent(UInput).props("dataTest")).toBe(dataTest);
-    });
-
-    it("Debounce – emits update:modelValue after debounce delay", async () => {
-      vi.useFakeTimers();
-
-      const debounceTime = 300;
-      const initialValue = 42;
-
-      const component = mount(UInputNumber, {
-        props: {
-          modelValue: initialValue,
-          debounce: debounceTime,
-        },
-      });
-
-      await flushPromises();
-
-      await component.getComponent(UInput).trigger("keyup");
-
-      expect(component.emitted("update:modelValue")).toBeUndefined();
-
-      vi.advanceTimersByTime(debounceTime);
-      await flushPromises();
-
-      expect(component.emitted("update:modelValue")).toBeDefined();
-      expect(component.emitted("update:modelValue")![0][0]).toBe(initialValue);
-
-      vi.useRealTimers();
     });
   });
 

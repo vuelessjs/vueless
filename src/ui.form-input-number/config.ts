@@ -5,7 +5,6 @@ export default /*tw*/ {
     size: "md",
     minFractionDigits: 0,
     maxFractionDigits: 2,
-    debounce: 0,
     decimalSeparator: ",",
     thousandsSeparator: " ",
     labelAlign: "topInside",

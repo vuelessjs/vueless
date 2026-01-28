@@ -350,7 +350,7 @@ describe("UInputCounter.vue", () => {
       });
     });
 
-    it("Debounce – passes debounce to UInputNumber and emits update:modelValue after delay", async () => {
+    it("Debounce – emits update:modelValue after debounce delay when typing in input", async () => {
       const debounceTime = 300;
       const initialValue = 42;
 
@@ -362,8 +362,6 @@ describe("UInputCounter.vue", () => {
       });
 
       await flushPromises();
-
-      expect(component.getComponent(UInputNumber).props("debounce")).toBe(debounceTime);
 
       await component.getComponent(UInputNumber).findComponent(UInput).trigger("keyup");
 

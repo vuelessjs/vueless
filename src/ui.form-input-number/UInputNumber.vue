@@ -1,9 +1,8 @@
 <script setup lang="ts">
-import { computed, watch, watchEffect, onMounted, useId, useTemplateRef } from "vue";
+import { computed, watch, onMounted, useId, useTemplateRef } from "vue";
 
 import { useUI } from "../composables/useUI";
 import { getDefaults } from "../utils/ui";
-import { createDebounce } from "../utils/helper";
 
 import UInput from "../ui.form-input/UInput.vue";
 
@@ -54,16 +53,6 @@ const emit = defineEmits([
    */
   "blur",
 ]);
-
-let emitModelValueDebounced = createDebounce((value: number | string) => {
-  emit("update:modelValue", value);
-}, Number(props.debounce));
-
-watchEffect(() => {
-  emitModelValueDebounced = createDebounce((value: number | string) => {
-    emit("update:modelValue", value);
-  }, Number(props.debounce));
-});
 
 const numberInputRef = useTemplateRef<InstanceType<typeof UInput>>("numberInput");
 
@@ -124,12 +113,7 @@ function onKeyup(event: KeyboardEvent) {
   const numberValue = getFixedNumber(parseFloat(rawValue.value), props.maxFractionDigits || 10);
   const value = props.valueType === "number" ? numberValue : rawValue.value || "";
 
-  if (Number(props.debounce) > 0) {
-    emitModelValueDebounced(value);
-  } else {
-    emit("update:modelValue", value);
-  }
-
+  emit("update:modelValue", value);
   emit("keyup", event);
 }
 
@@ -138,14 +122,6 @@ function onFocus(event: FocusEvent) {
 }
 
 function onBlur(event: FocusEvent) {
-  if (Number(props.debounce) > 0) {
-    const numberValue = getFixedNumber(parseFloat(rawValue.value), props.maxFractionDigits || 10);
-
-    const value = props.valueType === "number" ? numberValue : rawValue.value || "";
-
-    emit("update:modelValue", value);
-  }
-
   emit("blur", event);
 }
 
