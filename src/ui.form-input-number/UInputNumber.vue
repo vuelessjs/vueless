@@ -111,9 +111,9 @@ onMounted(() => {
 
 function onKeyup(event: KeyboardEvent) {
   const numberValue = getFixedNumber(parseFloat(rawValue.value), props.maxFractionDigits || 10);
+  const value = props.valueType === "number" ? numberValue : rawValue.value || "";
 
-  localValue.value = props.valueType === "number" ? numberValue : rawValue.value || "";
-
+  emit("update:modelValue", value);
   emit("keyup", event);
 }
 
