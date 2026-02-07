@@ -118,6 +118,21 @@ describe("UModalConfirm", () => {
       expect(component.find("[vl-key='confirmButton']").attributes("disabled")).toBeDefined();
     });
 
+    it("Loading – applies loading state to confirm button when loading is true", () => {
+      const component = mount(UModalConfirm, {
+        props: {
+          modelValue,
+          loading: true,
+        },
+      });
+
+      const confirmButton = component
+        .findAllComponents(UButton)
+        .find((button) => button.attributes("data-test")?.includes("confirm"));
+
+      expect(confirmButton?.props("loading")).toBe(true);
+    });
+
     it("Cancel Hidden – hides cancel button when cancelHidden is true", () => {
       const cancelHidden = true;
 
