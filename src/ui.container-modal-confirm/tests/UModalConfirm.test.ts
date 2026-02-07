@@ -4,6 +4,7 @@ import { describe, it, expect } from "vitest";
 import UModalConfirm from "../UModalConfirm.vue";
 import UModal from "../../ui.container-modal/UModal.vue";
 import UButton from "../../ui.button/UButton.vue";
+import ULoader from "../../ui.loader/ULoader.vue";
 
 import type { Props } from "../types";
 
@@ -126,11 +127,7 @@ describe("UModalConfirm", () => {
         },
       });
 
-      const confirmButton = component
-        .findAllComponents(UButton)
-        .find((button) => button.attributes("data-test")?.includes("confirm"));
-
-      expect(confirmButton?.props("loading")).toBe(true);
+      expect(component.findComponent(ULoader).exists()).toBe(true);
     });
 
     it("Cancel Hidden – hides cancel button when cancelHidden is true", () => {
