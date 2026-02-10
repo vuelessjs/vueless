@@ -131,7 +131,7 @@ export default /*tw*/ {
     },
   },
   listbox: `
-    {UListbox} border-0 outline-1 outline-default
+    {UListbox} border-0 outline-1! outline-default
     my-1.5 group-[*]/top:bottom-full group-[*]/top:top-auto top-full w-full
   `,
   i18n: {
