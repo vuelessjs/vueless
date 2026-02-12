@@ -521,15 +521,16 @@ function clearSelectedItems() {
 }
 
 function onToggleExpand(row: Row) {
-  const targetIndex = localExpandedRows.value.findIndex((expandedId) => expandedId === row.id);
+  const expanded = localExpandedRows.value;
+  const targetIndex = expanded.indexOf(row.id);
 
   if (~targetIndex) {
-    localExpandedRows.value = localExpandedRows.value.filter((expendedRow) => {
-      return ![row.id, ...getRowChildrenIds(row)].includes(expendedRow);
-    });
+    const idsToRemove = new Set([row.id, ...getRowChildrenIds(row)]);
+
+    localExpandedRows.value = expanded.filter((id) => !idsToRemove.has(id));
     emit("row-collapse", row);
   } else {
-    localExpandedRows.value.push(row.id);
+    localExpandedRows.value = [...expanded, row.id];
     emit("row-expand", row);
   }
 

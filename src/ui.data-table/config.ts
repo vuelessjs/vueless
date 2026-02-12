@@ -33,7 +33,7 @@ export default /*tw*/ {
     base: "border border-solid border-muted rounded-medium bg-default overflow-x-auto ",
     variants: {
       virtualScroll: {
-        true: "h-150 overflow-y-auto scrollbar-thin",
+        true: "h-150 overflow-y-auto",
       },
     },
   },
