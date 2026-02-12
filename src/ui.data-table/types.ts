@@ -112,6 +112,26 @@ export interface Props {
   loading?: boolean;
 
   /**
+   * Enable virtual scrolling for large datasets.
+   */
+  virtualScroll?: boolean;
+
+  /**
+   * Fixed row height in pixels (used for virtual scroll calculations).
+   */
+  rowHeight?: number;
+
+  /**
+   * Height of the scroll container (CSS value).
+   */
+  scrollHeight?: string;
+
+  /**
+   * Number of extra rows to render above/below viewport.
+   */
+  bufferSize?: number;
+
+  /**
    * Component config object.
    */
   config?: ComponentConfig<Config>;

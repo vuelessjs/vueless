@@ -971,3 +971,76 @@ FooterSlot.args = {
     </template>
   `,
 };
+
+function generateNestedRows(count: number): Row[] {
+  return Array.from({ length: count }, (_, i) => {
+    const hasChildren = i % 10 === 0;
+    const row: Row = {
+      id: `row-${i}`,
+      orderId: `ORD-${String(i).padStart(5, "0")}`,
+      customerName: ["Alice Johnson", "Michael Smith", "Emma Brown", "James Wilson"][i % 4],
+      status: ["Pending", "Shipped", "Delivered", "Cancelled"][i % 4],
+      totalPrice: `$${(Math.random() * 500).toFixed(2)}`,
+    };
+
+    if (hasChildren) {
+      row.row = Array.from({ length: 3 }, (_, j) => ({
+        id: `row-${i}-child-${j}`,
+        orderId: `SUB-${String(i).padStart(5, "0")}-${j + 1}`,
+        customerName: "",
+        status: ["Processing", "Packed", "Ready"][j % 3],
+        totalPrice: `$${(Math.random() * 100).toFixed(2)}`,
+      }));
+    }
+
+    return row;
+  });
+}
+
+export const VirtualScroll: StoryFn<UTableArgs> = (args: UTableArgs) => ({
+  components: { UTable, UBadge },
+  setup() {
+    const rows = generateNestedRows(100000);
+
+    return { args, rows };
+  },
+  template: `
+    <UTable
+      :columns="[
+        { key: 'orderId', label: 'Order ID', thClass: 'w-1/5' },
+        { key: 'customerName', label: 'Customer Name' },
+        { key: 'status', label: 'Status' },
+        { key: 'totalPrice', label: 'Total Price' },
+      ]"
+      :rows="rows"
+      compact
+      virtual-scroll
+      :row-height="46"
+      :buffer-size="10"
+    >
+      <template #cell-status="{ value }">
+        <UBadge
+          :label="value"
+          variant="soft"
+          :color="
+            value === 'Delivered' ? 'success' :
+            value === 'Cancelled' ? 'error' :
+            value === 'Pending' ? 'notice' :
+            value === 'Shipped' || value === 'Processing' ? 'info' :
+            value === 'Packed' || value === 'Ready' ? 'primary' : ''
+          "
+        />
+      </template>
+    </UTable>
+  `,
+});
+VirtualScroll.parameters = {
+  docs: {
+    description: {
+      story:
+        "Virtual scrolling enables rendering of large datasets (100,000+ rows) with optimal performance. " +
+        "Only visible rows are rendered in the DOM, with collapsible nested rows fully supported. " +
+        "Use `virtualScroll` prop to enable, and configure `rowHeight`, `scrollHeight`, and `bufferSize` as needed.",
+    },
+  },
+};

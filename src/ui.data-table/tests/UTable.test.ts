@@ -291,6 +291,145 @@ describe("UTable.vue", () => {
         expect(cell.attributes("class")).toContain(compactClasses);
       });
     });
+
+    it("Virtual Scroll – is disabled by default", () => {
+      const component = mountUTable(getDefaultProps());
+
+      expect(component.vm.$props.virtualScroll).toBe(false);
+    });
+
+    it("Virtual Scroll – enables virtual scrolling when virtualScroll is true", () => {
+      const component = mountUTable(
+        getDefaultProps({
+          virtualScroll: true,
+        }),
+      );
+
+      expect(component.vm.$props.virtualScroll).toBe(true);
+
+      // Check that the table wrapper has virtual scroll classes
+      const tableWrapper = component.find("table").element.parentElement;
+
+      expect(tableWrapper?.className).toContain("overflow-y-auto");
+    });
+
+    it("Virtual Scroll – renders spacer rows when virtualScroll is enabled", async () => {
+      const manyRows = Array.from({ length: 100 }, (_, i) => ({
+        id: String(i + 1),
+        name: `User ${i + 1}`,
+        email: `user${i + 1}@example.com`,
+        role: "User",
+      }));
+
+      const component = mountUTable(
+        getDefaultProps({
+          rows: manyRows,
+          virtualScroll: true,
+          rowHeight: 40,
+        }),
+      );
+
+      await nextTick();
+
+      const allRows = component.findAll("tbody tr");
+      const spacerRows = allRows.filter((row) => {
+        const td = row.find("td");
+        const hasTableRow = row.findComponent(UTableRow).exists();
+
+        return (
+          td.exists() &&
+          td.attributes("colspan") &&
+          td.attributes("style")?.includes("height") &&
+          !hasTableRow
+        );
+      });
+
+      // Should have at least one spacer row (top or bottom)
+      expect(spacerRows.length).toBeGreaterThanOrEqual(1);
+    });
+
+    it("Row Height – uses default rowHeight value", () => {
+      const component = mountUTable(getDefaultProps());
+
+      expect(component.vm.$props.rowHeight).toBe(40);
+    });
+
+    it("Row Height – accepts custom rowHeight value", () => {
+      const customRowHeight = 60;
+
+      const component = mountUTable(
+        getDefaultProps({
+          rowHeight: customRowHeight,
+        }),
+      );
+
+      expect(component.vm.$props.rowHeight).toBe(customRowHeight);
+    });
+
+    it("Buffer Size – uses default bufferSize value", () => {
+      const component = mountUTable(getDefaultProps());
+
+      expect(component.vm.$props.bufferSize).toBe(10);
+    });
+
+    it("Buffer Size – accepts custom bufferSize value", () => {
+      const customBufferSize = 20;
+
+      const component = mountUTable(
+        getDefaultProps({
+          bufferSize: customBufferSize,
+        }),
+      );
+
+      expect(component.vm.$props.bufferSize).toBe(customBufferSize);
+    });
+
+    it("Virtual Scroll – renders only visible rows plus buffer", async () => {
+      const manyRows = Array.from({ length: 100 }, (_, i) => ({
+        id: String(i + 1),
+        name: `User ${i + 1}`,
+        email: `user${i + 1}@example.com`,
+        role: "User",
+      }));
+
+      const component = mountUTable(
+        getDefaultProps({
+          rows: manyRows,
+          virtualScroll: true,
+          rowHeight: 40,
+          scrollHeight: "400px",
+          bufferSize: 5,
+        }),
+      );
+
+      await nextTick();
+
+      const tableRows = component.findAllComponents(UTableRow);
+
+      // Should render less than total rows (only visible + buffer)
+      expect(tableRows.length).toBeLessThan(manyRows.length);
+      expect(tableRows.length).toBeGreaterThan(0);
+    });
+
+    it("Virtual Scroll – renders all rows when virtualScroll is false", () => {
+      const manyRows = Array.from({ length: 50 }, (_, i) => ({
+        id: String(i + 1),
+        name: `User ${i + 1}`,
+        email: `user${i + 1}@example.com`,
+        role: "User",
+      }));
+
+      const component = mountUTable(
+        getDefaultProps({
+          rows: manyRows,
+          virtualScroll: false,
+        }),
+      );
+
+      const tableRows = component.findAllComponents(UTableRow);
+
+      expect(tableRows.length).toBe(manyRows.length);
+    });
   });
 
   describe("Slots", () => {

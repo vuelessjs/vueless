@@ -19,6 +19,7 @@ import UTableRow from "./UTableRow.vue";
 import UDivider from "../ui.container-divider/UDivider.vue";
 
 import { useUI } from "../composables/useUI";
+import { useVirtualScroll } from "../composables/useVirtualScroll";
 import { getDefaults, cx, getMergedConfig } from "../utils/ui";
 import { hasSlotContent } from "../utils/helper";
 import { useComponentLocaleMessages } from "../composables/useComponentLocaleMassages";
@@ -75,13 +76,13 @@ const emit = defineEmits([
   "clickCell",
 
   /**
-   * Tirggers when row expanded.
+   * Triggers when row expanded.
    * @property {object} row
    */
   "row-expand",
 
   /**
-   * Tirggers when row collapsed.
+   * Triggers when row collapsed.
    * @property {object} row
    */
   "row-collapse",
@@ -205,6 +206,25 @@ const isCheckedMoreOneTableItems = computed(() => {
 const tableRowWidthStyle = computed(() => ({ width: `${tableWidth.value / PX_IN_REM}rem` }));
 
 const flatTableRows = computed(() => getFlatRows(props.rows));
+
+const visibleFlatRows = computed(() => {
+  return flatTableRows.value.filter(
+    (row) => !row.parentRowId || localExpandedRows.value.includes(row.parentRowId),
+  );
+});
+
+const virtualScroll = useVirtualScroll({
+  containerRef: tableWrapperRef,
+  totalCount: computed(() => (props.virtualScroll ? visibleFlatRows.value.length : 0)),
+  rowHeight: props.rowHeight,
+  bufferSize: props.bufferSize,
+});
+
+const renderedRows = computed(() => {
+  return props.virtualScroll
+    ? visibleFlatRows.value.slice(virtualScroll.startIndex.value, virtualScroll.endIndex.value)
+    : visibleFlatRows.value;
+});
 
 const isSelectedAllRows = computed(() => {
   return localSelectedRows.value.length === flatTableRows.value.length;
@@ -749,7 +769,7 @@ const {
       <ULoaderProgress :loading="loading" v-bind="stickyHeaderLoaderAttrs" />
     </div>
 
-    <div ref="table-wrapper" v-bind="tableWrapperAttrs">
+    <div ref="table-wrapper" v-bind="tableWrapperAttrs" @scroll="virtualScroll.onScroll">
       <table v-bind="tableAttrs">
         <thead v-bind="headerAttrs" :style="tableRowWidthStyle">
           <tr
@@ -835,12 +855,14 @@ const {
             </td>
           </tr>
 
-          <template
-            v-for="(row, rowIndex) in sortedRows.filter(
-              (row) => !row.parentRowId || localExpandedRows.includes(row.parentRowId),
-            )"
-            :key="row.id"
-          >
+          <tr v-if="props.virtualScroll && virtualScroll.topSpacerHeight.value">
+            <td
+              :colspan="colsCount"
+              :style="{ height: `${virtualScroll.topSpacerHeight.value}px` }"
+            />
+          </tr>
+
+          <template v-for="(row, rowIndex) in renderedRows" :key="row.id">
             <tr
               v-if="isShownDateDivider(rowIndex) && !isRowSelectedWithin(rowIndex) && row.rowDate"
               v-bind="bodyRowDateDividerAttrs"
@@ -934,6 +956,13 @@ const {
               </template>
             </UTableRow>
           </template>
+
+          <tr v-if="props.virtualScroll && virtualScroll.bottomSpacerHeight.value > 0">
+            <td
+              :colspan="colsCount"
+              :style="{ height: `${virtualScroll.bottomSpacerHeight.value}px` }"
+            />
+          </tr>
 
           <tr
             v-if="

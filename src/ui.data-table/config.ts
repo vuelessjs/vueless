@@ -29,18 +29,36 @@ export default /*tw*/ {
   stickyHeaderLoader: "{ULoaderProgress} absolute top-auto bottom-0",
   headerActionsCheckbox: "{UCheckbox}",
   headerActionsCounter: "{>headerCounterBase} -ml-1.5",
-  tableWrapper: "border border-solid border-muted rounded-medium bg-default overflow-x-auto",
-  table: "min-w-full border-none text-medium w-auto table-auto",
-  header:
-    "border-b border-muted [&>tr:first-child>*]:first:rounded-tl-medium [&>tr:last-child>*]:last:rounded-tr-medium relative",
+  tableWrapper: {
+    base: "border border-solid border-muted rounded-medium bg-default overflow-x-auto ",
+    variants: {
+      virtualScroll: {
+        true: "h-150 overflow-y-auto scrollbar-thin",
+      },
+    },
+  },
+  table: {
+    base: "min-w-full border-none text-medium w-auto table-auto border-separate border-spacing-0",
+    variants: {
+      virtualScroll: {
+        true: "table-layout-fixed w-full",
+      },
+    },
+  },
+  header: {
+    base: "[&>tr:first-child>*]:first:rounded-tl-medium [&>tr:last-child>*]:last:rounded-tr-medium relative",
+  },
   headerRow: "",
   beforeHeaderRow: "border border-solid border-muted",
   beforeHeaderCell: "{>headerCellBase}",
   headerCellBase: {
-    base: "p-4 text-medium font-normal text-lifted text-left text-nowrap",
+    base: "border-b border-muted p-4 text-medium font-normal text-lifted text-left text-nowrap",
     variants: {
       compact: {
         true: "px-4 py-3 last:px-4 last:py-3 first:px-4 first:py-3",
+      },
+      virtualScroll: {
+        true: "sticky top-0 z-10 bg-default",
       },
     },
   },
@@ -116,6 +134,9 @@ export default /*tw*/ {
   },
   defaults: {
     emptyCellLabel: "—",
+    rowHeight: 40,
+    bufferSize: 10,
+    virtualScroll: false,
     compact: false,
     selectable: false,
     dateDivider: false,
