@@ -15,7 +15,7 @@ export default /*tw*/ {
   bodyWarning: "{>body} bg-radial-[circle_at_0%_50%] from-warning/25 from-2.17% to-transparent",
   bodyError: "{>body} bg-radial-[circle_at_0%_50%] from-error/25 from-2.17% to-transparent",
   bodyInfo: "{>body} bg-radial-[circle_at_0%_50%] from-info/25 from-2.17% to-transparent",
-  content: "w-full flex flex-col max-w-full text-medium text-inverted",
+  content: "w-full flex flex-col max-w-full text-medium text-inverted break-all text-wrap",
   label: "mb-0.5 font-medium",
   description: "wrap-break-word font-normal",
   statusIcon: "{UIcon} brightness-125 dark:brightness-75",
