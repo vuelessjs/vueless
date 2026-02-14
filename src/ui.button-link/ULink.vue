@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { computed, useSlots, useTemplateRef } from "vue";
-import { RouterLink } from "vue-router";
+import { RouterLink, useRoute, useRouter } from "vue-router";
 
 import { useUI } from "../composables/useUI";
 import { hasSlotContent } from "../utils/helper";
@@ -49,6 +49,8 @@ const emit = defineEmits([
 const slots = useSlots();
 
 const linkRef = useTemplateRef<HTMLLinkElement>("link");
+const route = useRoute();
+const router = useRouter();
 
 const isPresentRoute = computed(() => {
   return typeof props.to === "string" || typeof props.to === "object";
@@ -56,6 +58,20 @@ const isPresentRoute = computed(() => {
 
 const safeTo = computed(() => {
   return props.to || "/";
+});
+
+const isActive = computed(() => {
+  if (!isPresentRoute.value) return false;
+
+  try {
+    const resolved = router.resolve(safeTo.value);
+    const currentPath = route.path;
+    const targetPath = resolved.path;
+
+    return currentPath === targetPath || currentPath.startsWith(targetPath + "/");
+  } catch {
+    return false;
+  }
 });
 
 const prefixedHref = computed(() => {
@@ -142,7 +158,7 @@ const { getDataTest, linkAttrs } = useUI<Config>(defaultConfig, mutatedProps);
       @binding {boolean} is-active
       @binding {boolean} is-exact-active
     -->
-    <slot :is-active="slotProps.isActive" :is-exact-active="slotProps.isExactActive">
+    <slot :is-active="isActive" :is-exact-active="slotProps.isExactActive">
       {{ label }}
     </slot>
   </router-link>
