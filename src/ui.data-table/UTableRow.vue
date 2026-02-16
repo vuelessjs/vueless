@@ -344,7 +344,7 @@ const { getDataTest } = useUI<Config>(defaultConfig);
         <slot :name="`cell-${key}`" :value="value" :row="row" :index="index">
           <!-- eslint-disable vue/no-v-html -->
           <div
-            v-if="value && shouldRenderCellWrapper(row, String(key))"
+            v-if="shouldRenderCellWrapper(row, String(key))"
             ref="cell"
             v-bind="attrs.bodyCellContentAttrs.value"
             :class="
@@ -353,7 +353,7 @@ const { getDataTest } = useUI<Config>(defaultConfig);
             :data-test="getDataTest(`${key}-cell`)"
             v-html="getHighlightedHtml(value, String(key))"
           />
-          <template v-else-if="value">{{ value }}</template>
+          <span v-else :data-test="getDataTest(`${key}-cell`)">{{ formatCellValue(value) }}</span>
         </slot>
       </div>
 
@@ -370,7 +370,7 @@ const { getDataTest } = useUI<Config>(defaultConfig);
             :data-test="getDataTest(`${key}-cell`)"
             v-html="getHighlightedHtml(value, String(key))"
           />
-          <template v-else>{{ value }}</template>
+          <span v-else :data-test="getDataTest(`${key}-cell`)">{{ formatCellValue(value) }}</span>
         </slot>
       </template>
     </td>
