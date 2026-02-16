@@ -16,6 +16,12 @@ export type RowId = string | number;
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export type Cell = CellObject & any;
 
+export interface SearchMatch {
+  rowId: RowId;
+  columnKey: string;
+  indices: number[];
+}
+
 export interface RowData {
   [key: string]: Cell;
 }
@@ -132,6 +138,16 @@ export interface Props {
   bufferSize?: number;
 
   /**
+   * Search string to highlight in table cells.
+   */
+  search?: string;
+
+  /**
+   * Index of the current search match to highlight (0-based).
+   */
+  searchMatch?: number;
+
+  /**
    * Component config object.
    */
   config?: ComponentConfig<Config>;
@@ -155,6 +171,10 @@ export interface UTableRowAttrs {
   bodyRowAttrs: Ref<UnknownObject>;
   bodyCellStickyLeftAttrs: Ref<UnknownObject>;
   bodyCellStickyRightAttrs: Ref<UnknownObject>;
+  bodyCellSearchMatchAttrs: Ref<UnknownObject>;
+  bodyCellSearchMatchTextAttrs: Ref<UnknownObject>;
+  bodyCellSearchMatchActiveAttrs: Ref<UnknownObject>;
+  bodyCellSearchMatchTextActiveAttrs: Ref<UnknownObject>;
 }
 
 export interface UTableRowProps {
@@ -170,4 +190,7 @@ export interface UTableRowProps {
   isChecked: boolean;
   isExpanded: boolean;
   columnPositions: Map<string, number>;
+  search?: string;
+  searchMatchColumns?: Set<string>;
+  activeSearchMatchColumn?: string;
 }

@@ -195,6 +195,63 @@ function getStickyColumnClass(column: ColumnObject) {
   return "";
 }
 
+function isCellSearchMatch(key: string): boolean {
+  return Boolean(props.searchMatchColumns?.has(key));
+}
+
+function isCellActiveSearchMatch(key: string): boolean {
+  return props.activeSearchMatchColumn === key;
+}
+
+function getSearchMatchCellClass(key: string): string {
+  if (!isCellSearchMatch(key)) return "";
+
+  return isCellActiveSearchMatch(key)
+    ? (props.attrs.bodyCellSearchMatchActiveAttrs.value.class as string)
+    : (props.attrs.bodyCellSearchMatchAttrs.value.class as string);
+}
+
+function getHighlightedHtml(value: Cell, key: string): string {
+  const text = String(formatCellValue(value));
+  const query = props.search;
+
+  if (!query || !isCellSearchMatch(key)) return escapeHtml(text);
+
+  const isActive = isCellActiveSearchMatch(key);
+  const matchClass = isActive
+    ? (props.attrs.bodyCellSearchMatchTextActiveAttrs.value.class as string)
+    : (props.attrs.bodyCellSearchMatchTextAttrs.value.class as string);
+
+  const lowerText = text.toLowerCase();
+  const lowerQuery = query.toLowerCase();
+  const parts: string[] = [];
+  let lastIndex = 0;
+
+  let pos = lowerText.indexOf(lowerQuery);
+
+  while (~pos) {
+    if (pos > lastIndex) {
+      parts.push(escapeHtml(text.slice(lastIndex, pos)));
+    }
+
+    parts.push(
+      `<mark class="${matchClass}">${escapeHtml(text.slice(pos, pos + query.length))}</mark>`,
+    );
+    lastIndex = pos + query.length;
+    pos = lowerText.indexOf(lowerQuery, lastIndex);
+  }
+
+  if (lastIndex < text.length) {
+    parts.push(escapeHtml(text.slice(lastIndex)));
+  }
+
+  return parts.join("");
+}
+
+function escapeHtml(text: string): string {
+  return text.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+}
+
 const { getDataTest } = useUI<Config>(defaultConfig);
 </script>
 
@@ -241,6 +298,7 @@ const { getDataTest } = useUI<Config>(defaultConfig);
           columns[index].tdClass,
           getCellClasses(row, String(key)),
           getStickyColumnClass(columns[index]),
+          getSearchMatchCellClass(String(key)),
         ])
       "
       :style="getStickyColumnStyle(columns[index])"
@@ -282,9 +340,8 @@ const { getDataTest } = useUI<Config>(defaultConfig);
               cx([attrs.bodyCellContentAttrs.value.class, getCellContentClass(row, String(key))])
             "
             :data-test="getDataTest(`${key}-cell`)"
-          >
-            {{ formatCellValue(value) }}
-          </div>
+            v-html="getHighlightedHtml(value, String(key))"
+          />
         </slot>
       </div>
 
@@ -297,9 +354,8 @@ const { getDataTest } = useUI<Config>(defaultConfig);
               cx([attrs.bodyCellContentAttrs.value.class, getCellContentClass(row, String(key))])
             "
             :data-test="getDataTest(`${key}-cell`)"
-          >
-            {{ formatCellValue(value) }}
-          </div>
+            v-html="getHighlightedHtml(value, String(key))"
+          />
         </slot>
       </template>
     </td>

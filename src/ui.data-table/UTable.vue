@@ -42,6 +42,7 @@ import type {
   DateDivider,
   FlatRow,
   ColumnObject,
+  SearchMatch,
 } from "./types";
 import { StickySide } from "./types";
 
@@ -98,6 +99,12 @@ const emit = defineEmits([
    * @property {array} rowId
    */
   "update:expandedRows",
+
+  /**
+   * Triggers when search matches are found.
+   * @property {number} totalMatches
+   */
+  "search",
 ]);
 
 const slots = useSlots();
@@ -226,6 +233,111 @@ const renderedRows = computed(() => {
     : visibleFlatRows.value;
 });
 
+const searchMatches = computed<SearchMatch[]>(() => {
+  const query = props.search?.toLowerCase();
+
+  if (!query) return [];
+
+  const matches: SearchMatch[] = [];
+  const columns = visibleColumns.value;
+  const rows = visibleFlatRows.value;
+
+  for (let i = 0; i < rows.length; i++) {
+    const row = rows[i];
+
+    for (let j = 0; j < columns.length; j++) {
+      const key = columns[j].key;
+      const cellValue = row[key];
+      const text = getCellTextValue(cellValue);
+
+      if (!text) continue;
+
+      const lowerText = text.toLowerCase();
+      const indices: number[] = [];
+      let pos = 0;
+
+      while ((pos = lowerText.indexOf(query, pos)) !== -1) {
+        indices.push(pos);
+        pos += query.length;
+      }
+
+      if (indices.length) {
+        matches.push({ rowId: row.id, columnKey: key, indices });
+      }
+    }
+  }
+
+  return matches;
+});
+
+const searchMatchMap = computed(() => {
+  const map = new Map<RowId, Map<string, number[]>>();
+
+  for (let i = 0; i < searchMatches.value.length; i++) {
+    const match = searchMatches.value[i];
+    let rowMap = map.get(match.rowId);
+
+    if (!rowMap) {
+      rowMap = new Map();
+      map.set(match.rowId, rowMap);
+    }
+
+    rowMap.set(match.columnKey, match.indices);
+  }
+
+  return map;
+});
+
+const activeMatch = computed(() => {
+  const idx = props.searchMatch;
+
+  if (idx === undefined || idx < 0 || !searchMatches.value.length) return null;
+
+  let globalIndex = 0;
+
+  for (const match of searchMatches.value) {
+    if (globalIndex + match.indices.length > idx) {
+      return {
+        rowId: match.rowId,
+        columnKey: match.columnKey,
+        charIndex: match.indices[idx - globalIndex],
+      };
+    }
+
+    globalIndex += match.indices.length;
+  }
+
+  return null;
+});
+
+const totalSearchMatches = computed(() => {
+  let count = 0;
+
+  for (const match of searchMatches.value) {
+    count += match.indices.length;
+  }
+
+  return count;
+});
+
+watch(totalSearchMatches, (count) => {
+  emit("search", count);
+});
+
+watch(activeMatch, (match) => {
+  if (!match) return;
+
+  if (props.virtualScroll) {
+    const rowIndex = visibleFlatRows.value.findIndex((row) => row.id === match.rowId);
+
+    if (rowIndex === -1) return;
+
+    virtualScroll.scrollToIndex(rowIndex);
+  } else {
+    scrollToRow(match.rowId);
+  }
+});
+
 const isSelectedAllRows = computed(() => {
   return localSelectedRows.value.length === flatTableRows.value.length;
 });
@@ -243,6 +355,10 @@ const tableRowAttrs = computed(() => ({
   bodyRowAttrs,
   bodyCellStickyLeftAttrs,
   bodyCellStickyRightAttrs,
+  bodyCellSearchMatchAttrs,
+  bodyCellSearchMatchTextAttrs,
+  bodyCellSearchMatchActiveAttrs,
+  bodyCellSearchMatchTextActiveAttrs,
 }));
 
 watch(localSelectedRows, onChangeLocalSelectedRows, { deep: true });
@@ -574,6 +690,47 @@ function isRowSelected(row: Row | undefined) {
   return !!localSelectedRows.value.find((selectedRow) => selectedRow.id === row.id);
 }
 
+function getCellTextValue(cellValue: unknown): string {
+  if (cellValue == null) return "";
+
+  if (typeof cellValue === "object" && "value" in (cellValue as Record<string, unknown>)) {
+    const val = (cellValue as Record<string, unknown>).value;
+
+    return val != null ? String(val) : "";
+  }
+
+  return String(cellValue);
+}
+
+function getRowSearchMatchColumns(row: FlatRow): Set<string> | undefined {
+  return searchMatchMap.value.get(row.id)
+    ? new Set(searchMatchMap.value.get(row.id)!.keys())
+    : undefined;
+}
+
+function getRowActiveSearchMatchColumn(row: FlatRow): string | undefined {
+  if (!activeMatch.value || activeMatch.value.rowId !== row.id) return undefined;
+
+  return activeMatch.value.columnKey;
+}
+
+function scrollToRow(rowId: RowId) {
+  if (!tableWrapperRef.value) return;
+
+  const targetRow = tableWrapperRef.value.querySelector<HTMLTableRowElement>(
+    `tr[data-row-id="${rowId}"]`,
+  );
+
+  if (!targetRow) return;
+
+  const containerRect = tableWrapperRef.value.getBoundingClientRect();
+  const rowRect = targetRow.getBoundingClientRect();
+
+  if (rowRect.top < containerRect.top || rowRect.bottom > containerRect.bottom) {
+    targetRow.scrollIntoView({ block: "center" });
+  }
+}
+
 defineExpose({
   /**
    * Allows to clear selected rows.
@@ -650,6 +807,10 @@ const {
   headerCellStickyRightAttrs,
   bodyCellStickyLeftAttrs,
   bodyCellStickyRightAttrs,
+  bodyCellSearchMatchAttrs,
+  bodyCellSearchMatchTextAttrs,
+  bodyCellSearchMatchActiveAttrs,
+  bodyCellSearchMatchTextActiveAttrs,
 } = useUI<Config>(defaultConfig, mutatedProps);
 </script>
 
@@ -900,9 +1061,13 @@ const {
               :nested-level="Number(row.nestedLevel || 0)"
               :empty-cell-label="emptyCellLabel"
               :data-test="getDataTest('row')"
+              :data-row-id="row.id"
               :is-expanded="localExpandedRows.includes(row.id)"
               :is-checked="isRowSelected(row)"
               :column-positions="columnPositions"
+              :search="search"
+              :search-match-columns="getRowSearchMatchColumns(row)"
+              :active-search-match-column="getRowActiveSearchMatchColumn(row)"
               @click="onClickRow"
               @dblclick="onDoubleClickRow"
               @click-cell="onClickCell"

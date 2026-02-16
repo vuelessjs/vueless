@@ -97,6 +97,10 @@ export default /*tw*/ {
   bodyCellNestedExpandIcon: "{UIcon}",
   bodyCellNestedCollapseIcon: "{UIcon}",
   bodyCheckbox: "{UCheckbox}",
+  bodyCellSearchMatch: "bg-warning/10",
+  bodyCellSearchMatchActive: "bg-warning/15",
+  bodyCellSearchMatchText: "bg-warning/50 rounded-xs",
+  bodyCellSearchMatchTextActive: "bg-warning rounded-xs",
   bodyDateDivider: {
     base: "{UDivider} py-2",
     label: "py-0 leading-none",
@@ -143,6 +147,8 @@ export default /*tw*/ {
     stickyHeader: false,
     stickyFooter: false,
     loading: false,
+    search: "",
+    searchMatch: -1,
     /* icons */
     expandIcon: "add",
     collapseIcon: "remove",
