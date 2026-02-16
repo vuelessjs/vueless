@@ -147,6 +147,7 @@ export default /*tw*/ {
     stickyHeader: false,
     stickyFooter: false,
     loading: false,
+    textEllipsis: false,
     search: "",
     searchMatch: -1,
     /* icons */

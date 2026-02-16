@@ -252,6 +252,14 @@ function escapeHtml(text: string): string {
   return text.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
 }
 
+function shouldRenderCellWrapper(row: Row, key: string): boolean {
+  return Boolean(
+    props.textEllipsis ||
+      (props.search && isCellSearchMatch(key)) ||
+      getCellContentClass(row, String(key)),
+  );
+}
+
 const { getDataTest } = useUI<Config>(defaultConfig);
 </script>
 
@@ -333,7 +341,7 @@ const { getDataTest } = useUI<Config>(defaultConfig);
         </div>
         <slot :name="`cell-${key}`" :value="value" :row="row" :index="index">
           <div
-            v-if="value"
+            v-if="value && shouldRenderCellWrapper(row, String(key))"
             ref="cell"
             v-bind="attrs.bodyCellContentAttrs.value"
             :class="
@@ -342,12 +350,14 @@ const { getDataTest } = useUI<Config>(defaultConfig);
             :data-test="getDataTest(`${key}-cell`)"
             v-html="getHighlightedHtml(value, String(key))"
           />
+          <template v-else-if="value">{{ value }}</template>
         </slot>
       </div>
 
       <template v-else>
         <slot :name="`cell-${key}`" :value="value" :row="row" :index="index">
           <div
+            v-if="shouldRenderCellWrapper(row, String(key))"
             v-bind="attrs.bodyCellContentAttrs.value"
             ref="cell"
             :class="
@@ -356,6 +366,7 @@ const { getDataTest } = useUI<Config>(defaultConfig);
             :data-test="getDataTest(`${key}-cell`)"
             v-html="getHighlightedHtml(value, String(key))"
           />
+          <template v-else>{{ value }}</template>
         </slot>
       </template>
     </td>

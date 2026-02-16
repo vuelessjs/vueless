@@ -1068,6 +1068,7 @@ const {
               :search="search"
               :search-match-columns="getRowSearchMatchColumns(row)"
               :active-search-match-column="getRowActiveSearchMatchColumn(row)"
+              :text-ellipsis="textEllipsis"
               @click="onClickRow"
               @dblclick="onDoubleClickRow"
               @click-cell="onClickCell"

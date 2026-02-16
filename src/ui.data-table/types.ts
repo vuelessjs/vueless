@@ -148,6 +148,11 @@ export interface Props {
   searchMatch?: number;
 
   /**
+   * Enable text ellipsis for table cells (renders div wrapper for overflow handling).
+   */
+  textEllipsis?: boolean;
+
+  /**
    * Component config object.
    */
   config?: ComponentConfig<Config>;
@@ -193,4 +198,5 @@ export interface UTableRowProps {
   search?: string;
   searchMatchColumns?: Set<string>;
   activeSearchMatchColumn?: string;
+  textEllipsis?: boolean;
 }
