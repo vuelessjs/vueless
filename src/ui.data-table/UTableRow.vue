@@ -24,7 +24,7 @@ defineOptions({ internal: true });
 
 const props = defineProps<UTableRowProps>();
 
-const emit = defineEmits(["click", "dblclick", "clickCell", "toggleExpand", "toggleCheckbox"]);
+const emit = defineEmits(["toggleExpand", "toggleCheckbox"]);
 
 const cellRef = useTemplateRef<HTMLDivElement[]>("cell");
 const toggleWrapperRef = useTemplateRef<HTMLDivElement[]>("toggle-wrapper");
@@ -109,20 +109,6 @@ function getNestedCheckboxShift() {
   return { transform: `translateX(${props.nestedLevel * LAST_NESTED_ROW_SHIFT_REM}rem)` };
 }
 
-function onClick(row: Row) {
-  emit("click", row);
-}
-
-function onDoubleClick(row: Row) {
-  const selection = window.getSelection();
-
-  if (selection) {
-    selection.removeAllRanges();
-  }
-
-  emit("dblclick", row);
-}
-
 function setCellTitle(mutations: MutationRecord[]) {
   mutations.forEach((mutation) => {
     const { target } = mutation;
@@ -145,10 +131,6 @@ function setElementTitle(element: HTMLElement) {
   if (!isOverflown && element.hasAttribute("title")) {
     element.removeAttribute("title");
   }
-}
-
-function onClickCell(cell: unknown | string | number, row: Row, key: string | number) {
-  emit("clickCell", cell, row, key);
 }
 
 function getRowClasses(row: Row) {
@@ -270,8 +252,6 @@ const { getDataTest } = useUI<Config>(defaultConfig);
     v-if="!row.parentRowId || !hasSlotContent($slots['nested-row'])"
     v-bind="{ ...$attrs, ...getRowAttrs() }"
     :class="cx([getRowAttrs().class, getRowClasses(row)])"
-    @click="onClick(props.row)"
-    @dblclick="onDoubleClick(props.row)"
   >
     <td
       v-if="selectable"
@@ -312,7 +292,8 @@ const { getDataTest } = useUI<Config>(defaultConfig);
         ])
       "
       :style="getStickyColumnStyle(columns[index])"
-      @click="onClickCell(value, row, key)"
+      :data-cell-key="key"
+      :data-test="getDataTest(`${key}-cell`)"
     >
       <div
         v-if="(row.row || nestedLevel) && index === 0"
@@ -353,7 +334,7 @@ const { getDataTest } = useUI<Config>(defaultConfig);
             :data-test="getDataTest(`${key}-cell`)"
             v-html="getHighlightedHtml(value, String(key))"
           />
-          <span v-else :data-test="getDataTest(`${key}-cell`)">{{ formatCellValue(value) }}</span>
+          <template v-else>{{ formatCellValue(value) }}</template>
         </slot>
       </div>
 
@@ -367,10 +348,9 @@ const { getDataTest } = useUI<Config>(defaultConfig);
             :class="
               cx([attrs.bodyCellContentAttrs.value.class, getCellContentClass(row, String(key))])
             "
-            :data-test="getDataTest(`${key}-cell`)"
             v-html="getHighlightedHtml(value, String(key))"
           />
-          <span v-else :data-test="getDataTest(`${key}-cell`)">{{ formatCellValue(value) }}</span>
+          <template v-else>{{ formatCellValue(value) }}</template>
         </slot>
       </template>
     </td>

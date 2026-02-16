@@ -612,6 +612,60 @@ function onClickCell(cell: Cell, row: Row, key: string | number) {
   emit("clickCell", cell, row, key);
 }
 
+function onBodyClick(event: MouseEvent) {
+  const target = event.target as HTMLElement;
+
+  const row = target.closest("tr");
+
+  if (!row) return;
+
+  const rowId = row.getAttribute("data-row-id");
+
+  if (!rowId) return;
+
+  const rowData = visibleFlatRows.value.find((r) => String(r.id) === rowId);
+
+  if (!rowData) return;
+
+  onClickRow(rowData);
+
+  const cell = target.closest("td");
+
+  if (cell) {
+    const cellKey = cell.getAttribute("data-cell-key");
+
+    if (cellKey) {
+      const cellValue = rowData[cellKey];
+
+      onClickCell(cellValue, rowData, cellKey);
+    }
+  }
+}
+
+function onBodyDoubleClick(event: MouseEvent) {
+  const target = event.target as HTMLElement;
+
+  const row = target.closest("tr");
+
+  if (!row) return;
+
+  const rowId = row.getAttribute("data-row-id");
+
+  if (!rowId) return;
+
+  const rowData = visibleFlatRows.value.find((r) => String(r.id) === rowId);
+
+  if (!rowData) return;
+
+  const selection = window.getSelection();
+
+  if (selection) {
+    selection.removeAllRanges();
+  }
+
+  onDoubleClickRow(rowData);
+}
+
 function onChangeSelectAll(selectAll: boolean) {
   if (selectAll && canSelectAll.value) {
     localSelectedRows.value = [...flatTableRows.value];
@@ -1042,7 +1096,12 @@ const tableRowAttrs = {
           <ULoaderProgress :loading="loading" v-bind="headerLoaderAttrs" />
         </thead>
 
-        <tbody v-if="sortedRows.length" v-bind="bodyAttrs">
+        <tbody
+          v-if="sortedRows.length"
+          v-bind="bodyAttrs"
+          @click="onBodyClick"
+          @dblclick="onBodyDoubleClick"
+        >
           <tr
             v-if="hasBeforeFirstRowSlot"
             v-bind="isRowSelected(sortedRows[0]) ? beforeBodyRowCheckedAttrs : beforeBodyRowAttrs"
@@ -1105,9 +1164,6 @@ const tableRowAttrs = {
               :search-match-columns="getRowSearchMatchColumns(row)"
               :active-search-match-column="getRowActiveSearchMatchColumn(row)"
               :text-ellipsis="textEllipsis"
-              @click="onClickRow"
-              @dblclick="onDoubleClickRow"
-              @click-cell="onClickCell"
               @toggle-expand="onToggleExpand"
               @toggle-checkbox="onToggleRowCheckbox"
             >
