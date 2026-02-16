@@ -25,6 +25,11 @@ import type {
   VuelessComponentInstance,
 } from "../types";
 
+/* Pre-computed Set for O(1) system key lookups instead of O(n) array scan. */
+const CVA_KEY_SET = new Set(Object.values(CVA_CONFIG_KEY));
+const SYSTEM_KEY_SET = new Set(Object.values(SYSTEM_CONFIG_KEY));
+const TRANSITION_KEY = SYSTEM_CONFIG_KEY.transition;
+
 /**
  * Merging component configs in a given sequence (bigger number = bigger priority):
  * 1. Default component config
@@ -275,7 +280,7 @@ function getExtendsKeys(configItemValue?: string | CVA | NestedComponent): strin
   const values = getBaseClasses(configItemValue);
   const matches = values.match(EXTENDS_PATTERN_REG_EXP);
 
-  return matches ? matches?.map((pattern) => pattern.slice(2, -1)) : [];
+  return matches ? matches.map((pattern) => pattern.slice(2, -1)) : [];
 }
 
 /**
@@ -292,9 +297,7 @@ function getNestedComponent(value?: string | CVA | NestedComponent) {
  * Check is config key not contains classes or CVA config object.
  */
 function isSystemKey(key: string): boolean {
-  const isExactKey = Object.values(SYSTEM_CONFIG_KEY).some((value) => value === key);
-
-  return isExactKey || key.toLowerCase().includes(SYSTEM_CONFIG_KEY.transition.toLowerCase());
+  return SYSTEM_KEY_SET.has(key) || key.toLowerCase().includes(TRANSITION_KEY);
 }
 
 /**
@@ -305,7 +308,7 @@ function isCVA(config?: UnknownObject | string): boolean {
     return false;
   }
 
-  return Object.values(CVA_CONFIG_KEY).some((value) =>
-    Object.keys(config).some((key) => key === value),
-  );
+  const keys = Object.keys(config);
+
+  return keys.some((key) => CVA_KEY_SET.has(key));
 }
