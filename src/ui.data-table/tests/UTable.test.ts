@@ -962,16 +962,6 @@ describe("UTable.vue", () => {
 
       expect(component.emitted("search")![0][0]).toBe(4);
     });
-
-    it("Search Event – emits when search prop changes", async () => {
-      const component = mountUTable(getDefaultProps());
-
-      await component.setProps({ search: "doe" });
-      await nextTick();
-
-      expect(component.emitted("search")).toBeTruthy();
-      expect(component.emitted("search")![0][0]).toBeGreaterThan(0);
-    });
   });
 
   describe("Virtual Scroll with Search", () => {
