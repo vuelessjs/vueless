@@ -29,12 +29,14 @@ const emit = defineEmits(["click", "dblclick", "clickCell", "toggleExpand", "tog
 const cellRef = useTemplateRef<HTMLDivElement[]>("cell");
 const toggleWrapperRef = useTemplateRef<HTMLDivElement[]>("toggle-wrapper");
 
-useMutationObserver(cellRef, setCellTitle, {
-  subtree: true,
-  childList: true,
-  characterData: true,
-  attributes: false,
-});
+if (props.textEllipsis) {
+  useMutationObserver(cellRef, setCellTitle, {
+    subtree: true,
+    childList: true,
+    characterData: true,
+    attributes: false,
+  });
+}
 
 const toggleIconConfig = computed(() => {
   const nestedRow = props.row?.row;

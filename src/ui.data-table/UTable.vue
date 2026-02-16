@@ -1,12 +1,12 @@
 <script setup lang="ts">
 import {
+  shallowRef,
   ref,
   computed,
   watch,
   useSlots,
   nextTick,
   onMounted,
-  onUpdated,
   onBeforeUnmount,
   useTemplateRef,
 } from "vue";
@@ -130,35 +130,27 @@ const { localeMessages } = useComponentLocaleMessages<typeof defaultConfig.i18n>
   props?.config?.i18n,
 );
 
-const localSelectedRows = ref<Row[]>([]);
-const localExpandedRows = ref<RowId[]>([]);
+const localSelectedRows = shallowRef<Row[]>([]);
+const localExpandedRows = shallowRef<RowId[]>([]);
 
 const sortedRows: ComputedRef<FlatRow[]> = computed(() => {
   const headerKeys = props.columns.map((column) =>
     typeof column === "object" ? column.key : column,
   );
 
+  const keyOrder = new Map(headerKeys.map((key, i) => [key, i]));
+
   return flatTableRows.value.map((row) => {
-    const rowEntries = Object.entries(row);
+    const entries = Object.entries(row);
 
-    const sortedEntries: typeof rowEntries = new Array(rowEntries.length);
+    entries.sort((a, b) => {
+      const aIdx = keyOrder.get(a[0]) ?? Infinity;
+      const bIdx = keyOrder.get(b[0]) ?? Infinity;
 
-    rowEntries.forEach((entry) => {
-      const [key] = entry;
-      const headerIndex = headerKeys.indexOf(key);
-
-      if (!~headerIndex) {
-        sortedEntries.push(entry);
-
-        return;
-      }
-
-      sortedEntries[headerIndex] = entry;
+      return aIdx - bIdx;
     });
 
-    const sortedRow = Object.fromEntries(sortedEntries.filter((value) => value));
-
-    return sortedRow as FlatRow;
+    return Object.fromEntries(entries) as FlatRow;
   });
 });
 
@@ -176,7 +168,7 @@ const visibleColumns = computed(() => {
   return normalizedColumns.value.filter((column) => column.isShown !== false);
 });
 
-const columnPositions = ref<Map<string, number>>(new Map());
+const columnPositions = shallowRef<Map<string, number>>(new Map());
 
 const colsCount = computed(() => {
   return normalizedColumns.value.length + 1;
@@ -191,11 +183,10 @@ const isShownActionsHeader = computed(() => {
   return hasSelectedRows && hasHeaderActions;
 });
 
-const isHeaderSticky = computed(() => {
-  const positionForFixHeader =
-    Number(headerRowRef.value?.getBoundingClientRect()?.top) + Number(window?.scrollY) || 0;
+const headerOffsetTop = ref(0);
 
-  return positionForFixHeader <= pagePositionY.value && props.stickyHeader;
+const isHeaderSticky = computed(() => {
+  return headerOffsetTop.value <= pagePositionY.value && props.stickyHeader;
 });
 
 const isShownFooterPosition = computed(() => {
@@ -270,19 +261,18 @@ const searchMatches = computed<SearchMatch[]>(() => {
   return matches;
 });
 
-const searchMatchMap = computed(() => {
-  const map = new Map<RowId, Map<string, number[]>>();
+const searchMatchColumnSets = computed(() => {
+  const map = new Map<RowId, Set<string>>();
 
-  for (let i = 0; i < searchMatches.value.length; i++) {
-    const match = searchMatches.value[i];
-    let rowMap = map.get(match.rowId);
+  for (const match of searchMatches.value) {
+    let set = map.get(match.rowId);
 
-    if (!rowMap) {
-      rowMap = new Map();
-      map.set(match.rowId, rowMap);
+    if (!set) {
+      set = new Set();
+      map.set(match.rowId, set);
     }
 
-    rowMap.set(match.columnKey, match.indices);
+    set.add(match.columnKey);
   }
 
   return map;
@@ -338,37 +328,25 @@ watch(activeMatch, (match) => {
   }
 });
 
+const selectedRowIds = computed(() => {
+  return new Set(localSelectedRows.value.map((row) => row.id));
+});
+
 const isSelectedAllRows = computed(() => {
   return localSelectedRows.value.length === flatTableRows.value.length;
 });
 
-const tableRowAttrs = computed(() => ({
-  bodyCellContentAttrs,
-  bodyCellCheckboxAttrs,
-  bodyCheckboxAttrs,
-  bodyCellNestedAttrs,
-  bodyCellNestedExpandIconAttrs,
-  bodyCellNestedCollapseIconAttrs,
-  bodyCellBaseAttrs,
-  bodyCellNestedIconWrapperAttrs,
-  bodyRowCheckedAttrs,
-  bodyRowAttrs,
-  bodyCellStickyLeftAttrs,
-  bodyCellStickyRightAttrs,
-  bodyCellSearchMatchAttrs,
-  bodyCellSearchMatchTextAttrs,
-  bodyCellSearchMatchActiveAttrs,
-  bodyCellSearchMatchTextActiveAttrs,
-}));
-
-watch(localSelectedRows, onChangeLocalSelectedRows, { deep: true });
-watch(() => props.selectedRows, onChangeSelectedRows, { deep: true, immediate: true });
-watch(() => props.expandedRows, onChangeExpandedRows, { deep: true, immediate: true });
+watch(localSelectedRows, onChangeLocalSelectedRows);
+watch(() => props.selectedRows, onChangeSelectedRows, { immediate: true });
+watch(() => props.expandedRows, onChangeExpandedRows, { immediate: true });
 watch(selectAll, onChangeSelectAll);
 watch(isHeaderSticky, setHeaderCellWidth);
 watch(isFooterSticky, (newValue) =>
   newValue ? nextTick(setFooterCellWidth) : setFooterCellWidth(null),
 );
+
+let resizeObserver: ResizeObserver | null = null;
+let scrollRafId: number | null = null;
 
 onMounted(async () => {
   document.addEventListener("keyup", onKeyupEsc);
@@ -376,19 +354,33 @@ onMounted(async () => {
   window.addEventListener("resize", onWindowResize);
 
   await nextTick();
+  updateHeaderOffsetTop();
   calculateStickyColumnPositions();
-});
 
-onUpdated(() => {
-  tableHeight.value = Number(tableWrapperRef.value?.offsetHeight);
-  tableWidth.value = Number(tableWrapperRef.value?.offsetWidth);
-  calculateStickyColumnPositions();
+  if (tableWrapperRef.value) {
+    resizeObserver = new ResizeObserver((entries) => {
+      const entry = entries[0];
+
+      if (!entry) return;
+
+      tableHeight.value = entry.contentRect.height;
+      tableWidth.value = entry.contentRect.width;
+      calculateStickyColumnPositions();
+    });
+
+    resizeObserver.observe(tableWrapperRef.value);
+  }
 });
 
 onBeforeUnmount(() => {
   document.removeEventListener("keyup", onKeyupEsc);
   document.removeEventListener("scroll", onScroll);
   window.removeEventListener("resize", onWindowResize);
+  resizeObserver?.disconnect();
+
+  if (scrollRafId !== null) {
+    cancelAnimationFrame(scrollRafId);
+  }
 });
 
 function onChangeSelectedRows() {
@@ -406,9 +398,16 @@ function onChangeExpandedRows() {
 function onWindowResize() {
   tableWidth.value = tableWrapperRef.value?.offsetWidth || 0;
 
+  updateHeaderOffsetTop();
   setHeaderCellWidth();
   setFooterCellWidth();
   calculateStickyColumnPositions();
+}
+
+function updateHeaderOffsetTop() {
+  if (headerRowRef.value) {
+    headerOffsetTop.value = headerRowRef.value.getBoundingClientRect().top + window.scrollY;
+  }
 }
 
 function calculateStickyColumnPositions() {
@@ -573,7 +572,12 @@ function setHeaderCellWidth() {
 }
 
 function onScroll() {
-  pagePositionY.value = Number(window?.scrollY);
+  if (scrollRafId !== null) return;
+
+  scrollRafId = requestAnimationFrame(() => {
+    pagePositionY.value = Number(window?.scrollY);
+    scrollRafId = null;
+  });
 }
 
 function onKeyupEsc(event: KeyboardEvent) {
@@ -670,7 +674,9 @@ function isRowSelectedWithin(rowIndex: number) {
 function onToggleRowCheckbox(row: Row) {
   const targetIndex = localSelectedRows.value.findIndex((selectedRow) => selectedRow.id === row.id);
 
-  ~targetIndex ? localSelectedRows.value.splice(targetIndex, 1) : localSelectedRows.value.push(row);
+  localSelectedRows.value = ~targetIndex
+    ? localSelectedRows.value.filter((_, i) => i !== targetIndex)
+    : [...localSelectedRows.value, row];
 }
 
 function getDateDividerConfig(row: Row, isSelected: boolean) {
@@ -687,7 +693,7 @@ function getDateDividerConfig(row: Row, isSelected: boolean) {
 function isRowSelected(row: Row | undefined) {
   if (!row) return false;
 
-  return !!localSelectedRows.value.find((selectedRow) => selectedRow.id === row.id);
+  return selectedRowIds.value.has(row.id);
 }
 
 function getCellTextValue(cellValue: unknown): string {
@@ -703,9 +709,7 @@ function getCellTextValue(cellValue: unknown): string {
 }
 
 function getRowSearchMatchColumns(row: FlatRow): Set<string> | undefined {
-  return searchMatchMap.value.get(row.id)
-    ? new Set(searchMatchMap.value.get(row.id)!.keys())
-    : undefined;
+  return searchMatchColumnSets.value.get(row.id);
 }
 
 function getRowActiveSearchMatchColumn(row: FlatRow): string | undefined {
@@ -743,6 +747,23 @@ defineExpose({
    * @property {HTMLDivElement}
    */
   wrapperRef,
+});
+
+/* Cached slot-content checks to avoid re-creating VNodes on every render. */
+const hasBeforeHeaderSlot = computed(() => {
+  return hasSlotContent(slots["before-header"]);
+});
+
+const hasBeforeFirstRowSlot = computed(() => {
+  return hasSlotContent(slots["before-first-row"]);
+});
+
+const hasAfterLastRowSlot = computed(() => {
+  return hasSlotContent(slots["after-last-row"]);
+});
+
+const hasFooterSlot = computed(() => {
+  return hasSlotContent(slots["footer"]);
 });
 
 /**
@@ -812,6 +833,26 @@ const {
   bodyCellSearchMatchActiveAttrs,
   bodyCellSearchMatchTextActiveAttrs,
 } = useUI<Config>(defaultConfig, mutatedProps);
+
+/* Plain object — inner refs are already reactive. */
+const tableRowAttrs = {
+  bodyCellContentAttrs,
+  bodyCellCheckboxAttrs,
+  bodyCheckboxAttrs,
+  bodyCellNestedAttrs,
+  bodyCellNestedExpandIconAttrs,
+  bodyCellNestedCollapseIconAttrs,
+  bodyCellBaseAttrs,
+  bodyCellNestedIconWrapperAttrs,
+  bodyRowCheckedAttrs,
+  bodyRowAttrs,
+  bodyCellStickyLeftAttrs,
+  bodyCellStickyRightAttrs,
+  bodyCellSearchMatchAttrs,
+  bodyCellSearchMatchTextAttrs,
+  bodyCellSearchMatchActiveAttrs,
+  bodyCellSearchMatchTextActiveAttrs,
+} as unknown as UTableRowAttrs;
 </script>
 
 <template>
@@ -934,12 +975,7 @@ const {
     <div ref="table-wrapper" v-bind="tableWrapperAttrs" @scroll="virtualScroll.onScroll">
       <table v-bind="tableAttrs">
         <thead v-bind="headerAttrs" :style="tableRowWidthStyle">
-          <tr
-            v-if="
-              hasSlotContent($slots['before-header'], { colsCount, classes: headerRowAttrs.class })
-            "
-            v-bind="beforeHeaderRowAttrs"
-          >
+          <tr v-if="hasBeforeHeaderSlot" v-bind="beforeHeaderRowAttrs">
             <!--
               @slot Use it to add something before header row.
               @binding {number} cols-count
@@ -1008,7 +1044,7 @@ const {
 
         <tbody v-if="sortedRows.length" v-bind="bodyAttrs">
           <tr
-            v-if="hasSlotContent($slots['before-first-row'], { colsCount })"
+            v-if="hasBeforeFirstRowSlot"
             v-bind="isRowSelected(sortedRows[0]) ? beforeBodyRowCheckedAttrs : beforeBodyRowAttrs"
           >
             <td :colspan="colsCount" v-bind="beforeBodyRowCellAttrs">
@@ -1131,15 +1167,7 @@ const {
             />
           </tr>
 
-          <tr
-            v-if="
-              hasSlotContent($slots['after-last-row'], {
-                colsCount,
-                classes: bodyCellBaseAttrs.class,
-              })
-            "
-            v-bind="afterBodyRowAttrs"
-          >
+          <tr v-if="hasAfterLastRowSlot" v-bind="afterBodyRowAttrs">
             <!--
                 @slot Use it to add something after last row.
                 @binding {number} cols-count
@@ -1169,7 +1197,7 @@ const {
           </tr>
         </tbody>
 
-        <tfoot v-if="hasSlotContent($slots['footer'], { colsCount })" v-bind="footerAttrs">
+        <tfoot v-if="hasFooterSlot" v-bind="footerAttrs">
           <tr ref="footer-row" v-bind="footerRowAttrs">
             <td v-if="selectable" />
 
