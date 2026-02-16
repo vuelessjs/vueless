@@ -36,6 +36,10 @@ describe("UTableRow.vue", () => {
     bodyRowAttrs: ref({ class: "row-base" }),
     bodyCellStickyLeftAttrs: ref({ class: "sticky-left" }),
     bodyCellStickyRightAttrs: ref({ class: "sticky-right" }),
+    bodyCellSearchMatchAttrs: ref({ class: "search-match" }),
+    bodyCellSearchMatchTextAttrs: ref({ class: "search-match-text" }),
+    bodyCellSearchMatchActiveAttrs: ref({ class: "search-match-active" }),
+    bodyCellSearchMatchTextActiveAttrs: ref({ class: "search-match-active-text" }),
   };
 
   const defaultConfig = {

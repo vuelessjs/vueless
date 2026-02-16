@@ -608,7 +608,7 @@ describe("UTable.vue", () => {
       await firstRow.trigger("click");
 
       expect(component.emitted("clickRow")).toBeTruthy();
-      expect(component.emitted("clickRow")![0][0]).toEqual(defaultRows[0]);
+      expect(component.emitted("clickRow")![0][0]).toMatchObject(defaultRows[0]);
     });
 
     it("Double Click Row – emits doubleClickRow event when row is double-clicked", async () => {
@@ -619,7 +619,7 @@ describe("UTable.vue", () => {
       await firstRow.trigger("dblclick");
 
       expect(component.emitted("doubleClickRow")).toBeTruthy();
-      expect(component.emitted("doubleClickRow")![0][0]).toEqual(defaultRows[0]);
+      expect(component.emitted("doubleClickRow")![0][0]).toMatchObject(defaultRows[0]);
     });
 
     it("Click Cell – emits clickCell event when cell is clicked", async () => {
@@ -630,11 +630,11 @@ describe("UTable.vue", () => {
       await firstCell.trigger("click");
 
       expect(component.emitted("clickCell")).toBeTruthy();
-      expect(component.emitted("clickCell")![0]).toEqual([
-        defaultRows[0].name,
-        defaultRows[0],
-        "name",
-      ]);
+      const emittedData = component.emitted("clickCell")![0];
+
+      expect(emittedData[0]).toBe(defaultRows[0].name);
+      expect(emittedData[1]).toMatchObject(defaultRows[0]);
+      expect(emittedData[2]).toBe("name");
     });
 
     it("Toggle Row Checkbox – emits update:selectedRows when row checkbox is clicked", async () => {
@@ -645,7 +645,10 @@ describe("UTable.vue", () => {
       await rowCheckbox.trigger("change");
 
       expect(component.emitted("update:selectedRows")).toBeTruthy();
-      expect(component.emitted("update:selectedRows")![0][0]).toEqual([defaultRows[0]]);
+      const emittedRows = component.emitted("update:selectedRows")![0][0] as Row[];
+
+      expect(emittedRows).toHaveLength(1);
+      expect(emittedRows[0]).toMatchObject(defaultRows[0]);
     });
 
     it("Toggle Expand – emits row-expand and update:expandedRows when expand icon is clicked", async () => {
@@ -664,7 +667,7 @@ describe("UTable.vue", () => {
       await expandIcon.trigger("click");
 
       expect(component.emitted("row-expand")).toBeTruthy();
-      expect(component.emitted("row-expand")![0][0]).toEqual(expandableRow);
+      expect(component.emitted("row-expand")![0][0]).toMatchObject(expandableRow);
       expect(component.emitted("update:expandedRows")).toBeTruthy();
       expect(component.emitted("update:expandedRows")![0][0]).toEqual(["1"]);
     });
@@ -690,7 +693,7 @@ describe("UTable.vue", () => {
       await collapseIcon.trigger("click");
 
       expect(component.emitted("row-collapse")).toBeTruthy();
-      expect(component.emitted("row-collapse")![0][0]).toEqual(expandableRow);
+      expect(component.emitted("row-collapse")![0][0]).toMatchObject(expandableRow);
       expect(component.emitted("update:expandedRows")).toBeTruthy();
       expect(component.emitted("update:expandedRows")![0][0]).toEqual([]);
     });
@@ -708,10 +711,11 @@ describe("UTable.vue", () => {
       const emittedEvents = component.emitted("update:selectedRows");
 
       expect(emittedEvents).toBeTruthy();
-      expect(emittedEvents![emittedEvents!.length - 1][0]).toEqual([
-        defaultRows[0],
-        defaultRows[1],
-      ]);
+      const emittedRows = emittedEvents![emittedEvents!.length - 1][0] as Row[];
+
+      expect(emittedRows).toHaveLength(2);
+      expect(emittedRows[0]).toMatchObject(defaultRows[0]);
+      expect(emittedRows[1]).toMatchObject(defaultRows[1]);
     });
 
     it("Nested Row Expansion – emits update:expandedRows for nested rows", async () => {

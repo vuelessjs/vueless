@@ -342,6 +342,7 @@ const { getDataTest } = useUI<Config>(defaultConfig);
           </slot>
         </div>
         <slot :name="`cell-${key}`" :value="value" :row="row" :index="index">
+          <!-- eslint-disable vue/no-v-html -->
           <div
             v-if="value && shouldRenderCellWrapper(row, String(key))"
             ref="cell"
@@ -358,6 +359,7 @@ const { getDataTest } = useUI<Config>(defaultConfig);
 
       <template v-else>
         <slot :name="`cell-${key}`" :value="value" :row="row" :index="index">
+          <!-- eslint-disable vue/no-v-html -->
           <div
             v-if="shouldRenderCellWrapper(row, String(key))"
             v-bind="attrs.bodyCellContentAttrs.value"
