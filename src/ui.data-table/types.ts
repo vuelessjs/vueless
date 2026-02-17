@@ -199,4 +199,6 @@ export interface UTableRowProps {
   searchMatchColumns?: Set<string>;
   activeSearchMatchColumn?: string;
   textEllipsis?: boolean;
+  onToggleExpand?: (row: Row) => void;
+  onToggleCheckbox?: (row: Row) => void;
 }

@@ -1,13 +1,13 @@
 <script setup lang="ts">
-import { computed, onMounted, useTemplateRef } from "vue";
-import { cx } from "../utils/ui";
+import { computed, onMounted, useTemplateRef, useSlots, useAttrs, h } from "vue";
 import { hasSlotContent, isEmptyValue } from "../utils/helper";
+import { cx } from "../utils/ui";
 
 import { PX_IN_REM } from "../constants";
 import { mapRowColumns } from "./utilTable";
 
-import { useMutationObserver } from "../composables/useMutationObserver";
 import { useUI } from "../composables/useUI";
+import { useMutationObserver } from "../composables/useMutationObserver";
 
 import UIcon from "../ui.image-icon/UIcon.vue";
 import UCheckbox from "../ui.form-checkbox/UCheckbox.vue";
@@ -15,6 +15,7 @@ import UCheckbox from "../ui.form-checkbox/UCheckbox.vue";
 import defaultConfig from "./config";
 
 import { StickySide } from "./types";
+import type { VNode } from "vue";
 import type { Cell, CellObject, Row, UTableRowProps, Config, ColumnObject } from "./types";
 
 const NESTED_ROW_SHIFT_REM = 1.5;
@@ -25,6 +26,9 @@ defineOptions({ internal: true });
 const props = defineProps<UTableRowProps>();
 
 const emit = defineEmits(["toggleExpand", "toggleCheckbox"]);
+
+const slots = useSlots();
+const attrs = useAttrs();
 
 const cellRef = useTemplateRef<HTMLDivElement[]>("cell");
 const toggleWrapperRef = useTemplateRef<HTMLDivElement[]>("toggle-wrapper");
@@ -236,6 +240,10 @@ function escapeHtml(text: string): string {
   return text.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
 }
 
+function isNestedFirstCell(index: number): boolean {
+  return (Boolean(props.row.row) || Boolean(props.nestedLevel)) && index === 0;
+}
+
 function shouldRenderCellWrapper(row: Row, key: string): boolean {
   return Boolean(
     props.textEllipsis ||
@@ -244,162 +252,225 @@ function shouldRenderCellWrapper(row: Row, key: string): boolean {
   );
 }
 
+function renderCellContent(value: Cell, key: string, index: number): VNode | VNode[] | string {
+  const keyStr = String(key);
+  const hasCellSlot = hasSlotContent(slots[`cell-${key}`], { value, row: props.row, index });
+
+  // Check if slot exists
+  if (hasCellSlot) {
+    return slots[`cell-${key}`]?.({ value, row: props.row, index }) || "";
+  }
+
+  // Render cell wrapper with highlighted HTML
+  if (shouldRenderCellWrapper(props.row, keyStr)) {
+    return h("div", {
+      ref: cellRef,
+      ...props.attrs.bodyCellContentAttrs.value,
+      class: cx([
+        props.attrs.bodyCellContentAttrs.value.class,
+        getCellContentClass(props.row, keyStr),
+      ]),
+      innerHTML: getHighlightedHtml(value, keyStr),
+    });
+  }
+
+  // Render plain text
+  return formatCellValue(value);
+}
+
+function renderNestedFirstCell(value: Cell, key: string, index: number): VNode {
+  const keyStr = String(key);
+  const hasExpandSlot = hasSlotContent(slots?.expand, {
+    row: props.row,
+    expanded: props.isExpanded,
+  });
+
+  const toggleIconNode = h(UIcon, {
+    size: "xs",
+    interactive: true,
+    name: getToggleIconName(),
+    color: "primary",
+    ...toggleIconConfig.value,
+  });
+
+  const toggleWrapperNode = h(
+    "div",
+    {
+      ref: toggleWrapperRef,
+      ...props.attrs.bodyCellNestedIconWrapperAttrs.value,
+      style: { width: getIconWidth() },
+    },
+    [toggleIconNode],
+  );
+
+  const toggleIconWrapperNode = h(
+    "div",
+    {
+      "data-row-toggle-icon": props.row.id,
+      onDblclick: (e: Event) => e.stopPropagation(),
+      onClick: (e: Event) => {
+        e.stopPropagation();
+        onToggleExpand(props.row);
+      },
+    },
+    hasExpandSlot
+      ? slots?.expand?.({ row: props.row, expanded: props.isExpanded })
+      : [toggleWrapperNode],
+  );
+
+  const hasCellSlot = hasSlotContent(slots[`cell-${key}`], { value, row: props.row, index });
+
+  return h(
+    "div",
+    {
+      style: getNestedShift(),
+      ...props.attrs.bodyCellNestedAttrs.value,
+    },
+    [
+      props.row.row ? toggleIconWrapperNode : null,
+      // Cell content
+      ...(() => {
+        if (hasCellSlot) {
+          const slotContent = slots[`cell-${key}`]?.({ value, row: props.row, index });
+
+          return Array.isArray(slotContent) ? slotContent : [slotContent];
+        }
+
+        if (shouldRenderCellWrapper(props.row, keyStr)) {
+          return [
+            h("div", {
+              ref: cellRef,
+              ...props.attrs.bodyCellContentAttrs.value,
+              class: cx([
+                props.attrs.bodyCellContentAttrs.value.class,
+                getCellContentClass(props.row, keyStr),
+              ]),
+              "data-test": getDataTest(`${key}-cell`),
+              innerHTML: getHighlightedHtml(value, keyStr),
+            }),
+          ];
+        }
+
+        return [formatCellValue(value)];
+      })(),
+    ].filter(Boolean),
+  );
+}
+
+function renderTableCell(value: Cell, key: string, index: number): VNode {
+  const keyStr = String(key);
+
+  const nestedCellNode = isNestedFirstCell(index)
+    ? renderNestedFirstCell(value, key, index)
+    : renderCellContent(value, key, index);
+
+  return h(
+    "td",
+    {
+      key: index,
+      ...props.attrs.bodyCellBaseAttrs.value,
+      class: cx([
+        props.attrs.bodyCellBaseAttrs.value.class,
+        props.columns[index].tdClass,
+        getCellClasses(props.row, keyStr),
+        getStickyColumnClass(props.columns[index]),
+        getSearchMatchCellClass(keyStr),
+      ]),
+      style: getStickyColumnStyle(props.columns[index]),
+      "data-cell-key": key,
+      "data-test": getDataTest(`${key}-cell`),
+    },
+    [nestedCellNode],
+  );
+}
+
+function renderCheckboxCell(): VNode | null {
+  if (!props.selectable) return null;
+
+  const checkboxNode = h(UCheckbox, {
+    modelValue: props.isChecked,
+    size: "md",
+    ...props.attrs.bodyCheckboxAttrs.value,
+    "data-id": props.row.id,
+    "data-test": getDataTest("body-checkbox"),
+    onInput: () => onInputCheckbox(props.row),
+  });
+
+  return h(
+    "td",
+    {
+      ...props.attrs.bodyCellCheckboxAttrs.value,
+      class: cx([
+        props.attrs.bodyCellCheckboxAttrs.value.class,
+        props.columns[0]?.sticky === StickySide.Left
+          ? props.attrs.bodyCellStickyLeftAttrs.value.class
+          : "",
+      ]),
+      style: {
+        ...getNestedCheckboxShift(),
+        ...(props.columns[0]?.sticky === StickySide.Left ? { left: "0" } : {}),
+      },
+      onClick: (e: Event) => e.stopPropagation(),
+      onDblclick: (e: Event) => e.stopPropagation(),
+    },
+    [checkboxNode],
+  );
+}
+
+function renderMainRow(): VNode | null {
+  const hasNestedRowSlot = hasSlotContent(slots["nested-row"], {
+    row: props.row,
+    nestedLevel: props.nestedLevel,
+  });
+
+  if (hasNestedRowSlot && props.row.parentRowId) {
+    return null;
+  }
+
+  const cells = Object.entries(mapRowColumns(props.row, props.columns)).map(
+    ([key, value], index) => {
+      return renderTableCell(value, key, index);
+    },
+  );
+
+  return h(
+    "tr",
+    {
+      ...attrs,
+      ...getRowAttrs(),
+      class: cx([getRowAttrs().class, getRowClasses(props.row)]),
+    },
+    [renderCheckboxCell(), ...cells].filter(Boolean),
+  );
+}
+
+function renderNestedRow(): VNode | null {
+  const hasNestedRowSlot = hasSlotContent(slots["nested-row"], {
+    row: props.row,
+    nestedLevel: props.nestedLevel,
+  });
+
+  if (!hasNestedRowSlot || !props.row.parentRowId) {
+    return null;
+  }
+
+  const nestedRowSlotContent = slots["nested-row"]?.({
+    row: props.row,
+    nestedLevel: props.nestedLevel,
+  });
+
+  const tdNode = h(
+    "td",
+    { colspan: props.columns.length + Number(props.selectable) },
+    nestedRowSlotContent,
+  );
+
+  return h("tr", { class: props.row.class }, [tdNode]);
+}
+
 const { getDataTest } = useUI<Config>(defaultConfig);
 </script>
 
 <template>
-  <tr
-    v-if="!row.parentRowId || !hasSlotContent($slots['nested-row'])"
-    v-bind="{ ...$attrs, ...getRowAttrs() }"
-    :class="cx([getRowAttrs().class, getRowClasses(row)])"
-  >
-    <td
-      v-if="selectable"
-      :style="{
-        ...getNestedCheckboxShift(),
-        ...(columns[0]?.sticky === StickySide.Left ? { left: '0' } : {}),
-      }"
-      v-bind="attrs.bodyCellCheckboxAttrs.value"
-      :class="
-        cx([
-          attrs.bodyCellCheckboxAttrs.value.class,
-          columns[0]?.sticky === StickySide.Left ? attrs.bodyCellStickyLeftAttrs.value.class : '',
-        ])
-      "
-      @click.stop
-      @dblclick.stop
-    >
-      <UCheckbox
-        :model-value="isChecked"
-        size="md"
-        v-bind="attrs.bodyCheckboxAttrs.value"
-        :data-id="row.id"
-        :data-test="getDataTest('body-checkbox')"
-        @input="onInputCheckbox(row)"
-      />
-    </td>
-
-    <template v-for="(value, key, index) in mapRowColumns(row, columns)" :key="index">
-      <td
-        v-if="(row.row || nestedLevel) && index === 0"
-        v-bind="attrs.bodyCellBaseAttrs.value"
-        :class="
-          cx([
-            columns[index].tdClass,
-            getCellClasses(row, String(key)),
-            getStickyColumnClass(columns[index]),
-            getSearchMatchCellClass(String(key)),
-          ])
-        "
-        :style="getStickyColumnStyle(columns[index])"
-        :data-cell-key="key"
-        :data-test="getDataTest(`${key}-cell`)"
-      >
-        <div :style="getNestedShift()" v-bind="attrs.bodyCellNestedAttrs.value">
-          <div
-            v-if="row.row"
-            :data-row-toggle-icon="row.id"
-            @dblclick.stop
-            @click.stop="onToggleExpand(row)"
-          >
-            <slot name="expand" :row="row" :expanded="isExpanded">
-              <div
-                ref="toggle-wrapper"
-                v-bind="attrs.bodyCellNestedIconWrapperAttrs.value"
-                :style="{ width: getIconWidth() }"
-              >
-                <UIcon
-                  size="xs"
-                  interactive
-                  :name="getToggleIconName()"
-                  color="primary"
-                  v-bind="toggleIconConfig"
-                />
-              </div>
-            </slot>
-          </div>
-
-          <slot
-            v-if="hasSlotContent($slots[`cell-${key}`], { value, row, index })"
-            :name="`cell-${key}`"
-            :value="value"
-            :row="row"
-            :index="index"
-          />
-          <div
-            v-else-if="shouldRenderCellWrapper(row, String(key))"
-            ref="cell"
-            v-bind="attrs.bodyCellContentAttrs.value"
-            :class="
-              cx([attrs.bodyCellContentAttrs.value.class, getCellContentClass(row, String(key))])
-            "
-            :data-test="getDataTest(`${key}-cell`)"
-            v-html="getHighlightedHtml(value, String(key))"
-          />
-          <template v-else>{{ formatCellValue(value) }}</template>
-        </div>
-      </td>
-
-      <td
-        v-else-if="
-          shouldRenderCellWrapper(row, String(key)) ||
-          hasSlotContent($slots[`cell-${key}`], { value, row, index })
-        "
-        v-bind="attrs.bodyCellBaseAttrs.value"
-        :class="
-          cx([
-            columns[index].tdClass,
-            getCellClasses(row, String(key)),
-            getStickyColumnClass(columns[index]),
-            getSearchMatchCellClass(String(key)),
-          ])
-        "
-        :style="getStickyColumnStyle(columns[index])"
-        :data-cell-key="key"
-        :data-test="getDataTest(`${key}-cell`)"
-      >
-        <slot
-          v-if="hasSlotContent($slots[`cell-${key}`], { value, row, index })"
-          :name="`cell-${key}`"
-          :index="index"
-          :value="value"
-          :row="row"
-        />
-        <div
-          v-else
-          ref="cell"
-          v-bind="attrs.bodyCellContentAttrs.value"
-          :class="
-            cx([attrs.bodyCellContentAttrs.value.class, getCellContentClass(row, String(key))])
-          "
-          v-html="getHighlightedHtml(value, String(key))"
-        />
-      </td>
-
-      <td
-        v-else
-        v-bind="attrs.bodyCellBaseAttrs.value"
-        :style="getStickyColumnStyle(columns[index])"
-        :class="
-          cx([
-            columns[index].tdClass,
-            getCellClasses(row, String(key)),
-            getStickyColumnClass(columns[index]),
-          ])
-        "
-        :data-cell-key="key"
-        :data-test="getDataTest(`${key}-cell`)"
-        v-text="formatCellValue(value)"
-      />
-    </template>
-  </tr>
-
-  <tr
-    v-if="row.parentRowId && hasSlotContent($slots['nested-row'], { row, nestedLevel })"
-    :class="row.class"
-  >
-    <td :colspan="columns.length + Number(selectable)">
-      <slot name="nested-row" :row="row" :nested-level="nestedLevel" />
-    </td>
-  </tr>
+  <component :is="() => [renderMainRow(), renderNestedRow()].filter(Boolean)" />
 </template>

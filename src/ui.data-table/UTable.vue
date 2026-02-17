@@ -9,6 +9,8 @@ import {
   onMounted,
   onBeforeUnmount,
   useTemplateRef,
+  h,
+  VNode,
 } from "vue";
 import { isEqual } from "lodash-es";
 
@@ -43,6 +45,7 @@ import type {
   FlatRow,
   ColumnObject,
   SearchMatch,
+  UTableRowProps,
 } from "./types";
 import { StickySide } from "./types";
 
@@ -907,6 +910,137 @@ const tableRowAttrs = {
   bodyCellSearchMatchActiveAttrs,
   bodyCellSearchMatchTextActiveAttrs,
 } as unknown as UTableRowAttrs;
+
+function renderDateDividerRow(row: FlatRow, rowIndex: number): VNode | null {
+  if (!isShownDateDivider(rowIndex) || !row.rowDate) return null;
+
+  const isSelected = isRowSelectedWithin(rowIndex);
+
+  const propsDateDivider = isSelected
+    ? bodyRowCheckedDateDividerAttrs.value
+    : bodyRowDateDividerAttrs.value;
+
+  const dividerNode = h(UDivider, {
+    label: getDateDividerData(row.rowDate).label,
+    ...(isSelected ? bodySelectedDateDividerAttrs.value : bodyDateDividerAttrs.value),
+    config: getDateDividerConfig(row, isSelected),
+  });
+
+  return h("tr", propsDateDivider, [
+    h(
+      "td",
+      {
+        ...bodyCellDateDividerAttrs.value,
+        colspan: colsCount.value,
+      },
+      [dividerNode],
+    ),
+  ]);
+}
+
+function renderTableRowSlots(row: FlatRow, rowIndex: number) {
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-function-type
+  const cellSlots: Record<string, Function> = {};
+
+  // Create cell slots
+  Object.entries(mapRowColumns(row, normalizedColumns.value)).forEach(([key], cellIndex) => {
+    cellSlots[`cell-${key}`] = ({
+      value: cellValue,
+      row: cellRow,
+    }: {
+      value: Cell;
+      row: FlatRow;
+    }) => {
+      const hasCellSlot = hasSlotContent(slots[`cell-${key}`], {
+        value: cellValue,
+        row: cellRow,
+        index: rowIndex,
+        cellIndex,
+      });
+
+      if (hasCellSlot) {
+        return slots[`cell-${key}`]?.({
+          value: cellValue,
+          row: cellRow,
+          index: rowIndex,
+          cellIndex,
+        });
+      }
+
+      return null;
+    };
+  });
+
+  // Add expand slot
+  cellSlots.expand = ({ row: expandedRow, expanded }: { row: FlatRow; expanded: boolean }) => {
+    const hasExpandSlot = hasSlotContent(slots.expand, {
+      index: rowIndex,
+      row: expandedRow,
+      expanded,
+    });
+
+    if (hasExpandSlot) {
+      return slots.expand?.({ index: rowIndex, row: expandedRow, expanded });
+    }
+
+    return null;
+  };
+
+  // Add nested-row slot
+  cellSlots["nested-row"] = () => {
+    const hasNestedRowSlot = hasSlotContent(slots["nested-row"], {
+      index: rowIndex,
+      row,
+      nestedLevel: Number(row.nestedLevel || 0),
+    });
+
+    if (hasNestedRowSlot && row) {
+      return slots["nested-row"]?.({
+        index: rowIndex,
+        row,
+        nestedLevel: Number(row.nestedLevel || 0),
+      });
+    }
+
+    return null;
+  };
+
+  return cellSlots;
+}
+
+function renderTableRow(row: FlatRow, rowIndex: number): VNode {
+  return h(
+    UTableRow,
+    {
+      selectable: props.selectable,
+      row,
+      columns: normalizedColumns.value,
+      config: config.value,
+      attrs: tableRowAttrs as unknown as UTableRowAttrs,
+      colsCount: colsCount.value,
+      nestedLevel: Number(row.nestedLevel || 0),
+      emptyCellLabel: props.emptyCellLabel,
+      "data-test": getDataTest("row"),
+      "data-row-id": row.id,
+      isExpanded: localExpandedRows.value.includes(row.id),
+      isChecked: isRowSelected(row),
+      columnPositions: columnPositions.value,
+      search: props.search,
+      searchMatchColumns: getRowSearchMatchColumns(row),
+      activeSearchMatchColumn: getRowActiveSearchMatchColumn(row),
+      textEllipsis: props.textEllipsis,
+      onToggleExpand,
+      onToggleCheckbox: onToggleRowCheckbox,
+    } as unknown as UTableRowProps,
+    renderTableRowSlots(row, rowIndex),
+  );
+}
+
+function renderRowTemplate(row: FlatRow, rowIndex: number): VNode[] {
+  return [renderDateDividerRow(row, rowIndex), renderTableRow(row, rowIndex)].filter(
+    Boolean,
+  ) as VNode[];
+}
 </script>
 
 <template>
@@ -947,10 +1081,10 @@ const tableRowAttrs = {
       >
         <template v-if="hasSlotContent($slots[`header-${column.key}`], { column, index })">
           <!--
-              @slot Use it to customize needed header cell.
-              @binding {object} column
-              @binding {number} index
-            -->
+            @slot Use it to customize needed header cell.
+            @binding {object} column
+            @binding {number} index
+          -->
           <slot :name="`header-${column.key}`" :column="column" :index="index" />
         </template>
 
@@ -1119,102 +1253,9 @@ const tableRowAttrs = {
             />
           </tr>
 
-          <template v-for="(row, rowIndex) in renderedRows" :key="row.id">
-            <tr
-              v-if="isShownDateDivider(rowIndex) && !isRowSelectedWithin(rowIndex) && row.rowDate"
-              v-bind="bodyRowDateDividerAttrs"
-            >
-              <td v-bind="bodyCellDateDividerAttrs" :colspan="colsCount">
-                <UDivider
-                  :label="getDateDividerData(row.rowDate).label"
-                  v-bind="bodyDateDividerAttrs"
-                  :config="getDateDividerConfig(row, false)"
-                />
-              </td>
-            </tr>
-
-            <tr
-              v-if="isShownDateDivider(rowIndex) && isRowSelectedWithin(rowIndex) && row.rowDate"
-              v-bind="bodyRowCheckedDateDividerAttrs"
-            >
-              <td v-bind="bodyCellDateDividerAttrs" :colspan="colsCount">
-                <UDivider
-                  :label="getDateDividerData(row.rowDate).label"
-                  v-bind="bodySelectedDateDividerAttrs"
-                  :config="getDateDividerConfig(row, true)"
-                />
-              </td>
-            </tr>
-
-            <UTableRow
-              :selectable="selectable"
-              :row="row"
-              :columns="normalizedColumns"
-              :config="config"
-              :attrs="tableRowAttrs as unknown as UTableRowAttrs"
-              :cols-count="colsCount"
-              :nested-level="Number(row.nestedLevel || 0)"
-              :empty-cell-label="emptyCellLabel"
-              :data-test="getDataTest('row')"
-              :data-row-id="row.id"
-              :is-expanded="localExpandedRows.includes(row.id)"
-              :is-checked="isRowSelected(row)"
-              :column-positions="columnPositions"
-              :search="search"
-              :search-match-columns="getRowSearchMatchColumns(row)"
-              :active-search-match-column="getRowActiveSearchMatchColumn(row)"
-              :text-ellipsis="textEllipsis"
-              @toggle-expand="onToggleExpand"
-              @toggle-checkbox="onToggleRowCheckbox"
-            >
-              <template
-                v-for="(value, key, cellIndex) in mapRowColumns(row, normalizedColumns)"
-                :key="`${rowIndex}-${cellIndex}`"
-                #[`cell-${key}`]="{ value: cellValue, row: cellRow }"
-              >
-                <!--
-                  @slot Use it to customize needed table cell.
-                  @binding {string} value
-                  @binding {object} row
-                  @binding {number} index
-                  @binding {number} cellIndex
-                -->
-                <slot
-                  :name="`cell-${key}`"
-                  :value="cellValue"
-                  :row="cellRow"
-                  :index="rowIndex"
-                  :cell-index="cellIndex"
-                />
-              </template>
-
-              <template #expand="{ row: expandedRow, expanded }">
-                <!--
-                  @slot Use it to customize row expand icon.
-                  @binding {object} row
-                  @binding {boolean} expanded
-                  @binding {number} index
-                -->
-                <slot name="expand" :index="rowIndex" :row="expandedRow" :expanded="expanded" />
-              </template>
-
-              <template #nested-row>
-                <!--
-                  @slot Use it to add inside nested row.
-                  @binding {object} row
-                  @binding {number} index
-                  @binding {number} nestedLevel
-                -->
-                <slot
-                  v-if="row"
-                  name="nested-row"
-                  :index="rowIndex"
-                  :row="row"
-                  :nested-level="Number(row.nestedLevel || 0)"
-                />
-              </template>
-            </UTableRow>
-          </template>
+          <component
+            :is="() => renderedRows.map((row, rowIndex) => renderRowTemplate(row, rowIndex)).flat()"
+          />
 
           <tr v-if="props.virtualScroll && virtualScroll.bottomSpacerHeight.value > 0">
             <td
