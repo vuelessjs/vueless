@@ -279,53 +279,55 @@ const { getDataTest } = useUI<Config>(defaultConfig);
       />
     </td>
 
-    <td
-      v-for="(value, key, index) in mapRowColumns(row, columns)"
-      :key="index"
-      v-bind="attrs.bodyCellBaseAttrs.value"
-      :class="
-        cx([
-          columns[index].tdClass,
-          getCellClasses(row, String(key)),
-          getStickyColumnClass(columns[index]),
-          getSearchMatchCellClass(String(key)),
-        ])
-      "
-      :style="getStickyColumnStyle(columns[index])"
-      :data-cell-key="key"
-      :data-test="getDataTest(`${key}-cell`)"
-    >
-      <div
+    <template v-for="(value, key, index) in mapRowColumns(row, columns)" :key="index">
+      <td
         v-if="(row.row || nestedLevel) && index === 0"
-        :style="getNestedShift()"
-        v-bind="attrs.bodyCellNestedAttrs.value"
+        v-bind="attrs.bodyCellBaseAttrs.value"
+        :class="
+          cx([
+            columns[index].tdClass,
+            getCellClasses(row, String(key)),
+            getStickyColumnClass(columns[index]),
+            getSearchMatchCellClass(String(key)),
+          ])
+        "
+        :style="getStickyColumnStyle(columns[index])"
+        :data-cell-key="key"
+        :data-test="getDataTest(`${key}-cell`)"
       >
-        <div
-          v-if="row.row"
-          :data-row-toggle-icon="row.id"
-          @dblclick.stop
-          @click.stop="onToggleExpand(row)"
-        >
-          <slot name="expand" :row="row" :expanded="isExpanded">
-            <div
-              ref="toggle-wrapper"
-              v-bind="attrs.bodyCellNestedIconWrapperAttrs.value"
-              :style="{ width: getIconWidth() }"
-            >
-              <UIcon
-                size="xs"
-                interactive
-                :name="getToggleIconName()"
-                color="primary"
-                v-bind="toggleIconConfig"
-              />
-            </div>
-          </slot>
-        </div>
-        <slot :name="`cell-${key}`" :value="value" :row="row" :index="index">
-          <!-- eslint-disable vue/no-v-html -->
+        <div :style="getNestedShift()" v-bind="attrs.bodyCellNestedAttrs.value">
           <div
-            v-if="shouldRenderCellWrapper(row, String(key))"
+            v-if="row.row"
+            :data-row-toggle-icon="row.id"
+            @dblclick.stop
+            @click.stop="onToggleExpand(row)"
+          >
+            <slot name="expand" :row="row" :expanded="isExpanded">
+              <div
+                ref="toggle-wrapper"
+                v-bind="attrs.bodyCellNestedIconWrapperAttrs.value"
+                :style="{ width: getIconWidth() }"
+              >
+                <UIcon
+                  size="xs"
+                  interactive
+                  :name="getToggleIconName()"
+                  color="primary"
+                  v-bind="toggleIconConfig"
+                />
+              </div>
+            </slot>
+          </div>
+
+          <slot
+            v-if="hasSlotContent($slots[`cell-${key}`], { value, row, index })"
+            :name="`cell-${key}`"
+            :value="value"
+            :row="row"
+            :index="index"
+          />
+          <div
+            v-else-if="shouldRenderCellWrapper(row, String(key))"
             ref="cell"
             v-bind="attrs.bodyCellContentAttrs.value"
             :class="
@@ -335,25 +337,61 @@ const { getDataTest } = useUI<Config>(defaultConfig);
             v-html="getHighlightedHtml(value, String(key))"
           />
           <template v-else>{{ formatCellValue(value) }}</template>
-        </slot>
-      </div>
+        </div>
+      </td>
 
-      <template v-else>
-        <slot :name="`cell-${key}`" :value="value" :row="row" :index="index">
-          <!-- eslint-disable vue/no-v-html -->
-          <div
-            v-if="shouldRenderCellWrapper(row, String(key))"
-            v-bind="attrs.bodyCellContentAttrs.value"
-            ref="cell"
-            :class="
-              cx([attrs.bodyCellContentAttrs.value.class, getCellContentClass(row, String(key))])
-            "
-            v-html="getHighlightedHtml(value, String(key))"
-          />
-          <template v-else>{{ formatCellValue(value) }}</template>
-        </slot>
-      </template>
-    </td>
+      <td
+        v-else-if="
+          shouldRenderCellWrapper(row, String(key)) ||
+          hasSlotContent($slots[`cell-${key}`], { value, row, index })
+        "
+        v-bind="attrs.bodyCellBaseAttrs.value"
+        :class="
+          cx([
+            columns[index].tdClass,
+            getCellClasses(row, String(key)),
+            getStickyColumnClass(columns[index]),
+            getSearchMatchCellClass(String(key)),
+          ])
+        "
+        :style="getStickyColumnStyle(columns[index])"
+        :data-cell-key="key"
+        :data-test="getDataTest(`${key}-cell`)"
+      >
+        <slot
+          v-if="hasSlotContent($slots[`cell-${key}`], { value, row, index })"
+          :name="`cell-${key}`"
+          :index="index"
+          :value="value"
+          :row="row"
+        />
+        <div
+          v-else
+          ref="cell"
+          v-bind="attrs.bodyCellContentAttrs.value"
+          :class="
+            cx([attrs.bodyCellContentAttrs.value.class, getCellContentClass(row, String(key))])
+          "
+          v-html="getHighlightedHtml(value, String(key))"
+        />
+      </td>
+
+      <td
+        v-else
+        v-bind="attrs.bodyCellBaseAttrs.value"
+        :style="getStickyColumnStyle(columns[index])"
+        :class="
+          cx([
+            columns[index].tdClass,
+            getCellClasses(row, String(key)),
+            getStickyColumnClass(columns[index]),
+          ])
+        "
+        :data-cell-key="key"
+        :data-test="getDataTest(`${key}-cell`)"
+        v-text="formatCellValue(value)"
+      />
+    </template>
   </tr>
 
   <tr
