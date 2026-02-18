@@ -192,6 +192,95 @@ describe("UNumber.vue", () => {
       });
     });
 
+    it("Raw – renders formatted number as plain text without HTML elements when raw is true", () => {
+      const component = mount(UNumber, {
+        props: {
+          value,
+          raw: true,
+        },
+      });
+
+      // Should render plain text without the number div structure
+      expect(component.find("[vl-key='number']").exists()).toBe(false);
+      expect(component.text()).toContain("1 234,56");
+    });
+
+    it("Raw – renders with currency when raw is true and currency is set", () => {
+      const currency = "$";
+
+      const component = mount(UNumber, {
+        props: {
+          value,
+          currency,
+          currencyAlign: "left",
+          raw: true,
+        },
+      });
+
+      expect(component.text()).toBe("$1 234,56");
+    });
+
+    it("Raw – renders with currency and space when raw is true, currency is set, and currencySpace is true", () => {
+      const currency = "$";
+
+      const component = mount(UNumber, {
+        props: {
+          value,
+          currency,
+          currencyAlign: "left",
+          currencySpace: true,
+          raw: true,
+        },
+      });
+
+      expect(component.text()).toBe("$ 1 234,56");
+    });
+
+    it("Raw – renders with currency on right when raw is true and currencyAlign is right", () => {
+      const currency = "$";
+
+      const component = mount(UNumber, {
+        props: {
+          value,
+          currency,
+          currencyAlign: "right",
+          raw: true,
+        },
+      });
+
+      expect(component.text()).toBe("1 234,56$");
+    });
+
+    it("Raw – renders with currency on right and space when raw is true, currencyAlign is right, and currencySpace is true", () => {
+      const currency = "$";
+
+      const component = mount(UNumber, {
+        props: {
+          value,
+          currency,
+          currencyAlign: "right",
+          currencySpace: true,
+          raw: true,
+        },
+      });
+
+      expect(component.text()).toBe("1 234,56 $");
+    });
+
+    it("Raw – renders with sign when raw is true and sign is set", () => {
+      const testNegativeValue = -123;
+
+      const component = mount(UNumber, {
+        props: {
+          value: testNegativeValue,
+          sign: MATH_SIGN_TYPE.auto,
+          raw: true,
+        },
+      });
+
+      expect(component.text()).toContain(MATH_SIGN.MINUS);
+    });
+
     it("MinFractionDigits – adds zeros to meet the minimum fraction digits requirement", () => {
       const value = 123;
       const minFractionDigits = 2;
