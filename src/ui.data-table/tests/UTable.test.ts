@@ -775,9 +775,9 @@ describe("UTable.vue", () => {
     it("Toggle Row Checkbox – emits update:selectedRows when row checkbox is clicked", async () => {
       const component = mountUTable(getDefaultProps({ selectable: true }));
 
-      const rowCheckbox = component.find("tbody tr").find("input[type='checkbox']");
+      const checkboxCell = component.find("tbody tr td[data-checkbox-id]");
 
-      await rowCheckbox.trigger("change");
+      await checkboxCell.trigger("click");
 
       expect(component.emitted("update:selectedRows")).toBeTruthy();
       const emittedRows = component.emitted("update:selectedRows")![0][0] as Row[];
@@ -836,12 +836,24 @@ describe("UTable.vue", () => {
     it("Multiple Row Selection – emits update:selectedRows with all selected rows", async () => {
       const component = mountUTable(getDefaultProps({ selectable: true }));
 
-      const tableRows = component.findAll("tbody tr");
-
       // Select first row
-      await tableRows[0].find("input[type='checkbox']").trigger("change");
+      let tableRows = component.findAll("tbody tr");
+
+      await tableRows[0].find("td[data-checkbox-id]").trigger("click");
+      await nextTick();
+
+      // Update props with the first selected row
+      const firstEmit = component.emitted("update:selectedRows")![0][0] as Row[];
+
+      await component.setProps({ selectedRows: firstEmit });
+      await nextTick();
+
+      // Re-query the DOM after props update
+      tableRows = component.findAll("tbody tr");
+
       // Select second row
-      await tableRows[1].find("input[type='checkbox']").trigger("change");
+      await tableRows[1].find("td[data-checkbox-id]").trigger("click");
+      await nextTick();
 
       const emittedEvents = component.emitted("update:selectedRows");
 

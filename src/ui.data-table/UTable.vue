@@ -630,8 +630,28 @@ function onBodyClick(event: MouseEvent) {
 
   if (!rowData) return;
 
+  // Handle checkbox toggle via event delegation
+  const checkboxCell = target.closest("td[data-checkbox-id]");
+
+  if (checkboxCell) {
+    onToggleRowCheckbox(rowData);
+
+    return;
+  }
+
+  // Handle expand icon toggle via event delegation
+  const expandIconElement = target.closest("[data-expand-icon]");
+
+  if (expandIconElement) {
+    onToggleExpand(rowData);
+
+    return;
+  }
+
+  // Handle row click via event delegation
   onClickRow(rowData);
 
+  // Handle cell click via event delegation
   const cell = target.closest("td");
 
   if (cell) {
@@ -1029,8 +1049,6 @@ function renderTableRow(row: FlatRow, rowIndex: number): VNode {
       searchMatchColumns: getRowSearchMatchColumns(row),
       activeSearchMatchColumn: getRowActiveSearchMatchColumn(row),
       textEllipsis: props.textEllipsis,
-      onToggleExpand,
-      onToggleCheckbox: onToggleRowCheckbox,
     } as unknown as UTableRowProps,
     renderTableRowSlots(row, rowIndex),
   );

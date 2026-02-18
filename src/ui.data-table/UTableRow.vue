@@ -25,8 +25,6 @@ defineOptions({ internal: true });
 
 const props = defineProps<UTableRowProps>();
 
-const emit = defineEmits(["toggleExpand", "toggleCheckbox"]);
-
 const slots = useSlots();
 const attrs = useAttrs();
 
@@ -145,14 +143,6 @@ function getRowClasses(row: Row) {
 
 function getRowAttrs() {
   return props.isChecked ? props.attrs.bodyRowCheckedAttrs.value : props.attrs.bodyRowAttrs.value;
-}
-
-function onToggleExpand(row: Row) {
-  emit("toggleExpand", row);
-}
-
-function onInputCheckbox(row: Row) {
-  emit("toggleCheckbox", row);
 }
 
 function getStickyColumnStyle(column: ColumnObject) {
@@ -307,11 +297,8 @@ function renderNestedFirstCell(value: Cell, key: string, index: number): VNode {
     "div",
     {
       "data-row-toggle-icon": props.row.id,
+      "data-expand-icon": props.row.id,
       onDblclick: (e: Event) => e.stopPropagation(),
-      onClick: (e: Event) => {
-        e.stopPropagation();
-        onToggleExpand(props.row);
-      },
     },
     hasExpandSlot
       ? slots?.expand?.({ row: props.row, expanded: props.isExpanded })
@@ -392,14 +379,15 @@ function renderCheckboxCell(): VNode | null {
     size: "md",
     ...props.attrs.bodyCheckboxAttrs.value,
     "data-id": props.row.id,
+    "data-checkbox-id": props.row.id,
     "data-test": getDataTest("body-checkbox"),
-    onInput: () => onInputCheckbox(props.row),
   });
 
   return h(
     "td",
     {
       ...props.attrs.bodyCellCheckboxAttrs.value,
+      "data-checkbox-id": props.row.id,
       class: cx([
         props.attrs.bodyCellCheckboxAttrs.value.class,
         props.columns[0]?.sticky === StickySide.Left
@@ -410,7 +398,6 @@ function renderCheckboxCell(): VNode | null {
         ...getNestedCheckboxShift(),
         ...(props.columns[0]?.sticky === StickySide.Left ? { left: "0" } : {}),
       },
-      onClick: (e: Event) => e.stopPropagation(),
       onDblclick: (e: Event) => e.stopPropagation(),
     },
     [checkboxNode],
