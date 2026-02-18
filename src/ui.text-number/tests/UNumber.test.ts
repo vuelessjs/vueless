@@ -251,6 +251,7 @@ describe("UNumber.vue", () => {
       expect(component.text()).toBe("1 234,56$");
     });
 
+    // eslint-disable-next-line vue/max-len
     it("Raw – renders with currency on right and space when raw is true, currencyAlign is right, and currencySpace is true", () => {
       const currency = "$";
 
@@ -273,7 +274,7 @@ describe("UNumber.vue", () => {
       const component = mount(UNumber, {
         props: {
           value: testNegativeValue,
-          sign: MATH_SIGN_TYPE.auto,
+          sign: MATH_SIGN_TYPE.auto as Props["sign"],
           raw: true,
         },
       });
