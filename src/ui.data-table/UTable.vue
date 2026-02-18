@@ -4,13 +4,13 @@ import {
   ref,
   computed,
   watch,
+  watchEffect,
   useSlots,
   nextTick,
   onMounted,
   onBeforeUnmount,
   useTemplateRef,
   h,
-  VNode,
 } from "vue";
 import { isEqual } from "lodash-es";
 
@@ -32,7 +32,7 @@ import { normalizeColumns, mapRowColumns, getFlatRows, getRowChildrenIds } from 
 import { PX_IN_REM } from "../constants";
 import { COMPONENT_NAME } from "./constants";
 
-import type { ComputedRef } from "vue";
+import type { ComputedRef, VNode } from "vue";
 import type { Config as UDividerConfig } from "../ui.container-divider/types";
 import type {
   Cell,
@@ -313,24 +313,6 @@ const totalSearchMatches = computed(() => {
   return count;
 });
 
-watch(totalSearchMatches, (count) => {
-  emit("search", count);
-});
-
-watch(activeMatch, (match) => {
-  if (!match) return;
-
-  if (props.virtualScroll) {
-    const rowIndex = visibleFlatRows.value.findIndex((row) => row.id === match.rowId);
-
-    if (rowIndex === -1) return;
-
-    virtualScroll.scrollToIndex(rowIndex);
-  } else {
-    scrollToRow(match.rowId);
-  }
-});
-
 const selectedRowIds = computed(() => {
   return new Set(localSelectedRows.value.map((row) => row.id));
 });
@@ -339,14 +321,127 @@ const isSelectedAllRows = computed(() => {
   return localSelectedRows.value.length === flatTableRows.value.length;
 });
 
-watch(localSelectedRows, onChangeLocalSelectedRows);
-watch(() => props.selectedRows, onChangeSelectedRows, { immediate: true });
+// Conditional watchers - only create listeners when their associated features are enabled
+// Using watchEffect to dynamically create/destroy watchers based on feature state
+
+// Search-related watchers
+// Note: totalSearchMatches watcher always runs to emit events (even when search is cleared)
+watch(totalSearchMatches, (count) => emit("search", count), { flush: "post" });
+
+// activeMatch watcher - only created when search is active
+let stopActiveMatchWatch: (() => void) | null = null;
+
+watchEffect(() => {
+  if (props.search) {
+    // Create watcher if it doesn't exist
+    if (!stopActiveMatchWatch) {
+      stopActiveMatchWatch = watch(
+        activeMatch,
+        (match) => {
+          if (!match) return;
+
+          if (props.virtualScroll) {
+            const rowIndex = visibleFlatRows.value.findIndex((row) => row.id === match.rowId);
+
+            if (rowIndex === -1) return;
+
+            virtualScroll.scrollToIndex(rowIndex);
+          } else {
+            scrollToRow(match.rowId);
+          }
+        },
+        { flush: "post" },
+      );
+    }
+  } else {
+    // Cleanup watcher if it exists
+    if (stopActiveMatchWatch) {
+      stopActiveMatchWatch();
+      stopActiveMatchWatch = null;
+    }
+  }
+});
+
+// Selection-related watchers (only created when selectable is enabled)
+let stopLocalSelectedRowsWatch: (() => void) | null = null;
+let stopSelectedRowsWatch: (() => void) | null = null;
+let stopSelectAllWatch: (() => void) | null = null;
+
+watchEffect(() => {
+  if (props.selectable) {
+    // Create watchers if they don't exist
+    if (!stopLocalSelectedRowsWatch) {
+      stopLocalSelectedRowsWatch = watch(localSelectedRows, onChangeLocalSelectedRows);
+    }
+
+    if (!stopSelectedRowsWatch) {
+      stopSelectedRowsWatch = watch(() => props.selectedRows, onChangeSelectedRows, {
+        immediate: true,
+      });
+    }
+
+    if (!stopSelectAllWatch) {
+      stopSelectAllWatch = watch(selectAll, onChangeSelectAll);
+    }
+  } else {
+    // Cleanup watchers if they exist
+    if (stopLocalSelectedRowsWatch) {
+      stopLocalSelectedRowsWatch();
+      stopLocalSelectedRowsWatch = null;
+    }
+
+    if (stopSelectedRowsWatch) {
+      stopSelectedRowsWatch();
+      stopSelectedRowsWatch = null;
+    }
+
+    if (stopSelectAllWatch) {
+      stopSelectAllWatch();
+      stopSelectAllWatch = null;
+    }
+  }
+});
+
+// Expansion watcher (always register as it's a core feature)
 watch(() => props.expandedRows, onChangeExpandedRows, { immediate: true });
-watch(selectAll, onChangeSelectAll);
-watch(isHeaderSticky, setHeaderCellWidth);
-watch(isFooterSticky, (newValue) =>
-  newValue ? nextTick(setFooterCellWidth) : setFooterCellWidth(null),
-);
+
+// Sticky header watcher (only created when stickyHeader is enabled)
+let stopHeaderStickyWatch: (() => void) | null = null;
+
+watchEffect(() => {
+  if (props.stickyHeader) {
+    // Create watcher if it doesn't exist
+    if (!stopHeaderStickyWatch) {
+      stopHeaderStickyWatch = watch(isHeaderSticky, setHeaderCellWidth);
+    }
+  } else {
+    // Cleanup watcher if it exists
+    if (stopHeaderStickyWatch) {
+      stopHeaderStickyWatch();
+      stopHeaderStickyWatch = null;
+    }
+  }
+});
+
+// Sticky footer watcher (only created when stickyFooter is enabled)
+let stopFooterStickyWatch: (() => void) | null = null;
+
+watchEffect(() => {
+  if (props.stickyFooter) {
+    // Create watcher if it doesn't exist
+    if (!stopFooterStickyWatch) {
+      stopFooterStickyWatch = watch(isFooterSticky, (newValue) =>
+        newValue ? nextTick(setFooterCellWidth) : setFooterCellWidth(null),
+      );
+    }
+  } else {
+    // Cleanup watcher if it exists
+    if (stopFooterStickyWatch) {
+      stopFooterStickyWatch();
+      stopFooterStickyWatch = null;
+    }
+  }
+});
 
 let resizeObserver: ResizeObserver | null = null;
 let scrollRafId: number | null = null;
@@ -630,10 +725,15 @@ function onBodyClick(event: MouseEvent) {
 
   if (!rowData) return;
 
-  // Handle checkbox toggle via event delegation
+  // Handle checkbox toggle via event delegation.
+  // When unchecking, UCheckbox.onIconClick() calls input.click() which dispatches
+  // a second (programmatic) click event with target=INPUT and isTrusted=false.
+  // Without this guard, onToggleRowCheckbox fires twice (deselect then reselect).
   const checkboxCell = target.closest("td[data-checkbox-id]");
 
   if (checkboxCell) {
+    if (target.tagName === "INPUT" && !event.isTrusted) return;
+
     onToggleRowCheckbox(rowData);
 
     return;
@@ -708,6 +808,7 @@ function onChangeLocalSelectedRows(selectedRows: Row[]) {
     nextTick(setHeaderCellWidth);
   }
 
+  // Set flag to prevent selectAll watcher from triggering
   selectAll.value = !!selectedRows.length;
 
   emit("update:selectedRows", localSelectedRows.value);
