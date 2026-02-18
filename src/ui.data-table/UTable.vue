@@ -461,11 +461,23 @@ watchEffect(() => {
 
 let resizeObserver: ResizeObserver | null = null;
 let scrollRafId: number | null = null;
+let resizeDebounceId: ReturnType<typeof setTimeout> | null = null;
+
+function scheduleWindowResize(tableRectWidth: number, tableRectHeight: number) {
+  if (resizeDebounceId) clearTimeout(resizeDebounceId);
+
+  resizeDebounceId = setTimeout(() => {
+    resizeDebounceId = null;
+    onWindowResize();
+
+    tableHeight.value = tableRectHeight;
+    tableWidth.value = tableRectWidth;
+  }, 300);
+}
 
 onMounted(async () => {
   document.addEventListener("keyup", onKeyupEsc);
   document.addEventListener("scroll", onScroll, { passive: true });
-  window.addEventListener("resize", onWindowResize);
 
   await nextTick();
   updateHeaderOffsetTop();
@@ -477,9 +489,7 @@ onMounted(async () => {
 
       if (!entry) return;
 
-      tableHeight.value = entry.contentRect.height;
-      tableWidth.value = entry.contentRect.width;
-      calculateStickyColumnPositions();
+      scheduleWindowResize(entry.contentRect.width, entry.contentRect.height);
     });
 
     resizeObserver.observe(tableWrapperRef.value);
@@ -489,11 +499,14 @@ onMounted(async () => {
 onBeforeUnmount(() => {
   document.removeEventListener("keyup", onKeyupEsc);
   document.removeEventListener("scroll", onScroll);
-  window.removeEventListener("resize", onWindowResize);
   resizeObserver?.disconnect();
 
   if (scrollRafId !== null) {
     cancelAnimationFrame(scrollRafId);
+  }
+
+  if (resizeDebounceId !== null) {
+    clearTimeout(resizeDebounceId);
   }
 });
 
@@ -510,8 +523,6 @@ function onChangeExpandedRows() {
 }
 
 function onWindowResize() {
-  tableWidth.value = tableWrapperRef.value?.offsetWidth || 0;
-
   updateHeaderOffsetTop();
   setHeaderCellWidth();
   setFooterCellWidth();
