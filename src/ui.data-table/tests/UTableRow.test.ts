@@ -68,6 +68,7 @@ describe("UTableRow.vue", () => {
       config: defaultConfig,
       isChecked: false,
       isExpanded: false,
+      isVisible: true,
       columnPositions,
       ...overrides,
     };
@@ -458,6 +459,27 @@ describe("UTableRow.vue", () => {
       const iconWrapper = component.find(".icon-wrapper");
 
       expect(iconWrapper.exists()).toBe(true);
+    });
+
+    it("isVisible – shows row when isVisible is true", () => {
+      const component = mount(UTableRow, {
+        props: getDefaultProps({ isVisible: true }),
+      });
+
+      const row = component.find("tr");
+      const style = row.attributes("style") || "";
+
+      expect(style).not.toContain("display: none");
+    });
+
+    it("isVisible – hides row when isVisible is false", () => {
+      const component = mount(UTableRow, {
+        props: getDefaultProps({ isVisible: false }),
+      });
+
+      const row = component.find("tr");
+
+      expect(row.attributes("style")).toContain("display: none");
     });
   });
 });

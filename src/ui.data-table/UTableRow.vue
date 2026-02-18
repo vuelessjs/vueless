@@ -473,6 +473,7 @@ function renderMainRow(): VNode {
       ...attrs,
       ...getRowAttrs(),
       class: cx([getRowAttrs().class, getRowClasses(props.row)]),
+      style: { display: props.isVisible ? "" : "none" },
     },
     [renderCheckboxCell(), ...cells].filter(Boolean),
   );
@@ -485,7 +486,14 @@ function renderNestedRow(nestedRowSlotContent: unknown): VNode {
     nestedRowSlotContent,
   );
 
-  return h("tr", { class: props.row.class }, [tdNode]);
+  return h(
+    "tr",
+    {
+      class: props.row.class,
+      style: { display: props.isVisible ? "" : "none" },
+    },
+    [tdNode],
+  );
 }
 
 function renderRows(): VNode[] {

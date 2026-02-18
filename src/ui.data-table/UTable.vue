@@ -224,10 +224,24 @@ const virtualScroll = useVirtualScroll({
 });
 
 const renderedRows = computed(() => {
-  return props.virtualScroll
-    ? visibleFlatRows.value.slice(virtualScroll.startIndex.value, virtualScroll.endIndex.value)
-    : visibleFlatRows.value;
+  if (props.virtualScroll) {
+    // For virtual scroll, we still need to slice based on visible rows
+    // but we need to map back to the actual rows from flatTableRows
+    const visibleSlice = visibleFlatRows.value.slice(
+      virtualScroll.startIndex.value,
+      virtualScroll.endIndex.value,
+    );
+    const visibleIds = new Set(visibleSlice.map((row) => row.id));
+
+    return flatTableRows.value.filter((row) => visibleIds.has(row.id));
+  }
+
+  return flatTableRows.value;
 });
+
+function isRowVisible(row: FlatRow): boolean {
+  return !row.parentRowId || expandedRowsSet.value.has(row.parentRowId);
+}
 
 const searchMatches = computed<SearchMatch[]>(() => {
   const query = props.search?.toLowerCase();
@@ -723,7 +737,7 @@ function onBodyClick(event: MouseEvent) {
 
   if (!rowId) return;
 
-  const rowData = visibleFlatRows.value.find((r) => String(r.id) === rowId);
+  const rowData = flatTableRows.value.find((r) => String(r.id) === rowId);
 
   if (!rowData) return;
 
@@ -778,7 +792,7 @@ function onBodyDoubleClick(event: MouseEvent) {
 
   if (!rowId) return;
 
-  const rowData = visibleFlatRows.value.find((r) => String(r.id) === rowId);
+  const rowData = flatTableRows.value.find((r) => String(r.id) === rowId);
 
   if (!rowData) return;
 
@@ -1078,6 +1092,7 @@ function renderTableRow(row: FlatRow, rowIndex: number): VNode {
       "data-row-id": row.id,
       isExpanded: expandedRowsSet.value.has(row.id),
       isChecked: isRowSelected(row),
+      isVisible: isRowVisible(row),
       columnPositions: columnPositions.value,
       search: props.search,
       searchMatchColumns: getRowSearchMatchColumns(row),

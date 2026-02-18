@@ -199,6 +199,7 @@ export interface UTableRowProps {
   config: Config;
   isChecked: boolean;
   isExpanded: boolean;
+  isVisible: boolean;
   columnPositions: Map<string, number>;
   search?: string;
   searchMatchColumns?: Set<string>;
