@@ -14,23 +14,24 @@ import {
 } from "vue";
 import { isEqual } from "lodash-es";
 
-import UEmpty from "../ui.container-empty/UEmpty.vue";
-import UCheckbox from "../ui.form-checkbox/UCheckbox.vue";
-import ULoaderProgress from "../ui.loader-progress/ULoaderProgress.vue";
-import UTableRow from "./UTableRow.vue";
-import UDivider from "../ui.container-divider/UDivider.vue";
-
 import { useUI } from "../composables/useUI";
 import { useVirtualScroll } from "../composables/useVirtualScroll";
+import { useComponentLocaleMessages } from "../composables/useComponentLocaleMassages";
 import { getDefaults, cx, getMergedConfig } from "../utils/ui";
 import { hasSlotContent } from "../utils/helper";
-import { useComponentLocaleMessages } from "../composables/useComponentLocaleMassages";
-
-import defaultConfig from "./config";
-import { normalizeColumns, mapRowColumns, getFlatRows, getRowChildrenIds } from "./utilTable";
 
 import { PX_IN_REM } from "../constants";
 import { COMPONENT_NAME } from "./constants";
+
+import defaultConfig from "./config";
+import { normalizeColumns, getFlatRows, getRowChildrenIds } from "./utilTable";
+import { StickySide } from "./types";
+
+import UEmpty from "../ui.container-empty/UEmpty.vue";
+import UCheckbox from "../ui.form-checkbox/UCheckbox.vue";
+import ULoaderProgress from "../ui.loader-progress/ULoaderProgress.vue";
+import UDivider from "../ui.container-divider/UDivider.vue";
+import UTableRow from "./UTableRow.vue";
 
 import type { ComputedRef, VNode } from "vue";
 import type { Config as UDividerConfig } from "../ui.container-divider/types";
@@ -47,7 +48,6 @@ import type {
   SearchMatch,
   UTableRowProps,
 } from "./types";
-import { StickySide } from "./types";
 
 defineOptions({ inheritAttrs: false });
 
@@ -136,6 +136,8 @@ const { localeMessages } = useComponentLocaleMessages<typeof defaultConfig.i18n>
 const localSelectedRows = shallowRef<Row[]>([]);
 const localExpandedRows = shallowRef<RowId[]>([]);
 
+const expandedRowsSet = computed(() => new Set(localExpandedRows.value));
+
 const sortedRows: ComputedRef<FlatRow[]> = computed(() => {
   const headerKeys = props.columns.map((column) =>
     typeof column === "object" ? column.key : column,
@@ -209,9 +211,9 @@ const tableRowWidthStyle = computed(() => ({ width: `${tableWidth.value / PX_IN_
 const flatTableRows = computed(() => getFlatRows(props.rows));
 
 const visibleFlatRows = computed(() => {
-  return flatTableRows.value.filter(
-    (row) => !row.parentRowId || localExpandedRows.value.includes(row.parentRowId),
-  );
+  const expanded = expandedRowsSet.value;
+
+  return flatTableRows.value.filter((row) => !row.parentRowId || expanded.has(row.parentRowId));
 });
 
 const virtualScroll = useVirtualScroll({
@@ -820,9 +822,8 @@ function clearSelectedItems() {
 
 function onToggleExpand(row: Row) {
   const expanded = localExpandedRows.value;
-  const targetIndex = expanded.indexOf(row.id);
 
-  if (~targetIndex) {
+  if (expandedRowsSet.value.has(row.id)) {
     const idsToRemove = new Set([row.id, ...getRowChildrenIds(row)]);
 
     localExpandedRows.value = expanded.filter((id) => !idsToRemove.has(id));
@@ -1047,7 +1048,7 @@ function renderDateDividerRow(row: FlatRow, rowIndex: number): VNode | null {
     config: getDateDividerConfig(row, isSelected),
   });
 
-  return h("tr", propsDateDivider, [
+  return h("tr", { ...propsDateDivider, key: `date-divider-${row.id}` }, [
     h(
       "td",
       {
@@ -1059,81 +1060,13 @@ function renderDateDividerRow(row: FlatRow, rowIndex: number): VNode | null {
   ]);
 }
 
-function renderTableRowSlots(row: FlatRow, rowIndex: number) {
-  // eslint-disable-next-line @typescript-eslint/no-unsafe-function-type
-  const cellSlots: Record<string, Function> = {};
-
-  // Create cell slots
-  Object.entries(mapRowColumns(row, normalizedColumns.value)).forEach(([key], cellIndex) => {
-    cellSlots[`cell-${key}`] = ({
-      value: cellValue,
-      row: cellRow,
-    }: {
-      value: Cell;
-      row: FlatRow;
-    }) => {
-      const hasCellSlot = hasSlotContent(slots[`cell-${key}`], {
-        value: cellValue,
-        row: cellRow,
-        index: rowIndex,
-        cellIndex,
-      });
-
-      if (hasCellSlot) {
-        return slots[`cell-${key}`]?.({
-          value: cellValue,
-          row: cellRow,
-          index: rowIndex,
-          cellIndex,
-        });
-      }
-
-      return null;
-    };
-  });
-
-  // Add expand slot
-  cellSlots.expand = ({ row: expandedRow, expanded }: { row: FlatRow; expanded: boolean }) => {
-    const hasExpandSlot = hasSlotContent(slots.expand, {
-      index: rowIndex,
-      row: expandedRow,
-      expanded,
-    });
-
-    if (hasExpandSlot) {
-      return slots.expand?.({ index: rowIndex, row: expandedRow, expanded });
-    }
-
-    return null;
-  };
-
-  // Add nested-row slot
-  cellSlots["nested-row"] = () => {
-    const hasNestedRowSlot = hasSlotContent(slots["nested-row"], {
-      index: rowIndex,
-      row,
-      nestedLevel: Number(row.nestedLevel || 0),
-    });
-
-    if (hasNestedRowSlot && row) {
-      return slots["nested-row"]?.({
-        index: rowIndex,
-        row,
-        nestedLevel: Number(row.nestedLevel || 0),
-      });
-    }
-
-    return null;
-  };
-
-  return cellSlots;
-}
-
 function renderTableRow(row: FlatRow, rowIndex: number): VNode {
   return h(
     UTableRow,
     {
+      key: row.id,
       selectable: props.selectable,
+      rowIndex,
       row,
       columns: normalizedColumns.value,
       config: config.value,
@@ -1143,7 +1076,7 @@ function renderTableRow(row: FlatRow, rowIndex: number): VNode {
       emptyCellLabel: props.emptyCellLabel,
       "data-test": getDataTest("row"),
       "data-row-id": row.id,
-      isExpanded: localExpandedRows.value.includes(row.id),
+      isExpanded: expandedRowsSet.value.has(row.id),
       isChecked: isRowSelected(row),
       columnPositions: columnPositions.value,
       search: props.search,
@@ -1151,7 +1084,7 @@ function renderTableRow(row: FlatRow, rowIndex: number): VNode {
       activeSearchMatchColumn: getRowActiveSearchMatchColumn(row),
       textEllipsis: props.textEllipsis,
     } as unknown as UTableRowProps,
-    renderTableRowSlots(row, rowIndex),
+    slots,
   );
 }
 

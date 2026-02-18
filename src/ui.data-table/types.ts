@@ -185,6 +185,11 @@ export interface UTableRowAttrs {
 export interface UTableRowProps {
   row: FlatRow;
   columns: ColumnObject[];
+  /**
+   * Row index in the parent table (used for slot params).
+   * Optional to keep UTableRow mountable standalone in tests/internal usage.
+   */
+  rowIndex?: number;
   emptyCellLabel?: string;
   selectable: boolean;
   nestedLevel: number;

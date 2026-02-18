@@ -1,21 +1,32 @@
 <script setup lang="ts">
-import { computed, onMounted, useTemplateRef, useSlots, useAttrs, h } from "vue";
-import { hasSlotContent, isEmptyValue } from "../utils/helper";
-import { cx } from "../utils/ui";
-
-import { PX_IN_REM } from "../constants";
-import { mapRowColumns } from "./utilTable";
+import {
+  Comment,
+  Fragment,
+  Text,
+  computed,
+  h,
+  onMounted,
+  useAttrs,
+  useSlots,
+  useTemplateRef,
+} from "vue";
 
 import { useUI } from "../composables/useUI";
 import { useMutationObserver } from "../composables/useMutationObserver";
 
-import UIcon from "../ui.image-icon/UIcon.vue";
-import UCheckbox from "../ui.form-checkbox/UCheckbox.vue";
+import { isEmptyValue } from "../utils/helper";
+import { cx } from "../utils/ui";
+
+import { PX_IN_REM } from "../constants";
 
 import defaultConfig from "./config";
-
+import { mapRowColumns } from "./utilTable";
 import { StickySide } from "./types";
-import type { VNode } from "vue";
+
+import UCheckbox from "../ui.form-checkbox/UCheckbox.vue";
+import UIcon from "../ui.image-icon/UIcon.vue";
+
+import type { Slot, VNode } from "vue";
 import type { Cell, CellObject, Row, UTableRowProps, Config, ColumnObject } from "./types";
 
 const NESTED_ROW_SHIFT_REM = 1.5;
@@ -29,7 +40,6 @@ const slots = useSlots();
 const attrs = useAttrs();
 
 const cellRef = useTemplateRef<HTMLDivElement[]>("cell");
-const toggleWrapperRef = useTemplateRef<HTMLDivElement[]>("toggle-wrapper");
 
 if (props.textEllipsis) {
   useMutationObserver(cellRef, setCellTitle, {
@@ -65,17 +75,6 @@ function getToggleIconName() {
   return props.isExpanded
     ? props.config?.defaults?.collapseIcon
     : props.config?.defaults?.expandIcon;
-}
-
-function getIconWidth() {
-  const icon = document.querySelector(`[data-row-toggle-icon='${props.row.id}']`);
-  const currentWrapperWidth = toggleWrapperRef.value?.at(0)?.getBoundingClientRect()?.width || 0;
-
-  if (icon) {
-    return `${icon.getBoundingClientRect().width / PX_IN_REM}rem`;
-  }
-
-  return `${currentWrapperWidth / PX_IN_REM || 1}rem`;
 }
 
 function getCellClasses(row: Row, key: string) {
@@ -234,6 +233,54 @@ function isNestedFirstCell(index: number): boolean {
   return (Boolean(props.row.row) || Boolean(props.nestedLevel)) && index === 0;
 }
 
+function getRowIndex(): number {
+  return props.rowIndex ?? 0;
+}
+
+function isSlotContentEmpty(content: unknown): boolean {
+  const toArray = (arg: unknown) => {
+    return Array.isArray(arg) ? arg : [arg];
+  };
+
+  if (content === null || content === undefined) return true;
+
+  if (typeof content === "boolean" || typeof content === "number") {
+    return false;
+  }
+
+  if (typeof content === "string") {
+    return content.length === 0;
+  }
+
+  return toArray(content).every((node) => {
+    if (node === null || node === undefined) return true;
+
+    if (typeof node === "boolean" || typeof node === "number") {
+      return false;
+    }
+
+    if (typeof node === "string") {
+      return node.length === 0;
+    }
+
+    const vnode = node as VNode;
+
+    return (
+      vnode.type === Comment ||
+      (vnode.type === Text && !vnode.children?.length) ||
+      (vnode.type === Fragment && !vnode.children?.length)
+    );
+  });
+}
+
+function resolveSlotContent(slot: Slot | undefined, slotParams: Record<string, unknown>) {
+  if (!slot) return null;
+
+  const content = slot(slotParams);
+
+  return isSlotContentEmpty(content) ? null : content;
+}
+
 function shouldRenderCellWrapper(row: Row, key: string): boolean {
   return Boolean(
     props.textEllipsis ||
@@ -242,13 +289,19 @@ function shouldRenderCellWrapper(row: Row, key: string): boolean {
   );
 }
 
-function renderCellContent(value: Cell, key: string, index: number): VNode | VNode[] | string {
+function renderCellContent(value: Cell, key: string, cellIndex: number): VNode | VNode[] | string {
   const keyStr = String(key);
-  const hasCellSlot = hasSlotContent(slots[`cell-${key}`], { value, row: props.row, index });
+
+  const slotContent = resolveSlotContent(slots[`cell-${key}`], {
+    value,
+    row: props.row,
+    index: getRowIndex(),
+    cellIndex,
+  });
 
   // Check if slot exists
-  if (hasCellSlot) {
-    return slots[`cell-${key}`]?.({ value, row: props.row, index }) || "";
+  if (slotContent) {
+    return slotContent as VNode | VNode[] | string;
   }
 
   // Render cell wrapper with highlighted HTML
@@ -268,9 +321,11 @@ function renderCellContent(value: Cell, key: string, index: number): VNode | VNo
   return formatCellValue(value);
 }
 
-function renderNestedFirstCell(value: Cell, key: string, index: number): VNode {
+function renderNestedFirstCell(value: Cell, key: string, cellIndex: number): VNode {
   const keyStr = String(key);
-  const hasExpandSlot = hasSlotContent(slots?.expand, {
+
+  const expandSlotContent = resolveSlotContent(slots.expand, {
+    index: getRowIndex(),
     row: props.row,
     expanded: props.isExpanded,
   });
@@ -286,9 +341,7 @@ function renderNestedFirstCell(value: Cell, key: string, index: number): VNode {
   const toggleWrapperNode = h(
     "div",
     {
-      ref: toggleWrapperRef,
       ...props.attrs.bodyCellNestedIconWrapperAttrs.value,
-      style: { width: getIconWidth() },
     },
     [toggleIconNode],
   );
@@ -300,12 +353,15 @@ function renderNestedFirstCell(value: Cell, key: string, index: number): VNode {
       "data-expand-icon": props.row.id,
       onDblclick: (e: Event) => e.stopPropagation(),
     },
-    hasExpandSlot
-      ? slots?.expand?.({ row: props.row, expanded: props.isExpanded })
-      : [toggleWrapperNode],
+    expandSlotContent || [toggleWrapperNode],
   );
 
-  const hasCellSlot = hasSlotContent(slots[`cell-${key}`], { value, row: props.row, index });
+  const cellSlotContent = resolveSlotContent(slots[`cell-${key}`], {
+    value,
+    row: props.row,
+    index: getRowIndex(),
+    cellIndex,
+  });
 
   return h(
     "div",
@@ -317,10 +373,8 @@ function renderNestedFirstCell(value: Cell, key: string, index: number): VNode {
       props.row.row ? toggleIconWrapperNode : null,
       // Cell content
       ...(() => {
-        if (hasCellSlot) {
-          const slotContent = slots[`cell-${key}`]?.({ value, row: props.row, index });
-
-          return Array.isArray(slotContent) ? slotContent : [slotContent];
+        if (cellSlotContent) {
+          return Array.isArray(cellSlotContent) ? cellSlotContent : [cellSlotContent];
         }
 
         if (shouldRenderCellWrapper(props.row, keyStr)) {
@@ -351,6 +405,8 @@ function renderTableCell(value: Cell, key: string, index: number): VNode {
     ? renderNestedFirstCell(value, key, index)
     : renderCellContent(value, key, index);
 
+  const cellChildren = Array.isArray(nestedCellNode) ? nestedCellNode : [nestedCellNode];
+
   return h(
     "td",
     {
@@ -367,7 +423,7 @@ function renderTableCell(value: Cell, key: string, index: number): VNode {
       "data-cell-key": key,
       "data-test": getDataTest(`${key}-cell`),
     },
-    [nestedCellNode],
+    cellChildren,
   );
 }
 
@@ -404,16 +460,7 @@ function renderCheckboxCell(): VNode | null {
   );
 }
 
-function renderMainRow(): VNode | null {
-  const hasNestedRowSlot = hasSlotContent(slots["nested-row"], {
-    row: props.row,
-    nestedLevel: props.nestedLevel,
-  });
-
-  if (hasNestedRowSlot && props.row.parentRowId) {
-    return null;
-  }
-
+function renderMainRow(): VNode {
   const cells = Object.entries(mapRowColumns(props.row, props.columns)).map(
     ([key, value], index) => {
       return renderTableCell(value, key, index);
@@ -431,21 +478,7 @@ function renderMainRow(): VNode | null {
   );
 }
 
-function renderNestedRow(): VNode | null {
-  const hasNestedRowSlot = hasSlotContent(slots["nested-row"], {
-    row: props.row,
-    nestedLevel: props.nestedLevel,
-  });
-
-  if (!hasNestedRowSlot || !props.row.parentRowId) {
-    return null;
-  }
-
-  const nestedRowSlotContent = slots["nested-row"]?.({
-    row: props.row,
-    nestedLevel: props.nestedLevel,
-  });
-
+function renderNestedRow(nestedRowSlotContent: unknown): VNode {
   const tdNode = h(
     "td",
     { colspan: props.columns.length + Number(props.selectable) },
@@ -455,9 +488,25 @@ function renderNestedRow(): VNode | null {
   return h("tr", { class: props.row.class }, [tdNode]);
 }
 
+function renderRows(): VNode[] {
+  if (props.row.parentRowId) {
+    const nestedRowSlotContent = resolveSlotContent(slots["nested-row"], {
+      index: getRowIndex(),
+      row: props.row,
+      nestedLevel: props.nestedLevel,
+    });
+
+    if (nestedRowSlotContent) {
+      return [renderNestedRow(nestedRowSlotContent)];
+    }
+  }
+
+  return [renderMainRow()];
+}
+
 const { getDataTest } = useUI<Config>(defaultConfig);
 </script>
 
 <template>
-  <component :is="() => [renderMainRow(), renderNestedRow()].filter(Boolean)" />
+  <component :is="renderRows" />
 </template>
