@@ -479,7 +479,7 @@ function renderMainRow(): VNode {
   );
 }
 
-function renderNestedRow(nestedRowSlotContent: unknown): VNode {
+function renderNestedRow(nestedRowSlotContent: VNode[]): VNode {
   const tdNode = h(
     "td",
     { colspan: props.columns.length + Number(props.selectable) },
