@@ -1,3 +1,5 @@
+import { ref } from "vue";
+
 import type { Meta, StoryFn } from "@storybook/vue3-vite";
 
 import {
@@ -18,6 +20,8 @@ import UBadge from "../../ui.text-badge/UBadge.vue";
 import URow from "../../ui.container-row/URow.vue";
 import UIcon from "../../ui.image-icon/UIcon.vue";
 import ULoader from "../../ui.loader/ULoader.vue";
+import UInputSearch from "../../ui.form-input-search/UInputSearch.vue";
+import UText from "../../ui.text-block/UText.vue";
 
 import tooltip from "../../v.tooltip/vTooltip";
 import type { Row, Props, ColumnObject } from "../types";
@@ -970,4 +974,163 @@ FooterSlot.args = {
       </td>
     </template>
   `,
+};
+
+function generateNestedRows(count: number): Row[] {
+  return Array.from({ length: count }, (_, i) => {
+    const hasChildren = i % 10 === 0;
+    const row: Row = {
+      id: `row-${i}`,
+      orderId: `ORD-${String(i).padStart(5, "0")}`,
+      customerName: ["Alice Johnson", "Michael Smith", "Emma Brown", "James Wilson"][i % 4],
+      status: ["Pending", "Shipped", "Delivered", "Cancelled"][i % 4],
+      totalPrice: `$${(Math.random() * 500).toFixed(2)}`,
+    };
+
+    if (hasChildren) {
+      row.row = Array.from({ length: 3 }, (_, j) => ({
+        id: `row-${i}-child-${j}`,
+        orderId: `SUB-${String(i).padStart(5, "0")}-${j + 1}`,
+        customerName: "",
+        status: ["Processing", "Packed", "Ready"][j % 3],
+        totalPrice: `$${(Math.random() * 100).toFixed(2)}`,
+      }));
+    }
+
+    return row;
+  });
+}
+
+export const VirtualScroll: StoryFn<UTableArgs> = (args: UTableArgs) => ({
+  components: { UTable, UBadge },
+  setup() {
+    const rows = generateNestedRows(100000);
+
+    return { args, rows };
+  },
+  template: `
+    <UTable
+      :columns="[
+        { key: 'orderId', label: 'Order ID', thClass: 'w-1/5' },
+        { key: 'customerName', label: 'Customer Name' },
+        { key: 'status', label: 'Status' },
+        { key: 'totalPrice', label: 'Total Price' },
+      ]"
+      :rows="rows"
+      compact
+      virtual-scroll
+      :row-height="46"
+      :buffer-size="10"
+    >
+      <template #cell-status="{ value }">
+        <UBadge
+          :label="value"
+          variant="soft"
+          :color="
+            value === 'Delivered' ? 'success' :
+            value === 'Cancelled' ? 'error' :
+            value === 'Pending' ? 'notice' :
+            value === 'Shipped' || value === 'Processing' ? 'info' :
+            value === 'Packed' || value === 'Ready' ? 'primary' : ''
+          "
+        />
+      </template>
+    </UTable>
+  `,
+});
+VirtualScroll.parameters = {
+  docs: {
+    description: {
+      story:
+        "Virtual scrolling enables rendering of large datasets (100,000+ rows) with optimal performance. " +
+        "Only visible rows are rendered in the DOM, with collapsible nested rows fully supported. " +
+        "Use `virtualScroll` prop to enable, and configure `rowHeight`, `scrollHeight`, and `bufferSize` as needed.",
+    },
+  },
+};
+
+export const VirtualSearch: StoryFn<UTableArgs> = (args: UTableArgs) => ({
+  components: { UTable, UInputSearch, UButton, URow, UText },
+  setup() {
+    const rows = generateNestedRows(100000);
+    const search = ref("");
+    const searchMatch = ref(-1);
+    const totalMatches = ref(0);
+
+    function onPrev() {
+      if (totalMatches.value === 0) return;
+
+      searchMatch.value = searchMatch.value <= 0 ? totalMatches.value - 1 : searchMatch.value - 1;
+    }
+
+    function onNext() {
+      if (totalMatches.value === 0) return;
+
+      searchMatch.value = searchMatch.value >= totalMatches.value - 1 ? 0 : searchMatch.value + 1;
+    }
+
+    return { args, rows, search, searchMatch, totalMatches, onPrev, onNext };
+  },
+  template: `
+    <URow align="stretch" gap="xs" class="mb-4">
+      <UInputSearch
+        v-model="search"
+        placeholder="Search in table..."
+        size="md"
+        @clear="searchMatch = -1"
+      >
+        <template #right>
+          <UText :label="searchMatch + 1 + ' / ' + totalMatches" :wrap="false" class="ml-1" />
+        </template>
+      </UInputSearch>
+
+      <UButton
+        square
+        size="sm"
+        title="Prev"
+        variant="soft"
+        icon="keyboard_arrow_up"
+        :disabled="totalMatches === 0"
+        @click="onPrev"
+      />
+
+      <UButton
+        square
+        size="sm"
+        title="Next"
+        variant="soft"
+        icon="keyboard_arrow_down"
+        :disabled="totalMatches === 0"
+        @click="onNext"
+      />
+    </URow>
+
+    <UTable
+      :columns="[
+        { key: 'orderId', label: 'Order ID', thClass: 'w-1/5' },
+        { key: 'customerName', label: 'Customer Name' },
+        { key: 'status', label: 'Status' },
+        { key: 'totalPrice', label: 'Total Price' },
+      ]"
+      :rows="rows"
+      compact
+      virtual-scroll
+      :row-height="45"
+      :buffer-size="10"
+      :search="search"
+      :search-match="searchMatch"
+      @search="totalMatches = $event"
+    />
+  `,
+});
+VirtualSearch.parameters = {
+  docs: {
+    description: {
+      story:
+        "Search functionality with virtual scrolling. " +
+        "Use `search` prop to pass a search string and `searchMatch` prop to highlight a specific match. " +
+        "The `@search` event emits the total number of matches found. " +
+        "Use Prev/Next buttons to navigate between matches.",
+    },
+  },
 };

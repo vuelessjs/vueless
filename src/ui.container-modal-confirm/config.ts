@@ -1,5 +1,8 @@
 export default /*tw*/ {
-  confirmModal: "{UModal}",
+  confirmModal: {
+    base: "{UModal}",
+    header: "pb-4",
+  },
   footerLeftFallback: "flex gap-3",
   confirmButton: "{UButton} w-full",
   cancelButton: "{UButton} w-full",
@@ -13,6 +16,7 @@ export default /*tw*/ {
     confirmColor: "primary",
     inner: false,
     divided: false,
+    loading: false,
     closeOnEsc: true,
     closeOnCross: true,
     closeOnOverlay: true,

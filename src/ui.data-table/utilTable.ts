@@ -7,24 +7,30 @@ export function normalizeColumns(columns: Column[]): ColumnObject[] {
 }
 
 export function mapRowColumns(row: Row, columns: ColumnObject[]): RowData {
-  const filteredRow = Object.entries(row).filter((item) => {
-    return columns.some((column) => column.key === item[0] && column.isShown !== false);
-  });
+  const visibleKeys = new Set(columns.filter((col) => col.isShown !== false).map((col) => col.key));
 
-  return Object.fromEntries(filteredRow) as RowData;
+  const result: RowData = {};
+
+  for (const key of Object.keys(row)) {
+    if (visibleKeys.has(key)) {
+      result[key] = row[key];
+    }
+  }
+
+  return result;
 }
 
 export function getFlatRows(tableRows: Row[]) {
   const rows: FlatRow[] = [];
 
   function addRow(row: Row, nestedLevel: number, parentRowId?: string | number) {
-    if (parentRowId) {
-      row.parentRowId = parentRowId;
-    }
+    const flatRow: FlatRow = {
+      ...row,
+      nestedLevel,
+      ...(parentRowId !== undefined ? { parentRowId } : {}),
+    };
 
-    row.nestedLevel = nestedLevel;
-
-    rows.push(row as FlatRow);
+    rows.push(flatRow);
 
     if (row.row && !Array.isArray(row.row)) {
       addRow(row.row, nestedLevel + 1, row.id);

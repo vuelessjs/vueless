@@ -45,6 +45,11 @@ export interface Props {
   confirmDisabled?: boolean;
 
   /**
+   * Enable loader for confirm button.
+   */
+  loading?: boolean;
+
+  /**
    * Hide cancel button.
    */
   cancelHidden?: boolean;

@@ -154,6 +154,7 @@ const {
           :label="confirmLabel || localeMessages.confirm"
           :color="confirmColor"
           :disabled="confirmDisabled"
+          :loading="loading"
           v-bind="confirmButtonAttrs"
           :data-test="getDataTest('confirm')"
           @click="emitConfirmAction"

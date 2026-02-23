@@ -291,6 +291,280 @@ describe("UTable.vue", () => {
         expect(cell.attributes("class")).toContain(compactClasses);
       });
     });
+
+    it("Virtual Scroll – is disabled by default", () => {
+      const component = mountUTable(getDefaultProps());
+
+      expect(component.vm.$props.virtualScroll).toBe(false);
+    });
+
+    it("Virtual Scroll – enables virtual scrolling when virtualScroll is true", () => {
+      const component = mountUTable(
+        getDefaultProps({
+          virtualScroll: true,
+        }),
+      );
+
+      expect(component.vm.$props.virtualScroll).toBe(true);
+
+      // Check that the table wrapper has virtual scroll classes
+      const tableWrapper = component.find("table").element.parentElement;
+
+      expect(tableWrapper?.className).toContain("overflow-y-auto");
+    });
+
+    it("Virtual Scroll – renders spacer rows when virtualScroll is enabled", async () => {
+      const manyRows = Array.from({ length: 100 }, (_, i) => ({
+        id: String(i + 1),
+        name: `User ${i + 1}`,
+        email: `user${i + 1}@example.com`,
+        role: "User",
+      }));
+
+      const component = mountUTable(
+        getDefaultProps({
+          rows: manyRows,
+          virtualScroll: true,
+          rowHeight: 40,
+        }),
+      );
+
+      await nextTick();
+
+      const allRows = component.findAll("tbody tr");
+      const spacerRows = allRows.filter((row) => {
+        const td = row.find("td");
+        const hasTableRow = row.findComponent(UTableRow).exists();
+
+        return (
+          td.exists() &&
+          td.attributes("colspan") &&
+          td.attributes("style")?.includes("height") &&
+          !hasTableRow
+        );
+      });
+
+      // Should have at least one spacer row (top or bottom)
+      expect(spacerRows.length).toBeGreaterThanOrEqual(1);
+    });
+
+    it("Row Height – uses default rowHeight value", () => {
+      const component = mountUTable(getDefaultProps());
+
+      expect(component.vm.$props.rowHeight).toBe(40);
+    });
+
+    it("Row Height – accepts custom rowHeight value", () => {
+      const customRowHeight = 60;
+
+      const component = mountUTable(
+        getDefaultProps({
+          rowHeight: customRowHeight,
+        }),
+      );
+
+      expect(component.vm.$props.rowHeight).toBe(customRowHeight);
+    });
+
+    it("Buffer Size – uses default bufferSize value", () => {
+      const component = mountUTable(getDefaultProps());
+
+      expect(component.vm.$props.bufferSize).toBe(10);
+    });
+
+    it("Buffer Size – accepts custom bufferSize value", () => {
+      const customBufferSize = 20;
+
+      const component = mountUTable(
+        getDefaultProps({
+          bufferSize: customBufferSize,
+        }),
+      );
+
+      expect(component.vm.$props.bufferSize).toBe(customBufferSize);
+    });
+
+    it("Virtual Scroll – renders only visible rows plus buffer", async () => {
+      const manyRows = Array.from({ length: 100 }, (_, i) => ({
+        id: String(i + 1),
+        name: `User ${i + 1}`,
+        email: `user${i + 1}@example.com`,
+        role: "User",
+      }));
+
+      const component = mountUTable(
+        getDefaultProps({
+          rows: manyRows,
+          virtualScroll: true,
+          rowHeight: 40,
+          scrollHeight: "400px",
+          bufferSize: 5,
+        }),
+      );
+
+      await nextTick();
+
+      const tableRows = component.findAllComponents(UTableRow);
+
+      // Should render less than total rows (only visible + buffer)
+      expect(tableRows.length).toBeLessThan(manyRows.length);
+      expect(tableRows.length).toBeGreaterThan(0);
+    });
+
+    it("Virtual Scroll – renders all rows when virtualScroll is false", () => {
+      const manyRows = Array.from({ length: 50 }, (_, i) => ({
+        id: String(i + 1),
+        name: `User ${i + 1}`,
+        email: `user${i + 1}@example.com`,
+        role: "User",
+      }));
+
+      const component = mountUTable(
+        getDefaultProps({
+          rows: manyRows,
+          virtualScroll: false,
+        }),
+      );
+
+      const tableRows = component.findAllComponents(UTableRow);
+
+      expect(tableRows.length).toBe(manyRows.length);
+    });
+
+    it("Scroll Height – accepts scrollHeight prop", () => {
+      const scrollHeight = "500px";
+
+      const component = mountUTable(
+        getDefaultProps({
+          virtualScroll: true,
+          scrollHeight,
+        }),
+      );
+
+      expect(component.vm.$props.scrollHeight).toBe(scrollHeight);
+    });
+
+    it("Search – uses default empty search value", () => {
+      const component = mountUTable(getDefaultProps());
+
+      expect(component.vm.$props.search).toBe("");
+    });
+
+    it("Search – accepts search string", () => {
+      const searchQuery = "john";
+
+      const component = mountUTable(
+        getDefaultProps({
+          search: searchQuery,
+        }),
+      );
+
+      expect(component.vm.$props.search).toBe(searchQuery);
+    });
+
+    it("Search – emits search event with total matches count", async () => {
+      const component = mountUTable(getDefaultProps());
+
+      await component.setProps({ search: "doe" });
+      await nextTick();
+
+      expect(component.emitted("search")).toBeTruthy();
+      expect(component.emitted("search")![0][0]).toBe(1);
+    });
+
+    it("Search – emits search event with zero when no matches found", async () => {
+      const component = mountUTable(getDefaultProps());
+
+      // First set a search that has matches
+      await component.setProps({ search: "doe" });
+      await nextTick();
+
+      // Then set a search with no matches
+      await component.setProps({ search: "nonexistent" });
+      await nextTick();
+
+      const emittedEvents = component.emitted("search");
+
+      expect(emittedEvents).toBeTruthy();
+      expect(emittedEvents![emittedEvents!.length - 1][0]).toBe(0);
+    });
+
+    it("Search – finds multiple matches across different rows", async () => {
+      const component = mountUTable(getDefaultProps());
+
+      await component.setProps({ search: "example" });
+      await nextTick();
+
+      const emittedEvents = component.emitted("search");
+
+      expect(emittedEvents).toBeTruthy();
+      expect(emittedEvents![0][0]).toBe(3); // All 3 rows have "example.com" in email
+    });
+
+    it("Search – is case insensitive", async () => {
+      const component = mountUTable(getDefaultProps());
+
+      await component.setProps({ search: "DOE" });
+      await nextTick();
+
+      const emittedEvents = component.emitted("search");
+
+      expect(emittedEvents).toBeTruthy();
+      expect(emittedEvents![0][0]).toBe(1);
+
+      // Clear search first to trigger a new event
+      await component.setProps({ search: "" });
+      await nextTick();
+
+      await component.setProps({ search: "doe" });
+      await nextTick();
+
+      expect(emittedEvents![emittedEvents!.length - 1][0]).toBe(1);
+    });
+
+    it("Search – finds partial matches", async () => {
+      const component = mountUTable(getDefaultProps());
+
+      await component.setProps({ search: "Jo" });
+      await nextTick();
+
+      expect(component.emitted("search")![0][0]).toBeGreaterThan(0);
+    });
+
+    it("Search Match – uses default searchMatch value", () => {
+      const component = mountUTable(getDefaultProps());
+
+      expect(component.vm.$props.searchMatch).toBe(-1);
+    });
+
+    it("Search Match – accepts searchMatch index", () => {
+      const searchMatchIndex = 2;
+
+      const component = mountUTable(
+        getDefaultProps({
+          search: "example",
+          searchMatch: searchMatchIndex,
+        }),
+      );
+
+      expect(component.vm.$props.searchMatch).toBe(searchMatchIndex);
+    });
+
+    it("Search Match – passes search props to table rows", async () => {
+      const searchQuery = "john";
+
+      const component = mountUTable(
+        getDefaultProps({
+          search: searchQuery,
+        }),
+      );
+
+      await nextTick();
+
+      const tableRow = component.getComponent(UTableRow);
+
+      expect(tableRow.props("search")).toBe(searchQuery);
+    });
   });
 
   describe("Slots", () => {
@@ -469,7 +743,7 @@ describe("UTable.vue", () => {
       await firstRow.trigger("click");
 
       expect(component.emitted("clickRow")).toBeTruthy();
-      expect(component.emitted("clickRow")![0][0]).toEqual(defaultRows[0]);
+      expect(component.emitted("clickRow")![0][0]).toMatchObject(defaultRows[0]);
     });
 
     it("Double Click Row – emits doubleClickRow event when row is double-clicked", async () => {
@@ -480,7 +754,7 @@ describe("UTable.vue", () => {
       await firstRow.trigger("dblclick");
 
       expect(component.emitted("doubleClickRow")).toBeTruthy();
-      expect(component.emitted("doubleClickRow")![0][0]).toEqual(defaultRows[0]);
+      expect(component.emitted("doubleClickRow")![0][0]).toMatchObject(defaultRows[0]);
     });
 
     it("Click Cell – emits clickCell event when cell is clicked", async () => {
@@ -491,22 +765,25 @@ describe("UTable.vue", () => {
       await firstCell.trigger("click");
 
       expect(component.emitted("clickCell")).toBeTruthy();
-      expect(component.emitted("clickCell")![0]).toEqual([
-        defaultRows[0].name,
-        defaultRows[0],
-        "name",
-      ]);
+      const emittedData = component.emitted("clickCell")![0];
+
+      expect(emittedData[0]).toBe(defaultRows[0].name);
+      expect(emittedData[1]).toMatchObject(defaultRows[0]);
+      expect(emittedData[2]).toBe("name");
     });
 
     it("Toggle Row Checkbox – emits update:selectedRows when row checkbox is clicked", async () => {
       const component = mountUTable(getDefaultProps({ selectable: true }));
 
-      const rowCheckbox = component.find("tbody tr").find("input[type='checkbox']");
+      const checkboxCell = component.find("tbody tr td[data-checkbox-id]");
 
-      await rowCheckbox.trigger("change");
+      await checkboxCell.trigger("click");
 
       expect(component.emitted("update:selectedRows")).toBeTruthy();
-      expect(component.emitted("update:selectedRows")![0][0]).toEqual([defaultRows[0]]);
+      const emittedRows = component.emitted("update:selectedRows")![0][0] as Row[];
+
+      expect(emittedRows).toHaveLength(1);
+      expect(emittedRows[0]).toMatchObject(defaultRows[0]);
     });
 
     it("Toggle Expand – emits row-expand and update:expandedRows when expand icon is clicked", async () => {
@@ -525,7 +802,7 @@ describe("UTable.vue", () => {
       await expandIcon.trigger("click");
 
       expect(component.emitted("row-expand")).toBeTruthy();
-      expect(component.emitted("row-expand")![0][0]).toEqual(expandableRow);
+      expect(component.emitted("row-expand")![0][0]).toMatchObject(expandableRow);
       expect(component.emitted("update:expandedRows")).toBeTruthy();
       expect(component.emitted("update:expandedRows")![0][0]).toEqual(["1"]);
     });
@@ -551,7 +828,7 @@ describe("UTable.vue", () => {
       await collapseIcon.trigger("click");
 
       expect(component.emitted("row-collapse")).toBeTruthy();
-      expect(component.emitted("row-collapse")![0][0]).toEqual(expandableRow);
+      expect(component.emitted("row-collapse")![0][0]).toMatchObject(expandableRow);
       expect(component.emitted("update:expandedRows")).toBeTruthy();
       expect(component.emitted("update:expandedRows")![0][0]).toEqual([]);
     });
@@ -559,20 +836,33 @@ describe("UTable.vue", () => {
     it("Multiple Row Selection – emits update:selectedRows with all selected rows", async () => {
       const component = mountUTable(getDefaultProps({ selectable: true }));
 
-      const tableRows = component.findAll("tbody tr");
-
       // Select first row
-      await tableRows[0].find("input[type='checkbox']").trigger("change");
+      let tableRows = component.findAll("tbody tr");
+
+      await tableRows[0].find("td[data-checkbox-id]").trigger("click");
+      await nextTick();
+
+      // Update props with the first selected row
+      const firstEmit = component.emitted("update:selectedRows")![0][0] as Row[];
+
+      await component.setProps({ selectedRows: firstEmit });
+      await nextTick();
+
+      // Re-query the DOM after props update
+      tableRows = component.findAll("tbody tr");
+
       // Select second row
-      await tableRows[1].find("input[type='checkbox']").trigger("change");
+      await tableRows[1].find("td[data-checkbox-id]").trigger("click");
+      await nextTick();
 
       const emittedEvents = component.emitted("update:selectedRows");
 
       expect(emittedEvents).toBeTruthy();
-      expect(emittedEvents![emittedEvents!.length - 1][0]).toEqual([
-        defaultRows[0],
-        defaultRows[1],
-      ]);
+      const emittedRows = emittedEvents![emittedEvents!.length - 1][0] as Row[];
+
+      expect(emittedRows).toHaveLength(2);
+      expect(emittedRows[0]).toMatchObject(defaultRows[0]);
+      expect(emittedRows[1]).toMatchObject(defaultRows[1]);
     });
 
     it("Nested Row Expansion – emits update:expandedRows for nested rows", async () => {
@@ -625,6 +915,152 @@ describe("UTable.vue", () => {
       // Row click events should not be triggered when expand icon is clicked
       expect(component.emitted("clickRow")).toBeFalsy();
       expect(component.emitted("doubleClickRow")).toBeFalsy();
+    });
+
+    it("Search Event – emits when search prop changes", async () => {
+      const component = mountUTable(getDefaultProps());
+
+      await component.setProps({ search: "doe" });
+      await nextTick();
+
+      expect(component.emitted("search")).toBeTruthy();
+      expect(component.emitted("search")![0][0]).toBe(1);
+    });
+
+    it("Search Event – emits updated count when search changes", async () => {
+      const component = mountUTable(getDefaultProps());
+
+      await component.setProps({ search: "doe" });
+      await nextTick();
+
+      const initialCount = component.emitted("search")![0][0];
+
+      await component.setProps({ search: "example" });
+      await nextTick();
+
+      const updatedCount = component.emitted("search")![1][0];
+
+      expect(updatedCount).toBeGreaterThan(initialCount as number);
+    });
+
+    it("Search Event – emits zero when search is cleared", async () => {
+      const component = mountUTable(getDefaultProps());
+
+      await component.setProps({ search: "doe" });
+      await nextTick();
+
+      await component.setProps({ search: "" });
+      await nextTick();
+
+      const emittedEvents = component.emitted("search");
+
+      expect(emittedEvents![emittedEvents!.length - 1][0]).toBe(0);
+    });
+
+    it("Search Event – counts all occurrences in a single cell", async () => {
+      const rowsWithDuplicates: Row[] = [
+        {
+          id: "1",
+          name: "Test Test Test",
+          email: "test@example.com",
+          role: "User",
+        },
+      ];
+
+      const component = mountUTable(getDefaultProps({ rows: rowsWithDuplicates }));
+
+      await component.setProps({ search: "test" });
+      await nextTick();
+
+      expect(component.emitted("search")![0][0]).toBe(4);
+    });
+  });
+
+  describe("Virtual Scroll with Search", () => {
+    it("Virtual Scroll with Search – renders only visible rows with search", async () => {
+      const manyRows = Array.from({ length: 100 }, (_, i) => ({
+        id: String(i + 1),
+        name: `User ${i + 1}`,
+        email: `user${i + 1}@example.com`,
+        role: i % 2 === 0 ? "Admin" : "User",
+      }));
+
+      const component = mountUTable(
+        getDefaultProps({
+          rows: manyRows,
+          virtualScroll: true,
+          rowHeight: 40,
+          scrollHeight: "400px",
+        }),
+      );
+
+      await component.setProps({ search: "Admin" });
+      await nextTick();
+
+      const tableRows = component.findAllComponents(UTableRow);
+
+      expect(tableRows.length).toBeLessThan(manyRows.length);
+      expect(component.emitted("search")).toBeTruthy();
+    });
+
+    it("Virtual Scroll with Search – passes search match columns to rows", async () => {
+      const component = mountUTable(
+        getDefaultProps({
+          virtualScroll: true,
+          search: "john",
+        }),
+      );
+
+      await nextTick();
+
+      const tableRow = component.getComponent(UTableRow);
+
+      expect(tableRow.props("search")).toBe("john");
+      expect(tableRow.props("searchMatchColumns")).toBeDefined();
+    });
+
+    it("Virtual Scroll with Search – handles searchMatch prop", async () => {
+      const manyRows = Array.from({ length: 50 }, (_, i) => ({
+        id: String(i + 1),
+        name: `User ${i + 1}`,
+        email: `user${i + 1}@example.com`,
+        role: "User",
+      }));
+
+      const component = mountUTable(
+        getDefaultProps({
+          rows: manyRows,
+          virtualScroll: true,
+          search: "user",
+          searchMatch: 0,
+        }),
+      );
+
+      await nextTick();
+
+      expect(component.vm.$props.searchMatch).toBe(0);
+    });
+
+    it("Virtual Scroll with Search – emits search event with virtual scroll enabled", async () => {
+      const manyRows = Array.from({ length: 100 }, (_, i) => ({
+        id: String(i + 1),
+        name: `User ${i + 1}`,
+        email: `user${i + 1}@example.com`,
+        role: "User",
+      }));
+
+      const component = mountUTable(
+        getDefaultProps({
+          rows: manyRows,
+          virtualScroll: true,
+        }),
+      );
+
+      await component.setProps({ search: "user" });
+      await nextTick();
+
+      expect(component.emitted("search")).toBeTruthy();
+      expect(component.emitted("search")![0][0]).toBeGreaterThan(0);
     });
   });
 });

@@ -1,35 +1,39 @@
 <script setup lang="ts">
 import {
+  shallowRef,
   ref,
   computed,
   watch,
+  watchEffect,
   useSlots,
   nextTick,
   onMounted,
-  onUpdated,
   onBeforeUnmount,
   useTemplateRef,
+  h,
 } from "vue";
 import { isEqual } from "lodash-es";
 
-import UEmpty from "../ui.container-empty/UEmpty.vue";
-import UCheckbox from "../ui.form-checkbox/UCheckbox.vue";
-import ULoaderProgress from "../ui.loader-progress/ULoaderProgress.vue";
-import UTableRow from "./UTableRow.vue";
-import UDivider from "../ui.container-divider/UDivider.vue";
-
 import { useUI } from "../composables/useUI";
+import { useVirtualScroll } from "../composables/useVirtualScroll";
+import { useComponentLocaleMessages } from "../composables/useComponentLocaleMassages";
 import { getDefaults, cx, getMergedConfig } from "../utils/ui";
 import { hasSlotContent } from "../utils/helper";
-import { useComponentLocaleMessages } from "../composables/useComponentLocaleMassages";
-
-import defaultConfig from "./config";
-import { normalizeColumns, mapRowColumns, getFlatRows, getRowChildrenIds } from "./utilTable";
 
 import { PX_IN_REM } from "../constants";
 import { COMPONENT_NAME } from "./constants";
 
-import type { ComputedRef } from "vue";
+import defaultConfig from "./config";
+import { normalizeColumns, getFlatRows, getRowChildrenIds } from "./utilTable";
+import { StickySide } from "./types";
+
+import UEmpty from "../ui.container-empty/UEmpty.vue";
+import UCheckbox from "../ui.form-checkbox/UCheckbox.vue";
+import ULoaderProgress from "../ui.loader-progress/ULoaderProgress.vue";
+import UDivider from "../ui.container-divider/UDivider.vue";
+import UTableRow from "./UTableRow.vue";
+
+import type { ComputedRef, VNode } from "vue";
 import type { Config as UDividerConfig } from "../ui.container-divider/types";
 import type {
   Cell,
@@ -41,8 +45,9 @@ import type {
   DateDivider,
   FlatRow,
   ColumnObject,
+  SearchMatch,
+  UTableRowProps,
 } from "./types";
-import { StickySide } from "./types";
 
 defineOptions({ inheritAttrs: false });
 
@@ -75,13 +80,13 @@ const emit = defineEmits([
   "clickCell",
 
   /**
-   * Tirggers when row expanded.
+   * Triggers when row expanded.
    * @property {object} row
    */
   "row-expand",
 
   /**
-   * Tirggers when row collapsed.
+   * Triggers when row collapsed.
    * @property {object} row
    */
   "row-collapse",
@@ -97,6 +102,12 @@ const emit = defineEmits([
    * @property {array} rowId
    */
   "update:expandedRows",
+
+  /**
+   * Triggers when search matches are found.
+   * @property {number} totalMatches
+   */
+  "search",
 ]);
 
 const slots = useSlots();
@@ -122,35 +133,29 @@ const { localeMessages } = useComponentLocaleMessages<typeof defaultConfig.i18n>
   props?.config?.i18n,
 );
 
-const localSelectedRows = ref<Row[]>([]);
-const localExpandedRows = ref<RowId[]>([]);
+const localSelectedRows = shallowRef<Row[]>([]);
+const localExpandedRows = shallowRef<RowId[]>([]);
+
+const expandedRowsSet = computed(() => new Set(localExpandedRows.value));
 
 const sortedRows: ComputedRef<FlatRow[]> = computed(() => {
   const headerKeys = props.columns.map((column) =>
     typeof column === "object" ? column.key : column,
   );
 
+  const keyOrder = new Map(headerKeys.map((key, i) => [key, i]));
+
   return flatTableRows.value.map((row) => {
-    const rowEntries = Object.entries(row);
+    const entries = Object.entries(row);
 
-    const sortedEntries: typeof rowEntries = new Array(rowEntries.length);
+    entries.sort((a, b) => {
+      const aIdx = keyOrder.get(a[0]) ?? Infinity;
+      const bIdx = keyOrder.get(b[0]) ?? Infinity;
 
-    rowEntries.forEach((entry) => {
-      const [key] = entry;
-      const headerIndex = headerKeys.indexOf(key);
-
-      if (!~headerIndex) {
-        sortedEntries.push(entry);
-
-        return;
-      }
-
-      sortedEntries[headerIndex] = entry;
+      return aIdx - bIdx;
     });
 
-    const sortedRow = Object.fromEntries(sortedEntries.filter((value) => value));
-
-    return sortedRow as FlatRow;
+    return Object.fromEntries(entries) as FlatRow;
   });
 });
 
@@ -168,7 +173,7 @@ const visibleColumns = computed(() => {
   return normalizedColumns.value.filter((column) => column.isShown !== false);
 });
 
-const columnPositions = ref<Map<string, number>>(new Map());
+const columnPositions = shallowRef<Map<string, number>>(new Map());
 
 const colsCount = computed(() => {
   return normalizedColumns.value.length + 1;
@@ -183,11 +188,10 @@ const isShownActionsHeader = computed(() => {
   return hasSelectedRows && hasHeaderActions;
 });
 
-const isHeaderSticky = computed(() => {
-  const positionForFixHeader =
-    Number(headerRowRef.value?.getBoundingClientRect()?.top) + Number(window?.scrollY) || 0;
+const headerOffsetTop = ref(0);
 
-  return positionForFixHeader <= pagePositionY.value && props.stickyHeader;
+const isHeaderSticky = computed(() => {
+  return headerOffsetTop.value <= pagePositionY.value && props.stickyHeader;
 });
 
 const isShownFooterPosition = computed(() => {
@@ -206,53 +210,304 @@ const tableRowWidthStyle = computed(() => ({ width: `${tableWidth.value / PX_IN_
 
 const flatTableRows = computed(() => getFlatRows(props.rows));
 
+const visibleFlatRows = computed(() => {
+  const expanded = expandedRowsSet.value;
+
+  return flatTableRows.value.filter((row) => !row.parentRowId || expanded.has(row.parentRowId));
+});
+
+const virtualScroll = useVirtualScroll({
+  containerRef: tableWrapperRef,
+  totalCount: computed(() => (props.virtualScroll ? visibleFlatRows.value.length : 0)),
+  rowHeight: props.rowHeight,
+  bufferSize: props.bufferSize,
+});
+
+const renderedRows = computed(() => {
+  if (props.virtualScroll) {
+    // For virtual scroll, we still need to slice based on visible rows
+    // but we need to map back to the actual rows from flatTableRows
+    const visibleSlice = visibleFlatRows.value.slice(
+      virtualScroll.startIndex.value,
+      virtualScroll.endIndex.value,
+    );
+    const visibleIds = new Set(visibleSlice.map((row) => row.id));
+
+    return flatTableRows.value.filter((row) => visibleIds.has(row.id));
+  }
+
+  return flatTableRows.value;
+});
+
+function isRowVisible(row: FlatRow): boolean {
+  return !row.parentRowId || expandedRowsSet.value.has(row.parentRowId);
+}
+
+const searchMatches = computed<SearchMatch[]>(() => {
+  const query = props.search?.toLowerCase();
+
+  if (!query) return [];
+
+  const matches: SearchMatch[] = [];
+  const columns = visibleColumns.value;
+  const rows = visibleFlatRows.value;
+
+  for (let i = 0; i < rows.length; i++) {
+    const row = rows[i];
+
+    for (let j = 0; j < columns.length; j++) {
+      const key = columns[j].key;
+      const cellValue = row[key];
+      const text = getCellTextValue(cellValue);
+
+      if (!text) continue;
+
+      const lowerText = text.toLowerCase();
+      const indices: number[] = [];
+      let pos = 0;
+
+      while ((pos = lowerText.indexOf(query, pos)) !== -1) {
+        indices.push(pos);
+        pos += query.length;
+      }
+
+      if (indices.length) {
+        matches.push({ rowId: row.id, columnKey: key, indices });
+      }
+    }
+  }
+
+  return matches;
+});
+
+const searchMatchColumnSets = computed(() => {
+  const map = new Map<RowId, Set<string>>();
+
+  for (const match of searchMatches.value) {
+    let set = map.get(match.rowId);
+
+    if (!set) {
+      set = new Set();
+      map.set(match.rowId, set);
+    }
+
+    set.add(match.columnKey);
+  }
+
+  return map;
+});
+
+const activeMatch = computed(() => {
+  const idx = props.searchMatch;
+
+  if (idx === undefined || idx < 0 || !searchMatches.value.length) return null;
+
+  let globalIndex = 0;
+
+  for (const match of searchMatches.value) {
+    if (globalIndex + match.indices.length > idx) {
+      return {
+        rowId: match.rowId,
+        columnKey: match.columnKey,
+        charIndex: match.indices[idx - globalIndex],
+      };
+    }
+
+    globalIndex += match.indices.length;
+  }
+
+  return null;
+});
+
+const totalSearchMatches = computed(() => {
+  let count = 0;
+
+  for (const match of searchMatches.value) {
+    count += match.indices.length;
+  }
+
+  return count;
+});
+
+const selectedRowIds = computed(() => {
+  return new Set(localSelectedRows.value.map((row) => row.id));
+});
+
 const isSelectedAllRows = computed(() => {
   return localSelectedRows.value.length === flatTableRows.value.length;
 });
 
-const tableRowAttrs = computed(() => ({
-  bodyCellContentAttrs,
-  bodyCellCheckboxAttrs,
-  bodyCheckboxAttrs,
-  bodyCellNestedAttrs,
-  bodyCellNestedExpandIconAttrs,
-  bodyCellNestedCollapseIconAttrs,
-  bodyCellBaseAttrs,
-  bodyCellNestedIconWrapperAttrs,
-  bodyRowCheckedAttrs,
-  bodyRowAttrs,
-  bodyCellStickyLeftAttrs,
-  bodyCellStickyRightAttrs,
-}));
+// Conditional watchers - only create listeners when their associated features are enabled
+// Using watchEffect to dynamically create/destroy watchers based on feature state
 
-watch(localSelectedRows, onChangeLocalSelectedRows, { deep: true });
-watch(() => props.selectedRows, onChangeSelectedRows, { deep: true, immediate: true });
-watch(() => props.expandedRows, onChangeExpandedRows, { deep: true, immediate: true });
-watch(selectAll, onChangeSelectAll);
-watch(isHeaderSticky, setHeaderCellWidth);
-watch(isFooterSticky, (newValue) =>
-  newValue ? nextTick(setFooterCellWidth) : setFooterCellWidth(null),
-);
+// Search-related watchers
+// Note: totalSearchMatches watcher always runs to emit events (even when search is cleared)
+watch(totalSearchMatches, (count) => emit("search", count), { flush: "post" });
+
+// activeMatch watcher - only created when search is active
+let stopActiveMatchWatch: (() => void) | null = null;
+
+watchEffect(() => {
+  if (props.search) {
+    // Create watcher if it doesn't exist
+    if (!stopActiveMatchWatch) {
+      stopActiveMatchWatch = watch(
+        activeMatch,
+        (match) => {
+          if (!match) return;
+
+          if (props.virtualScroll) {
+            const rowIndex = visibleFlatRows.value.findIndex((row) => row.id === match.rowId);
+
+            if (rowIndex === -1) return;
+
+            virtualScroll.scrollToIndex(rowIndex);
+          } else {
+            scrollToRow(match.rowId);
+          }
+        },
+        { flush: "post" },
+      );
+    }
+  } else {
+    // Cleanup watcher if it exists
+    if (stopActiveMatchWatch) {
+      stopActiveMatchWatch();
+      stopActiveMatchWatch = null;
+    }
+  }
+});
+
+// Selection-related watchers (only created when selectable is enabled)
+let stopLocalSelectedRowsWatch: (() => void) | null = null;
+let stopSelectedRowsWatch: (() => void) | null = null;
+let stopSelectAllWatch: (() => void) | null = null;
+
+watchEffect(() => {
+  if (props.selectable) {
+    // Create watchers if they don't exist
+    if (!stopLocalSelectedRowsWatch) {
+      stopLocalSelectedRowsWatch = watch(localSelectedRows, onChangeLocalSelectedRows);
+    }
+
+    if (!stopSelectedRowsWatch) {
+      stopSelectedRowsWatch = watch(() => props.selectedRows, onChangeSelectedRows, {
+        immediate: true,
+      });
+    }
+
+    if (!stopSelectAllWatch) {
+      stopSelectAllWatch = watch(selectAll, onChangeSelectAll);
+    }
+  } else {
+    // Cleanup watchers if they exist
+    if (stopLocalSelectedRowsWatch) {
+      stopLocalSelectedRowsWatch();
+      stopLocalSelectedRowsWatch = null;
+    }
+
+    if (stopSelectedRowsWatch) {
+      stopSelectedRowsWatch();
+      stopSelectedRowsWatch = null;
+    }
+
+    if (stopSelectAllWatch) {
+      stopSelectAllWatch();
+      stopSelectAllWatch = null;
+    }
+  }
+});
+
+// Expansion watcher (always register as it's a core feature)
+watch(() => props.expandedRows, onChangeExpandedRows, { immediate: true });
+
+// Sticky header watcher (only created when stickyHeader is enabled)
+let stopHeaderStickyWatch: (() => void) | null = null;
+
+watchEffect(() => {
+  if (props.stickyHeader) {
+    // Create watcher if it doesn't exist
+    if (!stopHeaderStickyWatch) {
+      stopHeaderStickyWatch = watch(isHeaderSticky, setHeaderCellWidth);
+    }
+  } else {
+    // Cleanup watcher if it exists
+    if (stopHeaderStickyWatch) {
+      stopHeaderStickyWatch();
+      stopHeaderStickyWatch = null;
+    }
+  }
+});
+
+// Sticky footer watcher (only created when stickyFooter is enabled)
+let stopFooterStickyWatch: (() => void) | null = null;
+
+watchEffect(() => {
+  if (props.stickyFooter) {
+    // Create watcher if it doesn't exist
+    if (!stopFooterStickyWatch) {
+      stopFooterStickyWatch = watch(isFooterSticky, (newValue) =>
+        newValue ? nextTick(setFooterCellWidth) : setFooterCellWidth(null),
+      );
+    }
+  } else {
+    // Cleanup watcher if it exists
+    if (stopFooterStickyWatch) {
+      stopFooterStickyWatch();
+      stopFooterStickyWatch = null;
+    }
+  }
+});
+
+let resizeObserver: ResizeObserver | null = null;
+let scrollRafId: number | null = null;
+let resizeDebounceId: ReturnType<typeof setTimeout> | null = null;
+
+function scheduleWindowResize(tableRectWidth: number, tableRectHeight: number) {
+  if (resizeDebounceId) clearTimeout(resizeDebounceId);
+
+  resizeDebounceId = setTimeout(() => {
+    resizeDebounceId = null;
+    onWindowResize();
+
+    tableHeight.value = tableRectHeight;
+    tableWidth.value = tableRectWidth;
+  }, 300);
+}
 
 onMounted(async () => {
   document.addEventListener("keyup", onKeyupEsc);
   document.addEventListener("scroll", onScroll, { passive: true });
-  window.addEventListener("resize", onWindowResize);
 
   await nextTick();
+  updateHeaderOffsetTop();
   calculateStickyColumnPositions();
-});
 
-onUpdated(() => {
-  tableHeight.value = Number(tableWrapperRef.value?.offsetHeight);
-  tableWidth.value = Number(tableWrapperRef.value?.offsetWidth);
-  calculateStickyColumnPositions();
+  if (tableWrapperRef.value) {
+    resizeObserver = new ResizeObserver((entries) => {
+      const entry = entries[0];
+
+      if (!entry) return;
+
+      scheduleWindowResize(entry.contentRect.width, entry.contentRect.height);
+    });
+
+    resizeObserver.observe(tableWrapperRef.value);
+  }
 });
 
 onBeforeUnmount(() => {
   document.removeEventListener("keyup", onKeyupEsc);
   document.removeEventListener("scroll", onScroll);
-  window.removeEventListener("resize", onWindowResize);
+  resizeObserver?.disconnect();
+
+  if (scrollRafId !== null) {
+    cancelAnimationFrame(scrollRafId);
+  }
+
+  if (resizeDebounceId !== null) {
+    clearTimeout(resizeDebounceId);
+  }
 });
 
 function onChangeSelectedRows() {
@@ -268,11 +523,16 @@ function onChangeExpandedRows() {
 }
 
 function onWindowResize() {
-  tableWidth.value = tableWrapperRef.value?.offsetWidth || 0;
-
+  updateHeaderOffsetTop();
   setHeaderCellWidth();
   setFooterCellWidth();
   calculateStickyColumnPositions();
+}
+
+function updateHeaderOffsetTop() {
+  if (headerRowRef.value) {
+    headerOffsetTop.value = headerRowRef.value.getBoundingClientRect().top + window.scrollY;
+  }
 }
 
 function calculateStickyColumnPositions() {
@@ -437,7 +697,12 @@ function setHeaderCellWidth() {
 }
 
 function onScroll() {
-  pagePositionY.value = Number(window?.scrollY);
+  if (scrollRafId !== null) return;
+
+  scrollRafId = requestAnimationFrame(() => {
+    pagePositionY.value = Number(window?.scrollY);
+    scrollRafId = null;
+  });
 }
 
 function onKeyupEsc(event: KeyboardEvent) {
@@ -472,6 +737,85 @@ function onClickCell(cell: Cell, row: Row, key: string | number) {
   emit("clickCell", cell, row, key);
 }
 
+function onBodyClick(event: MouseEvent) {
+  const target = event.target as HTMLElement;
+
+  const row = target.closest("tr");
+
+  if (!row) return;
+
+  const rowId = row.getAttribute("data-row-id");
+
+  if (!rowId) return;
+
+  const rowData = flatTableRows.value.find((r) => String(r.id) === rowId);
+
+  if (!rowData) return;
+
+  // Handle checkbox toggle via event delegation.
+  // When unchecking, UCheckbox.onIconClick() calls input.click() which dispatches
+  // a second (programmatic) click event with target=INPUT and isTrusted=false.
+  // Without this guard, onToggleRowCheckbox fires twice (deselect then reselect).
+  const checkboxCell = target.closest("td[data-checkbox-id]");
+
+  if (checkboxCell) {
+    if (target.tagName === "INPUT" && !event.isTrusted) return;
+
+    onToggleRowCheckbox(rowData);
+
+    return;
+  }
+
+  // Handle expand icon toggle via event delegation
+  const expandIconElement = target.closest("[data-expand-icon]");
+
+  if (expandIconElement) {
+    onToggleExpand(rowData);
+
+    return;
+  }
+
+  // Handle row click via event delegation
+  onClickRow(rowData);
+
+  // Handle cell click via event delegation
+  const cell = target.closest("td");
+
+  if (cell) {
+    const cellKey = cell.getAttribute("data-cell-key");
+
+    if (cellKey) {
+      const cellValue = rowData[cellKey];
+
+      onClickCell(cellValue, rowData, cellKey);
+    }
+  }
+}
+
+function onBodyDoubleClick(event: MouseEvent) {
+  const target = event.target as HTMLElement;
+
+  const row = target.closest("tr");
+
+  if (!row) return;
+
+  const rowId = row.getAttribute("data-row-id");
+
+  if (!rowId) return;
+
+  const rowData = flatTableRows.value.find((r) => String(r.id) === rowId);
+
+  if (!rowData) return;
+
+  const selection = window.getSelection();
+
+  if (selection) {
+    selection.removeAllRanges();
+  }
+
+  onDoubleClickRow(rowData);
+}
+
 function onChangeSelectAll(selectAll: boolean) {
   if (selectAll && canSelectAll.value) {
     localSelectedRows.value = [...flatTableRows.value];
@@ -491,6 +835,7 @@ function onChangeLocalSelectedRows(selectedRows: Row[]) {
     nextTick(setHeaderCellWidth);
   }
 
+  // Set flag to prevent selectAll watcher from triggering
   selectAll.value = !!selectedRows.length;
 
   emit("update:selectedRows", localSelectedRows.value);
@@ -501,15 +846,15 @@ function clearSelectedItems() {
 }
 
 function onToggleExpand(row: Row) {
-  const targetIndex = localExpandedRows.value.findIndex((expandedId) => expandedId === row.id);
+  const expanded = localExpandedRows.value;
 
-  if (~targetIndex) {
-    localExpandedRows.value = localExpandedRows.value.filter((expendedRow) => {
-      return ![row.id, ...getRowChildrenIds(row)].includes(expendedRow);
-    });
+  if (expandedRowsSet.value.has(row.id)) {
+    const idsToRemove = new Set([row.id, ...getRowChildrenIds(row)]);
+
+    localExpandedRows.value = expanded.filter((id) => !idsToRemove.has(id));
     emit("row-collapse", row);
   } else {
-    localExpandedRows.value.push(row.id);
+    localExpandedRows.value = [...expanded, row.id];
     emit("row-expand", row);
   }
 
@@ -533,7 +878,9 @@ function isRowSelectedWithin(rowIndex: number) {
 function onToggleRowCheckbox(row: Row) {
   const targetIndex = localSelectedRows.value.findIndex((selectedRow) => selectedRow.id === row.id);
 
-  ~targetIndex ? localSelectedRows.value.splice(targetIndex, 1) : localSelectedRows.value.push(row);
+  localSelectedRows.value = ~targetIndex
+    ? localSelectedRows.value.filter((_, i) => i !== targetIndex)
+    : [...localSelectedRows.value, row];
 }
 
 function getDateDividerConfig(row: Row, isSelected: boolean) {
@@ -550,7 +897,46 @@ function getDateDividerConfig(row: Row, isSelected: boolean) {
 function isRowSelected(row: Row | undefined) {
   if (!row) return false;
 
-  return !!localSelectedRows.value.find((selectedRow) => selectedRow.id === row.id);
+  return selectedRowIds.value.has(row.id);
+}
+
+function getCellTextValue(cellValue: unknown): string {
+  if (cellValue == null) return "";
+
+  if (typeof cellValue === "object" && "value" in (cellValue as Record<string, unknown>)) {
+    const val = (cellValue as Record<string, unknown>).value;
+
+    return val != null ? String(val) : "";
+  }
+
+  return String(cellValue);
+}
+
+function getRowSearchMatchColumns(row: FlatRow): Set<string> | undefined {
+  return searchMatchColumnSets.value.get(row.id);
+}
+
+function getRowActiveSearchMatchColumn(row: FlatRow): string | undefined {
+  if (!activeMatch.value || activeMatch.value.rowId !== row.id) return undefined;
+
+  return activeMatch.value.columnKey;
+}
+
+function scrollToRow(rowId: RowId) {
+  if (!tableWrapperRef.value) return;
+
+  const targetRow = tableWrapperRef.value.querySelector<HTMLTableRowElement>(
+    `tr[data-row-id="${rowId}"]`,
+  );
+
+  if (!targetRow) return;
+
+  const containerRect = tableWrapperRef.value.getBoundingClientRect();
+  const rowRect = targetRow.getBoundingClientRect();
+
+  if (rowRect.top < containerRect.top || rowRect.bottom > containerRect.bottom) {
+    targetRow.scrollIntoView({ block: "center" });
+  }
 }
 
 defineExpose({
@@ -565,6 +951,23 @@ defineExpose({
    * @property {HTMLDivElement}
    */
   wrapperRef,
+});
+
+/* Cached slot-content checks to avoid re-creating VNodes on every render. */
+const hasBeforeHeaderSlot = computed(() => {
+  return hasSlotContent(slots["before-header"]);
+});
+
+const hasBeforeFirstRowSlot = computed(() => {
+  return hasSlotContent(slots["before-first-row"]);
+});
+
+const hasAfterLastRowSlot = computed(() => {
+  return hasSlotContent(slots["after-last-row"]);
+});
+
+const hasFooterSlot = computed(() => {
+  return hasSlotContent(slots["footer"]);
 });
 
 /**
@@ -629,7 +1032,93 @@ const {
   headerCellStickyRightAttrs,
   bodyCellStickyLeftAttrs,
   bodyCellStickyRightAttrs,
+  bodyCellSearchMatchAttrs,
+  bodyCellSearchMatchTextAttrs,
+  bodyCellSearchMatchActiveAttrs,
+  bodyCellSearchMatchTextActiveAttrs,
 } = useUI<Config>(defaultConfig, mutatedProps);
+
+/* Plain object — inner refs are already reactive. */
+const tableRowAttrs = {
+  bodyCellContentAttrs,
+  bodyCellCheckboxAttrs,
+  bodyCheckboxAttrs,
+  bodyCellNestedAttrs,
+  bodyCellNestedExpandIconAttrs,
+  bodyCellNestedCollapseIconAttrs,
+  bodyCellBaseAttrs,
+  bodyCellNestedIconWrapperAttrs,
+  bodyRowCheckedAttrs,
+  bodyRowAttrs,
+  bodyCellStickyLeftAttrs,
+  bodyCellStickyRightAttrs,
+  bodyCellSearchMatchAttrs,
+  bodyCellSearchMatchTextAttrs,
+  bodyCellSearchMatchActiveAttrs,
+  bodyCellSearchMatchTextActiveAttrs,
+} as unknown as UTableRowAttrs;
+
+function renderDateDividerRow(row: FlatRow, rowIndex: number): VNode | null {
+  if (!isShownDateDivider(rowIndex) || !row.rowDate) return null;
+
+  const isSelected = isRowSelectedWithin(rowIndex);
+
+  const propsDateDivider = isSelected
+    ? bodyRowCheckedDateDividerAttrs.value
+    : bodyRowDateDividerAttrs.value;
+
+  const dividerNode = h(UDivider, {
+    label: getDateDividerData(row.rowDate).label,
+    ...(isSelected ? bodySelectedDateDividerAttrs.value : bodyDateDividerAttrs.value),
+    config: getDateDividerConfig(row, isSelected),
+  });
+
+  return h("tr", { ...propsDateDivider, key: `date-divider-${row.id}` }, [
+    h(
+      "td",
+      {
+        ...bodyCellDateDividerAttrs.value,
+        colspan: colsCount.value,
+      },
+      [dividerNode],
+    ),
+  ]);
+}
+
+function renderTableRow(row: FlatRow, rowIndex: number): VNode {
+  return h(
+    UTableRow,
+    {
+      key: row.id,
+      selectable: props.selectable,
+      rowIndex,
+      row,
+      columns: normalizedColumns.value,
+      config: config.value,
+      attrs: tableRowAttrs as unknown as UTableRowAttrs,
+      colsCount: colsCount.value,
+      nestedLevel: Number(row.nestedLevel || 0),
+      emptyCellLabel: props.emptyCellLabel,
+      "data-test": getDataTest("row"),
+      "data-row-id": row.id,
+      isExpanded: expandedRowsSet.value.has(row.id),
+      isChecked: isRowSelected(row),
+      isVisible: isRowVisible(row),
+      columnPositions: columnPositions.value,
+      search: props.search,
+      searchMatchColumns: getRowSearchMatchColumns(row),
+      activeSearchMatchColumn: getRowActiveSearchMatchColumn(row),
+      textEllipsis: props.textEllipsis,
+    } as unknown as UTableRowProps,
+    slots,
+  );
+}
+
+function renderRowTemplate(row: FlatRow, rowIndex: number): VNode[] {
+  return [renderDateDividerRow(row, rowIndex), renderTableRow(row, rowIndex)].filter(
+    Boolean,
+  ) as VNode[];
+}
 </script>
 
 <template>
@@ -670,10 +1159,10 @@ const {
       >
         <template v-if="hasSlotContent($slots[`header-${column.key}`], { column, index })">
           <!--
-              @slot Use it to customize needed header cell.
-              @binding {object} column
-              @binding {number} index
-            -->
+            @slot Use it to customize needed header cell.
+            @binding {object} column
+            @binding {number} index
+          -->
           <slot :name="`header-${column.key}`" :column="column" :index="index" />
         </template>
 
@@ -749,15 +1238,10 @@ const {
       <ULoaderProgress :loading="loading" v-bind="stickyHeaderLoaderAttrs" />
     </div>
 
-    <div ref="table-wrapper" v-bind="tableWrapperAttrs">
+    <div ref="table-wrapper" v-bind="tableWrapperAttrs" @scroll="virtualScroll.onScroll">
       <table v-bind="tableAttrs">
         <thead v-bind="headerAttrs" :style="tableRowWidthStyle">
-          <tr
-            v-if="
-              hasSlotContent($slots['before-header'], { colsCount, classes: headerRowAttrs.class })
-            "
-            v-bind="beforeHeaderRowAttrs"
-          >
+          <tr v-if="hasBeforeHeaderSlot" v-bind="beforeHeaderRowAttrs">
             <!--
               @slot Use it to add something before header row.
               @binding {number} cols-count
@@ -824,9 +1308,14 @@ const {
           <ULoaderProgress :loading="loading" v-bind="headerLoaderAttrs" />
         </thead>
 
-        <tbody v-if="sortedRows.length" v-bind="bodyAttrs">
+        <tbody
+          v-if="sortedRows.length"
+          v-bind="bodyAttrs"
+          @click="onBodyClick"
+          @dblclick="onBodyDoubleClick"
+        >
           <tr
-            v-if="hasSlotContent($slots['before-first-row'], { colsCount })"
+            v-if="hasBeforeFirstRowSlot"
             v-bind="isRowSelected(sortedRows[0]) ? beforeBodyRowCheckedAttrs : beforeBodyRowAttrs"
           >
             <td :colspan="colsCount" v-bind="beforeBodyRowCellAttrs">
@@ -835,115 +1324,25 @@ const {
             </td>
           </tr>
 
-          <template
-            v-for="(row, rowIndex) in sortedRows.filter(
-              (row) => !row.parentRowId || localExpandedRows.includes(row.parentRowId),
-            )"
-            :key="row.id"
-          >
-            <tr
-              v-if="isShownDateDivider(rowIndex) && !isRowSelectedWithin(rowIndex) && row.rowDate"
-              v-bind="bodyRowDateDividerAttrs"
-            >
-              <td v-bind="bodyCellDateDividerAttrs" :colspan="colsCount">
-                <UDivider
-                  :label="getDateDividerData(row.rowDate).label"
-                  v-bind="bodyDateDividerAttrs"
-                  :config="getDateDividerConfig(row, false)"
-                />
-              </td>
-            </tr>
+          <tr v-if="props.virtualScroll && virtualScroll.topSpacerHeight.value">
+            <td
+              :colspan="colsCount"
+              :style="{ height: `${virtualScroll.topSpacerHeight.value}px` }"
+            />
+          </tr>
 
-            <tr
-              v-if="isShownDateDivider(rowIndex) && isRowSelectedWithin(rowIndex) && row.rowDate"
-              v-bind="bodyRowCheckedDateDividerAttrs"
-            >
-              <td v-bind="bodyCellDateDividerAttrs" :colspan="colsCount">
-                <UDivider
-                  :label="getDateDividerData(row.rowDate).label"
-                  v-bind="bodySelectedDateDividerAttrs"
-                  :config="getDateDividerConfig(row, true)"
-                />
-              </td>
-            </tr>
+          <component
+            :is="() => renderedRows.map((row, rowIndex) => renderRowTemplate(row, rowIndex)).flat()"
+          />
 
-            <UTableRow
-              :selectable="selectable"
-              :row="row"
-              :columns="normalizedColumns"
-              :config="config"
-              :attrs="tableRowAttrs as unknown as UTableRowAttrs"
-              :cols-count="colsCount"
-              :nested-level="Number(row.nestedLevel || 0)"
-              :empty-cell-label="emptyCellLabel"
-              :data-test="getDataTest('row')"
-              :is-expanded="localExpandedRows.includes(row.id)"
-              :is-checked="isRowSelected(row)"
-              :column-positions="columnPositions"
-              @click="onClickRow"
-              @dblclick="onDoubleClickRow"
-              @click-cell="onClickCell"
-              @toggle-expand="onToggleExpand"
-              @toggle-checkbox="onToggleRowCheckbox"
-            >
-              <template
-                v-for="(value, key, cellIndex) in mapRowColumns(row, normalizedColumns)"
-                :key="`${rowIndex}-${cellIndex}`"
-                #[`cell-${key}`]="{ value: cellValue, row: cellRow }"
-              >
-                <!--
-                  @slot Use it to customize needed table cell.
-                  @binding {string} value
-                  @binding {object} row
-                  @binding {number} index
-                  @binding {number} cellIndex
-                -->
-                <slot
-                  :name="`cell-${key}`"
-                  :value="cellValue"
-                  :row="cellRow"
-                  :index="rowIndex"
-                  :cell-index="cellIndex"
-                />
-              </template>
+          <tr v-if="props.virtualScroll && virtualScroll.bottomSpacerHeight.value > 0">
+            <td
+              :colspan="colsCount"
+              :style="{ height: `${virtualScroll.bottomSpacerHeight.value}px` }"
+            />
+          </tr>
 
-              <template #expand="{ row: expandedRow, expanded }">
-                <!--
-                  @slot Use it to customize row expand icon.
-                  @binding {object} row
-                  @binding {boolean} expanded
-                  @binding {number} index
-                -->
-                <slot name="expand" :index="rowIndex" :row="expandedRow" :expanded="expanded" />
-              </template>
-
-              <template #nested-row>
-                <!--
-                  @slot Use it to add inside nested row.
-                  @binding {object} row
-                  @binding {number} index
-                  @binding {number} nestedLevel
-                -->
-                <slot
-                  v-if="row"
-                  name="nested-row"
-                  :index="rowIndex"
-                  :row="row"
-                  :nested-level="Number(row.nestedLevel || 0)"
-                />
-              </template>
-            </UTableRow>
-          </template>
-
-          <tr
-            v-if="
-              hasSlotContent($slots['after-last-row'], {
-                colsCount,
-                classes: bodyCellBaseAttrs.class,
-              })
-            "
-            v-bind="afterBodyRowAttrs"
-          >
+          <tr v-if="hasAfterLastRowSlot" v-bind="afterBodyRowAttrs">
             <!--
                 @slot Use it to add something after last row.
                 @binding {number} cols-count
@@ -973,7 +1372,7 @@ const {
           </tr>
         </tbody>
 
-        <tfoot v-if="hasSlotContent($slots['footer'], { colsCount })" v-bind="footerAttrs">
+        <tfoot v-if="hasFooterSlot" v-bind="footerAttrs">
           <tr ref="footer-row" v-bind="footerRowAttrs">
             <td v-if="selectable" />
 

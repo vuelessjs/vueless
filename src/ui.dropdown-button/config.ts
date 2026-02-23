@@ -3,7 +3,7 @@ export default /*tw*/ {
     base: "{UDropdown}",
     variants: {
       block: {
-        true: "!block w-full",
+        true: "block! w-full",
       },
     },
     defaults: {

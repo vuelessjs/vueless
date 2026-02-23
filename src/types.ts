@@ -385,6 +385,17 @@ export type UseUI<T> = {
   getDataTest: (suffix?: string) => string | null;
 } & KeysAttrs<T>;
 
+export interface ConfigDerivedData {
+  [key: string]: {
+    keyConfig: NestedComponent;
+    extendsClasses: string[];
+    extendsKeyConfig: NestedComponent;
+    nestedComponent: string;
+    mergedNestedConfig: unknown;
+    mergedDefaults: ComponentDefaults;
+  };
+}
+
 export type KeysAttrs<T> = Record<
   string,
   Ref<KeyAttrsWithConfig<T>> | ComputedRef<KeyAttrsWithConfig<T>>

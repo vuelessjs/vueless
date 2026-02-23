@@ -21,7 +21,7 @@ export default /*tw*/ {
       },
     },
   },
-  fileLabel: "{ULink} break-all !leading-[1.5]",
+  fileLabel: "{ULink} break-all leading-normal!",
   removeIcon: {
     base: "{UIcon}",
     defaults: {

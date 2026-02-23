@@ -718,40 +718,40 @@ const {
                   :key="index"
                   v-bind="selectedLabelAttrs"
                 >
-                  <!--
-                    @slot Use it to customize selected option.
-                    @binding {string} label
-                    @binding {modelValue} value
-                    @binding {object} option
-                  -->
-                  <slot
-                    name="selected-option"
-                    :label="option[labelKey]"
-                    :value="option[valueKey]"
-                    :option="option"
+                  <UBadge
+                    :title="option[labelKey]"
+                    :size="size"
+                    variant="subtle"
+                    v-bind="badgeLabelAttrs"
                   >
-                    <UBadge
-                      :title="option[labelKey]"
-                      :size="size"
-                      variant="subtle"
-                      v-bind="badgeLabelAttrs"
-                    >
-                      <div v-bind="selectedLabelTextAttrs">
+                    <div v-bind="selectedLabelTextAttrs">
+                      <!--
+                        @slot Use it to customize selected option.
+                        @binding {string} label
+                        @binding {modelValue} value
+                        @binding {object} option
+                      -->
+                      <slot
+                        name="selected-option"
+                        :label="option[labelKey]"
+                        :value="option[valueKey]"
+                        :option="option"
+                      >
                         {{ option[labelKey] }}
-                      </div>
+                      </slot>
+                    </div>
 
-                      <template #right>
-                        <UIcon
-                          interactive
-                          color="inherit"
-                          :disabled="disabled"
-                          :name="config.defaults.badgeClearIcon"
-                          v-bind="badgeClearIconAttrs"
-                          @click="onClickClearItem($event, option)"
-                        />
-                      </template>
-                    </UBadge>
-                  </slot>
+                    <template #right>
+                      <UIcon
+                        interactive
+                        color="inherit"
+                        :disabled="disabled"
+                        :name="config.defaults.badgeClearIcon"
+                        v-bind="badgeClearIconAttrs"
+                        @click="onClickClearItem($event, option)"
+                      />
+                    </template>
+                  </UBadge>
                 </div>
 
                 <!--
@@ -777,32 +777,32 @@ const {
                   :title="option[labelKey] as string"
                   v-bind="selectedLabelAttrs"
                 >
-                  <!--
-                    @slot Use it to customize selected option.
-                    @binding {string} label
-                    @binding {modelValue} value
-                    @binding {object} option
-                  -->
-                  <slot
-                    name="selected-option"
-                    :label="option[labelKey]"
-                    :value="option[valueKey]"
-                    :option="option"
-                  >
-                    <div v-bind="selectedLabelTextAttrs">
+                  <div v-bind="selectedLabelTextAttrs">
+                    <!--
+                      @slot Use it to customize selected option.
+                      @binding {string} label
+                      @binding {modelValue} value
+                      @binding {object} option
+                    -->
+                    <slot
+                      name="selected-option"
+                      :label="option[labelKey]"
+                      :value="option[valueKey]"
+                      :option="option"
+                    >
                       {{ option[labelKey] }}
-                    </div>
+                    </slot>
+                  </div>
 
-                    <UIcon
-                      v-if="!disabled"
-                      interactive
-                      color="neutral"
-                      :name="config.defaults.listClearIcon"
-                      :data-test="getDataTest('clear-item')"
-                      v-bind="listClearIconAttrs"
-                      @click.stop="onClickClearItem($event, option)"
-                    />
-                  </slot>
+                  <UIcon
+                    v-if="!disabled"
+                    interactive
+                    color="neutral"
+                    :name="config.defaults.listClearIcon"
+                    :data-test="getDataTest('clear-item')"
+                    v-bind="listClearIconAttrs"
+                    @click.stop="onClickClearItem($event, option)"
+                  />
                 </div>
 
                 <div v-bind="listFooterAttrs">

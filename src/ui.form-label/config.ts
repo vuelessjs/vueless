@@ -25,7 +25,7 @@ export default /*tw*/ {
   },
   content: "flex",
   label: {
-    base: "z-10 block !leading-none w-max transition",
+    base: "z-10 block leading-none! w-max transition",
     variants: {
       size: {
         sm: "text-small",
@@ -40,7 +40,7 @@ export default /*tw*/ {
         right: "font-normal",
       },
       error: {
-        true: "text-error group-focus-within/label:!text-error",
+        true: "text-error group-focus-within/label:text-error!",
       },
       disabled: {
         true: "text-lifted cursor-not-allowed",
@@ -62,7 +62,7 @@ export default /*tw*/ {
     ],
   },
   description: {
-    base: "font-normal text-lifted text-left !leading-tight",
+    base: "font-normal text-lifted text-left leading-tight!",
     variants: {
       size: {
         sm: "text-tiny",

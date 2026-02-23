@@ -18,10 +18,10 @@ export default /*tw*/ {
     `,
     variants: {
       error: {
-        true: "!border-error focus-within:outline-error",
+        true: "border-error! focus-within:outline-error",
       },
       disabled: {
-        true: "!border-default focus-within:outline-0 bg-lifted",
+        true: "border-default! focus-within:outline-0 bg-lifted",
       },
     },
   },
@@ -41,7 +41,7 @@ export default /*tw*/ {
   rightSlot: "flex items-center",
   input: {
     base: `
-      block w-full py-2 font-normal !leading-none bg-transparent
+      block w-full py-2 font-normal leading-none! bg-transparent
       border-none rounded-inherit transition focus:outline-none
       placeholder:font-normal placeholder:text-muted
       disabled:text-accented disabled:cursor-not-allowed

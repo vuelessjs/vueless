@@ -23,7 +23,7 @@ export default /*tw*/ {
     `,
     variants: {
       error: {
-        true: "!border-error focus-visible:outline-error",
+        true: "border-error! focus-visible:outline-error",
       },
     },
   },
@@ -34,7 +34,7 @@ export default /*tw*/ {
     `,
     variants: {
       disabled: {
-        true: "!bg-{color}/(--vl-disabled-opacity) cursor-not-allowed",
+        true: "bg-{color}/(--vl-disabled-opacity)! cursor-not-allowed",
       },
     },
   },

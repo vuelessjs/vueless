@@ -31,6 +31,7 @@ export default /*tw*/ {
     align: "left",
     currencyAlign: "right",
     currencySpace: false,
+    raw: false,
     minFractionDigits: 0,
     maxFractionDigits: 2,
     decimalSeparator: ",",

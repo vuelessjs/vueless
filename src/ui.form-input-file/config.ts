@@ -9,7 +9,7 @@ export default /*tw*/ {
     `,
     variants: {
       error: {
-        true: "!border-error focus-within:outline-error",
+        true: "border-error! focus-within:outline-error",
       },
       disabled: {
         true: "pointer-events-none bg-lifted",

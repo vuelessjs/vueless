@@ -1,6 +1,6 @@
 import { flushPromises, mount } from "@vue/test-utils";
 import { describe, it, expect, vi } from "vitest";
-import { ref } from "vue";
+import { ref, nextTick } from "vue";
 
 import UTableRow from "../UTableRow.vue";
 import UIcon from "../../ui.image-icon/UIcon.vue";
@@ -36,6 +36,10 @@ describe("UTableRow.vue", () => {
     bodyRowAttrs: ref({ class: "row-base" }),
     bodyCellStickyLeftAttrs: ref({ class: "sticky-left" }),
     bodyCellStickyRightAttrs: ref({ class: "sticky-right" }),
+    bodyCellSearchMatchAttrs: ref({ class: "search-match" }),
+    bodyCellSearchMatchTextAttrs: ref({ class: "search-match-text" }),
+    bodyCellSearchMatchActiveAttrs: ref({ class: "search-match-active" }),
+    bodyCellSearchMatchTextActiveAttrs: ref({ class: "search-match-active-text" }),
   };
 
   const defaultConfig = {
@@ -64,6 +68,7 @@ describe("UTableRow.vue", () => {
       config: defaultConfig,
       isChecked: false,
       isExpanded: false,
+      isVisible: true,
       columnPositions,
       ...overrides,
     };
@@ -260,13 +265,16 @@ describe("UTableRow.vue", () => {
         }),
       });
 
-      const icon = component.findComponent(UIcon);
+      let icon = component.findComponent(UIcon);
 
       expect(icon.props("name")).toBe(defaultConfig.defaults.expandIcon);
 
-      component.setProps({ isExpanded: true });
-
+      await component.setProps({ isExpanded: true });
+      await nextTick();
       await flushPromises();
+
+      // Re-query the icon after props update
+      icon = component.findComponent(UIcon);
 
       expect(icon.props("name")).toBe(defaultConfig.defaults.collapseIcon);
     });
@@ -286,106 +294,8 @@ describe("UTableRow.vue", () => {
     });
   });
 
-  describe("Events", () => {
-    it("Click – emits click event when row is clicked", async () => {
-      const component = mount(UTableRow, {
-        props: getDefaultProps(),
-      });
-
-      await component.get("tr").trigger("click");
-
-      expect(component.emitted("click")).toBeTruthy();
-      expect(component.emitted("click")![0][0]).toEqual(defaultRow);
-    });
-
-    it("Double Click – emits dblclick event when row is double-clicked", async () => {
-      const component = mount(UTableRow, {
-        props: getDefaultProps(),
-      });
-
-      await component.get("tr").trigger("dblclick");
-
-      expect(component.emitted("dblclick")).toBeTruthy();
-      expect(component.emitted("dblclick")![0][0]).toEqual(defaultRow);
-    });
-
-    it("Click Cell – emits clickCell event when cell is clicked", async () => {
-      const component = mount(UTableRow, {
-        props: getDefaultProps(),
-      });
-
-      const firstCell = component.find("td");
-
-      await firstCell.trigger("click");
-
-      expect(component.emitted("clickCell")).toBeTruthy();
-      expect(component.emitted("clickCell")![0]).toEqual(["John Doe", defaultRow, "name"]);
-    });
-
-    it("Toggle Expand – emits toggleExpand event when expand icon is clicked", async () => {
-      const expandableRow: FlatRow = {
-        ...defaultRow,
-        row: [{ id: "2", name: "Child", nestedLeveL: 1 }],
-      };
-
-      const component = mount(UTableRow, {
-        props: getDefaultProps({ row: expandableRow }),
-      });
-
-      const expandIcon = component.find("[data-row-toggle-icon='1']");
-
-      await expandIcon.trigger("click");
-
-      expect(component.emitted("toggleExpand")).toBeTruthy();
-      expect(component.emitted("toggleExpand")![0][0]).toEqual(expandableRow);
-    });
-
-    it("Toggle Checkbox – emits toggleCheckbox event when checkbox is changed", async () => {
-      const component = mount(UTableRow, {
-        props: getDefaultProps({ selectable: true }),
-      });
-
-      const checkbox = component.getComponent(UCheckbox);
-
-      await checkbox.vm.$emit("input", defaultRow);
-
-      expect(component.emitted("toggleCheckbox")).toBeTruthy();
-      expect(component.emitted("toggleCheckbox")![0][0]).toEqual(defaultRow);
-    });
-
-    it("Checkbox Cell – prevents row click events when checkbox cell is clicked", async () => {
-      const component = mount(UTableRow, {
-        props: getDefaultProps({ selectable: true }),
-      });
-
-      const checkboxCell = component.find("td");
-
-      await checkboxCell.trigger("click");
-      await checkboxCell.trigger("dblclick");
-
-      expect(component.emitted("click")).toBeFalsy();
-      expect(component.emitted("dblclick")).toBeFalsy();
-    });
-
-    it("Expand Icon – prevents row click events when expand icon is clicked", async () => {
-      const expandableRow: FlatRow = {
-        ...defaultRow,
-        row: [{ id: "2", name: "Child", nestedLeveL: 1 }],
-      };
-
-      const component = mount(UTableRow, {
-        props: getDefaultProps({ row: expandableRow }),
-      });
-
-      const expandIcon = component.find("[data-row-toggle-icon='1']");
-
-      await expandIcon.trigger("click");
-      await expandIcon.trigger("dblclick");
-
-      expect(component.emitted("click")).toBeFalsy();
-      expect(component.emitted("dblclick")).toBeFalsy();
-    });
-  });
+  // Events are now handled by UTable via event delegation
+  // UTableRow no longer emits click, dblclick, clickCell, toggleExpand, or toggleCheckbox events
 
   describe("Slots", () => {
     it("Cell Slot – renders custom content from cell slot", () => {
@@ -549,6 +459,27 @@ describe("UTableRow.vue", () => {
       const iconWrapper = component.find(".icon-wrapper");
 
       expect(iconWrapper.exists()).toBe(true);
+    });
+
+    it("isVisible – shows row when isVisible is true", () => {
+      const component = mount(UTableRow, {
+        props: getDefaultProps({ isVisible: true }),
+      });
+
+      const row = component.find("tr");
+      const style = row.attributes("style") || "";
+
+      expect(style).not.toContain("display: none");
+    });
+
+    it("isVisible – hides row when isVisible is false", () => {
+      const component = mount(UTableRow, {
+        props: getDefaultProps({ isVisible: false }),
+      });
+
+      const row = component.find("tr");
+
+      expect(row.attributes("style")).toContain("display: none");
     });
   });
 });

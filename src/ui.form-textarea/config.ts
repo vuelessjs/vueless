@@ -21,10 +21,10 @@ export default /*tw*/ {
     `,
     variants: {
       error: {
-        true: "!border-error focus-within:outline-error",
+        true: "border-error! focus-within:outline-error",
       },
       disabled: {
-        true: "!border-default focus-within:outline-0 bg-lifted",
+        true: "border-default! focus-within:outline-0 bg-lifted",
       },
     },
   },

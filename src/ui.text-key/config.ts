@@ -2,7 +2,7 @@ export default /*tw*/ {
   key: {
     base: `
       inline-flex items-center justify-center gap-1 border border-solid
-      rounded-small font-medium font-mono !leading-none outline-hidden
+      rounded-small font-medium font-mono leading-none! outline-hidden
     `,
     variants: {
       variant: {

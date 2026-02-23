@@ -48,6 +48,38 @@ const preparedNumber = computed(() => {
   );
 });
 
+const formattedNumber = computed(() => {
+  let result = "";
+
+  if (props.currencyAlign === "left" && props.currency) {
+    result += props.currency;
+
+    if (props.currencySpace) {
+      result += " ";
+    }
+  }
+
+  if (props.value) {
+    result += mathSign.value;
+  }
+
+  result += preparedNumber.value.integer;
+
+  if (props.maxFractionDigits > 0) {
+    result += preparedNumber.value.decimalSeparator + preparedNumber.value.fraction;
+  }
+
+  if (props.currencyAlign === "right" && props.currency) {
+    if (props.currencySpace) {
+      result += " ";
+    }
+
+    result += props.currency;
+  }
+
+  return result;
+});
+
 defineExpose({
   /**
    * A reference to the component's wrapper element for direct DOM manipulation.
@@ -76,10 +108,12 @@ const {
     <!-- @slot Use it to add something before the number. -->
     <slot name="left" />
 
-    <div v-bind="numberAttrs" :data-test="getDataTest()">
+    <template v-if="raw">{{ formattedNumber }}</template>
+
+    <div v-else v-bind="numberAttrs" :data-test="getDataTest()">
       <span v-if="currencyAlign === 'left' && currency" v-bind="currencyAttrs" v-text="currency" />
 
-      <span v-if="value" v-bind="mathSignAttrs" v-text="mathSign" />
+      <span v-if="value && mathSign" v-bind="mathSignAttrs" v-text="mathSign" />
 
       <span v-bind="integerAttrs" v-text="preparedNumber.integer" />
 

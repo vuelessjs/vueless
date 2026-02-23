@@ -90,6 +90,12 @@
   --border-color-accented: var(--vl-border-accented);
   --border-color-muted: var(--vl-border-muted);
 
+  /* Border colors */
+  --outline-color-default: var(--vl-border);
+  --outline-color-lifted: var(--vl-border-lifted);
+  --outline-color-accented: var(--vl-border-accented);
+  --outline-color-muted: var(--vl-border-muted);
+
   /* Background colors */
   --background-color-default: var(--vl-bg);
   --background-color-lifted: var(--vl-bg-lifted);

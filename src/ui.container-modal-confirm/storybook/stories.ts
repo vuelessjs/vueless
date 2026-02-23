@@ -131,6 +131,9 @@ ConfirmLabel.parameters = {
   },
 };
 
+export const ConfirmLoading = DefaultTemplate.bind({});
+ConfirmLoading.args = { loading: true };
+
 export const Inner: StoryFn<UModalConfirmArgs> = (args: UModalConfirmArgs) => ({
   components: { UModalConfirm, UButton, UModal, UCol, UText },
   setup() {
