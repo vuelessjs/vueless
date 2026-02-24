@@ -848,8 +848,8 @@ describe("USelect.vue", () => {
 
       vi.advanceTimersByTime(300); // Simulate debounce delay
 
-      expect(component.emitted("searchChange")).toBeDefined();
-      expect(component.emitted("searchChange")![0][0]).toBe(testValue);
+      expect(component.emitted("search-change")).toBeDefined();
+      expect(component.emitted("search-change")![0][0]).toBe(testValue);
 
       vi.useRealTimers();
     });

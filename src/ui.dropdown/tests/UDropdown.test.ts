@@ -455,7 +455,7 @@ describe("UDropdown.vue", () => {
       expect(component.emitted("close")).toBeTruthy();
     });
 
-    it("ClickOption – emits clickOption event when an option is clicked", async () => {
+    it("ClickOption – emits click-option event when an option is clicked", async () => {
       const component = mount(UDropdown, {
         props: {
           options: defaultOptions,
@@ -472,10 +472,10 @@ describe("UDropdown.vue", () => {
 
       await listbox.vm.$emit("click-option", defaultOptions[0]);
 
-      expect(component.emitted("clickOption")).toBeTruthy();
+      expect(component.emitted("click-option")).toBeTruthy();
     });
 
-    it("SearchChange – emits searchChange event when search value changes", async () => {
+    it("SearchChange – emits search-change event when search value changes", async () => {
       const component = mount(UDropdown, {
         props: {
           searchable: true,
@@ -493,8 +493,8 @@ describe("UDropdown.vue", () => {
 
       await listbox.vm.$emit("search-change", "test query");
 
-      expect(component.emitted("searchChange")).toBeTruthy();
-      expect(component.emitted("searchChange")![0][0]).toBe("test query");
+      expect(component.emitted("search-change")).toBeTruthy();
+      expect(component.emitted("search-change")![0][0]).toBe("test query");
     });
 
     it("Update:search – emits update:search event when search value updates", async () => {

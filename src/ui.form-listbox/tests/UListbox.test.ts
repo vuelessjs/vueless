@@ -474,7 +474,7 @@ describe("UListbox.vue", () => {
       expect(options[0].text()).toBe(targetValue);
     });
 
-    it("Search – emits searchChange event on input", async () => {
+    it("Search – emits search-change event on input", async () => {
       const targetValue = "test";
 
       const component = mount(UListbox, {
@@ -488,11 +488,11 @@ describe("UListbox.vue", () => {
 
       await searchInput.setValue(targetValue);
 
-      expect(component.emitted("searchChange")).toBeTruthy();
-      expect(component.emitted("searchChange")![0][0]).toBe(targetValue);
+      expect(component.emitted("search-change")).toBeTruthy();
+      expect(component.emitted("search-change")![0][0]).toBe(targetValue);
     });
 
-    it("Search – emits searchBlur event on blur", async () => {
+    it("Search – emits search-blur event on blur", async () => {
       const component = mount(UListbox, {
         props: {
           searchable: true,
@@ -504,7 +504,7 @@ describe("UListbox.vue", () => {
 
       await searchInput.trigger("blur");
 
-      expect(component.emitted("searchBlur")).toBeTruthy();
+      expect(component.emitted("search-blur")).toBeTruthy();
     });
 
     it("Keyboard Navigation – moves pointer down with arrow down", async () => {
@@ -719,8 +719,8 @@ describe("UListbox.vue", () => {
 
       await firstOption.trigger("click");
 
-      expect(component.emitted("clickOption")).toBeTruthy();
-      expect(component.emitted("clickOption")![0][0]).toEqual(defaultOptions[0]);
+      expect(component.emitted("click-option")).toBeTruthy();
+      expect(component.emitted("click-option")![0][0]).toEqual(defaultOptions[0]);
     });
 
     it("Search Change – emits when search input changes", async () => {
@@ -737,8 +737,8 @@ describe("UListbox.vue", () => {
 
       await searchInput.setValue("test");
 
-      expect(component.emitted("searchChange")).toBeTruthy();
-      expect(component.emitted("searchChange")![0][0]).toBe(expectedValue);
+      expect(component.emitted("search-change")).toBeTruthy();
+      expect(component.emitted("search-change")![0][0]).toBe(expectedValue);
     });
 
     it("Search Blur – emits when search input loses focus", async () => {
@@ -753,7 +753,7 @@ describe("UListbox.vue", () => {
 
       await searchInput.get("input").trigger("blur");
 
-      expect(component.emitted("searchBlur")).toBeTruthy();
+      expect(component.emitted("search-blur")).toBeTruthy();
     });
   });
 

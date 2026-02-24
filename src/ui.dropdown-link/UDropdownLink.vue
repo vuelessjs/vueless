@@ -27,7 +27,7 @@ const emit = defineEmits([
    * Triggers on a dropdown option click.
    * @property {string} value
    */
-  "clickOption",
+  "click-option",
 
   /**
    * Triggers when an option is selected.
@@ -50,7 +50,7 @@ const emit = defineEmits([
    * Triggers when the search value is changed.
    * @property {string} query
    */
-  "searchChange",
+  "search-change",
 
   /**
    * Triggers when the search v-model updates.
@@ -130,10 +130,10 @@ const { config, getDataTest, dropdownLinkAttrs, toggleLinkAttrs, toggleIconAttrs
     :close-on-select="closeOnSelect"
     v-bind="dropdownLinkAttrs"
     :data-test="dataTest"
-    @click-option="(option) => emit('clickOption', option)"
+    @click-option="(option) => emit('click-option', option)"
     @update:model-value="(value) => emit('update:modelValue', value)"
     @update:search="(value) => emit('update:search', value)"
-    @search-change="(query) => emit('searchChange', query)"
+    @search-change="(query) => emit('search-change', query)"
     @open="emit('open')"
     @close="emit('close')"
   >

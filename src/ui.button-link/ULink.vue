@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { computed, useSlots, useTemplateRef } from "vue";
-import { RouterLink, useRoute, useRouter } from "vue-router";
+import { computed, inject, useSlots, useTemplateRef } from "vue";
+import { RouterLink, routerKey, routeLocationKey } from "vue-router";
 
 import { useUI } from "../composables/useUI";
 import { hasSlotContent } from "../utils/helper";
@@ -49,11 +49,12 @@ const emit = defineEmits([
 const slots = useSlots();
 
 const linkRef = useTemplateRef<HTMLLinkElement>("link");
-const route = useRoute();
-const router = useRouter();
+
+const router = inject(routerKey, undefined);
+const route = inject(routeLocationKey, undefined);
 
 const isPresentRoute = computed(() => {
-  return typeof props.to === "string" || typeof props.to === "object";
+  return (typeof props.to === "string" || typeof props.to === "object") && router !== undefined;
 });
 
 const safeTo = computed(() => {
@@ -61,7 +62,7 @@ const safeTo = computed(() => {
 });
 
 const isActive = computed(() => {
-  if (!isPresentRoute.value) return false;
+  if (!isPresentRoute.value || !router || !route) return false;
 
   try {
     const resolved = router.resolve(safeTo.value);

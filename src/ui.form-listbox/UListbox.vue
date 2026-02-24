@@ -45,18 +45,18 @@ const emit = defineEmits([
   /**
    * Triggers on click option.
    */
-  "clickOption",
+  "click-option",
 
   /**
    * Triggers when the search input value changes.
    * @property {string} value
    */
-  "searchChange",
+  "search-change",
 
   /**
    * Triggers when the search input loses focus.
    */
-  "searchBlur",
+  "search-blur",
 
   /**
    * Triggers when the search v-model updates.
@@ -246,7 +246,7 @@ function onClickAddOption() {
 }
 
 function onSearchChange(value: string) {
-  emit("searchChange", value);
+  emit("search-change", value);
 }
 
 function onKeydownUp() {
@@ -341,11 +341,11 @@ function onClickOption(rawOption: Option) {
     rawOption.onClick(option);
   }
 
-  emit("clickOption", option);
+  emit("click-option", option);
 }
 
 function onInputSearchBlur(event: FocusEvent) {
-  emit("searchBlur", event);
+  emit("search-blur", event);
 }
 
 defineExpose({

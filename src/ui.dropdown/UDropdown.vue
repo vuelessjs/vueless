@@ -28,7 +28,7 @@ const emit = defineEmits([
    * Triggers on a dropdown option click.
    * @property {string} value
    */
-  "clickOption",
+  "click-option",
 
   /**
    * Triggers when an option is selected.
@@ -51,7 +51,7 @@ const emit = defineEmits([
    * Triggers when the search value is changed.
    * @property {string} query
    */
-  "searchChange",
+  "search-change",
 
   /**
    * Triggers when the search v-model updates.
@@ -128,13 +128,13 @@ const fullLabel = computed(() => {
 });
 
 function onSearchChange(query: string) {
-  emit("searchChange", query);
+  emit("search-change", query);
 }
 
 function onClickOption(option: Option) {
   isClickingOption.value = true;
 
-  emit("clickOption", option);
+  emit("click-option", option);
 
   if (props.closeOnSelect) {
     hide();

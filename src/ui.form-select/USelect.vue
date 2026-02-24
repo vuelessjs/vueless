@@ -55,7 +55,7 @@ const emit = defineEmits([
    * Triggers when the search value is changed.
    * @property {string} query
    */
-  "searchChange",
+  "search-change",
 
   /**
    * Triggers when the search v-model updates.
@@ -251,7 +251,7 @@ onMounted(() => {
 });
 
 function onSearchChange(query: string) {
-  emit("searchChange", query);
+  emit("search-change", query);
 }
 
 function onSearchUpdate(query: string) {
