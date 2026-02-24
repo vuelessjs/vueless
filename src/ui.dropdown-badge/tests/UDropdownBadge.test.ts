@@ -630,7 +630,7 @@ describe("UDropdownBadge.vue", () => {
       expect(component.emitted("update:modelValue")?.[0]).toEqual([2]);
     });
 
-    it("clickOption – emits clickOption event when an option is clicked", async () => {
+    it("click-option – emits click-option event when an option is clicked", async () => {
       const component = mount(UDropdownBadge, {
         props: {
           options: defaultOptions,
@@ -643,12 +643,12 @@ describe("UDropdownBadge.vue", () => {
       // Find the listbox component
       const listbox = component.findComponent(UListbox);
 
-      // Simulate clicking an option by emitting clickOption from the listbox
-      listbox.vm.$emit("clickOption", defaultOptions[1]);
+      // Simulate clicking an option by emitting click-option from the listbox
+      listbox.vm.$emit("click-option", defaultOptions[1]);
 
       // Check if the event was emitted with the correct value
-      expect(component.emitted("clickOption")).toBeTruthy();
-      expect(component.emitted("clickOption")?.[0]).toEqual([defaultOptions[1]]);
+      expect(component.emitted("click-option")).toBeTruthy();
+      expect(component.emitted("click-option")?.[0]).toEqual([defaultOptions[1]]);
     });
 
     it("Close – closes dropdown when clicking outside", async () => {
@@ -698,7 +698,7 @@ describe("UDropdownBadge.vue", () => {
       expect(component.emitted("close")).toBeTruthy();
     });
 
-    it("SearchChange – emits searchChange event when search value changes", async () => {
+    it("SearchChange – emits search-change event when search value changes", async () => {
       const component = mount(UDropdownBadge, {
         props: {
           searchable: true,
@@ -710,10 +710,10 @@ describe("UDropdownBadge.vue", () => {
 
       const dropdown = component.findComponent({ name: "UDropdown" });
 
-      dropdown.vm.$emit("searchChange", "test query");
+      dropdown.vm.$emit("search-change", "test query");
 
-      expect(component.emitted("searchChange")).toBeTruthy();
-      expect(component.emitted("searchChange")?.[0]).toEqual(["test query"]);
+      expect(component.emitted("search-change")).toBeTruthy();
+      expect(component.emitted("search-change")?.[0]).toEqual(["test query"]);
     });
 
     it("Update:search – emits update:search event when search value updates", async () => {
