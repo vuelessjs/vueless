@@ -209,7 +209,10 @@ export const Vueless = function (options = {}) {
     },
 
     /* remove cached icons */
-    buildEnd: async () => {
+    buildEnd: async function () {
+      /* skip in watch mode — configResolved won't re-run */
+      if (this.meta.watchMode) return;
+
       await removeIconsCache(basePath);
     },
   };
