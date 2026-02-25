@@ -28,7 +28,7 @@ A UI library with Open Architecture for Vue.js 3 and Nuxt.js 3 / 4, powered by [
 - 🖼️ Inline SVG icons
 - 🪄 Auto component imports (as you use them)
 - 🧿 Uncompiled source in npm for better DX
-- 🧪️ 1400+ unit tests ensuring consistent logic
+- 🧪️ 1500+ unit tests ensuring consistent logic
 - 🛡️ Full TypeScript support with type safety
 
 ## Built-In Storybook
