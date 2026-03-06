@@ -39,7 +39,7 @@ const props = defineProps<UTableRowProps>();
 const slots = useSlots();
 const attrs = useAttrs();
 
-const cellRef = useTemplateRef<HTMLDivElement[]>("cell");
+const cellRef = useTemplateRef<HTMLDivElement>("cell");
 
 if (props.textEllipsis) {
   useMutationObserver(cellRef, setCellTitle, {
@@ -67,7 +67,7 @@ const toggleIconConfig = computed(() => {
 
 onMounted(() => {
   if (cellRef.value) {
-    cellRef.value.forEach(setElementTitle);
+    setElementTitle(cellRef.value);
   }
 });
 
