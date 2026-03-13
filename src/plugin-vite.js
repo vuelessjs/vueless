@@ -104,6 +104,7 @@ export const Vueless = function (options = {}) {
     config: () => ({
       define: {
         "process.env": {},
+        __VUELESS_DEV__: process.argv.includes("--watch") || process.argv.includes("-w"),
       },
       optimizeDeps: {
         include: isInternalEnv
