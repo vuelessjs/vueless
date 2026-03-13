@@ -3,6 +3,7 @@ export default /*tw*/ {
     base: `
       {UDropdown}
       inline-flex gap-0.5 items-center justify-between rounded-small h-max
+      outline-solid outline-transparent
       focus-visible:outline-offset-4
     `,
     defaults: {
