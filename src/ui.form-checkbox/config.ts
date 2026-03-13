@@ -12,7 +12,7 @@ export default /*tw*/ {
   },
   checkbox: {
     base: `
-      {>checkboxBase} ml-0 bg-default border border-solid border-default outline-transparent
+      {>checkboxBase} ml-0 bg-default border border-solid border-default outline-solid outline-transparent
       appearance-none p-0 print:color-adjust-exact inline-block align-middle bg-origin-border select-none shrink-0
       hover:border-lifted
       active:border-{color} active:bg-{color}/15

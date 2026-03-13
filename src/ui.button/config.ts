@@ -2,7 +2,7 @@ export default /*tw*/ {
   button: {
     base: `
       flex items-center justify-center font-medium leading-snug! whitespace-nowrap
-      border border-solid transition cursor-pointer
+      border border-solid outline-solid outline-transparent transition cursor-pointer
       focus-visible:outline-medium focus-visible:outline-offset-2 focus-visible:outline-{color}
       disabled:cursor-not-allowed disabled:outline-0 disabled:outline-offset-0
     `,
