@@ -1,7 +1,7 @@
 export default /*tw*/ {
   wrapper: {
     base: `
-      relative inline-block h-max rounded-medium transition cursor-pointer outline-transparent
+      relative inline-block h-max rounded-medium transition cursor-pointer outline-solid outline-transparent
       focus-visible:outline-medium focus-visible:outline-offset-2 focus-visible:outline-primary`,
     variants: {
       disabled: {

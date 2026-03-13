@@ -58,7 +58,7 @@ export default /*tw*/ {
     variants: {
       split: {
         false: "border-0",
-        true: "border border-primary/75 outline-small outline-primary/75",
+        true: "border border-primary/75 outline-solid outline-small outline-primary/75",
       },
     },
     defaults: {
