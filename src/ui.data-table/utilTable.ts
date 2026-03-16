@@ -7,13 +7,11 @@ export function normalizeColumns(columns: Column[]): ColumnObject[] {
 }
 
 export function mapRowColumns(row: Row, columns: ColumnObject[]): RowData {
-  const visibleKeys = new Set(columns.filter((col) => col.isShown !== false).map((col) => col.key));
-
   const result: RowData = {};
 
-  for (const key of Object.keys(row)) {
-    if (visibleKeys.has(key)) {
-      result[key] = row[key];
+  for (const col of columns) {
+    if (col.isShown !== false) {
+      result[col.key] = row[col.key];
     }
   }
 

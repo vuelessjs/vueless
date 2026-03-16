@@ -48,7 +48,7 @@ export function useUI<T>(defaultConfig: T, mutatedProps?: MutatedProps, topLevel
 
   const firstClassKey = Object.keys(defaultConfig || {})[0];
   const config = ref({}) as Ref<ComponentConfigFull<T>>;
-  const isDev = import.meta.env?.DEV;
+  const isDev = import.meta.env?.DEV || __VUELESS_DEV__;
   const isUnstyled = Boolean(vuelessConfig.unstyled);
 
   /* Hoist shared reactive primitives — create once, share across all keys. */
