@@ -44,6 +44,7 @@ onMounted(() => {
   window.addEventListener("notifyEnd", onNotifyEnd);
   window.addEventListener("notifyClearAll", onClearAll);
 
+  setPosition();
   waitForPageElement();
 });
 
