@@ -718,12 +718,7 @@ const {
                   :key="index"
                   v-bind="selectedLabelAttrs"
                 >
-                  <UBadge
-                    :title="option[labelKey]"
-                    :size="size"
-                    variant="subtle"
-                    v-bind="badgeLabelAttrs"
-                  >
+                  <UBadge :title="option[labelKey]" :size="size" v-bind="badgeLabelAttrs">
                     <div v-bind="selectedLabelTextAttrs">
                       <!--
                         @slot Use it to customize selected option.
