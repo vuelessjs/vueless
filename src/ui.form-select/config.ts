@@ -76,7 +76,12 @@ export default /*tw*/ {
     ],
   },
   counter: "",
-  badgeLabel: "{UBadge} py-0.5 px-1.5 gap-0.5 rounded-small max-w-full",
+  badgeLabel: {
+    base: "{UBadge} py-0.5 px-1.5 gap-0.5 rounded-small max-w-full",
+    defaults: {
+      variant: "subtle",
+    },
+  },
   badgeClearIcon: {
     base: "{>clearIcon} -mr-1",
     defaults: {
