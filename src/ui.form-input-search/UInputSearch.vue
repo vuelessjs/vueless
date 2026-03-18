@@ -138,6 +138,7 @@ const {
     :placeholder="placeholder"
     inputmode="search"
     :left-icon="leftIcon"
+    :autocomplete="false"
     v-bind="searchButtonLabel ? searchInputWithButtonAttrs : searchInputAttrs"
     :data-test="getDataTest()"
     @update:model-value="onUpdateValue"
