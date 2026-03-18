@@ -885,13 +885,14 @@ const {
           <slot name="option" :option="option" :index="index" />
         </template>
 
-        <template #after-option="{ option, index }">
+        <template #after-option="{ option, selected, index }">
           <!--
             @slot Use it to add something after option.
             @binding {object} option
+            @binding {boolean} selected
             @binding {number} index
           -->
-          <slot name="after-option" :option="option" :index="index" />
+          <slot name="after-option" :option="option" :selected="selected" :index="index" />
         </template>
 
         <template #empty>

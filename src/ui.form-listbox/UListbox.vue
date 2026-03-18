@@ -120,7 +120,7 @@ const getOptionAriaSelected = (option: Option) => {
   if (option && option.groupLabel) return undefined;
   if (option.divider) return undefined;
 
-  return !!isSelectedOption(option);
+  return isSelectedOption(option);
 };
 
 const filteredOptions = computed(() => {
@@ -285,7 +285,7 @@ function select(option: Option, keyCode?: string) {
 
 function isSelectedOption(option: Option) {
   if (props.multiple) {
-    return (selectedValue.value as SelectedValue[]).find((selected) =>
+    return !!(selectedValue.value as SelectedValue[]).find((selected) =>
       isEqual(selected, option[props.valueKey]),
     );
   }
@@ -515,9 +515,15 @@ const {
           <!--
             @slot Use it to add something after the option.
             @binding {object} option
+            @binding {boolean} selected
             @binding {number} index
           -->
-          <slot name="after-option" :option="option" :index="index">
+          <slot
+            name="after-option"
+            :option="option"
+            :selected="isSelectedOption(option)"
+            :index="index"
+          >
             <UIcon
               v-if="isSelectedOption(option)"
               color="inherit"
