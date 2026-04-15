@@ -83,7 +83,7 @@ jobs:
           git config user.email "${GITHUB_ACTOR}@users.noreply.github.com"
       # OIDC requires npm v11.5.1 or later.
       # Node.js v20 comes with v10.8, so we need to update it:
-      - run: npm install -g npm@latest
+      - run: npm install -g npm@~11.10.0
       - run: npm ci
       - run: npm run release:prepare
       - run: npm run release:beta
@@ -124,7 +124,7 @@ jobs:
           git config user.email "${GITHUB_ACTOR}@users.noreply.github.com"
       # OIDC requires npm v11.5.1 or later.
       # Node.js v20 comes with v10.8, so we need to update it:
-      - run: npm install -g npm@latest
+      - run: npm install -g npm@~11.10.0
       - run: npm ci
       - run: npm run release:prepare
       - run: npm run release:${{ github.event.inputs.release_type }}
@@ -175,7 +175,7 @@ jobs:
         with:
           node-version: 22
           cache: 'npm'
-      - run: npm install -g npm@latest
+      - run: npm install -g npm@~11.10.0
       - run: npm ci
       - run: npm install -D @vueless/storybook@latest
       - run: |
