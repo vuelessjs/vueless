@@ -80,6 +80,9 @@ defineExpose({
 const mutatedProps = computed(() => ({
   error: Boolean(props.error) && !props.disabled,
   label: Boolean(props.label) || hasSlotContent(slots["label"], { label: props.label }),
+  description:
+    Boolean(props.description) ||
+    hasSlotContent(slots["description"], { description: props.description }),
   for: Boolean(props.for),
 }));
 
@@ -100,7 +103,15 @@ const { getDataTest, wrapperAttrs, contentAttrs, labelAttrs, descriptionAttrs, e
     </div>
 
     <!-- `v-bind` isn't assigned, because the div is system -->
-    <div v-if="label || hasSlotContent(slots['label'], { label }) || error || description">
+    <div
+      v-if="
+        label ||
+        hasSlotContent(slots['label'], { label }) ||
+        error ||
+        description ||
+        hasSlotContent(slots['description'], { description })
+      "
+    >
       <component
         :is="tag"
         v-if="label || hasSlotContent(slots['label'], { label })"
@@ -128,11 +139,20 @@ const { getDataTest, wrapperAttrs, contentAttrs, labelAttrs, descriptionAttrs, e
       />
 
       <div
-        v-if="description && !isShownError"
+        v-if="
+          (description || hasSlotContent(slots['description'], { description })) && !isShownError
+        "
         v-bind="descriptionAttrs"
         :data-test="getDataTest('description')"
-        v-text="description"
-      />
+      >
+        <!--
+          @slot Use this to add custom content instead of the description.
+          @binding {string} description
+        -->
+        <slot name="description" :description="description">
+          {{ description }}
+        </slot>
+      </div>
 
       <!-- @slot Use it to add something below the label content. -->
       <slot name="bottom" />
@@ -167,11 +187,18 @@ const { getDataTest, wrapperAttrs, contentAttrs, labelAttrs, descriptionAttrs, e
     <div v-if="isShownError" v-bind="errorAttrs" :data-test="getDataTest('error')" v-text="error" />
 
     <div
-      v-if="description && !isShownError"
+      v-if="(description || hasSlotContent(slots['description'], { description })) && !isShownError"
       v-bind="descriptionAttrs"
       :data-test="getDataTest('description')"
-      v-text="description"
-    />
+    >
+      <!--
+        @slot Use this to add custom content instead of the description.
+        @binding {string} description
+      -->
+      <slot name="description" :description="description">
+        {{ description }}
+      </slot>
+    </div>
 
     <!-- @slot Use it to add something below the label content. -->
     <slot name="bottom" />
