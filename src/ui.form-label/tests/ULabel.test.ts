@@ -302,6 +302,25 @@ describe("ULabel.vue", () => {
       expect(labelElement.text()).not.toContain(defaultLabel);
     });
 
+    it("Description – renders content from description slot", () => {
+      const slotContent = "Custom description";
+      const defaultDescription = "Default description";
+
+      const component = mount(ULabel, {
+        props: {
+          description: defaultDescription,
+        },
+        slots: {
+          description: slotContent,
+        },
+      });
+
+      const descriptionElement = component.find("[vl-key='description']");
+
+      expect(descriptionElement.text()).toBe(slotContent);
+      expect(descriptionElement.text()).not.toContain(defaultDescription);
+    });
+
     it("Label – exposes label content", () => {
       const defaultLabel = "Label Content";
       const slotContent = "Modified Label Content";
