@@ -26,9 +26,9 @@ export interface Props {
   description?: string;
 
   /**
-   * Label error message.
+   * Label error message, or `true` for error styling without showing message text.
    */
-  error?: string;
+  error?: string | boolean;
 
   /**
    * Label align.

@@ -3,6 +3,7 @@ import { describe, it, expect } from "vitest";
 
 import UDatePickerRange from "../UDatePickerRange.vue";
 import UInput from "../../ui.form-input/UInput.vue";
+import ULabel from "../../ui.form-label/ULabel.vue";
 import UButton from "../../ui.button/UButton.vue";
 import UDatePickerRangePeriodMenu from "../UDatePickerRangePeriodMenu.vue";
 
@@ -582,6 +583,26 @@ describe("UDatePickerRange.vue", () => {
       });
 
       expect(component.text()).toContain(`Icon: ${rightIcon}`);
+    });
+
+    it("Description – renders custom content from description slot", () => {
+      const customDescription = "Custom description content";
+
+      const component = mount(UDatePickerRange, {
+        props: {
+          variant: "input",
+          modelValue: { from: null, to: null },
+          description: "Default description",
+        },
+        slots: {
+          description: customDescription,
+        },
+      });
+
+      const labelComponent = component.getComponent(UInput).getComponent(ULabel);
+      const descriptionElement = labelComponent.find("[vl-child-key='description']");
+
+      expect(descriptionElement.text()).toBe(customDescription);
     });
   });
 

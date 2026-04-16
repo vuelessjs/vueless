@@ -4,6 +4,7 @@ import { nextTick } from "vue";
 
 import UDatePicker from "../UDatePicker.vue";
 import UInput from "../../ui.form-input/UInput.vue";
+import ULabel from "../../ui.form-label/ULabel.vue";
 import UIcon from "../../ui.image-icon/UIcon.vue";
 
 import type { Props } from "../types";
@@ -475,6 +476,25 @@ describe("UDatePicker.vue", () => {
       });
 
       expect(component.find(`.${slotClass}`).exists()).toBe(true);
+    });
+
+    it("Description – renders custom content from description slot", () => {
+      const customDescription = "Custom description content";
+
+      const component = mount(UDatePicker, {
+        props: {
+          modelValue: new Date(),
+          description: "Default description",
+        },
+        slots: {
+          description: customDescription,
+        },
+      });
+
+      const labelComponent = component.getComponent(UInput).getComponent(ULabel);
+      const descriptionElement = labelComponent.find("[vl-child-key='description']");
+
+      expect(descriptionElement.text()).toBe(customDescription);
     });
   });
 

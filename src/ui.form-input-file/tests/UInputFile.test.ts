@@ -292,6 +292,24 @@ describe("UInputFile.vue", () => {
       expect(labelElement.text()).toBe(`Custom ${defaultLabel}`);
     });
 
+    it("Description – renders custom content from description slot", () => {
+      const customDescription = "Custom description content";
+
+      const component = mount(UInputFile, {
+        props: {
+          description: "Default description",
+        },
+        slots: {
+          description: customDescription,
+        },
+      });
+
+      const labelComponent = component.getComponent(ULabel);
+      const descriptionElement = labelComponent.find("[vl-child-key='description']");
+
+      expect(descriptionElement.text()).toBe(customDescription);
+    });
+
     it("Top – renders custom content from top slot", () => {
       const testClass = "custom-top";
 

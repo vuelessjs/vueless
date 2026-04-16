@@ -52,7 +52,7 @@ export interface Props {
   /**
    * Radio group error message.
    */
-  error?: string;
+  error?: string | boolean;
 
   /**
    * Radio size.

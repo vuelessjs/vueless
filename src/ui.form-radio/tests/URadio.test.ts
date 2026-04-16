@@ -206,6 +206,24 @@ describe("URadio.vue", () => {
       expect(labelElement.text()).toBe(`Modified ${defaultLabel}`);
     });
 
+    it("Description – renders custom content from description slot", () => {
+      const customDescription = "Custom description content";
+
+      const component = mount(URadio, {
+        props: {
+          description: "Default description",
+        },
+        slots: {
+          description: customDescription,
+        },
+      });
+
+      const labelComponent = component.getComponent(ULabel);
+      const descriptionElement = labelComponent.find("[vl-child-key='description']");
+
+      expect(descriptionElement.text()).toBe(customDescription);
+    });
+
     it("Bottom – renders custom content from bottom slot", () => {
       const customBottomContent = "Custom Bottom Content";
 
