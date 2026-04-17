@@ -179,6 +179,14 @@ const { getDataTest, numberInputAttrs } = useUI<Config>(defaultConfig);
     @blur="onBlur"
     @input="onInput"
   >
+    <template #description>
+      <!--
+        @slot Use this to add custom content instead of the description.
+        @binding {string} description
+      -->
+      <slot name="description" :description="description" />
+    </template>
+
     <template #left>
       <!--
         @slot Use it to add something left.

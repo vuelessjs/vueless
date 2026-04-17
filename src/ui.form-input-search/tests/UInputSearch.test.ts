@@ -2,6 +2,7 @@ import { flushPromises, mount } from "@vue/test-utils";
 import { describe, it, expect, vi } from "vitest";
 
 import UInputSearch from "../UInputSearch.vue";
+import ULabel from "../../ui.form-label/ULabel.vue";
 import UInput from "../../ui.form-input/UInput.vue";
 import UIcon from "../../ui.image-icon/UIcon.vue";
 import UButton from "../../ui.button/UButton.vue";
@@ -300,6 +301,24 @@ describe("UInputSearch.vue", () => {
       });
 
       expect(component.getComponent(UButton).props("label")).toBe(searchButtonLabel);
+    });
+
+    it("Description – renders custom content from description slot", () => {
+      const customDescription = "Custom description content";
+
+      const component = mount(UInputSearch, {
+        props: {
+          description: "Default description",
+        },
+        slots: {
+          description: customDescription,
+        },
+      });
+
+      const labelComponent = component.getComponent(UInput).getComponent(ULabel);
+      const descriptionElement = labelComponent.find("[vl-child-key='description']");
+
+      expect(descriptionElement.text()).toBe(customDescription);
     });
   });
 

@@ -39,7 +39,7 @@ export interface Props {
   /**
    * Select error message.
    */
-  error?: string;
+  error?: string | boolean;
 
   /**
    * Select size.

@@ -124,6 +124,14 @@ const { getDataTest, radioLabelAttrs, radioAttrs } = useUI<Config>(defaultConfig
       <slot name="label" :label="label" />
     </template>
 
+    <template #description>
+      <!--
+        @slot Use this to add custom content instead of the description.
+        @binding {string} description
+      -->
+      <slot name="description" :description="description" />
+    </template>
+
     <input
       :id="elementId"
       type="radio"

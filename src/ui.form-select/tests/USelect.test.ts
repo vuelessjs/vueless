@@ -587,6 +587,25 @@ describe("USelect.vue", () => {
       expect(component.text()).toContain(`Modified ${defaultLabel}`);
     });
 
+    it("Description – renders custom content from description slot", () => {
+      const customDescription = "Custom description content";
+
+      const component = mount(USelect, {
+        props: {
+          description: "Default description",
+          options: defaultOptions,
+        },
+        slots: {
+          description: customDescription,
+        },
+      });
+
+      const labelComponent = component.getComponent(ULabel);
+      const descriptionElement = labelComponent.find("[vl-child-key='description']");
+
+      expect(descriptionElement.text()).toBe(customDescription);
+    });
+
     it("Left – renders custom content from left slot", () => {
       const slotContent = "Left Slot Content";
 

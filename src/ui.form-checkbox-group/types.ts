@@ -39,7 +39,7 @@ export interface Props {
   /**
    * Checkbox group error message.
    */
-  error?: string;
+  error?: string | boolean;
 
   /**
    * Checkbox group size.

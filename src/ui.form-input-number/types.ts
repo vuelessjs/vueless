@@ -52,7 +52,7 @@ export interface Props {
   /**
    * Error message.
    */
-  error?: string;
+  error?: string | boolean;
 
   /**
    * Input size.

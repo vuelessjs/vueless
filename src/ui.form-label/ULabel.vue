@@ -51,8 +51,12 @@ const wrapperElement = computed(() => {
   return wrapperRef.value;
 });
 
-const isShownError = computed(() => {
+const hasErrorState = computed(() => {
   return Boolean(props.error) && !props.disabled;
+});
+
+const showErrorMessage = computed(() => {
+  return hasErrorState.value && typeof props.error !== "boolean";
 });
 
 function onClick(event: MouseEvent) {
@@ -78,7 +82,7 @@ defineExpose({
  * Applies: `class`, `config`, redefined default `props` and dev `vl-...` attributes.
  */
 const mutatedProps = computed(() => ({
-  error: Boolean(props.error) && !props.disabled,
+  error: hasErrorState.value,
   label: Boolean(props.label) || hasSlotContent(slots["label"], { label: props.label }),
   description:
     Boolean(props.description) ||
@@ -132,7 +136,7 @@ const { getDataTest, wrapperAttrs, contentAttrs, labelAttrs, descriptionAttrs, e
       </component>
 
       <div
-        v-if="isShownError"
+        v-if="showErrorMessage"
         v-bind="errorAttrs"
         :data-test="getDataTest('error')"
         v-text="error"
@@ -140,7 +144,7 @@ const { getDataTest, wrapperAttrs, contentAttrs, labelAttrs, descriptionAttrs, e
 
       <div
         v-if="
-          (description || hasSlotContent(slots['description'], { description })) && !isShownError
+          (description || hasSlotContent(slots['description'], { description })) && !hasErrorState
         "
         v-bind="descriptionAttrs"
         :data-test="getDataTest('description')"
@@ -184,10 +188,17 @@ const { getDataTest, wrapperAttrs, contentAttrs, labelAttrs, descriptionAttrs, e
       <slot />
     </div>
 
-    <div v-if="isShownError" v-bind="errorAttrs" :data-test="getDataTest('error')" v-text="error" />
+    <div
+      v-if="showErrorMessage"
+      v-bind="errorAttrs"
+      :data-test="getDataTest('error')"
+      v-text="error"
+    />
 
     <div
-      v-if="(description || hasSlotContent(slots['description'], { description })) && !isShownError"
+      v-if="
+        (description || hasSlotContent(slots['description'], { description })) && !hasErrorState
+      "
       v-bind="descriptionAttrs"
       :data-test="getDataTest('description')"
     >

@@ -81,6 +81,14 @@ const { getDataTest, filesLabelAttrs, itemsAttrs, itemAttrs } = useUI<Config>(de
       <slot name="label" :label="label" />
     </template>
 
+    <template #description>
+      <!--
+        @slot Use this to add custom content instead of the description.
+        @binding {string} description
+      -->
+      <slot name="description" :description="description" />
+    </template>
+
     <div ref="items" v-bind="itemsAttrs">
       <!-- @slot Use it to add UFile. -->
       <slot>
