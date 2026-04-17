@@ -3,6 +3,7 @@ import { describe, it, expect } from "vitest";
 
 import UInputPassword from "../UInputPassword.vue";
 import UInput from "../../ui.form-input/UInput.vue";
+import ULabel from "../../ui.form-label/ULabel.vue";
 import UIcon from "../../ui.image-icon/UIcon.vue";
 
 import type { Props } from "../types";
@@ -298,6 +299,24 @@ describe("UInputPassword.vue", () => {
       await toggleButton.trigger("click");
 
       expect(component.html()).toContain(`Icon: ${visibilityIcon}`);
+    });
+
+    it("Description – renders custom content from description slot", () => {
+      const customDescription = "Custom description content";
+
+      const component = mount(UInputPassword, {
+        props: {
+          description: "Default description",
+        },
+        slots: {
+          description: customDescription,
+        },
+      });
+
+      const labelComponent = component.getComponent(UInput).getComponent(ULabel);
+      const descriptionElement = labelComponent.find("[vl-child-key='description']");
+
+      expect(descriptionElement.text()).toBe(customDescription);
     });
   });
 });

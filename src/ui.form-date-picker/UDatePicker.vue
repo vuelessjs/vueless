@@ -304,6 +304,14 @@ watchEffect(() => {
       @keydown.esc="deactivate"
       @keydown="onTextInputKeyDown"
     >
+      <template #description>
+        <!--
+          @slot Use this to add custom content instead of the description.
+          @binding {string} description
+        -->
+        <slot name="description" :description="description" />
+      </template>
+
       <template #left="{ iconName }">
         <!--
           @slot Use it add something before the date.

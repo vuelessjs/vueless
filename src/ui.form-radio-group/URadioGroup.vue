@@ -79,6 +79,14 @@ const { getDataTest, groupLabelAttrs, listAttrs, groupRadioAttrs } = useUI<Confi
       <slot name="label" :label="label" />
     </template>
 
+    <template #description>
+      <!--
+        @slot Use this to add custom content instead of the description.
+        @binding {string} description
+      -->
+      <slot name="description" :description="description" />
+    </template>
+
     <div ref="list" v-bind="listAttrs">
       <!-- @slot Use it to add URadio directly. -->
       <slot>

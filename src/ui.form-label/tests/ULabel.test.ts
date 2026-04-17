@@ -97,6 +97,20 @@ describe("ULabel.vue", () => {
       expect(errorElement.text()).toBe(error);
     });
 
+    it("Error – boolean error applies error styling without rendering error text", () => {
+      const errorClasses = "text-error";
+
+      const component = mount(ULabel, {
+        props: {
+          error: true,
+          label: "Label",
+        },
+      });
+
+      expect(component.find("[vl-key='label']").attributes("class")).toContain(errorClasses);
+      expect(component.find("[vl-key='error']").exists()).toBe(false);
+    });
+
     it("Align – applies correct classes for align prop", () => {
       const alignCases = {
         top: "flex-col",

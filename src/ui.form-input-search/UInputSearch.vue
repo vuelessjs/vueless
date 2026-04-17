@@ -144,6 +144,14 @@ const {
     @update:model-value="onUpdateValue"
     @keyup.enter="onKeyupEnter"
   >
+    <template #description>
+      <!--
+        @slot Use this to add custom content instead of the description.
+        @binding {string} description
+      -->
+      <slot name="description" :description="description" />
+    </template>
+
     <template #left>
       <!-- @slot Use it to add something before the text. -->
       <slot name="left" />

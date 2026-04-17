@@ -125,6 +125,14 @@ const { getDataTest, config, passwordInputAttrs, passwordIconAttrs, passwordIcon
       <slot name="label" :label="label" />
     </template>
 
+    <template #description>
+      <!--
+        @slot Use this to add custom content instead of the description.
+        @binding {string} description
+      -->
+      <slot name="description" :description="description" />
+    </template>
+
     <template #right>
       <div v-bind="passwordIconWrapperAttrs" @click="onClickShowPassword">
         <!--
