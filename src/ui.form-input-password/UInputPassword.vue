@@ -133,6 +133,14 @@ const { getDataTest, config, passwordInputAttrs, passwordIconAttrs, passwordIcon
       <slot name="description" :description="description" />
     </template>
 
+    <template #error>
+      <!--
+        @slot Use this to add custom content instead of the error message.
+        @binding {string | boolean} error
+      -->
+      <slot name="error" :error="error" />
+    </template>
+
     <template #right>
       <div v-bind="passwordIconWrapperAttrs" @click="onClickShowPassword">
         <!--

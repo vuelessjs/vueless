@@ -312,6 +312,14 @@ watchEffect(() => {
         <slot name="description" :description="description" />
       </template>
 
+      <template #error>
+        <!--
+          @slot Use this to add custom content instead of the error message.
+          @binding {string | boolean} error
+        -->
+        <slot name="error" :error="error" />
+      </template>
+
       <template #left="{ iconName }">
         <!--
           @slot Use it add something before the date.

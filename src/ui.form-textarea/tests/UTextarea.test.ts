@@ -448,6 +448,24 @@ describe("UTextarea.vue", () => {
       expect(descriptionElement.text()).toBe(customDescription);
     });
 
+    it("Error – renders custom content from error slot", () => {
+      const customError = "Custom error content";
+
+      const component = mount(UTextarea, {
+        props: {
+          error: "Default error message",
+        },
+        slots: {
+          error: customError,
+        },
+      });
+
+      const labelComponent = component.getComponent(ULabel);
+      const errorElement = labelComponent.find("[vl-child-key='error']");
+
+      expect(errorElement.text()).toBe(customError);
+    });
+
     it("Left – renders custom content from left slot", () => {
       const slotText = "Custom Left Content";
       const testClass = "custom-left";

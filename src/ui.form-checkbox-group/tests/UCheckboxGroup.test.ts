@@ -307,6 +307,24 @@ describe("UCheckboxGroup.vue", () => {
       expect(descriptionElement.text()).toBe(customDescription);
     });
 
+    it("Error – renders custom content from error slot", () => {
+      const customError = "Custom error content";
+
+      const component = mount(UCheckboxGroup, {
+        props: {
+          error: "Default error message",
+        },
+        slots: {
+          error: customError,
+        },
+      });
+
+      const labelComponent = component.getComponent(ULabel);
+      const errorElement = labelComponent.find("[vl-child-key='error']");
+
+      expect(errorElement.text()).toBe(customError);
+    });
+
     it("Default slot – renders custom UCheckbox components", () => {
       const component = mount(UCheckboxGroup, {
         props: {
