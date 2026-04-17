@@ -318,5 +318,23 @@ describe("UInputPassword.vue", () => {
 
       expect(descriptionElement.text()).toBe(customDescription);
     });
+
+    it("Error – renders custom content from error slot", () => {
+      const customError = "Custom error content";
+
+      const component = mount(UInputPassword, {
+        props: {
+          error: "Default error message",
+        },
+        slots: {
+          error: customError,
+        },
+      });
+
+      const labelComponent = component.getComponent(UInput).getComponent(ULabel);
+      const errorElement = labelComponent.find("[vl-child-key='error']");
+
+      expect(errorElement.text()).toBe(customError);
+    });
   });
 });

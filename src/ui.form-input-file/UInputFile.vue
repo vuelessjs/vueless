@@ -321,6 +321,14 @@ const {
       <slot name="description" :description="description" />
     </template>
 
+    <template #error>
+      <!--
+        @slot Use this to add custom content instead of the error message.
+        @binding {string | boolean} error
+      -->
+      <slot name="error" :error="currentError" />
+    </template>
+
     <div ref="dropZone" :ondrop="onDrop" v-bind="dropzoneAttrs">
       <UText v-if="hasSlotContent($slots['top'])" :size="size" v-bind="descriptionTopAttrs">
         <!-- @slot Use it to add something above the component content. -->

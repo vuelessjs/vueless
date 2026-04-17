@@ -310,6 +310,24 @@ describe("UInputFile.vue", () => {
       expect(descriptionElement.text()).toBe(customDescription);
     });
 
+    it("Error – renders custom content from error slot", () => {
+      const customError = "Custom error content";
+
+      const component = mount(UInputFile, {
+        props: {
+          error: "Default error message",
+        },
+        slots: {
+          error: customError,
+        },
+      });
+
+      const labelComponent = component.getComponent(ULabel);
+      const errorElement = labelComponent.find("[vl-child-key='error']");
+
+      expect(errorElement.text()).toBe(customError);
+    });
+
     it("Top – renders custom content from top slot", () => {
       const testClass = "custom-top";
 
