@@ -111,6 +111,25 @@ describe("ULabel.vue", () => {
       expect(component.find("[vl-key='error']").exists()).toBe(false);
     });
 
+    it("Error – renders content from error slot", () => {
+      const slotContent = "Custom error from slot";
+      const defaultError = "Default error";
+
+      const component = mount(ULabel, {
+        props: {
+          error: defaultError,
+        },
+        slots: {
+          error: slotContent,
+        },
+      });
+
+      const errorElement = component.find("[vl-key='error']");
+
+      expect(errorElement.text()).toBe(slotContent);
+      expect(errorElement.text()).not.toContain(defaultError);
+    });
+
     it("Align – applies correct classes for align prop", () => {
       const alignCases = {
         top: "flex-col",

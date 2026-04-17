@@ -55,8 +55,17 @@ const hasErrorState = computed(() => {
   return Boolean(props.error) && !props.disabled;
 });
 
-const showErrorMessage = computed(() => {
-  return hasErrorState.value && typeof props.error !== "boolean";
+const errorFallbackText = computed(() => {
+  return typeof props.error === "string" ? props.error : "";
+});
+
+const showErrorBlock = computed(() => {
+  if (!hasErrorState.value) return false;
+
+  return (
+    hasSlotContent(slots["error"], { error: props.error }) ||
+    (typeof props.error !== "boolean" && Boolean(props.error))
+  );
 });
 
 function onClick(event: MouseEvent) {
@@ -112,6 +121,7 @@ const { getDataTest, wrapperAttrs, contentAttrs, labelAttrs, descriptionAttrs, e
         label ||
         hasSlotContent(slots['label'], { label }) ||
         error ||
+        hasSlotContent(slots['error'], { error }) ||
         description ||
         hasSlotContent(slots['description'], { description })
       "
@@ -135,12 +145,15 @@ const { getDataTest, wrapperAttrs, contentAttrs, labelAttrs, descriptionAttrs, e
         </slot>
       </component>
 
-      <div
-        v-if="showErrorMessage"
-        v-bind="errorAttrs"
-        :data-test="getDataTest('error')"
-        v-text="error"
-      />
+      <div v-if="showErrorBlock" v-bind="errorAttrs" :data-test="getDataTest('error')">
+        <!--
+          @slot Use this to add custom content instead of the error message.
+          @binding {string | boolean} error
+        -->
+        <slot name="error" :error="error">
+          {{ errorFallbackText }}
+        </slot>
+      </div>
 
       <div
         v-if="
@@ -188,12 +201,15 @@ const { getDataTest, wrapperAttrs, contentAttrs, labelAttrs, descriptionAttrs, e
       <slot />
     </div>
 
-    <div
-      v-if="showErrorMessage"
-      v-bind="errorAttrs"
-      :data-test="getDataTest('error')"
-      v-text="error"
-    />
+    <div v-if="showErrorBlock" v-bind="errorAttrs" :data-test="getDataTest('error')">
+      <!--
+        @slot Use this to add custom content instead of the error message.
+        @binding {string | boolean} error
+      -->
+      <slot name="error" :error="error">
+        {{ errorFallbackText }}
+      </slot>
+    </div>
 
     <div
       v-if="
