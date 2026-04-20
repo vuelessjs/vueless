@@ -303,6 +303,44 @@ describe("URadioGroup.vue", () => {
       expect(labelElement.text()).toBe(`Modified ${defaultLabel}`);
     });
 
+    it("Description – renders custom content from description slot", () => {
+      const customDescription = "Custom description content";
+
+      const component = mount(URadioGroup, {
+        props: {
+          description: "Default description",
+          name: defaultName,
+        },
+        slots: {
+          description: customDescription,
+        },
+      });
+
+      const labelComponent = component.getComponent(ULabel);
+      const descriptionElement = labelComponent.find("[vl-child-key='description']");
+
+      expect(descriptionElement.text()).toBe(customDescription);
+    });
+
+    it("Error – renders custom content from error slot", () => {
+      const customError = "Custom error content";
+
+      const component = mount(URadioGroup, {
+        props: {
+          error: "Default error message",
+          name: defaultName,
+        },
+        slots: {
+          error: customError,
+        },
+      });
+
+      const labelComponent = component.getComponent(ULabel);
+      const errorElement = labelComponent.find("[vl-child-key='error']");
+
+      expect(errorElement.text()).toBe(customError);
+    });
+
     it("Default slot – renders custom URadio components", () => {
       const component = mount(URadioGroup, {
         props: {

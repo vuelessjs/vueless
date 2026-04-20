@@ -51,8 +51,21 @@ const wrapperElement = computed(() => {
   return wrapperRef.value;
 });
 
-const isShownError = computed(() => {
+const hasErrorState = computed(() => {
   return Boolean(props.error) && !props.disabled;
+});
+
+const errorFallbackText = computed(() => {
+  return typeof props.error === "string" ? props.error : "";
+});
+
+const showErrorBlock = computed(() => {
+  if (!hasErrorState.value) return false;
+
+  return (
+    hasSlotContent(slots["error"], { error: props.error }) ||
+    (typeof props.error !== "boolean" && Boolean(props.error))
+  );
 });
 
 function onClick(event: MouseEvent) {
@@ -78,7 +91,7 @@ defineExpose({
  * Applies: `class`, `config`, redefined default `props` and dev `vl-...` attributes.
  */
 const mutatedProps = computed(() => ({
-  error: Boolean(props.error) && !props.disabled,
+  error: hasErrorState.value,
   label: Boolean(props.label) || hasSlotContent(slots["label"], { label: props.label }),
   description:
     Boolean(props.description) ||
@@ -108,6 +121,7 @@ const { getDataTest, wrapperAttrs, contentAttrs, labelAttrs, descriptionAttrs, e
         label ||
         hasSlotContent(slots['label'], { label }) ||
         error ||
+        hasSlotContent(slots['error'], { error }) ||
         description ||
         hasSlotContent(slots['description'], { description })
       "
@@ -131,16 +145,19 @@ const { getDataTest, wrapperAttrs, contentAttrs, labelAttrs, descriptionAttrs, e
         </slot>
       </component>
 
-      <div
-        v-if="isShownError"
-        v-bind="errorAttrs"
-        :data-test="getDataTest('error')"
-        v-text="error"
-      />
+      <div v-if="showErrorBlock" v-bind="errorAttrs" :data-test="getDataTest('error')">
+        <!--
+          @slot Use this to add custom content instead of the error message.
+          @binding {string | boolean} error
+        -->
+        <slot name="error" :error="error">
+          {{ errorFallbackText }}
+        </slot>
+      </div>
 
       <div
         v-if="
-          (description || hasSlotContent(slots['description'], { description })) && !isShownError
+          (description || hasSlotContent(slots['description'], { description })) && !hasErrorState
         "
         v-bind="descriptionAttrs"
         :data-test="getDataTest('description')"
@@ -184,10 +201,20 @@ const { getDataTest, wrapperAttrs, contentAttrs, labelAttrs, descriptionAttrs, e
       <slot />
     </div>
 
-    <div v-if="isShownError" v-bind="errorAttrs" :data-test="getDataTest('error')" v-text="error" />
+    <div v-if="showErrorBlock" v-bind="errorAttrs" :data-test="getDataTest('error')">
+      <!--
+        @slot Use this to add custom content instead of the error message.
+        @binding {string | boolean} error
+      -->
+      <slot name="error" :error="error">
+        {{ errorFallbackText }}
+      </slot>
+    </div>
 
     <div
-      v-if="(description || hasSlotContent(slots['description'], { description })) && !isShownError"
+      v-if="
+        (description || hasSlotContent(slots['description'], { description })) && !hasErrorState
+      "
       v-bind="descriptionAttrs"
       :data-test="getDataTest('description')"
     >
