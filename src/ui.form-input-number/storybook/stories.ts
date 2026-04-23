@@ -14,6 +14,7 @@ import UButton from "../../ui.button/UButton.vue";
 import URow from "../../ui.container-row/URow.vue";
 import UDropdownButton from "../../ui.dropdown-button/UDropdownButton.vue";
 import UText from "../../ui.text-block/UText.vue";
+import ULink from "../../ui.button-link/ULink.vue";
 
 import type { Meta, StoryFn } from "@storybook/vue3-vite";
 import type { Props } from "../types";
@@ -200,7 +201,7 @@ export const IconProps: StoryFn<UInputNumberArgs> = (args) => ({
 });
 
 export const Slots: StoryFn<UInputNumberArgs> = (args) => ({
-  components: { UInputNumber, URow, UButton, UDropdownButton, UText },
+  components: { UInputNumber, URow, UCol, UButton, UDropdownButton, UText, ULink, UIcon },
   setup() {
     const currencies = [
       { label: "USD", value: "usd" },
@@ -209,42 +210,76 @@ export const Slots: StoryFn<UInputNumberArgs> = (args) => ({
     ];
 
     const currency = ref("usd");
+    const descriptionSlotValue = ref(0);
+    const errorSlotValue = ref(null);
 
-    return { args, currency, currencies };
+    return { args, currency, currencies, descriptionSlotValue, errorSlotValue };
   },
   template: `
-    <URow class="gap-4">
-      <UInputNumber
-        label="Left slot"
-        placeholder="Enter discount amount"
-        :config="{ numberInput: { wrapper: 'pl-0' } }"
-      >
-        <template #left>
-          <UDropdownButton
-            v-model="currency"
-            :options="currencies"
-            size="sm"
-            variant="soft"
-            class="rounded-r-none h-[49px]"
-          />
-        </template>
-      </UInputNumber>
+    <UCol class="gap-8">
+      <URow block>
+        <UInputNumber
+          label="Left slot"
+          placeholder="Enter discount amount"
+          :config="{ numberInput: { wrapper: 'pl-0' } }"
+        >
+          <template #left>
+            <UDropdownButton
+              v-model="currency"
+              :options="currencies"
+              size="sm"
+              variant="soft"
+              class="rounded-r-none h-[49px]"
+            />
+          </template>
+        </UInputNumber>
 
-      <UInputNumber
-        label="Right slot"
-        placeholder="Enter your annual payment"
-      >
-        <template #right>
-          <UText label="%, per year" variant="lifted" size="sm" :wrap="false" />
-        </template>
-      </UInputNumber>
-    </URow>
+        <UInputNumber
+          label="Right slot"
+          placeholder="Enter your annual payment"
+        >
+          <template #right>
+            <UText label="%, per year" variant="lifted" size="sm" :wrap="false" />
+          </template>
+        </UInputNumber>
+      </URow>
+
+      <URow block>
+        <UInputNumber v-model="descriptionSlotValue" label="Amount">
+          <template #description>
+            <URow align="center" gap="2xs" class="text-neutral">
+              <UIcon name="payments" size="xs" color="primary" />
+              <UText size="sm">
+                Net amount in
+                <ULink label="account currency" underlined size="sm" />.
+              </UText>
+            </URow>
+          </template>
+        </UInputNumber>
+
+        <UInputNumber
+          v-model="errorSlotValue"
+          label="Amount"
+          :error="true"
+        >
+          <template #error>
+            <URow align="center" gap="2xs">
+              <UIcon name="error" size="xs" color="error" />
+              <UText size="sm" color="error" :wrap="false">
+                Custom error —
+                <ULink label="currency help" underlined color="error" size="sm" />.
+              </UText>
+            </URow>
+          </template>
+        </UInputNumber>
+      </URow>
+    </UCol>
   `,
 });
 Slots.parameters = {
   docs: {
     story: {
-      height: "250px",
+      height: "300px",
     },
   },
 };

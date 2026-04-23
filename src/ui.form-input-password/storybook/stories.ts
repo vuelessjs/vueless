@@ -10,6 +10,9 @@ import {
 
 import UInputPassword from "../UInputPassword.vue";
 import UCol from "../../ui.container-col/UCol.vue";
+import UText from "../../ui.text-block/UText.vue";
+import ULink from "../../ui.button-link/ULink.vue";
+import UIcon from "../../ui.image-icon/UIcon.vue";
 import URow from "../../ui.container-row/URow.vue";
 import UButton from "../../ui.button/UButton.vue";
 import UDropdownButton from "../../ui.dropdown-button/UDropdownButton.vue";
@@ -139,69 +142,107 @@ export const IconProps: StoryFn<UInputPasswordArgs> = (args) => ({
 });
 
 export const Slots: StoryFn<UInputPasswordArgs> = (args) => ({
-  components: { UInputPassword, URow, UButton, UDropdownButton },
+  components: { UInputPassword, URow, UCol, UButton, UDropdownButton, UText, ULink, UIcon },
   setup() {
     const wifiTypes = [
       { label: "WPA2", value: "wpa2" },
       { label: "WPA3", value: "wpa3" },
     ];
 
-    return { args, wifiTypes };
+    const descriptionSlotValue = ref("");
+    const errorSlotValue = ref("");
+
+    return { args, wifiTypes, descriptionSlotValue, errorSlotValue };
   },
   template: `
-    <URow align="stretch">
-      <UInputPassword
-        v-bind="args"
-        v-model="args.modelValue"
-        label="Enter your password"
-        :config="{ passwordInput: { wrapper: 'pl-0' } }"
-      >
-        <template #label="{ label }">
-          {{ label }}
-          <span class="text-red-500">*</span>
-        </template>
+    <UCol class="gap-8">
+      <URow block>
+        <UInputPassword
+          v-bind="args"
+          v-model="args.modelValue"
+          label="Enter your password"
+          :config="{ passwordInput: { wrapper: 'pl-0' } }"
+        >
+          <template #label="{ label }">
+            {{ label }}
+            <span class="text-red-500">*</span>
+          </template>
 
-        <template #left>
-          <UDropdownButton
-            v-model="args.wifiType"
-            :options="wifiTypes"
-            label="Wifi type"
-            size="sm"
-            variant="soft"
-            class="rounded-r-none h-[49px]"
-          />
-        </template>
-      </UInputPassword>
+          <template #left>
+            <UDropdownButton
+              v-model="args.wifiType"
+              :options="wifiTypes"
+              label="Wifi type"
+              size="sm"
+              variant="soft"
+              class="rounded-r-none h-[49px]"
+            />
+          </template>
+        </UInputPassword>
 
-      <UInputPassword
-        v-bind="args"
-        v-model="args.modelValue"
-        label="Enter your password"
-        :config="{ passwordInput: { wrapper: 'pr-0' } }"
-      >
-        <template #label="{ label }">
-          {{ label }}
-          <span class="text-red-500">*</span>
-        </template>
+        <UInputPassword
+          v-bind="args"
+          v-model="args.modelValue"
+          label="Enter your password"
+          :config="{ passwordInput: { wrapper: 'pr-0' } }"
+        >
+          <template #label="{ label }">
+            {{ label }}
+            <span class="text-red-500">*</span>
+          </template>
 
-        <template #right="{ visible, toggle }">
-          <UButton
-            :label="visible ? 'Hide' : 'Show'"
-            color="neutral"
-            variant="ghost"
-            size="sm"
-            class="rounded-l-none h-[49px] min-w-[69px]"
-            @click="toggle"
-          />
-        </template>
-      </UInputPassword>
-    </URow>
+          <template #right="{ visible, toggle }">
+            <UButton
+              :label="visible ? 'Hide' : 'Show'"
+              color="neutral"
+              variant="ghost"
+              size="sm"
+              class="rounded-l-none h-[49px] min-w-[69px]"
+              @click="toggle"
+            />
+          </template>
+        </UInputPassword>
+      </URow>
+
+      <URow block>
+        <UInputPassword
+          v-model="descriptionSlotValue"
+          label="Password"
+        >
+          <template #description>
+            <URow align="center" gap="2xs" class="text-neutral">
+              <UIcon name="shield" size="xs" color="primary" />
+              <UText size="sm">
+                Minimum 8 characters.
+                <ULink label="Password rules" underlined size="sm" />.
+              </UText>
+            </URow>
+          </template>
+        </UInputPassword>
+
+        <UInputPassword
+          v-model="errorSlotValue"
+          label="Password"
+          :error="true"
+        >
+          <template #error>
+            <URow align="center" gap="2xs">
+              <UIcon name="error" size="xs" color="error" />
+              <UText size="sm" color="error" :wrap="false">
+                Custom error —
+                <ULink label="reset via email" underlined color="error" size="sm" />.
+              </UText>
+            </URow>
+          </template>
+        </UInputPassword>
+      </URow>
+    </UCol>
   `,
 });
 Slots.parameters = {
   docs: {
     story: {
-      height: "200px",
+      height: "300px",
     },
   },
 };

@@ -369,18 +369,6 @@ describe("ULabel.vue", () => {
 
       expect(component.find("[vl-key='label']").text()).toBe(slotContent);
     });
-
-    it("Bottom – renders content from bottom slot", () => {
-      const testClass = "custom-bottom";
-
-      const component = mount(ULabel, {
-        slots: {
-          bottom: `<div class="${testClass}">Bottom Slot Content</div>`,
-        },
-      });
-
-      expect(component.find(`.${testClass}`).exists()).toBe(true);
-    });
   });
 
   describe("Events", () => {

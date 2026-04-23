@@ -13,6 +13,7 @@ import URow from "../../ui.container-row/URow.vue";
 import UDropdownButton from "../../ui.dropdown-button/UDropdownButton.vue";
 import UText from "../../ui.text-block/UText.vue";
 import UChip from "../../ui.other-chip/UChip.vue";
+import ULink from "../../ui.button-link/ULink.vue";
 
 import type { Meta, StoryFn } from "@storybook/vue3-vite";
 import type { Props } from "../types";
@@ -190,7 +191,7 @@ export const IconProps: StoryFn<UInputArgs> = (args) => ({
 });
 
 export const Slots: StoryFn<UInputArgs> = (args) => ({
-  components: { UInput, URow, UDropdownButton, UText, UChip },
+  components: { UInput, URow, UCol, UDropdownButton, UText, UChip, ULink, UIcon },
   setup() {
     const countryCodes = [
       { label: "+33", value: "+33" },
@@ -199,50 +200,83 @@ export const Slots: StoryFn<UInputArgs> = (args) => ({
     ];
 
     const countryCode = ref("+33");
+    const descriptionSlotValue = ref("");
+    const errorSlotValue = ref("");
 
-    return { args, countryCode, countryCodes };
+    return { args, countryCode, countryCodes, descriptionSlotValue, errorSlotValue };
   },
   template: `
-    <URow>
-      <UInput
-        label="Phone Number"
-        placeholder="Enter your phone number"
-        :config="{ wrapper: 'pl-0' }"
-      >
-        <template #label="{ label }">
-          {{ label }}
-          <span class="text-red-500">*</span>
-        </template>
+    <UCol class="gap-8">
+      <URow block>
+        <UInput
+          label="Phone Number"
+          placeholder="Enter your phone number"
+          :config="{ wrapper: 'pl-0' }"
+        >
+          <template #label="{ label }">
+            {{ label }}
+            <span class="text-red-500">*</span>
+          </template>
 
-        <template #left>
-          <UDropdownButton
-            v-model="countryCode"
-            :options="countryCodes"
-            square
-            size="sm"
-            variant="soft"
-            class="rounded-r-none h-[49px]"
-          />
-        </template>
-      </UInput>
+          <template #left>
+            <UDropdownButton
+              v-model="countryCode"
+              :options="countryCodes"
+              square
+              size="sm"
+              variant="soft"
+              class="rounded-r-none h-[49px]"
+            />
+          </template>
+        </UInput>
 
-      <UInput label="Website" placeholder="Enter your website">
-        <template #label="{ label }">
-          {{ label }}
-          <span class="text-red-500">*</span>
-        </template>
+        <UInput label="Website" placeholder="Enter your website">
+          <template #label="{ label }">
+            {{ label }}
+            <span class="text-red-500">*</span>
+          </template>
 
-        <template #right>
-          <UText label=".com" variant="lifted" />
-        </template>
-      </UInput>
-    </URow>
+          <template #right>
+            <UText label=".com" variant="lifted" :wrap="false" />
+          </template>
+        </UInput>
+      </URow>
+
+      <URow block>
+        <UInput v-model="descriptionSlotValue" label="Display name">
+          <template #description>
+            <URow align="center" gap="2xs" class="text-neutral">
+              <UIcon name="info" size="xs" color="primary" />
+              <UText size="sm">
+                Shown on your public profile. Read the
+                <ULink label="naming policy" underlined size="sm" />.
+              </UText>
+            </URow>
+          </template>
+        </UInput>
+
+        <UInput
+          v-model="errorSlotValue"
+          label="Name"
+          :error="true"
+        >
+          <template #error>
+            <URow align="center" gap="2xs">
+              <UIcon name="error" size="xs" color="error" />
+              <UText size="sm" color="error" :wrap="false">
+                Custom error layout — <ULink label="open validation rules" underlined color="error" size="sm" />.
+              </UText>
+            </URow>
+          </template>
+        </UInput>
+      </URow>
+    </UCol>
   `,
 });
 Slots.parameters = {
   docs: {
     story: {
-      height: "250px",
+      height: "300px",
     },
   },
 };

@@ -211,10 +211,5 @@ const {
 
       <UIcon v-else :name="config.defaults.checkedIcon" color="inherit" v-bind="checkedIconAttrs" />
     </label>
-
-    <template #bottom>
-      <!-- @slot Use it to add something below the checkbox. -->
-      <slot name="bottom" />
-    </template>
   </ULabel>
 </template>

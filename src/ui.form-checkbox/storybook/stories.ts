@@ -17,6 +17,7 @@ import UChip from "../../ui.other-chip/UChip.vue";
 
 import type { Meta, StoryFn } from "@storybook/vue3-vite";
 import type { Props } from "../types";
+import { ref } from "vue";
 
 interface UCheckboxArgs extends Props {
   slotTemplate?: string;
@@ -142,23 +143,57 @@ Partial.parameters = {
   },
 };
 
-export const LabelSlot = DefaultTemplate.bind({});
-LabelSlot.args = {
-  slotTemplate: `
-    <template #label>
-      <URow gap="2xs" align="center">
-        <UText>I agree to the <ULink label="Privacy Policy" /></UText>
-        <UIcon name="contract" size="xs" />
-      </URow>
-    </template>
-  `,
-};
+export const Slots: StoryFn<UCheckboxArgs> = (args) => ({
+  components: { UCheckbox, UCol, UText, URow, ULink, UIcon },
+  setup: () => ({
+    args,
+    labelSlotValue: ref(false),
+    descriptionSlotValue: ref(false),
+    errorSlotValue: ref(false),
+  }),
+  template: `
+    <UCol class="gap-8">
+      <UCheckbox v-bind="args" v-model="labelSlotValue">
+        <template #label>
+          <URow gap="2xs" align="center">
+            <UText>I agree to the <ULink label="Privacy Policy" /></UText>
+            <UIcon name="contract" size="xs" />
+          </URow>
+        </template>
+      </UCheckbox>
 
-export const BottomSlot = DefaultTemplate.bind({});
-BottomSlot.args = {
-  slotTemplate: `
-    <template #bottom>
-      <ULink label="Learn more" size="sm" class="mr-1.5" />
-    </template>
+      <UCheckbox
+        v-bind="args"
+        v-model="descriptionSlotValue"
+        label="Email me product updates"
+      >
+        <template #description>
+          <URow align="center" gap="2xs" class="text-neutral">
+            <UIcon name="mail" size="xs" class="mt-0.5" color="primary" />
+            <UText size="sm">
+              Unsubscribe anytime.
+              <ULink label="Privacy policy" underlined size="sm" />.
+            </UText>
+          </URow>
+        </template>
+      </UCheckbox>
+
+      <UCheckbox
+        v-bind="args"
+        v-model="errorSlotValue"
+        label="Accept terms"
+        :error="true"
+      >
+        <template #error>
+          <URow align="center" gap="2xs">
+            <UIcon name="error" size="xs" color="error" />
+            <UText size="sm" color="error" :wrap="false">
+              Custom error —
+              <ULink label="read terms" underlined color="error" size="sm" />.
+            </UText>
+          </URow>
+        </template>
+      </UCheckbox>
+    </UCol>
   `,
-};
+});

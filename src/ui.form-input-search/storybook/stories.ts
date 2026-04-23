@@ -14,6 +14,7 @@ import UCol from "../../ui.container-col/UCol.vue";
 import URow from "../../ui.container-row/URow.vue";
 import UDropdownButton from "../../ui.dropdown-button/UDropdownButton.vue";
 import UText from "../../ui.text-block/UText.vue";
+import ULink from "../../ui.button-link/ULink.vue";
 
 import type { Meta, StoryFn } from "@storybook/vue3-vite";
 import type { Props } from "../types";
@@ -152,7 +153,7 @@ export const IconProps: StoryFn<UInputSearchArgs> = (args) => ({
 });
 
 export const Slots: StoryFn<UInputSearchArgs> = (args) => ({
-  components: { UInputSearch, UCol, URow, UIcon, UDropdownButton, UText },
+  components: { UInputSearch, UCol, URow, UIcon, UDropdownButton, UText, ULink },
   setup() {
     const aiVersions = [
       { label: "GPT-4o", value: "gpt-4o" },
@@ -160,10 +161,13 @@ export const Slots: StoryFn<UInputSearchArgs> = (args) => ({
       { label: "GPT-4", value: "gpt-4" },
     ];
 
-    return { args, aiVersions };
+    const descriptionSlotValue = ref("");
+    const errorSlotValue = ref("");
+
+    return { args, aiVersions, descriptionSlotValue, errorSlotValue };
   },
   template: `
-    <UCol>
+    <UCol class="gap-8">
       <UInputSearch placeholder="Search by rental district...">
         <template #right>
           <URow align="center" gap="xs">
@@ -188,13 +192,42 @@ export const Slots: StoryFn<UInputSearchArgs> = (args) => ({
           />
         </template>
       </UInputSearch>
+
+      <UInputSearch v-model="descriptionSlotValue" label="Search products">
+        <template #description>
+          <URow align="center" gap="2xs" class="text-neutral">
+            <UIcon name="travel_explore" size="xs" color="primary" />
+            <UText size="sm">
+              Tip: use
+              <ULink label="filters" underlined size="sm" />
+              for exact matches.
+            </UText>
+          </URow>
+        </template>
+      </UInputSearch>
+
+      <UInputSearch
+        v-model="errorSlotValue"
+        label="Search"
+        :error="true"
+      >
+        <template #error>
+          <URow align="center" gap="2xs">
+            <UIcon name="error" size="xs" color="error" />
+            <UText size="sm" color="error" :wrap="false">
+              Custom error —
+              <ULink label="search help" underlined color="error" size="sm" />.
+            </UText>
+          </URow>
+        </template>
+      </UInputSearch>
     </UCol>
   `,
 });
 Slots.parameters = {
   docs: {
     story: {
-      height: "270px",
+      height: "500px",
     },
   },
 };

@@ -14,6 +14,7 @@ import UBadge from "../../ui.text-badge/UBadge.vue";
 import UIcon from "../../ui.image-icon/UIcon.vue";
 import URow from "../../ui.container-row/URow.vue";
 import UText from "../../ui.text-block/UText.vue";
+import ULink from "../../ui.button-link/ULink.vue";
 
 import type { Meta, StoryFn } from "@storybook/vue3-vite";
 import type { Props } from "../types";
@@ -109,15 +110,17 @@ LabelSlot.args = {
 };
 
 export const Slots: StoryFn<UInputFileArgs> = (args) => ({
-  components: { UInputFile, UCol, UBadge, UIcon, URow, UText },
+  components: { UInputFile, UCol, UBadge, UIcon, URow, UText, ULink },
   setup() {
-    return { args };
+    const files = ref<File[]>([]);
+
+    return { args, files };
   },
   template: `
     <UCol gap="xl">
       <UInputFile
         v-bind="args"
-        v-model="args.files"
+        v-model="files"
         label="Top Slot"
         :allowedFileTypes="['.jpeg', '.png']"
         :maxFileSize="2"
@@ -132,7 +135,7 @@ export const Slots: StoryFn<UInputFileArgs> = (args) => ({
 
       <UInputFile
         v-bind="args"
-        v-model="args.files"
+        v-model="files"
         label="Left Slot"
         :allowedFileTypes="['.pdf', '.doc', '.docx']"
       >
@@ -146,7 +149,7 @@ export const Slots: StoryFn<UInputFileArgs> = (args) => ({
 
       <UInputFile
         v-bind="args"
-        v-model="args.files"
+        v-model="files"
         label="Bottom Slot"
         multiple
         :allowedFileTypes="['.png', '.jpeg']"
@@ -155,6 +158,38 @@ export const Slots: StoryFn<UInputFileArgs> = (args) => ({
           <URow align="center" gap="2xs">
             <UIcon name="schedule" size="xs" color="neutral" />
             <UText label="Processing may take a few moments for multiple files" variant="lifted" />
+          </URow>
+        </template>
+      </UInputFile>
+
+      <UInputFile
+        v-bind="args"
+        v-model="files"
+        label="Upload document"
+      >
+        <template #description>
+          <URow align="center" gap="2xs">
+            <UIcon name="description" size="xs" color="primary" />
+            <UText size="sm">
+              PDF or image, max 5MB.
+              <ULink label="See requirements" underlined size="sm" />.
+            </UText>
+          </URow>
+        </template>
+      </UInputFile>
+
+      <UInputFile
+        v-bind="args"
+        v-model="files"
+        label="Upload document"
+        :error="true"
+      >
+        <template #error>
+          <URow align="center" gap="2xs">
+            <UIcon name="error" size="xs" color="error" />
+            <UText size="sm" color="error" :wrap="false">
+              Custom error — <ULink label="retry upload" underlined color="error" size="sm" />.
+            </UText>
           </URow>
         </template>
       </UInputFile>

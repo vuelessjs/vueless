@@ -319,23 +319,6 @@ describe("UCheckbox.vue", () => {
 
       expect(errorElement.text()).toBe(customError);
     });
-
-    it("Bottom – renders custom content from bottom slot", () => {
-      const customBottomContent = "Custom Bottom Content";
-
-      const component = mount(UCheckbox, {
-        props: {
-          label: "Test Label",
-        },
-        slots: {
-          bottom: customBottomContent,
-        },
-      });
-
-      const labelComponent = component.getComponent(ULabel);
-
-      expect(labelComponent.text()).toContain(customBottomContent);
-    });
   });
 
   describe("Events", () => {

@@ -1,4 +1,5 @@
 import type { Meta, StoryFn } from "@storybook/vue3-vite";
+import { ref } from "vue";
 import {
   getArgs,
   getArgTypes,
@@ -13,6 +14,7 @@ import URow from "../../ui.container-row/URow.vue";
 import UCol from "../../ui.container-col/UCol.vue";
 import UButton from "../../ui.button/UButton.vue";
 import UText from "../../ui.text-block/UText.vue";
+import ULink from "../../ui.button-link/ULink.vue";
 
 import { COMPONENT_NAME } from "../constants";
 
@@ -364,43 +366,86 @@ export const IconProps: StoryFn<DefaultUDatePickerArgs> = (args) => ({
 });
 
 export const Slots: StoryFn<DefaultUDatePickerArgs> = (args) => ({
-  components: { UDatePicker, URow, UButton },
-  setup: () => ({ args }),
+  components: { UDatePicker, URow, UCol, UButton, UText, ULink, UIcon },
+  setup: () => ({
+    args,
+    descriptionSlotValue: ref(dateValue),
+    errorSlotValue: ref<Date | null>(null),
+  }),
   template: `
-    <URow align="stretch">
-      <UDatePicker
-        v-bind="args"
-        v-model="args.leftModel"
-        class="w-full"
-        :config="{ datepickerInput: { wrapper: 'pl-0' } }"
-      >
-        <template #left>
-          <UButton
-            label="Today"
-            size="sm"
-            variant="soft"
-            class="h-full rounded-r-none"
-            @click="args.leftModel = new Date()"
-          />
-        </template>
-      </UDatePicker>
+    <UCol class="gap-8">
+      <URow block>
+        <UDatePicker
+          v-bind="args"
+          v-model="args.leftModel"
+          class="w-full"
+          :config="{ datepickerInput: { wrapper: 'pl-0' } }"
+        >
+          <template #left>
+            <UButton
+              label="Today"
+              size="sm"
+              variant="soft"
+              class="h-full rounded-r-none"
+              @click="args.leftModel = new Date()"
+            />
+          </template>
+        </UDatePicker>
 
-      <UDatePicker
-        v-bind="args"
-        v-model="args.modelValue"
-        class="w-full"
-        :config="{ datepickerInput: { wrapper: 'pr-0' } }"
-      >
-        <template #right>
-          <UButton
-            label="Clear"
-            size="sm"
-            variant="ghost"
-            class="h-full rounded-l-none"
-            @click="args.modelValue = null"
-          />
-        </template>
-      </UDatePicker>
-    </URow>
+        <UDatePicker
+          v-bind="args"
+          v-model="args.modelValue"
+          class="w-full"
+          :config="{ datepickerInput: { wrapper: 'pr-0' } }"
+        >
+          <template #right>
+            <UButton
+              label="Clear"
+              size="sm"
+              variant="ghost"
+              class="h-full rounded-l-none"
+              @click="args.modelValue = null"
+            />
+          </template>
+        </UDatePicker>
+      </URow>
+
+      <URow block>
+        <UDatePicker
+          v-bind="args"
+          v-model="descriptionSlotValue"
+          label="Event date"
+          class="w-full"
+        >
+          <template #description>
+            <URow align="center" gap="2xs" class="text-neutral">
+              <UIcon name="event" size="xs" color="primary" />
+              <UText size="sm">
+                Uses your local timezone.
+                <ULink label="Date policy" underlined size="sm" />.
+              </UText>
+            </URow>
+          </template>
+        </UDatePicker>
+
+        <UDatePicker
+          v-bind="args"
+          v-model="errorSlotValue"
+          label="Due date"
+          :error="true"
+          class="w-full"
+        >
+          <template #error>
+            <URow align="center" gap="2xs">
+              <UIcon name="error" size="xs" color="error" />
+              <UText size="sm" color="error" :wrap="false">
+                Custom error —
+                <ULink label="available dates" underlined color="error" size="sm" />.
+              </UText>
+            </URow>
+          </template>
+        </UDatePicker>
+      </URow>
+    </UCol>
   `,
 });

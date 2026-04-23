@@ -334,54 +334,106 @@ export const IconProps: StoryFn<USelectArgs> = (args) => ({
 });
 
 export const Slots: StoryFn<USelectArgs> = (args) => ({
-  components: { USelect, URow, UIcon, UText },
-  setup: () => ({ args, leftSlotModel: ref("paypal"), rightSlotModel: ref("bank") }),
+  components: { USelect, URow, UCol, UIcon, UText, ULink },
+  setup: () => ({
+    args,
+    leftSlotModel: ref("paypal"),
+    rightSlotModel: ref("bank"),
+    descriptionSlotModel: ref(null),
+    errorSlotModel: ref(null),
+  }),
   template: `
-    <URow>
-      <USelect
-        v-model="leftSlotModel"
-        label="Select Payment Method"
-        :options="[
-          { label: 'Visa', value: 'visa', icon: 'credit_card', details: '•••• 4242' },
-          { label: 'PayPal', value: 'paypal', icon: 'payments', details: 'user@example.com' },
-          { label: 'Bank Transfer', value: 'bank', icon: 'account_balance', details: 'Acct **** 1234' },
-          { label: 'Apple Pay', value: 'apple', icon: 'phone_iphone', details: 'iPhone 15' },
-        ]"
-      >
-        <template #left="{ options }">
-          <UIcon
-            v-if="leftSlotModel"
-            :name="options?.icon"
-            color="primary"
-            size="sm"
-          />
-        </template>
-      </USelect>
+    <UCol class="gap-8">
+      <URow block>
+        <USelect
+          v-model="leftSlotModel"
+          label="Select Payment Method"
+          :options="[
+            { label: 'Visa', value: 'visa', icon: 'credit_card', details: '•••• 4242' },
+            { label: 'PayPal', value: 'paypal', icon: 'payments', details: 'user@example.com' },
+            { label: 'Bank Transfer', value: 'bank', icon: 'account_balance', details: 'Acct **** 1234' },
+            { label: 'Apple Pay', value: 'apple', icon: 'phone_iphone', details: 'iPhone 15' },
+          ]"
+        >
+          <template #left="{ options }">
+            <UIcon
+              v-if="leftSlotModel"
+              :name="options?.icon"
+              color="primary"
+              size="sm"
+            />
+          </template>
+        </USelect>
 
-      <USelect
-        v-model="rightSlotModel"
-        label="Select Payment Method"
-        :options="[
-          { label: 'Visa', value: 'visa', icon: 'credit_card', details: '•••• 4242' },
-          { label: 'PayPal', value: 'paypal', icon: 'payments', details: 'user@example.com' },
-          { label: 'Bank Transfer', value: 'bank', icon: 'account_balance', details: 'Acct **** 1234' },
-          { label: 'Apple Pay', value: 'apple', icon: 'phone_iphone', details: 'iPhone 15' },
-        ]"
-      >
-        <template #right="{ options }">
-          <UText
-            v-if="rightSlotModel"
-            size="sm"
-            variant="lifted"
-            class="text-nowrap"
-          >
-            {{ options?.details }}
-          </UText>
-        </template>
-      </USelect>
-    </URow>
+        <USelect
+          v-model="rightSlotModel"
+          label="Select Payment Method"
+          :options="[
+            { label: 'Visa', value: 'visa', icon: 'credit_card', details: '•••• 4242' },
+            { label: 'PayPal', value: 'paypal', icon: 'payments', details: 'user@example.com' },
+            { label: 'Bank Transfer', value: 'bank', icon: 'account_balance', details: 'Acct **** 1234' },
+            { label: 'Apple Pay', value: 'apple', icon: 'phone_iphone', details: 'iPhone 15' },
+          ]"
+        >
+          <template #right="{ options }">
+            <UText
+              v-if="rightSlotModel"
+              size="sm"
+              variant="lifted"
+              class="text-nowrap"
+            >
+              {{ options?.details }}
+            </UText>
+          </template>
+        </USelect>
+      </URow>
+
+      <URow block>
+        <USelect
+          v-bind="args"
+          v-model="descriptionSlotModel"
+          label="City"
+          :options="args.options"
+        >
+          <template #description>
+            <URow align="center" gap="2xs" class="text-neutral">
+              <UIcon name="location_city" size="xs" color="primary" />
+              <UText size="sm">
+                Only cities we ship to.
+                <ULink label="Shipping zones" underlined size="sm" />.
+              </UText>
+            </URow>
+          </template>
+        </USelect>
+
+        <USelect
+          v-bind="args"
+          v-model="errorSlotModel"
+          label="City"
+          :options="args.options"
+          :error="true"
+        >
+          <template #error>
+            <URow align="center" gap="2xs">
+              <UIcon name="error" size="xs" color="error" />
+              <UText size="sm" color="error" :wrap="false">
+                Custom error —
+                <ULink label="contact support" underlined color="error" size="sm" />.
+              </UText>
+            </URow>
+          </template>
+        </USelect>
+      </URow>
+    </UCol>
   `,
 });
+Slots.parameters = {
+  docs: {
+    story: {
+      height: "400px",
+    },
+  },
+};
 
 export const ToggleSlots: StoryFn<USelectArgs> = (args) => ({
   components: { USelect, URow, UIcon },
