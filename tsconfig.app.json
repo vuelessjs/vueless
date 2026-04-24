@@ -20,7 +20,6 @@
     "noEmit": true,
 
     /* Path settings */
-    "baseUrl": ".",
     "rootDir": "./src",
     "outDir": "./dist",
 

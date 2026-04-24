@@ -17,9 +17,6 @@
     "composite": true,
     "noEmit": true,
 
-    /* Path settings */
-    "baseUrl": ".",
-
     /* Enables all strict type-checking options. */
     "strict": true,
     "noImplicitThis": true,

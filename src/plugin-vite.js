@@ -49,6 +49,10 @@ export const TailwindCSS = (options) => {
 };
 
 /* Automatically importing Vueless components on demand */
+/**
+ * @param {import("unplugin-vue-components/types").Options | undefined} options
+ * @returns {import("vite").Plugin & { api: import("unplugin-vue-components/types").PublicPluginAPI }}
+ */
 export const UnpluginComponents = (options) =>
   UnpluginVueComponents({
     dirs: [VUELESS_USER_COMPONENTS_DIR, SRC_USER_COMPONENTS_DIR],
