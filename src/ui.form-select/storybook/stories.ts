@@ -343,7 +343,7 @@ export const Slots: StoryFn<USelectArgs> = (args) => ({
     errorSlotModel: ref(null),
   }),
   template: `
-    <UCol class="gap-8">
+    <UCol gap="3xl">
       <URow block>
         <USelect
           v-model="leftSlotModel"

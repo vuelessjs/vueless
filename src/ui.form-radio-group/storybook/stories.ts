@@ -183,16 +183,16 @@ export const Slots: StoryFn<URadioGroupArgs> = (args) => ({
     modelValueError: ref(null),
   }),
   template: `
-    <UCol class="gap-8">
+    <UCol gap="3xl">
       <URadioGroup
         v-bind="args"
         v-model="modelValueLabel"
         name="LabelSlot"
       >
         <template #label>
-          <URow gap="2xs" align="center">
-            <UText>I agree to the <ULink label="Privacy Policy" /></UText>
-            <UIcon name="contract" size="xs" />
+          <URow align="center" gap="2xs">
+            <UText>Choose a delivery option</UText>
+            <UIcon name="local_shipping" size="xs" color="neutral" />
           </URow>
         </template>
       </URadioGroup>

@@ -155,7 +155,7 @@ export const Slots: StoryFn<UInputPasswordArgs> = (args) => ({
     return { args, wifiTypes, descriptionSlotValue, errorSlotValue };
   },
   template: `
-    <UCol class="gap-8">
+    <UCol gap="3xl">
       <URow block>
         <UInputPassword
           v-bind="args"

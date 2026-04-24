@@ -167,7 +167,7 @@ export const Slots: StoryFn<UInputSearchArgs> = (args) => ({
     return { args, aiVersions, descriptionSlotValue, errorSlotValue };
   },
   template: `
-    <UCol class="gap-8">
+    <UCol gap="3xl">
       <UInputSearch placeholder="Search by rental district...">
         <template #right>
           <URow align="center" gap="xs">

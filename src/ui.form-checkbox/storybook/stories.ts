@@ -152,11 +152,11 @@ export const Slots: StoryFn<UCheckboxArgs> = (args) => ({
     errorSlotValue: ref(false),
   }),
   template: `
-    <UCol class="gap-8">
+    <UCol gap="3xl">
       <UCheckbox v-bind="args" v-model="labelSlotValue">
         <template #label>
           <URow gap="2xs" align="center">
-            <UText>I agree to the <ULink label="Privacy Policy" /></UText>
+            <UText>I agree to the Privacy Policy</UText>
             <UIcon name="contract" size="xs" />
           </URow>
         </template>

@@ -199,16 +199,16 @@ export const Slots: StoryFn<UCheckboxGroupArgs> = (args) => ({
     modelValueError: ref(""),
   }),
   template: `
-    <UCol class="gap-8">
+    <UCol gap="3xl">
       <UCheckboxGroup
         v-bind="args"
         v-model="modelValueLabel"
         name="LabelSlot"
       >
         <template #label>
-          <URow align="center" gap="2xs" class="text-neutral">
-            <UText>See our <ULink label="Privacy Policy" /></UText>
-            <UIcon name="contract" size="xs" />
+          <URow align="center" gap="2xs">
+            <UText>Choose how we notify you</UText>
+            <UIcon name="notifications" size="xs" color="neutral" />
           </URow>
         </template>
       </UCheckboxGroup>
@@ -238,13 +238,13 @@ export const Slots: StoryFn<UCheckboxGroupArgs> = (args) => ({
         :error="true"
       >
         <template #error>
-          <URow align="center" gap="2xs">
-            <UIcon name="error" size="xs" color="error" />
-            <UText size="sm" color="error" :wrap="false">
-              Custom error —
-              <ULink label="why this matters" underlined color="error" size="sm" />.
-            </UText>
-          </URow>
+          <ul class="m-0 list-disc pl-4 text-sm text-error">
+            <li>Invalid selection</li>
+            <li>At least one channel is required</li>
+            <li>
+              <ULink label="Why this matters" underlined color="error" class="inline!" />
+            </li>
+          </ul>
         </template>
       </UCheckboxGroup>
     </UCol>

@@ -117,7 +117,7 @@ LabelAlign.args = { enum: "align" };
 export const Slots: StoryFn<ULabelArgs> = () => ({
   components: { ULabel, UText, URow, ULink, UIcon, UCol, UChip },
   template: `
-    <UCol class="gap-8">
+    <UCol gap="3xl">
       <ULabel label="Work email">
         <UText label="johndoe@example.com" />
         <template #label="{ label }">

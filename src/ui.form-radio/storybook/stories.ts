@@ -118,7 +118,7 @@ export const Slots: StoryFn<URadioArgs> = (args) => ({
     errorModel: ref(""),
   }),
   template: `
-    <UCol class="gap-8">
+    <UCol gap="3xl">
       <URadio
         v-bind="args"
         v-model="labelModel"
@@ -126,9 +126,9 @@ export const Slots: StoryFn<URadioArgs> = (args) => ({
         value="courier"
       >
         <template #label>
-          <URow gap="2xs" align="center">
-            <UText>I agree to the <ULink label="Privacy Policy" /></UText>
-            <UIcon name="contract" size="xs" />
+          <URow align="center" gap="2xs">
+            <UText>Courier delivery</UText>
+            <UIcon name="local_shipping" size="xs" color="neutral" />
           </URow>
         </template>
       </URadio>

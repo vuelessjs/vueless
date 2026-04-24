@@ -148,7 +148,7 @@ export const Slots: StoryFn<UTextareaArgs> = (args) => ({
     errorSlotValue: ref(""),
   }),
   template: `
-    <UCol class="gap-8">
+    <UCol gap="3xl">
       <URow block>
         <UTextarea v-bind="args" v-model="args.modelValue" :max-length="300">
           <template #left>

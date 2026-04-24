@@ -373,7 +373,7 @@ export const Slots: StoryFn<DefaultUDatePickerArgs> = (args) => ({
     errorSlotValue: ref<Date | null>(null),
   }),
   template: `
-    <UCol class="gap-8">
+    <UCol gap="3xl">
       <URow block>
         <UDatePicker
           v-bind="args"

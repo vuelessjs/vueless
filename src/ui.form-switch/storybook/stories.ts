@@ -90,32 +90,20 @@ ToggleIcon.args = { toggleIcon: true };
 export const Disabled = DefaultTemplate.bind({});
 Disabled.args = { disabled: true };
 
-export const LabelSlot = DefaultTemplate.bind({});
-LabelSlot.args = {
-  label: "Enable Notifications",
-  slotTemplate: `
-    <template #label="{ label }">
-      <URow gap="2xs" align="center">
-        <UText>I agree to the <ULink label="Privacy Policy" /></UText>
-        <UIcon name="contract" size="xs" />
-      </URow>
-    </template>
-  `,
-};
-
 export const Slots: StoryFn<USwitchArgs> = (args) => ({
   components: { USwitch, UCol, UText, URow, ULink, UIcon },
-  setup: () => ({ args, descriptionSlotValue: ref(true) }),
+  setup: () => ({ args, labelSlotValue: ref(false), descriptionSlotValue: ref(false) }),
   template: `
-    <UCol class="gap-8">
+    <UCol gap="3xl">
       <USwitch
         v-bind="args"
-        v-model="args.modelValue"
+        v-model="labelSlotValue"
+        label="Enable Notifications"
       >
-        <template #label>
+        <template #label="{ label }">
           <URow gap="2xs" align="center">
-            <UText>I agree to the <ULink label="Privacy Policy" /></UText>
-            <UIcon name="contract" size="xs" />
+            <UText :label="label" />
+            <UIcon name="notifications" size="xs" />
           </URow>
         </template>
       </USwitch>

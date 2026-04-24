@@ -216,7 +216,7 @@ export const Slots: StoryFn<UInputNumberArgs> = (args) => ({
     return { args, currency, currencies, descriptionSlotValue, errorSlotValue };
   },
   template: `
-    <UCol class="gap-8">
+    <UCol gap="3xl">
       <URow block>
         <UInputNumber
           label="Left slot"

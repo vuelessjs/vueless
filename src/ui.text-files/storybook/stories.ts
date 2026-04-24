@@ -88,7 +88,7 @@ export const Slots: StoryFn<UFilesArgs> = (args) => ({
     return { args };
   },
   template: `
-    <UCol class="gap-8">
+    <UCol gap="3xl">
       <URow block>
         <UFiles v-bind="args">
           <template #before-file="{ index }">
