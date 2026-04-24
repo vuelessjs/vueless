@@ -525,10 +525,10 @@ describe("UDrawer", () => {
       expect(component.emitted("close")).toBeTruthy();
     });
 
-    it("CloseOnOverlay – emits events when overlay is clicked based on prop", () => {
+    it("CloseOnOverlay – emits events when overlay is clicked based on prop", async () => {
       const closeOnOverlay = [true, false];
 
-      closeOnOverlay.forEach(async (value) => {
+      for (const value of closeOnOverlay) {
         const component = mount(UDrawer, {
           props: {
             modelValue,
@@ -541,15 +541,9 @@ describe("UDrawer", () => {
         await innerWrapper.trigger("mousedown");
         await innerWrapper.trigger("click");
 
-        if (value) {
-          expect(component.emitted("update:modelValue")).toBeTruthy();
-          expect(component.emitted("update:modelValue")?.[0]).toEqual([false]);
-          expect(component.emitted("close")).toBeTruthy();
-        } else {
-          expect(component.emitted("update:modelValue")).toBeFalsy();
-          expect(component.emitted("close")).toBeFalsy();
-        }
-      });
+        expect(component.emitted("update:modelValue")).toEqual(value ? [[false]] : undefined);
+        expect(Boolean(component.emitted("close")?.length)).toBe(value);
+      }
     });
 
     it("CloseOnOverlay – does not close when mousedown on drawer and mouseup on overlay", async () => {
@@ -573,10 +567,10 @@ describe("UDrawer", () => {
       expect(component.emitted("close")).toBeFalsy();
     });
 
-    it("CloseOnEsc – emits events when escape key is pressed based on prop", () => {
+    it("CloseOnEsc – emits events when escape key is pressed based on prop", async () => {
       const closeOnEsc = [true, false];
 
-      closeOnEsc.forEach(async (value) => {
+      for (const value of closeOnEsc) {
         const component = mount(UDrawer, {
           props: {
             modelValue,
@@ -588,15 +582,9 @@ describe("UDrawer", () => {
 
         await wrapper.trigger("keydown", { key: "Escape" });
 
-        if (value) {
-          expect(component.emitted("update:modelValue")).toBeTruthy();
-          expect(component.emitted("update:modelValue")?.[0]).toEqual([false]);
-          expect(component.emitted("close")).toBeTruthy();
-        } else {
-          expect(component.emitted("update:modelValue")).toBeFalsy();
-          expect(component.emitted("close")).toBeFalsy();
-        }
-      });
+        expect(component.emitted("update:modelValue")).toEqual(value ? [[false]] : undefined);
+        expect(Boolean(component.emitted("close")?.length)).toBe(value);
+      }
     });
   });
 
@@ -718,13 +706,7 @@ describe("UDrawer", () => {
       const drawerElement = component.find("[vl-key='drawerWrapper']");
       const style = drawerElement.attributes("style");
 
-      // Should contain transform when dragging (if style exists)
-      if (style) {
-        expect(style).toContain("transform");
-      } else {
-        // If no style attribute, that's also valid (transform might be applied via CSS classes)
-        expect(drawerElement.exists()).toBe(true);
-      }
+      expect(style ? style.includes("transform") : drawerElement.exists()).toBe(true);
     });
   });
 
