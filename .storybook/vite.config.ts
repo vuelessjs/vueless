@@ -8,7 +8,7 @@ const __dirname = dirname(__filename);
 // Plugins
 import Vue from "@vitejs/plugin-vue";
 import { Vueless, TailwindCSS } from "vueless/plugin-vite.js";
-import { INTERNAL_ENV } from "vueless/constants.js";
+import { INTERNAL_ENV } from "../src/constants.js";
 
 export default defineConfig({
   plugins: [Vue(), TailwindCSS(), Vueless({ env: INTERNAL_ENV })],
