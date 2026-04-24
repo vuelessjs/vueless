@@ -416,9 +416,12 @@ export const Slots: StoryFn<USelectArgs> = (args) => ({
           <template #error>
             <URow align="center" gap="2xs">
               <UIcon name="error" size="xs" color="error" />
-              <UText size="sm" color="error" :wrap="false">
-                Custom error —
-                <ULink label="contact support" underlined color="error" size="sm" />.
+              <UText size="sm" color="error" class="m-0">
+                <ul>
+                  <li>Please select an option from the list</li>
+                  <li>The current value is not available anymore</li>
+                  <li>Pick a valid choice to continue</li>
+                </ul>
               </UText>
             </URow>
           </template>

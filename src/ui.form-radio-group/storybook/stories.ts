@@ -224,9 +224,12 @@ export const Slots: StoryFn<URadioGroupArgs> = (args) => ({
         <template #error>
           <URow align="center" gap="2xs">
             <UIcon name="error" size="xs" color="error" />
-            <UText size="sm" color="error" :wrap="false">
-              Custom error —
-              <ULink label="view requirements" underlined color="error" size="sm" />.
+            <UText size="sm" color="error" class="m-0">
+              <ul>
+                <li>Please choose one option from the group</li>
+                <li>At least one selection is required</li>
+                <li>Review the labels and pick a valid answer</li>
+              </ul>
             </UText>
           </URow>
         </template>

@@ -189,9 +189,12 @@ export const Slots: StoryFn<UTextareaArgs> = (args) => ({
           <template #error>
             <URow align="center" gap="2xs">
               <UIcon name="error" size="xs" color="error" />
-              <UText size="sm" color="error" :wrap="false">
-                Custom error —
-                <ULink label="why this failed" underlined color="error" size="sm" />.
+              <UText size="sm" color="error" class="m-0">
+                <ul>
+                  <li>Message is too short (minimum 10 characters)</li>
+                  <li>Remove disallowed characters from your text</li>
+                  <li>Try again after fixing the issues above</li>
+                </ul>
               </UText>
             </URow>
           </template>

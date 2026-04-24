@@ -375,9 +375,12 @@ export const Slots: StoryFn<DefaultUDatePickerRangeArgs> = (args) => ({
           <template #error>
             <URow align="center" gap="2xs">
               <UIcon name="error" size="xs" color="error" />
-              <UText size="sm" color="error" :wrap="false">
-                Custom error —
-                <ULink label="change dates" underlined color="error" size="sm" />.
+              <UText size="sm" color="error" class="m-0">
+                <ul>
+                  <li>End date must be after the start date</li>
+                  <li>Range cannot span more than 30 days</li>
+                  <li>Select both dates from the calendar</li>
+                </ul>
               </UText>
             </URow>
           </template>

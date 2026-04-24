@@ -161,9 +161,12 @@ export const Slots: StoryFn<URadioArgs> = (args) => ({
         <template #error>
           <URow align="center" gap="2xs">
             <UIcon name="error" size="xs" color="error" />
-            <UText size="sm" color="error" :wrap="false">
-              Custom error —
-              <ULink label="pick an option" underlined color="error" size="sm" />.
+            <UText size="sm" color="error" class="m-0">
+              <ul>
+                <li>You must select one of the available options</li>
+                <li>This field is required to proceed</li>
+                <li>Choose an option above to clear this error</li>
+              </ul>
             </UText>
           </URow>
         </template>

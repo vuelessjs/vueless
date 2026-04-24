@@ -238,13 +238,13 @@ export const Slots: StoryFn<UCheckboxGroupArgs> = (args) => ({
         :error="true"
       >
         <template #error>
-          <ul class="m-0 list-disc pl-4 text-sm text-error">
-            <li>Invalid selection</li>
-            <li>At least one channel is required</li>
-            <li>
-              <ULink label="Why this matters" underlined color="error" class="inline!" />
-            </li>
-          </ul>
+          <UText size="sm" color="error" class="m-0">
+            <ul>
+              <li>Invalid selection</li>
+              <li>At least one channel is required</li>
+              <li>Choose at least one option before submitting</li>
+            </ul>
+          </UText>
         </template>
       </UCheckboxGroup>
     </UCol>

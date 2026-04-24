@@ -438,9 +438,12 @@ export const Slots: StoryFn<DefaultUDatePickerArgs> = (args) => ({
           <template #error>
             <URow align="center" gap="2xs">
               <UIcon name="error" size="xs" color="error" />
-              <UText size="sm" color="error" :wrap="false">
-                Custom error —
-                <ULink label="available dates" underlined color="error" size="sm" />.
+              <UText size="sm" color="error" class="m-0">
+                <ul>
+                  <li>The selected date is not available</li>
+                  <li>Pick a day within the allowed range</li>
+                  <li>Weekends and holidays are excluded</li>
+                </ul>
               </UText>
             </URow>
           </template>

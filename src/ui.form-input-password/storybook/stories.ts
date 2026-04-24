@@ -228,9 +228,12 @@ export const Slots: StoryFn<UInputPasswordArgs> = (args) => ({
           <template #error>
             <URow align="center" gap="2xs">
               <UIcon name="error" size="xs" color="error" />
-              <UText size="sm" color="error" :wrap="false">
-                Custom error —
-                <ULink label="reset via email" underlined color="error" size="sm" />.
+              <UText size="sm" color="error" class="m-0">
+                <ul>
+                  <li>Password does not meet strength requirements</li>
+                  <li>Use at least 8 characters with mixed case and numbers</li>
+                  <li>Avoid common words and repeated characters</li>
+                </ul>
               </UText>
             </URow>
           </template>

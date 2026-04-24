@@ -187,8 +187,12 @@ export const Slots: StoryFn<UInputFileArgs> = (args) => ({
         <template #error>
           <URow align="center" gap="2xs">
             <UIcon name="error" size="xs" color="error" />
-            <UText size="sm" color="error" :wrap="false">
-              Custom error — <ULink label="retry upload" underlined color="error" size="sm" />.
+            <UText size="sm" color="error" class="m-0">
+              <ul>
+                <li>File type is not accepted for this field</li>
+                <li>Maximum file size has been exceeded</li>
+                <li>Choose another file and upload again</li>
+              </ul>
             </UText>
           </URow>
         </template>

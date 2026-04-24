@@ -187,9 +187,12 @@ export const Slots: StoryFn<UCheckboxArgs> = (args) => ({
         <template #error>
           <URow align="center" gap="2xs">
             <UIcon name="error" size="xs" color="error" />
-            <UText size="sm" color="error" :wrap="false">
-              Custom error —
-              <ULink label="read terms" underlined color="error" size="sm" />.
+            <UText size="sm" color="error" class="m-0">
+              <ul>
+                <li>You must accept the terms to continue</li>
+                <li>This checkbox is required for registration</li>
+                <li>Clear the error by checking the box above</li>
+              </ul>
             </UText>
           </URow>
         </template>

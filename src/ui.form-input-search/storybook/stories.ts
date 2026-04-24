@@ -214,9 +214,12 @@ export const Slots: StoryFn<UInputSearchArgs> = (args) => ({
         <template #error>
           <URow align="center" gap="2xs">
             <UIcon name="error" size="xs" color="error" />
-            <UText size="sm" color="error" :wrap="false">
-              Custom error —
-              <ULink label="search help" underlined color="error" size="sm" />.
+            <UText size="sm" color="error" class="m-0">
+              <ul>
+                <li>Search query is too short</li>
+                <li>Remove unsupported symbols from your search</li>
+                <li>Try different keywords and search again</li>
+              </ul>
             </UText>
           </URow>
         </template>

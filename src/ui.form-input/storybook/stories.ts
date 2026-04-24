@@ -263,8 +263,12 @@ export const Slots: StoryFn<UInputArgs> = (args) => ({
           <template #error>
             <URow align="center" gap="2xs">
               <UIcon name="error" size="xs" color="error" />
-              <UText size="sm" color="error" :wrap="false">
-                Custom error layout — <ULink label="open validation rules" underlined color="error" size="sm" />.
+              <UText size="sm" color="error" class="m-0">
+                <ul>
+                  <li>This field failed validation</li>
+                  <li>Check minimum and maximum length rules</li>
+                  <li>Only allowed characters may be used</li>
+                </ul>
               </UText>
             </URow>
           </template>

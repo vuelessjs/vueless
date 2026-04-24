@@ -149,9 +149,12 @@ export const Slots: StoryFn<ULabelArgs> = () => ({
         <template #error>
           <URow align="center" gap="2xs">
             <UIcon name="error" size="xs" color="error" />
-            <UText size="sm" color="error" :wrap="false">
-              Custom error —
-              <ULink label="email format" underlined color="error" size="sm" />.
+            <UText size="sm" color="error" class="m-0">
+              <ul>
+                <li>Email address format is invalid</li>
+                <li>Use a name@domain.com style address</li>
+                <li>Remove spaces and special characters from the local part</li>
+              </ul>
             </UText>
           </URow>
         </template>
