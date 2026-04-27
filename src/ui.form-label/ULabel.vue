@@ -170,9 +170,6 @@ const { getDataTest, wrapperAttrs, contentAttrs, labelAttrs, descriptionAttrs, e
           {{ description }}
         </slot>
       </div>
-
-      <!-- @slot Use it to add something below the label content. -->
-      <slot name="bottom" />
     </div>
   </div>
 
@@ -226,8 +223,5 @@ const { getDataTest, wrapperAttrs, contentAttrs, labelAttrs, descriptionAttrs, e
         {{ description }}
       </slot>
     </div>
-
-    <!-- @slot Use it to add something below the label content. -->
-    <slot name="bottom" />
   </div>
 </template>

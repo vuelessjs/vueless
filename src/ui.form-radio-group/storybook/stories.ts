@@ -13,9 +13,12 @@ import UCol from "../../ui.container-col/UCol.vue";
 import URow from "../../ui.container-row/URow.vue";
 import UBadge from "../../ui.text-badge/UBadge.vue";
 import UText from "../../ui.text-block/UText.vue";
+import ULink from "../../ui.button-link/ULink.vue";
+import UIcon from "../../ui.image-icon/UIcon.vue";
 
 import type { Meta, StoryFn } from "@storybook/vue3-vite";
 import type { Props } from "../types";
+import { ref } from "vue";
 
 interface URadioGroupArgs extends Props {
   slotTemplate?: string;
@@ -170,3 +173,67 @@ CustomKeys.parameters = {
     },
   },
 };
+
+export const Slots: StoryFn<URadioGroupArgs> = (args) => ({
+  components: { URadioGroup, UCol, UText, URow, ULink, UIcon },
+  setup: () => ({
+    args,
+    modelValueLabel: ref(null),
+    modelValueDescription: ref(null),
+    modelValueError: ref(null),
+  }),
+  template: `
+    <UCol gap="3xl">
+      <URadioGroup
+        v-bind="args"
+        v-model="modelValueLabel"
+        name="LabelSlot"
+      >
+        <template #label>
+          <URow align="center" gap="2xs">
+            <UText>Choose a delivery option</UText>
+            <UIcon name="local_shipping" size="xs" color="neutral" />
+          </URow>
+        </template>
+      </URadioGroup>
+
+      <URadioGroup
+        v-bind="args"
+        v-model="modelValueDescription"
+        name="SlotsDescription"
+        label="Delivery"
+      >
+        <template #description>
+          <URow align="center" gap="2xs" class="text-neutral">
+            <UIcon name="local_shipping" size="xs" color="primary" />
+            <UText size="sm">
+              Shipping times are estimates.
+              <ULink label="Full policy" underlined size="sm" />.
+            </UText>
+          </URow>
+        </template>
+      </URadioGroup>
+
+      <URadioGroup
+        v-bind="args"
+        v-model="modelValueError"
+        name="SlotsError"
+        label="Delivery"
+        :error="true"
+      >
+        <template #error>
+          <URow align="center" gap="2xs">
+            <UIcon name="error" size="xs" color="error" />
+            <UText size="sm" color="error">
+              <ul>
+                <li>Please choose one option from the group</li>
+                <li>At least one selection is required</li>
+                <li>Review the labels and pick a valid answer</li>
+              </ul>
+            </UText>
+          </URow>
+        </template>
+      </URadioGroup>
+    </UCol>
+  `,
+});

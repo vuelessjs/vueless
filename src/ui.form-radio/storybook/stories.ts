@@ -15,6 +15,8 @@ import UIcon from "../../ui.image-icon/UIcon.vue";
 
 import type { Meta, StoryFn } from "@storybook/vue3-vite";
 import type { Props } from "../types";
+import { ref } from "vue";
+import UCol from "../../ui.container-col/UCol.vue";
 
 interface URadioArgs extends Props {
   slotTemplate?: string;
@@ -107,30 +109,68 @@ Sizes.args = { name: "Sizes", enum: "size", label: "{enumValue}", modelValue: 1 
 export const Colors = EnumTemplate.bind({});
 Colors.args = { name: "Colors", enum: "color", label: "{enumValue}", modelValue: 1 };
 
-export const LabelSlot = DefaultTemplate.bind({});
-LabelSlot.args = {
-  name: "LabelSlot",
-  value: "courier",
-  color: "primary",
-  slotTemplate: `
-    <template #label>
-      <URow gap="2xs" align="center">
-        <UText>I agree to the <ULink label="Privacy Policy" /></UText>
-        <UIcon name="contract" size="xs" />
-      </URow>
-    </template>
-  `,
-};
+export const Slots: StoryFn<URadioArgs> = (args) => ({
+  components: { URadio, UCol, UText, URow, ULink, UIcon },
+  setup: () => ({
+    args,
+    labelModel: ref(""),
+    descriptionModel: ref(""),
+    errorModel: ref(""),
+  }),
+  template: `
+    <UCol gap="3xl">
+      <URadio
+        v-bind="args"
+        v-model="labelModel"
+        name="LabelSlot"
+        value="courier"
+      >
+        <template #label>
+          <URow align="center" gap="2xs">
+            <UText>Courier delivery</UText>
+            <UIcon name="local_shipping" size="xs" color="neutral" />
+          </URow>
+        </template>
+      </URadio>
 
-export const BottomSlot = DefaultTemplate.bind({});
-BottomSlot.args = {
-  name: "terms",
-  label: "I agree to the Terms and Conditions",
-  value: "terms",
-  color: "primary",
-  slotTemplate: `
-    <template #bottom>
-      <UBadge label="Required to proceed" color="warning" variant="outlined" size="sm" class="mt-2" />
-    </template>
+      <URadio
+        v-bind="args"
+        v-model="descriptionModel"
+        name="DescriptionSlot"
+        value="pro"
+      >
+        <template #description>
+          <URow align="center" gap="2xs" class="text-neutral">
+            <UIcon name="workspace_premium" size="xs" class="mt-0.5" color="primary" />
+            <UText size="sm">
+              Includes all core features.
+              <ULink label="Compare plans" underlined size="sm" />.
+            </UText>
+          </URow>
+        </template>
+      </URadio>
+
+      <URadio
+        v-bind="args"
+        v-model="errorModel"
+        name="ErrorSlot"
+        label="Select"
+        value="1"
+        :error="true"
+      >
+        <template #error>
+          <URow align="center" gap="2xs">
+            <UIcon name="error" size="xs" color="error" />
+            <UText size="sm" color="error">
+              <ul>
+                <li>You must select one of the available options</li>
+                <li>This field is required to proceed</li>
+                <li>Choose an option above to clear this error</li>
+              </ul>
+            </UText>
+          </URow>
+        </template>
+      </URadio>
+    </UCol>
   `,
-};
+});

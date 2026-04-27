@@ -15,6 +15,7 @@ import UCol from "../../ui.container-col/UCol.vue";
 import UIcon from "../../ui.image-icon/UIcon.vue";
 import UButton from "../../ui.button/UButton.vue";
 import UText from "../../ui.text-block/UText.vue";
+import ULink from "../../ui.button-link/ULink.vue";
 
 import { addDays } from "../../ui.form-calendar/utilDate";
 
@@ -296,44 +297,102 @@ export const IconProps: StoryFn<DefaultUDatePickerRangeArgs> = (args) => ({
 });
 
 export const Slots: StoryFn<DefaultUDatePickerRangeArgs> = (args) => ({
-  components: { UDatePickerRange, URow, UButton },
-  setup: () => ({ args, fromDate, toDate, leftModel: ref({ from: null, to: null }) }),
+  components: { UDatePickerRange, URow, UCol, UButton, UText, ULink, UIcon },
+  setup: () => ({
+    args,
+    fromDate,
+    toDate,
+    leftModel: ref({ from: null, to: null }),
+    descriptionSlotValue: ref({ from: fromDate, to: toDate }),
+    errorSlotValue: ref({ from: null, to: null }),
+  }),
   template: `
-    <URow align="stretch">
-      <UDatePickerRange
-        label="Select date range"
-        v-model="leftModel"
-        variant="input"
-        class="w-full"
-        :config="{ datepickerInput: { wrapper: 'pl-0' } }"
-      >
-        <template #left>
-          <UButton
-            label="2 weeks"
-            size="sm"
-            variant="soft"
-            class="h-full rounded-r-none"
-            @click="leftModel = { from: fromDate, to: toDate }"
-          />
-        </template>
-      </UDatePickerRange>
-      <UDatePickerRange
-        label="Select date range"
-        v-model="args.modelValue"
-        variant="input"
-        class="w-full"
-        :config="{ datepickerInput: { wrapper: 'pr-0' } }"
-      >
-        <template #right>
-          <UButton
-            label="Clear"
-            size="sm"
-            variant="ghost"
-            class="h-full rounded-l-none"
-            @click="args.modelValue = { from: null, to: null }"
-          />
-        </template>
-      </UDatePickerRange>
-    </URow>
+    <UCol gap="3xl">
+      <URow block>
+        <UDatePickerRange
+          label="Select date range"
+          v-model="leftModel"
+          variant="input"
+          class="w-full"
+          :config="{ datepickerInput: { wrapper: 'pl-0' } }"
+        >
+          <template #left>
+            <UButton
+              label="2 weeks"
+              size="sm"
+              variant="soft"
+              class="h-full rounded-r-none"
+              @click="leftModel = { from: fromDate, to: toDate }"
+            />
+          </template>
+        </UDatePickerRange>
+        <UDatePickerRange
+          label="Select date range"
+          v-model="args.modelValue"
+          variant="input"
+          class="w-full"
+          :config="{ datepickerInput: { wrapper: 'pr-0' } }"
+        >
+          <template #right>
+            <UButton
+              label="Clear"
+              size="sm"
+              variant="ghost"
+              class="h-full rounded-l-none"
+              @click="args.modelValue = { from: null, to: null }"
+            />
+          </template>
+        </UDatePickerRange>
+      </URow>
+
+      <URow block>
+        <UDatePickerRange
+          v-bind="args"
+          v-model="descriptionSlotValue"
+          variant="input"
+          label="Report period"
+          class="w-full"
+        >
+          <template #description>
+            <URow align="center" gap="2xs" class="text-neutral">
+              <UIcon name="date_range" size="xs" color="primary" />
+              <UText size="sm">
+                Inclusive of start and end.
+                <ULink label="Fiscal calendar" underlined size="sm" />.
+              </UText>
+            </URow>
+          </template>
+        </UDatePickerRange>
+
+        <UDatePickerRange
+          v-bind="args"
+          v-model="errorSlotValue"
+          variant="input"
+          label="Stay dates"
+          :error="true"
+          class="w-full"
+        >
+          <template #error>
+            <URow align="center" gap="2xs">
+              <UIcon name="error" size="xs" color="error" />
+              <UText size="sm" color="error">
+                <ul>
+                  <li>End date must be after the start date</li>
+                  <li>Range cannot span more than 30 days</li>
+                  <li>Select both dates from the calendar</li>
+                </ul>
+              </UText>
+            </URow>
+          </template>
+        </UDatePickerRange>
+      </URow>
+    </UCol>
   `,
 });
+Slots.parameters = {
+  docs: {
+    story: {
+      height: "700px",
+    },
+  },
+};

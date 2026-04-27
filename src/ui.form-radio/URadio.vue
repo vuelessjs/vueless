@@ -151,10 +151,5 @@ const { getDataTest, radioLabelAttrs, radioAttrs } = useUI<Config>(defaultConfig
       :data-test="getDataTest()"
       @change="onChange"
     />
-
-    <template #bottom>
-      <!-- @slot Use it to add something below the radio. -->
-      <slot name="bottom" />
-    </template>
   </ULabel>
 </template>
