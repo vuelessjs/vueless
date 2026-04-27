@@ -15,6 +15,7 @@ import ULink from "../../ui.button-link/ULink.vue";
 
 import type { Meta, StoryFn } from "@storybook/vue3-vite";
 import type { Props } from "../types";
+import { ref } from "vue";
 
 interface USwitchArgs extends Props {
   slotTemplate?: string;
@@ -89,15 +90,38 @@ ToggleIcon.args = { toggleIcon: true };
 export const Disabled = DefaultTemplate.bind({});
 Disabled.args = { disabled: true };
 
-export const LabelSlot = DefaultTemplate.bind({});
-LabelSlot.args = {
-  label: "Enable Notifications",
-  slotTemplate: `
-    <template #label="{ label }">
-      <URow gap="2xs" align="center">
-        <UText>I agree to the <ULink label="Privacy Policy" /></UText>
-        <UIcon name="contract" size="xs" />
-      </URow>
-    </template>
+export const Slots: StoryFn<USwitchArgs> = (args) => ({
+  components: { USwitch, UCol, UText, URow, ULink, UIcon },
+  setup: () => ({ args, labelSlotValue: ref(false), descriptionSlotValue: ref(false) }),
+  template: `
+    <UCol gap="3xl">
+      <USwitch
+        v-bind="args"
+        v-model="labelSlotValue"
+        label="Enable Notifications"
+      >
+        <template #label="{ label }">
+          <URow gap="2xs" align="center">
+            <UText :label="label" />
+            <UIcon name="notifications" size="xs" />
+          </URow>
+        </template>
+      </USwitch>
+
+      <USwitch
+        v-model="descriptionSlotValue"
+        label="Auto-save drafts"
+      >
+        <template #description>
+          <URow align="center" gap="2xs" class="text-neutral">
+            <UIcon name="cloud_sync" size="xs" class="mt-0.5" color="primary" />
+            <UText size="sm">
+              Drafts sync across devices.
+              <ULink label="Learn more" underlined size="sm" />.
+            </UText>
+          </URow>
+        </template>
+      </USwitch>
+    </UCol>
   `,
-};
+});

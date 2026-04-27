@@ -189,3 +189,64 @@ CustomKeys.parameters = {
     },
   },
 };
+
+export const Slots: StoryFn<UCheckboxGroupArgs> = (args) => ({
+  components: { UCheckboxGroup, UCol, UText, URow, ULink, UIcon },
+  setup: () => ({
+    args,
+    modelValueLabel: ref(""),
+    modelValueDescription: ref(""),
+    modelValueError: ref(""),
+  }),
+  template: `
+    <UCol gap="3xl">
+      <UCheckboxGroup
+        v-bind="args"
+        v-model="modelValueLabel"
+        name="LabelSlot"
+      >
+        <template #label>
+          <URow align="center" gap="2xs">
+            <UText>Choose how we notify you</UText>
+            <UIcon name="notifications" size="xs" color="neutral" />
+          </URow>
+        </template>
+      </UCheckboxGroup>
+
+      <UCheckboxGroup
+        v-bind="args"
+        v-model="modelValueDescription"
+        name="SlotsDescription"
+        label="Notification channels"
+      >
+        <template #description>
+          <URow align="center" gap="2xs" class="text-neutral">
+            <UIcon name="notifications" size="xs" color="primary" />
+            <UText size="sm">
+              You can change this later.
+              <ULink label="Notification settings" underlined size="sm" />.
+            </UText>
+          </URow>
+        </template>
+      </UCheckboxGroup>
+
+      <UCheckboxGroup
+        v-bind="args"
+        v-model="modelValueError"
+        name="SlotsError"
+        label="Select options"
+        :error="true"
+      >
+        <template #error>
+          <UText size="sm" color="error">
+            <ul>
+              <li>Invalid selection</li>
+              <li>At least one channel is required</li>
+              <li>Choose at least one option before submitting</li>
+            </ul>
+          </UText>
+        </template>
+      </UCheckboxGroup>
+    </UCol>
+  `,
+});
