@@ -265,7 +265,7 @@ export const Slots: StoryFn<UInputNumberArgs> = (args) => ({
           <template #error>
             <URow align="center" gap="2xs">
               <UIcon name="error" size="xs" color="error" />
-              <UText size="sm" color="error" class="m-0">
+              <UText size="sm" color="error">
                 <ul>
                   <li>Value is outside the allowed range</li>
                   <li>Use up to two decimal places for this currency</li>

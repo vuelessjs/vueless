@@ -263,7 +263,7 @@ export const Slots: StoryFn<UInputArgs> = (args) => ({
           <template #error>
             <URow align="center" gap="2xs">
               <UIcon name="error" size="xs" color="error" />
-              <UText size="sm" color="error" class="m-0">
+              <UText size="sm" color="error">
                 <ul>
                   <li>This field failed validation</li>
                   <li>Check minimum and maximum length rules</li>

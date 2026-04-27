@@ -149,7 +149,7 @@ export const Slots: StoryFn<ULabelArgs> = () => ({
         <template #error>
           <URow align="center" gap="2xs">
             <UIcon name="error" size="xs" color="error" />
-            <UText size="sm" color="error" class="m-0">
+            <UText size="sm" color="error">
               <ul>
                 <li>Email address format is invalid</li>
                 <li>Use a name@domain.com style address</li>

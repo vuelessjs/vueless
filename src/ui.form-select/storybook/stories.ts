@@ -416,7 +416,7 @@ export const Slots: StoryFn<USelectArgs> = (args) => ({
           <template #error>
             <URow align="center" gap="2xs">
               <UIcon name="error" size="xs" color="error" />
-              <UText size="sm" color="error" class="m-0">
+              <UText size="sm" color="error">
                 <ul>
                   <li>Please select an option from the list</li>
                   <li>The current value is not available anymore</li>

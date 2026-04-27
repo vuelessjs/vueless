@@ -438,7 +438,7 @@ export const Slots: StoryFn<DefaultUDatePickerArgs> = (args) => ({
           <template #error>
             <URow align="center" gap="2xs">
               <UIcon name="error" size="xs" color="error" />
-              <UText size="sm" color="error" class="m-0">
+              <UText size="sm" color="error">
                 <ul>
                   <li>The selected date is not available</li>
                   <li>Pick a day within the allowed range</li>

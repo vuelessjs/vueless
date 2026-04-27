@@ -161,7 +161,7 @@ export const Slots: StoryFn<URadioArgs> = (args) => ({
         <template #error>
           <URow align="center" gap="2xs">
             <UIcon name="error" size="xs" color="error" />
-            <UText size="sm" color="error" class="m-0">
+            <UText size="sm" color="error">
               <ul>
                 <li>You must select one of the available options</li>
                 <li>This field is required to proceed</li>

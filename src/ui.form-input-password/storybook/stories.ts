@@ -228,7 +228,7 @@ export const Slots: StoryFn<UInputPasswordArgs> = (args) => ({
           <template #error>
             <URow align="center" gap="2xs">
               <UIcon name="error" size="xs" color="error" />
-              <UText size="sm" color="error" class="m-0">
+              <UText size="sm" color="error">
                 <ul>
                   <li>Password does not meet strength requirements</li>
                   <li>Use at least 8 characters with mixed case and numbers</li>

@@ -187,7 +187,7 @@ export const Slots: StoryFn<UInputFileArgs> = (args) => ({
         <template #error>
           <URow align="center" gap="2xs">
             <UIcon name="error" size="xs" color="error" />
-            <UText size="sm" color="error" class="m-0">
+            <UText size="sm" color="error">
               <ul>
                 <li>File type is not accepted for this field</li>
                 <li>Maximum file size has been exceeded</li>
