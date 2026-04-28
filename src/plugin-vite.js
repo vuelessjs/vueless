@@ -155,14 +155,21 @@ export const Vueless = function (options = {}) {
         await copyIconsCache(basePath);
       }
 
-      /* suppress rollup warnings */
-      const originalOnWarn = config.build.rollupOptions.onwarn;
+      /* suppress SOURCEMAP_BROKEN warning from Tailwind */
+      for (const key of ["rollupOptions", "rolldownOptions"]) {
+        const opts = config.build?.[key];
 
-      config.build.rollupOptions.onwarn = (warning, warn) => {
-        // eslint-disable-next-line prettier/prettier
-        if (warning.code === "SOURCEMAP_BROKEN" && warning.plugin === "@tailwindcss/vite:generate:build") return;
-        originalOnWarn ? originalOnWarn(warning, warn) : warn(warning);
-      };
+        if (!opts || typeof opts !== "object") continue;
+
+        const originalOnWarn = opts.onwarn;
+
+        opts.onwarn = (warning, warn) => {
+          // eslint-disable-next-line prettier/prettier
+          if (warning.code === "SOURCEMAP_BROKEN" && warning.plugin === "@tailwindcss/vite:generate:build") return;
+
+          return originalOnWarn ? originalOnWarn(warning, warn) : warn(warning);
+        };
+      }
     },
 
     /* update icons cache in dev env */
