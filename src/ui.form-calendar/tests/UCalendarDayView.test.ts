@@ -332,13 +332,12 @@ describe("UCalendarDayView.vue", () => {
       const dayButtons = component.findAll("button");
       const targetDay = dayButtons.find((button) => button.text() === "15");
 
-      if (targetDay) {
-        await targetDay.trigger("mouseover");
+      expect(targetDay, "day 15 should exist in the grid").toBeTruthy();
+      await targetDay!.trigger("mouseover");
 
-        const lastRangePreview = component.find('[vl-key="lastDayInRange"]');
+      const lastRangePreview = component.find('[vl-key="lastDayInRange"]');
 
-        expect(lastRangePreview.exists()).toBe(true);
-      }
+      expect(lastRangePreview.exists()).toBe(true);
     });
 
     it("applies another month range preview classes when hovering over another month day", async () => {
@@ -354,13 +353,14 @@ describe("UCalendarDayView.vue", () => {
 
       const anotherMonthDays = component.findAll('[vl-key="anotherMonthDay"]');
 
-      if (anotherMonthDays.length > 0) {
-        await anotherMonthDays[0].trigger("mouseover");
+      expect(anotherMonthDays.length, "need another-month cells for hover preview").toBeGreaterThan(
+        0,
+      );
+      await anotherMonthDays[0].trigger("mouseover");
 
-        const anotherMonthPreview = component.findAll('[vl-key="anotherMonthDayInRange"]');
+      const anotherMonthPreview = component.findAll('[vl-key="anotherMonthDayInRange"]');
 
-        expect(anotherMonthPreview.length).toBeGreaterThanOrEqual(0);
-      }
+      expect(anotherMonthPreview.length).toBeGreaterThanOrEqual(0);
     });
 
     it("clears range preview when mouse leaves day view", async () => {
@@ -376,14 +376,13 @@ describe("UCalendarDayView.vue", () => {
       const dayButtons = component.findAll("button");
       const targetDay = dayButtons.find((button) => button.text() === "15");
 
-      if (targetDay) {
-        await targetDay.trigger("mouseover");
-        await component.trigger("mouseleave");
+      expect(targetDay, "day 15 should exist in the grid").toBeTruthy();
+      await targetDay!.trigger("mouseover");
+      await component.trigger("mouseleave");
 
-        const lastRangePreview = component.find('[vl-key="lastDayInRange"]');
+      const lastRangePreview = component.find('[vl-key="lastDayInRange"]');
 
-        expect(lastRangePreview.exists()).toBe(false);
-      }
+      expect(lastRangePreview.exists()).toBe(false);
     });
   });
 

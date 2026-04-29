@@ -133,9 +133,8 @@ describe("UProgress.vue", () => {
         const progressElement = component.find("progress");
         const stepperElement = component.findComponent(UStepperProgress);
 
-        isProgress
-          ? expect(progressElement.exists()).toBe(isProgress)
-          : expect(stepperElement.exists()).toBe(!isProgress);
+        expect(progressElement.exists()).toBe(isProgress);
+        expect(stepperElement.exists()).toBe(!isProgress);
       });
     });
 

@@ -411,8 +411,10 @@ describe("UListbox.vue", () => {
       await flushPromises();
 
       const wrapper = component.find('[vl-key="wrapper"]');
+      const styleAttr = wrapper.attributes("style");
+      const inlineMaxHeight = (wrapper.element as HTMLElement).style.maxHeight;
 
-      expect(wrapper.attributes("style")).toContain(expectedStyle);
+      expect(styleAttr ?? inlineMaxHeight).toContain(expectedStyle);
     });
   });
 
