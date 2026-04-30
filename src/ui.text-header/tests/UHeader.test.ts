@@ -49,9 +49,9 @@ describe("UHeader.vue", () => {
           },
         });
 
-        color === "text"
-          ? expect(component.attributes("class")).toContain("text-default")
-          : expect(component.attributes("class")).toContain(color);
+        const expectedInClass = color === "text" ? "text-default" : color;
+
+        expect(component.attributes("class")).toContain(expectedInClass);
       });
     });
 

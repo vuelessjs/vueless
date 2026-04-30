@@ -8,7 +8,10 @@ import {
 
 import UFiles from "../../ui.text-files/UFiles.vue";
 import URow from "../../ui.container-row/URow.vue";
+import UCol from "../../ui.container-col/UCol.vue";
 import UIcon from "../../ui.image-icon/UIcon.vue";
+import UText from "../../ui.text-block/UText.vue";
+import ULink from "../../ui.button-link/ULink.vue";
 
 import type { Meta, StoryFn } from "@storybook/vue3-vite";
 import type { Props } from "../types";
@@ -80,25 +83,39 @@ export const Sizes = EnumTemplate.bind({});
 Sizes.args = { enum: "size" };
 
 export const Slots: StoryFn<UFilesArgs> = (args) => ({
-  components: { UFiles, URow, UIcon },
+  components: { UFiles, URow, UCol, UIcon, UText, ULink },
   setup() {
     return { args };
   },
   template: `
-    <URow>
-      <UFiles v-bind="args">
-        <template #before-file="{ index }">
-          <UIcon v-if="index === 0" name="info" color="warning" size="xs" />
-          <UIcon v-if="index === 1" name="check_circle" color="success" size="xs" />
-        </template>
-      </UFiles>
+    <UCol gap="3xl">
+      <URow block>
+        <UFiles v-bind="args">
+          <template #before-file="{ index }">
+            <UIcon v-if="index === 0" name="info" color="warning" size="xs" />
+            <UIcon v-if="index === 1" name="check_circle" color="success" size="xs" />
+          </template>
+        </UFiles>
 
-      <UFiles v-bind="args">
-        <template #after-file="{ index }">
-          <UIcon v-if="index === 0" name="info" color="warning" size="xs" />
-          <UIcon v-if="index === 1" name="check_circle" color="success" size="xs" />
+        <UFiles v-bind="args">
+          <template #after-file="{ index }">
+            <UIcon v-if="index === 0" name="info" color="warning" size="xs" />
+            <UIcon v-if="index === 1" name="check_circle" color="success" size="xs" />
+          </template>
+        </UFiles>
+      </URow>
+
+      <UFiles v-bind="args" label="Documents">
+        <template #description>
+          <URow align="center" gap="2xs" class="text-neutral">
+            <UIcon name="folder" size="xs" class="mt-0.5" color="primary" />
+            <UText size="sm">
+              Files are read-only here.
+              <ULink label="Manage in storage" underlined size="sm" />.
+            </UText>
+          </URow>
         </template>
       </UFiles>
-    </URow>
+    </UCol>
   `,
 });

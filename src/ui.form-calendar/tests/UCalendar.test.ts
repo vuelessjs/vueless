@@ -62,6 +62,15 @@ describe("UCalendar.vue", () => {
     it("View – sets the correct view variant", () => {
       const viewCases = [View.Day, View.Month, View.Year];
 
+      const viewExpectations: Record<
+        (typeof viewCases)[number],
+        { day: boolean; month: boolean; year: boolean }
+      > = {
+        [View.Day]: { day: true, month: false, year: false },
+        [View.Month]: { day: false, month: true, year: false },
+        [View.Year]: { day: false, month: false, year: true },
+      };
+
       viewCases.forEach((view) => {
         const component = mount(UCalendar, {
           props: {
@@ -70,19 +79,11 @@ describe("UCalendar.vue", () => {
           },
         });
 
-        if (view === View.Day) {
-          expect(component.findComponent(DayView).exists()).toBe(true);
-          expect(component.findComponent(MonthView).exists()).toBe(false);
-          expect(component.findComponent(YearView).exists()).toBe(false);
-        } else if (view === View.Month) {
-          expect(component.findComponent(DayView).exists()).toBe(false);
-          expect(component.findComponent(MonthView).exists()).toBe(true);
-          expect(component.findComponent(YearView).exists()).toBe(false);
-        } else if (view === View.Year) {
-          expect(component.findComponent(DayView).exists()).toBe(false);
-          expect(component.findComponent(MonthView).exists()).toBe(false);
-          expect(component.findComponent(YearView).exists()).toBe(true);
-        }
+        const expected = viewExpectations[view];
+
+        expect(component.findComponent(DayView).exists()).toBe(expected.day);
+        expect(component.findComponent(MonthView).exists()).toBe(expected.month);
+        expect(component.findComponent(YearView).exists()).toBe(expected.year);
       });
     });
 

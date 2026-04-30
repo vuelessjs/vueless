@@ -1,4 +1,4 @@
-import esbuild from "esbuild";
+import { build as rolldownBuild } from "rolldown";
 import path from "node:path";
 import { cwd } from "node:process";
 import { pathToFileURL } from "node:url";
@@ -191,21 +191,20 @@ export async function cacheMergedConfigs({ vuelessSrcDir, basePath } = {}) {
 }
 
 /**
- * Builds a TypeScript file into a JavaScript file using esbuild.
+ * Bundles a TypeScript component config to ESM `.mjs` via Rolldown (Oxc transform).
  *
  * @param {string} entryPath - The path to the TypeScript file to be built.
  * @param {string} configOutFile - The output path for the resulting JavaScript file.
  * @return {Promise<void>} A promise that resolves when the build is complete.
  */
 export async function buildTSFile(entryPath, configOutFile) {
-  await esbuild.build({
-    entryPoints: [entryPath],
-    outfile: configOutFile,
-    bundle: true,
+  await rolldownBuild({
+    input: entryPath,
     platform: "node",
-    format: "esm",
-    target: "ESNext",
-    loader: { ".ts": "ts" },
+    output: {
+      file: configOutFile,
+      format: "esm",
+    },
   });
 }
 

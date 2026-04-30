@@ -13,10 +13,12 @@ export default /*tw*/ {
         true: "w-full",
       },
       grow: {
-        true: "flex-grow",
+        true: "grow",
+        false: "grow-0",
       },
       shrink: {
-        true: "flex-shrink",
+        true: "shrink",
+        false: "shrink-0",
       },
       gap: {
         none: "gap-0",

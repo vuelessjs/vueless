@@ -578,10 +578,10 @@ describe("UModal", () => {
     });
 
     // CloseOnOverlay events
-    it("emits events when overlay is clicked based on closeOnOverlay prop", () => {
+    it("emits events when overlay is clicked based on closeOnOverlay prop", async () => {
       const closeOnOverlay = [true, false];
 
-      closeOnOverlay.forEach(async (value) => {
+      for (const value of closeOnOverlay) {
         const component = mount(UModal, {
           props: {
             modelValue,
@@ -594,15 +594,9 @@ describe("UModal", () => {
         await innerWrapper.trigger("mousedown");
         await innerWrapper.trigger("click");
 
-        if (value) {
-          expect(component.emitted("update:modelValue")).toBeTruthy();
-          expect(component.emitted("update:modelValue")?.[0]).toEqual([false]);
-          expect(component.emitted("close")).toBeTruthy();
-        } else {
-          expect(component.emitted("update:modelValue")).toBeFalsy();
-          expect(component.emitted("close")).toBeFalsy();
-        }
-      });
+        expect(component.emitted("update:modelValue")).toEqual(value ? [[false]] : undefined);
+        expect(Boolean(component.emitted("close")?.length)).toBe(value);
+      }
     });
 
     it("does not close when mousedown on modal and mouseup on overlay", async () => {
@@ -627,10 +621,10 @@ describe("UModal", () => {
     });
 
     // CloseOnEsc events
-    it("emits events when escape key is pressed based on closeOnEsc prop", () => {
+    it("emits events when escape key is pressed based on closeOnEsc prop", async () => {
       const closeOnEsc = [true, false];
 
-      closeOnEsc.forEach(async (value) => {
+      for (const value of closeOnEsc) {
         const component = mount(UModal, {
           props: {
             modelValue,
@@ -642,15 +636,9 @@ describe("UModal", () => {
 
         await wrapper.trigger("keydown", { key: "Escape" });
 
-        if (value) {
-          expect(component.emitted("update:modelValue")).toBeTruthy();
-          expect(component.emitted("update:modelValue")?.[0]).toEqual([false]);
-          expect(component.emitted("close")).toBeTruthy();
-        } else {
-          expect(component.emitted("update:modelValue")).toBeFalsy();
-          expect(component.emitted("close")).toBeFalsy();
-        }
-      });
+        expect(component.emitted("update:modelValue")).toEqual(value ? [[false]] : undefined);
+        expect(Boolean(component.emitted("close")?.length)).toBe(value);
+      }
     });
   });
 

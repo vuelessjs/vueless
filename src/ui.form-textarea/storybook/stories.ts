@@ -12,9 +12,11 @@ import UCol from "../../ui.container-col/UCol.vue";
 import URow from "../../ui.container-row/URow.vue";
 import tooltip from "../../v.tooltip/vTooltip";
 import UText from "../../ui.text-block/UText.vue";
+import ULink from "../../ui.button-link/ULink.vue";
 
 import type { Meta, StoryFn } from "@storybook/vue3-vite";
 import type { Props } from "../types";
+import { ref } from "vue";
 
 interface UTextareaArgs extends Props {
   slotTemplate?: string;
@@ -138,27 +140,66 @@ NoAutocomplete.parameters = {
 };
 
 export const Slots: StoryFn<UTextareaArgs> = (args) => ({
-  components: { UTextarea, URow, UIcon, UText },
+  components: { UTextarea, URow, UCol, UIcon, UText, ULink },
   directives: { tooltip },
-  setup: () => ({ args }),
+  setup: () => ({
+    args,
+    descriptionSlotValue: ref(""),
+    errorSlotValue: ref(""),
+  }),
   template: `
-    <URow>
-      <UTextarea v-bind="args" v-model="args.modelValue" :max-length="300">
-        <template #left>
-          <UText :label="args.modelValue?.length + '/300'" variant="lifted" />
-        </template>
-      </UTextarea>
+    <UCol gap="3xl">
+      <URow block>
+        <UTextarea v-bind="args" v-model="args.modelValue" :max-length="300">
+          <template #left>
+            <UText :label="args.modelValue?.length + '/300'" variant="lifted" />
+          </template>
+        </UTextarea>
 
-      <UTextarea v-bind="args">
-        <template #right>
-          <UIcon
-            name="send"
-            color="success"
-            v-tooltip="'Send message'"
-            interactive
-          />
-        </template>
-      </UTextarea>
-    </URow>
+        <UTextarea v-bind="args">
+          <template #right>
+            <UIcon
+              name="send"
+              color="success"
+              v-tooltip="'Send message'"
+              interactive
+            />
+          </template>
+        </UTextarea>
+      </URow>
+
+      <URow block>
+        <UTextarea v-model="descriptionSlotValue" label="Feedback">
+          <template #description>
+            <URow align="center" gap="2xs" class="text-neutral">
+              <UIcon name="format_quote" size="xs" class="mt-0.5" color="primary" />
+              <UText size="sm">
+                Markdown is not supported. See
+                <ULink label="content guidelines" underlined size="sm" />.
+              </UText>
+            </URow>
+          </template>
+        </UTextarea>
+
+        <UTextarea
+          v-model="errorSlotValue"
+          label="Message"
+          :error="true"
+        >
+          <template #error>
+            <URow align="center" gap="2xs">
+              <UIcon name="error" size="xs" color="error" />
+              <UText size="sm" color="error">
+                <ul>
+                  <li>Message is too short (minimum 10 characters)</li>
+                  <li>Remove disallowed characters from your text</li>
+                  <li>Try again after fixing the issues above</li>
+                </ul>
+              </UText>
+            </URow>
+          </template>
+        </UTextarea>
+      </URow>
+    </UCol>
   `,
 });

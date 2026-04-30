@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { watch, computed, useId, ref, useTemplateRef, nextTick } from "vue";
+import { watch, computed, useId, ref, useTemplateRef } from "vue";
 import { isEqual } from "lodash-es";
 
 import { useUI } from "../composables/useUI";
@@ -144,78 +144,77 @@ const filteredOptions = computed(() => {
 watch(
   () => [props.options, props.size, props.visibleOptions, props.searchable, searchModel.value],
   () => {
-    nextTick(() => {
-      const options = [
-        ...(optionsRef.value || []),
-        ...(addOptionRef.value ? [addOptionRef.value] : []),
-        ...(emptyOptionRef.value ? [emptyOptionRef.value] : []),
-      ];
+    const options = [
+      ...(optionsRef.value || []),
+      ...(addOptionRef.value ? [addOptionRef.value] : []),
+      ...(emptyOptionRef.value ? [emptyOptionRef.value] : []),
+    ];
 
-      if (props.visibleOptions) {
-        options.slice(0, props.visibleOptions);
-      }
+    if (props.visibleOptions) {
+      options.slice(0, props.visibleOptions);
+    }
 
-      const maxHeight = options
-        .slice(0, props.visibleOptions)
-        .map((el) => {
-          const styles = window.getComputedStyle(el);
-          const height = parseFloat(styles.height || "0");
-          const marginTop = parseFloat(styles.marginTop || "0");
-          const marginBottom = parseFloat(styles.marginBottom || "0");
+    const maxHeight = options
+      .slice(0, props.visibleOptions)
+      .map((el) => {
+        const styles = window.getComputedStyle(el);
+        const height = parseFloat(styles.height || "0");
+        const marginTop = parseFloat(styles.marginTop || "0");
+        const marginBottom = parseFloat(styles.marginBottom || "0");
 
-          return height + marginTop + marginBottom;
-        })
-        .reduce((acc, cur) => acc + cur, 0);
+        return height + marginTop + marginBottom;
+      })
+      .reduce((acc, cur) => acc + cur, 0);
 
-      const wrapperStyle = getComputedStyle(wrapperRef.value as Element);
-      const wrapperPaddingTop = parseFloat(wrapperStyle.paddingTop || "0");
-      const wrapperPaddingBottom = parseFloat(wrapperStyle.paddingBottom || "0");
-      const wrapperBorderTop = parseFloat(wrapperStyle.borderTopWidth || "0");
-      const wrapperBorderBottom = parseFloat(wrapperStyle.borderBottomWidth || "0");
-      const wrapperGap = parseFloat(wrapperStyle.gap || "0");
+    const wrapperEl = wrapperRef.value;
+    const wrapperStyle = wrapperEl ? getComputedStyle(wrapperEl) : null;
+    const wrapperPaddingTop = parseFloat(wrapperStyle?.paddingTop || "0");
+    const wrapperPaddingBottom = parseFloat(wrapperStyle?.paddingBottom || "0");
+    const wrapperBorderTop = parseFloat(wrapperStyle?.borderTopWidth || "0");
+    const wrapperBorderBottom = parseFloat(wrapperStyle?.borderBottomWidth || "0");
+    const wrapperGap = parseFloat(wrapperStyle?.gap || "0");
 
-      const addOptionHeight = addOptionRef.value?.getBoundingClientRect().height || 0;
+    const addOptionHeight = addOptionRef.value?.getBoundingClientRect().height || 0;
 
-      const inputEl = listboxInputRef.value?.input as HTMLInputElement | undefined;
-      let listboxInputHeight = 0;
+    const inputEl = listboxInputRef.value?.input as HTMLInputElement | undefined;
+    let listboxInputHeight = 0;
 
-      let listboxInputWrapperPaddingTop = 0;
-      let listboxInputBorderTop = 0;
-      let listboxInputBorderBottom = 0;
+    let listboxInputWrapperPaddingTop = 0;
+    let listboxInputBorderTop = 0;
+    let listboxInputBorderBottom = 0;
 
-      if (inputEl) {
-        const listboxInputStyle = getComputedStyle(inputEl);
-        const listboxInputLabelStyle = inputEl.parentElement
-          ? getComputedStyle(inputEl.parentElement)
-          : undefined;
-        const listboxInputWrapperStyle = getComputedStyle(
-          inputEl.parentElement?.parentElement?.parentElement as Element,
-        );
+    if (inputEl) {
+      const listboxInputStyle = getComputedStyle(inputEl);
+      const listboxInputLabelStyle = inputEl.parentElement
+        ? getComputedStyle(inputEl.parentElement)
+        : undefined;
+      const listboxInputWrapperStyle = getComputedStyle(
+        inputEl.parentElement?.parentElement?.parentElement as Element,
+      );
 
-        listboxInputHeight = parseFloat(listboxInputStyle.height || "0");
+      listboxInputHeight = parseFloat(listboxInputStyle.height || "0");
 
-        listboxInputWrapperPaddingTop = parseFloat(listboxInputWrapperStyle.paddingTop || "0");
+      listboxInputWrapperPaddingTop = parseFloat(listboxInputWrapperStyle.paddingTop || "0");
 
-        listboxInputBorderTop = parseFloat(listboxInputLabelStyle?.borderTop || "0");
-        listboxInputBorderBottom = parseFloat(listboxInputLabelStyle?.borderBottom || "0");
-      }
+      listboxInputBorderTop = parseFloat(listboxInputLabelStyle?.borderTop || "0");
+      listboxInputBorderBottom = parseFloat(listboxInputLabelStyle?.borderBottom || "0");
+    }
 
-      wrapperMaxHeight.value = `${
-        maxHeight +
-        addOptionHeight +
-        (props.searchable ? wrapperGap : 0) +
-        wrapperPaddingTop +
-        wrapperPaddingBottom +
-        wrapperBorderTop +
-        wrapperBorderBottom +
-        listboxInputHeight +
-        listboxInputBorderTop +
-        listboxInputBorderBottom +
-        listboxInputWrapperPaddingTop
-      }px`;
-    });
+    wrapperMaxHeight.value = `${
+      maxHeight +
+      addOptionHeight +
+      (props.searchable ? wrapperGap : 0) +
+      wrapperPaddingTop +
+      wrapperPaddingBottom +
+      wrapperBorderTop +
+      wrapperBorderBottom +
+      listboxInputHeight +
+      listboxInputBorderTop +
+      listboxInputBorderBottom +
+      listboxInputWrapperPaddingTop
+    }px`;
   },
-  { immediate: true },
+  { immediate: true, flush: "post" },
 );
 
 watch(
