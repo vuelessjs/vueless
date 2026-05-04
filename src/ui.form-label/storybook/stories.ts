@@ -133,30 +133,24 @@ export const Slots: StoryFn<ULabelArgs> = () => ({
       <ULabel label="Work email">
         <UText label="johndoe@example.com" />
         <template #description>
-          <URow align="center" gap="2xs" class="text-neutral">
-            <UIcon name="mark_email_unread" size="xs" color="primary" />
-            <UText size="sm">
-              We will send a
-              <ULink label="confirmation link" underlined size="sm" />
-              to this address.
-            </UText>
-          </URow>
+          <UText size="sm" variant="lifted">
+            We will send a
+            <ULink label="confirmation link" underlined size="sm" />
+            to this address.
+          </UText>
         </template>
       </ULabel>
 
       <ULabel label="Email" :error="true">
         <UText label="not-an-email" />
         <template #error>
-          <URow align="center" gap="2xs">
-            <UIcon name="error" size="xs" color="error" />
-            <UText size="sm" color="error">
-              <ul>
-                <li>Email address format is invalid</li>
-                <li>Use a name@domain.com style address</li>
-                <li>Remove spaces and special characters from the local part</li>
-              </ul>
-            </UText>
-          </URow>
+          <UText size="sm" color="error">
+            <ul>
+              <li>Email address format is invalid</li>
+              <li>Use a name@domain.com style address</li>
+              <li>Remove spaces and special characters from the local part</li>
+            </ul>
+          </UText>
         </template>
       </ULabel>
     </UCol>

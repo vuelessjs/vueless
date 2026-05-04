@@ -184,7 +184,7 @@ Loading.parameters = {
 
 export const EmptyCellLabel = DefaultTemplate.bind({});
 EmptyCellLabel.args = {
-  emptyCellLabel: "---",
+  emptyCellLabel: "NO DATA AVAILABLE",
   rows: [
     {
       id: getRandomId(),

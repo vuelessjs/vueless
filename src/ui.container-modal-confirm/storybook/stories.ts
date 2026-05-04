@@ -27,6 +27,10 @@ interface UModalConfirmArgs extends Props {
   modelValues?: UnknownObject;
 }
 
+const confirmModalDocsLayout = {
+  innerWrapper: "w-full max-h-full",
+};
+
 export default {
   id: "5080",
   title: "Containers / Modal Confirm",
@@ -35,6 +39,9 @@ export default {
     title: "Confirm Subscription Upgrade",
     confirmLabel: "Confirm",
     modelValue: true,
+    config: {
+      confirmModal: confirmModalDocsLayout,
+    },
   },
   argTypes: {
     ...getArgTypes(UModalConfirm.__name),
@@ -152,7 +159,14 @@ export const Inner: StoryFn<UModalConfirmArgs> = (args: UModalConfirmArgs) => ({
       resetBodyOverflow();
     }
 
-    return { args, showMainModal, showInnerModal, openMainModal, openInnerModal };
+    return {
+      args,
+      showMainModal,
+      showInnerModal,
+      openMainModal,
+      openInnerModal,
+      confirmModalDocsLayout,
+    };
   },
   template: `
     <div>
@@ -181,6 +195,7 @@ export const Inner: StoryFn<UModalConfirmArgs> = (args: UModalConfirmArgs) => ({
           "
           confirm-label="Agree"
           inner
+          :config="{ confirmModal: confirmModalDocsLayout }"
         >
           <UText label="Click Agree to proceed with subscription upgrade." />
         </UModalConfirm>
@@ -291,7 +306,7 @@ AfterTitleSlot.args = {
 
 export const ActionsSlot = DefaultTemplate.bind({});
 ActionsSlot.args = {
-  config: { confirmModal: { closeButton: "p-0" } },
+  config: { confirmModal: { closeButton: "p-0", innerWrapper: "w-full max-h-full" } },
   slotTemplate: `
     <template #actions="{ close }">
       <UButton

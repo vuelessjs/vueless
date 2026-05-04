@@ -418,13 +418,10 @@ export const Slots: StoryFn<DefaultUDatePickerArgs> = (args) => ({
           class="w-full"
         >
           <template #description>
-            <URow align="center" gap="2xs" class="text-neutral">
-              <UIcon name="event" size="xs" color="primary" />
-              <UText size="sm">
-                Uses your local timezone.
-                <ULink label="Date policy" underlined size="sm" />.
-              </UText>
-            </URow>
+            <UText size="sm" variant="lifted">
+              Uses your local timezone, see our
+              <ULink label="date policy" underlined size="sm" />.
+            </UText>
           </template>
         </UDatePicker>
 
@@ -436,19 +433,24 @@ export const Slots: StoryFn<DefaultUDatePickerArgs> = (args) => ({
           class="w-full"
         >
           <template #error>
-            <URow align="center" gap="2xs">
-              <UIcon name="error" size="xs" color="error" />
-              <UText size="sm" color="error">
-                <ul>
-                  <li>The selected date is not available</li>
-                  <li>Pick a day within the allowed range</li>
-                  <li>Weekends and holidays are excluded</li>
-                </ul>
-              </UText>
-            </URow>
+            <UText size="sm" color="error">
+              <ul>
+                <li>The selected date is not available</li>
+                <li>Pick a day within the allowed range</li>
+                <li>Weekends and holidays are excluded</li>
+              </ul>
+            </UText>
           </template>
         </UDatePicker>
       </URow>
     </UCol>
   `,
 });
+
+Slots.parameters = {
+  docs: {
+    story: {
+      height: "550px",
+    },
+  },
+};

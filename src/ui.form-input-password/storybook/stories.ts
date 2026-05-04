@@ -210,13 +210,10 @@ export const Slots: StoryFn<UInputPasswordArgs> = (args) => ({
           label="Password"
         >
           <template #description>
-            <URow align="center" gap="2xs" class="text-neutral">
-              <UIcon name="shield" size="xs" color="primary" />
-              <UText size="sm">
-                Minimum 8 characters.
-                <ULink label="Password rules" underlined size="sm" />.
-              </UText>
-            </URow>
+            <UText size="sm" variant="lifted">
+              Minimum 8 characters, see
+              <ULink label="password rules" underlined size="sm" />.
+            </UText>
           </template>
         </UInputPassword>
 
@@ -226,16 +223,13 @@ export const Slots: StoryFn<UInputPasswordArgs> = (args) => ({
           :error="true"
         >
           <template #error>
-            <URow align="center" gap="2xs">
-              <UIcon name="error" size="xs" color="error" />
-              <UText size="sm" color="error">
-                <ul>
-                  <li>Password does not meet strength requirements</li>
-                  <li>Use at least 8 characters with mixed case and numbers</li>
-                  <li>Avoid common words and repeated characters</li>
-                </ul>
-              </UText>
-            </URow>
+            <UText size="sm" color="error">
+              <ul>
+                <li>Password does not meet strength requirements</li>
+                <li>Use at least 8 characters with mixed case and numbers</li>
+                <li>Avoid common words and repeated characters</li>
+              </ul>
+            </UText>
           </template>
         </UInputPassword>
       </URow>

@@ -44,34 +44,34 @@ export default {
   },
 } as Meta;
 
-const defaultTemplate = `
-  <UCol
-    justify="between"
-    class="h-full"
-  >
-    <URow
-      v-for="(cookie, index) in cookieSettings"
-      :key="cookie.label"
-      justify="between"
-      align="center"
-      block
-    >
-      <UCol gap="2xs">
-        <UHeader
-          :label="cookie.label"
-          class="text-sm"
-        />
-        <UText
-          :label="cookie.description"
-          size="sm"
-          variant="lifted"
-        />
-      </UCol>
+const defaultTemplate = (isInvertedExpr: string = "false") => {
+  return `
+    <UCol justify="between" block class="h-full">
+      <URow
+        v-for="(cookie, index) in cookieSettings"
+        :key="cookie.label"
+        align="center"
+        block
+        gap="sm"
+      >
+        <UCol gap="2xs" class="min-w-0 flex-1">
+          <UHeader
+            :label="cookie.label"
+            class="text-sm"
+            :class="{ 'text-inverted': ${isInvertedExpr} }"
+          />
+          <UText
+            :label="cookie.description"
+            size="sm"
+            variant="lifted"
+          />
+        </UCol>
 
-      <USwitch v-model="cookieValues[index]" />
-    </URow>
-  </UCol>
-`;
+        <USwitch v-model="cookieValues[index]" class="shrink-0" />
+      </URow>
+    </UCol>
+  `;
+};
 
 const cookieSettings = ref([
   {
@@ -95,7 +95,7 @@ const DefaultTemplate: StoryFn<UCardArgs> = (args: UCardArgs) => ({
   setup: () => ({ args, slots: getSlotNames(UCard.__name), cookieSettings, cookieValues }),
   template: `
     <UCard v-bind="args" class="max-w-96">
-      ${args.slotTemplate || getSlotsFragment(defaultTemplate)}
+      ${args.slotTemplate || getSlotsFragment(defaultTemplate())}
     </UCard>
   `,
 });
@@ -109,9 +109,10 @@ const EnumTemplate: StoryFn<UCardArgs> = (args: UCardArgs, { argTypes }) => ({
         v-for="option in argTypes?.[args.enum]?.options"
         v-bind="getArgs(args, option)"
         :key="option"
+        :config="{ title: option === 'inverted' ? 'text-inverted' : 'text-default' }"
         class="max-w-96"
       >
-        ${defaultTemplate}
+        ${defaultTemplate("option === 'inverted'")}
       </UCard>
     </URow>
   `,
@@ -135,7 +136,7 @@ NoDivided.args = {
     <template #footer-left>
       <UButton size="sm" label="Save" variant="subtle" />
     </template>
-    ${defaultTemplate}
+    ${defaultTemplate()}
   `,
 };
 
@@ -145,7 +146,7 @@ BeforeTitleSlot.args = {
     <template #before-title>
       <UIcon name="cookie" color="success" size="sm" />
     </template>
-    ${defaultTemplate}
+    ${defaultTemplate()}
   `,
 };
 
@@ -155,7 +156,7 @@ TitleSlot.args = {
     <template #title="{ title }">
       <UHeader :label="title" color="primary" />
     </template>
-    ${defaultTemplate}
+    ${defaultTemplate()}
   `,
 };
 
@@ -165,7 +166,7 @@ AfterTitleSlot.args = {
     <template #after-title>
       <UIcon name="cookie" color="success" size="sm" />
     </template>
-    ${defaultTemplate}
+    ${defaultTemplate()}
   `,
 };
 
@@ -175,18 +176,18 @@ ActionsSlot.args = {
   slotTemplate: `
     <template #actions>
       <URow align="center" class="max-w-fit">
-        <ULink label="Learn more" />
-        <UButton size="sm" label="Manage" variant="subtle" />
+        <ULink label="Learn more" size="sm" />
+        <UButton label="Manage" variant="subtle" size="xs" />
       </URow>
     </template>
-    ${defaultTemplate}
+    ${defaultTemplate()}
   `,
 };
 
 export const FooterLeftSlot = DefaultTemplate.bind({});
 FooterLeftSlot.args = {
   slotTemplate: `
-    ${defaultTemplate}
+    ${defaultTemplate()}
     <template #footer-left>
       <UButton size="sm" label="Cancel" variant="outlined" />
     </template>
@@ -196,7 +197,7 @@ FooterLeftSlot.args = {
 export const FooterRightSlot = DefaultTemplate.bind({});
 FooterRightSlot.args = {
   slotTemplate: `
-    ${defaultTemplate}
+    ${defaultTemplate()}
     <template #footer-right>
       <UButton size="sm" label="Save" />
     </template>
