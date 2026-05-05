@@ -14,4 +14,100 @@ affecting rendered component(s) below Canvas and Docs tabs.
   body {
     font-family: Roboto, sans-serif;
   }
+
+  .sbdocs-content :is(h1, h2, h3, h4, h5, h6)[id] {
+    scroll-margin-top: 8px;
+  }
 </style>
+
+<script>
+  (function docsAnchorScroll() {
+    var ANCHOR_PREFIX = "anchor--";
+    var OBSERVE_MS = 20000;
+    var cancelled = false;
+    var observer = null;
+    var timeoutId = null;
+    var rafId = null;
+
+    function cleanup() {
+      cancelled = true;
+      if (observer) {
+        observer.disconnect();
+        observer = null;
+      }
+      if (timeoutId !== null) {
+        clearTimeout(timeoutId);
+        timeoutId = null;
+      }
+      if (rafId !== null) {
+        cancelAnimationFrame(rafId);
+        rafId = null;
+      }
+    }
+
+    function targetIdFromHash() {
+      var h = window.location.hash;
+      if (!h || h.length < 2) {
+        return null;
+      }
+      var id = decodeURIComponent(h.slice(1));
+      if (id.indexOf(ANCHOR_PREFIX) !== 0) {
+        return null;
+      }
+      return id;
+    }
+
+    function tryScroll(targetId) {
+      var el = document.getElementById(targetId);
+      if (!el) {
+        return false;
+      }
+      el.scrollIntoView({ block: "start", inline: "nearest", behavior: "auto" });
+      return true;
+    }
+
+    function scheduleScrollToHash() {
+      cleanup();
+      cancelled = false;
+
+      var targetId = targetIdFromHash();
+      if (!targetId) {
+        return;
+      }
+
+      if (tryScroll(targetId)) {
+        return;
+      }
+
+      observer = new MutationObserver(function () {
+        if (!cancelled && tryScroll(targetId)) {
+          cleanup();
+        }
+      });
+      observer.observe(document.documentElement, { childList: true, subtree: true });
+
+      timeoutId = window.setTimeout(function () {
+        cleanup();
+      }, OBSERVE_MS);
+
+      function poll() {
+        if (cancelled) {
+          return;
+        }
+        if (tryScroll(targetId)) {
+          cleanup();
+          return;
+        }
+        rafId = window.requestAnimationFrame(poll);
+      }
+      rafId = window.requestAnimationFrame(poll);
+    }
+
+    window.addEventListener("hashchange", scheduleScrollToHash);
+    if (document.readyState === "loading") {
+      document.addEventListener("DOMContentLoaded", scheduleScrollToHash);
+    } else {
+      scheduleScrollToHash();
+    }
+  })();
+</script>
