@@ -115,9 +115,9 @@ export const Slots: StoryFn<USwitchArgs> = (args) => ({
         <template #description>
           <URow align="center" gap="2xs" class="text-neutral">
             <UIcon name="cloud_sync" size="xs" class="mt-0.5" color="primary" />
-            <UText size="sm">
-              Drafts sync across devices.
-              <ULink label="Learn more" underlined size="sm" />.
+            <UText size="sm" variant="lifted">
+              Drafts sync across devices,
+              <ULink label="learn more" underlined size="sm" />.
             </UText>
           </URow>
         </template>

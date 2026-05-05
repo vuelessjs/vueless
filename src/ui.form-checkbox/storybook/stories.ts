@@ -168,13 +168,10 @@ export const Slots: StoryFn<UCheckboxArgs> = (args) => ({
         label="Email me product updates"
       >
         <template #description>
-          <URow align="center" gap="2xs" class="text-neutral">
-            <UIcon name="mail" size="xs" class="mt-0.5" color="primary" />
-            <UText size="sm">
-              Unsubscribe anytime.
-              <ULink label="Privacy policy" underlined size="sm" />.
-            </UText>
-          </URow>
+          <UText size="sm" variant="lifted">
+            Unsubscribe anytime, see our
+            <ULink label="privacy policy" underlined size="sm" />.
+          </UText>
         </template>
       </UCheckbox>
 
@@ -185,16 +182,13 @@ export const Slots: StoryFn<UCheckboxArgs> = (args) => ({
         :error="true"
       >
         <template #error>
-          <URow align="center" gap="2xs">
-            <UIcon name="error" size="xs" color="error" />
-            <UText size="sm" color="error">
-              <ul>
-                <li>You must accept the terms to continue</li>
-                <li>This checkbox is required for registration</li>
-                <li>Clear the error by checking the box above</li>
-              </ul>
-            </UText>
-          </URow>
+          <UText size="sm" color="error">
+            <ul>
+              <li>You must accept the terms to continue</li>
+              <li>This checkbox is required for registration</li>
+              <li>Clear the error by checking the box above</li>
+            </ul>
+          </UText>
         </template>
       </UCheckbox>
     </UCol>

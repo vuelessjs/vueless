@@ -222,9 +222,9 @@ export const Slots: StoryFn<UCheckboxGroupArgs> = (args) => ({
         <template #description>
           <URow align="center" gap="2xs" class="text-neutral">
             <UIcon name="notifications" size="xs" color="primary" />
-            <UText size="sm">
-              You can change this later.
-              <ULink label="Notification settings" underlined size="sm" />.
+            <UText size="sm" variant="lifted">
+              You can change this later in
+              <ULink label="notification settings" underlined size="sm" />.
             </UText>
           </URow>
         </template>
