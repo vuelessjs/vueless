@@ -264,7 +264,7 @@ WithoutDivider.args = {
   slotTemplate: `
     ${defaultTemplate}
     <template #footer-left>
-      <UButton label="Back" color="neutral" variant="subtle" />
+      <UButton label="Back" color="neutral" variant="subtle" block />
     </template>`,
 };
 WithoutDivider.parameters = {
@@ -404,7 +404,7 @@ FooterRightSlot.args = {
     </template>
 
     <template #footer-right>
-      <UButton label="Submit" variant="subtle" />
+      <UButton label="Not now" variant="subtle" color="neutral" />
     </template>
   `,
 };

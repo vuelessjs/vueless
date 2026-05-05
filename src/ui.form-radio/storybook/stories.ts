@@ -140,13 +140,11 @@ export const Slots: StoryFn<URadioArgs> = (args) => ({
         value="pro"
       >
         <template #description>
-          <URow align="center" gap="2xs" class="text-neutral">
-            <UIcon name="workspace_premium" size="xs" class="mt-0.5" color="primary" />
-            <UText size="sm">
-              Includes all core features.
-              <ULink label="Compare plans" underlined size="sm" />.
-            </UText>
-          </URow>
+          <UText size="sm" variant="lifted">
+            Includes all core features,
+            <ULink label="compare plans" underlined size="sm" />
+            for upgrades.
+          </UText>
         </template>
       </URadio>
 
@@ -159,16 +157,13 @@ export const Slots: StoryFn<URadioArgs> = (args) => ({
         :error="true"
       >
         <template #error>
-          <URow align="center" gap="2xs">
-            <UIcon name="error" size="xs" color="error" />
-            <UText size="sm" color="error">
-              <ul>
-                <li>You must select one of the available options</li>
-                <li>This field is required to proceed</li>
-                <li>Choose an option above to clear this error</li>
-              </ul>
-            </UText>
-          </URow>
+          <UText size="sm" color="error">
+            <ul>
+              <li>You must select one of the available options</li>
+              <li>This field is required to proceed</li>
+              <li>Choose an option above to clear this error</li>
+            </ul>
+          </UText>
         </template>
       </URadio>
     </UCol>

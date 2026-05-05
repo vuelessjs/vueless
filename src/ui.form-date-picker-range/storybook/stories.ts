@@ -354,13 +354,10 @@ export const Slots: StoryFn<DefaultUDatePickerRangeArgs> = (args) => ({
           class="w-full"
         >
           <template #description>
-            <URow align="center" gap="2xs" class="text-neutral">
-              <UIcon name="date_range" size="xs" color="primary" />
-              <UText size="sm">
-                Inclusive of start and end.
-                <ULink label="Fiscal calendar" underlined size="sm" />.
-              </UText>
-            </URow>
+            <UText size="sm" variant="lifted">
+              Inclusive of start and end, see the
+              <ULink label="fiscal calendar" underlined size="sm" />.
+            </UText>
           </template>
         </UDatePickerRange>
 
@@ -373,16 +370,13 @@ export const Slots: StoryFn<DefaultUDatePickerRangeArgs> = (args) => ({
           class="w-full"
         >
           <template #error>
-            <URow align="center" gap="2xs">
-              <UIcon name="error" size="xs" color="error" />
-              <UText size="sm" color="error">
-                <ul>
-                  <li>End date must be after the start date</li>
-                  <li>Range cannot span more than 30 days</li>
-                  <li>Select both dates from the calendar</li>
-                </ul>
-              </UText>
-            </URow>
+            <UText size="sm" color="error">
+              <ul>
+                <li>End date must be after the start date</li>
+                <li>Range cannot span more than 30 days</li>
+                <li>Select both dates from the calendar</li>
+              </ul>
+            </UText>
           </template>
         </UDatePickerRange>
       </URow>

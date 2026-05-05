@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, ref, useTemplateRef } from "vue";
+import { computed, ref, useId, useTemplateRef } from "vue";
 
 import { useUI } from "../composables/useUI";
 import { hasSlotContent } from "../utils/helper";
@@ -27,6 +27,7 @@ const emit = defineEmits([
 ]);
 
 const wrapperRef = useTemplateRef<HTMLDivElement>("wrapper");
+const instanceId = useId();
 
 const hovered = ref<number | null>(null);
 const preventHover = ref(false);
@@ -64,6 +65,10 @@ function onMouseHover(overStar: number | null = null) {
   if (!props.disabled && !props.readonly && !preventHover.value) {
     hovered.value = overStar;
   }
+}
+
+function getStarInputId(index: number) {
+  return `${props.id ?? instanceId}-${index}`;
 }
 
 defineExpose({
@@ -112,13 +117,13 @@ const {
         v-for="(star, index) in stars"
         :key="star"
         tabindex="0"
-        :for="String(index)"
+        :for="getStarInputId(index)"
         v-bind="starLabelAttrs"
         @keydown.enter="onClickStar(star)"
         @keydown.space.prevent="onClickStar(star)"
       >
         <input
-          :id="String(index)"
+          :id="getStarInputId(index)"
           tabindex="-1"
           type="radio"
           :disabled="disabled"

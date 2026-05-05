@@ -148,6 +148,13 @@ NotClearable.args = { clearable: false };
 
 export const Searchable = DefaultTemplate.bind({});
 Searchable.args = { searchable: true };
+Searchable.parameters = {
+  docs: {
+    story: {
+      height: "350px",
+    },
+  },
+};
 
 export const SearchModelValue = DefaultTemplate.bind({});
 SearchModelValue.args = { search: "New York", searchable: true };
@@ -163,10 +170,10 @@ export const NoCloseOnSelect = DefaultTemplate.bind({});
 NoCloseOnSelect.args = { modelValue: 3, closeOnSelect: false };
 
 export const Readonly = DefaultTemplate.bind({});
-Readonly.args = { readonly: true, modelValue: "1", clearable: false };
+Readonly.args = { readonly: true, modelValue: 1, clearable: false };
 
 export const Disabled = DefaultTemplate.bind({});
-Disabled.args = { disabled: true, modelValue: "2", clearable: false };
+Disabled.args = { disabled: true, modelValue: 2, clearable: false };
 
 export const LabelAlign = EnumTemplate.bind({});
 LabelAlign.args = {
@@ -183,6 +190,13 @@ LargeItemList.args = {
   options: [...new Array(1000)].map((_, index) => {
     return { value: index + 1, label: `value ${index + 1}`, badge: "badge" };
   }),
+};
+LargeItemList.parameters = {
+  docs: {
+    story: {
+      height: "400px",
+    },
+  },
 };
 
 export const Multiple = DefaultTemplate.bind({});
@@ -396,13 +410,10 @@ export const Slots: StoryFn<USelectArgs> = (args) => ({
           :options="args.options"
         >
           <template #description>
-            <URow align="center" gap="2xs" class="text-neutral">
-              <UIcon name="location_city" size="xs" color="primary" />
-              <UText size="sm">
-                Only cities we ship to.
-                <ULink label="Shipping zones" underlined size="sm" />.
-              </UText>
-            </URow>
+            <UText size="sm" variant="lifted">
+              Only cities we ship to, see
+              <ULink label="shipping zones" underlined size="sm" />.
+            </UText>
           </template>
         </USelect>
 
@@ -414,16 +425,13 @@ export const Slots: StoryFn<USelectArgs> = (args) => ({
           :error="true"
         >
           <template #error>
-            <URow align="center" gap="2xs">
-              <UIcon name="error" size="xs" color="error" />
-              <UText size="sm" color="error">
-                <ul>
-                  <li>Please select an option from the list</li>
-                  <li>The current value is not available anymore</li>
-                  <li>Pick a valid choice to continue</li>
-                </ul>
-              </UText>
-            </URow>
+            <UText size="sm" color="error">
+              <ul>
+                <li>Please select an option from the list</li>
+                <li>The current value is not available anymore</li>
+                <li>Pick a valid choice to continue</li>
+              </ul>
+            </UText>
           </template>
         </USelect>
       </URow>

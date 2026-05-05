@@ -245,13 +245,10 @@ export const Slots: StoryFn<UInputArgs> = (args) => ({
       <URow block>
         <UInput v-model="descriptionSlotValue" label="Display name">
           <template #description>
-            <URow align="center" gap="2xs" class="text-neutral">
-              <UIcon name="info" size="xs" color="primary" />
-              <UText size="sm">
-                Shown on your public profile. Read the
-                <ULink label="naming policy" underlined size="sm" />.
-              </UText>
-            </URow>
+            <UText size="sm" variant="lifted">
+              Shown on your public profile, read the
+              <ULink label="naming policy" underlined size="sm" />.
+            </UText>
           </template>
         </UInput>
 
@@ -262,7 +259,6 @@ export const Slots: StoryFn<UInputArgs> = (args) => ({
         >
           <template #error>
             <URow align="center" gap="2xs">
-              <UIcon name="error" size="xs" color="error" />
               <UText size="sm" color="error">
                 <ul>
                   <li>This field failed validation</li>
