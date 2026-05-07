@@ -247,13 +247,10 @@ export const Slots: StoryFn<UInputNumberArgs> = (args) => ({
       <URow block>
         <UInputNumber v-model="descriptionSlotValue" label="Amount">
           <template #description>
-            <URow align="center" gap="2xs" class="text-neutral">
-              <UIcon name="payments" size="xs" color="primary" />
-              <UText size="sm">
-                Net amount in
-                <ULink label="account currency" underlined size="sm" />.
-              </UText>
-            </URow>
+            <UText size="sm" variant="lifted">
+              Net amount in
+              <ULink label="account currency" underlined size="sm" />.
+            </UText>
           </template>
         </UInputNumber>
 
@@ -263,16 +260,13 @@ export const Slots: StoryFn<UInputNumberArgs> = (args) => ({
           :error="true"
         >
           <template #error>
-            <URow align="center" gap="2xs">
-              <UIcon name="error" size="xs" color="error" />
-              <UText size="sm" color="error">
-                <ul>
-                  <li>Value is outside the allowed range</li>
-                  <li>Use up to two decimal places for this currency</li>
-                  <li>Enter a number greater than zero</li>
-                </ul>
-              </UText>
-            </URow>
+            <UText size="sm" color="error">
+              <ul>
+                <li>Value is outside the allowed range</li>
+                <li>Use up to two decimal places for this currency</li>
+                <li>Enter a number greater than zero</li>
+              </ul>
+            </UText>
           </template>
         </UInputNumber>
       </URow>

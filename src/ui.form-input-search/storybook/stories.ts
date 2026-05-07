@@ -195,14 +195,11 @@ export const Slots: StoryFn<UInputSearchArgs> = (args) => ({
 
       <UInputSearch v-model="descriptionSlotValue" label="Search products">
         <template #description>
-          <URow align="center" gap="2xs" class="text-neutral">
-            <UIcon name="travel_explore" size="xs" color="primary" />
-            <UText size="sm">
-              Tip: use
-              <ULink label="filters" underlined size="sm" />
-              for exact matches.
-            </UText>
-          </URow>
+          <UText size="sm" variant="lifted">
+            Tip: use
+            <ULink label="filters" underlined size="sm" />
+            for exact matches.
+          </UText>
         </template>
       </UInputSearch>
 
@@ -212,16 +209,13 @@ export const Slots: StoryFn<UInputSearchArgs> = (args) => ({
         :error="true"
       >
         <template #error>
-          <URow align="center" gap="2xs">
-            <UIcon name="error" size="xs" color="error" />
-            <UText size="sm" color="error">
-              <ul>
-                <li>Search query is too short</li>
-                <li>Remove unsupported symbols from your search</li>
-                <li>Try different keywords and search again</li>
-              </ul>
-            </UText>
-          </URow>
+          <UText size="sm" color="error">
+            <ul>
+              <li>Search query is too short</li>
+              <li>Remove unsupported symbols from your search</li>
+              <li>Try different keywords and search again</li>
+            </ul>
+          </UText>
         </template>
       </UInputSearch>
     </UCol>

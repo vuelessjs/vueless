@@ -168,13 +168,10 @@ export const Slots: StoryFn<UInputFileArgs> = (args) => ({
         label="Upload document"
       >
         <template #description>
-          <URow align="center" gap="2xs">
-            <UIcon name="description" size="xs" color="primary" />
-            <UText size="sm">
-              PDF or image, max 5MB.
-              <ULink label="See requirements" underlined size="sm" />.
-            </UText>
-          </URow>
+          <UText size="sm" variant="lifted">
+            PDF or image, max 5MB, see
+            <ULink label="requirements" underlined size="sm" />.
+          </UText>
         </template>
       </UInputFile>
 
@@ -185,16 +182,13 @@ export const Slots: StoryFn<UInputFileArgs> = (args) => ({
         :error="true"
       >
         <template #error>
-          <URow align="center" gap="2xs">
-            <UIcon name="error" size="xs" color="error" />
-            <UText size="sm" color="error">
-              <ul>
-                <li>File type is not accepted for this field</li>
-                <li>Maximum file size has been exceeded</li>
-                <li>Choose another file and upload again</li>
-              </ul>
-            </UText>
-          </URow>
+          <UText size="sm" color="error">
+            <ul>
+              <li>File type is not accepted for this field</li>
+              <li>Maximum file size has been exceeded</li>
+              <li>Choose another file and upload again</li>
+            </ul>
+          </UText>
         </template>
       </UInputFile>
     </UCol>

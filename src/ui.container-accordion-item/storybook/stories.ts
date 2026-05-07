@@ -23,7 +23,7 @@ interface UAccordionItemArgs extends Props {
 }
 
 export default {
-  id: "5050",
+  id: "5040",
   title: "Containers / Accordion Item",
   component: UAccordionItem,
   args: {

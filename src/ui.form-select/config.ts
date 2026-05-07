@@ -117,7 +117,10 @@ export default /*tw*/ {
     ],
   },
   toggleWrapper: "{>toggle} mr-3",
-  toggleIcon: "{UIcon} {>selectIcon} -mr-1 transition duration-300 group-[*]/active:rotate-180",
+  toggleIcon: {
+    base: "{UIcon} {>selectIcon} -mr-1 transition duration-300",
+    compoundVariants: [{ opened: true, class: "rotate-180" }],
+  },
   leftIcon: "{UIcon} {>selectIcon}",
   rightIcon: "{UIcon} {>selectIcon}",
   leftSlot: "{>toggle} pl-2.5",

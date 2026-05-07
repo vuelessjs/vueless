@@ -109,9 +109,9 @@ export const Slots: StoryFn<UFilesArgs> = (args) => ({
         <template #description>
           <URow align="center" gap="2xs" class="text-neutral">
             <UIcon name="folder" size="xs" class="mt-0.5" color="primary" />
-            <UText size="sm">
-              Files are read-only here.
-              <ULink label="Manage in storage" underlined size="sm" />.
+            <UText size="sm" variant="lifted">
+              Files are read-only here,
+              <ULink label="manage in storage" underlined size="sm" />.
             </UText>
           </URow>
         </template>

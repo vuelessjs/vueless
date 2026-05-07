@@ -1,5 +1,6 @@
+import { nextTick } from "vue";
 import { flushPromises, mount } from "@vue/test-utils";
-import { describe, it, expect } from "vitest";
+import { describe, it, expect, vi } from "vitest";
 
 import UListbox from "../UListbox.vue";
 import UIcon from "../../ui.image-icon/UIcon.vue";
@@ -399,7 +400,37 @@ describe("UListbox.vue", () => {
         id: `option-${i}`,
       }));
 
-      const expectedStyle = "max-height:";
+      // Mock getComputedStyle to return non-zero heights for option elements
+      const originalGetComputedStyle = window.getComputedStyle;
+
+      vi.spyOn(window, "getComputedStyle").mockImplementation((el) => {
+        const real = originalGetComputedStyle(el);
+
+        return {
+          ...real,
+          height: "40px",
+          marginTop: "0px",
+          marginBottom: "4px",
+          paddingTop: "4px",
+          paddingBottom: "4px",
+          borderTopWidth: "1px",
+          borderBottomWidth: "1px",
+          gap: "4px",
+        } as CSSStyleDeclaration;
+      });
+
+      // Mock getBoundingClientRect for option elements
+      vi.spyOn(HTMLElement.prototype, "getBoundingClientRect").mockReturnValue({
+        height: 40,
+        width: 100,
+        top: 0,
+        left: 0,
+        bottom: 40,
+        right: 100,
+        x: 0,
+        y: 0,
+        toJSON: () => {},
+      });
 
       const component = mount(UListbox, {
         props: {
@@ -409,12 +440,15 @@ describe("UListbox.vue", () => {
       });
 
       await flushPromises();
+      await nextTick();
 
       const wrapper = component.find('[vl-key="wrapper"]');
       const styleAttr = wrapper.attributes("style");
       const inlineMaxHeight = (wrapper.element as HTMLElement).style.maxHeight;
 
-      expect(styleAttr ?? inlineMaxHeight).toContain(expectedStyle);
+      expect(styleAttr ?? inlineMaxHeight).toContain("max-height:");
+
+      vi.restoreAllMocks();
     });
   });
 

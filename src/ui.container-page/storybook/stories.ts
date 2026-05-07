@@ -35,6 +35,7 @@ export default {
   component: UPage,
   args: {
     title: "Join Our Community",
+    config: { wrapper: "min-h-max", page: "min-h-max" },
   },
   argTypes: {
     ...getArgTypes(UPage.__name),
@@ -142,7 +143,11 @@ const EnumTemplate: StoryFn<UPageArgs> = (args: UPageArgs, { argTypes }) => ({
         v-for="option in argTypes?.[args.enum]?.options"
         v-bind="getArgs(args, option)"
         :key="option"
-        :config="{ wrapper: 'min-h-max', page: 'min-h-max mb-4' }"
+        :config="{
+          wrapper: 'min-h-max',
+          page: 'min-h-max mb-4',
+          title: option === 'inverted' ? 'text-inverted' : 'text-default'
+        }"
       >
         ${defaultTemplate}
       </UPage>

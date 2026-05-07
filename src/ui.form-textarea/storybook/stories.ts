@@ -171,13 +171,10 @@ export const Slots: StoryFn<UTextareaArgs> = (args) => ({
       <URow block>
         <UTextarea v-model="descriptionSlotValue" label="Feedback">
           <template #description>
-            <URow align="center" gap="2xs" class="text-neutral">
-              <UIcon name="format_quote" size="xs" class="mt-0.5" color="primary" />
-              <UText size="sm">
-                Markdown is not supported. See
-                <ULink label="content guidelines" underlined size="sm" />.
-              </UText>
-            </URow>
+            <UText size="sm" variant="lifted">
+              Markdown is not supported, see
+              <ULink label="content guidelines" underlined size="sm" />.
+            </UText>
           </template>
         </UTextarea>
 
@@ -187,16 +184,13 @@ export const Slots: StoryFn<UTextareaArgs> = (args) => ({
           :error="true"
         >
           <template #error>
-            <URow align="center" gap="2xs">
-              <UIcon name="error" size="xs" color="error" />
-              <UText size="sm" color="error">
-                <ul>
-                  <li>Message is too short (minimum 10 characters)</li>
-                  <li>Remove disallowed characters from your text</li>
-                  <li>Try again after fixing the issues above</li>
-                </ul>
-              </UText>
-            </URow>
+            <UText size="sm" color="error">
+              <ul>
+                <li>Message is too short (minimum 10 characters)</li>
+                <li>Remove disallowed characters from your text</li>
+                <li>Try again after fixing the issues above</li>
+              </ul>
+            </UText>
           </template>
         </UTextarea>
       </URow>

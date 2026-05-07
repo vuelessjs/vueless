@@ -204,13 +204,10 @@ export const Slots: StoryFn<URadioGroupArgs> = (args) => ({
         label="Delivery"
       >
         <template #description>
-          <URow align="center" gap="2xs" class="text-neutral">
-            <UIcon name="local_shipping" size="xs" color="primary" />
-            <UText size="sm">
-              Shipping times are estimates.
-              <ULink label="Full policy" underlined size="sm" />.
-            </UText>
-          </URow>
+          <UText size="sm" variant="lifted">
+            Shipping times are estimates, see the
+            <ULink label="full policy" underlined size="sm" />.
+          </UText>
         </template>
       </URadioGroup>
 
@@ -222,16 +219,13 @@ export const Slots: StoryFn<URadioGroupArgs> = (args) => ({
         :error="true"
       >
         <template #error>
-          <URow align="center" gap="2xs">
-            <UIcon name="error" size="xs" color="error" />
-            <UText size="sm" color="error">
-              <ul>
-                <li>Please choose one option from the group</li>
-                <li>At least one selection is required</li>
-                <li>Review the labels and pick a valid answer</li>
-              </ul>
-            </UText>
-          </URow>
+          <UText size="sm" color="error">
+            <ul>
+              <li>Please choose one option from the group</li>
+              <li>At least one selection is required</li>
+              <li>Review the labels and pick a valid answer</li>
+            </ul>
+          </UText>
         </template>
       </URadioGroup>
     </UCol>
