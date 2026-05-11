@@ -250,6 +250,22 @@ const {
       <slot name="label" :label="label" />
     </template>
 
+    <template #description>
+      <!--
+        @slot Use this to add custom content instead of the description.
+        @binding {string} description
+      -->
+      <slot name="description" :description="description" />
+    </template>
+
+    <template #error>
+      <!--
+        @slot Use this to add custom content instead of the error message.
+        @binding {string | boolean} error
+      -->
+      <slot name="error" :error="error" />
+    </template>
+
     <div ref="wrapper" v-bind="wrapperAttrs">
       <span
         v-if="hasSlotContent($slots['left'])"

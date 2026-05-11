@@ -11,9 +11,9 @@ describe("UEmpty.vue", () => {
   describe("Props", () => {
     it("Size – applies the correct size class", async () => {
       const size = {
-        sm: "2xl",
+        sm: "xl",
         md: "3xl",
-        lg: "4xl",
+        lg: "5xl",
       };
 
       Object.entries(size).forEach(([size, value]) => {

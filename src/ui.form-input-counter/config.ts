@@ -46,6 +46,7 @@ export default /*tw*/ {
     max: 999,
     minFractionDigits: 0,
     maxFractionDigits: 2,
+    debounce: 0,
     readonly: false,
     disabled: false,
     /* icons */

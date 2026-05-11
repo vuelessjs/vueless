@@ -1,5 +1,6 @@
+import { nextTick } from "vue";
 import { flushPromises, mount } from "@vue/test-utils";
-import { describe, it, expect } from "vitest";
+import { describe, it, expect, vi } from "vitest";
 
 import UListbox from "../UListbox.vue";
 import UIcon from "../../ui.image-icon/UIcon.vue";
@@ -399,7 +400,37 @@ describe("UListbox.vue", () => {
         id: `option-${i}`,
       }));
 
-      const expectedStyle = "max-height:";
+      // Mock getComputedStyle to return non-zero heights for option elements
+      const originalGetComputedStyle = window.getComputedStyle;
+
+      vi.spyOn(window, "getComputedStyle").mockImplementation((el) => {
+        const real = originalGetComputedStyle(el);
+
+        return {
+          ...real,
+          height: "40px",
+          marginTop: "0px",
+          marginBottom: "4px",
+          paddingTop: "4px",
+          paddingBottom: "4px",
+          borderTopWidth: "1px",
+          borderBottomWidth: "1px",
+          gap: "4px",
+        } as CSSStyleDeclaration;
+      });
+
+      // Mock getBoundingClientRect for option elements
+      vi.spyOn(HTMLElement.prototype, "getBoundingClientRect").mockReturnValue({
+        height: 40,
+        width: 100,
+        top: 0,
+        left: 0,
+        bottom: 40,
+        right: 100,
+        x: 0,
+        y: 0,
+        toJSON: () => {},
+      });
 
       const component = mount(UListbox, {
         props: {
@@ -409,10 +440,15 @@ describe("UListbox.vue", () => {
       });
 
       await flushPromises();
+      await nextTick();
 
       const wrapper = component.find('[vl-key="wrapper"]');
+      const styleAttr = wrapper.attributes("style");
+      const inlineMaxHeight = (wrapper.element as HTMLElement).style.maxHeight;
 
-      expect(wrapper.attributes("style")).toContain(expectedStyle);
+      expect(styleAttr ?? inlineMaxHeight).toContain("max-height:");
+
+      vi.restoreAllMocks();
     });
   });
 
@@ -474,7 +510,7 @@ describe("UListbox.vue", () => {
       expect(options[0].text()).toBe(targetValue);
     });
 
-    it("Search – emits searchChange event on input", async () => {
+    it("Search – emits search-change event on input", async () => {
       const targetValue = "test";
 
       const component = mount(UListbox, {
@@ -488,11 +524,11 @@ describe("UListbox.vue", () => {
 
       await searchInput.setValue(targetValue);
 
-      expect(component.emitted("searchChange")).toBeTruthy();
-      expect(component.emitted("searchChange")![0][0]).toBe(targetValue);
+      expect(component.emitted("search-change")).toBeTruthy();
+      expect(component.emitted("search-change")![0][0]).toBe(targetValue);
     });
 
-    it("Search – emits searchBlur event on blur", async () => {
+    it("Search – emits search-blur event on blur", async () => {
       const component = mount(UListbox, {
         props: {
           searchable: true,
@@ -504,7 +540,7 @@ describe("UListbox.vue", () => {
 
       await searchInput.trigger("blur");
 
-      expect(component.emitted("searchBlur")).toBeTruthy();
+      expect(component.emitted("search-blur")).toBeTruthy();
     });
 
     it("Keyboard Navigation – moves pointer down with arrow down", async () => {
@@ -719,8 +755,8 @@ describe("UListbox.vue", () => {
 
       await firstOption.trigger("click");
 
-      expect(component.emitted("clickOption")).toBeTruthy();
-      expect(component.emitted("clickOption")![0][0]).toEqual(defaultOptions[0]);
+      expect(component.emitted("click-option")).toBeTruthy();
+      expect(component.emitted("click-option")![0][0]).toEqual(defaultOptions[0]);
     });
 
     it("Search Change – emits when search input changes", async () => {
@@ -737,8 +773,8 @@ describe("UListbox.vue", () => {
 
       await searchInput.setValue("test");
 
-      expect(component.emitted("searchChange")).toBeTruthy();
-      expect(component.emitted("searchChange")![0][0]).toBe(expectedValue);
+      expect(component.emitted("search-change")).toBeTruthy();
+      expect(component.emitted("search-change")![0][0]).toBe(expectedValue);
     });
 
     it("Search Blur – emits when search input loses focus", async () => {
@@ -753,7 +789,7 @@ describe("UListbox.vue", () => {
 
       await searchInput.get("input").trigger("blur");
 
-      expect(component.emitted("searchBlur")).toBeTruthy();
+      expect(component.emitted("search-blur")).toBeTruthy();
     });
   });
 

@@ -1,6 +1,6 @@
 export default /*tw*/ {
   wrapper: {
-    base: "flex w-full group",
+    base: "flex w-full group/label",
     variants: {
       align: {
         topInside: "flex-col gap-0 relative",
@@ -25,7 +25,7 @@ export default /*tw*/ {
   },
   content: "flex",
   label: {
-    base: "z-10 block !leading-none w-max transition",
+    base: "z-10 block leading-none! w-max transition",
     variants: {
       size: {
         sm: "text-small",
@@ -40,7 +40,7 @@ export default /*tw*/ {
         right: "font-normal",
       },
       error: {
-        true: "text-error group-focus-within:!text-error",
+        true: "text-error group-focus-within/label:text-error!",
       },
       disabled: {
         true: "text-lifted cursor-not-allowed",
@@ -58,11 +58,11 @@ export default /*tw*/ {
       { align: ["left", "right"], size: "md", class: "text-medium" },
       { align: ["left", "right"], size: "lg", class: "mt-px text-large" },
       { align: ["left", "right"], centred: false, class: "pt-1" },
-      { align: "topInside", disabled: false, class: "group-focus-within:text-primary" },
+      { align: "topInside", disabled: false, class: "group-focus-within/label:text-primary" },
     ],
   },
   description: {
-    base: "font-normal text-lifted text-left !leading-tight",
+    base: "font-normal text-lifted text-left leading-tight!",
     variants: {
       size: {
         sm: "text-tiny",

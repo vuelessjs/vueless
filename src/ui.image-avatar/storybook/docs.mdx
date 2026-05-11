@@ -1,4 +1,4 @@
-import { Meta, Title, Subtitle, Description, Primary, Controls, Stories, Source } from "@storybook/addon-docs/blocks";
+import { Meta, Title, Subtitle, Description, Primary, Controls, Stories, Source, Markdown } from "@storybook/addon-docs/blocks";
 import { getSource } from "../../utils/storybook";
 
 import * as stories from "./stories";
@@ -11,6 +11,21 @@ import defaultConfig from "../config?raw"
 <Primary of={stories}  />
 <Controls of={stories.Default} />
 <Stories of={stories} />
+
+## Chip Object Properties
+Keys you may/have to provide to the component in a `chip` object.
+
+<Markdown>
+{`
+|  Key name              | Description                                           | Type                    |
+| ---------------------- | ----------------------------------------------------- | ----------------------- |
+| icon                   | Chip icon name                                        | String                  |
+| color                  | Chip color                                            | String                  |
+| xPosition              | Chip x-axis position                                  | String                  |
+| yPosition              | Chip y-axis position                                  | String                  |
+| inset                  | Display the chip inside the component                 | Boolean                 |
+`}
+</Markdown>
 
 ## Default config
 <Source code={getSource(defaultConfig)} language="jsx" dark />

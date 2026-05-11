@@ -35,6 +35,7 @@ import {
   DEFAULT_DISABLED_OPACITY,
   LETTER_SPACING,
   DEFAULT_LETTER_SPACING,
+  THEME_TOKENS,
   LIGHT_THEME,
   DARK_THEME,
   SPACING,
@@ -898,12 +899,11 @@ function setCSSVariables(
   `;
 
   if (isCSR) {
-    const vuelessStyleId = "vueless-theme-tokens";
-    let style = document.getElementById(vuelessStyleId) as HTMLStyleElement | null;
+    let style = document.getElementById(THEME_TOKENS) as HTMLStyleElement | null;
 
     if (!style) {
       style = document.createElement("style");
-      style.id = vuelessStyleId;
+      style.id = THEME_TOKENS;
 
       const firstStyleOrLink = document.querySelector("link[rel='stylesheet'], style");
 

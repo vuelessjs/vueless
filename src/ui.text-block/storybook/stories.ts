@@ -90,8 +90,8 @@ Sizes.args = { enum: "size" };
 export const Color = EnumTemplate.bind({});
 Color.args = { enum: "color" };
 
-export const Variant = EnumTemplate.bind({});
-Variant.args = { enum: "variant" };
+export const Variants = EnumTemplate.bind({});
+Variants.args = { enum: "variant" };
 
 export const Line: StoryFn<UTextArgs> = (args: UTextArgs) => ({
   components: { UText, UCol },

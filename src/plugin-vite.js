@@ -24,7 +24,7 @@ import { overrideComponents, restoreComponents } from "./utils/node/componentOve
 import {
   getNuxtDirs,
   getVueDirs,
-  getVuelessConfigDirs,
+  getVuelessAppDirs,
   cacheMergedConfigs,
   autoImportUserConfigs,
 } from "./utils/node/helper.js";
@@ -33,7 +33,6 @@ import {
   JAVASCRIPT_EXT,
   TYPESCRIPT_EXT,
   INTERNAL_ENV,
-  STORYBOOK_ENV,
   NUXT_MODULE_ENV,
   VUELESS_LOCAL_DIR,
   VUELESS_PACKAGE_DIR,
@@ -50,6 +49,10 @@ export const TailwindCSS = (options) => {
 };
 
 /* Automatically importing Vueless components on demand */
+/**
+ * @param {import("unplugin-vue-components/types").Options | undefined} options
+ * @returns {import("vite").Plugin & { api: import("unplugin-vue-components/types").PublicPluginAPI }}
+ */
 export const UnpluginComponents = (options) =>
   UnpluginVueComponents({
     dirs: [VUELESS_USER_COMPONENTS_DIR, SRC_USER_COMPONENTS_DIR],
@@ -67,7 +70,6 @@ export const Vueless = function (options = {}) {
   const { debug, env, include, basePath } = options;
 
   const isInternalEnv = env === INTERNAL_ENV;
-  const isStorybookEnv = env === STORYBOOK_ENV;
   const isNuxtModuleEnv = env === NUXT_MODULE_ENV;
 
   const vuelessSrcDir = isInternalEnv ? VUELESS_LOCAL_DIR : VUELESS_PACKAGE_DIR;
@@ -77,16 +79,15 @@ export const Vueless = function (options = {}) {
 
   const targetFiles = [
     ...(include || []),
-    ...getVuelessConfigDirs(),
+    ...getVuelessAppDirs(),
     ...(isNuxtModuleEnv ? getNuxtDirs() : getVueDirs()),
   ];
 
   /* if server stopped by developer (Ctrl+C) */
   process.on("SIGINT", async () => {
-    if (isInternalEnv || isStorybookEnv) {
-      await removeCustomPropTypes(vuelessSrcDir);
-      await restoreComponents(vuelessSrcDir);
-    }
+    /* remove `.cache` folder in components and restore changes */
+    await removeCustomPropTypes(vuelessSrcDir);
+    await restoreComponents(vuelessSrcDir);
 
     /* remove cached icons */
     await removeIconsCache(basePath);
@@ -107,6 +108,7 @@ export const Vueless = function (options = {}) {
     config: () => ({
       define: {
         "process.env": {},
+        __VUELESS_DEV__: process.argv.includes("--watch") || process.argv.includes("-w"),
       },
       optimizeDeps: {
         include: isInternalEnv
@@ -153,14 +155,21 @@ export const Vueless = function (options = {}) {
         await copyIconsCache(basePath);
       }
 
-      /* suppress rollup warnings */
-      const originalOnWarn = config.build.rollupOptions.onwarn;
+      /* suppress SOURCEMAP_BROKEN warning from Tailwind */
+      for (const key of ["rollupOptions", "rolldownOptions"]) {
+        const opts = config.build?.[key];
 
-      config.build.rollupOptions.onwarn = (warning, warn) => {
-        // eslint-disable-next-line prettier/prettier
-        if (warning.code === "SOURCEMAP_BROKEN" && warning.plugin === "@tailwindcss/vite:generate:build") return;
-        originalOnWarn ? originalOnWarn(warning, warn) : warn(warning);
-      };
+        if (!opts || typeof opts !== "object") continue;
+
+        const originalOnWarn = opts.onwarn;
+
+        opts.onwarn = (warning, warn) => {
+          // eslint-disable-next-line prettier/prettier
+          if (warning.code === "SOURCEMAP_BROKEN" && warning.plugin === "@tailwindcss/vite:generate:build") return;
+
+          return originalOnWarn ? originalOnWarn(warning, warn) : warn(warning);
+        };
+      }
     },
 
     /* update icons cache in dev env */
@@ -212,7 +221,10 @@ export const Vueless = function (options = {}) {
     },
 
     /* remove cached icons */
-    buildEnd: async () => {
+    buildEnd: async function () {
+      /* skip in watch mode — configResolved won't re-run */
+      if (this.meta.watchMode) return;
+
       await removeIconsCache(basePath);
     },
   };

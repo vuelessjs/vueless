@@ -34,7 +34,7 @@ export interface Props<TModelValue> {
   /**
    * Datepicker error message.
    */
-  error?: string;
+  error?: string | boolean;
 
   /**
    * Make datepicker disabled.

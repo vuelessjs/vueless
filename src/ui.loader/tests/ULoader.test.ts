@@ -57,10 +57,10 @@ describe("ULoader.vue", () => {
         // Check if the ellipses have the correct color class
         const ellipses = component.findAll("[vl-key='ellipse']");
 
+        const expectedClass = color === "inherit" ? "bg-current" : `bg-${color}`;
+
         ellipses.forEach((ellipse) => {
-          color === "inherit"
-            ? expect(ellipse.classes()).toContain("bg-current")
-            : expect(ellipse.classes()).toContain(`bg-${color}`);
+          expect(ellipse.classes()).toContain(expectedClass);
         });
       });
     });

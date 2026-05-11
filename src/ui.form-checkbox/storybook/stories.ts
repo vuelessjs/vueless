@@ -17,6 +17,7 @@ import UChip from "../../ui.other-chip/UChip.vue";
 
 import type { Meta, StoryFn } from "@storybook/vue3-vite";
 import type { Props } from "../types";
+import { ref } from "vue";
 
 interface UCheckboxArgs extends Props {
   slotTemplate?: string;
@@ -142,23 +143,54 @@ Partial.parameters = {
   },
 };
 
-export const LabelSlot = DefaultTemplate.bind({});
-LabelSlot.args = {
-  slotTemplate: `
-    <template #label>
-      <URow gap="2xs" align="center">
-        <UText>I agree to the <ULink label="Privacy Policy" /></UText>
-        <UIcon name="contract" size="xs" />
-      </URow>
-    </template>
-  `,
-};
+export const Slots: StoryFn<UCheckboxArgs> = (args) => ({
+  components: { UCheckbox, UCol, UText, URow, ULink, UIcon },
+  setup: () => ({
+    args,
+    labelSlotValue: ref(false),
+    descriptionSlotValue: ref(false),
+    errorSlotValue: ref(false),
+  }),
+  template: `
+    <UCol gap="3xl">
+      <UCheckbox v-bind="args" v-model="labelSlotValue">
+        <template #label>
+          <URow gap="2xs" align="center">
+            <UText>I agree to the Privacy Policy</UText>
+            <UIcon name="contract" size="xs" />
+          </URow>
+        </template>
+      </UCheckbox>
 
-export const BottomSlot = DefaultTemplate.bind({});
-BottomSlot.args = {
-  slotTemplate: `
-    <template #bottom>
-      <ULink label="Learn more" size="sm" class="mr-1.5" />
-    </template>
+      <UCheckbox
+        v-bind="args"
+        v-model="descriptionSlotValue"
+        label="Email me product updates"
+      >
+        <template #description>
+          <UText size="sm" variant="lifted">
+            Unsubscribe anytime, see our
+            <ULink label="privacy policy" underlined size="sm" />.
+          </UText>
+        </template>
+      </UCheckbox>
+
+      <UCheckbox
+        v-bind="args"
+        v-model="errorSlotValue"
+        label="Accept terms"
+        :error="true"
+      >
+        <template #error>
+          <UText size="sm" color="error">
+            <ul>
+              <li>You must accept the terms to continue</li>
+              <li>This checkbox is required for registration</li>
+              <li>Clear the error by checking the box above</li>
+            </ul>
+          </UText>
+        </template>
+      </UCheckbox>
+    </UCol>
   `,
-};
+});

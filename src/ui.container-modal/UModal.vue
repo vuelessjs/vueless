@@ -49,6 +49,7 @@ const slots = useSlots();
 const wrapperRef = useTemplateRef<HTMLDivElement>("wrapper");
 
 const isWrapperTransitionComplete = ref(false);
+const isMouseDownOnOverlay = ref(false);
 
 const isShownModal = computed({
   get: () => props.modelValue,
@@ -153,8 +154,15 @@ function onClickBackLink() {
   emit("back");
 }
 
+function onMouseDownOverlay() {
+  isMouseDownOnOverlay.value = true;
+}
+
 function onClickOutside() {
-  props.closeOnOverlay && closeModal();
+  if (!props.closeOnOverlay || !isMouseDownOnOverlay.value) return;
+
+  closeModal();
+  isMouseDownOnOverlay.value = false;
 }
 
 function onKeydownEsc(e: KeyboardEvent) {
@@ -229,7 +237,11 @@ const {
       :data-test="getDataTest()"
       @keydown.self.esc="onKeydownEsc"
     >
-      <div v-bind="innerWrapperAttrs" @click.self="onClickOutside">
+      <div
+        v-bind="innerWrapperAttrs"
+        @mousedown.self="onMouseDownOverlay"
+        @click.self="onClickOutside"
+      >
         <div v-bind="modalAttrs">
           <div v-if="isExistHeader" v-bind="headerAttrs">
             <div v-bind="beforeTitleAttrs">

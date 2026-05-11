@@ -1,7 +1,7 @@
 export default /*tw*/ {
   avatar: {
     base: `
-      flex items-center justify-center shrink-0 border
+      flex items-center justify-center shrink-0 border relative
       text-{color} bg-{color}/10 bg-contain bg-center bg-no-repeat
     `,
     variants: {
@@ -34,6 +34,23 @@ export default /*tw*/ {
       },
     },
   },
+  chip: {
+    base: "{UChip}",
+    defaults: {
+      size: {
+        "3xs": "xs",
+        "2xs": "xs",
+        xs: "sm",
+        sm: "md",
+        md: "md",
+        lg: "lg",
+        xl: "xl",
+        "2xl": "xl",
+        "3xl": "xl",
+      },
+    },
+  },
+  hidden: "hidden",
   placeholderIcon: "{UIcon}",
   defaults: {
     color: "grayscale",

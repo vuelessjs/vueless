@@ -49,6 +49,11 @@ export interface Props {
   currencySpace?: boolean;
 
   /**
+   * Show formatted number as plain text without HTML elements.
+   */
+  raw?: boolean;
+
+  /**
    * Minimal number of signs after the decimal separator (fractional part of a number).
    */
   minFractionDigits?: number;

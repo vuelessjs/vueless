@@ -51,8 +51,21 @@ const wrapperElement = computed(() => {
   return wrapperRef.value;
 });
 
-const isShownError = computed(() => {
+const hasErrorState = computed(() => {
   return Boolean(props.error) && !props.disabled;
+});
+
+const errorFallbackText = computed(() => {
+  return typeof props.error === "string" ? props.error : "";
+});
+
+const showErrorBlock = computed(() => {
+  if (!hasErrorState.value) return false;
+
+  return (
+    hasSlotContent(slots["error"], { error: props.error }) ||
+    (typeof props.error !== "boolean" && Boolean(props.error))
+  );
 });
 
 function onClick(event: MouseEvent) {
@@ -78,8 +91,11 @@ defineExpose({
  * Applies: `class`, `config`, redefined default `props` and dev `vl-...` attributes.
  */
 const mutatedProps = computed(() => ({
-  error: Boolean(props.error) && !props.disabled,
+  error: hasErrorState.value,
   label: Boolean(props.label) || hasSlotContent(slots["label"], { label: props.label }),
+  description:
+    Boolean(props.description) ||
+    hasSlotContent(slots["description"], { description: props.description }),
   for: Boolean(props.for),
 }));
 
@@ -100,7 +116,16 @@ const { getDataTest, wrapperAttrs, contentAttrs, labelAttrs, descriptionAttrs, e
     </div>
 
     <!-- `v-bind` isn't assigned, because the div is system -->
-    <div v-if="label || hasSlotContent(slots['label'], { label }) || error || description">
+    <div
+      v-if="
+        label ||
+        hasSlotContent(slots['label'], { label }) ||
+        error ||
+        hasSlotContent(slots['error'], { error }) ||
+        description ||
+        hasSlotContent(slots['description'], { description })
+      "
+    >
       <component
         :is="tag"
         v-if="label || hasSlotContent(slots['label'], { label })"
@@ -120,22 +145,31 @@ const { getDataTest, wrapperAttrs, contentAttrs, labelAttrs, descriptionAttrs, e
         </slot>
       </component>
 
-      <div
-        v-if="isShownError"
-        v-bind="errorAttrs"
-        :data-test="getDataTest('error')"
-        v-text="error"
-      />
+      <div v-if="showErrorBlock" v-bind="errorAttrs" :data-test="getDataTest('error')">
+        <!--
+          @slot Use this to add custom content instead of the error message.
+          @binding {string | boolean} error
+        -->
+        <slot name="error" :error="error">
+          {{ errorFallbackText }}
+        </slot>
+      </div>
 
       <div
-        v-if="description && !isShownError"
+        v-if="
+          (description || hasSlotContent(slots['description'], { description })) && !hasErrorState
+        "
         v-bind="descriptionAttrs"
         :data-test="getDataTest('description')"
-        v-text="description"
-      />
-
-      <!-- @slot Use it to add something below the label content. -->
-      <slot name="bottom" />
+      >
+        <!--
+          @slot Use this to add custom content instead of the description.
+          @binding {string} description
+        -->
+        <slot name="description" :description="description">
+          {{ description }}
+        </slot>
+      </div>
     </div>
   </div>
 
@@ -164,16 +198,30 @@ const { getDataTest, wrapperAttrs, contentAttrs, labelAttrs, descriptionAttrs, e
       <slot />
     </div>
 
-    <div v-if="isShownError" v-bind="errorAttrs" :data-test="getDataTest('error')" v-text="error" />
+    <div v-if="showErrorBlock" v-bind="errorAttrs" :data-test="getDataTest('error')">
+      <!--
+        @slot Use this to add custom content instead of the error message.
+        @binding {string | boolean} error
+      -->
+      <slot name="error" :error="error">
+        {{ errorFallbackText }}
+      </slot>
+    </div>
 
     <div
-      v-if="description && !isShownError"
+      v-if="
+        (description || hasSlotContent(slots['description'], { description })) && !hasErrorState
+      "
       v-bind="descriptionAttrs"
       :data-test="getDataTest('description')"
-      v-text="description"
-    />
-
-    <!-- @slot Use it to add something below the label content. -->
-    <slot name="bottom" />
+    >
+      <!--
+        @slot Use this to add custom content instead of the description.
+        @binding {string} description
+      -->
+      <slot name="description" :description="description">
+        {{ description }}
+      </slot>
+    </div>
   </div>
 </template>

@@ -114,29 +114,45 @@ Sizes.args = { enum: "size" };
 export const LabelAlign = EnumTemplate.bind({});
 LabelAlign.args = { enum: "align" };
 
-export const LabelSlot = DefaultTemplate.bind({});
-LabelSlot.args = {
-  label: "Email Address",
-  slotTemplate: `
-    <template #label="{ label }">
-      <URow align="center" gap="xs">
-        <UIcon name="mail" size="sm" class="text-primary" />
-        <UChip icon="asterisk" color="error" size="2xs">
-          <UText :label="label" class="mr-2" />
-        </UChip>
-      </URow>
-    </template>
-  `,
-};
+export const Slots: StoryFn<ULabelArgs> = () => ({
+  components: { ULabel, UText, URow, ULink, UIcon, UCol, UChip },
+  template: `
+    <UCol gap="3xl">
+      <ULabel label="Work email">
+        <UText label="johndoe@example.com" />
+        <template #label="{ label }">
+          <URow align="center" gap="xs">
+            <UIcon name="mail" size="sm" class="text-primary" />
+            <UChip icon="asterisk" color="error" size="xs">
+              <UText :label="label" class="mr-2" />
+            </UChip>
+          </URow>
+        </template>
+      </ULabel>
 
-export const BottomSlot = DefaultTemplate.bind({});
-BottomSlot.args = {
-  slotTemplate: `
-    <template #bottom>
-      <URow align="center" gap="2xs" class="mt-1">
-        <UIcon name="error" size="xs" />
-        <UText>Invalid email address. <ULink label="Need help?" /></UText>
-      </URow>
-    </template>
+      <ULabel label="Work email">
+        <UText label="johndoe@example.com" />
+        <template #description>
+          <UText size="sm" variant="lifted">
+            We will send a
+            <ULink label="confirmation link" underlined size="sm" />
+            to this address.
+          </UText>
+        </template>
+      </ULabel>
+
+      <ULabel label="Email" :error="true">
+        <UText label="not-an-email" />
+        <template #error>
+          <UText size="sm" color="error">
+            <ul>
+              <li>Email address format is invalid</li>
+              <li>Use a name@domain.com style address</li>
+              <li>Remove spaces and special characters from the local part</li>
+            </ul>
+          </UText>
+        </template>
+      </ULabel>
+    </UCol>
   `,
-};
+});

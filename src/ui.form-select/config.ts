@@ -12,13 +12,13 @@ export default /*tw*/ {
   wrapper: {
     base: `
       flex flex-row-reverse justify-between w-full min-h-full box-border relative
-      rounded-medium border border-solid border-default bg-default outline-transparent
+      rounded-medium border border-solid border-default bg-default outline-solid outline-transparent
       hover:border-lifted hover:transition hover:focus-within:border-primary focus-within:border-primary
       focus-within:outline focus-within:outline-small focus-within:outline-primary focus-within:transition
     `,
     variants: {
       error: {
-        true: "!border-error focus-within:outline-error",
+        true: "border-error! focus-within:outline-error",
       },
       disabled: {
         true: `
@@ -44,12 +44,15 @@ export default /*tw*/ {
     compoundVariants: [{ labelAlign: "topInside", label: true, class: "pt-0" }],
   },
   selectedLabels: {
-    base: "w-full !leading-none items-center whitespace-nowrap",
+    base: "w-full leading-none! items-center whitespace-nowrap",
     variants: {
       size: {
         sm: "text-small",
         md: "text-medium",
         lg: "text-large",
+      },
+      label: {
+        false: "py-px",
       },
       disabled: {
         true: "opacity-(--vl-disabled-opacity)",
@@ -73,7 +76,12 @@ export default /*tw*/ {
     ],
   },
   counter: "",
-  badgeLabel: "{UBadge} py-0.5 px-1.5 gap-0.5 rounded-small max-w-full",
+  badgeLabel: {
+    base: "{UBadge} py-0.5 px-1.5 gap-0.5 rounded-small max-w-full",
+    defaults: {
+      variant: "subtle",
+    },
+  },
   badgeClearIcon: {
     base: "{>clearIcon} -mr-1",
     defaults: {
@@ -109,7 +117,10 @@ export default /*tw*/ {
     ],
   },
   toggleWrapper: "{>toggle} mr-3",
-  toggleIcon: "{UIcon} {>selectIcon} -mr-1 transition duration-300 group-[*]/active:rotate-180",
+  toggleIcon: {
+    base: "{UIcon} {>selectIcon} -mr-1 transition duration-300",
+    compoundVariants: [{ opened: true, class: "rotate-180" }],
+  },
   leftIcon: "{UIcon} {>selectIcon}",
   rightIcon: "{UIcon} {>selectIcon}",
   leftSlot: "{>toggle} pl-2.5",
@@ -118,7 +129,7 @@ export default /*tw*/ {
   clear: "{>toggle}",
   clearIcon: "{UIcon} {>selectIcon}",
   placeholder: {
-    base: "flex items-center text-muted !leading-none shrink-0",
+    base: "flex items-center text-muted leading-none! shrink-0",
     variants: {
       size: {
         sm: "text-small",
@@ -127,7 +138,10 @@ export default /*tw*/ {
       },
     },
   },
-  listbox: "{UListbox} group-[*]/top:bottom-full group-[*]/top:top-auto top-full w-full",
+  listbox: `
+    {UListbox} border-0 outline-solid outline-1! outline-default
+    my-2 group-[*]/top:bottom-full group-[*]/top:top-auto top-full w-full
+  `,
   i18n: {
     listIsEmpty: "List is empty.",
     noDataToShow: "No data to show.",

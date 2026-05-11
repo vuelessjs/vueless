@@ -73,7 +73,7 @@ export interface Props {
   /**
    * Set error message.
    */
-  error?: string;
+  error?: string | boolean;
 
   /**
    * Set number of visible rows.

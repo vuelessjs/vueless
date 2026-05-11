@@ -27,6 +27,10 @@ interface UModalConfirmArgs extends Props {
   modelValues?: UnknownObject;
 }
 
+const confirmModalDocsLayout = {
+  innerWrapper: "w-full max-h-full",
+};
+
 export default {
   id: "5080",
   title: "Containers / Modal Confirm",
@@ -35,6 +39,9 @@ export default {
     title: "Confirm Subscription Upgrade",
     confirmLabel: "Confirm",
     modelValue: true,
+    config: {
+      confirmModal: confirmModalDocsLayout,
+    },
   },
   argTypes: {
     ...getArgTypes(UModalConfirm.__name),
@@ -131,6 +138,9 @@ ConfirmLabel.parameters = {
   },
 };
 
+export const ConfirmLoading = DefaultTemplate.bind({});
+ConfirmLoading.args = { loading: true };
+
 export const Inner: StoryFn<UModalConfirmArgs> = (args: UModalConfirmArgs) => ({
   components: { UModalConfirm, UButton, UModal, UCol, UText },
   setup() {
@@ -149,7 +159,14 @@ export const Inner: StoryFn<UModalConfirmArgs> = (args: UModalConfirmArgs) => ({
       resetBodyOverflow();
     }
 
-    return { args, showMainModal, showInnerModal, openMainModal, openInnerModal };
+    return {
+      args,
+      showMainModal,
+      showInnerModal,
+      openMainModal,
+      openInnerModal,
+      confirmModalDocsLayout,
+    };
   },
   template: `
     <div>
@@ -178,6 +195,7 @@ export const Inner: StoryFn<UModalConfirmArgs> = (args: UModalConfirmArgs) => ({
           "
           confirm-label="Agree"
           inner
+          :config="{ confirmModal: confirmModalDocsLayout }"
         >
           <UText label="Click Agree to proceed with subscription upgrade." />
         </UModalConfirm>
@@ -221,8 +239,8 @@ DisableConfirmButton.args = { confirmDisabled: true };
 export const Sizes = EnumTemplate.bind({});
 Sizes.args = { enum: "size", modelValues: {} };
 
-export const Variant = EnumTemplate.bind({});
-Variant.args = { enum: "variant", modelValues: {} };
+export const Variants = EnumTemplate.bind({});
+Variants.args = { enum: "variant", modelValues: {} };
 
 export const Colors: StoryFn<UModalConfirmArgs> = (args: UModalConfirmArgs, { argTypes }) => ({
   components: { UModalConfirm, UButton, URow },
@@ -288,7 +306,7 @@ AfterTitleSlot.args = {
 
 export const ActionsSlot = DefaultTemplate.bind({});
 ActionsSlot.args = {
-  config: { confirmModal: { closeButton: "p-0" } },
+  config: { confirmModal: { closeButton: "p-0", innerWrapper: "w-full max-h-full" } },
   slotTemplate: `
     <template #actions="{ close }">
       <UButton

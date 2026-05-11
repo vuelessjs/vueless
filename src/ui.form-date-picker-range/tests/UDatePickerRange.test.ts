@@ -3,6 +3,7 @@ import { describe, it, expect } from "vitest";
 
 import UDatePickerRange from "../UDatePickerRange.vue";
 import UInput from "../../ui.form-input/UInput.vue";
+import ULabel from "../../ui.form-label/ULabel.vue";
 import UButton from "../../ui.button/UButton.vue";
 import UDatePickerRangePeriodMenu from "../UDatePickerRangePeriodMenu.vue";
 
@@ -42,7 +43,11 @@ describe("UDatePickerRange.vue", () => {
       const input = component.findComponent(UInput).get("input");
 
       await input.trigger("focus");
-      await component.get("[vl-key='day']").trigger("click");
+
+      const days = component.findAll("[vl-key='day']");
+
+      await days[0].trigger("click");
+      await days[3].trigger("click");
 
       expect(component.emitted("update:modelValue")).toBeTruthy();
     });
@@ -436,6 +441,37 @@ describe("UDatePickerRange.vue", () => {
 
       expect(component.find("[vl-key='datepickerCalendar']").exists()).toBe(true);
     });
+
+    it("Menu – allows selecting the same day for from and to in range mode", async () => {
+      const component = mount(UDatePickerRange, {
+        props: {
+          variant: "input",
+          modelValue: { from: null, to: null },
+          dateFormat: "Y-m-d",
+          "onUpdate:modelValue": (value: RangeDate) => {
+            component.setProps({ modelValue: value });
+          },
+        },
+      });
+
+      const input = component.findComponent(UInput).get("input");
+
+      await input.trigger("focus");
+
+      const days = component.findAll("[vl-key='day']");
+
+      await days[10].trigger("click");
+      await days[10].trigger("click");
+
+      expect(component.emitted("update:modelValue")).toBeTruthy();
+
+      const emittedValues = component.emitted("update:modelValue")!;
+      const lastEmittedValue = emittedValues[emittedValues.length - 1][0] as RangeDate;
+
+      expect(lastEmittedValue.from).not.toBeNull();
+      expect(lastEmittedValue.to).not.toBeNull();
+      expect(lastEmittedValue.from).toBe(lastEmittedValue.to);
+    });
   });
 
   describe("Range Navigation", () => {
@@ -547,6 +583,129 @@ describe("UDatePickerRange.vue", () => {
       });
 
       expect(component.text()).toContain(`Icon: ${rightIcon}`);
+    });
+
+    it("Description – renders custom content from description slot", () => {
+      const customDescription = "Custom description content";
+
+      const component = mount(UDatePickerRange, {
+        props: {
+          variant: "input",
+          modelValue: { from: null, to: null },
+          description: "Default description",
+        },
+        slots: {
+          description: customDescription,
+        },
+      });
+
+      const labelComponent = component.getComponent(UInput).getComponent(ULabel);
+      const descriptionElement = labelComponent.find("[vl-child-key='description']");
+
+      expect(descriptionElement.text()).toBe(customDescription);
+    });
+
+    it("Error – renders custom content from error slot", () => {
+      const customError = "Custom error content";
+
+      const component = mount(UDatePickerRange, {
+        props: {
+          variant: "input",
+          modelValue: { from: null, to: null },
+          error: "Default error message",
+        },
+        slots: {
+          error: customError,
+        },
+      });
+
+      const labelComponent = component.getComponent(UInput).getComponent(ULabel);
+      const errorElement = labelComponent.find("[vl-child-key='error']");
+
+      expect(errorElement.text()).toBe(customError);
+    });
+  });
+
+  describe("Events", () => {
+    it("ChangeRange – handles change-range event from calendar when dates are selected", async () => {
+      const component = mount(UDatePickerRange, {
+        props: {
+          variant: "input",
+          modelValue: { from: null, to: null },
+          dateFormat: "Y-m-d",
+          "onUpdate:modelValue": (value: RangeDate) => {
+            component.setProps({ modelValue: value });
+          },
+        },
+      });
+
+      const input = component.findComponent(UInput).find("input");
+
+      await input.trigger("focus");
+
+      const days = component.findAll("[vl-key='day']");
+
+      expect(days.length).toBeGreaterThan(0);
+
+      await days[0].trigger("click");
+      await days[3].trigger("click");
+
+      expect(component.emitted("update:modelValue")).toBeTruthy();
+    });
+
+    it("ChangeRange – handles change-range event from calendar when both dates are selected", async () => {
+      const component = mount(UDatePickerRange, {
+        props: {
+          variant: "input",
+          modelValue: { from: null, to: null },
+          dateFormat: "Y-m-d",
+          "onUpdate:modelValue": (value: RangeDate) => {
+            component.setProps({ modelValue: value });
+          },
+        },
+      });
+
+      const input = component.findComponent(UInput).find("input");
+
+      await input.trigger("focus");
+
+      const days = component.findAll("[vl-key='day']");
+
+      await days[0].trigger("click");
+      await days[3].trigger("click");
+
+      expect(component.emitted("update:modelValue")).toBeTruthy();
+    });
+
+    it("ChangeRange – handles change-range event from calendar when same date is selected twice", async () => {
+      const component = mount(UDatePickerRange, {
+        props: {
+          variant: "input",
+          modelValue: { from: null, to: null },
+          dateFormat: "Y-m-d",
+          "onUpdate:modelValue": (value: RangeDate) => {
+            component.setProps({ modelValue: value });
+          },
+        },
+      });
+
+      const input = component.findComponent(UInput).find("input");
+
+      await input.trigger("focus");
+
+      const days = component.findAll("[vl-key='day']");
+
+      await days[10].trigger("click");
+      await days[10].trigger("click");
+
+      expect(component.emitted("update:modelValue")).toBeTruthy();
+
+      const emittedValues = component.emitted("update:modelValue")!;
+      const lastEmittedValue = emittedValues[emittedValues.length - 1][0] as RangeDate;
+
+      expect(lastEmittedValue.from).not.toBeNull();
+      expect(lastEmittedValue.to).not.toBeNull();
+      expect(lastEmittedValue.from).toBe(lastEmittedValue.to);
     });
   });
 

@@ -148,6 +148,13 @@ NotClearable.args = { clearable: false };
 
 export const Searchable = DefaultTemplate.bind({});
 Searchable.args = { searchable: true };
+Searchable.parameters = {
+  docs: {
+    story: {
+      height: "350px",
+    },
+  },
+};
 
 export const SearchModelValue = DefaultTemplate.bind({});
 SearchModelValue.args = { search: "New York", searchable: true };
@@ -163,10 +170,10 @@ export const NoCloseOnSelect = DefaultTemplate.bind({});
 NoCloseOnSelect.args = { modelValue: 3, closeOnSelect: false };
 
 export const Readonly = DefaultTemplate.bind({});
-Readonly.args = { readonly: true, modelValue: "1", clearable: false };
+Readonly.args = { readonly: true, modelValue: 1, clearable: false };
 
 export const Disabled = DefaultTemplate.bind({});
-Disabled.args = { disabled: true, modelValue: "2", clearable: false };
+Disabled.args = { disabled: true, modelValue: 2, clearable: false };
 
 export const LabelAlign = EnumTemplate.bind({});
 LabelAlign.args = {
@@ -183,6 +190,13 @@ LargeItemList.args = {
   options: [...new Array(1000)].map((_, index) => {
     return { value: index + 1, label: `value ${index + 1}`, badge: "badge" };
   }),
+};
+LargeItemList.parameters = {
+  docs: {
+    story: {
+      height: "400px",
+    },
+  },
 };
 
 export const Multiple = DefaultTemplate.bind({});
@@ -334,54 +348,103 @@ export const IconProps: StoryFn<USelectArgs> = (args) => ({
 });
 
 export const Slots: StoryFn<USelectArgs> = (args) => ({
-  components: { USelect, URow, UIcon, UText },
-  setup: () => ({ args, leftSlotModel: ref("paypal"), rightSlotModel: ref("bank") }),
+  components: { USelect, URow, UCol, UIcon, UText, ULink },
+  setup: () => ({
+    args,
+    leftSlotModel: ref("paypal"),
+    rightSlotModel: ref("bank"),
+    descriptionSlotModel: ref(null),
+    errorSlotModel: ref(null),
+  }),
   template: `
-    <URow>
-      <USelect
-        v-model="leftSlotModel"
-        label="Select Payment Method"
-        :options="[
-          { label: 'Visa', value: 'visa', icon: 'credit_card', details: '•••• 4242' },
-          { label: 'PayPal', value: 'paypal', icon: 'payments', details: 'user@example.com' },
-          { label: 'Bank Transfer', value: 'bank', icon: 'account_balance', details: 'Acct **** 1234' },
-          { label: 'Apple Pay', value: 'apple', icon: 'phone_iphone', details: 'iPhone 15' },
-        ]"
-      >
-        <template #left="{ options }">
-          <UIcon
-            v-if="leftSlotModel"
-            :name="options?.icon"
-            color="primary"
-            size="sm"
-          />
-        </template>
-      </USelect>
+    <UCol gap="3xl">
+      <URow block>
+        <USelect
+          v-model="leftSlotModel"
+          label="Select Payment Method"
+          :options="[
+            { label: 'Visa', value: 'visa', icon: 'credit_card', details: '•••• 4242' },
+            { label: 'PayPal', value: 'paypal', icon: 'payments', details: 'user@example.com' },
+            { label: 'Bank Transfer', value: 'bank', icon: 'account_balance', details: 'Acct **** 1234' },
+            { label: 'Apple Pay', value: 'apple', icon: 'phone_iphone', details: 'iPhone 15' },
+          ]"
+        >
+          <template #left="{ options }">
+            <UIcon
+              v-if="leftSlotModel"
+              :name="options?.icon"
+              color="primary"
+              size="sm"
+            />
+          </template>
+        </USelect>
 
-      <USelect
-        v-model="rightSlotModel"
-        label="Select Payment Method"
-        :options="[
-          { label: 'Visa', value: 'visa', icon: 'credit_card', details: '•••• 4242' },
-          { label: 'PayPal', value: 'paypal', icon: 'payments', details: 'user@example.com' },
-          { label: 'Bank Transfer', value: 'bank', icon: 'account_balance', details: 'Acct **** 1234' },
-          { label: 'Apple Pay', value: 'apple', icon: 'phone_iphone', details: 'iPhone 15' },
-        ]"
-      >
-        <template #right="{ options }">
-          <UText
-            v-if="rightSlotModel"
-            size="sm"
-            variant="lifted"
-            class="text-nowrap"
-          >
-            {{ options?.details }}
-          </UText>
-        </template>
-      </USelect>
-    </URow>
+        <USelect
+          v-model="rightSlotModel"
+          label="Select Payment Method"
+          :options="[
+            { label: 'Visa', value: 'visa', icon: 'credit_card', details: '•••• 4242' },
+            { label: 'PayPal', value: 'paypal', icon: 'payments', details: 'user@example.com' },
+            { label: 'Bank Transfer', value: 'bank', icon: 'account_balance', details: 'Acct **** 1234' },
+            { label: 'Apple Pay', value: 'apple', icon: 'phone_iphone', details: 'iPhone 15' },
+          ]"
+        >
+          <template #right="{ options }">
+            <UText
+              v-if="rightSlotModel"
+              size="sm"
+              variant="lifted"
+              class="text-nowrap"
+            >
+              {{ options?.details }}
+            </UText>
+          </template>
+        </USelect>
+      </URow>
+
+      <URow block>
+        <USelect
+          v-bind="args"
+          v-model="descriptionSlotModel"
+          label="City"
+          :options="args.options"
+        >
+          <template #description>
+            <UText size="sm" variant="lifted">
+              Only cities we ship to, see
+              <ULink label="shipping zones" underlined size="sm" />.
+            </UText>
+          </template>
+        </USelect>
+
+        <USelect
+          v-bind="args"
+          v-model="errorSlotModel"
+          label="City"
+          :options="args.options"
+          :error="true"
+        >
+          <template #error>
+            <UText size="sm" color="error">
+              <ul>
+                <li>Please select an option from the list</li>
+                <li>The current value is not available anymore</li>
+                <li>Pick a valid choice to continue</li>
+              </ul>
+            </UText>
+          </template>
+        </USelect>
+      </URow>
+    </UCol>
   `,
 });
+Slots.parameters = {
+  docs: {
+    story: {
+      height: "400px",
+    },
+  },
+};
 
 export const ToggleSlots: StoryFn<USelectArgs> = (args) => ({
   components: { USelect, URow, UIcon },

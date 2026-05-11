@@ -85,8 +85,8 @@ Limit.parameters = {
   },
 };
 
-export const Variant = EnumTemplate.bind({});
-Variant.args = { enum: "variant" };
+export const Variants = EnumTemplate.bind({});
+Variants.args = { enum: "variant" };
 
 export const Sizes = EnumTemplate.bind({});
 Sizes.args = { enum: "size" };

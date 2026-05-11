@@ -4,6 +4,7 @@ import { describe, it, expect } from "vitest";
 import UModalConfirm from "../UModalConfirm.vue";
 import UModal from "../../ui.container-modal/UModal.vue";
 import UButton from "../../ui.button/UButton.vue";
+import ULoader from "../../ui.loader/ULoader.vue";
 
 import type { Props } from "../types";
 
@@ -116,6 +117,17 @@ describe("UModalConfirm", () => {
       });
 
       expect(component.find("[vl-key='confirmButton']").attributes("disabled")).toBeDefined();
+    });
+
+    it("Loading – applies loading state to confirm button when loading is true", () => {
+      const component = mount(UModalConfirm, {
+        props: {
+          modelValue,
+          loading: true,
+        },
+      });
+
+      expect(component.findComponent(ULoader).exists()).toBe(true);
     });
 
     it("Cancel Hidden – hides cancel button when cancelHidden is true", () => {

@@ -36,6 +36,7 @@ export default {
   args: {
     title: "Sign Up",
     modelValue: true,
+    config: { innerWrapper: "h-max" },
   },
   argTypes: {
     ...getArgTypes(UModal.__name),
@@ -263,7 +264,7 @@ WithoutDivider.args = {
   slotTemplate: `
     ${defaultTemplate}
     <template #footer-left>
-      <UButton label="Back" color="neutral" variant="subtle" />
+      <UButton label="Back" color="neutral" variant="subtle" block />
     </template>`,
 };
 WithoutDivider.parameters = {
@@ -280,8 +281,8 @@ WithoutDivider.parameters = {
 export const Sizes = EnumTemplate.bind({});
 Sizes.args = { enum: "size", modelValues: {} };
 
-export const Variant = EnumTemplate.bind({});
-Variant.args = { enum: "variant", modelValues: {} };
+export const Variants = EnumTemplate.bind({});
+Variants.args = { enum: "variant", modelValues: {} };
 
 export const BackLink: StoryFn<UModalArgs> = (args: UModalArgs) => ({
   components: { UModal, UButton, UCheckbox, UCol, URow, UDivider, UInput, UInputPassword },
@@ -403,7 +404,7 @@ FooterRightSlot.args = {
     </template>
 
     <template #footer-right>
-      <UButton label="Submit" variant="subtle" />
+      <UButton label="Not now" variant="subtle" color="neutral" />
     </template>
   `,
 };

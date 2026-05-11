@@ -56,7 +56,7 @@ export default /*tw*/ {
   timepicker: "mt-2 pl-1 pt-3 text-medium flex items-stretch justify-between gap-2 border-t border-muted",
   timepickerLabel: "w-full self-center",
   timepickerInputWrapper: `
-    flex items-center rounded-medium border border-solid border-default
+    flex items-center rounded-medium border border-solid border-default outline-solid outline-transparent
     hover:focus-within:border-primary focus-within:border-primary
     focus-within:outline focus-within:outline-small focus-within:outline-primary
   `,

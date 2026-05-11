@@ -44,6 +44,7 @@ export default /*tw*/ {
         true: "leading-none",
       },
       wrap: {
+        true: "text-wrap wrap-anywhere",
         false: "text-nowrap",
       },
     },

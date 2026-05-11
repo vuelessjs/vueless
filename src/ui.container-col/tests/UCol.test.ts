@@ -140,6 +140,40 @@ describe("UCol.vue", () => {
       expect(component.attributes("class")).toContain(expectedClasses);
     });
 
+    it("Grow – applies the correct grow class", () => {
+      const growClasses = {
+        true: "grow",
+        false: "grow-0",
+      };
+
+      Object.entries(growClasses).forEach(([grow, classes]) => {
+        const component = mount(UCol, {
+          props: {
+            grow: grow === "true",
+          },
+        });
+
+        expect(component.attributes("class")).toContain(classes);
+      });
+    });
+
+    it("Shrink – applies the correct shrink class", () => {
+      const shrinkClasses = {
+        true: "shrink",
+        false: "shrink-0",
+      };
+
+      Object.entries(shrinkClasses).forEach(([shrink, classes]) => {
+        const component = mount(UCol, {
+          props: {
+            shrink: shrink === "true",
+          },
+        });
+
+        expect(component.attributes("class")).toContain(classes);
+      });
+    });
+
     it("Tag – renders the correct HTML tag", () => {
       const tags = ["div", "section", "article", "main", "aside", "nav", "span"];
 

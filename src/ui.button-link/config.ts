@@ -1,10 +1,11 @@
 export default /*tw*/ {
   link: {
     base: `
-      inline-block cursor-pointer !leading-none transition
+      inline-block cursor-pointer leading-none! transition
       text-{color} decoration-{color} underline-offset-4
       hover:text-{color}-lifted hover:decoration-{color}-lifted
       active:text-{color}-accented active:decoration-{color}-accented
+      outline-solid outline-transparent
       focus-visible:outline-medium focus-visible:rounded-small
       focus-visible:outline-offset-4 focus-visible:outline-{color}
     `,
@@ -29,7 +30,7 @@ export default /*tw*/ {
         true: "decoration-dotted hover:decoration-dotted",
       },
       disabled: {
-        true: "!text-{color}/(--vl-disabled-opacity) !no-underline cursor-not-allowed",
+        true: "text-{color}/(--vl-disabled-opacity)! no-underline! cursor-not-allowed",
       },
       block: {
         true: "w-full",

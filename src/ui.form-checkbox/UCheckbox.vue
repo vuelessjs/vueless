@@ -121,10 +121,6 @@ function onChange() {
   emit("input", newModelValue);
 }
 
-function onIconClick() {
-  document.getElementById(elementId)?.click();
-}
-
 /**
  * Get element / nested component attributes for each config token ✨
  * Applies: `class`, `config`, redefined default `props` and dev `vl-...` attributes.
@@ -169,6 +165,22 @@ const {
       <slot name="label" :label="label" />
     </template>
 
+    <template #description>
+      <!--
+        @slot Use this to add custom content instead of the description.
+        @binding {string} description
+      -->
+      <slot name="description" :description="description" />
+    </template>
+
+    <template #error>
+      <!--
+        @slot Use this to add custom content instead of the error message.
+        @binding {string | boolean} error
+      -->
+      <slot name="error" :error="error" />
+    </template>
+
     <input
       :id="elementId"
       type="checkbox"
@@ -185,10 +197,10 @@ const {
       @change="onChange"
     />
 
-    <div
+    <label
       v-if="isChecked"
       v-bind="partial ? partiallyCheckedAttrs : checkedAttrs"
-      @click="onIconClick"
+      :for="elementId"
     >
       <UIcon
         v-if="partial"
@@ -198,11 +210,6 @@ const {
       />
 
       <UIcon v-else :name="config.defaults.checkedIcon" color="inherit" v-bind="checkedIconAttrs" />
-    </div>
-
-    <template #bottom>
-      <!-- @slot Use it to add something below the checkbox. -->
-      <slot name="bottom" />
-    </template>
+    </label>
   </ULabel>
 </template>

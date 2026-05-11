@@ -98,29 +98,29 @@ const EnumTemplate: StoryFn<EnumUDropdownLinkArgs> = (
 const GroupValuesTemplate: StoryFn<DefaultUDropdownLinkArgs> = (
   args: DefaultUDropdownLinkArgs,
 ) => ({
-  components: { UDropdownLink },
+  components: { UDropdownLink, URow },
   setup() {
     return {
       args,
     };
   },
   template: `
-    <UDropdownLink
-      v-bind="args"
-      v-model="args.modelValue"
-      label="Single"
-      :config="{ listbox: 'min-w-[200px]' }"
-      class="max-w-96 mr-20"
-    />
+    <URow gap="2xl">
+      <UDropdownLink
+        v-bind="args"
+        v-model="args.modelValue"
+        label="Single"
+        :config="{ listbox: 'min-w-[200px]' }"
+      />
 
-    <UDropdownLink
-      v-bind="args"
-      v-model="args.modelValueMultiple"
-      label="Multiple"
-      multiple
-      :config="{ listbox: 'min-w-[200px]' }"
-      class="mt-5 max-w-96"
-    />
+      <UDropdownLink
+        v-bind="args"
+        v-model="args.modelValueMultiple"
+        label="Multiple"
+        multiple
+        :config="{ listbox: 'min-w-[200px]' }"
+      />
+    </URow>
   `,
 });
 
@@ -136,6 +136,13 @@ Default.parameters = {
 
 export const Disabled = DefaultTemplate.bind({});
 Disabled.args = { disabled: true };
+Disabled.parameters = {
+  docs: {
+    story: {
+      height: "120px",
+    },
+  },
+};
 
 export const Searchable = DefaultTemplate.bind({});
 Searchable.args = { searchable: true };
@@ -176,7 +183,7 @@ export const ListboxXPosition = EnumTemplate.bind({});
 ListboxXPosition.args = {
   enum: "xPosition",
   label: "{enumValue}",
-  class: "w-40 py-1 px-2.5 border border-dashed border-primary",
+  config: { dropdownLink: "w-40 py-1 px-2.5 border border-dashed border-primary" },
 };
 
 export const ListboxYPosition = EnumTemplate.bind({});
@@ -364,7 +371,7 @@ export const OptionSlots: StoryFn<DefaultUDropdownLinkArgs> = (args) => ({
         ]"
       >
         <template #before-option="{ option }">
-          <UAvatar :src="option.avatar" size="sm" />
+          <UAvatar :src="option.avatar" size="xs" />
         </template>
       </UDropdownLink>
 
@@ -407,7 +414,7 @@ export const OptionSlots: StoryFn<DefaultUDropdownLinkArgs> = (args) => ({
         ]"
       >
         <template #option="{ option }">
-          <URow align="center" gap="xs">
+          <URow justify="between" align="center" gap="xs" block>
             <UCol gap="none">
               <UText size="sm">{{ option.label }}</UText>
               <UText variant="lifted" size="xs">{{ option.role }}</UText>
@@ -426,47 +433,13 @@ export const OptionSlots: StoryFn<DefaultUDropdownLinkArgs> = (args) => ({
         v-model="args.afterOptionModel"
         label="After option slot"
         :options="[
-          {
-            label: 'John Doe',
-            value: '1',
-            role: 'Developer',
-            avatar: johnDoe,
-            status: 'online',
-            statusColor: 'success',
-          },
-          {
-            label: 'Jane Smith',
-            value: '2',
-            role: 'Designer',
-            avatar: emilyDavis,
-            status: 'away',
-            statusColor: 'warning',
-          },
-          {
-            label: 'Mike Johnson',
-            value: '3',
-            role: 'Product Manager',
-            avatar: alexJohnson,
-            status: 'offline',
-            statusColor: 'grayscale',
-          },
-          {
-            label: 'Sarah Wilson',
-            value: '4',
-            role: 'QA Engineer',
-            avatar: patMorgan,
-            status: 'online',
-            statusColor: 'success',
-          },
+          { label: 'John Doe', value: '1', verified: true },
+          { label: 'Jane Smith', value: '2', verified: true },
+          { label: 'Mike Johnson', value: '3', verified: false },
         ]"
       >
         <template #after-option="{ option }">
-          <UBadge
-            :label="option.status"
-            :color="option.statusColor"
-            size="sm"
-            variant="subtle"
-          />
+          <UIcon v-if="option.verified" name="verified" size="xs" color="success" />
         </template>
       </UDropdownLink>
     </URow>

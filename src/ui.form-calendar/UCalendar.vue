@@ -38,7 +38,7 @@ import {
 
 import defaultConfig from "./config";
 
-import type { Props, DateValue, RangeDate, Locale, Config } from "./types";
+import type { Props, DateValue, Locale, Config } from "./types";
 import type { DateLocale } from "./utilFormatting";
 import type { ComponentExposed } from "../types";
 
@@ -90,6 +90,12 @@ const emit = defineEmits([
    * @property {string} value
    */
   "userDateChange",
+
+  /**
+   * Triggers when range date values (from or to) change.
+   * @property {object} value
+   */
+  "change-range",
 ]);
 
 const wrapperRef = useTemplateRef<HTMLDivElement>("wrapper");
@@ -189,21 +195,14 @@ const userFormatLocale = computed(() => {
 const localValue = computed({
   get: () => {
     if (props.range) {
-      const isModelValueRangeType =
-        props.modelValue &&
-        typeof props.modelValue === "object" &&
-        !(props.modelValue instanceof Date);
+      if (tempRangeValue.value) return tempRangeValue.value;
 
-      const modelValue = isModelValueRangeType
-        ? (props.modelValue as RangeDate)
-        : (props.modelValue as string | Date);
-
-      const from = isRangeDate(modelValue) ? modelValue.from : modelValue || null;
-      const to = isRangeDate(modelValue) ? modelValue.to : null;
+      const from = isRangeDate(props.modelValue) ? props.modelValue.from : null;
+      const to = isRangeDate(props.modelValue) ? props.modelValue.to : null;
 
       return {
-        from: parseDate(from || null, actualDateFormat.value, locale.value),
-        to: parseDate(to || null, actualDateFormat.value, locale.value),
+        from: parseDate(from, actualDateFormat.value, locale.value),
+        to: parseDate(to, actualDateFormat.value, locale.value),
       };
     }
 
@@ -256,7 +255,15 @@ const localValue = computed({
 
     const newRangeDate = { from: newDate, to: newDateTo };
 
-    emit("update:modelValue", props.range ? (newRangeDate as RangeDate) : newDate);
+    if (props.range) {
+      if (newDate && newDateTo) {
+        tempRangeValue.value = null;
+        emit("update:modelValue", newRangeDate);
+        emit("change-range", newRangeDate);
+      }
+    } else {
+      emit("update:modelValue", newDate);
+    }
 
     if (parsedDate === null && isTimepickerEnabled.value && isInputRefs.value) {
       const currentDate = new Date();
@@ -269,6 +276,7 @@ const localValue = computed({
 });
 
 const activeDate = ref();
+const tempRangeValue = ref<TModelValue | null>(null);
 
 if (isRangeDate(localValue.value)) {
   activeDate.value = localValue.value.from || getDateWithoutTime();
@@ -452,18 +460,26 @@ function onInputDate(newDate: Date | null) {
   }
 
   if (props.range && isRangeDate(localValue.value)) {
-    const isFullReset =
-      (localValue.value.from && newDate < localValue.value.from) ||
-      (localValue.value.to && localValue.value.from);
+    const isNewDateLessFromDate = localValue.value.from && newDate < localValue.value.from;
+    const areToAndFromDateExists = localValue.value.to && localValue.value.from;
+    const hasFrom = localValue.value.from;
 
-    const updatedValue =
-      isFullReset || !localValue.value.from
-        ? { from: newDate, to: null }
-        : { from: localValue.value.from, to: newDate };
+    const isFullReset = isNewDateLessFromDate || areToAndFromDateExists || !hasFrom;
 
-    localValue.value = updatedValue;
+    const updatedValue = isFullReset
+      ? { from: newDate, to: null }
+      : { from: localValue.value.from, to: newDate };
 
-    emit("input", updatedValue);
+    if (updatedValue.from && updatedValue.to) {
+      tempRangeValue.value = null;
+      localValue.value = updatedValue;
+
+      emit("input", updatedValue);
+      emit("change-range", updatedValue);
+    } else {
+      tempRangeValue.value = updatedValue;
+      emit("change-range", updatedValue);
+    }
   } else {
     localValue.value = newDate;
 

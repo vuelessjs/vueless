@@ -1,8 +1,9 @@
 <script setup lang="ts">
-import { ref, computed, useTemplateRef, watch } from "vue";
+import { ref, computed, useTemplateRef, watch, watchEffect } from "vue";
 
 import { useUI } from "../composables/useUI";
 import { getDefaults } from "../utils/ui";
+import { createDebounce } from "../utils/helper";
 import { useComponentLocaleMessages } from "../composables/useComponentLocaleMassages";
 
 import UIcon from "../ui.image-icon/UIcon.vue";
@@ -42,6 +43,26 @@ const emit = defineEmits([
   "blur",
 ]);
 
+let emitModelValueDebounced = createDebounce((value: number | string) => {
+  emit("update:modelValue", value);
+}, Number(props.debounce));
+
+watchEffect(() => {
+  emitModelValueDebounced = createDebounce((value: number | string) => {
+    emit("update:modelValue", value);
+  }, Number(props.debounce));
+});
+
+const displayValue = ref<number | string>(props.modelValue);
+
+watch(
+  () => props.modelValue,
+  (v) => {
+    displayValue.value = v;
+  },
+  { immediate: true },
+);
+
 const { localeMessages } = useComponentLocaleMessages<typeof defaultConfig.i18n>(
   COMPONENT_NAME,
   defaultConfig.i18n,
@@ -56,8 +77,12 @@ const addIterationCount = ref(0);
 const subtractIterationCount = ref(0);
 
 const count = computed({
-  get: () => props.modelValue,
-  set: (value) => emit("update:modelValue", value),
+  get: () => displayValue.value,
+  set: (value) => {
+    displayValue.value = value;
+
+    Number(props.debounce) > 0 ? emitModelValueDebounced(value) : emit("update:modelValue", value);
+  },
 });
 
 const isAddButtonDisabled = computed(() => {
@@ -147,11 +172,33 @@ function onBlur(event: FocusEvent) {
   if (Number(count.value) > props.max) count.value = props.max;
   if (Number(count.value) < props.min) count.value = props.min;
 
+  if (Number(props.debounce) > 0) {
+    emit("update:modelValue", count.value);
+  }
+
   emit("blur", event);
 }
 
 function onInput() {
   setInputSize();
+}
+
+function onKeyDown(event: KeyboardEvent) {
+  if (event.key === "ArrowUp") {
+    event.preventDefault();
+
+    if (!isAddButtonDisabled.value && !props.disabled) {
+      onClickAdd();
+    }
+  }
+
+  if (event.key === "ArrowDown") {
+    event.preventDefault();
+
+    if (!isSubtractButtonDisabled.value && !props.disabled) {
+      onClickSubtract();
+    }
+  }
 }
 
 function setInputSize() {
@@ -222,6 +269,7 @@ const {
       @focus="onFocus"
       @blur="onBlur"
       @input="onInput"
+      @keydown="onKeyDown"
     />
 
     <UButton

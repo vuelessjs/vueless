@@ -12,6 +12,14 @@ export default /*tw*/ {
       block: {
         true: "w-full",
       },
+      grow: {
+        true: "grow",
+        false: "grow-0",
+      },
+      shrink: {
+        true: "shrink",
+        false: "shrink-0",
+      },
       gap: {
         none: "gap-0",
         "3xs": "gap-0.5",
@@ -61,5 +69,7 @@ export default /*tw*/ {
     wrap: false,
     reverse: false,
     block: false,
+    grow: false,
+    shrink: false,
   },
 };

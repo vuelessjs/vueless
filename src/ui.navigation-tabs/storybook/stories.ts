@@ -10,6 +10,12 @@ import UTabs from "../../ui.navigation-tabs/UTabs.vue";
 import URow from "../../ui.container-row/URow.vue";
 import ULabel from "../../ui.form-label/ULabel.vue";
 import UTab from "../../ui.navigation-tab/UTab.vue";
+import UBadge from "../../ui.text-badge/UBadge.vue";
+import UAvatar from "../../ui.image-avatar/UAvatar.vue";
+import UChip from "../../ui.other-chip/UChip.vue";
+import UText from "../../ui.text-block/UText.vue";
+
+import johnDoe from "../../ui.navigation-tab/storybook/assets/john-doe.png";
 
 import type { Meta, StoryFn } from "@storybook/vue3-vite";
 import type { Props } from "../types";
@@ -105,6 +111,33 @@ export const DefaultSlot: StoryFn<UTabsArgs> = (args) => ({
       <UTab label="Custom Tab 1" value="1" />
       <UTab label="Custom Tab 2" value="2" disabled />
       <UTab label="Custom Tab 3" value="3" />
+    </UTabs>
+  `,
+});
+
+export const TabSlots: StoryFn<UTabsArgs> = (args) => ({
+  components: { UTabs, UBadge, UAvatar, UChip, UText },
+  setup: () => ({ args, johnDoe }),
+  template: `
+    <UTabs v-model="args.modelValue" v-bind="args">
+      <template #left="{ index }">
+        <UAvatar
+          v-if="index === 0"
+          :src="johnDoe"
+          size="3xs"
+          rounded="full"
+        />
+      </template>
+
+      <template #label="{ label, index }">
+        <UChip v-if="index === 1" size="sm">
+          <UText :label="label" color="primary" class="mr-1.5" />
+        </UChip>
+      </template>
+
+      <template #right="{ index }">
+        <UBadge v-if="index === 2" label="New!" size="sm" />
+      </template>
     </UTabs>
   `,
 });

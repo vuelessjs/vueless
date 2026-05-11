@@ -55,7 +55,7 @@ const emit = defineEmits([
    * Triggers when the search value is changed.
    * @property {string} query
    */
-  "searchChange",
+  "search-change",
 
   /**
    * Triggers when the search v-model updates.
@@ -251,7 +251,7 @@ onMounted(() => {
 });
 
 function onSearchChange(query: string) {
-  emit("searchChange", query);
+  emit("search-change", query);
 }
 
 function onSearchUpdate(query: string) {
@@ -538,6 +538,22 @@ const {
       </div>
     </template>
 
+    <template #description>
+      <!--
+        @slot Use this to add custom content instead of the description.
+        @binding {string} description
+      -->
+      <slot name="description" :description="description" />
+    </template>
+
+    <template #error>
+      <!--
+        @slot Use this to add custom content instead of the error message.
+        @binding {string | boolean} error
+      -->
+      <slot name="error" :error="error" />
+    </template>
+
     <div
       ref="wrapper"
       :tabindex="searchable || disabled ? -1 : 0"
@@ -718,40 +734,35 @@ const {
                   :key="index"
                   v-bind="selectedLabelAttrs"
                 >
-                  <!--
-                    @slot Use it to customize selected option.
-                    @binding {string} label
-                    @binding {modelValue} value
-                    @binding {object} option
-                  -->
-                  <slot
-                    name="selected-option"
-                    :label="option[labelKey]"
-                    :value="option[valueKey]"
-                    :option="option"
-                  >
-                    <UBadge
-                      :title="option[labelKey]"
-                      :size="size"
-                      variant="subtle"
-                      v-bind="badgeLabelAttrs"
-                    >
-                      <div v-bind="selectedLabelTextAttrs">
+                  <UBadge :title="option[labelKey]" :size="size" v-bind="badgeLabelAttrs">
+                    <div v-bind="selectedLabelTextAttrs">
+                      <!--
+                        @slot Use it to customize selected option.
+                        @binding {string} label
+                        @binding {modelValue} value
+                        @binding {object} option
+                      -->
+                      <slot
+                        name="selected-option"
+                        :label="option[labelKey]"
+                        :value="option[valueKey]"
+                        :option="option"
+                      >
                         {{ option[labelKey] }}
-                      </div>
+                      </slot>
+                    </div>
 
-                      <template #right>
-                        <UIcon
-                          interactive
-                          color="inherit"
-                          :disabled="disabled"
-                          :name="config.defaults.badgeClearIcon"
-                          v-bind="badgeClearIconAttrs"
-                          @click="onClickClearItem($event, option)"
-                        />
-                      </template>
-                    </UBadge>
-                  </slot>
+                    <template #right>
+                      <UIcon
+                        interactive
+                        color="inherit"
+                        :disabled="disabled"
+                        :name="config.defaults.badgeClearIcon"
+                        v-bind="badgeClearIconAttrs"
+                        @click="onClickClearItem($event, option)"
+                      />
+                    </template>
+                  </UBadge>
                 </div>
 
                 <!--
@@ -777,32 +788,32 @@ const {
                   :title="option[labelKey] as string"
                   v-bind="selectedLabelAttrs"
                 >
-                  <!--
-                    @slot Use it to customize selected option.
-                    @binding {string} label
-                    @binding {modelValue} value
-                    @binding {object} option
-                  -->
-                  <slot
-                    name="selected-option"
-                    :label="option[labelKey]"
-                    :value="option[valueKey]"
-                    :option="option"
-                  >
-                    <div v-bind="selectedLabelTextAttrs">
+                  <div v-bind="selectedLabelTextAttrs">
+                    <!--
+                      @slot Use it to customize selected option.
+                      @binding {string} label
+                      @binding {modelValue} value
+                      @binding {object} option
+                    -->
+                    <slot
+                      name="selected-option"
+                      :label="option[labelKey]"
+                      :value="option[valueKey]"
+                      :option="option"
+                    >
                       {{ option[labelKey] }}
-                    </div>
+                    </slot>
+                  </div>
 
-                    <UIcon
-                      v-if="!disabled"
-                      interactive
-                      color="neutral"
-                      :name="config.defaults.listClearIcon"
-                      :data-test="getDataTest('clear-item')"
-                      v-bind="listClearIconAttrs"
-                      @click.stop="onClickClearItem($event, option)"
-                    />
-                  </slot>
+                  <UIcon
+                    v-if="!disabled"
+                    interactive
+                    color="neutral"
+                    :name="config.defaults.listClearIcon"
+                    :data-test="getDataTest('clear-item')"
+                    v-bind="listClearIconAttrs"
+                    @click.stop="onClickClearItem($event, option)"
+                  />
                 </div>
 
                 <div v-bind="listFooterAttrs">
@@ -885,13 +896,14 @@ const {
           <slot name="option" :option="option" :index="index" />
         </template>
 
-        <template #after-option="{ option, index }">
+        <template #after-option="{ option, selected, index }">
           <!--
             @slot Use it to add something after option.
             @binding {object} option
+            @binding {boolean} selected
             @binding {number} index
           -->
-          <slot name="after-option" :option="option" :index="index" />
+          <slot name="after-option" :option="option" :selected="selected" :index="index" />
         </template>
 
         <template #empty>

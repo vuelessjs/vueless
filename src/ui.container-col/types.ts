@@ -50,6 +50,16 @@ export interface Props {
   block?: boolean;
 
   /**
+   * Allow flex item to grow to fill available space (flex-grow).
+   */
+  grow?: boolean;
+
+  /**
+   * Allow flex item to shrink if necessary (flex-shrink).
+   */
+  shrink?: boolean;
+
+  /**
    * Allows changing HTML tag.
    */
   tag?: string;

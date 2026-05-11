@@ -3,13 +3,13 @@ export default /*tw*/ {
   dropzone: {
     base: `
       p-3 size-auto w-full bg-default transition
-      rounded-medium border border-solid border-default
+      rounded-medium border border-solid border-default outline-solid outline-transparent
       hover:border-lifted hover:focus-within:border-primary focus-within:border-primary
       focus-within:outline focus-within:outline-small focus-within:outline-primary
     `,
     variants: {
       error: {
-        true: "!border-error focus-within:outline-error",
+        true: "border-error! focus-within:outline-error",
       },
       disabled: {
         true: "pointer-events-none bg-lifted",

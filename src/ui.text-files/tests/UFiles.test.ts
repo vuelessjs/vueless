@@ -173,6 +173,25 @@ describe("UFiles.vue", () => {
       expect(component.find(`.${slotClass}`).text()).toBe(slotText);
     });
 
+    it("Description – renders custom content from description slot", () => {
+      const customDescription = "Custom description content";
+
+      const component = mount(UFiles, {
+        props: {
+          fileList: [],
+          description: "Default description",
+        },
+        slots: {
+          description: customDescription,
+        },
+      });
+
+      const labelComponent = component.getComponent(ULabel);
+      const descriptionElement = labelComponent.find("[vl-child-key='description']");
+
+      expect(descriptionElement.text()).toBe(customDescription);
+    });
+
     it("Before – renders content from before-file slot", () => {
       const slotText = "Before";
       const slotClass = "before-content";

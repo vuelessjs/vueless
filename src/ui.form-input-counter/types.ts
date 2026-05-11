@@ -66,6 +66,11 @@ export interface Props {
   disabled?: boolean;
 
   /**
+   * Time in milliseconds before value emit.
+   */
+  debounce?: number | string;
+
+  /**
    * Component config object.
    */
   config?: ComponentConfig<Config>;

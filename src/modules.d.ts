@@ -31,3 +31,5 @@ declare module "virtual:vueless/vue-i18n" {
   export type I18n = UnknownObject;
   export type VueMessageType = UnknownObject;
 }
+
+declare const __VUELESS_DEV__: boolean;

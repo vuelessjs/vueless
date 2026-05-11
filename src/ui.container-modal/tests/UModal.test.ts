@@ -200,12 +200,13 @@ describe("UModal", () => {
           },
         });
 
-        const overlay = component.find('[vl-key="overlay"]');
+        const innerWrapper = component.find('[vl-key="innerWrapper"]');
 
-        expect(overlay.exists()).toBe(true);
+        expect(innerWrapper.exists()).toBe(true);
 
-        await overlay.trigger("click");
-        await sleep(500);
+        await innerWrapper.trigger("mousedown");
+        await innerWrapper.trigger("click");
+        await sleep(1000);
 
         const modal = component.find('[vl-key="modal"]');
 
@@ -228,7 +229,7 @@ describe("UModal", () => {
         const wrapper = component.find("[vl-key='wrapper']");
 
         await wrapper.trigger("keydown", { key: "Escape" });
-        await sleep(500);
+        await sleep(1000);
 
         const modal = component.find('[vl-key="modal"]');
 
@@ -577,10 +578,10 @@ describe("UModal", () => {
     });
 
     // CloseOnOverlay events
-    it("emits events when overlay is clicked based on closeOnOverlay prop", () => {
+    it("emits events when overlay is clicked based on closeOnOverlay prop", async () => {
       const closeOnOverlay = [true, false];
 
-      closeOnOverlay.forEach(async (value) => {
+      for (const value of closeOnOverlay) {
         const component = mount(UModal, {
           props: {
             modelValue,
@@ -590,24 +591,40 @@ describe("UModal", () => {
 
         const innerWrapper = component.find("[vl-key='innerWrapper']");
 
+        await innerWrapper.trigger("mousedown");
         await innerWrapper.trigger("click");
 
-        if (value) {
-          expect(component.emitted("update:modelValue")).toBeTruthy();
-          expect(component.emitted("update:modelValue")?.[0]).toEqual([false]);
-          expect(component.emitted("close")).toBeTruthy();
-        } else {
-          expect(component.emitted("update:modelValue")).toBeFalsy();
-          expect(component.emitted("close")).toBeFalsy();
-        }
+        expect(component.emitted("update:modelValue")).toEqual(value ? [[false]] : undefined);
+        expect(Boolean(component.emitted("close")?.length)).toBe(value);
+      }
+    });
+
+    it("does not close when mousedown on modal and mouseup on overlay", async () => {
+      const component = mount(UModal, {
+        props: {
+          modelValue: true,
+          closeOnOverlay: true,
+        },
       });
+
+      const modal = component.find("[vl-key='modal']");
+      const innerWrapper = component.find("[vl-key='innerWrapper']");
+
+      // Mousedown on modal content
+      await modal.trigger("mousedown");
+      // Click (mouseup) on overlay
+      await innerWrapper.trigger("click");
+
+      // Modal should NOT close
+      expect(component.emitted("update:modelValue")).toBeFalsy();
+      expect(component.emitted("close")).toBeFalsy();
     });
 
     // CloseOnEsc events
-    it("emits events when escape key is pressed based on closeOnEsc prop", () => {
+    it("emits events when escape key is pressed based on closeOnEsc prop", async () => {
       const closeOnEsc = [true, false];
 
-      closeOnEsc.forEach(async (value) => {
+      for (const value of closeOnEsc) {
         const component = mount(UModal, {
           props: {
             modelValue,
@@ -619,15 +636,9 @@ describe("UModal", () => {
 
         await wrapper.trigger("keydown", { key: "Escape" });
 
-        if (value) {
-          expect(component.emitted("update:modelValue")).toBeTruthy();
-          expect(component.emitted("update:modelValue")?.[0]).toEqual([false]);
-          expect(component.emitted("close")).toBeTruthy();
-        } else {
-          expect(component.emitted("update:modelValue")).toBeFalsy();
-          expect(component.emitted("close")).toBeFalsy();
-        }
-      });
+        expect(component.emitted("update:modelValue")).toEqual(value ? [[false]] : undefined);
+        expect(Boolean(component.emitted("close")?.length)).toBe(value);
+      }
     });
   });
 

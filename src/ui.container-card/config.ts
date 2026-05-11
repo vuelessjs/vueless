@@ -17,7 +17,7 @@ export default /*tw*/ {
   title: "{UHeader}",
   description: "mt-0.5 font-normal text-lifted",
   footer: {
-    base: "flex justify-between w-full border-t border-muted mt-6 pt-4 md:pt-6",
+    base: "flex justify-between w-full border-muted mt-6 pt-4 md:pt-6",
     variants: {
       variant: {
         solid: "border-muted",
@@ -26,11 +26,16 @@ export default /*tw*/ {
         soft: "border-default/50",
         inverted: "border-default/50",
       },
+      divided: {
+        true: "border-t",
+        false: "mt-0",
+      },
     },
   },
   footerLeft: "",
   footerRight: "",
   defaults: {
     variant: "outlined",
+    divided: true,
   },
 };

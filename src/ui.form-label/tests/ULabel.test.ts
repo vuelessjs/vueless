@@ -97,6 +97,39 @@ describe("ULabel.vue", () => {
       expect(errorElement.text()).toBe(error);
     });
 
+    it("Error – boolean error applies error styling without rendering error text", () => {
+      const errorClasses = "text-error";
+
+      const component = mount(ULabel, {
+        props: {
+          error: true,
+          label: "Label",
+        },
+      });
+
+      expect(component.find("[vl-key='label']").attributes("class")).toContain(errorClasses);
+      expect(component.find("[vl-key='error']").exists()).toBe(false);
+    });
+
+    it("Error – renders content from error slot", () => {
+      const slotContent = "Custom error from slot";
+      const defaultError = "Default error";
+
+      const component = mount(ULabel, {
+        props: {
+          error: defaultError,
+        },
+        slots: {
+          error: slotContent,
+        },
+      });
+
+      const errorElement = component.find("[vl-key='error']");
+
+      expect(errorElement.text()).toBe(slotContent);
+      expect(errorElement.text()).not.toContain(defaultError);
+    });
+
     it("Align – applies correct classes for align prop", () => {
       const alignCases = {
         top: "flex-col",
@@ -302,6 +335,25 @@ describe("ULabel.vue", () => {
       expect(labelElement.text()).not.toContain(defaultLabel);
     });
 
+    it("Description – renders content from description slot", () => {
+      const slotContent = "Custom description";
+      const defaultDescription = "Default description";
+
+      const component = mount(ULabel, {
+        props: {
+          description: defaultDescription,
+        },
+        slots: {
+          description: slotContent,
+        },
+      });
+
+      const descriptionElement = component.find("[vl-key='description']");
+
+      expect(descriptionElement.text()).toBe(slotContent);
+      expect(descriptionElement.text()).not.toContain(defaultDescription);
+    });
+
     it("Label – exposes label content", () => {
       const defaultLabel = "Label Content";
       const slotContent = "Modified Label Content";
@@ -316,18 +368,6 @@ describe("ULabel.vue", () => {
       });
 
       expect(component.find("[vl-key='label']").text()).toBe(slotContent);
-    });
-
-    it("Bottom – renders content from bottom slot", () => {
-      const testClass = "custom-bottom";
-
-      const component = mount(ULabel, {
-        slots: {
-          bottom: `<div class="${testClass}">Bottom Slot Content</div>`,
-        },
-      });
-
-      expect(component.find(`.${testClass}`).exists()).toBe(true);
     });
   });
 

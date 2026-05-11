@@ -59,7 +59,7 @@ export default /*tw*/ {
   },
   periodRow: "mb-1 flex min-w-64 gap-1",
   periodButton: "{UButton} h-[3.125rem] w-full",
-  periodButtonActive: "{>periodButton} !bg-grayscale-accented/15",
+  periodButtonActive: "{>periodButton} bg-grayscale-accented/15!",
   rangeSwitchWrapper: "flex items-center justify-between py-2",
   rangeSwitchButton: "{UButton}",
   rangeSwitchTitle: "font-medium text-medium",
@@ -99,11 +99,11 @@ export default /*tw*/ {
   },
   rangeInputFirst: {
     base: "{UInput} {>rangeInput}",
-    wrapper: "!rounded-r-none",
+    wrapper: "rounded-r-none!",
   },
   rangeInputLast: {
     base: "{UInput} {>rangeInput}",
-    wrapper: "!rounded-l-none",
+    wrapper: "rounded-l-none!",
   },
   rangeInputError: "text-small font-normal leading-none mt-2 text-center text-red-500",
   datepickerCalendar: {

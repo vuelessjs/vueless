@@ -28,7 +28,6 @@ defineExpose({
  * Get element / nested component attributes for each config token ✨
  * Applies: `class`, `config`, redefined default `props` and dev `vl-...` attributes.
  */
-
 const { getDataTest, wrapperAttrs } = useUI<Config>(defaultConfig);
 </script>
 

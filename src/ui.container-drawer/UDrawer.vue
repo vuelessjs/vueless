@@ -47,6 +47,7 @@ const isDraggingFromHandle = ref(false);
 const dragStartPosition = ref({ x: 0, y: 0 });
 const dragCurrentPosition = ref({ x: 0, y: 0 });
 const minDragDistance = 10;
+const isMouseDownOnOverlay = ref(false);
 
 const isShownDrawer = computed({
   get: () => props.modelValue,
@@ -180,8 +181,15 @@ function toggleEventListeners() {
   }
 }
 
+function onMouseDownOverlay() {
+  isMouseDownOnOverlay.value = true;
+}
+
 function onClickOutside() {
-  props.closeOnOverlay && closeDrawer();
+  if (!props.closeOnOverlay || !isMouseDownOnOverlay.value) return;
+
+  closeDrawer();
+  isMouseDownOnOverlay.value = false;
 }
 
 function onKeydownEsc(e: KeyboardEvent) {
@@ -197,8 +205,6 @@ function closeDrawer() {
 }
 
 function onDragStart(e: MouseEvent | TouchEvent) {
-  e.preventDefault();
-
   const clientX = "touches" in e ? e.touches[0].clientX : e.clientX;
   const clientY = "touches" in e ? e.touches[0].clientY : e.clientY;
 
@@ -210,6 +216,8 @@ function onDragStart(e: MouseEvent | TouchEvent) {
   isDraggingFromHandle.value = !!handleWrapperRef.value?.contains(targetNode);
 
   if (!props.handle || !isDraggingFromHandle.value) return;
+
+  e.preventDefault();
 
   document.addEventListener("mousemove", onDragMove);
   document.addEventListener("mouseup", onDragEnd);
@@ -294,7 +302,7 @@ const {
   titleFallbackAttrs,
   closeButtonAttrs,
   closeIconAttrs,
-} = useUI<Config>(defaultConfig);
+} = useUI<Config>(defaultConfig, undefined, "drawer");
 </script>
 
 <template>
@@ -312,7 +320,11 @@ const {
       :data-test="getDataTest()"
       @keydown.self.esc="onKeydownEsc"
     >
-      <div v-bind="innerWrapperAttrs" @click.self="onClickOutside">
+      <div
+        v-bind="innerWrapperAttrs"
+        @mousedown.self="onMouseDownOverlay"
+        @click.self="onClickOutside"
+      >
         <div
           ref="drawer"
           :style="{ transform: dragTransform }"

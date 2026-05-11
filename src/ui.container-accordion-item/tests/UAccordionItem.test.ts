@@ -68,9 +68,11 @@ describe("UAccordionItem", () => {
 
         expect(icon.exists()).toBe(exists);
 
-        if (exists) {
-          expect(icon.props("name")).toBe(iconName);
+        if (!exists) {
+          return;
         }
+
+        expect(icon.props("name")).toBe(iconName);
       });
     });
 

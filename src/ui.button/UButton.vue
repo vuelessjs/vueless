@@ -62,7 +62,7 @@ defineExpose({
  * Applies: `class`, `config`, redefined default `props` and dev `vl-...` attributes.
  */
 const mutatedProps = computed(() => ({
-  icon: Boolean(props.icon) || hasSlotContent(slots["default"]),
+  icon: Boolean(props.icon) || (!props.label && hasSlotContent(slots["default"])),
   leftIcon: Boolean(props.leftIcon) || hasSlotContent(slots["left"]),
   rightIcon: Boolean(props.rightIcon) || hasSlotContent(slots["right"]),
   label: Boolean(props.label),

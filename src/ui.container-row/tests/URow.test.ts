@@ -10,13 +10,15 @@ describe("URow.vue", () => {
     it("Gap – applies the correct gap class", () => {
       const gapClasses = {
         none: "gap-0",
+        "3xs": "gap-0.5",
         "2xs": "gap-1",
         xs: "gap-2",
         sm: "gap-3",
         md: "gap-4",
         lg: "gap-5",
         xl: "gap-6",
-        "2xl": "gap-8",
+        "2xl": "gap-7",
+        "3xl": "gap-8",
       };
 
       Object.entries(gapClasses).forEach(([gap, classes]) => {
@@ -136,6 +138,40 @@ describe("URow.vue", () => {
       });
 
       expect(component.attributes("class")).toContain(expectedClasses);
+    });
+
+    it("Grow – applies the correct grow class", () => {
+      const growClasses = {
+        true: "grow",
+        false: "grow-0",
+      };
+
+      Object.entries(growClasses).forEach(([grow, classes]) => {
+        const component = mount(URow, {
+          props: {
+            grow: grow === "true",
+          },
+        });
+
+        expect(component.attributes("class")).toContain(classes);
+      });
+    });
+
+    it("Shrink – applies the correct shrink class", () => {
+      const shrinkClasses = {
+        true: "shrink",
+        false: "shrink-0",
+      };
+
+      Object.entries(shrinkClasses).forEach(([shrink, classes]) => {
+        const component = mount(URow, {
+          props: {
+            shrink: shrink === "true",
+          },
+        });
+
+        expect(component.attributes("class")).toContain(classes);
+      });
     });
 
     it("Tag – renders the correct HTML tag", () => {

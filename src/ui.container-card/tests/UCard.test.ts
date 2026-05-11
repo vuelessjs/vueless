@@ -62,6 +62,39 @@ describe("UCard", () => {
       });
     });
 
+    it("Divided – shows divider between content and footer when divided is true", () => {
+      const component = mount(UCard, {
+        props: {
+          divided: true,
+        },
+        slots: {
+          "footer-left": "<div>Footer Content</div>",
+        },
+      });
+
+      const footer = component.find("[vl-key='footer']");
+
+      expect(footer.exists()).toBe(true);
+      expect(footer.attributes("class")).toContain("border-t");
+    });
+
+    it("Divided – hides divider between content and footer when divided is false", () => {
+      const component = mount(UCard, {
+        props: {
+          divided: false,
+        },
+        slots: {
+          "footer-left": "<div>Footer Content</div>",
+        },
+      });
+
+      const footer = component.find("[vl-key='footer']");
+
+      expect(footer.exists()).toBe(true);
+      expect(footer.attributes("class")).not.toContain("border-t");
+      expect(footer.attributes("class")).toContain("mt-0");
+    });
+
     it("Data Test – applies data-test attribute", () => {
       const dataTest = "card-test";
 

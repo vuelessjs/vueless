@@ -6,16 +6,21 @@ import type { Config as UDividerConfig } from "../ui.container-divider/types";
 
 export type Config = typeof defaultConfig;
 
-type RowKeys = number | string | boolean | undefined | Date | Row | Row[] | ((row: Row) => string);
-
 export interface CellObject {
   contentClass?: string | ((value: unknown | string, row: Row) => string);
   class?: string | ((value: unknown | string, row: Row) => string);
-  [key: string]: unknown | string;
+  [key: string]: unknown;
 }
 
 export type RowId = string | number;
-export type Cell = CellObject | string;
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export type Cell = CellObject & any;
+
+export interface SearchMatch {
+  rowId: RowId;
+  columnKey: string;
+  indices: number[];
+}
 
 export interface RowData {
   [key: string]: Cell;
@@ -32,18 +37,23 @@ export interface Row {
   rowDate?: string | Date;
   row?: Row | Row[];
   class?: string | ((row: Row) => string);
-  [key: string]: Cell | RowKeys;
+  [key: string]: unknown;
 }
 
 export interface FlatRow extends Row {
   parentRowId?: RowId;
   nestedLevel: number;
 }
+export enum StickySide {
+  Left = "left",
+  Right = "right",
+}
 
 export interface ColumnObject {
   key: string;
   label?: string;
   isShown?: boolean;
+  sticky?: "left" | "right";
   class?: string | ((value: unknown | string, row: Row) => string);
   tdClass?: string;
   thClass?: string;
@@ -108,6 +118,41 @@ export interface Props {
   loading?: boolean;
 
   /**
+   * Enable virtual scrolling for large datasets.
+   */
+  virtualScroll?: boolean;
+
+  /**
+   * Fixed row height in pixels (used for virtual scroll calculations).
+   */
+  rowHeight?: number;
+
+  /**
+   * Height of the scroll container (CSS value).
+   */
+  scrollHeight?: string;
+
+  /**
+   * Number of extra rows to render above/below viewport.
+   */
+  bufferSize?: number;
+
+  /**
+   * Search string to highlight in table cells.
+   */
+  search?: string;
+
+  /**
+   * Index of the current search match to highlight (0-based).
+   */
+  searchMatch?: number;
+
+  /**
+   * Enable text ellipsis for table cells (renders div wrapper for overflow handling).
+   */
+  textEllipsis?: boolean;
+
+  /**
    * Component config object.
    */
   config?: ComponentConfig<Config>;
@@ -129,11 +174,22 @@ export interface UTableRowAttrs {
   bodyCellNestedIconWrapperAttrs: Ref<UnknownObject>;
   bodyRowCheckedAttrs: Ref<UnknownObject>;
   bodyRowAttrs: Ref<UnknownObject>;
+  bodyCellStickyLeftAttrs: Ref<UnknownObject>;
+  bodyCellStickyRightAttrs: Ref<UnknownObject>;
+  bodyCellSearchMatchAttrs: Ref<UnknownObject>;
+  bodyCellSearchMatchTextAttrs: Ref<UnknownObject>;
+  bodyCellSearchMatchActiveAttrs: Ref<UnknownObject>;
+  bodyCellSearchMatchTextActiveAttrs: Ref<UnknownObject>;
 }
 
 export interface UTableRowProps {
   row: FlatRow;
   columns: ColumnObject[];
+  /**
+   * Row index in the parent table (used for slot params).
+   * Optional to keep UTableRow mountable standalone in tests/internal usage.
+   */
+  rowIndex?: number;
   emptyCellLabel?: string;
   selectable: boolean;
   nestedLevel: number;
@@ -143,4 +199,12 @@ export interface UTableRowProps {
   config: Config;
   isChecked: boolean;
   isExpanded: boolean;
+  isVisible: boolean;
+  columnPositions: Map<string, number>;
+  search?: string;
+  searchMatchColumns?: Set<string>;
+  activeSearchMatchColumn?: string;
+  textEllipsis?: boolean;
+  onToggleExpand?: (row: Row) => void;
+  onToggleCheckbox?: (row: Row) => void;
 }

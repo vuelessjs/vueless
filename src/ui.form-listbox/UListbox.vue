@@ -45,18 +45,18 @@ const emit = defineEmits([
   /**
    * Triggers on click option.
    */
-  "clickOption",
+  "click-option",
 
   /**
    * Triggers when the search input value changes.
    * @property {string} value
    */
-  "searchChange",
+  "search-change",
 
   /**
    * Triggers when the search input loses focus.
    */
-  "searchBlur",
+  "search-blur",
 
   /**
    * Triggers when the search v-model updates.
@@ -120,7 +120,7 @@ const getOptionAriaSelected = (option: Option) => {
   if (option && option.groupLabel) return undefined;
   if (option.divider) return undefined;
 
-  return !!isSelectedOption(option);
+  return isSelectedOption(option);
 };
 
 const filteredOptions = computed(() => {
@@ -158,13 +158,12 @@ watch(
       const maxHeight = options
         .slice(0, props.visibleOptions)
         .map((el) => {
-          const elHeight = el.getBoundingClientRect().height;
-
           const styles = window.getComputedStyle(el);
+          const height = parseFloat(styles.height || "0");
           const marginTop = parseFloat(styles.marginTop || "0");
           const marginBottom = parseFloat(styles.marginBottom || "0");
 
-          return elHeight + marginTop + marginBottom;
+          return height + marginTop + marginBottom;
         })
         .reduce((acc, cur) => acc + cur, 0);
 
@@ -247,7 +246,7 @@ function onClickAddOption() {
 }
 
 function onSearchChange(value: string) {
-  emit("searchChange", value);
+  emit("search-change", value);
 }
 
 function onKeydownUp() {
@@ -286,7 +285,7 @@ function select(option: Option, keyCode?: string) {
 
 function isSelectedOption(option: Option) {
   if (props.multiple) {
-    return (selectedValue.value as SelectedValue[]).find((selected) =>
+    return !!(selectedValue.value as SelectedValue[]).find((selected) =>
       isEqual(selected, option[props.valueKey]),
     );
   }
@@ -342,11 +341,11 @@ function onClickOption(rawOption: Option) {
     rawOption.onClick(option);
   }
 
-  emit("clickOption", option);
+  emit("click-option", option);
 }
 
 function onInputSearchBlur(event: FocusEvent) {
-  emit("searchBlur", event);
+  emit("search-blur", event);
 }
 
 defineExpose({
@@ -516,9 +515,15 @@ const {
           <!--
             @slot Use it to add something after the option.
             @binding {object} option
+            @binding {boolean} selected
             @binding {number} index
           -->
-          <slot name="after-option" :option="option" :index="index">
+          <slot
+            name="after-option"
+            :option="option"
+            :selected="isSelectedOption(option)"
+            :index="index"
+          >
             <UIcon
               v-if="isSelectedOption(option)"
               color="inherit"

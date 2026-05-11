@@ -4,7 +4,7 @@ import { cachedIcons } from "virtual:vueless/icons";
 
 import { useUI } from "../composables/useUI";
 import { getDefaults } from "../utils/ui";
-import { ICONS_CACHED_DIR, INTERNAL_ICONS_LIBRARY, STORYBOOK_ICONS_LIBRARY } from "../constants";
+import { INTERNAL_ICONS_LIBRARY, STORYBOOK_ICONS_LIBRARY } from "../constants";
 
 import { COMPONENT_NAME } from "./constants";
 import defaultConfig from "./config";
@@ -33,15 +33,15 @@ const dynamicComponent = computed(() => {
   let userLibrary = config.value.defaults.library;
 
   const isInternalIconExists = cachedIcons.find(([path]: [string]) =>
-    path.includes(`${ICONS_CACHED_DIR}/${INTERNAL_ICONS_LIBRARY}/${props.name}.svg`),
+    path.includes(`${INTERNAL_ICONS_LIBRARY}/${props.name}.svg`),
   );
 
   const isStorybookIconExists = cachedIcons.find(([path]: [string]) =>
-    path.includes(`${ICONS_CACHED_DIR}/${STORYBOOK_ICONS_LIBRARY}/${props.name}.svg`),
+    path.includes(`${STORYBOOK_ICONS_LIBRARY}/${props.name}.svg`),
   );
 
   const isExternalIconExists = cachedIcons.find(([path]: [string]) =>
-    path.includes(`${ICONS_CACHED_DIR}/${userLibrary}/${props.name}.svg`),
+    path.includes(`${userLibrary}/${props.name}.svg`),
   );
 
   if (isInternalIconExists && !isExternalIconExists) {
@@ -67,9 +67,7 @@ const dynamicComponent = computed(() => {
   if (!name) return "";
 
   const [, component] =
-    cachedIcons.find(([path]: [string]) =>
-      path.includes(`${ICONS_CACHED_DIR}/${userLibrary}/${props.name}.svg`),
-    ) || [];
+    cachedIcons.find(([path]: [string]) => path.includes(`${userLibrary}/${props.name}.svg`)) || [];
 
   if (!component) return "";
 

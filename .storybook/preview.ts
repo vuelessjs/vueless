@@ -1,11 +1,6 @@
-import {
-  getThemeDark,
-  getThemeLight,
-  getThemeLightPreview,
-  vue3SourceDecorator,
-  storyDarkModeDecorator,
-} from "@vueless/storybook";
 import { getRandomId } from "vueless";
+import { vue3SourceDecorator, storyDarkModeDecorator } from "@vueless/storybook";
+import { getThemeDark, getThemeLight, getThemeLightPreview } from "@vueless/storybook/themes";
 import { setup } from "@storybook/vue3-vite";
 
 import type { Preview } from "@storybook/vue3-vite";

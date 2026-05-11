@@ -92,3 +92,10 @@ vi.mock("virtual:vueless/icons", () => {
 
   return { cachedIcons };
 });
+
+// Mock ResizeObserver
+global.ResizeObserver = class ResizeObserver {
+  observe() {}
+  unobserve() {}
+  disconnect() {}
+};

@@ -124,6 +124,22 @@ const { getDataTest, radioLabelAttrs, radioAttrs } = useUI<Config>(defaultConfig
       <slot name="label" :label="label" />
     </template>
 
+    <template #description>
+      <!--
+        @slot Use this to add custom content instead of the description.
+        @binding {string} description
+      -->
+      <slot name="description" :description="description" />
+    </template>
+
+    <template #error>
+      <!--
+        @slot Use this to add custom content instead of the error message.
+        @binding {string | boolean} error
+      -->
+      <slot name="error" :error="error" />
+    </template>
+
     <input
       :id="elementId"
       type="radio"
@@ -135,10 +151,5 @@ const { getDataTest, radioLabelAttrs, radioAttrs } = useUI<Config>(defaultConfig
       :data-test="getDataTest()"
       @change="onChange"
     />
-
-    <template #bottom>
-      <!-- @slot Use it to add something below the radio. -->
-      <slot name="bottom" />
-    </template>
   </ULabel>
 </template>

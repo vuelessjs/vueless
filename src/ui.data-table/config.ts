@@ -19,7 +19,7 @@ export default /*tw*/ {
   stickyHeaderCell: "{>headerCellBase} flex-none whitespace-nowrap",
   stickyHeaderCheckbox: "{UCheckbox}",
   stickyHeaderCounter: {
-    base: "{>headerCounterBase} absolute top-4 left-11 bg-gradient-to-r from-(--vl-bg) from-80%",
+    base: "{>headerCounterBase} absolute top-4 left-11 bg-linear-to-r from-(--vl-bg) from-80%",
     variants: {
       compact: {
         true: "top-3",
@@ -29,42 +29,66 @@ export default /*tw*/ {
   stickyHeaderLoader: "{ULoaderProgress} absolute top-auto bottom-0",
   headerActionsCheckbox: "{UCheckbox}",
   headerActionsCounter: "{>headerCounterBase} -ml-1.5",
-  tableWrapper: "border border-solid border-muted rounded-medium bg-default overflow-x-auto",
-  table: "min-w-full border-none text-medium w-full table-auto",
-  header:
-    "border-b border-muted [&>tr:first-child>*]:first:rounded-tl-medium [&>tr:last-child>*]:last:rounded-tr-medium relative",
+  tableWrapper: {
+    base: "border border-solid border-muted rounded-medium bg-default overflow-x-auto ",
+    variants: {
+      virtualScroll: {
+        true: "h-150 overflow-y-auto",
+      },
+    },
+  },
+  table: {
+    base: "min-w-full border-none text-medium w-auto table-auto border-separate border-spacing-0",
+    variants: {
+      virtualScroll: {
+        true: "table-layout-fixed w-full",
+      },
+    },
+  },
+  header: {
+    base: "[&>tr:first-child>*]:first:rounded-tl-medium [&>tr:last-child>*]:last:rounded-tr-medium relative",
+  },
   headerRow: "",
   beforeHeaderRow: "border border-solid border-muted",
   beforeHeaderCell: "{>headerCellBase}",
   headerCellBase: {
-    base: "p-4 text-medium font-normal text-lifted text-left text-nowrap",
+    base: "border-b border-muted p-4 text-medium font-normal text-lifted text-left text-nowrap",
     variants: {
       compact: {
         true: "px-4 py-3 last:px-4 last:py-3 first:px-4 first:py-3",
       },
+      virtualScroll: {
+        true: "sticky top-0 z-10 bg-default",
+      },
     },
   },
+  headerCellSticky: "sticky z-20 bg-default",
+  headerCellStickyLeft: "{>headerCellSticky}",
+  headerCellStickyRight: "{>headerCellSticky}",
   headerCellCheckbox: "{>headerCellBase} w-10 pr-2",
   headerCheckbox: "{UCheckbox}",
   headerCounter: "{>stickyHeaderCounter} ml-px",
   headerLoader: "{ULoaderProgress} absolute top-auto bottom-0",
   body: "group/body divide-none",
-  bodyRow: "hover:bg-muted",
+  bodyRow: "bg-default hover:bg-muted",
   bodyRowChecked: "bg-lifted transition",
-  beforeBodyRow: "!p-0",
-  beforeBodyRowChecked: "{>bodyRowChecked} !p-0",
+  beforeBodyRow: "p-0!",
+  beforeBodyRowChecked: "{>bodyRowChecked} p-0!",
   beforeBodyRowCell: "{>bodyCellBase} py-1",
-  afterBodyRow: "!p-0",
+  afterBodyRow: "p-0!",
   bodyRowDateDivider: "first:hidden",
   bodyRowCheckedDateDivider: "{>bodyRowChecked} {>bodyRowChecked}",
   bodyCellBase: {
     base: "p-4 truncate align-top",
     variants: {
       compact: {
-        true: "px-4 py-3 last:px-4 last:py-3 first:!px-4 first:py-3",
+        true: "px-4 py-3 last:px-4 last:py-3 first:px-4! first:py-3",
       },
     },
   },
+  bodyCellSticky: "sticky z-10 bg-inherit",
+  bodyCellStickyLeft: "{>bodyCellSticky}",
+  bodyCellStickyRight: "{>bodyCellSticky}",
   bodyCellContent: "text-ellipsis overflow-hidden",
   bodyCellCheckbox: "{>bodyCellBase} pr-2",
   bodyCellDateDivider: "",
@@ -73,13 +97,17 @@ export default /*tw*/ {
   bodyCellNestedExpandIcon: "{UIcon}",
   bodyCellNestedCollapseIcon: "{UIcon}",
   bodyCheckbox: "{UCheckbox}",
+  bodyCellSearchMatch: "bg-warning/10",
+  bodyCellSearchMatchActive: "bg-warning/15",
+  bodyCellSearchMatchText: "bg-warning/50 rounded-xs",
+  bodyCellSearchMatchTextActive: "bg-warning rounded-xs",
   bodyDateDivider: {
     base: "{UDivider} py-2",
     label: "py-0 leading-none",
   },
   bodySelectedDateDivider: {
     base: "{>bodyDateDivider}",
-    label: "!bg-lifted transition",
+    label: "bg-lifted! transition",
   },
   bodyEmptyState: "{UEmpty} my-8",
   bodyEmptyStateCell: "",
@@ -100,7 +128,7 @@ export default /*tw*/ {
     },
   },
   stickyFooterRow: `
-    fixed bottom-0 -ml-px border-b border-solid border-muted bg-default
+    fixed bottom-0 -ml-px border border-solid border-muted bg-default
     collapse group-[*]/footer-fixed:[visibility:inherit]
   `,
   i18n: {
@@ -110,12 +138,18 @@ export default /*tw*/ {
   },
   defaults: {
     emptyCellLabel: "—",
+    rowHeight: 40,
+    bufferSize: 10,
+    virtualScroll: false,
     compact: false,
     selectable: false,
     dateDivider: false,
     stickyHeader: false,
     stickyFooter: false,
     loading: false,
+    textEllipsis: false,
+    search: "",
+    searchMatch: -1,
     /* icons */
     expandIcon: "add",
     collapseIcon: "remove",

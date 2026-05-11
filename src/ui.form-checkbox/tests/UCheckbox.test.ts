@@ -284,21 +284,40 @@ describe("UCheckbox.vue", () => {
       expect(labelElement.text()).toBe(`Modified ${defaultLabel}`);
     });
 
-    it("Bottom – renders custom content from bottom slot", () => {
-      const customBottomContent = "Custom Bottom Content";
+    it("Description – renders custom content from description slot", () => {
+      const customDescription = "Custom description content";
 
       const component = mount(UCheckbox, {
         props: {
-          label: "Test Label",
+          description: "Default description",
         },
         slots: {
-          bottom: customBottomContent,
+          description: customDescription,
         },
       });
 
       const labelComponent = component.getComponent(ULabel);
+      const descriptionElement = labelComponent.find("[vl-child-key='description']");
 
-      expect(labelComponent.text()).toContain(customBottomContent);
+      expect(descriptionElement.text()).toBe(customDescription);
+    });
+
+    it("Error – renders custom content from error slot", () => {
+      const customError = "Custom error content";
+
+      const component = mount(UCheckbox, {
+        props: {
+          error: "Default error message",
+        },
+        slots: {
+          error: customError,
+        },
+      });
+
+      const labelComponent = component.getComponent(ULabel);
+      const errorElement = labelComponent.find("[vl-child-key='error']");
+
+      expect(errorElement.text()).toBe(customError);
     });
   });
 

@@ -12,15 +12,25 @@ export default /*tw*/ {
       block: {
         true: "w-full",
       },
+      grow: {
+        true: "grow",
+        false: "grow-0",
+      },
+      shrink: {
+        true: "shrink",
+        false: "shrink-0",
+      },
       gap: {
         none: "gap-0",
+        "3xs": "gap-0.5",
         "2xs": "gap-1",
         xs: "gap-2",
         sm: "gap-3",
         md: "gap-4",
         lg: "gap-5",
         xl: "gap-6",
-        "2xl": "gap-8",
+        "2xl": "gap-7",
+        "3xl": "gap-8",
       },
       align: {
         end: "items-end",
@@ -59,5 +69,7 @@ export default /*tw*/ {
     wrap: false,
     block: false,
     reverse: false,
+    grow: false,
+    shrink: false,
   },
 };

@@ -48,27 +48,31 @@ describe("UNotify.vue", () => {
 
   describe("Props", () => {
     it("X Position – applies the correct xPosition style", async () => {
-      const positions = ["left", "center", "right"];
+      async function mountAndGetPositionStyles(xPosition: Props["xPosition"]) {
+        const component = mountWithLocale({ xPosition });
 
-      for (const position of positions) {
-        const component = mountWithLocale({
-          xPosition: position as Props["xPosition"],
-        });
-
-        // Add a notification to ensure the component is rendered
         dispatchNotifyEvent("notifyStart", mockNotification);
         await component.vm.$nextTick();
 
-        // Check the component's style directly
-        const style = component.attributes("style") || "";
+        // @ts-expect-error - Accessing private method for testing
+        component.vm.setPosition();
+        await component.vm.$nextTick();
 
-        // For center position, we expect a calculated left value
-        if (position === "center") {
-          expect(style).toContain("left:");
-        } else {
-          expect(style).toContain(`${position}: 0px`);
-        }
+        // @ts-expect-error - Accessing private property for testing
+        return component.vm.notifyPositionStyles as Record<string, string | undefined>;
       }
+
+      for (const position of ["left", "right"] as const) {
+        const positionStyles = await mountAndGetPositionStyles(position);
+
+        expect(positionStyles).toHaveProperty(position);
+        expect(positionStyles[position]).toBe("0px");
+      }
+
+      const centerStyles = await mountAndGetPositionStyles("center");
+
+      expect(centerStyles).toHaveProperty("left");
+      expect(centerStyles.left).toBeDefined();
     });
 
     it("Y Position – applies the correct yPosition style", async () => {
@@ -83,10 +87,17 @@ describe("UNotify.vue", () => {
         dispatchNotifyEvent("notifyStart", mockNotification);
         await component.vm.$nextTick();
 
-        // Check the component's style directly
-        const style = component.attributes("style") || "";
+        // Manually trigger setPosition since waitForPageElement won't find the elements in tests
+        // @ts-expect-error - Accessing private method for testing
+        component.vm.setPosition();
+        await component.vm.$nextTick();
 
-        expect(style).toContain(`${position}: 0px`);
+        // Access the internal notifyPositionStyles ref
+        // @ts-expect-error - Accessing private property for testing
+        const positionStyles = component.vm.notifyPositionStyles;
+
+        expect(positionStyles).toHaveProperty(position);
+        expect(positionStyles[position]).toBe("0px");
       }
     });
 

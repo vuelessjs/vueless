@@ -60,3 +60,4 @@
 
 * [Vueless Vite Plugins](other/vueless-vite-plugins.md)
 * [Roadmap](other/roadmap.md)
+* [Quickstart package update](other/quickstart-package-update.md)

@@ -1,4 +1,7 @@
+import { ref } from "vue";
+
 import type { Meta, StoryFn } from "@storybook/vue3-vite";
+
 import {
   getArgTypes,
   getSlotNames,
@@ -17,8 +20,12 @@ import UBadge from "../../ui.text-badge/UBadge.vue";
 import URow from "../../ui.container-row/URow.vue";
 import UIcon from "../../ui.image-icon/UIcon.vue";
 import ULoader from "../../ui.loader/ULoader.vue";
+import UInputSearch from "../../ui.form-input-search/UInputSearch.vue";
+import UText from "../../ui.text-block/UText.vue";
 
-import type { Row, Props } from "../types";
+import tooltip from "../../v.tooltip/vTooltip";
+import type { Row, Props, ColumnObject } from "../types";
+import { StickySide } from "../types";
 
 interface UTableArgs extends Props {
   slotTemplate?: string;
@@ -177,7 +184,7 @@ Loading.parameters = {
 
 export const EmptyCellLabel = DefaultTemplate.bind({});
 EmptyCellLabel.args = {
-  emptyCellLabel: "---",
+  emptyCellLabel: "NO DATA",
   rows: [
     {
       id: getRandomId(),
@@ -476,6 +483,220 @@ DateDividerCustomLabel.parameters = {
   },
 };
 
+export const StickyColumns: StoryFn<UTableArgs> = (args: UTableArgs) => ({
+  components: { UTable, URow, UBadge, UButton, UIcon },
+  directives: { tooltip },
+  setup() {
+    function toggleLeft(key: string) {
+      const column = args.columns.find((item) => (item as ColumnObject).key === key);
+
+      if (!column || typeof column === "string") return;
+
+      column.sticky = column.sticky === StickySide.Left ? undefined : StickySide.Left;
+      args.columns = args.columns.slice();
+    }
+
+    function toggleRight(key: string) {
+      const column = args.columns.find((item) => (item as ColumnObject).key === key);
+
+      if (!column || typeof column === "string") return;
+
+      column.sticky = column.sticky === StickySide.Right ? undefined : StickySide.Right;
+      args.columns = args.columns.slice();
+    }
+
+    function isPinned(key: string, side: string) {
+      const column = args.columns.find((item) => (item as ColumnObject).key === key);
+
+      if (!column || typeof column === "string") return;
+
+      return column?.sticky === side;
+    }
+
+    return { args, toggleLeft, toggleRight, isPinned };
+  },
+  template: `
+    <UTable v-bind="args">
+      <template #header-orderId="{ column }">
+        <URow gap="2xs" align="center">
+          <div>{{ column.label }}</div>
+          <UIcon
+            name="keep"
+            size="xs"
+            interactive
+            v-tooltip="isPinned('orderId', 'left') ? 'Unpin left' : 'Pin left'"
+            :color="isPinned('orderId', 'left') ? 'primary' : 'inherit'"
+            @click.stop="toggleLeft('orderId')"
+          />
+        </URow>
+      </template>
+
+      <template #header-customerName="{ column }">
+        <URow gap="2xs" align="center">
+          <div>{{ column.label }}</div>
+          <UIcon
+            name="keep"
+            size="xs"
+            interactive
+            v-tooltip="isPinned('customerName', 'left') ? 'Unpin left' : 'Pin left'"
+            :color="isPinned('customerName', 'left') ? 'primary' : 'inherit'"
+            @click.stop="toggleLeft('customerName')"
+          />
+        </URow>
+      </template>
+
+      <template #header-email="{ column }">
+        <URow gap="2xs" align="center">
+          <div>{{ column.label }}</div>
+          <UIcon
+            name="keep"
+            size="xs"
+            interactive
+            v-tooltip="isPinned('email', 'left') ? 'Unpin left' : 'Pin left'"
+            :color="isPinned('email', 'left') ? 'primary' : 'inherit'"
+            @click.stop="toggleLeft('email')"
+          />
+        </URow>
+      </template>
+
+      <template #header-totalPrice="{ column }">
+        <URow gap="2xs" align="center">
+          <div>{{ column.label }}</div>
+          <UIcon
+            name="keep"
+            size="xs"
+            interactive
+            v-tooltip="isPinned('totalPrice', 'right') ? 'Unpin right' : 'Pin right'"
+            :color="isPinned('totalPrice', 'right') ? 'primary' : 'inherit'"
+            @click.stop="toggleRight('totalPrice')"
+          />
+        </URow>
+      </template>
+
+      <template #header-action="{ column }">
+        <URow gap="2xs" align="center">
+          <div>{{ column.label }}</div>
+          <UIcon
+            name="keep"
+            size="xs"
+            interactive
+            v-tooltip="isPinned('action', 'right') ? 'Unpin right' : 'Pin right'"
+            :color="isPinned('action', 'right') ? 'primary' : 'inherit'"
+            @click.stop="toggleRight('action')"
+          />
+        </URow>
+      </template>
+
+      <template #cell-status="{ value }">
+        <UBadge
+          :label="value"
+          variant="soft"
+          :color="
+            value === 'Delivered' ? 'success' :
+            value === 'Cancelled' ? 'error' :
+            value === 'Pending' ? 'notice' :
+            value === 'Shipped' ? 'info' : ''
+          "
+        />
+      </template>
+
+      <template #cell-action>
+        <UButton label="View" size="xs" variant="soft" />
+      </template>
+    </UTable>
+  `,
+});
+StickyColumns.args = {
+  columns: [
+    { key: "orderId", label: "Order ID", sticky: "left" },
+    { key: "customerName", label: "Customer Name", thClass: "min-w-[200px]" },
+    { key: "email", label: "Email", thClass: "min-w-[250px]", sticky: "left" },
+    { key: "phone", label: "Phone", thClass: "min-w-[150px]" },
+    { key: "address", label: "Address", thClass: "min-w-[300px]" },
+    { key: "city", label: "City", thClass: "min-w-[150px]" },
+    { key: "country", label: "Country", thClass: "min-w-[150px]" },
+    { key: "status", label: "Status", thClass: "min-w-[120px]" },
+    { key: "totalPrice", label: "Total Price", thClass: "min-w-[120px]" },
+    { key: "action", label: "Actions", sticky: "right", thClass: "min-w-[100px]" },
+  ],
+  rows: [
+    {
+      id: "row-1",
+      orderId: "ORD-1001",
+      customerName: "Alice Johnson",
+      email: "alice.johnson@example.com",
+      phone: "+1 (555) 123-4567",
+      address: "123 Main Street, Apt 4B",
+      city: "New York",
+      country: "USA",
+      status: "Delivered",
+      totalPrice: "$245.99",
+      action: "View",
+    },
+    {
+      id: "row-2",
+      orderId: "ORD-1002",
+      customerName: "Michael Smith",
+      email: "michael.smith@example.com",
+      phone: "+1 (555) 234-5678",
+      address: "456 Oak Avenue, Suite 200",
+      city: "Los Angeles",
+      country: "USA",
+      status: "Pending",
+      totalPrice: "$189.50",
+      action: "View",
+    },
+    {
+      id: "row-3",
+      orderId: "ORD-1003",
+      customerName: "Emma Brown",
+      email: "emma.brown@example.com",
+      phone: "+1 (555) 345-6789",
+      address: "789 Pine Road, Building C",
+      city: "Chicago",
+      country: "USA",
+      status: "Shipped",
+      totalPrice: "$312.75",
+      action: "View",
+    },
+    {
+      id: "row-4",
+      orderId: "ORD-1004",
+      customerName: "James Wilson",
+      email: "james.wilson@example.com",
+      phone: "+1 (555) 456-7890",
+      address: "321 Elm Street, Floor 3",
+      city: "Houston",
+      country: "USA",
+      status: "Cancelled",
+      totalPrice: "$156.20",
+      action: "View",
+    },
+    {
+      id: "row-5",
+      orderId: "ORD-1005",
+      customerName: "Sophia Davis",
+      email: "sophia.davis@example.com",
+      phone: "+1 (555) 567-8901",
+      address: "654 Maple Drive, Unit 12",
+      city: "Phoenix",
+      country: "USA",
+      status: "Delivered",
+      totalPrice: "$428.90",
+      action: "View",
+    },
+  ],
+};
+StickyColumns.parameters = {
+  docs: {
+    description: {
+      story:
+        "Pin columns to the left or right edge of the table when scrolling horizontally. " +
+        "Use the header pin icons to toggle pinning for each column.",
+    },
+  },
+};
+
 export const HeaderCounterSlot = DefaultTemplate.bind({});
 HeaderCounterSlot.args = {
   selectable: true,
@@ -491,7 +712,7 @@ export const HeaderKeySlot = DefaultTemplate.bind({});
 HeaderKeySlot.args = {
   slotTemplate: `
     <template #header-status="{ column }">
-      <UBadge :label="column?.label" />
+      <UBadge :label="column.label" />
     </template>
   `,
 };
@@ -620,9 +841,9 @@ ExpandSlot.args = {
   slotTemplate: `
     <template #expand="{ expanded }">
       <UButton
-        :icon="expanded ? 'remove' : 'add'"
-        variant="ghost"
-        size="xs"
+        :icon="expanded ? 'keyboard_arrow_up' : 'keyboard_arrow_down'"
+        variant="soft"
+        size="2xs"
         square
       />
     </template>
@@ -738,7 +959,7 @@ EmptyStateSlot.args = {
   },
   slotTemplate: `
     <template #empty-state>
-      <ULoader loading size="lg" :config="{ loader: 'mx-auto mb-4' }" />
+      <ULoader loading :config="{ loader: 'mx-auto mb-4' }" />
       <p class="text-center">Fetching latest data, please wait...</p>
     </template>
   `,
@@ -753,4 +974,163 @@ FooterSlot.args = {
       </td>
     </template>
   `,
+};
+
+function generateNestedRows(count: number): Row[] {
+  return Array.from({ length: count }, (_, i) => {
+    const hasChildren = i % 10 === 0;
+    const row: Row = {
+      id: `row-${i}`,
+      orderId: `ORD-${String(i).padStart(5, "0")}`,
+      customerName: ["Alice Johnson", "Michael Smith", "Emma Brown", "James Wilson"][i % 4],
+      status: ["Pending", "Shipped", "Delivered", "Cancelled"][i % 4],
+      totalPrice: `$${(Math.random() * 500).toFixed(2)}`,
+    };
+
+    if (hasChildren) {
+      row.row = Array.from({ length: 3 }, (_, j) => ({
+        id: `row-${i}-child-${j}`,
+        orderId: `SUB-${String(i).padStart(5, "0")}-${j + 1}`,
+        customerName: "",
+        status: ["Processing", "Packed", "Ready"][j % 3],
+        totalPrice: `$${(Math.random() * 100).toFixed(2)}`,
+      }));
+    }
+
+    return row;
+  });
+}
+
+export const VirtualScroll: StoryFn<UTableArgs> = (args: UTableArgs) => ({
+  components: { UTable, UBadge },
+  setup() {
+    const rows = generateNestedRows(100000);
+
+    return { args, rows };
+  },
+  template: `
+    <UTable
+      :columns="[
+        { key: 'orderId', label: 'Order ID', thClass: 'w-1/5' },
+        { key: 'customerName', label: 'Customer Name' },
+        { key: 'status', label: 'Status' },
+        { key: 'totalPrice', label: 'Total Price' },
+      ]"
+      :rows="rows"
+      compact
+      virtual-scroll
+      :row-height="46"
+      :buffer-size="10"
+    >
+      <template #cell-status="{ value }">
+        <UBadge
+          :label="value"
+          variant="soft"
+          :color="
+            value === 'Delivered' ? 'success' :
+            value === 'Cancelled' ? 'error' :
+            value === 'Pending' ? 'notice' :
+            value === 'Shipped' || value === 'Processing' ? 'info' :
+            value === 'Packed' || value === 'Ready' ? 'primary' : ''
+          "
+        />
+      </template>
+    </UTable>
+  `,
+});
+VirtualScroll.parameters = {
+  docs: {
+    description: {
+      story:
+        "Virtual scrolling enables rendering of large datasets (100,000+ rows) with optimal performance. " +
+        "Only visible rows are rendered in the DOM, with collapsible nested rows fully supported. " +
+        "Use `virtualScroll` prop to enable, and configure `rowHeight`, `scrollHeight`, and `bufferSize` as needed.",
+    },
+  },
+};
+
+export const VirtualSearch: StoryFn<UTableArgs> = (args: UTableArgs) => ({
+  components: { UTable, UInputSearch, UButton, URow, UText },
+  setup() {
+    const rows = generateNestedRows(100000);
+    const search = ref("");
+    const searchMatch = ref(-1);
+    const totalMatches = ref(0);
+
+    function onPrev() {
+      if (totalMatches.value === 0) return;
+
+      searchMatch.value = searchMatch.value <= 0 ? totalMatches.value - 1 : searchMatch.value - 1;
+    }
+
+    function onNext() {
+      if (totalMatches.value === 0) return;
+
+      searchMatch.value = searchMatch.value >= totalMatches.value - 1 ? 0 : searchMatch.value + 1;
+    }
+
+    return { args, rows, search, searchMatch, totalMatches, onPrev, onNext };
+  },
+  template: `
+    <URow align="stretch" gap="xs" class="mb-4">
+      <UInputSearch
+        v-model="search"
+        placeholder="Search in table..."
+        size="md"
+        @clear="searchMatch = -1"
+      >
+        <template #right>
+          <UText :label="searchMatch + 1 + ' / ' + totalMatches" :wrap="false" class="ml-1" />
+        </template>
+      </UInputSearch>
+
+      <UButton
+        square
+        size="sm"
+        title="Prev"
+        variant="soft"
+        icon="keyboard_arrow_up"
+        :disabled="totalMatches === 0"
+        @click="onPrev"
+      />
+
+      <UButton
+        square
+        size="sm"
+        title="Next"
+        variant="soft"
+        icon="keyboard_arrow_down"
+        :disabled="totalMatches === 0"
+        @click="onNext"
+      />
+    </URow>
+
+    <UTable
+      :columns="[
+        { key: 'orderId', label: 'Order ID', thClass: 'w-1/5' },
+        { key: 'customerName', label: 'Customer Name' },
+        { key: 'status', label: 'Status' },
+        { key: 'totalPrice', label: 'Total Price' },
+      ]"
+      :rows="rows"
+      compact
+      virtual-scroll
+      :row-height="45"
+      :buffer-size="10"
+      :search="search"
+      :search-match="searchMatch"
+      @search="totalMatches = $event"
+    />
+  `,
+});
+VirtualSearch.parameters = {
+  docs: {
+    description: {
+      story:
+        "Search functionality with virtual scrolling. " +
+        "Use `search` prop to pass a search string and `searchMatch` prop to highlight a specific match. " +
+        "The `@search` event emits the total number of matches found. " +
+        "Use Prev/Next buttons to navigate between matches.",
+    },
+  },
 };

@@ -111,9 +111,9 @@ onMounted(() => {
 
 function onKeyup(event: KeyboardEvent) {
   const numberValue = getFixedNumber(parseFloat(rawValue.value), props.maxFractionDigits || 10);
+  const value = props.valueType === "number" ? numberValue : rawValue.value || "";
 
-  localValue.value = props.valueType === "number" ? numberValue : rawValue.value || "";
-
+  emit("update:modelValue", value);
   emit("keyup", event);
 }
 
@@ -179,6 +179,22 @@ const { getDataTest, numberInputAttrs } = useUI<Config>(defaultConfig);
     @blur="onBlur"
     @input="onInput"
   >
+    <template #description>
+      <!--
+        @slot Use this to add custom content instead of the description.
+        @binding {string} description
+      -->
+      <slot name="description" :description="description" />
+    </template>
+
+    <template #error>
+      <!--
+        @slot Use this to add custom content instead of the error message.
+        @binding {string | boolean} error
+      -->
+      <slot name="error" :error="error" />
+    </template>
+
     <template #left>
       <!--
         @slot Use it to add something left.

@@ -229,6 +229,24 @@ describe("USwitch.vue", () => {
 
       expect(component.find("label").text()).toBe(`Modified ${defaultLabel}`);
     });
+
+    it("Description – renders custom content from description slot", () => {
+      const customDescription = "Custom description content";
+
+      const component = mount(USwitch, {
+        props: {
+          description: "Default description",
+        },
+        slots: {
+          description: customDescription,
+        },
+      });
+
+      const labelComponent = component.getComponent(ULabel);
+      const descriptionElement = labelComponent.find("[vl-child-key='description']");
+
+      expect(descriptionElement.text()).toBe(customDescription);
+    });
   });
 
   describe("Exposed properties", () => {

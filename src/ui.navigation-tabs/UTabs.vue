@@ -128,7 +128,50 @@ const {
           :disabled="item.disabled"
           v-bind="tabAttrs"
           :data-test="getDataTest(`item-${index}`)"
-        />
+        >
+          <template #left="{ iconName, active }">
+            <!--
+              @slot Use it to add something before the tab label.
+              @binding {object} item
+              @binding {number} index
+              @binding {boolean} active
+              @binding {string} icon-name
+            -->
+            <slot name="left" :item="item" :index="index" :active="active" :icon-name="iconName" />
+          </template>
+
+          <template #label="{ label, iconName, active }">
+            <!--
+              @slot Use it to add something instead of the tab label.
+              @binding {object} item
+              @binding {number} index
+              @binding {string} label
+              @binding {boolean} active
+              @binding {string} icon-name
+            -->
+            <slot
+              name="label"
+              :item="item"
+              :index="index"
+              :label="label"
+              :active="active"
+              :icon-name="iconName"
+            >
+              {{ label }}
+            </slot>
+          </template>
+
+          <template #right="{ iconName, active }">
+            <!--
+              @slot Use it to add something after the tab label.
+              @binding {object} item
+              @binding {number} index
+              @binding {boolean} active
+              @binding {string} icon-name
+            -->
+            <slot name="right" :item="item" :index="index" :active="active" :icon-name="iconName" />
+          </template>
+        </UTab>
       </slot>
     </div>
 

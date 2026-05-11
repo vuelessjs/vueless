@@ -3,6 +3,7 @@ import { describe, it, expect } from "vitest";
 
 import UInputNumber from "../UInputNumber.vue";
 import UInput from "../../ui.form-input/UInput.vue";
+import ULabel from "../../ui.form-label/ULabel.vue";
 import UIcon from "../../ui.image-icon/UIcon.vue";
 
 import type { Props } from "../types";
@@ -411,6 +412,42 @@ describe("UInputNumber.vue", () => {
 
       expect(component.find(`.${slotClass}`).exists()).toBe(true);
       expect(component.findComponent(UIcon).exists()).toBe(false);
+    });
+
+    it("Description – renders custom content from description slot", () => {
+      const customDescription = "Custom description content";
+
+      const component = mount(UInputNumber, {
+        props: {
+          description: "Default description",
+        },
+        slots: {
+          description: customDescription,
+        },
+      });
+
+      const labelComponent = component.getComponent(UInput).getComponent(ULabel);
+      const descriptionElement = labelComponent.find("[vl-child-key='description']");
+
+      expect(descriptionElement.text()).toBe(customDescription);
+    });
+
+    it("Error – renders custom content from error slot", () => {
+      const customError = "Custom error content";
+
+      const component = mount(UInputNumber, {
+        props: {
+          error: "Default error message",
+        },
+        slots: {
+          error: customError,
+        },
+      });
+
+      const labelComponent = component.getComponent(UInput).getComponent(ULabel);
+      const errorElement = labelComponent.find("[vl-child-key='error']");
+
+      expect(errorElement.text()).toBe(customError);
     });
   });
 

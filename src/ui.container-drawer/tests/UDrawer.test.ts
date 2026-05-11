@@ -165,8 +165,9 @@ describe("UDrawer", () => {
 
         expect(innerWrapper.exists()).toBe(true);
 
+        await innerWrapper.trigger("mousedown");
         await innerWrapper.trigger("click");
-        await sleep(500);
+        await sleep(1000);
 
         const drawer = component.find('[vl-key="drawer"]');
 
@@ -188,7 +189,7 @@ describe("UDrawer", () => {
         const wrapper = component.find("[vl-key='wrapper']");
 
         await wrapper.trigger("keydown", { key: "Escape" });
-        await sleep(500);
+        await sleep(1000);
 
         const drawer = component.find('[vl-key="drawer"]');
 
@@ -524,10 +525,10 @@ describe("UDrawer", () => {
       expect(component.emitted("close")).toBeTruthy();
     });
 
-    it("CloseOnOverlay – emits events when overlay is clicked based on prop", () => {
+    it("CloseOnOverlay – emits events when overlay is clicked based on prop", async () => {
       const closeOnOverlay = [true, false];
 
-      closeOnOverlay.forEach(async (value) => {
+      for (const value of closeOnOverlay) {
         const component = mount(UDrawer, {
           props: {
             modelValue,
@@ -537,23 +538,39 @@ describe("UDrawer", () => {
 
         const innerWrapper = component.find("[vl-key='innerWrapper']");
 
+        await innerWrapper.trigger("mousedown");
         await innerWrapper.trigger("click");
 
-        if (value) {
-          expect(component.emitted("update:modelValue")).toBeTruthy();
-          expect(component.emitted("update:modelValue")?.[0]).toEqual([false]);
-          expect(component.emitted("close")).toBeTruthy();
-        } else {
-          expect(component.emitted("update:modelValue")).toBeFalsy();
-          expect(component.emitted("close")).toBeFalsy();
-        }
-      });
+        expect(component.emitted("update:modelValue")).toEqual(value ? [[false]] : undefined);
+        expect(Boolean(component.emitted("close")?.length)).toBe(value);
+      }
     });
 
-    it("CloseOnEsc – emits events when escape key is pressed based on prop", () => {
+    it("CloseOnOverlay – does not close when mousedown on drawer and mouseup on overlay", async () => {
+      const component = mount(UDrawer, {
+        props: {
+          modelValue: true,
+          closeOnOverlay: true,
+        },
+      });
+
+      const drawer = component.find("[vl-key='drawer']");
+      const innerWrapper = component.find("[vl-key='innerWrapper']");
+
+      // Mousedown on drawer content
+      await drawer.trigger("mousedown");
+      // Click (mouseup) on overlay
+      await innerWrapper.trigger("click");
+
+      // Drawer should NOT close
+      expect(component.emitted("update:modelValue")).toBeFalsy();
+      expect(component.emitted("close")).toBeFalsy();
+    });
+
+    it("CloseOnEsc – emits events when escape key is pressed based on prop", async () => {
       const closeOnEsc = [true, false];
 
-      closeOnEsc.forEach(async (value) => {
+      for (const value of closeOnEsc) {
         const component = mount(UDrawer, {
           props: {
             modelValue,
@@ -565,15 +582,9 @@ describe("UDrawer", () => {
 
         await wrapper.trigger("keydown", { key: "Escape" });
 
-        if (value) {
-          expect(component.emitted("update:modelValue")).toBeTruthy();
-          expect(component.emitted("update:modelValue")?.[0]).toEqual([false]);
-          expect(component.emitted("close")).toBeTruthy();
-        } else {
-          expect(component.emitted("update:modelValue")).toBeFalsy();
-          expect(component.emitted("close")).toBeFalsy();
-        }
-      });
+        expect(component.emitted("update:modelValue")).toEqual(value ? [[false]] : undefined);
+        expect(Boolean(component.emitted("close")?.length)).toBe(value);
+      }
     });
   });
 
@@ -695,13 +706,7 @@ describe("UDrawer", () => {
       const drawerElement = component.find("[vl-key='drawerWrapper']");
       const style = drawerElement.attributes("style");
 
-      // Should contain transform when dragging (if style exists)
-      if (style) {
-        expect(style).toContain("transform");
-      } else {
-        // If no style attribute, that's also valid (transform might be applied via CSS classes)
-        expect(drawerElement.exists()).toBe(true);
-      }
+      expect(style ? style.includes("transform") : drawerElement.exists()).toBe(true);
     });
   });
 

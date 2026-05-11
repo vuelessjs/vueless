@@ -27,7 +27,7 @@ export default /*tw*/ {
         bold: "font-bold",
       },
       line: {
-        true: "!leading-none",
+        true: "leading-none!",
       },
     },
     compoundVariants: [

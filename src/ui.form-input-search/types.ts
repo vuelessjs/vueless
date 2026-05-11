@@ -38,7 +38,7 @@ export interface Props {
   /**
    * Error message.
    */
-  error?: string;
+  error?: string | boolean;
 
   /**
    * Minimum character length for search.

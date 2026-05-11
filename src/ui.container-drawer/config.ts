@@ -32,7 +32,7 @@ export default /*tw*/ {
     leaveFromClass: "opacity-100 translate-x-0",
     leaveToClass: "opacity-0 translate-x-full",
   },
-  overlay: "fixed inset-0 z-40 bg-inverted/15 dark:bg-lifted/75 backdrop-blur-md",
+  overlay: "fixed inset-0 z-40 bg-inverted/15 dark:bg-lifted/75",
   overlayTransition: {
     enterActiveClass: "ease-out duration-300",
     enterFromClass: "opacity-0",
@@ -81,7 +81,7 @@ export default /*tw*/ {
   footerLeft: "flex flex-col md:flex-row gap-4 w-full",
   footerRight: "flex flex-col md:flex-row gap-4 w-full justify-end",
   drawerWrapper: {
-    base: "flex border absolute select-none overflow-x-hidden",
+    base: "flex border absolute overflow-x-hidden",
     variants: {
       variant: {
         solid: "bg-default border-transparent",
@@ -103,26 +103,26 @@ export default /*tw*/ {
   },
   drawer: "overflow-y-auto",
   handleWrapper: {
-    base: "flex items-center justify-center bg-inherit cursor-grab active:cursor-grabbing",
+    base: "flex items-center justify-center bg-inherit cursor-grab active:cursor-grabbing select-none",
     variants: {
       position: {
-        top: "w-full h-11",
-        bottom: "w-full h-11",
-        left: "w-11 h-auto",
-        right: "w-11 h-auto",
+        top: "w-full h-6",
+        bottom: "w-full h-6",
+        left: "w-6 h-auto",
+        right: "w-6 h-auto",
       },
     },
   },
   handle: {
     base: "rounded-large cursor-grab active:cursor-grabbing bg-lifted hover:bg-accented transition",
     compoundVariants: [
-      { position: ["top", "bottom"], class: "w-11 h-1.5" },
-      { position: ["left", "right"], class: "w-1.5 h-11" },
+      { position: ["top", "bottom"], class: "w-10 h-1" },
+      { position: ["left", "right"], class: "w-1 h-10" },
     ],
   },
   defaults: {
     variant: "solid",
-    position: "left",
+    position: "right",
     inset: false,
     handle: true,
     closeOnEsc: true,

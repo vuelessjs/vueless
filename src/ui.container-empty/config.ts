@@ -1,15 +1,6 @@
 export default /*tw*/ {
-  wrapper: "flex flex-col items-center justify-center size-full",
-  header: {
-    base: "flex justify-center",
-    variants: {
-      size: {
-        sm: "mb-4",
-        md: "mb-5",
-        lg: "mb-6",
-      },
-    },
-  },
+  wrapper: "flex flex-col items-center justify-center gap-4 size-full",
+  header: "flex justify-center",
   emptyIconWrapper: {
     base: "rounded-full bg-inverted/5",
     variants: {
@@ -24,12 +15,13 @@ export default /*tw*/ {
     base: "{UIcon}",
     defaults: {
       size: {
-        sm: "2xl",
+        sm: "xl",
         md: "3xl",
-        lg: "4xl",
+        lg: "5xl",
       },
     },
   },
+  content: "flex flex-col items-center justify-center gap-1.5",
   title: {
     base: "{UHeader}",
     defaults: {
@@ -40,17 +32,8 @@ export default /*tw*/ {
       },
     },
   },
-  description: {
-    base: "text-center mt-2",
-    variants: {
-      size: {
-        sm: "text-small",
-        md: "text-medium",
-        lg: "text-large",
-      },
-    },
-  },
-  footer: "mt-4 flex justify-center",
+  description: "{UText}",
+  footer: "flex justify-center",
   defaults: {
     size: "md",
     /* icons */

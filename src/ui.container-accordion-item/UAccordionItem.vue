@@ -125,8 +125,9 @@ const {
         <!--
           @slot Use it to add custom title content.
           @binding {string} title
+          @binding {boolean} opened
         -->
-        <slot name="title" :title="title">
+        <slot name="title" :title="title" :opened="isOpened">
           {{ title }}
         </slot>
         <!--
@@ -149,8 +150,9 @@ const {
         <!--
           @slot Use it to add custom description content.
           @binding {string} description
+          @binding {boolean} opened
         -->
-        <slot name="description" :description="description">
+        <slot name="description" :description="description" :opened="isOpened">
           {{ description }}
         </slot>
       </div>

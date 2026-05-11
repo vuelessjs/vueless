@@ -92,6 +92,17 @@ Sizes.args = { enum: "size" };
 export const CurrencyAlign = EnumTemplate.bind({});
 CurrencyAlign.args = { enum: "currencyAlign", currency: "USD", currencySpace: true };
 
+export const Raw = DefaultTemplate.bind({});
+Raw.args = { raw: true, currency: "USD", currencySpace: true };
+Raw.parameters = {
+  docs: {
+    description: {
+      story:
+        "When `raw` is enabled, the number is displayed without formatting and html tags, showing only the raw value.",
+    },
+  },
+};
+
 export const LimitFractionDigits: StoryFn<UNumberArgs> = (args: UNumberArgs) => ({
   components: { UNumber, UCol },
   setup: () => ({ args }),
