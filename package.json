@@ -43,7 +43,8 @@
     "tailwindcss": "^4.2.4",
     "tippy.js": "^6.3.7",
     "unplugin-vue-components": "^32.0.0",
-    "vuedraggable": "4.1.0"
+    "vuedraggable": "4.1.0",
+    "vue-router": "^5.0.6"
   },
   "devDependencies": {
     "@material-symbols/svg-500": "^0.44.4",
@@ -70,16 +71,7 @@
     "vite": "^8.0.10",
     "vitest": "^4.1.5",
     "vue": "^3.5.33",
-    "vue-router": "^5.0.6",
     "vue-tsc": "^3.2.7"
-  },
-  "peerDependencies": {
-    "vue-router": "^4.5.0"
-  },
-  "peerDependenciesMeta": {
-    "vue-router": {
-      "optional": true
-    }
   },
   "sideEffects": false,
   "style": "tailwind.css",
