@@ -3,6 +3,19 @@ import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
 
 import USplitter from "../USplitter.vue";
 
+function dispatchPointerDown(target: Element, clientX: number, clientY: number) {
+  target.dispatchEvent(
+    new PointerEvent("pointerdown", {
+      bubbles: true,
+      cancelable: true,
+      clientX,
+      clientY,
+      pointerId: 1,
+      pointerType: "mouse",
+    }),
+  );
+}
+
 describe("USplitter", () => {
   beforeEach(() => {
     vi.useFakeTimers();
@@ -30,8 +43,8 @@ describe("USplitter", () => {
       const panels = component.findAll("[vl-key='panel']");
 
       expect(panels).toHaveLength(2);
-      expect(panels[0].attributes("style")).toContain("flex-basis: 30%");
-      expect(panels[1].attributes("style")).toContain("flex-basis: 70%");
+      expect(panels[0].attributes("style")).toMatch(/(^|;)\s*flex(-basis)?:[^;]*30%/);
+      expect(panels[1].attributes("style")).toMatch(/(^|;)\s*flex(-basis)?:[^;]*70%/);
     });
 
     it("Orientation – applies horizontal orientation by default", () => {
@@ -156,10 +169,7 @@ describe("USplitter", () => {
         bottom: 500,
       } as DOMRect);
 
-      await gutter.trigger("pointerdown", {
-        clientX: 500,
-        clientY: 250,
-      });
+      dispatchPointerDown(gutter.element, 500, 250);
 
       const pointerMoveEvent = new PointerEvent("pointermove", {
         clientX: 600,
@@ -186,10 +196,7 @@ describe("USplitter", () => {
 
       const gutter = component.find("[vl-key='gutter']");
 
-      await gutter.trigger("pointerdown", {
-        clientX: 500,
-        clientY: 250,
-      });
+      dispatchPointerDown(gutter.element, 500, 250);
 
       expect(component.emitted("resize-start")).toBeTruthy();
 
@@ -207,10 +214,7 @@ describe("USplitter", () => {
 
       const gutter = component.find("[vl-key='gutter']");
 
-      await gutter.trigger("pointerdown", {
-        clientX: 500,
-        clientY: 250,
-      });
+      dispatchPointerDown(gutter.element, 500, 250);
 
       const pointerUpEvent = new PointerEvent("pointerup");
 
@@ -293,12 +297,14 @@ describe("USplitter", () => {
 
       expect(emitted).toBeTruthy();
 
-      if (emitted) {
-        const lastEmit = emitted[emitted.length - 1][0] as number[];
-
-        expect(lastEmit[0]).toBeCloseTo(50, 0);
-        expect(lastEmit[1]).toBeCloseTo(50, 0);
+      if (!emitted) {
+        throw new Error("expected update:modelValue");
       }
+
+      const lastEmit = emitted[emitted.length - 1][0] as number[];
+
+      expect(lastEmit[0]).toBeCloseTo(50, 0);
+      expect(lastEmit[1]).toBeCloseTo(50, 0);
     });
   });
 

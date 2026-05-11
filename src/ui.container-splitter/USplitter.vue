@@ -318,8 +318,9 @@ watch(
   },
 );
 
+initializeSizes();
+
 onMounted(() => {
-  initializeSizes();
   updateContainerSize();
 
   window.addEventListener("resize", updateContainerSize);
