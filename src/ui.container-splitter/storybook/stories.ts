@@ -1,7 +1,8 @@
-import { getArgTypes, getDocsDescription } from "../../utils/storybook.ts";
+import { getArgTypes, getDocsDescription } from "../../utils/storybook";
 
 import USplitter from "../USplitter.vue";
-import UPlaceholder from "../../ui.other-placeholder/UPlaceholder.vue";
+import UPlaceholder from "../../ui.container-placeholder/UPlaceholder.vue";
+import UIcon from "../../ui.image-icon/UIcon.vue";
 
 import type { Meta, StoryFn } from "@storybook/vue3-vite";
 import type { Props } from "../types.ts";
@@ -18,7 +19,6 @@ export default {
     ...getArgTypes(USplitter.__name),
   },
   parameters: {
-    storyClasses: "p-0",
     docs: {
       ...getDocsDescription(USplitter.__name),
     },
@@ -28,144 +28,18 @@ export default {
 const DefaultTemplate: StoryFn<USplitterArgs> = (args: USplitterArgs) => ({
   components: { USplitter, UPlaceholder },
   setup: () => {
-    const sizes = args.modelValue || [50, 50];
+    const sizes = args.modelValue || [40, 60];
 
     return { args, sizes };
   },
   template: `
-    <div style="height: 400px;">
+    <div class="h-80">
       <USplitter v-bind="args" v-model="sizes">
         <template #panel-1>
-          <UPlaceholder label="Panel 1" inset />
+          <UPlaceholder label="Panel 1" />
         </template>
         <template #panel-2>
-          <UPlaceholder label="Panel 1"  inset />
-        </template>
-      </USplitter>
-    </div>
-  `,
-});
-
-const VerticalTemplate: StoryFn<USplitterArgs> = (args: USplitterArgs) => ({
-  components: { USplitter, UPlaceholder },
-  setup: () => {
-    const sizes = args.modelValue || [50, 50];
-
-    return { args, sizes };
-  },
-  template: `
-    <div style="height: 400px;">
-      <USplitter v-bind="args" v-model="sizes" orientation="vertical">
-        <template #panel-1>
-          <UPlaceholder inset />
-        </template>
-        <template #panel-2>
-          <UPlaceholder inset />
-        </template>
-      </USplitter>
-    </div>
-  `,
-});
-
-const ThreePanelsTemplate: StoryFn<USplitterArgs> = (args: USplitterArgs) => ({
-  components: { USplitter, UPlaceholder },
-  setup: () => {
-    const sizes = args.modelValue || [33.33, 33.33, 33.34];
-
-    return { args, sizes };
-  },
-  template: `
-    <div style="height: 400px;">
-      <USplitter v-bind="args" v-model="sizes">
-        <template #panel-1>
-          <UPlaceholder inset />
-        </template>
-        <template #panel-2>
-          <UPlaceholder inset />
-        </template>
-        <template #panel-3>
-          <UPlaceholder inset />
-        </template>
-      </USplitter>
-    </div>
-  `,
-});
-
-const MinMaxTemplate: StoryFn<USplitterArgs> = (args: USplitterArgs) => ({
-  components: { USplitter, UPlaceholder },
-  setup: () => {
-    const sizes = args.modelValue || [30, 70];
-
-    return { args, sizes };
-  },
-  template: `
-    <div style="height: 400px;">
-      <USplitter
-        v-bind="args"
-        v-model="sizes"
-        :min-sizes="20"
-        :max-sizes="80"
-      >
-        <template #panel-1>
-          <UPlaceholder inset />
-        </template>
-        <template #panel-2>
-          <UPlaceholder inset />
-        </template>
-      </USplitter>
-    </div>
-  `,
-});
-
-const NestedTemplate: StoryFn<USplitterArgs> = (args: USplitterArgs) => ({
-  components: { USplitter, UPlaceholder },
-  setup: () => {
-    const outerSizes = [30, 70];
-    const innerSizes = [50, 50];
-
-    return { args, outerSizes, innerSizes };
-  },
-  template: `
-    <div style="height: 400px;">
-      <USplitter v-bind="args" v-model="outerSizes">
-        <template #panel-1>
-          <UPlaceholder inset />
-        </template>
-        <template #panel-2>
-          <USplitter v-model="innerSizes" orientation="vertical">
-            <template #panel-1>
-              <UPlaceholder inset />
-            </template>
-            <template #panel-2>
-              <UPlaceholder inset />
-            </template>
-          </USplitter>
-        </template>
-      </USplitter>
-    </div>
-  `,
-});
-
-const CustomHandleTemplate: StoryFn<USplitterArgs> = (args: USplitterArgs) => ({
-  components: { USplitter, UPlaceholder },
-  setup: () => {
-    const sizes = args.modelValue || [50, 50];
-
-    return { args, sizes };
-  },
-  template: `
-    <div style="height: 400px;">
-      <USplitter v-bind="args" v-model="sizes">
-        <template #panel-1>
-          <UPlaceholder inset />
-        </template>
-        <template #panel-2>
-          <UPlaceholder inset />
-        </template>
-        <template #handle>
-          <div
-            class="size-2 rounded-full bg-grayscale-900"
-          />
+          <UPlaceholder label="Panel 2" />
         </template>
       </USplitter>
     </div>
@@ -175,28 +49,126 @@ const CustomHandleTemplate: StoryFn<USplitterArgs> = (args: USplitterArgs) => ({
 export const Default = DefaultTemplate.bind({});
 Default.args = {};
 
-export const Vertical = VerticalTemplate.bind({});
-Vertical.args = {};
-
-export const ThreePanels = ThreePanelsTemplate.bind({});
-ThreePanels.args = {};
-
-export const MinMaxSizes = MinMaxTemplate.bind({});
-MinMaxSizes.args = {};
-
-export const Nested = NestedTemplate.bind({});
-Nested.args = {};
-
-export const CustomHandle = CustomHandleTemplate.bind({});
-CustomHandle.args = {};
-
 export const Disabled = DefaultTemplate.bind({});
-Disabled.args = {
-  disabled: true,
+Disabled.args = { disabled: true };
+
+export const VerticalOrientation = DefaultTemplate.bind({});
+VerticalOrientation.args = { orientation: "vertical" };
+
+export const GutterSize = DefaultTemplate.bind({});
+GutterSize.args = { gutterSize: 16 };
+
+export const GutterColor = DefaultTemplate.bind({});
+GutterColor.args = { gutterColor: "grayscale" };
+
+export const MinSizes = DefaultTemplate.bind({});
+MinSizes.args = { minSizes: "30%", modelValue: [50, 50] };
+MinSizes.parameters = {
+  docs: {
+    description: {
+      story: [
+        "Caps how small each panel can get while dragging.",
+        "Use one value for every panel or an array for per-panel limits.",
+        "Numbers are treated as pixels; strings can use `%` of the splitter axis or a `px` length.",
+        "Here each panel stays at least 30% wide.",
+      ].join(" "),
+    },
+  },
 };
 
-export const WithPersistence = DefaultTemplate.bind({});
-WithPersistence.args = {
-  stateKey: "vueless-splitter-demo",
-  stateStorage: "local",
+export const MaxSizes = DefaultTemplate.bind({});
+MaxSizes.args = { maxSizes: "65%", modelValue: [50, 50] };
+MaxSizes.parameters = {
+  docs: {
+    description: {
+      story: [
+        "Caps how large each panel can grow. Omitted means a panel may use the full container.",
+        "Here neither panel can exceed 65% width.",
+      ].join(" "),
+    },
+  },
 };
+
+export const Step = DefaultTemplate.bind({});
+Step.args = { step: 10 };
+Step.parameters = {
+  docs: {
+    description: {
+      story: "Increments/decrements the size of the panels while pressing the arrow keys.",
+    },
+  },
+};
+
+export const StateKeyAndStorage = DefaultTemplate.bind({});
+StateKeyAndStorage.args = { stateKey: "splitter-state", stateStorage: "local" };
+StateKeyAndStorage.parameters = {
+  docs: {
+    description: {
+      story: [
+        "`stateKey` is the storage entry name: when set, the splitter saves panel sizes after each resize",
+        "and restores them on the next visit.",
+        "`stateStorage` chooses where that data lives—`session` (sessionStorage, cleared when the tab closes)",
+        "or `local` (localStorage, persists across sessions).",
+        "This story uses local storage so you can reload the page and keep your layout.",
+      ].join(" "),
+    },
+  },
+};
+
+export const Nested: StoryFn<USplitterArgs> = (args: USplitterArgs) => ({
+  components: { USplitter, UPlaceholder },
+  setup: () => {
+    const sizes = args.modelValue || [35, 65];
+
+    return { args, sizes };
+  },
+  template: `
+    <div class="h-80">
+      <USplitter v-bind="args" v-model="sizes">
+        <template #panel-1>
+          <UPlaceholder label="Panel 1" />
+        </template>
+        <template #panel-2>
+          <USplitter v-bind="args" v-model="sizes" orientation="vertical">
+            <template #panel-1>
+              <UPlaceholder label="Panel 2" />
+            </template>
+            <template #panel-2>
+              <UPlaceholder label="Panel 3" />
+            </template>
+          </USplitter>
+        </template>
+      </USplitter>
+    </div>
+  `,
+});
+
+export const HandleSlot: StoryFn<USplitterArgs> = (args: USplitterArgs) => ({
+  components: { USplitter, UPlaceholder, UIcon },
+  setup: () => {
+    const sizes = args.modelValue || [40, 60];
+
+    return { args, sizes };
+  },
+  template: `
+    <div class="h-80">
+      <USplitter v-bind="args" v-model="sizes">
+        <template #panel-1>
+          <UPlaceholder label="Panel 1" />
+        </template>
+        <template #panel-2>
+          <UPlaceholder label="Panel 2" />
+        </template>
+        <template #handle>
+          <UIcon
+            name="drag_handle"
+            size="sm"
+            color="neutral"
+            interactive
+            class="rotate-90 cursor-col-resize text-muted"
+          />
+        </template>
+      </USplitter>
+    </div>
+  `,
+});

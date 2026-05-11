@@ -14,6 +14,9 @@ defineOptions({ inheritAttrs: false });
 
 const props = withDefaults(defineProps<Props>(), {
   ...getDefaults<Props, Config>(defaultConfig, COMPONENT_NAME),
+  modelValue: () => [],
+  minSizes: () => [],
+  maxSizes: () => [],
 });
 
 const emit = defineEmits([
@@ -376,13 +379,12 @@ const { getDataTest, wrapperAttrs, panelAttrs, gutterAttrs, dividerAttrs } =
         @keydown="onKeyDown($event, index)"
         @dblclick="onDoubleClick(index)"
       >
-        <UDivider
-          :vertical="orientation === 'horizontal'"
-          :color="gutterColor"
-          size="sm"
-          v-bind="dividerAttrs"
-        >
-          <!-- @slot Use it to add custom handle inside the divider. -->
+        <UDivider v-bind="dividerAttrs" :vertical="isHorizontal" :color="gutterColor" size="sm">
+          <!--
+            @slot Use it to add custom handle inside the divider.
+            @binding {boolean} is-dragging
+            @binding {number} index
+          -->
           <slot name="handle" :is-dragging="isDragging" :index="index" />
         </UDivider>
       </div>

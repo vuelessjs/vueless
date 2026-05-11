@@ -23,7 +23,7 @@ export default /*tw*/ {
       },
     },
   },
-  divider: "{UDivider}",
+  divider: "{UDivider} h-full",
   defaults: {
     orientation: "horizontal",
     gutterSize: 8,
