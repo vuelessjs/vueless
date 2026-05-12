@@ -3,7 +3,6 @@ import { computed, useSlots, useTemplateRef, ref, watch, onMounted, onBeforeUnmo
 
 import { useUI } from "../composables/useUI";
 import { getDefaults } from "../utils/ui";
-import UDivider from "../ui.container-divider/UDivider.vue";
 
 import { COMPONENT_NAME } from "./constants";
 import defaultConfig from "./config";
@@ -344,8 +343,7 @@ const gutterStyle = computed(() => ({
   "--gutter-size": `${props.gutterSize}px`,
 }));
 
-const { getDataTest, wrapperAttrs, panelAttrs, gutterAttrs, dividerAttrs } =
-  useUI<Config>(defaultConfig);
+const { getDataTest, wrapperAttrs, panelAttrs, gutterAttrs } = useUI<Config>(defaultConfig);
 </script>
 
 <template>
@@ -380,14 +378,12 @@ const { getDataTest, wrapperAttrs, panelAttrs, gutterAttrs, dividerAttrs } =
         @keydown="onKeyDown($event, index)"
         @dblclick="onDoubleClick(index)"
       >
-        <UDivider v-bind="dividerAttrs" :vertical="isHorizontal" :color="gutterColor" size="sm">
-          <!--
-            @slot Use it to add custom handle inside the divider.
-            @binding {boolean} is-dragging
-            @binding {number} index
-          -->
-          <slot name="handle" :is-dragging="isDragging" :index="index" />
-        </UDivider>
+        <!--
+          @slot Use it to add custom handle inside the divider.
+          @binding {boolean} is-dragging
+          @binding {number} index
+        -->
+        <slot name="handle" :is-dragging="isDragging" :index="index" />
       </div>
     </template>
   </div>

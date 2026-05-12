@@ -31,20 +31,6 @@ export interface Props {
   gutterSize?: number;
 
   /**
-   * Gutter color.
-   */
-  gutterColor?:
-    | "primary"
-    | "secondary"
-    | "error"
-    | "warning"
-    | "success"
-    | "info"
-    | "notice"
-    | "neutral"
-    | "grayscale";
-
-  /**
    * Disable resizing.
    */
   disabled?: boolean;

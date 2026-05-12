@@ -58,9 +58,6 @@ VerticalOrientation.args = { orientation: "vertical" };
 export const GutterSize = DefaultTemplate.bind({});
 GutterSize.args = { gutterSize: 16 };
 
-export const GutterColor = DefaultTemplate.bind({});
-GutterColor.args = { gutterColor: "grayscale" };
-
 export const MinSizes = DefaultTemplate.bind({});
 MinSizes.args = { minSizes: "30%", modelValue: [50, 50] };
 MinSizes.parameters = {

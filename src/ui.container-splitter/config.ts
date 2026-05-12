@@ -12,7 +12,10 @@ export default /*tw*/ {
     base: "",
   },
   gutter: {
-    base: "flex items-center justify-center shrink-0 select-none focus:outline-hidden",
+    base: `
+      flex items-center justify-center shrink-0 select-none rounded-medium
+      focus-visible:outline-2 focus-visible:outline-grayscale-accented
+    `,
     variants: {
       orientation: {
         horizontal: "cursor-col-resize w-[var(--gutter-size)] h-full",
@@ -23,11 +26,9 @@ export default /*tw*/ {
       },
     },
   },
-  divider: "{UDivider} h-full",
   defaults: {
     orientation: "horizontal",
     gutterSize: 8,
-    gutterColor: "neutral",
     disabled: false,
     stateKey: null,
     stateStorage: "session",
