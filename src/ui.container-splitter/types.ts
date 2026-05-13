@@ -11,9 +11,9 @@ export interface Props {
   modelValue?: number[];
 
   /**
-   * Splitter orientation.
+   * Makes the splitter vertical (panels stacked top-to-bottom).
    */
-  orientation?: "horizontal" | "vertical";
+  vertical?: boolean;
 
   /**
    * Minimum sizes per panel (percentage or px). Can be a single value for all panels or an array of values per panel.
@@ -48,7 +48,7 @@ export interface Props {
   /**
    * Step factor to increment/decrement the size of the panels while pressing the arrow keys.
    */
-  step?: number;
+  resizeStep?: number;
 
   /**
    * Component config object.

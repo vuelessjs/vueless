@@ -53,7 +53,7 @@ export const Disabled = DefaultTemplate.bind({});
 Disabled.args = { disabled: true };
 
 export const VerticalOrientation = DefaultTemplate.bind({});
-VerticalOrientation.args = { orientation: "vertical" };
+VerticalOrientation.args = { vertical: true };
 
 export const GutterSize = DefaultTemplate.bind({});
 GutterSize.args = { gutterSize: 16 };
@@ -86,9 +86,9 @@ MaxSizes.parameters = {
   },
 };
 
-export const Step = DefaultTemplate.bind({});
-Step.args = { step: 10 };
-Step.parameters = {
+export const ResizeStep = DefaultTemplate.bind({});
+ResizeStep.args = { resizeStep: 10 };
+ResizeStep.parameters = {
   docs: {
     description: {
       story: "Increments/decrements the size of the panels while pressing the arrow keys.",
@@ -126,7 +126,7 @@ export const Nested: StoryFn<USplitterArgs> = (args: USplitterArgs) => ({
           <UPlaceholder label="Panel 1" />
         </template>
         <template #panel-2>
-          <USplitter v-bind="args" v-model="sizes" orientation="vertical">
+          <USplitter v-bind="args" v-model="sizes" vertical>
             <template #panel-1>
               <UPlaceholder label="Panel 2" />
             </template>

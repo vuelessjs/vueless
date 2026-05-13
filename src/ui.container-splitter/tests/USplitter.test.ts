@@ -47,7 +47,7 @@ describe("USplitter", () => {
       expect(panels[1].attributes("style")).toMatch(/(^|;)\s*flex(-basis)?:[^;]*70%/);
     });
 
-    it("Orientation – applies horizontal orientation by default", () => {
+    it("Vertical – applies horizontal layout by default", () => {
       const component = mount(USplitter, {
         slots: {
           "panel-1": "<div>Panel 1</div>",
@@ -60,10 +60,10 @@ describe("USplitter", () => {
       expect(wrapper.attributes("class")).toContain("flex-row");
     });
 
-    it("Orientation – applies vertical orientation", () => {
+    it("Vertical – applies vertical layout when true", () => {
       const component = mount(USplitter, {
         props: {
-          orientation: "vertical",
+          vertical: true,
         },
         slots: {
           "panel-1": "<div>Panel 1</div>",

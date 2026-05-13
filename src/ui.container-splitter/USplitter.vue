@@ -53,7 +53,7 @@ const dragCurrentPosition = ref(0);
 const containerSize = ref(0);
 const panelSizes = ref<number[]>([]);
 
-const isHorizontal = computed(() => props.orientation === "horizontal");
+const isHorizontal = computed(() => !props.vertical);
 
 function parseSize(size: number | string, containerSize: number): number {
   if (typeof size === "string") {
@@ -221,7 +221,7 @@ function onPointerUp() {
 function onKeyDown(event: KeyboardEvent, gutterIndex: number) {
   if (props.disabled) return;
 
-  const stepValue = event.shiftKey ? props.step : 1;
+  const stepValue = event.shiftKey ? props.resizeStep : 1;
   let delta = 0;
 
   if (isHorizontal.value) {
@@ -366,7 +366,7 @@ const { getDataTest, wrapperAttrs, panelAttrs, gutterAttrs } = useUI<Config>(def
         v-if="index < panelSlots.length - 1"
         role="separator"
         tabindex="0"
-        :aria-orientation="orientation"
+        :aria-orientation="vertical ? 'vertical' : 'horizontal'"
         :aria-valuenow="getGutterAriaValue(index)"
         :aria-valuemin="0"
         :aria-valuemax="100"
