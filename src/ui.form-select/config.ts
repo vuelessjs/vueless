@@ -40,8 +40,8 @@ export default /*tw*/ {
     ],
   },
   innerWrapper: {
-    base: "py-2 px-3 flex min-h-full w-full overflow-hidden justify-start",
-    compoundVariants: [{ labelAlign: "topInside", label: true, class: "pt-0" }],
+    base: "py-2.25 px-3 flex min-h-full w-full overflow-hidden justify-start",
+    compoundVariants: [{ labelAlign: "topInside", label: true, class: "pt-0.5" }],
   },
   selectedLabels: {
     base: "w-full leading-none! items-center whitespace-nowrap",
