@@ -19,7 +19,7 @@ if (isCSR) {
     animation: "shift-away",
   };
 
-  settings = merge(defaultSettings, vuelessConfig.directives?.tooltip || {}) as DefaultProps;
+  settings = merge({}, defaultSettings, vuelessConfig.directives?.tooltip || {}) as DefaultProps;
   tippy.setDefaultProps(settings);
 }
 
@@ -59,13 +59,13 @@ function onUnmounted(el: TippyTargetElement) {
 
 function setUpTippy(el: HTMLElement, props: string | TippyProps) {
   if (typeof props === "string" && props.length) {
-    tippy(el, merge(settings, { content: props }));
+    tippy(el, merge({}, settings, { content: props }));
 
     return;
   }
 
   if (typeof props !== "string" && props.content && String(props.content).length) {
-    tippy(el, merge(settings, props || {}));
+    tippy(el, merge({}, settings, props || {}));
   }
 }
 
@@ -73,12 +73,12 @@ function updateTippyProps(tippyInstance: TippyInstance | undefined, props: strin
   if (!tippyInstance || isSSR) return;
 
   if (typeof props === "string") {
-    tippyInstance.setProps(merge(settings, { content: props }));
+    tippyInstance.setProps(merge({}, settings, { content: props }));
 
     return;
   }
 
-  tippyInstance.setProps(merge(settings, props || {}));
+  tippyInstance.setProps(merge({}, settings, props || {}));
 }
 
 export default {

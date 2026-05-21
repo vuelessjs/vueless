@@ -47,7 +47,9 @@ export async function getVuelessConfig(basePath = "") {
 }
 
 /* Merge tailwind classes with removing duplicates. */
-const twMerge = extendTailwindMerge(merge(TAILWIND_MERGE_EXTENSION, vuelessConfig.tailwindMerge));
+const twMerge = extendTailwindMerge(
+  merge({}, TAILWIND_MERGE_EXTENSION, vuelessConfig.tailwindMerge),
+);
 
 /**
  * Export cx (class merge) method:

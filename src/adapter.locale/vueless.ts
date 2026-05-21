@@ -13,7 +13,7 @@ export function createVuelessAdapter(options?: LocaleOptions): LocaleInstance {
   const current = shallowRef(options?.locale ?? FALLBACK_LOCALE_CODE);
   const fallback = shallowRef(options?.fallback ?? FALLBACK_LOCALE_CODE);
 
-  const messages = ref(merge({ en }, options?.messages));
+  const messages = ref(merge({}, { en }, options?.messages));
 
   return {
     name: "vueless",
