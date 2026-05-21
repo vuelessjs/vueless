@@ -284,8 +284,8 @@ function resolveSlotContent(slot: Slot | undefined, slotParams: Record<string, u
 function shouldRenderCellWrapper(row: Row, key: string): boolean {
   return Boolean(
     props.textEllipsis ||
-      (props.search && isCellSearchMatch(key)) ||
-      getCellContentClass(row, String(key)),
+    (props.search && isCellSearchMatch(key)) ||
+    getCellContentClass(row, String(key)),
   );
 }
 
