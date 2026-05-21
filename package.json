@@ -1,6 +1,6 @@
 {
   "name": "vueless",
-  "version": "1.4.9-beta.1",
+  "version": "1.4.9",
   "description": "Vue Styleless UI Component Library, powered by Tailwind CSS.",
   "author": "Johnny Grid <hello@vueless.com> (https://vueless.com)",
   "homepage": "https://vueless.com",
@@ -43,8 +43,8 @@
     "tailwindcss": "^4.2.4",
     "tippy.js": "^6.3.7",
     "unplugin-vue-components": "^32.0.0",
-    "vuedraggable": "4.1.0",
-    "vue-router": "^5.0.6"
+    "vue-router": "^5.0.6",
+    "vuedraggable": "4.1.0"
   },
   "devDependencies": {
     "@material-symbols/svg-500": "^0.44.4",
@@ -59,7 +59,7 @@
     "@vue/eslint-config-typescript": "^14.7.0",
     "@vue/test-utils": "^2.4.8",
     "@vue/tsconfig": "^0.9.1",
-    "@vueless/storybook": "^1.5.6",
+    "@vueless/storybook": "^1.6.0",
     "eslint": "^10.2.1",
     "eslint-plugin-storybook": "^10.3.5",
     "eslint-plugin-vue": "^10.9.0",
