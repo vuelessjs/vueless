@@ -17,10 +17,10 @@ Vueless UI is built on the following core concepts:
 
 ## Component File Structure
 
-All Vueless components follow this standardized file structure:
+All Vueless components share the same internal file structure. The **internal contents are identical** across all contexts — only the **folder name and its location** differ depending on where the component lives.
 
 ```
-U[component]/
+<component>/
 ├─ storybook/
 │  ├─ docs.mdx          # Component documentation in MDX format
 │  └─ stories.ts        # Storybook stories for component visualization
@@ -37,12 +37,18 @@ U[component]/
 ├─ util[service].ts    # Optional component-specific utility functions
 ```
 
+### Folder naming by context
+
+- **Case A — `U[component]/`**: project-wide component in a consumer (non-Vueless) project; lives in `.vueless/components` (or `src/components`); scaffolded via `npx vueless create <UComponentName>`; `U` prefix is required for Vueless to recognize the component.
+- **Case B — `[component]/`**: local/module-level component in a consumer project, scoped to a specific feature or module rather than shared project-wide; lives under the feature/module path; no `U` prefix on the folder.
+- **Case C — `ui.<category>-<name>/`**: component inside the Vueless repository itself, located under `src/`; the folder name can differ from the main `.vue` file name (e.g. `ui.form-input/UInput.vue`, `ui.form-date-picker-range/UDatePickerRange.vue`).
+
 ### Key Files Explained
 
 - **config.ts**: Contains styling configuration, default prop values, and component settings
 - **constants.ts**: Component constants and identifiers
 - **types.ts**: TypeScript types and props declaration
-- **U[component].vue**: The main component file
+- **U[component].vue**: The main component file (in Case C the folder name may differ from the `.vue` file name)
 - **U[component][child].vue**: Child components (if needed)
 - **tests/U[component].test.ts**: Component test file that follows the naming convention of the component with .test.ts suffix
 
@@ -63,13 +69,14 @@ defineOptions({ inheritAttrs: false });
 Components use TypeScript to define strongly-typed props with defaults from config:
 
 ```typescript
-import { getDefaults } from "../utils/ui.ts";
-import defaultConfig from "./config.ts";
-import { COMPONENT_NAME } from "./constants.ts";
-import type { Props, Config } from "./types.ts";
+import { getDefaults } from "../utils/ui";
+import defaultConfig from "./config";
+import { COMPONENT_NAME } from "./constants";
+import type { Props, Config } from "./types";
 
 const props = withDefaults(defineProps<Props>(), {
   ...getDefaults<Props, Config>(defaultConfig, COMPONENT_NAME),
+  // withDefaults second arg is used ONLY for rare exceptions (e.g. arrays or objects)
 });
 ```
 
@@ -78,13 +85,13 @@ const props = withDefaults(defineProps<Props>(), {
 The useUI composable handles styling, attribute management, and class generation:
 
 ```typescript
-import useUI from "../composables/useUI.ts";
+import { useUI } from "../composables/useUI";
 
 const mutatedProps = computed(() => ({
   // Computed properties based on props or slots
 }));
 
-const { getDataTest, elementAttrs } = useUI<Config>(defaultConfig, mutatedProps);
+const { getDataTest, buttonAttrs, wrapperAttrs } = useUI<Config>(defaultConfig, mutatedProps);
 ```
 
 ## Styling System
@@ -123,8 +130,8 @@ When creating a new Vueless component, follow this structured approach:
 
 1. Define Props in types.ts:
 ```typescript
-import defaultConfig from "./config.ts";
-import type { ComponentConfig } from "../types.ts";
+import defaultConfig from "./config";
+import type { ComponentConfig } from "../types";
 
 export type Config = typeof defaultConfig;
 
@@ -137,12 +144,12 @@ export interface Props {
   /**
    * Component variant
    */
-  variant?: "solid" | "outlined" | "subtle" | "soft";
+  variant?: "solid" | "outlined" | "subtle" | "soft" | "ghost";
 
   /**
    * Component size
    */
-  size?: "xs" | "sm" | "md" | "lg" | "xl";
+  size?: "2xs" | "xs" | "sm" | "md" | "lg" | "xl";
 
   /**
    * Component config object
@@ -158,26 +165,33 @@ export interface Props {
 
 2. Create config.ts with styling:
 ```typescript
-export default {
-  wrapper: {
-    base: "relative flex items-center",
+export default /*tw*/ {
+  button: {
+    base: "flex items-center justify-center font-medium rounded-medium transition cursor-pointer",
     variants: {
       size: {
-        xs: "text-xs",
-        sm: "text-sm",
-        md: "text-base",
-        lg: "text-lg",
-        xl: "text-xl",
+        "2xs": "px-2 py-1 text-small gap-0.5",
+        xs: "px-3 py-1.5 text-small gap-1",
+        sm: "px-4 py-2 text-medium gap-1.5",
+        md: "px-5 py-2.5 text-medium gap-1.5",
+        lg: "px-6 py-3 text-large gap-1.5",
+        xl: "px-7 py-3.5 text-large gap-2",
       },
       variant: {
-        solid: "bg-primary-500 text-white",
-        outlined: "border border-primary-500 text-primary-500",
-        subtle: "bg-primary-50 text-primary-500",
-        soft: "bg-primary-100 text-primary-700",
+        solid: "bg-{color} border-transparent text-inverted hover:bg-{color}-lifted",
+        outlined: "text-{color} border-{color} hover:text-{color}-lifted",
+        subtle: "text-{color} bg-{color}/5 border-{color}/15",
+        soft: "text-{color} bg-{color}/5 border-transparent",
+        ghost: "text-{color} bg-transparent border-transparent",
       },
     },
   },
   // Additional elements as needed
+  defaults: {
+    color: "primary",
+    variant: "solid",
+    size: "md",
+  },
 };
 ```
 
@@ -185,29 +199,28 @@ export default {
 ```vue
 <script setup lang="ts">
 import { computed } from "vue";
-import useUI from "../composables/useUI.ts";
-import defaultConfig from "./config.ts";
-import { COMPONENT_NAME } from "./constants.ts";
-import { getDefaults } from "../utils/ui.ts";
-import type { Props, Config } from "./types.ts";
+import { useUI } from "../composables/useUI";
+import defaultConfig from "./config";
+import { COMPONENT_NAME } from "./constants";
+import { getDefaults } from "../utils/ui";
+import type { Props, Config } from "./types";
 
 defineOptions({ inheritAttrs: false });
 
 const props = withDefaults(defineProps<Props>(), {
   ...getDefaults<Props, Config>(defaultConfig, COMPONENT_NAME),
-  variant: "solid",
-  size: "md",
+  // Only add explicit defaults here for rare exceptions (e.g. label: "")
 });
 
-const { wrapperAttrs } = useUI<Config>(defaultConfig);
+const { getDataTest, buttonAttrs } = useUI<Config>(defaultConfig);
 </script>
 
 <template>
-  <div v-bind="wrapperAttrs" :data-test="getDataTest()">
+  <button v-bind="buttonAttrs" :data-test="getDataTest()">
     <slot>
       {{ props.label }}
     </slot>
-  </div>
+  </button>
 </template>
 ```
 
@@ -226,7 +239,7 @@ When modifying existing Vueless components, follow these best practices:
 
 1. **Props and Types**: 
    - Update the Props interface in `types.ts` when adding new props
-   - Provide appropriate defaults in the component definition
+   - Add default values to the `defaults: {}` block in `config.ts`; `withDefaults` second arg is only for rare exceptions
    - Add JSDoc comments for prop documentation
 
 2. **Styling Configuration**: 
@@ -254,7 +267,7 @@ The useUI composable handles three primary tasks:
 When using `useUI`, you typically provide these parameters:
 
 ```typescript
-const { elementAttrs, getDataTest } = useUI<Config>(defaultConfig, mutatedProps, topLevelKey);
+const { buttonAttrs, wrapperAttrs, getDataTest } = useUI<Config>(defaultConfig, mutatedProps, topLevelKey);
 ```
 
 Where:
@@ -264,22 +277,23 @@ Where:
 
 ### Return Value
 
-The composable returns an object containing:
+The composable returns an object containing named per-token attribute objects — one for each token defined in the config — plus `getDataTest`. For example, a component with `button`, `loader`, `leftIcon`, and `centerIcon` tokens in its config will receive:
 
-- **Element attribute objects**: Attribute objects for each element defined in the config
-- **Utility functions**: Helper functions like `getDataTest()` for testing attributes
+- **`buttonAttrs`**, **`loaderAttrs`**, **`leftIconAttrs`**, **`centerIconAttrs`**, etc. — attribute objects for each config token
+- **`getDataTest`** — helper function for generating `data-test` attributes
 
 ### Example
 
 ```typescript
-// Basic usage
-const { wrapperAttrs, contentAttrs } = useUI<Config>(defaultConfig);
+// Basic usage — named attrs match config token names
+const { getDataTest, buttonAttrs, loaderAttrs, leftIconAttrs } = useUI<Config>(defaultConfig);
 
-// With computed props
+// With computed props — override/augment props before class generation
 const mutatedProps = computed(() => ({
-  variant: props.loading ? 'loading' : props.variant,
+  icon: Boolean(props.icon),
+  leftIcon: Boolean(props.leftIcon),
 }));
-const { wrapperAttrs, contentAttrs } = useUI<Config>(defaultConfig, mutatedProps);
+const { getDataTest, buttonAttrs, loaderAttrs, leftIconAttrs } = useUI<Config>(defaultConfig, mutatedProps);
 ```
 
 ## Conditional Styling
@@ -297,30 +311,35 @@ The config structure contains these key elements:
 ### Example Configuration
 
 ```typescript
-export default {
+export default /*tw*/ {
   button: {
     // Base classes applied to all instances
-    base: "flex items-center justify-center rounded-md transition-colors",
+    base: "flex items-center justify-center rounded-medium transition cursor-pointer",
 
     // Variant classes applied based on props
     variants: {
-      // Variant prop (appearance variants)
+      // Variant prop (appearance variants) — uses {color} runtime placeholder
       variant: {
-        solid: "bg-primary-500 text-white hover:bg-primary-600",
-        outlined: "border border-primary-500 text-primary-500 hover:bg-primary-50",
-        subtle: "bg-transparent text-primary-500 hover:bg-primary-50",
+        solid: "bg-{color} border-transparent text-inverted hover:bg-{color}-lifted active:bg-{color}-accented disabled:bg-{color}/(--vl-disabled-opacity)!",
+        outlined: "text-{color} border-{color} hover:text-{color}-lifted hover:bg-{color}-lifted/10",
+        subtle: "text-{color} bg-{color}/5 border-{color}/15 hover:text-{color}-lifted",
+        soft: "text-{color} bg-{color}/5 border-transparent hover:text-{color}-lifted",
+        ghost: "text-{color} bg-transparent border-transparent hover:text-{color}-lifted",
       },
 
       // Size prop (sizing variants)
       size: {
-        sm: "text-sm py-1 px-2 gap-1",
-        md: "text-base py-2 px-3 gap-2",
-        lg: "text-lg py-3 px-4 gap-3",
+        "2xs": "text-small px-2 py-1 gap-0.5",
+        xs: "text-small px-3 py-1.5 gap-1",
+        sm: "text-medium px-4 py-2 gap-1.5",
+        md: "text-medium px-5 py-2.5 gap-1.5",
+        lg: "text-large px-6 py-3 gap-1.5",
+        xl: "text-large px-7 py-3.5 gap-2",
       },
 
       // Boolean prop (true/false variants)
-      disabled: {
-        true: "opacity-50 cursor-not-allowed",
+      loading: {
+        true: "gap-0 pointer-events-none",
       },
     },
 
@@ -332,11 +351,16 @@ export default {
         class: "bg-gray-300 hover:bg-gray-300",
       },
       {
-        variant: "outlined",
-        size: "sm",
-        class: "border-[1px]",
+        square: true,
+        size: "md",
+        class: "p-2.5",
       },
     ],
+  },
+  defaults: {
+    color: "primary",
+    variant: "solid",
+    size: "md",
   },
 };
 ```
@@ -366,23 +390,37 @@ When using nested components:
 
 ### Configuration Pattern
 
-Nested components should be configured in the parent component's config file:
+Nested components are wired up in the parent's config using special token-reference strings. This lets the parent inherit and extend the nested component's own config, rather than duplicating styles.
+
+- **`"{ULoader}"`** — token inherits its entire config from the `ULoader` component defaults
+- **`"{UIcon} {>centerIcon}"`** — token inherits `UIcon` defaults AND merges in the parent's `centerIcon` token as overrides
 
 ```typescript
-export default {
-  wrapper: {
-    base: "flex items-center",
-    // wrapper variants...
+export default /*tw*/ {
+  button: {
+    base: "flex items-center justify-center",
+    // button variants...
   },
-  icon: {
-    base: "flex-shrink-0",
-    variants: {
-      size: {
-        sm: "w-4 h-4",
-        md: "w-5 h-5",
-        lg: "w-6 h-6",
-      },
+  // Inherits ULoader config entirely
+  loader: {
+    base: "{ULoader}",
+    defaults: {
+      size: { sm: "md", md: "md", lg: "lg" },
     },
+  },
+  // Inherits UIcon config AND merges centerIcon token overrides
+  leftIcon: "{UIcon} {>centerIcon} -ml-1",
+  rightIcon: "{UIcon} {>centerIcon} -mr-1",
+  centerIcon: {
+    base: "{UIcon}",
+    defaults: {
+      size: { "2xs": "2xs", xs: "xs", sm: "sm", md: "sm", lg: "sm", xl: "sm" },
+    },
+  },
+  defaults: {
+    color: "primary",
+    variant: "solid",
+    size: "md",
   },
 };
 ```
@@ -390,33 +428,32 @@ export default {
 ### Usage Example
 
 ```vue
-<template>
-  <div v-bind="wrapperAttrs">
-    <UIcon 
-      v-if="props.leftIcon" 
-      :name="props.leftIcon" 
-      color="inherit" 
-      v-bind="iconAttrs" 
-    />
-    <span v-bind="labelAttrs">
-      <slot>{{ props.label }}</slot>
-    </span>
-    <UIcon 
-      v-if="props.rightIcon" 
-      :name="props.rightIcon" 
-      color="inherit" 
-      v-bind="iconAttrs" 
-    />
-  </div>
-</template>
-
 <script setup lang="ts">
-// Import components
-import UIcon from "../UIcon/UIcon.vue";
+import { useUI } from "../composables/useUI";
+import ULoader from "../ui.loader/ULoader.vue";
+import UIcon from "../ui.image-icon/UIcon.vue";
+import defaultConfig from "./config";
+import type { Props, Config } from "./types";
 
-// Get attribute bindings including nested components
-const { wrapperAttrs, labelAttrs, iconAttrs } = useUI<Config>(defaultConfig, mutatedProps);
+// Named attrs map 1-to-1 with config tokens
+const {
+  getDataTest,
+  buttonAttrs,
+  loaderAttrs,
+  leftIconAttrs,
+  rightIconAttrs,
+  centerIconAttrs,
+} = useUI<Config>(defaultConfig, mutatedProps);
 </script>
+
+<template>
+  <button v-bind="buttonAttrs" :data-test="getDataTest()">
+    <UIcon v-if="props.leftIcon" :name="props.leftIcon" v-bind="leftIconAttrs" />
+    <slot>{{ props.label }}</slot>
+    <UIcon v-if="props.rightIcon" :name="props.rightIcon" v-bind="rightIconAttrs" />
+    <ULoader v-if="props.loading" v-bind="loaderAttrs" />
+  </button>
+</template>
 ```
 
 ## Best Practices
@@ -493,13 +530,13 @@ import {
   getSlotsFragment,
   getDocsDescription,
   getEnumVariantDescription,
-} from "../../utils/storybook.ts";
+} from "../../utils/storybook";
 
 import UComponent from "../UComponent.vue";
 import URow from "../../ui.container-row/URow.vue";
 
-import type { Meta, StoryFn } from "@storybook/vue3";
-import type { Props } from "../types.ts";
+import type { Meta, StoryFn } from "@storybook/vue3-vite";
+import type { Props } from "../types";
 
 // 2. ARGS INTERFACE
 interface UComponentArgs extends Props {
@@ -603,10 +640,10 @@ The `docs.mdx` file follows a consistent exact structure, do not modify anything
 
 ```mdx
 import { Meta, Title, Subtitle, Description, Primary, Controls, Stories, Source } from "@storybook/addon-docs/blocks";
-import { getSource } from "../../utils/storybook.ts";
+import { getSource } from "../../utils/storybook";
 
-import * as stories from "./stories.ts";
-import defaultConfig from "../config.ts?raw"
+import * as stories from "./stories";
+import defaultConfig from "../config?raw"
 
 <Meta of={stories} />
 <Title of={stories} />
@@ -629,7 +666,7 @@ Vueless UI provides a comprehensive set of CSS variables for colors that can be 
 In your `config.ts` file, you can reference these CSS variables within your Tailwind classes:
 
 ```typescript
-export default {
+export default /*tw*/ {
   wrapper: {
     base: "relative flex items-center",
     variants: {
@@ -639,8 +676,8 @@ export default {
         secondary: "bg-(--vl-secondary) text-(--vl-text)",
         success: "bg-(--vl-success) text-(--vl-text-inverted)",
         error: "bg-(--vl-error) text-(--vl-text-inverted)",
-        // Using toned and accented variations
-        subtle: "bg-(--vl-primary-toned) text-(--vl-primary)",
+        // Using lifted and accented variations
+        subtle: "bg-(--vl-bg-lifted) text-(--vl-primary)",
         outlined: "border border-(--vl-primary) text-(--vl-primary)",
       },
     },
@@ -652,17 +689,17 @@ export default {
 
 #### State Colors
 
-These are the main semantic colors used across the application:
+These are the main semantic colors used across the application. Each has three variants: base, `-lifted` (lighter/more prominent), and `-accented` (stronger emphasis):
 
-- **Primary**: `--vl-primary`, `--vl-primary-toned`, `--vl-primary-accented`
-- **Secondary**: `--vl-secondary`, `--vl-secondary-toned`, `--vl-secondary-accented`
-- **Success**: `--vl-success`, `--vl-success-toned`, `--vl-success-accented`
-- **Info**: `--vl-info`, `--vl-info-toned`, `--vl-info-accented`
-- **Notice**: `--vl-notice`, `--vl-notice-toned`, `--vl-notice-accented`
-- **Warning**: `--vl-warning`, `--vl-warning-toned`, `--vl-warning-accented`
-- **Error**: `--vl-error`, `--vl-error-toned`, `--vl-error-accented`
-- **Neutral**: `--vl-neutral`, `--vl-neutral-toned`, `--vl-neutral-accented`
-- **Grayscale**: `--vl-grayscale`, `--vl-grayscale-toned`, `--vl-grayscale-accented`
+- **Primary**: `--vl-primary`, `--vl-primary-lifted`, `--vl-primary-accented`
+- **Secondary**: `--vl-secondary`, `--vl-secondary-lifted`, `--vl-secondary-accented`
+- **Success**: `--vl-success`, `--vl-success-lifted`, `--vl-success-accented`
+- **Info**: `--vl-info`, `--vl-info-lifted`, `--vl-info-accented`
+- **Notice**: `--vl-notice`, `--vl-notice-lifted`, `--vl-notice-accented`
+- **Warning**: `--vl-warning`, `--vl-warning-lifted`, `--vl-warning-accented`
+- **Error**: `--vl-error`, `--vl-error-lifted`, `--vl-error-accented`
+- **Neutral**: `--vl-neutral`, `--vl-neutral-lifted`, `--vl-neutral-accented`
+- **Grayscale**: `--vl-grayscale`, `--vl-grayscale-lifted`, `--vl-grayscale-accented`
 
 #### Contextual UI Variables
 
@@ -671,13 +708,6 @@ These variables provide consistent styling for common UI elements:
 - **Text**: `--vl-text`, `--vl-text-lifted`, `--vl-text-accented`, `--vl-text-muted`, `--vl-text-inverted`
 - **Border**: `--vl-border`, `--vl-border-lifted`, `--vl-border-accented`, `--vl-border-muted`
 - **Background**: `--vl-bg`, `--vl-bg-lifted`, `--vl-bg-accented`, `--vl-bg-muted`, `--vl-bg-inverted`
-
-#### Raw Color Shades
-
-Each color provides access to its various shades (from 50-950):
-
-- **Primary**: `--vl-primary-50` through `--vl-primary-950`
-- **Neutral**: `--vl-neutral-50` through `--vl-neutral-950`
 
 ### Tailwind Integration
 
@@ -694,16 +724,18 @@ The design system automatically handles dark mode through CSS variables. The val
 
 ### Using Runtime Colors
 
-Vueless UI supports runtime color switching. When implementing components that need to support multiple colors, use the `{color}` placeholder in your configuration:
+Vueless UI supports runtime color switching. When implementing components that need to support multiple colors, use the `{color}` placeholder in your configuration. The available runtime color patterns mirror the state color suffixes:
 
 ```typescript
-export default {
-  wrapper: {
+export default /*tw*/ {
+  button: {
     variants: {
-      color: {
-        primary: "bg-{color}-500 text-white",
-        secondary: "bg-{color}-200 text-{color}-700",
-        // other variants...
+      variant: {
+        // bg-{color} fills with the current color; text-inverted ensures contrast
+        solid: "bg-{color} border-transparent text-inverted hover:bg-{color}-lifted active:bg-{color}-accented disabled:bg-{color}/(--vl-disabled-opacity)!",
+        // text-{color} and border-{color} for outlined styles
+        outlined: "text-{color} border-{color} hover:text-{color}-lifted hover:bg-{color}-lifted/10",
+        subtle: "text-{color} bg-{color}/5 border-{color}/15 hover:text-{color}-lifted",
       },
     },
   },
@@ -711,6 +743,8 @@ export default {
 ```
 
 The system will automatically generate the necessary Tailwind classes for all supported colors at build time.
+
+**Runtime color suffixes**: Use `-lifted` for hover/lighter states and `-accented` for active/stronger states. Only these two suffixes exist — no other color-shade suffixes are supported.
 
 ## Conclusion
 
