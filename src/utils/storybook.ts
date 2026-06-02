@@ -400,16 +400,6 @@ export function getArgs(args: UnknownObject, option: string, outerOption?: strin
   };
 }
 
-export function getEnumVariantDescription(message = "Hover over a variant to see its value.") {
-  return {
-    docs: {
-      description: {
-        story: message,
-      },
-    },
-  };
-}
-
 export function trimText(text: string) {
   return text.replace(/\s+/g, " ").trim();
 }

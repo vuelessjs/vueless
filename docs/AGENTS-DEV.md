@@ -529,7 +529,6 @@ import {
   getSlotNames,
   getSlotsFragment,
   getDocsDescription,
-  getEnumVariantDescription,
 } from "../../utils/storybook";
 
 import UComponent from "../UComponent.vue";
@@ -592,12 +591,10 @@ Default.args = {
 // Variant showcase
 export const Variants = EnumTemplate.bind({});
 Variants.args = { enum: "variant" };
-Variants.parameters = getEnumVariantDescription();
 
 // Size showcase
 export const Sizes = EnumTemplate.bind({});
 Sizes.args = { enum: "size" };
-Sizes.parameters = getEnumVariantDescription();
 
 // Other features
 export const WithIcon = DefaultTemplate.bind({});
@@ -627,7 +624,6 @@ Stories should be named descriptively to reflect what aspect of the component th
 
 1. **args**: Component props to be displayed in the Storybook controls
 2. **parameters**: Additional configuration for the story
-   - Use `getEnumVariantDescription()` for enum variant stories
    - Add custom documentation with the `description` property
 
 ## Storybook docs.mdx Standards
