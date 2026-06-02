@@ -25,23 +25,23 @@ To customize the default `vueless` or your own custom theme, simply update your 
 
 <Source code={`
   .tippy-box[data-theme~="custom"] {
-    background-color: var(--vl-neutral-accented);
+    background-color: var(--vl-bg-inverted);
     color: var(--vl-text-inverted);
   }
-  
+
   .tippy-box[data-theme~="custom"][data-placement^="top"] > .tippy-arrow:before {
-    border-top-color: var(--vl-neutral-accented);
+    border-top-color: var(--vl-bg-inverted);
   }
-  
+
   .tippy-box[data-theme~="custom"][data-placement^="bottom"] > .tippy-arrow:before {
-    border-bottom-color: var(--vl-neutral-accented);
+    border-bottom-color: var(--vl-bg-inverted);
   }
-  
+
   .tippy-box[data-theme~="custom"][data-placement^="left"] > .tippy-arrow:before {
-    border-left-color: var(--vl-neutral-accented);
+    border-left-color: var(--vl-bg-inverted);
   }
-  
+
   .tippy-box[data-theme~="custom"][data-placement^="right"] > .tippy-arrow:before {
-    border-right-color: var(--vl-neutral-accented);
+    border-right-color: var(--vl-bg-inverted);
   }
 `} language="jsx" dark />

@@ -60,7 +60,9 @@ if (isSSR) {
 /**
  * Extend twMerge (tailwind merge) by vueless and user config:
  */
-const twMerge = extendTailwindMerge(merge(TAILWIND_MERGE_EXTENSION, vuelessConfig.tailwindMerge));
+const twMerge = extendTailwindMerge(
+  merge({}, TAILWIND_MERGE_EXTENSION, vuelessConfig.tailwindMerge),
+);
 
 /**
  * Export cva (class variance authority) methods:

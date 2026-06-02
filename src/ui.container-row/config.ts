@@ -70,6 +70,6 @@ export default /*tw*/ {
     block: false,
     reverse: false,
     grow: false,
-    shrink: false,
+    shrink: true,
   },
 };
