@@ -55,6 +55,7 @@
 ## Helpers
 
 * [Runtime theming](helpers/change-settings-in-runtime.md)
+* [Responsive Props](helpers/responsive-props.md)
 
 ## Other
 
