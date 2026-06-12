@@ -59,7 +59,7 @@
     "@vue/eslint-config-typescript": "^14.7.0",
     "@vue/test-utils": "^2.4.8",
     "@vue/tsconfig": "^0.9.1",
-    "@vueless/storybook": "^1.6.3",
+    "@vueless/storybook": "^1.6.4",
     "eslint": "^10.2.1",
     "eslint-plugin-storybook": "^10.3.5",
     "eslint-plugin-vue": "^10.9.0",
