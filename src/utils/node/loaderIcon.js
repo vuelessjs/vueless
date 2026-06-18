@@ -8,7 +8,7 @@
 import fs from "node:fs";
 import path from "node:path";
 import { cwd } from "node:process";
-import { rm, cp } from "node:fs/promises";
+import { rm, cp, mkdir } from "node:fs/promises";
 import { createRequire } from "module";
 
 import { getVuelessConfig } from "./vuelessConfig.js";
@@ -166,7 +166,7 @@ async function cachePackageIcons(isStorybookEnv) {
   const internalCachePath = path.join(cwd(), ICONS_CACHED_DIR, INTERNAL_ICONS_LIBRARY);
 
   if (fs.existsSync(internalVuelessPath)) {
-    await cp(internalVuelessPath, internalCachePath, { recursive: true });
+    await safeCopyDir(internalVuelessPath, internalCachePath);
   }
 
   /* copy storybook icons for storybook only */
@@ -175,8 +175,27 @@ async function cachePackageIcons(isStorybookEnv) {
     const storybookCachePath = path.join(cwd(), ICONS_CACHED_DIR, STORYBOOK_ICONS_LIBRARY);
 
     if (fs.existsSync(storybookVuelessPath)) {
-      await cp(storybookVuelessPath, storybookCachePath, { recursive: true });
+      await safeCopyDir(storybookVuelessPath, storybookCachePath);
     }
+  }
+}
+
+/**
+ * Copy a directory tolerating a destination created by a concurrent build.
+ * Node's `cp` does a non-atomic `mkdir` per directory, so two builds racing
+ * to create the same cache folder throw `EEXIST`. Pre-creating the destination
+ * with `recursive: true` (idempotent) and swallowing `EEXIST` makes it safe.
+ * @param {string} from
+ * @param {string} to
+ * @returns {Promise<void>}
+ */
+async function safeCopyDir(from, to) {
+  await mkdir(to, { recursive: true });
+
+  try {
+    await cp(from, to, { recursive: true, force: true });
+  } catch (error) {
+    if (error?.code !== "EEXIST") throw error;
   }
 }
 
