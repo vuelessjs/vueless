@@ -5,6 +5,7 @@ import prettierEslintConfig from "@vue/eslint-config-prettier";
 import pluginVue from "eslint-plugin-vue";
 import pluginVitest from "@vitest/eslint-plugin";
 import pluginStorybook from "eslint-plugin-storybook";
+import pluginTailwindcss from "eslint-plugin-tailwindcss";
 
 const languageOptions = {
   globals: {
@@ -31,6 +32,15 @@ export default defineConfigWithVueTs(
   })),
   vueTsConfigs.recommended,
   prettierEslintConfig,
+  {
+    ...pluginTailwindcss.configs.recommended,
+    files: ["**/*.{js,ts,jsx,tsx,vue}"],
+    settings: {
+      tailwindcss: {
+        cssConfigPath: "./src/tailwind.css",
+      },
+    },
+  },
   {
     name: "common",
     languageOptions,
@@ -66,7 +76,6 @@ export default defineConfigWithVueTs(
     },
   },
   {
-    name: "vitest",
     files: ["src/**/tests/*"],
     ...pluginVitest.configs.recommended,
   },
