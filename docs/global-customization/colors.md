@@ -4,21 +4,24 @@
 
 Components are based on a `primary` color and `neutral` color.
 
-<pre class="language-js" data-title="vueless.config.{js,ts}"><code class="lang-js">export default {
+{% code title="vueless.config.{js,ts}" %}
+```js
+export default {
   primary: "green",  /* default -> grayscale */
   neutral: "stone", /* default -> gray */
-}<a data-footnote-ref href="#user-content-fn-1">;</a>
-</code></pre>
+};
+```
+{% endcode %}
 
 Vueless uses Tailwind CSS under the hood, so you can use any of the [Tailwind CSS colors](https://tailwindcss.com/docs/customizing-colors#color-palette-reference) or your own custom colors.
 
-#### Default primary colors:&#x20;
+#### Default primary colors:
 
 `red`, `orange`, `amber`, `yellow`, `lime`, `green`, `emerald`, `teal`, `cyan`, `sky`, `blue`, `indigo`, `violet`, `purple`, `fuchsia`, `pink`, `rose`
 
-#### Default neutral colors:&#x20;
+#### Default neutral colors:
 
-`slate`, `gray`, `zinc`, `neutral`, `stone`&#x20;
+`slate`, `gray`, `zinc`, `neutral`, `stone`, `mauve`, `olive`, `mist`, `taupe`
 
 ***
 
@@ -69,8 +72,8 @@ If you use an object for colors, all shade keys should be defined. Missing or in
 
 To enable dynamic color changes at runtime, Vueless use the `--vl-primary-*` and `--vl-neutral-*` CSS variables. These variables will represent all Tailwind CSS shades of the defined Vueless colors.
 
-* `--vl-primary-50`,  `--vl-primary-100`, ... `--vl-primary-900`, `--vl-primary-950`
-* `--vl-gray-50`,  `--vl-gray-100`, ... `--vl-gray-900`, `--vl-gray-950`
+* `--vl-primary-50`, `--vl-primary-100`, ... `--vl-primary-900`, `--vl-primary-950`
+* `--vl-gray-50`, `--vl-gray-100`, ... `--vl-gray-900`, `--vl-gray-950`
 
 Example usage ([custom properties syntax](https://tailwindcss.com/docs/color#using-a-custom-value)):
 
@@ -157,5 +160,3 @@ When [overriding default colors](https://tailwindcss.com/docs/colors#overriding-
 {% endcode %}
 
 You can generate your colors using tools such as [uicolors](https://uicolors.app) for example.
-
-[^1]: 
