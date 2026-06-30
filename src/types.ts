@@ -235,7 +235,17 @@ export interface ColorShades {
   950: string;
 }
 
-export type NeutralColorName = "slate" | "gray" | "zinc" | "neutral" | "stone" | string;
+export type NeutralColorName =
+  | "slate"
+  | "gray"
+  | "zinc"
+  | "neutral"
+  | "stone"
+  | "mauve"
+  | "olive"
+  | "mist"
+  | "taupe"
+  | string;
 export type PrimaryColorName =
   | "red"
   | "orange"
