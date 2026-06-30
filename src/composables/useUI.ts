@@ -153,7 +153,6 @@ export function useUI<T>(defaultConfig: T, mutatedProps?: MutatedProps, topLevel
       let cvaFn = cvaCache.get(key);
 
       if (!cvaFn) {
-        // eslint-disable-next-line tailwindcss/no-custom-classname -- CVA config object, not a class string
         cvaFn = cva(value);
         cvaCache.set(key, cvaFn);
       }

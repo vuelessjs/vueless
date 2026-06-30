@@ -34,10 +34,11 @@ export default defineConfigWithVueTs(
   prettierEslintConfig,
   {
     ...pluginTailwindcss.configs.recommended,
-    files: ["**/*.{js,ts,jsx,tsx,vue}"],
+    files: ["**/*.{js,ts,vue}"],
     settings: {
       tailwindcss: {
         cssConfigPath: "./src/tailwind.css",
+        functions: ["classnames", "classNames", "clsx", "ctl", "tv", "tw", "twJoin"],
       },
     },
   },

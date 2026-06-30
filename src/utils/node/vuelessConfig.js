@@ -58,7 +58,6 @@ const twMerge = extendTailwindMerge(
  */
 export const { cx } = defineConfig({
   hooks: {
-    // eslint-disable-next-line tailwindcss/no-custom-classname -- callback param, not a class string
     onComplete: (classNames) => twMerge(classNames).replace(NESTED_COMPONENT_PATTERN_REG_EXP, ""),
   },
 });
