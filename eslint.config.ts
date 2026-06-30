@@ -38,7 +38,7 @@ export default defineConfigWithVueTs(
     settings: {
       tailwindcss: {
         cssConfigPath: "./src/tailwind.css",
-        functions: ["classnames", "classNames", "clsx", "ctl", "tv", "tw", "twJoin"],
+        functions: [],
       },
     },
   },
