@@ -55,6 +55,10 @@ export default {
       zinc: "bg-zinc-600",
       neutral: "bg-neutral-600",
       stone: "bg-stone-600",
+      mauve: "bg-mauve-600",
+      olive: "bg-olive-600",
+      mist: "bg-mist-600",
+      taupe: "bg-taupe-600",
     },
   },
   argTypes: {
