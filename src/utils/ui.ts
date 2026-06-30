@@ -76,6 +76,7 @@ export const {
   cva: classVarianceAuthority,
 } = defineConfig({
   hooks: {
+    // eslint-disable-next-line tailwindcss/no-custom-classname -- callback param, not a class string
     onComplete: (classNames) => twMerge(classNames),
   },
 });
