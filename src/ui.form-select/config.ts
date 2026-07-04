@@ -140,7 +140,7 @@ export default /*tw*/ {
   },
   listbox: `
     {UListbox} border-0 outline-solid outline-1! outline-default
-    my-2 group-[*]/top:bottom-full group-[*]/top:top-auto top-full w-full
+    my-2 group-[*]/top:bottom-full group-[*]/top:top-auto top-full w-full left-0
   `,
   i18n: {
     listIsEmpty: "List is empty.",
