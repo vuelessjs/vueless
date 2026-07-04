@@ -75,6 +75,11 @@ export interface Props {
   placeItems?: "start" | "end" | "end-safe" | "center" | "center-safe" | "stretch" | "baseline";
 
   /**
+   * Make the Grid expand to fill the entire width of its container.
+   */
+  block?: boolean;
+
+  /**
    * Allows changing HTML tag.
    */
   tag?: string;

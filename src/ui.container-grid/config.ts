@@ -2,6 +2,9 @@ export default /*tw*/ {
   wrapper: {
     base: "grid",
     variants: {
+      block: {
+        true: "w-full",
+      },
       cols: {
         "1": "grid-cols-1",
         "2": "grid-cols-2",
@@ -125,5 +128,6 @@ export default /*tw*/ {
     placeContent: "start",
     placeItems: "start",
     tag: "div",
+    block: false,
   },
 };
