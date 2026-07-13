@@ -76,7 +76,17 @@ export const STATE_COLORS = [
   GRAYSCALE_COLOR,
 ];
 export const LAYOUT_COLORS = ["text", "border", "bg"];
-export const NEUTRAL_COLORS = ["slate", "gray", "zinc", "neutral", "stone"];
+export const NEUTRAL_COLORS = [
+  "slate",
+  "gray",
+  "zinc",
+  "neutral",
+  "stone",
+  "mauve",
+  "olive",
+  "mist",
+  "taupe",
+];
 export const COLOR_SHADES = [50, 100, 200, 300, 400, 500, 600, 700, 800, 900, 950];
 
 export const DEFAULT_LIGHT_THEME = {
