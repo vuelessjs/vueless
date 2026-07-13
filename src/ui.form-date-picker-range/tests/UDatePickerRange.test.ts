@@ -379,6 +379,65 @@ describe("UDatePickerRange.vue", () => {
       expect(component.find(`[data-test="${dataTest}-button-prev"]`).exists()).toBe(true);
       expect(component.find(`[data-test="${dataTest}-button-next"]`).exists()).toBe(true);
     });
+
+    it("Data Test – applies data-test to period menu buttons when menu is open", async () => {
+      const dataTest = "date-picker-range";
+      const menuPrefix = `${dataTest}-period-menu`;
+
+      const component = mount(UDatePickerRange, {
+        props: {
+          variant: "input",
+          dataTest,
+          modelValue: { from: null, to: null },
+        },
+      });
+
+      const input = component.findComponent(UInput).find("input");
+
+      await input.trigger("focus");
+
+      const monthButton = component.find(`[data-test="${menuPrefix}-period-month"]`);
+      const quarterButton = component.find(`[data-test="${menuPrefix}-period-quarter"]`);
+      const yearButton = component.find(`[data-test="${menuPrefix}-period-year"]`);
+      const ownRangeButton = component.find(`[data-test="${menuPrefix}-own-range"]`);
+
+      expect(monthButton.exists()).toBe(true);
+      expect(quarterButton.exists()).toBe(true);
+      expect(yearButton.exists()).toBe(true);
+      expect(ownRangeButton.exists()).toBe(true);
+
+      await monthButton.trigger("click");
+
+      const gridButtons = component.findAll(`[data-test^="${menuPrefix}-period-date-"]`);
+
+      expect(gridButtons.length).toBeGreaterThan(0);
+    });
+
+    it("Data Test – period menu buttons have no data-test attribute when dataTest is not set", async () => {
+      const component = mount(UDatePickerRange, {
+        props: {
+          variant: "input",
+          modelValue: { from: null, to: null },
+        },
+      });
+
+      const input = component.findComponent(UInput).find("input");
+
+      await input.trigger("focus");
+
+      const periodMenu = component.findComponent(UDatePickerRangePeriodMenu);
+
+      expect(periodMenu.exists()).toBe(true);
+      expect(component.findAll('[data-test^="null-"]').length).toBe(0);
+
+      const monthButton = component.findAll("button").find((button) => button.text() !== "");
+
+      if (monthButton) {
+        await monthButton.trigger("click");
+      }
+
+      expect(component.findAll('[data-test^="null-"]').length).toBe(0);
+    });
   });
 
   describe("Menu", () => {
