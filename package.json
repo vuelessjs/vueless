@@ -37,7 +37,7 @@
     "@types/lodash-es": "^4.17.12",
     "cva": "^1.0.0-beta.4",
     "lodash-es": "^4.18.1",
-    "rolldown": "1.0.0-rc.17",
+    "rolldown": "^1.1.5",
     "svgo": "^4.0.1",
     "tailwind-merge": "^3.5.0",
     "tailwindcss": "^4.2.4",
