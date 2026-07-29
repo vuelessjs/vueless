@@ -122,7 +122,7 @@ export const ForceFallback = DefaultTemplate.bind({});
 ForceFallback.args = {
   forceFallback: true,
   fallbackOnBody: true,
-  fallbackClass: "sortable-fallback",
+  fallbackClass: "opacity-100!",
 };
 ForceFallback.parameters = {
   docs: {
