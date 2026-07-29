@@ -50,6 +50,21 @@ export interface Props {
   animationDuration?: number;
 
   /**
+   * Sortable JS fallback (instead of native HTML5 DnD).
+   */
+  forceFallback?: boolean;
+
+  /**
+   * Append the fallback drag clone to document.body.
+   */
+  fallbackOnBody?: boolean;
+
+  /**
+   * CSS class for the Sortable fallback drag clone (forceFallback mode).
+   */
+  fallbackClass?: string;
+
+  /**
    * Disable empty state for nested elements if empty (internal props).
    * @ignore
    */

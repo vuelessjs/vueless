@@ -55,6 +55,9 @@ export default /*tw*/ {
     labelKey: "label",
     valueKey: "value",
     animationDuration: 200,
+    forceFallback: false,
+    fallbackOnBody: false,
+    fallbackClass: "sortable-fallback",
     /* icons */
     dragIcon: "drag_indicator",
   },
