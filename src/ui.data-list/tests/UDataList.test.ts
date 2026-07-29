@@ -227,7 +227,7 @@ describe("UDataList.vue", () => {
       expect(draggableComponent.vm.$attrs["fallback-class"]).toBe(fallbackClass);
     });
 
-    it("Fallback Class – defaults to sortable-fallback", () => {
+    it("Fallback Class – defaults to shadow-sm", () => {
       const component = mount(UDataList, {
         props: {
           list: defaultList,
@@ -236,7 +236,7 @@ describe("UDataList.vue", () => {
 
       const draggableComponent = component.findComponent(draggable);
 
-      expect(draggableComponent.vm.$attrs["fallback-class"]).toBe("sortable-fallback");
+      expect(draggableComponent.vm.$attrs["fallback-class"]).toBe("shadow-sm");
     });
 
     it("Nesting – renders nested items when children array is present", async () => {
