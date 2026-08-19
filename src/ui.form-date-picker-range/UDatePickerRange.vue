@@ -736,7 +736,9 @@ watchEffect(() => {
           :min-date="minDate"
           :max-date="maxDate"
           :attrs="rangePeriodMenuAttrs as unknown as UDatePickerRangePeriodMenuAttrs"
-          :data-test="getDataTest('period-menu')"
+          :get-data-test="
+            (suffix?: string) => getDataTest(suffix ? `period-menu-${suffix}` : 'period-menu')
+          "
           @toggle-menu="isShownMenu = !isShownMenu"
           @close-menu="isShownMenu = false"
           @click-prev="onClickShiftDatesList(ShiftAction.Prev)"
@@ -759,7 +761,9 @@ watchEffect(() => {
           :date-format="dateFormat"
           :config="config"
           :attrs="rangeInputsAttrs as unknown as UDatePickerRangeInputsAttrs"
-          :data-test="getDataTest('range-inputs')"
+          :get-data-test="
+            (suffix?: string) => getDataTest(suffix ? `range-inputs-${suffix}` : 'range-inputs')
+          "
         />
 
         <div

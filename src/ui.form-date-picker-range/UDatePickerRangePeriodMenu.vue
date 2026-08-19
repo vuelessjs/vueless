@@ -22,9 +22,7 @@ import type { DatePeriodRange } from "./utilDateRange";
 
 defineOptions({ internal: true });
 
-const props = withDefaults(defineProps<UDatePickerRangePeriodMenuProps>(), {
-  dataTest: null,
-});
+const props = defineProps<UDatePickerRangePeriodMenuProps>();
 
 const emit = defineEmits(["toggleMenu", "closeMenu", "clickPrev", "clickNext"]);
 
@@ -150,7 +148,7 @@ function getDatePeriodState(date: DatePeriodRange) {
 </script>
 
 <template>
-  <div v-bind="attrs.periodRowAttrs.value" :data-test="dataTest">
+  <div v-bind="attrs.periodRowAttrs.value" :data-test="getDataTest()">
     <template v-for="periodButton in periods" :key="periodButton.name">
       <UButton
         v-if="periodButton.name !== period"
@@ -159,6 +157,7 @@ function getDatePeriodState(date: DatePeriodRange) {
         color="grayscale"
         variant="soft"
         :label="periodButton.title"
+        :data-test="getDataTest(`period-${periodButton.name}`)"
         v-bind="attrs.periodButtonAttrs.value"
         @click="onClickPeriodButton(periodButton.name)"
       />
@@ -170,6 +169,7 @@ function getDatePeriodState(date: DatePeriodRange) {
         color="grayscale"
         variant="soft"
         :label="periodButton.title"
+        :data-test="getDataTest(`period-${periodButton.name}`)"
         v-bind="attrs.periodButtonActiveAttrs.value"
         @click="onClickPeriodButton(periodButton.name)"
       />
@@ -183,6 +183,7 @@ function getDatePeriodState(date: DatePeriodRange) {
       size="xs"
       color="grayscale"
       variant="soft"
+      :data-test="getDataTest('custom-range')"
       v-bind="attrs.customRangeButtonAttrs.value"
       @click="onClickCustomRangeButton"
     >
@@ -200,6 +201,7 @@ function getDatePeriodState(date: DatePeriodRange) {
       size="xs"
       color="grayscale"
       variant="soft"
+      :data-test="getDataTest('custom-range')"
       v-bind="attrs.customRangeButtonAttrs.value"
       @click="onClickCustomRangeButton"
     >
@@ -219,6 +221,7 @@ function getDatePeriodState(date: DatePeriodRange) {
       variant="soft"
       :label="locale.ownRange"
       :left-icon="config.defaults?.ownRangeIcon"
+      :data-test="getDataTest('own-range')"
       v-bind="attrs.periodButtonAttrs.value"
       @click="onClickOwnRange"
     />
@@ -231,6 +234,7 @@ function getDatePeriodState(date: DatePeriodRange) {
       variant="soft"
       :label="locale.ownRange"
       :left-icon="config.defaults?.ownRangeIcon"
+      :data-test="getDataTest('own-range')"
       v-bind="attrs.periodButtonActiveAttrs.value"
       @click="onClickOwnRange"
     />
@@ -244,6 +248,7 @@ function getDatePeriodState(date: DatePeriodRange) {
         color="grayscale"
         variant="ghost"
         :icon="config.defaults?.prevIcon"
+        :data-test="getDataTest('range-switch-prev')"
         v-bind="attrs.rangeSwitchButtonAttrs.value"
         @click="emit('clickPrev')"
       />
@@ -258,6 +263,7 @@ function getDatePeriodState(date: DatePeriodRange) {
         color="grayscale"
         variant="ghost"
         :icon="config.defaults?.nextIcon"
+        :data-test="getDataTest('range-switch-next')"
         v-bind="attrs.rangeSwitchButtonAttrs.value"
         @click="emit('clickNext')"
       />
@@ -265,7 +271,7 @@ function getDatePeriodState(date: DatePeriodRange) {
 
     <div v-if="isDatePeriodOutOfRange" v-bind="attrs.periodDateListAttrs.value">
       <template
-        v-for="date in periodDateList"
+        v-for="(date, index) in periodDateList"
         :key="date.title + date.startRange.toISOString() + date.endRange.toISOString()"
       >
         <UButton
@@ -276,6 +282,7 @@ function getDatePeriodState(date: DatePeriodRange) {
           :disabled="isDatePeriodOutOfRange(date)"
           v-bind="attrs.periodDateCurrentSelectedAttrs.value"
           :label="String(date.title)"
+          :data-test="getDataTest(`period-date-${index}`)"
           @click="(selectDate(date), toggleMenu())"
         />
 
@@ -287,6 +294,7 @@ function getDatePeriodState(date: DatePeriodRange) {
           :disabled="isDatePeriodOutOfRange(date)"
           v-bind="attrs.periodDateSelectedAttrs.value"
           :label="String(date.title)"
+          :data-test="getDataTest(`period-date-${index}`)"
           @click="(selectDate(date), toggleMenu())"
         />
 
@@ -298,6 +306,7 @@ function getDatePeriodState(date: DatePeriodRange) {
           :disabled="isDatePeriodOutOfRange(date)"
           v-bind="attrs.periodDateCurrentAttrs.value"
           :label="String(date.title)"
+          :data-test="getDataTest(`period-date-${index}`)"
           @click="(selectDate(date), toggleMenu())"
         />
 
@@ -309,6 +318,7 @@ function getDatePeriodState(date: DatePeriodRange) {
           :disabled="isDatePeriodOutOfRange(date)"
           v-bind="attrs.periodDateAttrs.value"
           :label="String(date.title)"
+          :data-test="getDataTest(`period-date-${index}`)"
           @click="(selectDate(date), toggleMenu())"
         />
       </template>

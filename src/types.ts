@@ -390,9 +390,11 @@ export interface CVACompoundVariants {
 
 export type MutatedProps = ComputedRef<UnknownObject>;
 
+export type GetDataTest = (suffix?: string) => string | null;
+
 export type UseUI<T> = {
   config: Ref<T & ComponentConfig<T>>;
-  getDataTest: (suffix?: string) => string | null;
+  getDataTest: GetDataTest;
 } & KeysAttrs<T>;
 
 export interface ConfigDerivedData {

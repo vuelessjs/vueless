@@ -162,6 +162,83 @@ describe("UDataList.vue", () => {
       expect(draggableComponent.vm.$attrs.animation).toBe(animationDuration);
     });
 
+    it("Force Fallback – passes forceFallback to draggable", () => {
+      const component = mount(UDataList, {
+        props: {
+          list: defaultList,
+          forceFallback: true,
+        },
+      });
+
+      const draggableComponent = component.findComponent(draggable);
+
+      expect(draggableComponent.vm.$attrs["force-fallback"]).toBe(true);
+    });
+
+    it("Force Fallback – defaults to false", () => {
+      const component = mount(UDataList, {
+        props: {
+          list: defaultList,
+        },
+      });
+
+      const draggableComponent = component.findComponent(draggable);
+
+      expect(draggableComponent.vm.$attrs["force-fallback"]).toBe(false);
+    });
+
+    it("Fallback On Body – passes fallbackOnBody to draggable", () => {
+      const component = mount(UDataList, {
+        props: {
+          list: defaultList,
+          fallbackOnBody: true,
+        },
+      });
+
+      const draggableComponent = component.findComponent(draggable);
+
+      expect(draggableComponent.vm.$attrs["fallback-on-body"]).toBe(true);
+    });
+
+    it("Fallback On Body – defaults to false", () => {
+      const component = mount(UDataList, {
+        props: {
+          list: defaultList,
+        },
+      });
+
+      const draggableComponent = component.findComponent(draggable);
+
+      expect(draggableComponent.vm.$attrs["fallback-on-body"]).toBe(false);
+    });
+
+    it("Fallback Class – passes fallbackClass to draggable", () => {
+      const fallbackClass = "custom-drag-fallback";
+
+      const component = mount(UDataList, {
+        props: {
+          list: defaultList,
+          fallbackClass,
+        },
+      });
+
+      const draggableComponent = component.findComponent(draggable);
+
+      expect(draggableComponent.vm.$attrs["fallback-class"]).toBe(fallbackClass);
+    });
+
+    it("Fallback Class – defaults to shadow-sm", () => {
+      const component = mount(UDataList, {
+        props: {
+          list: defaultList,
+        },
+      });
+
+      const draggableComponent = component.findComponent(draggable);
+
+      expect(draggableComponent.vm.$attrs["fallback-class"]).toBe("shadow-sm");
+    });
+
     it("Nesting – renders nested items when children array is present", async () => {
       const component = mount(UDataList, {
         props: {

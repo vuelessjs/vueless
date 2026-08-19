@@ -7,8 +7,10 @@ const __dirname = dirname(__filename);
 
 // Plugins
 import Vue from "@vitejs/plugin-vue";
-import { Vueless, TailwindCSS } from "vueless/plugin-vite.js";
-import { INTERNAL_ENV } from "vueless/constants.js";
+/* Imported via a relative path (not the `vueless` alias) so Storybook's config
+   loader can resolve them while the symlinked `vueless` package is bundled. */
+import { Vueless, TailwindCSS } from "../src/plugin-vite.js";
+import { INTERNAL_ENV } from "../src/constants.js";
 
 export default defineConfig({
   plugins: [Vue(), TailwindCSS(), Vueless({ env: INTERNAL_ENV })],

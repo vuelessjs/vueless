@@ -204,6 +204,7 @@ export async function buildTSFile(entryPath, configOutFile) {
     output: {
       file: configOutFile,
       format: "esm",
+      codeSplitting: false,
     },
   });
 }
