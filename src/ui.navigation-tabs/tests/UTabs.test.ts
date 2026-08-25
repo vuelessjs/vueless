@@ -8,6 +8,25 @@ import UButton from "../../ui.button/UButton.vue";
 
 import type { Props, UTabsOption } from "../types";
 
+function dispatchPointer(
+  target: EventTarget,
+  type: "pointerdown" | "pointermove" | "pointerup",
+  clientX: number,
+  extra: PointerEventInit = {},
+) {
+  target.dispatchEvent(
+    new PointerEvent(type, {
+      bubbles: true,
+      cancelable: true,
+      clientX,
+      clientY: 0,
+      pointerId: 1,
+      pointerType: "mouse",
+      ...extra,
+    }),
+  );
+}
+
 describe("UTabs.vue", () => {
   // Global options definition
   const options: UTabsOption[] = [
@@ -163,18 +182,8 @@ describe("UTabs.vue", () => {
         },
       });
 
-      await tabsContainer.trigger("pointerdown", { clientX: 200, clientY: 0, button: 0 });
-
-      document.dispatchEvent(
-        new PointerEvent("pointermove", {
-          clientX: 120,
-          clientY: 0,
-          bubbles: true,
-          cancelable: true,
-          buttons: 1,
-          pointerType: "mouse",
-        }),
-      );
+      dispatchPointer(element, "pointerdown", 200, { button: 0 });
+      dispatchPointer(document, "pointermove", 120, { buttons: 1 });
 
       await nextTick();
 
@@ -182,7 +191,7 @@ describe("UTabs.vue", () => {
       expect(tabsContainer.classes()).toContain("cursor-move");
       expect(tabsContainer.classes()).toContain("icon-drag");
 
-      document.dispatchEvent(new PointerEvent("pointerup", { bubbles: true }));
+      dispatchPointer(document, "pointerup", 120);
     });
 
     it("Scrollable – does not select a tab after a drag gesture", async () => {
@@ -210,20 +219,9 @@ describe("UTabs.vue", () => {
         value: 0,
       });
 
-      await tabsContainer.trigger("pointerdown", { clientX: 200, clientY: 0, button: 0 });
-
-      document.dispatchEvent(
-        new PointerEvent("pointermove", {
-          clientX: 120,
-          clientY: 0,
-          bubbles: true,
-          cancelable: true,
-          buttons: 1,
-          pointerType: "mouse",
-        }),
-      );
-
-      document.dispatchEvent(new PointerEvent("pointerup", { bubbles: true }));
+      dispatchPointer(element, "pointerdown", 200, { button: 0 });
+      dispatchPointer(document, "pointermove", 120, { buttons: 1 });
+      dispatchPointer(document, "pointerup", 120);
 
       await component.findAllComponents(UTab)[1].trigger("click");
 
