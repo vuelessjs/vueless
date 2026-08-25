@@ -1,3 +1,4 @@
+import { nextTick } from "vue";
 import { mount } from "@vue/test-utils";
 import { describe, it, expect } from "vitest";
 
@@ -132,6 +133,101 @@ describe("UTabs.vue", () => {
 
       expect(prevButton).toBeDefined();
       expect(nextButton).toBeDefined();
+    });
+
+    it("Scrollable – scrolls the tab list on pointer drag", async () => {
+      const manyOptions: UTabsOption[] = Array.from({ length: 10 }, (_, i) => ({
+        value: `tab${i}`,
+        label: `Tab ${i}`,
+      }));
+
+      const component = mount(UTabs, {
+        props: {
+          options: manyOptions,
+          scrollable: true,
+        },
+      });
+
+      const tabsContainer = component.find(`[vl-key="tabs"]`);
+      const element = tabsContainer.element;
+
+      let scrollLeft = 0;
+
+      Object.defineProperty(element, "scrollWidth", { configurable: true, value: 1000 });
+      Object.defineProperty(element, "clientWidth", { configurable: true, value: 300 });
+      Object.defineProperty(element, "scrollLeft", {
+        configurable: true,
+        get: () => scrollLeft,
+        set: (value: number) => {
+          scrollLeft = value;
+        },
+      });
+
+      await tabsContainer.trigger("pointerdown", { clientX: 200, clientY: 0, button: 0 });
+
+      document.dispatchEvent(
+        new PointerEvent("pointermove", {
+          clientX: 120,
+          clientY: 0,
+          bubbles: true,
+          cancelable: true,
+          buttons: 1,
+          pointerType: "mouse",
+        }),
+      );
+
+      await nextTick();
+
+      expect(scrollLeft).toBe(80);
+      expect(tabsContainer.classes()).toContain("cursor-move");
+      expect(tabsContainer.classes()).toContain("icon-drag");
+
+      document.dispatchEvent(new PointerEvent("pointerup", { bubbles: true }));
+    });
+
+    it("Scrollable – does not select a tab after a drag gesture", async () => {
+      const manyOptions: UTabsOption[] = Array.from({ length: 10 }, (_, i) => ({
+        value: `tab${i}`,
+        label: `Tab ${i}`,
+      }));
+
+      const component = mount(UTabs, {
+        props: {
+          options: manyOptions,
+          modelValue: "tab0",
+          scrollable: true,
+        },
+      });
+
+      const tabsContainer = component.find(`[vl-key="tabs"]`);
+      const element = tabsContainer.element;
+
+      Object.defineProperty(element, "scrollWidth", { configurable: true, value: 1000 });
+      Object.defineProperty(element, "clientWidth", { configurable: true, value: 300 });
+      Object.defineProperty(element, "scrollLeft", {
+        configurable: true,
+        writable: true,
+        value: 0,
+      });
+
+      await tabsContainer.trigger("pointerdown", { clientX: 200, clientY: 0, button: 0 });
+
+      document.dispatchEvent(
+        new PointerEvent("pointermove", {
+          clientX: 120,
+          clientY: 0,
+          bubbles: true,
+          cancelable: true,
+          buttons: 1,
+          pointerType: "mouse",
+        }),
+      );
+
+      document.dispatchEvent(new PointerEvent("pointerup", { bubbles: true }));
+
+      await component.findAllComponents(UTab)[1].trigger("click");
+
+      expect(component.emitted("update:modelValue")).toBeFalsy();
     });
 
     it("Block – provides block value to tabs", () => {

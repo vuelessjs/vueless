@@ -89,6 +89,13 @@ Scrollable.args = {
   options: getOptionsArray(),
   scrollable: true,
 };
+Scrollable.parameters = {
+  docs: {
+    description: {
+      story: "Scroll overflowing tabs with the arrow buttons or by dragging the tab list.",
+    },
+  },
+};
 
 export const Block = DefaultTemplate.bind({});
 Block.args = { block: true };

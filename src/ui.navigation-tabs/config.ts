@@ -4,10 +4,11 @@ export default /*tw*/ {
     base: "flex border-b border-default w-full",
     variants: {
       scrollable: {
-        true: "overflow-hidden flex-nowrap scroll-smooth",
+        true: "overflow-hidden flex-nowrap scroll-smooth touch-pan-y select-none",
       },
     },
   },
+  drag: "icon-drag cursor-move scroll-auto! *:pointer-events-none",
   tab: "{UTab}",
   prev: "",
   next: "",
