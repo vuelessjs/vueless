@@ -31,6 +31,7 @@ import UEmpty from "../ui.container-empty/UEmpty.vue";
 import UCheckbox from "../ui.form-checkbox/UCheckbox.vue";
 import ULoaderProgress from "../ui.loader-progress/ULoaderProgress.vue";
 import UDivider from "../ui.container-divider/UDivider.vue";
+import USkeleton from "../ui.skeleton/USkeleton.vue";
 import UTableRow from "./UTableRow.vue";
 
 import type { ComputedRef, VNode } from "vue";
@@ -58,6 +59,7 @@ const props = withDefaults(defineProps<Props>(), {
   dateDivider: () => [],
   selectedRows: () => [],
   expandedRows: () => [],
+  skeletonWidths: () => defaultConfig.defaults.skeletonWidths,
 });
 
 const emit = defineEmits([
@@ -206,7 +208,9 @@ const isCheckedMoreOneTableItems = computed(() => {
   return Boolean(localSelectedRows.value.length);
 });
 
-const tableRowWidthStyle = computed(() => ({ width: `${tableWidth.value / PX_IN_REM}rem` }));
+const tableRowWidthStyle = computed(() => ({
+  width: `${tableWidth.value / PX_IN_REM}rem`,
+}));
 
 const flatTableRows = computed(() => getFlatRows(props.rows));
 
@@ -214,6 +218,18 @@ const visibleFlatRows = computed(() => {
   const expanded = expandedRowsSet.value;
 
   return flatTableRows.value.filter((row) => !row.parentRowId || expanded.has(row.parentRowId));
+});
+
+const showSkeletonLoading = computed(() => {
+  return props.skeletonLoading && !sortedRows.value.length;
+});
+
+const progressLoading = computed(() => {
+  return showSkeletonLoading.value ? false : props.loading;
+});
+
+const skeletonRowIndexes = computed(() => {
+  return Array.from({ length: props.skeletonRows }, (_, index) => index);
 });
 
 const virtualScroll = useVirtualScroll({
@@ -241,6 +257,10 @@ const renderedRows = computed(() => {
 
 function isRowVisible(row: FlatRow): boolean {
   return !row.parentRowId || expandedRowsSet.value.has(row.parentRowId);
+}
+
+function getSkeletonWidthClass(columnIndex: number, rowIndex: number): string {
+  return props.skeletonWidths[(columnIndex + rowIndex) % props.skeletonWidths.length];
 }
 
 const searchMatches = computed<SearchMatch[]>(() => {
@@ -663,7 +683,9 @@ function getDateDividerData(rowDate: string | Date | undefined) {
 function setFooterCellWidth(zero?: null) {
   const ZERO_WIDTH = 0;
 
-  if (!props.stickyFooter || !footerRowRef.value || !stickyFooterRowRef.value) return;
+  if (!props.stickyFooter || !footerRowRef.value || !stickyFooterRowRef.value) {
+    return;
+  }
 
   const mainFooterItems = [...footerRowRef.value.children] as HTMLElement[];
   const stickyFooterItems = [...stickyFooterRowRef.value.children] as HTMLElement[];
@@ -889,7 +911,7 @@ function getDateDividerConfig(row: Row, isSelected: boolean) {
     : bodyDateDividerAttrs.value.config;
 
   return getMergedConfig({
-    defaultConfig: defaultConfig,
+    defaultConfig,
     globalConfig: getDateDividerData(row.rowDate).config,
   }) as UDividerConfig;
 }
@@ -917,7 +939,9 @@ function getRowSearchMatchColumns(row: FlatRow): Set<string> | undefined {
 }
 
 function getRowActiveSearchMatchColumn(row: FlatRow): string | undefined {
-  if (!activeMatch.value || activeMatch.value.rowId !== row.id) return undefined;
+  if (!activeMatch.value || activeMatch.value.rowId !== row.id) {
+    return;
+  }
 
   return activeMatch.value.columnKey;
 }
@@ -1036,6 +1060,8 @@ const {
   bodyCellSearchMatchTextAttrs,
   bodyCellSearchMatchActiveAttrs,
   bodyCellSearchMatchTextActiveAttrs,
+  skeletonCellAttrs,
+  skeletonCheckboxAttrs,
 } = useUI<Config>(defaultConfig, mutatedProps);
 
 /* Plain object — inner refs are already reactive. */
@@ -1171,7 +1197,7 @@ function renderRowTemplate(row: FlatRow, rowIndex: number): VNode[] {
         </template>
       </div>
 
-      <ULoaderProgress :loading="loading" v-bind="stickyHeaderLoaderAttrs" />
+      <ULoaderProgress :loading="progressLoading" v-bind="stickyHeaderLoaderAttrs" />
     </div>
 
     <div
@@ -1203,7 +1229,7 @@ function renderRowTemplate(row: FlatRow, rowIndex: number): VNode[] {
       -->
       <slot name="header-actions" :selected-rows="localSelectedRows" />
 
-      <ULoaderProgress :loading="loading" v-bind="stickyHeaderLoaderAttrs" />
+      <ULoaderProgress :loading="progressLoading" v-bind="stickyHeaderLoaderAttrs" />
     </div>
 
     <div
@@ -1235,7 +1261,7 @@ function renderRowTemplate(row: FlatRow, rowIndex: number): VNode[] {
       -->
       <slot name="header-actions" :selected-rows="localSelectedRows" />
 
-      <ULoaderProgress :loading="loading" v-bind="stickyHeaderLoaderAttrs" />
+      <ULoaderProgress :loading="progressLoading" v-bind="stickyHeaderLoaderAttrs" />
     </div>
 
     <div ref="table-wrapper" v-bind="tableWrapperAttrs" @scroll="virtualScroll.onScroll">
@@ -1293,7 +1319,12 @@ function renderRowTemplate(row: FlatRow, rowIndex: number): VNode[] {
                 @binding {number} index
               -->
               <slot
-                v-if="hasSlotContent($slots[`header-${column.key}`], { column, index })"
+                v-if="
+                  hasSlotContent($slots[`header-${column.key}`], {
+                    column,
+                    index,
+                  })
+                "
                 :name="`header-${column.key}`"
                 :column="column"
                 :index="index"
@@ -1305,7 +1336,7 @@ function renderRowTemplate(row: FlatRow, rowIndex: number): VNode[] {
             </th>
           </tr>
 
-          <ULoaderProgress :loading="loading" v-bind="headerLoaderAttrs" />
+          <ULoaderProgress :loading="progressLoading" v-bind="headerLoaderAttrs" />
         </thead>
 
         <tbody
@@ -1353,6 +1384,30 @@ function renderRowTemplate(row: FlatRow, rowIndex: number): VNode[] {
               :cols-count="colsCount"
               :classes="bodyCellBaseAttrs.class"
             />
+          </tr>
+        </tbody>
+
+        <tbody v-else-if="showSkeletonLoading" v-bind="bodyAttrs">
+          <tr
+            v-for="rowIndex in skeletonRowIndexes"
+            :key="`skeleton-row-${rowIndex}`"
+            v-bind="bodyRowAttrs"
+          >
+            <td v-if="selectable" v-bind="bodyCellCheckboxAttrs">
+              <USkeleton v-bind="skeletonCheckboxAttrs" />
+            </td>
+
+            <td
+              v-for="(column, columnIndex) in visibleColumns"
+              :key="`${column.key}-skeleton-${rowIndex}`"
+              v-bind="bodyCellBaseAttrs"
+              :style="getStickyColumnStyle(column)"
+            >
+              <USkeleton
+                v-bind="skeletonCellAttrs"
+                :class="getSkeletonWidthClass(columnIndex, rowIndex)"
+              />
+            </td>
           </tr>
         </tbody>
 

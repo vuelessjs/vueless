@@ -182,6 +182,36 @@ Loading.parameters = {
   },
 };
 
+export const SkeletonLoading = DefaultTemplate.bind({});
+SkeletonLoading.args = {
+  rows: [],
+  skeletonLoading: true,
+};
+SkeletonLoading.parameters = {
+  docs: {
+    description: {
+      story:
+        "Use `skeletonLoading` while the first request is pending. The table keeps its structure " +
+        "and renders cell skeletons instead of the empty state.",
+    },
+  },
+};
+
+export const SkeletonLoadingConfigured = DefaultTemplate.bind({});
+SkeletonLoadingConfigured.args = {
+  rows: [],
+  skeletonLoading: true,
+  skeletonRows: 3,
+  skeletonWidths: ["w-11/12", "w-2/3", "w-1/2"],
+};
+SkeletonLoadingConfigured.parameters = {
+  docs: {
+    description: {
+      story: "Configure skeleton row count and cell widths for a single table with props.",
+    },
+  },
+};
+
 export const EmptyCellLabel = DefaultTemplate.bind({});
 EmptyCellLabel.args = {
   emptyCellLabel: "NO DATA",

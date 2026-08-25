@@ -7,6 +7,7 @@ import UTableRow from "../UTableRow.vue";
 import UEmpty from "../../ui.container-empty/UEmpty.vue";
 import ULoaderProgress from "../../ui.loader-progress/ULoaderProgress.vue";
 import UDivider from "../../ui.container-divider/UDivider.vue";
+import USkeleton from "../../ui.skeleton/USkeleton.vue";
 import {
   LoaderProgressSymbol,
   createLoaderProgress,
@@ -149,6 +150,29 @@ describe("UTable.vue", () => {
       expect(emptyComponent.exists()).toBe(true);
     });
 
+    it("Skeleton loading – renders skeleton body instead of empty state", () => {
+      const component = mountUTable(getDefaultProps({ rows: [], skeletonLoading: true }));
+
+      expect(component.findComponent(UEmpty).exists()).toBe(false);
+      expect(component.findAllComponents(USkeleton).length).toBeGreaterThan(0);
+      expect(component.find("table").exists()).toBe(true);
+    });
+
+    it("Skeleton loading – applies skeleton rows and widths from props", () => {
+      const component = mountUTable(
+        getDefaultProps({
+          rows: [],
+          skeletonLoading: true,
+          skeletonRows: 2,
+          skeletonWidths: ["w-1/3"],
+        }),
+      );
+
+      expect(component.findAll("tbody tr")).toHaveLength(2);
+      expect(component.findAllComponents(USkeleton)).toHaveLength(defaultColumns.length * 2);
+      expect(component.findComponent(USkeleton).classes()).toContain("w-1/3");
+    });
+
     it("Selectable – renders select all checkbox when selectable is true", () => {
       const component = mountUTable(getDefaultProps({ selectable: true }));
 
@@ -215,6 +239,20 @@ describe("UTable.vue", () => {
 
     it("Loading – hides loader when loading is false", () => {
       const component = mountUTable(getDefaultProps({ loading: false }));
+
+      const loader = component.findComponent(ULoaderProgress);
+
+      expect(loader.props("loading")).toBe(false);
+    });
+
+    it("Skeleton loading – hides progress loader while skeleton is shown", () => {
+      const component = mountUTable(
+        getDefaultProps({
+          rows: [],
+          loading: true,
+          skeletonLoading: true,
+        }),
+      );
 
       const loader = component.findComponent(ULoaderProgress);
 
@@ -644,7 +682,14 @@ describe("UTable.vue", () => {
           name: "Parent Row",
           email: "parent@example.com",
           role: "Admin",
-          row: [{ id: "1-1", name: "Child", email: "child@example.com", role: "User" }],
+          row: [
+            {
+              id: "1-1",
+              name: "Child",
+              email: "child@example.com",
+              role: "User",
+            },
+          ],
         },
       ];
 
@@ -710,7 +755,14 @@ describe("UTable.vue", () => {
           name: "Parent Row",
           email: "parent@example.com",
           role: "Admin",
-          row: [{ id: "1-1", name: "Child", email: "child@example.com", role: "User" }],
+          row: [
+            {
+              id: "1-1",
+              name: "Child",
+              email: "child@example.com",
+              role: "User",
+            },
+          ],
         },
       ];
 
@@ -792,7 +844,14 @@ describe("UTable.vue", () => {
         name: "Parent Row",
         email: "parent@example.com",
         role: "Admin",
-        row: [{ id: "1-1", name: "Child", email: "child@example.com", role: "User" }],
+        row: [
+          {
+            id: "1-1",
+            name: "Child",
+            email: "child@example.com",
+            role: "User",
+          },
+        ],
       };
 
       const component = mountUTable(getDefaultProps({ rows: [expandableRow] }));
@@ -813,7 +872,14 @@ describe("UTable.vue", () => {
         name: "Parent Row",
         email: "parent@example.com",
         role: "Admin",
-        row: [{ id: "1-1", name: "Child", email: "child@example.com", role: "User" }],
+        row: [
+          {
+            id: "1-1",
+            name: "Child",
+            email: "child@example.com",
+            role: "User",
+          },
+        ],
       };
 
       const component = mountUTable(
@@ -879,7 +945,12 @@ describe("UTable.vue", () => {
               email: "child1@example.com",
               role: "User",
               row: [
-                { id: "1-1-1", name: "Grandchild", email: "grandchild@example.com", role: "Guest" },
+                {
+                  id: "1-1-1",
+                  name: "Grandchild",
+                  email: "grandchild@example.com",
+                  role: "Guest",
+                },
               ],
             },
           ],
@@ -902,7 +973,14 @@ describe("UTable.vue", () => {
         name: "Parent Row",
         email: "parent@example.com",
         role: "Admin",
-        row: [{ id: "1-1", name: "Child", email: "child@example.com", role: "User" }],
+        row: [
+          {
+            id: "1-1",
+            name: "Child",
+            email: "child@example.com",
+            role: "User",
+          },
+        ],
       };
 
       const component = mountUTable(getDefaultProps({ rows: [expandableRow] }));

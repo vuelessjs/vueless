@@ -1,5 +1,4 @@
 import defaultConfig from "./config";
-
 import type { Ref } from "vue";
 import type { ComponentConfig, UnknownObject } from "../types";
 import type { Config as UDividerConfig } from "../ui.container-divider/types";
@@ -116,6 +115,21 @@ export interface Props {
    * Set table loader state.
    */
   loading?: boolean;
+
+  /**
+   * Show skeleton body for the first table load instead of the regular loader.
+   */
+  skeletonLoading?: boolean;
+
+  /**
+   * Number of skeleton rows shown during initial loading.
+   */
+  skeletonRows?: number;
+
+  /**
+   * Skeleton cell width classes used to vary the loading placeholder layout.
+   */
+  skeletonWidths?: string[];
 
   /**
    * Enable virtual scrolling for large datasets.
