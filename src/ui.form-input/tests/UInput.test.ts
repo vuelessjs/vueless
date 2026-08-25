@@ -302,6 +302,22 @@ describe("UInput.vue", () => {
 
       expect(component.get("input").attributes("data-test")).toBe(dataTestValue);
     });
+
+    it("Data Test – forwards data-test to the label so the error block is targetable", () => {
+      const dataTestValue = "test-input";
+
+      const component = mount(UInput, {
+        props: {
+          dataTest: dataTestValue,
+          error: "This is an error",
+        },
+      });
+
+      const errorElement = component.find(`[data-test="${dataTestValue}-label-error"]`);
+
+      expect(errorElement.exists()).toBe(true);
+      expect(errorElement.text()).toBe("This is an error");
+    });
   });
 
   describe("Slots", () => {
