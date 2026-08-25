@@ -9,11 +9,6 @@ import type { Props } from "../types";
 describe("UDrawer", () => {
   const modelValue = true;
 
-  // Wait for an async component to load
-  function sleep(ms: number = 0) {
-    return new Promise((resolve) => setTimeout(resolve, ms));
-  }
-
   // Props tests
   describe("Props", () => {
     it("ModelValue – renders when true", () => {
@@ -150,10 +145,10 @@ describe("UDrawer", () => {
       expect(innerWrapper.attributes("class")).toContain(expectedClass);
     });
 
-    it("CloseOnOverlay – closes drawer when overlay is clicked", () => {
+    it("CloseOnOverlay – closes drawer when overlay is clicked", async () => {
       const closeOnOverlay = [true, false];
 
-      closeOnOverlay.forEach(async (value) => {
+      for (const value of closeOnOverlay) {
         const component = mount(UDrawer, {
           props: {
             modelValue,
@@ -167,18 +162,17 @@ describe("UDrawer", () => {
 
         await innerWrapper.trigger("mousedown");
         await innerWrapper.trigger("click");
-        await sleep(1000);
 
-        const drawer = component.find('[vl-key="drawer"]');
+        const closeRequests = component.emitted("update:modelValue");
 
-        expect(drawer.exists()).toBe(!value);
-      });
+        expect(value ? closeRequests?.at(-1) : closeRequests).toEqual(value ? [false] : undefined);
+      }
     });
 
-    it("CloseOnEsc – closes drawer when escape key is pressed", () => {
+    it("CloseOnEsc – closes drawer when escape key is pressed", async () => {
       const closeOnEsc = [true, false];
 
-      closeOnEsc.forEach(async (value) => {
+      for (const value of closeOnEsc) {
         const component = mount(UDrawer, {
           props: {
             modelValue,
@@ -189,12 +183,11 @@ describe("UDrawer", () => {
         const wrapper = component.find("[vl-key='wrapper']");
 
         await wrapper.trigger("keydown", { key: "Escape" });
-        await sleep(1000);
 
-        const drawer = component.find('[vl-key="drawer"]');
+        const closeRequests = component.emitted("update:modelValue");
 
-        expect(drawer.exists()).toBe(!value);
-      });
+        expect(value ? closeRequests?.at(-1) : closeRequests).toEqual(value ? [false] : undefined);
+      }
     });
 
     it("DataTest – applies the correct data-test attribute", () => {
