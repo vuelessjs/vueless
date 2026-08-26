@@ -4,7 +4,7 @@ export default /*tw*/ {
     base: "flex border-b border-default w-full",
     variants: {
       scrollable: {
-        true: "overflow-hidden flex-nowrap scroll-smooth touch-pan-y select-none",
+        true: "overflow-hidden flex-nowrap touch-pan-y select-none",
       },
     },
   },

@@ -174,9 +174,29 @@ function onClickCapture(event: MouseEvent) {
   clearSuppressClickTimer();
 }
 
+function getHorizontalWheelDelta(event: WheelEvent) {
+  if (Math.abs(event.deltaX) >= Math.abs(event.deltaY)) {
+    return event.deltaX;
+  }
+
+  return event.shiftKey ? event.deltaY : 0;
+}
+
+function onWheel(event: WheelEvent) {
+  if (!props.scrollable || !scrollContainerRef.value || !isScrollableOverflow()) return;
+
+  const deltaX = getHorizontalWheelDelta(event);
+
+  if (!deltaX) return;
+
+  event.preventDefault();
+  scrollContainerRef.value.scrollLeft += deltaX;
+}
+
 onMounted(() => {
   if (scrollContainerRef.value) {
     scrollContainerRef.value.addEventListener("scroll", checkScroll, { passive: true });
+    scrollContainerRef.value.addEventListener("wheel", onWheel, { passive: false });
 
     checkScroll();
   }
@@ -189,6 +209,7 @@ onUnmounted(() => {
 
   if (scrollContainerRef.value) {
     scrollContainerRef.value.removeEventListener("scroll", checkScroll);
+    scrollContainerRef.value.removeEventListener("wheel", onWheel);
   }
 });
 

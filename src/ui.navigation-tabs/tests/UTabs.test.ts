@@ -114,7 +114,7 @@ describe("UTabs.vue", () => {
       const tabsContainer = component.find(`[vl-key="tabs"]`);
 
       // Check that the container has the scrollable class
-      expect(tabsContainer.classes()).toContain("scroll-smooth");
+      expect(tabsContainer.classes()).toContain("overflow-hidden");
     });
 
     it("Scroll – shows scroll buttons when scrollable and content overflows", async () => {
@@ -226,6 +226,124 @@ describe("UTabs.vue", () => {
       await component.findAllComponents(UTab)[1].trigger("click");
 
       expect(component.emitted("update:modelValue")).toBeFalsy();
+    });
+
+    it("Scrollable – scrolls the tab list on horizontal wheel", () => {
+      const manyOptions: UTabsOption[] = Array.from({ length: 10 }, (_, i) => ({
+        value: `tab${i}`,
+        label: `Tab ${i}`,
+      }));
+
+      const component = mount(UTabs, {
+        props: {
+          options: manyOptions,
+          scrollable: true,
+        },
+      });
+
+      const element = component.find(`[vl-key="tabs"]`).element;
+
+      let scrollLeft = 0;
+
+      Object.defineProperty(element, "scrollWidth", { configurable: true, value: 1000 });
+      Object.defineProperty(element, "clientWidth", { configurable: true, value: 300 });
+      Object.defineProperty(element, "scrollLeft", {
+        configurable: true,
+        get: () => scrollLeft,
+        set: (value: number) => {
+          scrollLeft = value;
+        },
+      });
+
+      element.dispatchEvent(
+        new WheelEvent("wheel", {
+          deltaX: 40,
+          deltaY: 0,
+          bubbles: true,
+          cancelable: true,
+        }),
+      );
+
+      expect(scrollLeft).toBe(40);
+    });
+
+    it("Scrollable – does not scroll the tab list on vertical wheel", () => {
+      const manyOptions: UTabsOption[] = Array.from({ length: 10 }, (_, i) => ({
+        value: `tab${i}`,
+        label: `Tab ${i}`,
+      }));
+
+      const component = mount(UTabs, {
+        props: {
+          options: manyOptions,
+          scrollable: true,
+        },
+      });
+
+      const element = component.find(`[vl-key="tabs"]`).element;
+
+      let scrollLeft = 0;
+
+      Object.defineProperty(element, "scrollWidth", { configurable: true, value: 1000 });
+      Object.defineProperty(element, "clientWidth", { configurable: true, value: 300 });
+      Object.defineProperty(element, "scrollLeft", {
+        configurable: true,
+        get: () => scrollLeft,
+        set: (value: number) => {
+          scrollLeft = value;
+        },
+      });
+
+      element.dispatchEvent(
+        new WheelEvent("wheel", {
+          deltaX: 0,
+          deltaY: 40,
+          bubbles: true,
+          cancelable: true,
+        }),
+      );
+
+      expect(scrollLeft).toBe(0);
+    });
+
+    it("Scrollable – scrolls the tab list on shift+wheel", () => {
+      const manyOptions: UTabsOption[] = Array.from({ length: 10 }, (_, i) => ({
+        value: `tab${i}`,
+        label: `Tab ${i}`,
+      }));
+
+      const component = mount(UTabs, {
+        props: {
+          options: manyOptions,
+          scrollable: true,
+        },
+      });
+
+      const element = component.find(`[vl-key="tabs"]`).element;
+
+      let scrollLeft = 0;
+
+      Object.defineProperty(element, "scrollWidth", { configurable: true, value: 1000 });
+      Object.defineProperty(element, "clientWidth", { configurable: true, value: 300 });
+      Object.defineProperty(element, "scrollLeft", {
+        configurable: true,
+        get: () => scrollLeft,
+        set: (value: number) => {
+          scrollLeft = value;
+        },
+      });
+
+      element.dispatchEvent(
+        new WheelEvent("wheel", {
+          deltaX: 0,
+          deltaY: 40,
+          shiftKey: true,
+          bubbles: true,
+          cancelable: true,
+        }),
+      );
+
+      expect(scrollLeft).toBe(40);
     });
 
     it("Block – provides block value to tabs", () => {

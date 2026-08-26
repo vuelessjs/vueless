@@ -92,7 +92,8 @@ Scrollable.args = {
 Scrollable.parameters = {
   docs: {
     description: {
-      story: "Scroll overflowing tabs with the arrow buttons or by dragging the tab list.",
+      story:
+        "Scroll overflowing tabs with the arrow buttons, by dragging the tab list, or with horizontal wheel.",
     },
   },
 };
