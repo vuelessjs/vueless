@@ -149,6 +149,20 @@ describe("UTab.vue", () => {
 
   // Active state tests
   describe("Active state", () => {
+    it("Active – applies active classes when rendered without UTabs", () => {
+      const expectedClass = "border-primary";
+
+      const component = mount(UTab, {
+        props: {
+          label: "Tab Item",
+        },
+      });
+
+      const button = component.findComponent(UButton);
+
+      expect(button.attributes("class")).toContain(expectedClass);
+    });
+
     it("Active – applies active classes when tab is selected", () => {
       const value = "tab1";
       const expectedClass = "border-primary";
