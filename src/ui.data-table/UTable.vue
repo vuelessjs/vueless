@@ -1064,7 +1064,7 @@ const {
   skeletonCheckboxAttrs,
 } = useUI<Config>(defaultConfig, mutatedProps);
 
-/* Plain object — inner refs are already reactive. */
+/* Plain object — inner refs are already reactive and identity-stable (see useUI). */
 const tableRowAttrs = {
   bodyCellContentAttrs,
   bodyCellCheckboxAttrs,
@@ -1111,8 +1111,40 @@ function renderDateDividerRow(row: FlatRow, rowIndex: number): VNode | null {
   ]);
 }
 
+/**
+ * Per-row VNode memo cache. Toggling one checkbox invalidates the `selectedRowIds`
+ * computed, which re-runs the body render function. Without memoization every row's
+ * VNode would be rebuilt and diffed on each toggle (200+ rows → visible lag). We cache
+ * each row's VNode keyed by row id and only rebuild it when an input that actually
+ * affects that row changes — so an unrelated row keeps the same VNode reference and
+ * Vue skips it entirely during patch.
+ */
+const rowVNodeCache = new Map<RowId, { signature: string; row: FlatRow; vnode: VNode }>();
+
+function getRowSignature(row: FlatRow, rowIndex: number): string {
+  return [
+    rowIndex,
+    Number(isRowSelected(row)),
+    Number(expandedRowsSet.value.has(row.id)),
+    Number(isRowVisible(row)),
+    props.selectable ? 1 : 0,
+    props.search || "",
+    getRowActiveSearchMatchColumn(row) || "",
+    [...(getRowSearchMatchColumns(row) || [])].join(","),
+  ].join("|");
+}
+
 function renderTableRow(row: FlatRow, rowIndex: number): VNode {
-  return h(
+  const signature = getRowSignature(row, rowIndex);
+  const cached = rowVNodeCache.get(row.id);
+
+  // `row` identity guards against stale data: `flatTableRows` yields fresh row
+  // objects whenever `props.rows` changes, so a new reference means new cell data.
+  if (cached && cached.row === row && cached.signature === signature) {
+    return cached.vnode;
+  }
+
+  const vnode = h(
     UTableRow,
     {
       key: row.id,
@@ -1138,13 +1170,48 @@ function renderTableRow(row: FlatRow, rowIndex: number): VNode {
     } as unknown as UTableRowProps,
     slots,
   );
+
+  rowVNodeCache.set(row.id, { signature, row, vnode });
+
+  return vnode;
 }
+
+/* Column layout / config changes affect every row — invalidate the whole cache. */
+watch(
+  [
+    normalizedColumns,
+    config,
+    columnPositions,
+    () => props.textEllipsis,
+    () => props.emptyCellLabel,
+  ],
+  () => rowVNodeCache.clear(),
+);
+
+/* Drop cache entries for rows that no longer exist (filters, pagination reset). */
+watch(flatTableRows, (rows) => {
+  const liveIds = new Set(rows.map((row) => row.id));
+
+  for (const id of rowVNodeCache.keys()) {
+    if (!liveIds.has(id)) rowVNodeCache.delete(id);
+  }
+});
 
 function renderRowTemplate(row: FlatRow, rowIndex: number): VNode[] {
   return [renderDateDividerRow(row, rowIndex), renderTableRow(row, rowIndex)].filter(
     Boolean,
   ) as VNode[];
 }
+
+/**
+ * Stable functional component for the body rows. Defined once so its type
+ * identity never changes across parent re-renders — a previous inline `:is`
+ * arrow created a new type on every render, forcing Vue to unmount and rebuild
+ * the entire tbody (e.g. on a sticky-header toggle). Reading `renderedRows`
+ * through the closure keeps it reactive while row keys drive reconciliation.
+ */
+const BodyRows = () =>
+  renderedRows.value.map((row, rowIndex) => renderRowTemplate(row, rowIndex)).flat();
 </script>
 
 <template>
@@ -1362,9 +1429,7 @@ function renderRowTemplate(row: FlatRow, rowIndex: number): VNode[] {
             />
           </tr>
 
-          <component
-            :is="() => renderedRows.map((row, rowIndex) => renderRowTemplate(row, rowIndex)).flat()"
-          />
+          <component :is="BodyRows" />
 
           <tr v-if="props.virtualScroll && virtualScroll.bottomSpacerHeight.value > 0">
             <td

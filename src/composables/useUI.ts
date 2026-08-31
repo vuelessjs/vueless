@@ -228,6 +228,16 @@ export function useUI<T>(defaultConfig: T, mutatedProps?: MutatedProps, topLevel
     const keysAttrs: KeysAttrs<T> = {};
     const attrsRefs: Record<string, Ref<KeyAttrs>> = {};
 
+    /**
+     * Structural signature per key. The watcher below fires on any config/prop/class
+     * change and would otherwise re-mint every key's attrs object — even keys whose
+     * classes are identical — invalidating downstream reactive readers (e.g. every
+     * body row of a table on an unrelated sticky toggle). We skip the `.value` write
+     * when the new object is structurally equal to the last one, so the ref keeps its
+     * identity and dependents are not re-rendered.
+     */
+    const attrsSignatures: Record<string, string> = {};
+
     for (const key in config.value) {
       if (isSystemKey(key)) continue;
 
@@ -266,12 +276,20 @@ export function useUI<T>(defaultConfig: T, mutatedProps?: MutatedProps, topLevel
           /* Delete value key to prevent v-model overwrite. */
           delete commonAttrs.value;
 
-          attrsRefs[key].value = {
+          const nextValue: KeyAttrs = {
             ...commonAttrs,
             class: cx([...data.extendsClasses, classes, commonAttrs.class]),
             config: data.mergedNestedConfig,
             ...data.mergedDefaults,
           };
+
+          /* Keep the previous ref identity when nothing changed — see attrsSignatures. */
+          const signature = JSON.stringify(nextValue);
+
+          if (attrsSignatures[key] === signature) continue;
+
+          attrsSignatures[key] = signature;
+          attrsRefs[key].value = nextValue;
         }
       },
       { immediate: true },
