@@ -7,7 +7,7 @@ import { getDefaults } from "../utils/ui";
 import UTab from "../ui.navigation-tab/UTab.vue";
 import UButton from "../ui.button/UButton.vue";
 
-import { COMPONENT_NAME, SCROLL_OFFSET } from "./constants";
+import { COMPONENT_NAME, SCROLL_OFFSET, DRAG_THRESHOLD, DRAG_CLICK_SUPPRESS_MS } from "./constants";
 import defaultConfig from "./config";
 
 import type { Props, Config } from "./types";
@@ -37,6 +37,15 @@ const wrapperRef = useTemplateRef<HTMLDivElement>("wrapper");
 const scrollContainerRef = useTemplateRef<HTMLDivElement | null>("scroll-container");
 const showLeftArrow = ref(false);
 const showRightArrow = ref(false);
+const isDragging = ref(false);
+const preventTabClick = ref(false);
+
+let isPointerDown = false;
+let dragAxis: "x" | "y" | null = null;
+let startX = 0;
+let startY = 0;
+let startScrollLeft = 0;
+let suppressClickTimer: ReturnType<typeof setTimeout> | null = null;
 
 function checkScroll() {
   if (!scrollContainerRef.value) return;
@@ -59,17 +68,148 @@ function scrollNext() {
   scrollContainerRef.value.scrollBy({ left: SCROLL_OFFSET, behavior: "smooth" });
 }
 
+function isScrollableOverflow() {
+  if (!scrollContainerRef.value) return false;
+
+  return scrollContainerRef.value.scrollWidth > scrollContainerRef.value.clientWidth;
+}
+
+function clearSuppressClickTimer() {
+  if (!suppressClickTimer) return;
+
+  clearTimeout(suppressClickTimer);
+  suppressClickTimer = null;
+}
+
+function stopDragListeners() {
+  document.removeEventListener("pointermove", onPointerMove);
+  document.removeEventListener("pointerup", onPointerUp);
+  document.removeEventListener("pointercancel", onPointerUp);
+}
+
+function resetDragState() {
+  isPointerDown = false;
+  dragAxis = null;
+  isDragging.value = false;
+  document.body.style.cursor = "";
+  document.body.style.userSelect = "";
+}
+
+function suppressTabClick() {
+  preventTabClick.value = true;
+  clearSuppressClickTimer();
+
+  suppressClickTimer = setTimeout(() => {
+    preventTabClick.value = false;
+    suppressClickTimer = null;
+  }, DRAG_CLICK_SUPPRESS_MS);
+}
+
+function onPointerDown(event: PointerEvent) {
+  if (!props.scrollable || event.button > 0 || !isScrollableOverflow()) return;
+
+  isPointerDown = true;
+  dragAxis = null;
+  startX = event.clientX;
+  startY = event.clientY;
+  startScrollLeft = scrollContainerRef.value?.scrollLeft ?? 0;
+
+  document.addEventListener("pointermove", onPointerMove, { passive: false });
+  document.addEventListener("pointerup", onPointerUp);
+  document.addEventListener("pointercancel", onPointerUp);
+}
+
+function onPointerMove(event: PointerEvent) {
+  if (!isPointerDown || !scrollContainerRef.value) return;
+
+  if (event.pointerType === "mouse" && event.buttons === 0) {
+    onPointerUp();
+
+    return;
+  }
+
+  const deltaX = event.clientX - startX;
+  const deltaY = event.clientY - startY;
+
+  if (!dragAxis) {
+    if (Math.abs(deltaX) < DRAG_THRESHOLD && Math.abs(deltaY) < DRAG_THRESHOLD) return;
+
+    dragAxis = Math.abs(deltaX) >= Math.abs(deltaY) ? "x" : "y";
+
+    if (dragAxis === "y") {
+      stopDragListeners();
+      resetDragState();
+
+      return;
+    }
+
+    isDragging.value = true;
+    document.body.style.cursor = "move";
+    document.body.style.userSelect = "none";
+  }
+
+  if (dragAxis !== "x") return;
+
+  event.preventDefault();
+  scrollContainerRef.value.scrollLeft = startScrollLeft - deltaX;
+}
+
+function onPointerUp() {
+  const wasDragging = isDragging.value;
+
+  stopDragListeners();
+  resetDragState();
+
+  if (wasDragging) {
+    suppressTabClick();
+  }
+}
+
+function onClickCapture(event: MouseEvent) {
+  if (!preventTabClick.value) return;
+
+  event.preventDefault();
+  event.stopPropagation();
+  preventTabClick.value = false;
+  clearSuppressClickTimer();
+}
+
+function getHorizontalWheelDelta(event: WheelEvent) {
+  if (Math.abs(event.deltaX) >= Math.abs(event.deltaY)) {
+    return event.deltaX;
+  }
+
+  return event.shiftKey ? event.deltaY : 0;
+}
+
+function onWheel(event: WheelEvent) {
+  if (!props.scrollable || !scrollContainerRef.value || !isScrollableOverflow()) return;
+
+  const deltaX = getHorizontalWheelDelta(event);
+
+  if (!deltaX) return;
+
+  event.preventDefault();
+  scrollContainerRef.value.scrollLeft += deltaX;
+}
+
 onMounted(() => {
   if (scrollContainerRef.value) {
     scrollContainerRef.value.addEventListener("scroll", checkScroll, { passive: true });
+    scrollContainerRef.value.addEventListener("wheel", onWheel, { passive: false });
 
     checkScroll();
   }
 });
 
 onUnmounted(() => {
+  stopDragListeners();
+  resetDragState();
+  clearSuppressClickTimer();
+
   if (scrollContainerRef.value) {
     scrollContainerRef.value.removeEventListener("scroll", checkScroll);
+    scrollContainerRef.value.removeEventListener("wheel", onWheel);
   }
 });
 
@@ -79,6 +219,7 @@ provide("getUTabsSquare", () => props.square);
 provide("getUTabsScrollable", () => props.scrollable);
 provide("getUTabsSelectedItem", () => selectedItem.value);
 provide("setUTabsSelectedItem", (value: string) => (selectedItem.value = value));
+provide("getUTabsPreventTabClick", () => preventTabClick.value);
 
 defineExpose({
   /**
@@ -97,6 +238,7 @@ const {
   config,
   wrapperAttrs,
   tabsAttrs,
+  dragAttrs,
   tabAttrs,
   prevAttrs,
   nextAttrs,
@@ -117,7 +259,15 @@ const {
       </slot>
     </div>
 
-    <div ref="scroll-container" v-bind="tabsAttrs" :data-test="getDataTest()" @scroll="checkScroll">
+    <div
+      ref="scroll-container"
+      v-bind="tabsAttrs"
+      :class="isDragging && dragAttrs.class"
+      :data-test="getDataTest()"
+      @scroll="checkScroll"
+      @pointerdown="onPointerDown"
+      @click.capture="onClickCapture"
+    >
       <!-- @slot Use it to add the UTab component. -->
       <slot>
         <UTab

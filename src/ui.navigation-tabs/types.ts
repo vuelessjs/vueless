@@ -31,7 +31,7 @@ export interface Props {
   size?: "2xs" | "xs" | "sm" | "md" | "lg" | "xl";
 
   /**
-   * Make the Tabs scrollable.
+   * Make the Tabs scrollable via arrow buttons, dragging, or horizontal wheel.
    */
   scrollable?: boolean;
 
