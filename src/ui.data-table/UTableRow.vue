@@ -400,6 +400,7 @@ function renderNestedFirstCell(value: Cell, key: string, cellIndex: number): VNo
 
 function renderTableCell(value: Cell, key: string, index: number): VNode {
   const keyStr = String(key);
+  const column = props.columns.find((col) => col.key === key) ?? props.columns[index];
 
   const nestedCellNode = isNestedFirstCell(index)
     ? renderNestedFirstCell(value, key, index)
@@ -414,12 +415,12 @@ function renderTableCell(value: Cell, key: string, index: number): VNode {
       ...props.attrs.bodyCellBaseAttrs.value,
       class: cx([
         props.attrs.bodyCellBaseAttrs.value.class,
-        props.columns[index].tdClass,
+        column.tdClass,
         getCellClasses(props.row, keyStr),
-        getStickyColumnClass(props.columns[index]),
+        getStickyColumnClass(column),
         getSearchMatchCellClass(keyStr),
       ]),
-      style: getStickyColumnStyle(props.columns[index]),
+      style: getStickyColumnStyle(column),
       "data-cell-key": key,
       "data-test": getDataTest(`${key}-cell`),
     },
