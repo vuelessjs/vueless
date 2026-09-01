@@ -838,6 +838,50 @@ function onBodyDoubleClick(event: MouseEvent) {
   onDoubleClickRow(rowData);
 }
 
+// Detect double-tap on touch devices and dispatch a native `dblclick`,
+// which bubbles to the tbody and triggers onBodyDoubleClick.
+const DOUBLE_TAP_DELAY = 300;
+const DOUBLE_TAP_MAX_MOVE = 24;
+
+let lastTapTime = 0;
+let lastTapRow: Element | null = null;
+let lastTapX = 0;
+let lastTapY = 0;
+
+function onBodyTouchEnd(event: TouchEvent) {
+  if (event.changedTouches.length !== 1) return;
+
+  const [touch] = event.changedTouches;
+  const target = touch.target as HTMLElement | null;
+  const row = target?.closest("tr[data-row-id]") ?? null;
+
+  if (!row) {
+    lastTapRow = null;
+
+    return;
+  }
+
+  const now = event.timeStamp;
+  const isSameRow = row === lastTapRow;
+  const isQuick = now - lastTapTime < DOUBLE_TAP_DELAY;
+  const isNear =
+    Math.abs(touch.clientX - lastTapX) < DOUBLE_TAP_MAX_MOVE &&
+    Math.abs(touch.clientY - lastTapY) < DOUBLE_TAP_MAX_MOVE;
+
+  if (isSameRow && isQuick && isNear) {
+    lastTapTime = 0;
+    lastTapRow = null;
+    row.dispatchEvent(new MouseEvent("dblclick", { bubbles: true, cancelable: true }));
+
+    return;
+  }
+
+  lastTapTime = now;
+  lastTapRow = row;
+  lastTapX = touch.clientX;
+  lastTapY = touch.clientY;
+}
+
 function onChangeSelectAll(selectAll: boolean) {
   if (selectAll && canSelectAll.value) {
     localSelectedRows.value = [...flatTableRows.value];
@@ -1411,6 +1455,7 @@ const BodyRows = () =>
           v-bind="bodyAttrs"
           @click="onBodyClick"
           @dblclick="onBodyDoubleClick"
+          @touchend="onBodyTouchEnd"
         >
           <tr
             v-if="hasBeforeFirstRowSlot"
