@@ -57,7 +57,14 @@ defineExpose({
  * Get element / nested component attributes for each config token ✨
  * Applies: `class`, `config`, redefined default `props` and dev `vl-...` attributes.
  */
-const { getDataTest, groupLabelAttrs, listAttrs, groupRadioAttrs } = useUI<Config>(defaultConfig);
+const mutatedProps = computed(() => ({
+  label: Boolean(props.label),
+}));
+
+const { getDataTest, groupLabelAttrs, listAttrs, groupRadioAttrs } = useUI<Config>(
+  defaultConfig,
+  mutatedProps,
+);
 </script>
 
 <template>
