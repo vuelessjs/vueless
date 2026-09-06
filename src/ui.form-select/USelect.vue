@@ -135,7 +135,7 @@ const dropdownValue = computed({
     emit("update:modelValue", value);
     emit("change", { value, options: props.options });
 
-    if (!props.multiple && props.closeOnSelect) deactivate();
+    if (props.closeOnSelect) deactivate();
   },
 });
 
