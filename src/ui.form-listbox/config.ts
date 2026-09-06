@@ -15,7 +15,7 @@ export default /*tw*/ {
   listboxInput: {
     base: "{UInputSearch} sticky top-0 pt-1 bg-default z-10",
     searchInput: {
-      wrapper: "pl-2 pr-1 rounded-none border-0 border-b focus-within:outline-0 border-default!",
+      wrapper: "pl-2 pr-1 rounded-none border-0 border-b focus-within:outline-0 outline-none! border-default!",
     },
   },
   selectIcon: {
