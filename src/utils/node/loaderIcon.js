@@ -227,7 +227,7 @@ async function findAndCopyIcons(files, library, vuelessConfig, debug) {
     const iconPropsPattern = `\\b\\w*(name|icon)\\w*\\s*=\\s*(['"])(.*?)\\2`;
     const uComponentIconNamePattern =
       // eslint-disable-next-line vue/max-len
-      /<UIcon\b[^>]*?\b(name)\s*[:=]\s*(['"])(.*?)\2[^>]*?>|<(?!UIcon\b)(U\w+)\b[^>]*?\b(\w*icon\w*)\s*[:=]\s*(['"])(.*?)\6[^>]*?>/;
+      /<UIcon\b[^>]*?\b(name)\s*[:=]\s*(['"])(.*?)\2[^>]*?>|<(?!UIcon\b)([A-Z]\w+)\b[^>]*?\b(\w*icon\w*)\s*[:=]\s*(['"])(.*?)\6[^>]*?>/;
 
     const uComponentIconNameArray = fileContents.match(new RegExp(uComponentIconNamePattern, "g"));
 
