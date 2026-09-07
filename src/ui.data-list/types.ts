@@ -71,6 +71,12 @@ export interface Props {
   hideEmptyStateForNesting?: boolean;
 
   /**
+   * Item key whose truthy value renders an empty nested drop-zone,
+   * so a deeper level can be created by drag even without children.
+   */
+  nestedKey?: string;
+
+  /**
    * Component config object.
    */
   config?: ComponentConfig<Config>;

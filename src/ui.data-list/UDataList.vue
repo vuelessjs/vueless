@@ -42,6 +42,10 @@ function isCrossed(element: DataListItem) {
   return Boolean(element.crossed);
 }
 
+function hasNestedList(element: DataListItem) {
+  return Boolean(element.children?.length || (props.nestedKey && element[props.nestedKey]));
+}
+
 function onDragEnd() {
   const sortData = prepareSortData(props.list);
 
@@ -181,14 +185,33 @@ const {
           </div>
 
           <UDataList
-            v-if="element.children?.length"
+            v-if="hasNestedList(element)"
             hide-empty-state-for-nesting
             :list="element.children"
             :group="group"
+            :size="size"
+            :label-key="labelKey"
+            :value-key="valueKey"
+            :nested-key="nestedKey"
+            :animation-duration="animationDuration"
+            :force-fallback="forceFallback"
+            :fallback-on-body="fallbackOnBody"
+            :fallback-class="fallbackClass"
             v-bind="nestedAttrs"
+            :class="!element.children?.length && 'min-h-4'"
             :data-test="getDataTest('table')"
             @drag-sort="onDragEnd"
           >
+            <!-- @vue-ignore -->
+            <template #drag="slotProps: { item: DataListItem; iconName: string }">
+              <!--
+                @slot Use it to add something instead of the drag icon.
+                @binding {object} item
+                @binding {string} icon-name
+              -->
+              <slot name="drag" :item="slotProps.item" :icon-name="slotProps.iconName" />
+            </template>
+
             <!-- @vue-ignore -->
             <template #label="slotProps: { item: DataListItem; crossed: boolean }">
               <!--
@@ -196,12 +219,7 @@ const {
                 @binding {object} item
                 @binding {boolean} crossed
               -->
-              <slot name="label" :item="slotProps.item" :crossed="slotProps.crossed">
-                <div
-                  v-bind="slotProps.crossed ? labelCrossedAttrs : labelAttrs"
-                  v-text="slotProps.item[labelKey]"
-                />
-              </slot>
+              <slot name="label" :item="slotProps.item" :crossed="slotProps.crossed" />
             </template>
 
             <!-- @vue-ignore -->

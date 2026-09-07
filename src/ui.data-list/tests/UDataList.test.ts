@@ -253,6 +253,52 @@ describe("UDataList.vue", () => {
       expect(nestedComponent.props("list")).toEqual(nestedList[0].children);
     });
 
+    it("Nesting – renders empty nested drop-zone for childless items when nestedKey is truthy", () => {
+      const component = mount(UDataList, {
+        props: {
+          list: [{ value: 1, label: "Leaf", canNest: true }],
+          nestedKey: "canNest",
+        },
+      });
+
+      const nestedComponent = component.findComponent("[vl-key='nested']");
+
+      expect(nestedComponent.exists()).toBe(true);
+    });
+
+    it("Nesting – does not render drop-zone for childless items when nestedKey value is falsy", () => {
+      const component = mount(UDataList, {
+        props: {
+          list: [{ value: 1, label: "Leaf", canNest: false }],
+          nestedKey: "canNest",
+        },
+      });
+
+      const nestedComponent = component.findComponent("[vl-key='nested']");
+
+      expect(nestedComponent.exists()).toBe(false);
+    });
+
+    it("Nesting – emits dragged item with parentValue of the leaf after drop into empty drop-zone", async () => {
+      const leaf: DataListItem = { value: 1, label: "Leaf", canNest: true, children: [] };
+      const list: DataListItem[] = [leaf, { value: 2, label: "Dragged", canNest: true }];
+
+      const component = mount(UDataList, {
+        props: { list, nestedKey: "canNest" },
+      });
+
+      // Simulate vuedraggable moving item 2 into the leaf's (previously empty) nested list.
+      list.splice(1, 1);
+      leaf.children!.push({ value: 2, label: "Dragged", canNest: true });
+
+      await component.findComponent(draggable).vm.$emit("end");
+
+      const sortData = component.emitted("dragSort")?.[0]?.[0] as DataListItem[];
+      const dragged = sortData.find((item) => item.value === 2);
+
+      expect(dragged?.parentValue).toBe(leaf.value);
+    });
+
     it("Data Test – applies correct data-test attribute", () => {
       const dataTest = "test-data-list";
 
