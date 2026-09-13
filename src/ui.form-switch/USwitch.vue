@@ -68,16 +68,19 @@ function toggle() {
   }
 }
 
-function onClickToggle(event: Event) {
-  event.stopPropagation();
-  toggle();
+/**
+ * Toggles when the visible track is clicked. Clicks forwarded from the label
+ * arrive on the hidden checkbox (which already toggles via v-model), so skip
+ * those to avoid a double toggle.
+ */
+function onClickWrapper(event: MouseEvent) {
+  if ((event.target as HTMLElement)?.tagName !== "INPUT") {
+    toggle();
+  }
 }
 
-function onKeydownSpace() {
-  toggle();
-}
-
-function onClickWrapper() {
+function onKeydownToggle(event: Event) {
+  event.preventDefault();
   toggle();
 }
 
@@ -119,7 +122,6 @@ const {
     :disabled="disabled"
     v-bind="switchLabelAttrs"
     :data-test="getDataTest()"
-    @click="onClickToggle"
   >
     <template #label>
       <!--
@@ -141,9 +143,9 @@ const {
       ref="wrapper"
       tabindex="0"
       v-bind="wrapperAttrs"
-      @keydown.enter="onKeydownSpace"
-      @keydown.space.prevent="onKeydownSpace"
       @click="onClickWrapper"
+      @keydown.enter="onKeydownToggle"
+      @keydown.space="onKeydownToggle"
     >
       <input
         :id="elementId"
@@ -154,7 +156,6 @@ const {
         :aria-labelledby="inputAriaLabelledBy"
         :aria-label="!hasLabel ? localeMessages.switch : undefined"
         v-bind="inputAttrs"
-        @click="onClickToggle"
       />
 
       <span v-bind="circleAttrs">

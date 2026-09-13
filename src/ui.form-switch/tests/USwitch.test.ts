@@ -13,6 +13,7 @@ describe("USwitch.vue", () => {
       const modelValue = true;
 
       const component = mount(USwitch, {
+        attachTo: document.body,
         props: {
           modelValue,
           "onUpdate:modelValue": (e) => component.setProps({ modelValue: e }),
@@ -28,6 +29,8 @@ describe("USwitch.vue", () => {
       await inputElement.trigger("click");
 
       expect(component.emitted("update:modelValue")![1][0]).toBe(true);
+
+      component.unmount();
     });
 
     it("Label – passes label to ULabel component", () => {
@@ -196,6 +199,154 @@ describe("USwitch.vue", () => {
       });
 
       expect(component.findComponent(ULabel).attributes("data-test")).toBe(dataTest);
+    });
+  });
+
+  describe("Toggle behavior", () => {
+    it("Label click – plain-text label toggles exactly once", async () => {
+      const component = mount(USwitch, {
+        attachTo: document.body,
+        props: {
+          modelValue: false,
+          label: "Test Label",
+        },
+      });
+
+      await component.find("label").trigger("click");
+
+      const emitted = component.emitted("update:modelValue");
+
+      expect(emitted).toHaveLength(1);
+      expect(emitted![0][0]).toBe(true);
+
+      component.unmount();
+    });
+
+    it("Label slot click – #label slot content toggles exactly once", async () => {
+      const component = mount(USwitch, {
+        attachTo: document.body,
+        props: {
+          modelValue: false,
+        },
+        slots: {
+          label: "Custom Label Content",
+        },
+      });
+
+      await component.find("label").trigger("click");
+
+      const emitted = component.emitted("update:modelValue");
+
+      expect(emitted).toHaveLength(1);
+      expect(emitted![0][0]).toBe(true);
+
+      component.unmount();
+    });
+
+    // The track (wrapper) is a sibling of the <label>, outside its `for` forwarding,
+    // so its own @click="toggle" is the only path — clicking it must toggle exactly once.
+    it("Track click – wrapper toggles exactly once", async () => {
+      const component = mount(USwitch, {
+        attachTo: document.body,
+        props: {
+          modelValue: false,
+        },
+      });
+
+      await component.get("[vl-key='wrapper']").trigger("click");
+
+      const emitted = component.emitted("update:modelValue");
+
+      expect(emitted).toHaveLength(1);
+      expect(emitted![0][0]).toBe(true);
+
+      component.unmount();
+    });
+
+    it("Track click – disabled wrapper emits nothing", async () => {
+      const component = mount(USwitch, {
+        attachTo: document.body,
+        props: {
+          modelValue: false,
+          disabled: true,
+        },
+      });
+
+      await component.get("[vl-key='wrapper']").trigger("click");
+
+      expect(component.emitted("update:modelValue")).toBeUndefined();
+
+      component.unmount();
+    });
+
+    it("Keyboard – Enter toggles exactly once", async () => {
+      const component = mount(USwitch, {
+        attachTo: document.body,
+        props: {
+          modelValue: false,
+        },
+      });
+
+      await component.get("[vl-key='wrapper']").trigger("keydown.enter");
+
+      const emitted = component.emitted("update:modelValue");
+
+      expect(emitted).toHaveLength(1);
+      expect(emitted![0][0]).toBe(true);
+
+      component.unmount();
+    });
+
+    it("Keyboard – Space toggles exactly once", async () => {
+      const component = mount(USwitch, {
+        attachTo: document.body,
+        props: {
+          modelValue: false,
+        },
+      });
+
+      await component.get("[vl-key='wrapper']").trigger("keydown.space");
+
+      const emitted = component.emitted("update:modelValue");
+
+      expect(emitted).toHaveLength(1);
+      expect(emitted![0][0]).toBe(true);
+
+      component.unmount();
+    });
+
+    it("Disabled – label click emits nothing", async () => {
+      const component = mount(USwitch, {
+        attachTo: document.body,
+        props: {
+          modelValue: false,
+          label: "Test Label",
+          disabled: true,
+        },
+      });
+
+      await component.find("label").trigger("click");
+
+      expect(component.emitted("update:modelValue")).toBeUndefined();
+
+      component.unmount();
+    });
+
+    it("Disabled – keyboard emits nothing", async () => {
+      const component = mount(USwitch, {
+        attachTo: document.body,
+        props: {
+          modelValue: false,
+          disabled: true,
+        },
+      });
+
+      await component.get("[vl-key='wrapper']").trigger("keydown.enter");
+      await component.get("[vl-key='wrapper']").trigger("keydown.space");
+
+      expect(component.emitted("update:modelValue")).toBeUndefined();
+
+      component.unmount();
     });
   });
 
