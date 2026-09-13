@@ -64,7 +64,7 @@ function setUpTippy(el: HTMLElement, props: string | TippyProps) {
     return;
   }
 
-  if (typeof props !== "string" && props.content && String(props.content).length) {
+  if (typeof props !== "string" && props && props.content && String(props.content).length) {
     tippy(el, merge({}, settings, props || {}));
   }
 }
