@@ -11,10 +11,10 @@ export default /*tw*/ {
   },
   wrapper: {
     base: `
-      flex flex-row-reverse justify-between w-full min-h-full box-border relative
+      flex flex-row-reverse justify-between w-full min-h-full box-border relative transition
       rounded-medium border border-solid border-default bg-default outline-solid outline-small outline-transparent
-      hover:border-lifted hover:transition hover:focus-within:border-primary focus-within:border-primary
-      focus-within:outline focus-within:outline-small focus-within:outline-primary focus-within:transition
+      hover:border-lifted hover:focus-within:border-primary focus-within:border-primary
+      focus-within:outline focus-within:outline-small focus-within:outline-primary
     `,
     variants: {
       error: {
