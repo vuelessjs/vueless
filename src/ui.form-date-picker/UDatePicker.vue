@@ -119,6 +119,16 @@ function deactivate() {
   customView.value = View.Day;
 }
 
+function deactivateOnBlur(event: FocusEvent) {
+  const related = event.relatedTarget as HTMLElement | null;
+
+  if (related && wrapperRef.value?.contains(related)) {
+    return;
+  }
+
+  deactivate();
+}
+
 function onUserFormatDateChange(value: string) {
   userFormatDate.value = value.trim();
 }
@@ -279,7 +289,7 @@ watchEffect(() => {
 </script>
 
 <template>
-  <div v-bind="wrapperAttrs" ref="wrapper" :data-test="getDataTest()">
+  <div v-bind="wrapperAttrs" ref="wrapper" :data-test="getDataTest()" @focusout="deactivateOnBlur">
     <UInput
       :id="elementId"
       :key="String(userFormatDate)"
