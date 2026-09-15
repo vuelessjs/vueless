@@ -556,7 +556,7 @@ const {
 
     <div
       ref="wrapper"
-      :tabindex="searchable || disabled ? -1 : 0"
+      :tabindex="disabled ? -1 : searchable && isOpen ? -1 : 0"
       role="combobox"
       :aria-expanded="ariaExpanded"
       aria-haspopup="listbox"
