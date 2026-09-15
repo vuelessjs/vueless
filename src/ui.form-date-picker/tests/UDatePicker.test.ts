@@ -356,6 +356,53 @@ describe("UDatePicker.vue", () => {
       expect(calendar.isVisible()).toBe(true);
     });
 
+    it("Calendar – hides when focus leaves the whole component", async () => {
+      const component = mount(UDatePicker, {
+        props: {
+          modelValue: new Date(),
+        },
+        attachTo: document.body,
+      });
+
+      const input = component.getComponent(UInput).find("input");
+      const calendar = component.findComponent({ name: "UCalendar" });
+
+      await input.trigger("focus");
+      expect(calendar.isVisible()).toBe(true);
+
+      const outsideElement = document.createElement("button");
+
+      document.body.appendChild(outsideElement);
+
+      await component.trigger("focusout", { relatedTarget: outsideElement });
+
+      expect(calendar.isVisible()).toBe(false);
+
+      outsideElement.remove();
+      component.unmount();
+    });
+
+    it("Calendar – stays open when focus moves inside the component", async () => {
+      const component = mount(UDatePicker, {
+        props: {
+          modelValue: new Date(),
+        },
+        attachTo: document.body,
+      });
+
+      const input = component.getComponent(UInput).find("input");
+      const calendar = component.findComponent({ name: "UCalendar" });
+
+      await input.trigger("focus");
+      expect(calendar.isVisible()).toBe(true);
+
+      await component.trigger("focusout", { relatedTarget: calendar.element });
+
+      expect(calendar.isVisible()).toBe(true);
+
+      component.unmount();
+    });
+
     it("Calendar – hides when escape key is pressed on calendar", async () => {
       const component = mount(UDatePicker, {
         props: {
