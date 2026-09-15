@@ -580,6 +580,7 @@ const {
         <UButton
           round
           square
+          tabindex="-1"
           v-bind="addOptionButtonAttrs"
           :data-test="getDataTest('add-button')"
           @click="onClickAddOption"
