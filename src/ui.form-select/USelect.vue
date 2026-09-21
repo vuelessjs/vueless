@@ -151,16 +151,20 @@ const isMultipleBadgeVariant = computed(
   () => props.multiple && props.multipleVariant === MULTIPLE_VARIANTS.badge,
 );
 
+const listboxOptions = computed(() => props.options as Option[]);
+
 const localValue = computed<Option | Option[]>(() => {
   if (!props.multiple) {
     const [singleValue] = Array.isArray(props.modelValue) ? props.modelValue : [props.modelValue];
 
-    return getCurrentOption(props.options, singleValue, props.valueKey, props.groupValueKey);
+    return getCurrentOption(listboxOptions.value, singleValue, props.valueKey, props.groupValueKey);
   }
 
   return props.modelValue && Array.isArray(props.modelValue)
     ? (props.modelValue
-        .map((value) => getCurrentOption(props.options, value, props.valueKey, props.groupValueKey))
+        .map((value) =>
+          getCurrentOption(listboxOptions.value, value, props.valueKey, props.groupValueKey),
+        )
         .filter(Boolean) as Option[])
     : [];
 });
@@ -858,7 +862,7 @@ const {
         :searchable="searchable"
         :options-limit="optionsLimit"
         :multiple="multiple"
-        :options="options"
+        :options="listboxOptions"
         :disabled="disabled"
         :size="size"
         :debounce="debounce"

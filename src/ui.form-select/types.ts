@@ -1,9 +1,12 @@
 import defaultConfig from "./config";
 
-import type { Option } from "../ui.form-listbox/types";
-import type { ComponentConfig } from "../types";
+import type { BaseOption } from "../ui.form-listbox/types";
+import type { ComponentConfig, UnknownObject } from "../types";
 
 export type Config = typeof defaultConfig;
+
+/* Any object shape is a valid option, only reserved option keys are type checked. */
+export type SelectOption = BaseOption & (object | UnknownObject);
 
 export interface Props {
   /**
@@ -14,7 +17,7 @@ export interface Props {
   /**
    * Select options.
    */
-  options?: Option[];
+  options?: SelectOption[];
 
   /**
    * Select label.
