@@ -54,8 +54,20 @@
 
 ## Helpers
 
+* [General utils](helpers/general-utils.md)
 * [Runtime theming](helpers/change-settings-in-runtime.md)
 * [Responsive Props](helpers/responsive-props.md)
+* [Dark mode state](helpers/dark-mode-state.md)
+* [CSS variables](helpers/css-variables.md)
+* [Notifications](helpers/notifications.md)
+* [Loaders](helpers/loaders.md)
+* [Platform detection](helpers/platform-detection.md)
+* [Request queue](helpers/request-queue.md)
+* [Auto position](helpers/auto-position.md)
+* [Mutation observer](helpers/mutation-observer.md)
+* [Component styling engine](helpers/component-styling-engine.md)
+* [Styling utils](helpers/styling-utils.md)
+* [Locale](helpers/locale.md)
 
 ## Other
 
