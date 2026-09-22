@@ -212,7 +212,7 @@ const tableRowWidthStyle = computed(() => ({
   width: `${tableWidth.value / PX_IN_REM}rem`,
 }));
 
-const flatTableRows = computed(() => getFlatRows(props.rows));
+const flatTableRows = computed(() => getFlatRows(props.rows as Row[]));
 
 const visibleFlatRows = computed(() => {
   const expanded = expandedRowsSet.value;
@@ -532,7 +532,7 @@ onBeforeUnmount(() => {
 
 function onChangeSelectedRows() {
   if (!isEqual(props.selectedRows, localSelectedRows.value)) {
-    localSelectedRows.value = props.selectedRows;
+    localSelectedRows.value = props.selectedRows as Row[];
   }
 }
 

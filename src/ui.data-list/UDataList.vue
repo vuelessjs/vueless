@@ -13,6 +13,7 @@ import { COMPONENT_NAME } from "./constants";
 import defaultConfig from "./config";
 import { useComponentLocaleMessages } from "../composables/useComponentLocaleMassages";
 
+import type { UnknownObject } from "../types";
 import type { Props, DataListItem, Config } from "./types";
 
 defineOptions({ inheritAttrs: false });
@@ -43,7 +44,9 @@ function isCrossed(element: DataListItem) {
 }
 
 function hasNestedList(element: DataListItem) {
-  return Boolean(element.children?.length || (props.nestedKey && element[props.nestedKey]));
+  return Boolean(
+    element.children?.length || (props.nestedKey && (element as UnknownObject)[props.nestedKey]),
+  );
 }
 
 function onDragEnd() {
@@ -61,7 +64,7 @@ function prepareSortData(list: DataListItem[] = [], parentValue: string | number
     if (hasItemChildren) {
       const childrenItem = prepareSortData(
         item.children,
-        item[props.valueKey] as string | number | null,
+        (item as UnknownObject)[props.valueKey] as string | number | null,
       );
 
       childrenItem.forEach((item) => sortData.push(item));

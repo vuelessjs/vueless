@@ -75,8 +75,11 @@ const wrapperMaxHeight = ref("");
 
 const localSearch = ref(props.search ?? "");
 
+/* Indexable view of the options, `labelKey` / `valueKey` lookups need an index signature. */
+const localOptions = computed(() => props.options as Option[]);
+
 const { pointer, pointerDirty, pointerSet, pointerBackward, pointerForward, pointerReset } =
-  usePointer(props.options, optionsRef, wrapperRef);
+  usePointer(localOptions.value, optionsRef, wrapperRef);
 
 const elementId = props.id || useId();
 
@@ -126,7 +129,7 @@ const getOptionAriaSelected = (option: Option) => {
 const filteredOptions = computed(() => {
   const normalizedSearch = searchModel.value.toLowerCase().trim();
 
-  let options = [...props.options];
+  let options = [...localOptions.value];
 
   options = props.groupValueKey
     ? filterGroups(
@@ -324,9 +327,9 @@ function optionHighlight(index: number, option: Option) {
 }
 
 function addPointerElement(keyCode?: string) {
-  if (props.options.length > 0) {
-    select(props.options[pointer.value], keyCode);
-    onClickOption(props.options[pointer.value]);
+  if (localOptions.value.length > 0) {
+    select(localOptions.value[pointer.value], keyCode);
+    onClickOption(localOptions.value[pointer.value]);
   }
 
   pointerReset();

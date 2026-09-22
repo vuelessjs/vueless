@@ -8,11 +8,14 @@ export type SetUTabsSelectedItem = (
   value: string | number | boolean | UnknownArray | UnknownObject,
 ) => void;
 
-export interface UTabsOption {
+export interface BaseTabOption {
   value: string | number;
   label: string;
   disabled?: boolean;
 }
+
+/* Any object shape is a valid option, only reserved option keys are type checked. */
+export type UTabsOption = BaseTabOption & (object | UnknownObject);
 
 export interface Props {
   /**

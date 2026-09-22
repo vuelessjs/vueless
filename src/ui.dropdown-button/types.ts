@@ -1,6 +1,6 @@
 import defaultConfig from "./config";
 
-import type { Option } from "../ui.form-listbox/types";
+import type { ListboxOption } from "../ui.form-listbox/types";
 import type { ComponentConfig, UnknownObject } from "../types";
 
 export type Config = typeof defaultConfig;
@@ -24,7 +24,7 @@ export interface Props {
   /**
    * Options list.
    */
-  options?: Option[];
+  options?: ListboxOption[];
 
   /**
    * Label key in the item object of options.

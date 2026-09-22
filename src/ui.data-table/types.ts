@@ -25,19 +25,29 @@ export interface RowData {
   [key: string]: Cell;
 }
 
-export interface DateDivider {
+export interface BaseDateDivider {
   date: Date | string;
   label?: string;
   config?: ComponentConfig<UDividerConfig>;
 }
 
-export interface Row {
+/* Any object shape is a valid divider, only reserved divider keys are type checked. */
+export type DateDivider = BaseDateDivider & (object | UnknownObject);
+
+export interface BaseRow {
   id: RowId;
   rowDate?: string | Date;
-  row?: Row | Row[];
+  row?: TableRow | TableRow[];
   class?: string | ((row: Row) => string);
+}
+
+export interface Row extends BaseRow {
+  row?: Row | Row[];
   [key: string]: unknown;
 }
+
+/* Any object shape is a valid row, only reserved row keys are type checked. */
+export type TableRow = BaseRow & (object | UnknownObject);
 
 export interface FlatRow extends Row {
   parentRowId?: RowId;
@@ -58,7 +68,10 @@ export interface ColumnObject {
   thClass?: string;
 }
 
-export type Column = ColumnObject | string;
+/* Any object shape is a valid column, only reserved column keys are type checked. */
+export type TableColumn = ColumnObject & (object | UnknownObject);
+
+export type Column = TableColumn | string;
 
 export interface Props {
   /**
@@ -69,12 +82,12 @@ export interface Props {
   /**
    * Table rows data.
    */
-  rows: Row[];
+  rows: TableRow[];
 
   /**
    * Selected rows.
    */
-  selectedRows?: Row[];
+  selectedRows?: TableRow[];
 
   /**
    * Selected rows id.

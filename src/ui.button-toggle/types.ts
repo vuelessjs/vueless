@@ -1,19 +1,21 @@
 import defaultConfig from "./config";
 
-import type { ComponentConfig } from "../types";
+import type { ComponentConfig, UnknownObject } from "../types";
 
 export type Config = typeof defaultConfig;
 
-export interface UToggleOption {
+export interface BaseToggleOption {
   value: string | number | boolean;
   label?: string;
   disabled?: boolean;
   icon?: string;
   leftIcon?: string;
   rightIcon?: string;
-  onClick?: (option: Omit<UToggleOption, "onClick">) => void;
-  [key: string]: unknown;
+  onClick?: (option: Omit<BaseToggleOption, "onClick">) => void;
 }
+
+/* Any object shape is a valid option, only reserved option keys are type checked. */
+export type UToggleOption = BaseToggleOption & (object | UnknownObject);
 
 export interface Props {
   /**

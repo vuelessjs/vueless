@@ -10,7 +10,7 @@ import URadio from "../ui.form-radio/URadio.vue";
 import defaultConfig from "./config";
 import { COMPONENT_NAME } from "./constants";
 
-import type { Props, SetRadioGroupSelectedItem, Config } from "./types";
+import type { Props, BaseOption, SetRadioGroupSelectedItem, Config } from "./types";
 
 defineOptions({ inheritAttrs: false });
 
@@ -30,6 +30,11 @@ const emit = defineEmits([
 ]);
 
 const listRef = useTemplateRef<HTMLDivElement>("list");
+
+/* Indexable view of the options for `labelKey` / `valueKey` lookups. */
+const keyedOptions = computed(
+  () => props.options as (BaseOption & Record<string, BaseOption["value"]>)[],
+);
 
 const selectedItem = computed({
   get: () => props.modelValue,
@@ -106,7 +111,7 @@ const { getDataTest, groupLabelAttrs, listAttrs, groupRadioAttrs } = useUI<Confi
       <!-- @slot Use it to add URadio directly. -->
       <slot>
         <URadio
-          v-for="(option, index) in options"
+          v-for="(option, index) in keyedOptions"
           :key="index"
           :model-value="selectedItem"
           :value="option[valueKey]"

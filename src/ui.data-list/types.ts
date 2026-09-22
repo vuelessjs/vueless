@@ -2,7 +2,7 @@ import defaultConfig from "./config";
 
 import DraggableContext from "vuedraggable";
 
-import type { ComponentConfig, UnknownType } from "../types";
+import type { ComponentConfig, UnknownObject } from "../types";
 
 export type Config = typeof defaultConfig;
 
@@ -11,12 +11,14 @@ export interface DragMoveEvent extends DragEvent {
   relatedContext: typeof DraggableContext | null;
 }
 
-export interface DataListItem {
+export interface BaseDataListItem {
   crossed?: boolean;
   actions?: boolean;
   children?: DataListItem[];
-  [key: string]: UnknownType | DataListItem[];
 }
+
+/* Any object shape is a valid item, only reserved item keys are type checked. */
+export type DataListItem = BaseDataListItem & (object | UnknownObject);
 
 export interface Props {
   /**

@@ -9,7 +9,7 @@ import draggable from "vuedraggable";
 import type { Props, DataListItem } from "../types";
 
 describe("UDataList.vue", () => {
-  const defaultList: DataListItem[] = [
+  const defaultList = [
     { value: 1, label: "Item 1" },
     { value: 2, label: "Item 2", crossed: true },
     { value: 3, label: "Item 3", actions: false },
@@ -280,7 +280,7 @@ describe("UDataList.vue", () => {
     });
 
     it("Nesting – emits dragged item with parentValue of the leaf after drop into empty drop-zone", async () => {
-      const leaf: DataListItem = { value: 1, label: "Leaf", canNest: true, children: [] };
+      const leaf = { value: 1, label: "Leaf", canNest: true, children: [] as DataListItem[] };
       const list: DataListItem[] = [leaf, { value: 2, label: "Dragged", canNest: true }];
 
       const component = mount(UDataList, {
@@ -293,7 +293,10 @@ describe("UDataList.vue", () => {
 
       await component.findComponent(draggable).vm.$emit("end");
 
-      const sortData = component.emitted("dragSort")?.[0]?.[0] as DataListItem[];
+      const sortData = component.emitted("dragSort")?.[0]?.[0] as {
+        value: number;
+        parentValue: unknown;
+      }[];
       const dragged = sortData.find((item) => item.value === 2);
 
       expect(dragged?.parentValue).toBe(leaf.value);

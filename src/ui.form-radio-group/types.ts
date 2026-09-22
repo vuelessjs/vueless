@@ -10,9 +10,8 @@ export interface BaseOption {
   description?: string;
 }
 
-export interface Option extends BaseOption {
-  [key: string]: string | number | boolean | UnknownArray | UnknownObject | undefined;
-}
+/* Any object shape is a valid option, only reserved option keys are type checked. */
+export type Option = BaseOption & (object | UnknownObject);
 
 export type SetRadioGroupSelectedItem =
   | ((value: string | number | boolean | UnknownArray | UnknownObject) => void)

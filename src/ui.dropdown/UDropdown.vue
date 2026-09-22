@@ -83,9 +83,12 @@ const dropdownSearch = computed({
   set: (value: string) => emit("update:search", value),
 });
 
+/* Indexable view of the options, `labelKey` / `valueKey` lookups need an index signature. */
+const localOptions = computed(() => props.options as Option[]);
+
 const selectedOptions = computed(() => {
   if (props.multiple) {
-    return props.options.filter((option) => {
+    return localOptions.value.filter((option) => {
       return (
         option[props.valueKey] &&
         (dropdownValue.value as SelectedValue[]).find((selected) =>
@@ -96,7 +99,7 @@ const selectedOptions = computed(() => {
   }
 
   return [
-    props.options.find(
+    localOptions.value.find(
       (option) => option[props.valueKey] && isEqual(option[props.valueKey], dropdownValue.value),
     ),
   ].filter((option) => !!option);

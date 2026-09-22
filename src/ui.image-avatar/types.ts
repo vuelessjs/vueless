@@ -1,16 +1,19 @@
 import defaultConfig from "./config";
 
-import type { ComponentConfig } from "../types";
+import type { ComponentConfig, UnknownObject } from "../types";
 
 export type Config = typeof defaultConfig;
 
-export interface ChipItem {
+export interface BaseChipItem {
   icon?: string;
   color?: Props["color"];
   xPosition?: "left" | "right";
   yPosition?: "top" | "bottom";
   inset?: boolean;
 }
+
+/* Any object shape is a valid chip, only reserved chip keys are type checked. */
+export type ChipItem = BaseChipItem & (object | UnknownObject);
 
 export interface Props {
   /**

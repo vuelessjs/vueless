@@ -16,6 +16,9 @@ export interface Option extends BaseOption {
   [key: string]: string | number | boolean | UnknownObject | Option[] | OnClickOption | undefined;
 }
 
+/* Any object shape is a valid option, only reserved option keys are type checked. */
+export type ListboxOption = BaseOption & (object | UnknownObject);
+
 export type SelectedValue = string | number | UnknownObject;
 
 export interface Props {
@@ -32,7 +35,7 @@ export interface Props {
   /**
    * List options.
    */
-  options?: Option[];
+  options?: ListboxOption[];
 
   /**
    * Shows input to search value in a list.
