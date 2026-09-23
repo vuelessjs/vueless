@@ -81,6 +81,13 @@ export default defineConfigWithVueTs(
     ...pluginVitest.configs.recommended,
   },
   {
+    name: "vueless-type-tests",
+    files: ["src/**/tests/*.test-d.ts"],
+    rules: {
+      "vitest/expect-expect": ["error", { assertFunctionNames: ["expect", "assert", "expectTypeOf"] }],
+    },
+  },
+  {
     name: "eslint",
     files: ["eslint.config.*"],
     rules: {
