@@ -2,7 +2,7 @@ export default /*tw*/ {
   badge: {
     base: `
       inline-flex items-center justify-between py-1
-      border border-solid rounded-medium leading-none! outline-solid outline-transparent
+      border border-solid rounded-medium leading-none! outline-solid outline-medium outline-transparent
     `,
     variants: {
       variant: {

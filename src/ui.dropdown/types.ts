@@ -1,11 +1,35 @@
 import defaultConfig from "./config";
 
-import type { Option } from "../ui.form-listbox/types";
+import type { ListboxOption, SlotOption } from "../ui.form-listbox/types";
 import type { ComponentConfig, UnknownObject } from "../types";
 
 export type Config = typeof defaultConfig;
 
-export interface Props {
+/**
+ * The option slots are forwarded verbatim to `UListbox`, so they inherit its flattening: with
+ * `groupValueKey` set, `filterGroups` concats nested group members into the list the slots iterate
+ * and those members need not carry the parent's members. Hence `SlotOption`, which is `Partial`.
+ *
+ * `selectedOptions` is different — it is a `filter`ed subset of `props.options` (`UDropdown.vue:91`)
+ * with no synthetic entry, so it keeps the full `TOption` guarantee.
+ */
+export interface UDropdownSlots<TOption extends ListboxOption = ListboxOption> {
+  default?: (props: {
+    /* `displayLabel` joins `option[labelKey]` lookups, which yield `undefined` for an option
+       without that key — so it is only `string` when the label is resolvable. */
+    opened: boolean;
+    displayLabel: string | undefined;
+    fullLabel: string;
+    selectedOptions: TOption[];
+  }) => unknown;
+  dropdown?: (props: { opened: boolean; contentClasses: string | undefined }) => unknown;
+  "before-option"?: (props: { option: SlotOption<TOption>; index: number }) => unknown;
+  option?: (props: { option: SlotOption<TOption>; index: number }) => unknown;
+  "after-option"?: (props: { option: SlotOption<TOption>; index: number }) => unknown;
+  empty?: () => unknown;
+}
+
+export interface Props<TOption extends ListboxOption = ListboxOption> {
   /**
    * Selected dropdown value.
    */
@@ -24,7 +48,7 @@ export interface Props {
   /**
    * Options list.
    */
-  options?: Option[];
+  options?: TOption[];
 
   /**
    * Label key in the item object of options.

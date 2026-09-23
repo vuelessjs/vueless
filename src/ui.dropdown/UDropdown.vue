@@ -1,4 +1,4 @@
-<script setup lang="ts">
+<script setup lang="ts" generic="TOption extends ListboxOption">
 import { nextTick, computed, ref, useTemplateRef } from "vue";
 import { isEqual } from "lodash-es";
 
@@ -11,12 +11,13 @@ import UCollapsible from "../ui.container-collapsible/UCollapsible.vue";
 import defaultConfig from "./config";
 import { COMPONENT_NAME } from "./constants";
 
-import type { Props, Config } from "./types";
-import type { Option, SelectedValue } from "../ui.form-listbox/types";
+import type { Props, Config, UDropdownSlots } from "./types";
+import type { ComponentExposed } from "../types";
+import type { Option, SelectedValue, ListboxOption } from "../ui.form-listbox/types";
 
 defineOptions({ inheritAttrs: false });
 
-const props = withDefaults(defineProps<Props>(), {
+const props = withDefaults(defineProps<Props<TOption>>(), {
   ...getDefaults<Props, Config>(defaultConfig, COMPONENT_NAME),
   options: () => [],
   modelValue: "",
@@ -60,7 +61,10 @@ const emit = defineEmits([
   "update:search",
 ]);
 
-type UListboxRef = InstanceType<typeof UListbox>;
+defineSlots<UDropdownSlots<TOption>>();
+
+/* `UListbox` is generic, so its type is a function — `InstanceType` does not apply. */
+type UListboxRef = ComponentExposed<typeof UListbox>;
 type UCollapsibleRef = InstanceType<typeof UCollapsible>;
 
 const isClickingOption = ref(false);
@@ -83,9 +87,12 @@ const dropdownSearch = computed({
   set: (value: string) => emit("update:search", value),
 });
 
+/* Indexable view of the options, `labelKey` / `valueKey` lookups need an index signature. */
+const localOptions = computed(() => props.options as Option[]);
+
 const selectedOptions = computed(() => {
   if (props.multiple) {
-    return props.options.filter((option) => {
+    return localOptions.value.filter((option) => {
       return (
         option[props.valueKey] &&
         (dropdownValue.value as SelectedValue[]).find((selected) =>
@@ -96,11 +103,15 @@ const selectedOptions = computed(() => {
   }
 
   return [
-    props.options.find(
+    localOptions.value.find(
       (option) => option[props.valueKey] && isEqual(option[props.valueKey], dropdownValue.value),
     ),
   ].filter((option) => !!option);
 });
+
+/* `selectedOptions` filters `localOptions` (the indexable view of `props.options`) and injects
+   nothing, so every element is a `props.options` element — `TOption`, with its full guarantee. */
+const slotSelectedOptions = computed(() => selectedOptions.value as TOption[]);
 
 const displayLabel = computed(() => {
   if (!props.labelDisplayCount || !selectedOptions.value.length) {
@@ -253,7 +264,7 @@ const { getDataTest, dropdownAttrs, listboxAttrs } = useUI<Config>(
         :opened="opened"
         :display-label="displayLabel"
         :full-label="fullLabel"
-        :selected-options="selectedOptions"
+        :selected-options="slotSelectedOptions"
       />
     </template>
 

@@ -6,7 +6,7 @@ import {
   getDocsDescription,
 } from "../../utils/storybook";
 
-import UTabs from "../../ui.navigation-tabs/UTabs.vue";
+import UTabsComponent from "../../ui.navigation-tabs/UTabs.vue";
 import URow from "../../ui.container-row/URow.vue";
 import ULabel from "../../ui.form-label/ULabel.vue";
 import UTab from "../../ui.navigation-tab/UTab.vue";
@@ -19,6 +19,9 @@ import johnDoe from "../../ui.navigation-tab/storybook/assets/john-doe.png";
 
 import type { Meta, StoryFn } from "@storybook/vue3-vite";
 import type { Props } from "../types";
+
+/* Generic SFCs are typed as a function, which drops the compiler-generated `__name`. */
+const UTabs = UTabsComponent as typeof UTabsComponent & { __name: string };
 
 interface UTabsArgs extends Props {
   slotTemplate?: string;
@@ -88,6 +91,14 @@ export const Scrollable = DefaultTemplate.bind({});
 Scrollable.args = {
   options: getOptionsArray(),
   scrollable: true,
+};
+Scrollable.parameters = {
+  docs: {
+    description: {
+      story:
+        "Scroll overflowing tabs with the arrow buttons, by dragging the tab list, or with horizontal wheel.",
+    },
+  },
 };
 
 export const Block = DefaultTemplate.bind({});

@@ -14,7 +14,7 @@ A UI library with Open Architecture for Vue.js 3 and Nuxt.js 3 / 4, powered by [
 
 ### Key features
 
-- 🧩 65+ crafted UI components (including range date picker, multi-select, and nested table)
+- 🧩 74 crafted UI components (including range date picker, multi-select, and nested table)
 - ✨ Open Architecture lets you customize, copy, extend, and create your own components
 - 📕 Built-in Storybook support
 - 🪩 Theme Builder for runtime theme customization

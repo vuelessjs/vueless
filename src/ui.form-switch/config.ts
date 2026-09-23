@@ -6,7 +6,8 @@ export default /*tw*/ {
   },
   wrapper: {
     base: `
-      flex items-center p-0.5 relative rounded-full outline-solid outline-transparent cursor-pointer transition focus-within:transition
+      flex items-center p-0.5 relative cursor-pointer transition focus-within:transition
+      rounded-full outline-solid outline-medium outline-transparent
       focus-visible:outline focus-visible:outline-medium focus-visible:outline-offset-2 focus-visible:outline-{color}
     `,
     variants: {

@@ -1,6 +1,6 @@
 import type { Column, ColumnObject, FlatRow, Row, RowData, RowId } from "./types";
 
-export function normalizeColumns(columns: Column[]): ColumnObject[] {
+export function normalizeColumns(columns: readonly Column[]): ColumnObject[] {
   return columns.map((column) =>
     typeof column === "string" ? { label: column, key: column } : column,
   );

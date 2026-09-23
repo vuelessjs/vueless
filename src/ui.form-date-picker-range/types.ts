@@ -2,7 +2,7 @@ import defaultConfig from "./config";
 import { ShiftAction } from "./constants";
 
 import type { Ref } from "vue";
-import type { UnknownObject, ComponentConfig } from "../types";
+import type { UnknownObject, ComponentConfig, GetDataTest } from "../types";
 import type { DatePeriodRange } from "./utilDateRange";
 
 export type Locale = typeof defaultConfig.i18n;
@@ -56,7 +56,7 @@ export interface UDatePickerRangePeriodMenuProps {
   maxDate: string | Date | undefined;
   minDate: string | Date | undefined;
   customRangeButton: CustomRangeButton;
-  dataTest?: string | null;
+  getDataTest: GetDataTest;
   config: Config;
   attrs: UDatePickerRangePeriodMenuAttrs;
 }
@@ -74,7 +74,7 @@ export interface UDatePickerRangeInputsProps {
   minDate: string | Date | undefined;
   config: Config;
   attrs: UDatePickerRangeInputsAttrs;
-  dataTest?: string | null;
+  getDataTest: GetDataTest;
 }
 
 export interface CustomRangeButton {

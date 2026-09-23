@@ -6,7 +6,7 @@ import {
   getDocsDescription,
 } from "../../utils/storybook";
 
-import UDataList from "../../ui.data-list/UDataList.vue";
+import UDataListComponent from "../../ui.data-list/UDataList.vue";
 import UIcon from "../../ui.image-icon/UIcon.vue";
 import UButton from "../../ui.button/UButton.vue";
 import URow from "../../ui.container-row/URow.vue";
@@ -18,6 +18,9 @@ import tooltip from "../../v.tooltip/vTooltip";
 
 import type { Meta, StoryFn } from "@storybook/vue3-vite";
 import type { Props, DataListItem } from "../types";
+
+/* Generic SFCs are typed as a function, which drops the compiler-generated `__name`. */
+const UDataList = UDataListComponent as typeof UDataListComponent & { __name: string };
 
 interface UDataListArgs extends Props {
   slotTemplate?: string;
@@ -117,6 +120,22 @@ Nesting.args = {
 
 export const Sizes = EnumTemplate.bind({});
 Sizes.args = { enum: "size" };
+
+export const ForceFallback = DefaultTemplate.bind({});
+ForceFallback.args = {
+  forceFallback: true,
+  fallbackOnBody: true,
+  fallbackClass: "opacity-100!",
+};
+ForceFallback.parameters = {
+  docs: {
+    description: {
+      story:
+        // eslint-disable-next-line vue/max-len
+        "Use `forceFallback` to drag with Sortable's JS fallback instead of native HTML5 DnD (browsers force translucency on native drag images). Pair with `fallbackOnBody` when the list sits inside an `overflow: hidden` container, and `fallbackClass` to style the floating clone.",
+    },
+  },
+};
 
 export const LabelSlot = DefaultTemplate.bind({});
 LabelSlot.args = {

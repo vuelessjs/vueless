@@ -16,9 +16,7 @@ type UInputRef = InstanceType<typeof UInput>;
 
 defineOptions({ internal: true });
 
-const props = withDefaults(defineProps<UDatePickerRangeInputsProps>(), {
-  dataTest: null,
-});
+const props = defineProps<UDatePickerRangeInputsProps>();
 
 const rangeInputStartRef = useTemplateRef<UInputRef>("range-input-start");
 const rangeInputEndRef = useTemplateRef<UInputRef>("range-input-end");
@@ -142,7 +140,7 @@ defineExpose({
       v-bind="attrs.rangeInputFirstAttrs.value"
       :name="rangeInputName"
       no-autocomplete
-      :data-test="`${dataTest}-from`"
+      :data-test="getDataTest('from')"
       @blur="updateDateValue(rangeStart, InputRangeType.Start)"
       @keydown.enter="updateDateValue(rangeStart, InputRangeType.Start)"
       @input="validateInput($event, InputRangeType.Start)"
@@ -156,7 +154,7 @@ defineExpose({
       v-bind="attrs.rangeInputLastAttrs.value"
       :name="rangeInputName"
       no-autocomplete
-      :data-test="`${dataTest}-to`"
+      :data-test="getDataTest('to')"
       @blur="updateDateValue(rangeEnd, InputRangeType.End)"
       @keydown.enter="updateDateValue(rangeEnd, InputRangeType.End)"
       @input="validateInput($event, InputRangeType.End)"

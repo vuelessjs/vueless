@@ -1,17 +1,20 @@
 import defaultConfig from "./config";
 
-import type { ComponentConfig } from "../types";
+import type { ComponentConfig, UnknownObject } from "../types";
 import type { ChipItem } from "../ui.image-avatar/types";
 
 export type Config = typeof defaultConfig;
 
-export interface AvatarItem {
+export interface BaseAvatarItem {
   src?: string;
   label?: string;
   color?: string;
   placeholderIcon?: string;
   chip?: ChipItem;
 }
+
+/* Any object shape is a valid avatar, only reserved avatar keys are type checked. */
+export type AvatarItem = BaseAvatarItem & (object | UnknownObject);
 
 export interface Props {
   /**

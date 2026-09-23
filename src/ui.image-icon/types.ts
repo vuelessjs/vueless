@@ -1,6 +1,6 @@
 import defaultConfig from "./config";
 
-import type { DefineComponent, SVGAttributes } from "vue";
+import type { Component, SVGAttributes } from "vue";
 
 import type { ComponentConfig } from "../types";
 
@@ -17,7 +17,7 @@ export interface Props {
   /**
    * Icon source (svg as a vue component).
    */
-  src?: DefineComponent<SVGAttributes>;
+  src?: Component<SVGAttributes>;
 
   /**
    * Icon color.

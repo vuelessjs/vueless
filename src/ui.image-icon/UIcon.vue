@@ -11,13 +11,14 @@ import defaultConfig from "./config";
 
 import USkeleton from "../ui.skeleton/USkeleton.vue";
 
-import type { AsyncComponentLoader, ComponentPublicInstance } from "vue";
+import type { AsyncComponentLoader, ComponentOptions, ComponentPublicInstance } from "vue";
 import type { Props, Config } from "./types";
 
 defineOptions({ inheritAttrs: false });
 
 const props = withDefaults(defineProps<Props>(), {
   ...getDefaults<Props, Config>(defaultConfig, COMPONENT_NAME),
+  src: undefined,
 });
 
 const emit = defineEmits([
@@ -53,7 +54,7 @@ const dynamicComponent = computed(() => {
   }
 
   const name = props.name;
-  const src = props.src;
+  const src = props.src as ComponentOptions | undefined;
 
   /* Edge case */
   if (!src && !name) return "";

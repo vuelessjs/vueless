@@ -6,7 +6,7 @@ import {
   getDocsDescription,
 } from "../../utils/storybook";
 
-import UDropdown from "../../ui.dropdown/UDropdown.vue";
+import UDropdownComponent from "../../ui.dropdown/UDropdown.vue";
 import URow from "../../ui.container-row/URow.vue";
 import UCol from "../../ui.container-col/UCol.vue";
 import UButton from "../../ui.button/UButton.vue";
@@ -19,6 +19,9 @@ import UAvatar from "../../ui.image-avatar/UAvatar.vue";
 
 import type { Meta, StoryFn } from "@storybook/vue3-vite";
 import type { Props } from "../types";
+
+/* Generic SFCs are typed as a function, which drops the compiler-generated `__name`. */
+const UDropdown = UDropdownComponent as typeof UDropdownComponent & { __name: string };
 
 interface DefaultUDropdownArgs extends Props {
   slotTemplate?: string;

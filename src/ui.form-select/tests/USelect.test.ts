@@ -2,12 +2,19 @@ import { mount, flushPromises } from "@vue/test-utils";
 import { describe, it, expect, vi } from "vitest";
 
 import USelect from "../USelect.vue";
-import UListbox from "../../ui.form-listbox/UListbox.vue";
+import UListboxComponent from "../../ui.form-listbox/UListbox.vue";
 import UIcon from "../../ui.image-icon/UIcon.vue";
 import ULabel from "../../ui.form-label/ULabel.vue";
 import UBadge from "../../ui.text-badge/UBadge.vue";
 
 import type { Props } from "../types";
+
+import type { ComponentProps } from "../../types";
+
+/* Generic SFCs are typed as a function, which `findComponent` does not accept. */
+const UListbox = UListboxComponent as unknown as new () => {
+  $props: ComponentProps<typeof UListboxComponent>;
+};
 
 describe("USelect.vue", () => {
   const defaultOptions = [
@@ -253,6 +260,63 @@ describe("USelect.vue", () => {
       await component.get("[role='combobox']").trigger("focus");
 
       expect(component.getComponent(UListbox).props("searchable")).toBe(true);
+    });
+
+    it("Searchable – closes when the search input blurs to an outside element", async () => {
+      const component = mount(USelect, {
+        props: {
+          searchable: true,
+          options: defaultOptions,
+        },
+        attachTo: document.body,
+      });
+
+      await component.get("[role='combobox']").trigger("focus");
+      await flushPromises();
+
+      expect(component.emitted("open")).toBeTruthy();
+
+      const outside = document.createElement("button");
+
+      document.body.appendChild(outside);
+
+      await component
+        .getComponent(UListbox)
+        .get("input")
+        .trigger("blur", { relatedTarget: outside });
+      await flushPromises();
+
+      expect(component.emitted("close")).toBeTruthy();
+      expect(component.findComponent(UListbox).exists()).toBe(false);
+
+      outside.remove();
+      component.unmount();
+    });
+
+    it("Searchable – stays open when focus moves within its own listbox", async () => {
+      const component = mount(USelect, {
+        props: {
+          searchable: true,
+          options: defaultOptions,
+        },
+        attachTo: document.body,
+      });
+
+      await component.get("[role='combobox']").trigger("focus");
+      await flushPromises();
+
+      const listboxEl = component.getComponent(UListbox).element as HTMLElement;
+
+      await component
+        .getComponent(UListbox)
+        .get("input")
+        .trigger("blur", { relatedTarget: listboxEl });
+      await flushPromises();
+
+      expect(component.emitted("close")).toBeFalsy();
+      expect(component.findComponent(UListbox).exists()).toBe(true);
+
+      component.unmount();
     });
 
     it("Search v-model – passes search to UListbox and filters", async () => {

@@ -9,7 +9,7 @@ import draggable from "vuedraggable";
 import type { Props, DataListItem } from "../types";
 
 describe("UDataList.vue", () => {
-  const defaultList: DataListItem[] = [
+  const defaultList = [
     { value: 1, label: "Item 1" },
     { value: 2, label: "Item 2", crossed: true },
     { value: 3, label: "Item 3", actions: false },
@@ -162,6 +162,83 @@ describe("UDataList.vue", () => {
       expect(draggableComponent.vm.$attrs.animation).toBe(animationDuration);
     });
 
+    it("Force Fallback – passes forceFallback to draggable", () => {
+      const component = mount(UDataList, {
+        props: {
+          list: defaultList,
+          forceFallback: true,
+        },
+      });
+
+      const draggableComponent = component.findComponent(draggable);
+
+      expect(draggableComponent.vm.$attrs["force-fallback"]).toBe(true);
+    });
+
+    it("Force Fallback – defaults to false", () => {
+      const component = mount(UDataList, {
+        props: {
+          list: defaultList,
+        },
+      });
+
+      const draggableComponent = component.findComponent(draggable);
+
+      expect(draggableComponent.vm.$attrs["force-fallback"]).toBe(false);
+    });
+
+    it("Fallback On Body – passes fallbackOnBody to draggable", () => {
+      const component = mount(UDataList, {
+        props: {
+          list: defaultList,
+          fallbackOnBody: true,
+        },
+      });
+
+      const draggableComponent = component.findComponent(draggable);
+
+      expect(draggableComponent.vm.$attrs["fallback-on-body"]).toBe(true);
+    });
+
+    it("Fallback On Body – defaults to false", () => {
+      const component = mount(UDataList, {
+        props: {
+          list: defaultList,
+        },
+      });
+
+      const draggableComponent = component.findComponent(draggable);
+
+      expect(draggableComponent.vm.$attrs["fallback-on-body"]).toBe(false);
+    });
+
+    it("Fallback Class – passes fallbackClass to draggable", () => {
+      const fallbackClass = "custom-drag-fallback";
+
+      const component = mount(UDataList, {
+        props: {
+          list: defaultList,
+          fallbackClass,
+        },
+      });
+
+      const draggableComponent = component.findComponent(draggable);
+
+      expect(draggableComponent.vm.$attrs["fallback-class"]).toBe(fallbackClass);
+    });
+
+    it("Fallback Class – defaults to shadow-sm", () => {
+      const component = mount(UDataList, {
+        props: {
+          list: defaultList,
+        },
+      });
+
+      const draggableComponent = component.findComponent(draggable);
+
+      expect(draggableComponent.vm.$attrs["fallback-class"]).toBe("shadow-sm");
+    });
+
     it("Nesting – renders nested items when children array is present", async () => {
       const component = mount(UDataList, {
         props: {
@@ -174,6 +251,55 @@ describe("UDataList.vue", () => {
       >;
 
       expect(nestedComponent.props("list")).toEqual(nestedList[0].children);
+    });
+
+    it("Nesting – renders empty nested drop-zone for childless items when nestedKey is truthy", () => {
+      const component = mount(UDataList, {
+        props: {
+          list: [{ value: 1, label: "Leaf", canNest: true }],
+          nestedKey: "canNest",
+        },
+      });
+
+      const nestedComponent = component.findComponent("[vl-key='nested']");
+
+      expect(nestedComponent.exists()).toBe(true);
+    });
+
+    it("Nesting – does not render drop-zone for childless items when nestedKey value is falsy", () => {
+      const component = mount(UDataList, {
+        props: {
+          list: [{ value: 1, label: "Leaf", canNest: false }],
+          nestedKey: "canNest",
+        },
+      });
+
+      const nestedComponent = component.findComponent("[vl-key='nested']");
+
+      expect(nestedComponent.exists()).toBe(false);
+    });
+
+    it("Nesting – emits dragged item with parentValue of the leaf after drop into empty drop-zone", async () => {
+      const leaf = { value: 1, label: "Leaf", canNest: true, children: [] as DataListItem[] };
+      const list: DataListItem[] = [leaf, { value: 2, label: "Dragged", canNest: true }];
+
+      const component = mount(UDataList, {
+        props: { list, nestedKey: "canNest" },
+      });
+
+      // Simulate vuedraggable moving item 2 into the leaf's (previously empty) nested list.
+      list.splice(1, 1);
+      leaf.children!.push({ value: 2, label: "Dragged", canNest: true });
+
+      await component.findComponent(draggable).vm.$emit("end");
+
+      const sortData = component.emitted("dragSort")?.[0]?.[0] as {
+        value: number;
+        parentValue: unknown;
+      }[];
+      const dragged = sortData.find((item) => item.value === 2);
+
+      expect(dragged?.parentValue).toBe(leaf.value);
     });
 
     it("Data Test – applies correct data-test attribute", () => {

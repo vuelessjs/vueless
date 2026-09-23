@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { provide, ref, watch, useTemplateRef } from "vue";
+import { computed, provide, ref, watch, useTemplateRef } from "vue";
 import { isEqual } from "lodash-es";
 
 import { useUI } from "../composables/useUI";
@@ -12,6 +12,7 @@ import { COMPONENT_NAME } from "./constants";
 import defaultConfig from "./config";
 
 import type { UnknownObject } from "../types";
+import type { BaseCheckboxOption } from "../ui.form-checkbox/types";
 import type { Props, Config } from "./types";
 
 defineOptions({ inheritAttrs: false });
@@ -34,6 +35,11 @@ const emit = defineEmits([
 const listRef = useTemplateRef<HTMLDivElement>("list");
 
 const checkedItems = ref([] as UnknownObject[]);
+
+/* Indexable view of the options for `labelKey` / `valueKey` lookups. */
+const keyedOptions = computed(
+  () => props.options as (BaseCheckboxOption & Record<string, BaseCheckboxOption["value"]>)[],
+);
 
 provide<(value: UnknownObject[]) => void>(
   "setCheckboxGroupCheckedItems",
@@ -116,7 +122,7 @@ const { getDataTest, groupLabelAttrs, groupCheckboxAttrs, listAttrs } =
       <!-- @slot Use it to add UCheckbox directly. -->
       <slot>
         <UCheckbox
-          v-for="(option, index) in options"
+          v-for="(option, index) in keyedOptions"
           :key="index"
           :model-value="modelValue"
           :value="option[valueKey]"

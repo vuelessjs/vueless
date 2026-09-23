@@ -1,11 +1,62 @@
 import defaultConfig from "./config";
 
-import type { Option } from "../ui.form-listbox/types";
-import type { ComponentConfig } from "../types";
+import type { BaseOption, SlotOption } from "../ui.form-listbox/types";
+import type { ComponentConfig, UnknownObject } from "../types";
 
 export type Config = typeof defaultConfig;
 
-export interface Props {
+/* Any object shape is a valid option, only reserved option keys are type checked. */
+export type SelectOption = BaseOption & (object | UnknownObject);
+
+/**
+ * Shape of a selected option exposed to slots.
+ *
+ * `getCurrentOption` falls back to `{} as Option` when no option matches (`utilSelect.ts:15`), and
+ * that empty object reaches `selected-option`, `left` and `right` verbatim — confirmed by runtime
+ * probe. In `multiple` mode it is an element of the array given to `selected-options`. So no member
+ * of `TOption` can be promised; `SlotOption` (Stage 2's type) already encodes exactly that.
+ */
+export type SelectedSlotOption<TOption extends SelectOption = SelectOption> = SlotOption<TOption>;
+
+/**
+ * What `left`, `right` and `selected-options` receive: `multiple ? selectedOptions.full : selectedOption`.
+ * In `multiple` mode a non-matching `modelValue` entry contributes a `{}` element to the array.
+ */
+export type SelectedOptionsBinding<TOption extends SelectOption = SelectOption> =
+  | SelectedSlotOption<TOption>
+  | SelectedSlotOption<TOption>[];
+
+export interface USelectSlots<TOption extends SelectOption = SelectOption> {
+  label?: (props: { label: string }) => unknown;
+  description?: (props: { description: string }) => unknown;
+  error?: (props: { error: string | boolean }) => unknown;
+  left?: (props: { iconName: string; options: SelectedOptionsBinding<TOption> }) => unknown;
+  right?: (props: { iconName: string; options: SelectedOptionsBinding<TOption> }) => unknown;
+  toggle?: (props: { iconName: string; opened: boolean }) => unknown;
+  clear?: (props: { iconName: string; clear: (event: MouseEvent) => void }) => unknown;
+  "before-toggle"?: () => unknown;
+  "after-toggle"?: () => unknown;
+  "selected-options"?: (props: { options: SelectedOptionsBinding<TOption> }) => unknown;
+  /* All four `selected-option` sites bind a single option, never an array: the `!multiple` branch
+   * binds the selected option and each `multiple` variant binds a `selectedOptions.visible` element.
+   * A runtime probe records a bare `{}` here in all three variants, hence the optional members. */
+  "selected-option"?: (props: {
+    label: unknown;
+    value: unknown;
+    option: SelectedSlotOption<TOption>;
+  }) => unknown;
+  "selected-counter"?: (props: { count: number }) => unknown;
+  "before-option"?: (props: { option: SlotOption<TOption>; index: number }) => unknown;
+  option?: (props: { option: SlotOption<TOption>; index: number }) => unknown;
+  "after-option"?: (props: {
+    option: SlotOption<TOption>;
+    selected: boolean;
+    index: number;
+  }) => unknown;
+  empty?: () => unknown;
+}
+
+export interface Props<TOption extends SelectOption = SelectOption> {
   /**
    * Select value.
    */
@@ -14,7 +65,7 @@ export interface Props {
   /**
    * Select options.
    */
-  options?: Option[];
+  options?: TOption[];
 
   /**
    * Select label.

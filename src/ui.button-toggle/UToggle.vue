@@ -1,4 +1,4 @@
-<script setup lang="ts">
+<script setup lang="ts" generic="TItem extends UToggleOption">
 import { computed, ref, useId, useTemplateRef } from "vue";
 
 import UButton from "../ui.button/UButton.vue";
@@ -9,15 +9,17 @@ import { getDefaults } from "../utils/ui";
 import defaultConfig from "./config";
 import { COMPONENT_NAME } from "./constants";
 
-import type { Props, Config, UToggleOption } from "./types";
+import type { Props, Config, UToggleOption, UToggleSlots } from "./types";
 
 defineOptions({ inheritAttrs: false });
 
-const props = withDefaults(defineProps<Props>(), {
-  ...getDefaults<Props, Config>(defaultConfig, COMPONENT_NAME),
+const props = withDefaults(defineProps<Props<TItem>>(), {
+  ...getDefaults<Props<TItem>, Config>(defaultConfig, COMPONENT_NAME),
   options: () => [],
   modelValue: () => [],
 });
+
+defineSlots<UToggleSlots<TItem>>();
 
 const emit = defineEmits([
   /**

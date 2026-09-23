@@ -1,4 +1,4 @@
-<script setup lang="ts">
+<script setup lang="ts" generic="TItem extends DataListItem">
 import { useTemplateRef } from "vue";
 import draggable from "vuedraggable/src/vuedraggable";
 
@@ -13,14 +13,17 @@ import { COMPONENT_NAME } from "./constants";
 import defaultConfig from "./config";
 import { useComponentLocaleMessages } from "../composables/useComponentLocaleMassages";
 
-import type { Props, DataListItem, Config } from "./types";
+import type { UnknownObject } from "../types";
+import type { Props, DataListItem, SlotItem, UDataListSlots, Config } from "./types";
 
 defineOptions({ inheritAttrs: false });
 
-const props = withDefaults(defineProps<Props>(), {
-  ...getDefaults<Props, Config>(defaultConfig, COMPONENT_NAME),
+const props = withDefaults(defineProps<Props<TItem>>(), {
+  ...getDefaults<Props<TItem>, Config>(defaultConfig, COMPONENT_NAME),
   list: () => [],
 });
+
+defineSlots<UDataListSlots<TItem>>();
 
 const emit = defineEmits([
   /**
@@ -42,6 +45,12 @@ function isCrossed(element: DataListItem) {
   return Boolean(element.crossed);
 }
 
+function hasNestedList(element: DataListItem) {
+  return Boolean(
+    element.children?.length || (props.nestedKey && (element as UnknownObject)[props.nestedKey]),
+  );
+}
+
 function onDragEnd() {
   const sortData = prepareSortData(props.list);
 
@@ -57,7 +66,7 @@ function prepareSortData(list: DataListItem[] = [], parentValue: string | number
     if (hasItemChildren) {
       const childrenItem = prepareSortData(
         item.children,
-        item[props.valueKey] as string | number | null,
+        (item as UnknownObject)[props.valueKey] as string | number | null,
       );
 
       childrenItem.forEach((item) => sortData.push(item));
@@ -129,6 +138,9 @@ const {
       :animation="animationDuration"
       :ghost-class="config.draggableGhost"
       :drag-class="config.draggableDrag"
+      :force-fallback="forceFallback"
+      :fallback-on-body="fallbackOnBody"
+      :fallback-class="fallbackClass"
       v-bind="draggableAttrs"
       :data-test="getDataTest()"
       @end="onDragEnd"
@@ -178,36 +190,58 @@ const {
           </div>
 
           <UDataList
-            v-if="element.children?.length"
+            v-if="hasNestedList(element)"
             hide-empty-state-for-nesting
             :list="element.children"
             :group="group"
+            :size="size"
+            :label-key="labelKey"
+            :value-key="valueKey"
+            :nested-key="nestedKey"
+            :animation-duration="animationDuration"
+            :force-fallback="forceFallback"
+            :fallback-on-body="fallbackOnBody"
+            :fallback-class="fallbackClass"
             v-bind="nestedAttrs"
+            :class="!element.children?.length && 'min-h-4'"
             :data-test="getDataTest('table')"
             @drag-sort="onDragEnd"
           >
-            <!-- @vue-ignore -->
-            <template #label="slotProps: { item: DataListItem; crossed: boolean }">
+            <!-- The nested list is built from `element.children` (`DataListItem[]`, not `TItem[]`),
+                 so it yields `SlotItem<DataListItem>`. `SlotItem` is all-optional, so forwarding it
+                 as `SlotItem<TItem>` promises nothing a deep child may lack. -->
+            <template #drag="slotProps">
+              <!--
+                @slot Use it to add something instead of the drag icon.
+                @binding {object} item
+                @binding {string} icon-name
+              -->
+              <slot
+                name="drag"
+                :item="slotProps.item as SlotItem<TItem>"
+                :icon-name="slotProps.iconName"
+              />
+            </template>
+
+            <template #label="slotProps">
               <!--
                 @slot Use it to modify label.
                 @binding {object} item
                 @binding {boolean} crossed
               -->
-              <slot name="label" :item="slotProps.item" :crossed="slotProps.crossed">
-                <div
-                  v-bind="slotProps.crossed ? labelCrossedAttrs : labelAttrs"
-                  v-text="slotProps.item[labelKey]"
-                />
-              </slot>
+              <slot
+                name="label"
+                :item="slotProps.item as SlotItem<TItem>"
+                :crossed="slotProps.crossed"
+              />
             </template>
 
-            <!-- @vue-ignore -->
-            <template #actions="slotProps: { item: DataListItem }">
+            <template #actions="slotProps">
               <!--
                 @slot Use it to add custom actions.
                 @binding {object} item
               -->
-              <slot name="actions" :item="slotProps.item" />
+              <slot name="actions" :item="slotProps.item as SlotItem<TItem>" />
             </template>
           </UDataList>
         </div>

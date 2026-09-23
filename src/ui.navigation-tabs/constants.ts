@@ -5,3 +5,5 @@
 export const COMPONENT_NAME = "UTabs";
 
 export const SCROLL_OFFSET = 200;
+export const DRAG_THRESHOLD = 5;
+export const DRAG_CLICK_SUPPRESS_MS = 300;

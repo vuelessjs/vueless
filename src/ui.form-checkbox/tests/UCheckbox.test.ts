@@ -33,7 +33,7 @@ describe("UCheckbox.vue", () => {
     it("Value – returns correct value type when checkbox is checked", async () => {
       const testValues = ["string-value", 42, true, { id: 1, name: "test" }, [1, 2, 3]];
 
-      testValues.forEach(async (testValue) => {
+      for (const testValue of testValues) {
         const component = mount(UCheckbox, {
           props: {
             value: testValue,
@@ -48,7 +48,7 @@ describe("UCheckbox.vue", () => {
         const emittedValues = component.emitted("update:modelValue");
 
         expect(emittedValues![0][0]).toEqual([testValue]);
-      });
+      }
     });
 
     it("TrueValue and FalseValue – returns correct values when checkbox is checked and unchecked", async () => {
@@ -59,7 +59,7 @@ describe("UCheckbox.vue", () => {
         { trueValue: true, falseValue: false },
       ];
 
-      testValuePairs.forEach(async ({ trueValue, falseValue }) => {
+      for (const { trueValue, falseValue } of testValuePairs) {
         const component = mount(UCheckbox, {
           props: {
             trueValue,
@@ -81,7 +81,7 @@ describe("UCheckbox.vue", () => {
         emittedValues = component.emitted("update:modelValue");
 
         expect(emittedValues![1][0]).toEqual(falseValue);
-      });
+      }
     });
 
     it("Partial – displays correct icon when checkbox is partially checked", () => {

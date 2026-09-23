@@ -281,6 +281,7 @@ const {
     :align="labelAlign"
     centred
     v-bind="inputLabelAttrs"
+    :data-test="getDataTest('label')"
   >
     <template #label>
       <!--

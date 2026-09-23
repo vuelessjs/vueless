@@ -13,12 +13,13 @@ import type { Props as UTabsProps, SetUTabsSelectedItem } from "../ui.navigation
 
 defineOptions({ inheritAttrs: false });
 
-const setUTabsSelectedItem = inject<SetUTabsSelectedItem>("setUTabsSelectedItem");
-const getUTabsSelectedItem = inject("getUTabsSelectedItem");
-const getUTabsScrollable = inject<UTabsProps["scrollable"]>("getUTabsScrollable");
-const getUTabsSquare = inject<UTabsProps["square"]>("getUTabsSquare");
-const getUTabsBlock = inject<UTabsProps["block"]>("getUTabsBlock");
+const setUTabsSelectedItem = inject<SetUTabsSelectedItem | null>("setUTabsSelectedItem", null);
+const getUTabsSelectedItem = inject("getUTabsSelectedItem", null);
+const getUTabsScrollable = inject<UTabsProps["scrollable"]>("getUTabsScrollable", false);
+const getUTabsSquare = inject<UTabsProps["square"]>("getUTabsSquare", false);
+const getUTabsBlock = inject<UTabsProps["block"]>("getUTabsBlock", false);
 const getUTabsSize = inject<UTabsProps["size"]>("getUTabsSize", "md");
+const getUTabsPreventTabClick = inject<() => boolean>("getUTabsPreventTabClick", () => false);
 
 const props = withDefaults(defineProps<Props>(), {
   ...getDefaults<Props, Config>(defaultConfig, COMPONENT_NAME),
@@ -34,12 +35,16 @@ const size = computed(() => toValue(getUTabsSize));
 const block = computed(() => toValue(getUTabsBlock));
 const square = computed(() => toValue(getUTabsSquare));
 const scrollable = computed(() => toValue(getUTabsScrollable));
-const isActive = computed(() => toValue(getUTabsSelectedItem) === props.value);
+const isActive = computed(() => {
+  if (!setUTabsSelectedItem) return true;
+
+  return toValue(getUTabsSelectedItem) === props.value;
+});
 
 async function onClickSetValue() {
-  if (!props.disabled && setUTabsSelectedItem) {
-    setUTabsSelectedItem(props.value ?? "");
-  }
+  if (toValue(getUTabsPreventTabClick) || props.disabled || !setUTabsSelectedItem) return;
+
+  setUTabsSelectedItem(props.value ?? "");
 }
 
 defineExpose({

@@ -34,11 +34,6 @@ const mountWithRouter = (component: unknown, options: UnknownObject) => {
 describe("UModal", () => {
   const modelValue = true;
 
-  // Wait for an async component to load
-  function sleep(ms: number = 0) {
-    return new Promise((resolve) => setTimeout(resolve, ms));
-  }
-
   // Props tests
   describe("Props", () => {
     // ModelValue prop
@@ -189,10 +184,10 @@ describe("UModal", () => {
     });
 
     // CloseOnOverlay prop
-    it("renders with closeOnOverlay prop", () => {
+    it("renders with closeOnOverlay prop", async () => {
       const closeOnOverlay = [true, false];
 
-      closeOnOverlay.forEach(async (value) => {
+      for (const value of closeOnOverlay) {
         const component = mount(UModal, {
           props: {
             modelValue,
@@ -206,19 +201,18 @@ describe("UModal", () => {
 
         await innerWrapper.trigger("mousedown");
         await innerWrapper.trigger("click");
-        await sleep(1000);
 
-        const modal = component.find('[vl-key="modal"]');
+        const closeRequests = component.emitted("update:modelValue");
 
-        expect(modal.exists()).toBe(!value);
-      });
+        expect(value ? closeRequests?.at(-1) : closeRequests).toEqual(value ? [false] : undefined);
+      }
     });
 
     // CloseOnEsc prop
-    it("renders with closeOnEsc prop", () => {
+    it("renders with closeOnEsc prop", async () => {
       const closeOnEsc = [true, false];
 
-      closeOnEsc.forEach(async (value) => {
+      for (const value of closeOnEsc) {
         const component = mount(UModal, {
           props: {
             modelValue,
@@ -229,12 +223,11 @@ describe("UModal", () => {
         const wrapper = component.find("[vl-key='wrapper']");
 
         await wrapper.trigger("keydown", { key: "Escape" });
-        await sleep(1000);
 
-        const modal = component.find('[vl-key="modal"]');
+        const closeRequests = component.emitted("update:modelValue");
 
-        expect(modal.exists()).toBe(!value);
-      });
+        expect(value ? closeRequests?.at(-1) : closeRequests).toEqual(value ? [false] : undefined);
+      }
     });
 
     // Inner prop

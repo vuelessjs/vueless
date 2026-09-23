@@ -4,9 +4,16 @@ import { describe, it, expect } from "vitest";
 import UDropdownButton from "../UDropdownButton.vue";
 import UButton from "../../ui.button/UButton.vue";
 import UIcon from "../../ui.image-icon/UIcon.vue";
-import UListbox from "../../ui.form-listbox/UListbox.vue";
+import UListboxComponent from "../../ui.form-listbox/UListbox.vue";
 
 import type { Props } from "../types";
+
+import type { ComponentProps } from "../../types";
+
+/* Generic SFCs are typed as a function, which `findComponent` does not accept. */
+const UListbox = UListboxComponent as unknown as new () => {
+  $props: ComponentProps<typeof UListboxComponent>;
+};
 
 describe("UDropdownButton.vue", () => {
   const defaultOptions = [

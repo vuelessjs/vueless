@@ -1,4 +1,4 @@
-<script setup lang="ts">
+<script setup lang="ts" generic="TOption extends SelectOption">
 import { ref, computed, nextTick, watch, useSlots, onMounted, useId, useTemplateRef } from "vue";
 
 import UIcon from "../ui.image-icon/UIcon.vue";
@@ -19,12 +19,13 @@ import defaultConfig from "./config";
 import { COMPONENT_NAME, DIRECTION, KEYS, MULTIPLE_VARIANTS } from "./constants";
 
 import type { Option, Config as UListboxConfig } from "../ui.form-listbox/types";
-import type { Props, Config } from "./types";
-import type { KeyAttrsWithConfig } from "../types";
+import type { Props, Config, SelectOption, USelectSlots, SelectedSlotOption } from "./types";
+import type { ComponentPublicInstance } from "vue";
+import type { ComponentExposed, KeyAttrsWithConfig } from "../types";
 
 defineOptions({ inheritAttrs: false });
 
-const props = withDefaults(defineProps<Props>(), {
+const props = withDefaults(defineProps<Props<TOption>>(), {
   ...getDefaults<Props, Config>(defaultConfig, COMPONENT_NAME),
   options: () => [],
   modelValue: "",
@@ -97,12 +98,17 @@ const emit = defineEmits([
   "change",
 ]);
 
+defineSlots<USelectSlots<TOption>>();
+
 const slots = useSlots();
 
 const isOpen = ref(false);
 const preferredOpenDirection = ref(DIRECTION.bottom);
 
-const listboxRef = useTemplateRef<InstanceType<typeof UListbox>>("listbox");
+/* `UListbox` is generic, so its type is a function — `InstanceType` does not apply. */
+const listboxRef = useTemplateRef<ComponentExposed<typeof UListbox> & ComponentPublicInstance>(
+  "listbox",
+);
 const wrapperRef = useTemplateRef<HTMLDivElement>("wrapper");
 const labelComponentRef = useTemplateRef<InstanceType<typeof ULabel>>("labelComponent");
 const leftSlotWrapperRef = useTemplateRef<HTMLDivElement>("leftSlotWrapper");
@@ -135,7 +141,7 @@ const dropdownValue = computed({
     emit("update:modelValue", value);
     emit("change", { value, options: props.options });
 
-    if (!props.multiple && props.closeOnSelect) deactivate();
+    if (props.closeOnSelect) deactivate();
   },
 });
 
@@ -151,16 +157,24 @@ const isMultipleBadgeVariant = computed(
   () => props.multiple && props.multipleVariant === MULTIPLE_VARIANTS.badge,
 );
 
+/* Indexable view of the options — `labelKey` / `valueKey` lookups need an index signature. */
+const listboxOptions = computed(() => props.options as Option[]);
+
+/* Same array, keeping `TOption` so the forwarded `UListbox` option slots infer the caller's shape. */
+const typedListboxOptions = computed(() => props.options);
+
 const localValue = computed<Option | Option[]>(() => {
   if (!props.multiple) {
     const [singleValue] = Array.isArray(props.modelValue) ? props.modelValue : [props.modelValue];
 
-    return getCurrentOption(props.options, singleValue, props.valueKey, props.groupValueKey);
+    return getCurrentOption(listboxOptions.value, singleValue, props.valueKey, props.groupValueKey);
   }
 
   return props.modelValue && Array.isArray(props.modelValue)
     ? (props.modelValue
-        .map((value) => getCurrentOption(props.options, value, props.valueKey, props.groupValueKey))
+        .map((value) =>
+          getCurrentOption(listboxOptions.value, value, props.valueKey, props.groupValueKey),
+        )
         .filter(Boolean) as Option[])
     : [];
 });
@@ -178,6 +192,21 @@ const selectedOptions = computed(() => {
     hidden: options.slice(props.labelDisplayCount),
   };
 });
+
+/* Slot-facing views of the values above. The internals keep `Option` because `labelKey` /
+ * `valueKey` are runtime strings and need its index signature; slots get the caller's shape.
+ * The narrowing cannot over-promise: `SelectedSlotOption` makes every member optional, which is
+ * exactly what the runtime delivers — a probe records a bare `{}` at `selected-option`, `left` and
+ * `right` when no option matches `modelValue`, and a `{}` array element in `multiple` mode. */
+const slotSelectedOption = computed(() => selectedOption.value as SelectedSlotOption<TOption>);
+
+const slotSelectedOptions = computed(
+  () => selectedOptions.value.full as SelectedSlotOption<TOption>[],
+);
+
+const slotVisibleOptions = computed(
+  () => selectedOptions.value.visible as SelectedSlotOption<TOption>[],
+);
 
 const selectedOptionsLabel = computed(() => {
   return {
@@ -556,7 +585,7 @@ const {
 
     <div
       ref="wrapper"
-      :tabindex="searchable || disabled ? -1 : 0"
+      :tabindex="disabled ? -1 : searchable && isOpen ? -1 : 0"
       role="combobox"
       :aria-expanded="ariaExpanded"
       aria-haspopup="listbox"
@@ -589,7 +618,7 @@ const {
         <slot
           name="right"
           :icon-name="rightIcon"
-          :options="multiple ? selectedOptions.full : selectedOption"
+          :options="multiple ? slotSelectedOptions : slotSelectedOption"
         >
           <UIcon v-if="rightIcon" :name="rightIcon" v-bind="rightIconAttrs" />
         </slot>
@@ -669,7 +698,10 @@ const {
             @binding {array} options
             @binding {object} options
           -->
-          <slot name="selected-options" :options="multiple ? selectedOptions.full : selectedOption">
+          <slot
+            name="selected-options"
+            :options="multiple ? slotSelectedOptions : slotSelectedOption"
+          >
             <span v-if="!multiple" v-bind="selectedLabelsAttrs" @click="toggle" @mousedown.prevent>
               <!--
                 @slot Use it to customize selected option.
@@ -681,7 +713,7 @@ const {
                 name="selected-option"
                 :label="selectedOption[labelKey]"
                 :value="selectedOption[valueKey]"
-                :option="localValue"
+                :option="slotSelectedOption"
               >
                 <div
                   :title="(selectedOption[labelKey] || '') as string"
@@ -705,7 +737,7 @@ const {
                       name="selected-option"
                       :label="option[labelKey]"
                       :value="option[valueKey]"
-                      :option="option"
+                      :option="slotVisibleOptions[index]"
                     >
                       {{
                         option[labelKey] +
@@ -746,7 +778,7 @@ const {
                         name="selected-option"
                         :label="option[labelKey]"
                         :value="option[valueKey]"
-                        :option="option"
+                        :option="slotVisibleOptions[index]"
                       >
                         {{ option[labelKey] }}
                       </slot>
@@ -799,7 +831,7 @@ const {
                       name="selected-option"
                       :label="option[labelKey]"
                       :value="option[valueKey]"
-                      :option="option"
+                      :option="slotVisibleOptions[index]"
                     >
                       {{ option[labelKey] }}
                     </slot>
@@ -858,7 +890,7 @@ const {
         :searchable="searchable"
         :options-limit="optionsLimit"
         :multiple="multiple"
-        :options="options"
+        :options="typedListboxOptions"
         :disabled="disabled"
         :size="size"
         :debounce="debounce"
@@ -926,7 +958,7 @@ const {
         <slot
           name="left"
           :icon-name="leftIcon"
-          :options="multiple ? selectedOptions.full : selectedOption"
+          :options="multiple ? slotSelectedOptions : slotSelectedOption"
         >
           <UIcon v-if="leftIcon" :name="leftIcon" v-bind="leftIconAttrs" />
         </slot>

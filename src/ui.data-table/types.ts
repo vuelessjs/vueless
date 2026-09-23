@@ -1,5 +1,4 @@
 import defaultConfig from "./config";
-
 import type { Ref } from "vue";
 import type { ComponentConfig, UnknownObject } from "../types";
 import type { Config as UDividerConfig } from "../ui.container-divider/types";
@@ -26,19 +25,29 @@ export interface RowData {
   [key: string]: Cell;
 }
 
-export interface DateDivider {
+export interface BaseDateDivider {
   date: Date | string;
   label?: string;
   config?: ComponentConfig<UDividerConfig>;
 }
 
-export interface Row {
+/* Any object shape is a valid divider, only reserved divider keys are type checked. */
+export type DateDivider = BaseDateDivider & (object | UnknownObject);
+
+export interface BaseRow {
   id: RowId;
   rowDate?: string | Date;
-  row?: Row | Row[];
+  row?: TableRow | TableRow[];
   class?: string | ((row: Row) => string);
+}
+
+export interface Row extends BaseRow {
+  row?: Row | Row[];
   [key: string]: unknown;
 }
+
+/* Any object shape is a valid row, only reserved row keys are type checked. */
+export type TableRow = BaseRow & (object | UnknownObject);
 
 export interface FlatRow extends Row {
   parentRowId?: RowId;
@@ -59,23 +68,30 @@ export interface ColumnObject {
   thClass?: string;
 }
 
-export type Column = ColumnObject | string;
+/* Any object shape is a valid column, only reserved column keys are type checked. */
+export type TableColumn = ColumnObject & (object | UnknownObject);
 
-export interface Props {
+export type Column = TableColumn | string;
+
+/* A column entry that keeps its key literal, so slot keys can be narrowed at the call site. */
+export type KeyedColumn<TCol extends string> = TCol | (TableColumn & { key: TCol });
+
+export interface Props<TRow extends TableRow = TableRow, TCol extends string = string> {
   /**
    * Table columns (headers).
+   * `readonly` so `as const` column lists keep their literal keys and narrow the cell slot names.
    */
-  columns: Column[];
+  columns: readonly KeyedColumn<TCol>[];
 
   /**
    * Table rows data.
    */
-  rows: Row[];
+  rows: TRow[];
 
   /**
    * Selected rows.
    */
-  selectedRows?: Row[];
+  selectedRows?: TRow[];
 
   /**
    * Selected rows id.
@@ -116,6 +132,21 @@ export interface Props {
    * Set table loader state.
    */
   loading?: boolean;
+
+  /**
+   * Show skeleton body for the first table load instead of the regular loader.
+   */
+  skeletonLoading?: boolean;
+
+  /**
+   * Number of skeleton rows shown during initial loading.
+   */
+  skeletonRows?: number;
+
+  /**
+   * Skeleton cell width classes used to vary the loading placeholder layout.
+   */
+  skeletonWidths?: string[];
 
   /**
    * Enable virtual scrolling for large datasets.
@@ -162,6 +193,72 @@ export interface Props {
    */
   dataTest?: string | null;
 }
+
+/* Drops `Row`'s `[key: string]: unknown` so slot rows only expose statically known keys. */
+type KnownKeys<T> = {
+  [K in keyof T as string extends K ? never : number extends K ? never : K]: T[K];
+};
+
+/**
+ * Row shape exposed to slots: the caller's row plus the flattening metadata.
+ *
+ * `TRow`'s own keys are optional. Rows are flattened through `getFlatRows`, which recurses into
+ * `row.row` — and `BaseRow.row` is `TableRow | TableRow[]`, not `TRow`, so a nested child need not
+ * carry the parent's members. Every row slot (`cell-*`, `expand`, `nested-row`) receives those
+ * children verbatim; `nested-row` receives nothing else. `BaseRow`/`FlatRow` metadata
+ * (`id`, `nestedLevel`, …) is always set by the flattener, so it stays guaranteed.
+ */
+export type SlotRow<TRow extends TableRow = TableRow> = Partial<KnownKeys<TRow>> &
+  KnownKeys<FlatRow>;
+
+/* Selected rows carry the same guarantee: select-all flattens nested children into the selection. */
+export type SelectedSlotRow<TRow extends TableRow = TableRow> = SlotRow<TRow>;
+
+export interface UTableStaticSlots<TRow extends TableRow = TableRow> {
+  "header-counter"?: (props: { total: number }) => unknown;
+  "header-actions"?: (props: { selectedRows: SelectedSlotRow<TRow>[] }) => unknown;
+  "before-header"?: (props: { colsCount: number; classes?: string }) => unknown;
+  "after-last-row"?: (props: { colsCount: number; classes?: string }) => unknown;
+  "before-first-row"?: () => unknown;
+  "empty-state"?: () => unknown;
+  footer?: (props: { colsCount: number }) => unknown;
+  expand?: (props: { index: number; row: SlotRow<TRow>; expanded: boolean }) => unknown;
+  "nested-row"?: (props: { index: number; row: SlotRow<TRow>; nestedLevel: number }) => unknown;
+}
+
+/**
+ * Slot key suffix. Narrows to the literal column keys only when they are statically known —
+ * `columns` from a `ref`, an API, or a plain `string[]` widens `TCol` back to `string`, and an
+ * empty `columns` array infers `TCol` as `never`. Both mean "not statically known", so every
+ * `cell-*` / `header-*` slot must keep compiling.
+ *
+ * The `[TCol]` tuple wrapper is required: a naked `never` distributes to `never`, which would
+ * silently collapse the whole mapped type and reject every slot.
+ */
+type SlotKeySuffix<TCol extends string> = [TCol] extends [never]
+  ? string
+  : string extends TCol
+    ? string
+    : TCol;
+
+export type UTableDynamicSlots<TRow extends TableRow = TableRow, TCol extends string = string> = {
+  [K in `cell-${SlotKeySuffix<TCol>}`]?: (props: {
+    value: Cell;
+    row: SlotRow<TRow>;
+    index: number;
+    cellIndex: number;
+  }) => unknown;
+} & {
+  [K in `header-${SlotKeySuffix<TCol>}`]?: (props: {
+    column: ColumnObject;
+    index: number;
+  }) => unknown;
+};
+
+export type UTableSlots<
+  TRow extends TableRow = TableRow,
+  TCol extends string = string,
+> = UTableStaticSlots<TRow> & UTableDynamicSlots<TRow, TCol>;
 
 export interface UTableRowAttrs {
   bodyCellContentAttrs: Ref<UnknownObject>;

@@ -8,13 +8,35 @@ export type SetUTabsSelectedItem = (
   value: string | number | boolean | UnknownArray | UnknownObject,
 ) => void;
 
-export interface UTabsOption {
+export interface BaseTabOption {
   value: string | number;
   label: string;
   disabled?: boolean;
 }
 
-export interface Props {
+/* Any object shape is a valid option, only reserved option keys are type checked. */
+export type UTabsOption = BaseTabOption & (object | UnknownObject);
+
+/**
+ * Slots receive each option verbatim — `UTabs` iterates `props.options` without
+ * filtering, flattening or synthesising entries, so the caller's shape is guaranteed.
+ */
+export interface UTabsSlots<TItem extends UTabsOption = UTabsOption> {
+  default?: () => unknown;
+  prev?: (props: { iconName: string }) => unknown;
+  next?: (props: { iconName: string }) => unknown;
+  left?: (props: { item: TItem; index: number; active: boolean; iconName?: string }) => unknown;
+  label?: (props: {
+    item: TItem;
+    index: number;
+    label: string;
+    active: boolean;
+    iconName?: string;
+  }) => unknown;
+  right?: (props: { item: TItem; index: number; active: boolean; iconName?: string }) => unknown;
+}
+
+export interface Props<TItem extends UTabsOption = UTabsOption> {
   /**
    * Selected tab value.
    */
@@ -23,7 +45,7 @@ export interface Props {
   /**
    * Tab options.
    */
-  options?: UTabsOption[];
+  options?: TItem[];
 
   /**
    * Tabs size.
@@ -31,7 +53,7 @@ export interface Props {
   size?: "2xs" | "xs" | "sm" | "md" | "lg" | "xl";
 
   /**
-   * Make the Tabs scrollable.
+   * Make the Tabs scrollable via arrow buttons, dragging, or horizontal wheel.
    */
   scrollable?: boolean;
 

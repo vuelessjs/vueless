@@ -1,14 +1,17 @@
 import defaultConfig from "./config";
-import type { ComponentConfig } from "../types";
+import type { ComponentConfig, UnknownObject } from "../types";
 
 export type Config = typeof defaultConfig;
 
-export interface UAccordionOption {
+export interface BaseAccordionOption {
   value: string;
   title: string;
   description?: string;
   opened?: boolean;
 }
+
+/* Any object shape is a valid option, only reserved option keys are type checked. */
+export type UAccordionOption = BaseAccordionOption & (object | UnknownObject);
 
 export type SetAccordionSelectedItem = (value: string, opened: boolean) => void;
 

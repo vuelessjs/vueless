@@ -16,9 +16,41 @@ export interface Option extends BaseOption {
   [key: string]: string | number | boolean | UnknownObject | Option[] | OnClickOption | undefined;
 }
 
+/* Any object shape is a valid option, only reserved option keys are type checked. */
+export type ListboxOption = BaseOption & (object | UnknownObject);
+
 export type SelectedValue = string | number | UnknownObject;
 
-export interface Props {
+/* Drops `Option`'s `[key: string]` index signature so slot options only expose known keys. */
+type KnownKeys<T> = {
+  [K in keyof T as string extends K ? never : number extends K ? never : K]: T[K];
+};
+
+/**
+ * Option shape exposed to slots: the caller's option plus the reserved option keys.
+ *
+ * `TOption`'s own keys are optional. With `groupValueKey` set, `filterGroups` flattens the
+ * nested `groupValueKey` array into the same list the slots iterate, and those group members
+ * are typed `Option`, not `TOption` — so a flattened child need not carry the parent's members.
+ * `BaseOption`'s keys are optional already, so nothing is promised that can be absent.
+ */
+export type SlotOption<TOption extends ListboxOption = ListboxOption> = Partial<
+  KnownKeys<TOption>
+> &
+  BaseOption;
+
+export interface UListboxSlots<TOption extends ListboxOption = ListboxOption> {
+  "before-option"?: (props: { option: SlotOption<TOption>; index: number }) => unknown;
+  option?: (props: { option: SlotOption<TOption>; index: number }) => unknown;
+  "after-option"?: (props: {
+    option: SlotOption<TOption>;
+    selected: boolean;
+    index: number;
+  }) => unknown;
+  empty?: () => unknown;
+}
+
+export interface Props<TOption extends ListboxOption = ListboxOption> {
   /**
    * Selected item.
    */
@@ -32,7 +64,7 @@ export interface Props {
   /**
    * List options.
    */
-  options?: Option[];
+  options?: TOption[];
 
   /**
    * Shows input to search value in a list.

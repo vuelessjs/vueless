@@ -1,11 +1,25 @@
 import defaultConfig from "./config";
 
-import type { Option } from "../ui.form-listbox/types";
+import type { ListboxOption, SlotOption } from "../ui.form-listbox/types";
 import type { ComponentConfig, UnknownObject } from "../types";
 
 export type Config = typeof defaultConfig;
 
-export interface Props {
+/* Option slots are forwarded through `UDropdown` to `UListbox`, inheriting its group flattening —
+   a flattened member need not carry the parent's members, so `SlotOption` is `Partial`. */
+export interface UDropdownBadgeSlots<TOption extends ListboxOption = ListboxOption> {
+  /* `label` is `UDropdown`'s `displayLabel`, a join of `option[labelKey]` lookups — `undefined`
+     when the label cannot be resolved. */
+  default?: (props: { label: string | undefined; opened: boolean }) => unknown;
+  left?: (props: { opened: boolean }) => unknown;
+  toggle?: (props: { opened: boolean }) => unknown;
+  "before-option"?: (props: { option: SlotOption<TOption>; index: number }) => unknown;
+  option?: (props: { option: SlotOption<TOption>; index: number }) => unknown;
+  "after-option"?: (props: { option: SlotOption<TOption>; index: number }) => unknown;
+  empty?: () => unknown;
+}
+
+export interface Props<TOption extends ListboxOption = ListboxOption> {
   /**
    * Selected badge.
    */
@@ -24,7 +38,7 @@ export interface Props {
   /**
    * Options list.
    */
-  options?: Option[];
+  options?: TOption[];
 
   /**
    * Label key in the item object of options.

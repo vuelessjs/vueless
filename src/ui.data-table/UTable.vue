@@ -1,4 +1,4 @@
-<script setup lang="ts">
+<script setup lang="ts" generic="TRow extends TableRow, TCol extends string = string">
 import {
   shallowRef,
   ref,
@@ -31,6 +31,7 @@ import UEmpty from "../ui.container-empty/UEmpty.vue";
 import UCheckbox from "../ui.form-checkbox/UCheckbox.vue";
 import ULoaderProgress from "../ui.loader-progress/ULoaderProgress.vue";
 import UDivider from "../ui.container-divider/UDivider.vue";
+import USkeleton from "../ui.skeleton/USkeleton.vue";
 import UTableRow from "./UTableRow.vue";
 
 import type { ComputedRef, VNode } from "vue";
@@ -46,18 +47,22 @@ import type {
   FlatRow,
   ColumnObject,
   SearchMatch,
+  TableRow,
   UTableRowProps,
+  UTableSlots,
+  SelectedSlotRow,
 } from "./types";
 
 defineOptions({ inheritAttrs: false });
 
-const props = withDefaults(defineProps<Props>(), {
-  ...getDefaults<Props, Config>(defaultConfig, COMPONENT_NAME),
+const props = withDefaults(defineProps<Props<TRow, TCol>>(), {
+  ...getDefaults<Props<TRow, TCol>, Config>(defaultConfig, COMPONENT_NAME),
   columns: () => [],
   rows: () => [],
   dateDivider: () => [],
   selectedRows: () => [],
   expandedRows: () => [],
+  skeletonWidths: () => defaultConfig.defaults.skeletonWidths,
 });
 
 const emit = defineEmits([
@@ -110,6 +115,8 @@ const emit = defineEmits([
   "search",
 ]);
 
+defineSlots<UTableSlots<TRow, TCol>>();
+
 const slots = useSlots();
 
 const selectAll = ref(false);
@@ -143,7 +150,7 @@ const sortedRows: ComputedRef<FlatRow[]> = computed(() => {
     typeof column === "object" ? column.key : column,
   );
 
-  const keyOrder = new Map(headerKeys.map((key, i) => [key, i]));
+  const keyOrder = new Map<string, number>(headerKeys.map((key, i) => [key, i]));
 
   return flatTableRows.value.map((row) => {
     const entries = Object.entries(row);
@@ -168,6 +175,11 @@ const isFooterSticky = computed(() => {
 });
 
 const normalizedColumns = computed(() => normalizeColumns(props.columns));
+
+/* Slot keys are narrowed to `TCol` for callers; internal dispatch is driven by runtime strings. */
+function headerSlotName(key: string) {
+  return `header-${key}` as `header-${TCol}`;
+}
 
 const visibleColumns = computed(() => {
   return normalizedColumns.value.filter((column) => column.isShown !== false);
@@ -206,14 +218,31 @@ const isCheckedMoreOneTableItems = computed(() => {
   return Boolean(localSelectedRows.value.length);
 });
 
-const tableRowWidthStyle = computed(() => ({ width: `${tableWidth.value / PX_IN_REM}rem` }));
+/* Select-all includes nested children, which need not carry `TRow`'s members. */
+const selectedRowsSlotValue = computed(() => localSelectedRows.value as SelectedSlotRow<TRow>[]);
 
-const flatTableRows = computed(() => getFlatRows(props.rows));
+const tableRowWidthStyle = computed(() => ({
+  width: `${tableWidth.value / PX_IN_REM}rem`,
+}));
+
+const flatTableRows = computed(() => getFlatRows(props.rows as Row[]));
 
 const visibleFlatRows = computed(() => {
   const expanded = expandedRowsSet.value;
 
   return flatTableRows.value.filter((row) => !row.parentRowId || expanded.has(row.parentRowId));
+});
+
+const showSkeletonLoading = computed(() => {
+  return props.skeletonLoading && !sortedRows.value.length;
+});
+
+const progressLoading = computed(() => {
+  return showSkeletonLoading.value ? false : props.loading;
+});
+
+const skeletonRowIndexes = computed(() => {
+  return Array.from({ length: props.skeletonRows }, (_, index) => index);
 });
 
 const virtualScroll = useVirtualScroll({
@@ -241,6 +270,10 @@ const renderedRows = computed(() => {
 
 function isRowVisible(row: FlatRow): boolean {
   return !row.parentRowId || expandedRowsSet.value.has(row.parentRowId);
+}
+
+function getSkeletonWidthClass(columnIndex: number, rowIndex: number): string {
+  return props.skeletonWidths[(columnIndex + rowIndex) % props.skeletonWidths.length];
 }
 
 const searchMatches = computed<SearchMatch[]>(() => {
@@ -512,7 +545,7 @@ onBeforeUnmount(() => {
 
 function onChangeSelectedRows() {
   if (!isEqual(props.selectedRows, localSelectedRows.value)) {
-    localSelectedRows.value = props.selectedRows;
+    localSelectedRows.value = props.selectedRows as Row[];
   }
 }
 
@@ -663,7 +696,9 @@ function getDateDividerData(rowDate: string | Date | undefined) {
 function setFooterCellWidth(zero?: null) {
   const ZERO_WIDTH = 0;
 
-  if (!props.stickyFooter || !footerRowRef.value || !stickyFooterRowRef.value) return;
+  if (!props.stickyFooter || !footerRowRef.value || !stickyFooterRowRef.value) {
+    return;
+  }
 
   const mainFooterItems = [...footerRowRef.value.children] as HTMLElement[];
   const stickyFooterItems = [...stickyFooterRowRef.value.children] as HTMLElement[];
@@ -816,6 +851,50 @@ function onBodyDoubleClick(event: MouseEvent) {
   onDoubleClickRow(rowData);
 }
 
+// Detect double-tap on touch devices and dispatch a native `dblclick`,
+// which bubbles to the tbody and triggers onBodyDoubleClick.
+const DOUBLE_TAP_DELAY = 300;
+const DOUBLE_TAP_MAX_MOVE = 24;
+
+let lastTapTime = 0;
+let lastTapRow: Element | null = null;
+let lastTapX = 0;
+let lastTapY = 0;
+
+function onBodyTouchEnd(event: TouchEvent) {
+  if (event.changedTouches.length !== 1) return;
+
+  const [touch] = event.changedTouches;
+  const target = touch.target as HTMLElement | null;
+  const row = target?.closest("tr[data-row-id]") ?? null;
+
+  if (!row) {
+    lastTapRow = null;
+
+    return;
+  }
+
+  const now = event.timeStamp;
+  const isSameRow = row === lastTapRow;
+  const isQuick = now - lastTapTime < DOUBLE_TAP_DELAY;
+  const isNear =
+    Math.abs(touch.clientX - lastTapX) < DOUBLE_TAP_MAX_MOVE &&
+    Math.abs(touch.clientY - lastTapY) < DOUBLE_TAP_MAX_MOVE;
+
+  if (isSameRow && isQuick && isNear) {
+    lastTapTime = 0;
+    lastTapRow = null;
+    row.dispatchEvent(new MouseEvent("dblclick", { bubbles: true, cancelable: true }));
+
+    return;
+  }
+
+  lastTapTime = now;
+  lastTapRow = row;
+  lastTapX = touch.clientX;
+  lastTapY = touch.clientY;
+}
+
 function onChangeSelectAll(selectAll: boolean) {
   if (selectAll && canSelectAll.value) {
     localSelectedRows.value = [...flatTableRows.value];
@@ -889,7 +968,7 @@ function getDateDividerConfig(row: Row, isSelected: boolean) {
     : bodyDateDividerAttrs.value.config;
 
   return getMergedConfig({
-    defaultConfig: defaultConfig,
+    defaultConfig,
     globalConfig: getDateDividerData(row.rowDate).config,
   }) as UDividerConfig;
 }
@@ -917,7 +996,9 @@ function getRowSearchMatchColumns(row: FlatRow): Set<string> | undefined {
 }
 
 function getRowActiveSearchMatchColumn(row: FlatRow): string | undefined {
-  if (!activeMatch.value || activeMatch.value.rowId !== row.id) return undefined;
+  if (!activeMatch.value || activeMatch.value.rowId !== row.id) {
+    return;
+  }
 
   return activeMatch.value.columnKey;
 }
@@ -1036,9 +1117,11 @@ const {
   bodyCellSearchMatchTextAttrs,
   bodyCellSearchMatchActiveAttrs,
   bodyCellSearchMatchTextActiveAttrs,
+  skeletonCellAttrs,
+  skeletonCheckboxAttrs,
 } = useUI<Config>(defaultConfig, mutatedProps);
 
-/* Plain object — inner refs are already reactive. */
+/* Plain object — inner refs are already reactive and identity-stable (see useUI). */
 const tableRowAttrs = {
   bodyCellContentAttrs,
   bodyCellCheckboxAttrs,
@@ -1085,8 +1168,40 @@ function renderDateDividerRow(row: FlatRow, rowIndex: number): VNode | null {
   ]);
 }
 
+/**
+ * Per-row VNode memo cache. Toggling one checkbox invalidates the `selectedRowIds`
+ * computed, which re-runs the body render function. Without memoization every row's
+ * VNode would be rebuilt and diffed on each toggle (200+ rows → visible lag). We cache
+ * each row's VNode keyed by row id and only rebuild it when an input that actually
+ * affects that row changes — so an unrelated row keeps the same VNode reference and
+ * Vue skips it entirely during patch.
+ */
+const rowVNodeCache = new Map<RowId, { signature: string; row: FlatRow; vnode: VNode }>();
+
+function getRowSignature(row: FlatRow, rowIndex: number): string {
+  return [
+    rowIndex,
+    Number(isRowSelected(row)),
+    Number(expandedRowsSet.value.has(row.id)),
+    Number(isRowVisible(row)),
+    props.selectable ? 1 : 0,
+    props.search || "",
+    getRowActiveSearchMatchColumn(row) || "",
+    [...(getRowSearchMatchColumns(row) || [])].join(","),
+  ].join("|");
+}
+
 function renderTableRow(row: FlatRow, rowIndex: number): VNode {
-  return h(
+  const signature = getRowSignature(row, rowIndex);
+  const cached = rowVNodeCache.get(row.id);
+
+  // `row` identity guards against stale data: `flatTableRows` yields fresh row
+  // objects whenever `props.rows` changes, so a new reference means new cell data.
+  if (cached && cached.row === row && cached.signature === signature) {
+    return cached.vnode;
+  }
+
+  const vnode = h(
     UTableRow,
     {
       key: row.id,
@@ -1112,13 +1227,48 @@ function renderTableRow(row: FlatRow, rowIndex: number): VNode {
     } as unknown as UTableRowProps,
     slots,
   );
+
+  rowVNodeCache.set(row.id, { signature, row, vnode });
+
+  return vnode;
 }
+
+/* Column layout / config changes affect every row — invalidate the whole cache. */
+watch(
+  [
+    normalizedColumns,
+    config,
+    columnPositions,
+    () => props.textEllipsis,
+    () => props.emptyCellLabel,
+  ],
+  () => rowVNodeCache.clear(),
+);
+
+/* Drop cache entries for rows that no longer exist (filters, pagination reset). */
+watch(flatTableRows, (rows) => {
+  const liveIds = new Set(rows.map((row) => row.id));
+
+  for (const id of rowVNodeCache.keys()) {
+    if (!liveIds.has(id)) rowVNodeCache.delete(id);
+  }
+});
 
 function renderRowTemplate(row: FlatRow, rowIndex: number): VNode[] {
   return [renderDateDividerRow(row, rowIndex), renderTableRow(row, rowIndex)].filter(
     Boolean,
   ) as VNode[];
 }
+
+/**
+ * Stable functional component for the body rows. Defined once so its type
+ * identity never changes across parent re-renders — a previous inline `:is`
+ * arrow created a new type on every render, forcing Vue to unmount and rebuild
+ * the entire tbody (e.g. on a sticky-header toggle). Reading `renderedRows`
+ * through the closure keeps it reactive while row keys drive reconciliation.
+ */
+const BodyRows = () =>
+  renderedRows.value.map((row, rowIndex) => renderRowTemplate(row, rowIndex)).flat();
 </script>
 
 <template>
@@ -1163,7 +1313,7 @@ function renderRowTemplate(row: FlatRow, rowIndex: number): VNode[] {
             @binding {object} column
             @binding {number} index
           -->
-          <slot :name="`header-${column.key}`" :column="column" :index="index" />
+          <slot :name="headerSlotName(column.key)" :column="column" :index="index" />
         </template>
 
         <template v-else>
@@ -1171,7 +1321,7 @@ function renderRowTemplate(row: FlatRow, rowIndex: number): VNode[] {
         </template>
       </div>
 
-      <ULoaderProgress :loading="loading" v-bind="stickyHeaderLoaderAttrs" />
+      <ULoaderProgress :loading="progressLoading" v-bind="stickyHeaderLoaderAttrs" />
     </div>
 
     <div
@@ -1201,9 +1351,9 @@ function renderRowTemplate(row: FlatRow, rowIndex: number): VNode[] {
         @slot Use it to add action buttons within the actions header, which appear when rows are selected.
         @binding {array} selected-rows
       -->
-      <slot name="header-actions" :selected-rows="localSelectedRows" />
+      <slot name="header-actions" :selected-rows="selectedRowsSlotValue" />
 
-      <ULoaderProgress :loading="loading" v-bind="stickyHeaderLoaderAttrs" />
+      <ULoaderProgress :loading="progressLoading" v-bind="stickyHeaderLoaderAttrs" />
     </div>
 
     <div
@@ -1233,9 +1383,9 @@ function renderRowTemplate(row: FlatRow, rowIndex: number): VNode[] {
         @slot Use it to add action buttons within the actions header, which appear when rows are selected.
         @binding {array} selected-rows
       -->
-      <slot name="header-actions" :selected-rows="localSelectedRows" />
+      <slot name="header-actions" :selected-rows="selectedRowsSlotValue" />
 
-      <ULoaderProgress :loading="loading" v-bind="stickyHeaderLoaderAttrs" />
+      <ULoaderProgress :loading="progressLoading" v-bind="stickyHeaderLoaderAttrs" />
     </div>
 
     <div ref="table-wrapper" v-bind="tableWrapperAttrs" @scroll="virtualScroll.onScroll">
@@ -1293,8 +1443,13 @@ function renderRowTemplate(row: FlatRow, rowIndex: number): VNode[] {
                 @binding {number} index
               -->
               <slot
-                v-if="hasSlotContent($slots[`header-${column.key}`], { column, index })"
-                :name="`header-${column.key}`"
+                v-if="
+                  hasSlotContent($slots[`header-${column.key}`], {
+                    column,
+                    index,
+                  })
+                "
+                :name="headerSlotName(column.key)"
                 :column="column"
                 :index="index"
               />
@@ -1305,7 +1460,7 @@ function renderRowTemplate(row: FlatRow, rowIndex: number): VNode[] {
             </th>
           </tr>
 
-          <ULoaderProgress :loading="loading" v-bind="headerLoaderAttrs" />
+          <ULoaderProgress :loading="progressLoading" v-bind="headerLoaderAttrs" />
         </thead>
 
         <tbody
@@ -1313,6 +1468,7 @@ function renderRowTemplate(row: FlatRow, rowIndex: number): VNode[] {
           v-bind="bodyAttrs"
           @click="onBodyClick"
           @dblclick="onBodyDoubleClick"
+          @touchend="onBodyTouchEnd"
         >
           <tr
             v-if="hasBeforeFirstRowSlot"
@@ -1331,9 +1487,7 @@ function renderRowTemplate(row: FlatRow, rowIndex: number): VNode[] {
             />
           </tr>
 
-          <component
-            :is="() => renderedRows.map((row, rowIndex) => renderRowTemplate(row, rowIndex)).flat()"
-          />
+          <component :is="BodyRows" />
 
           <tr v-if="props.virtualScroll && virtualScroll.bottomSpacerHeight.value > 0">
             <td
@@ -1353,6 +1507,30 @@ function renderRowTemplate(row: FlatRow, rowIndex: number): VNode[] {
               :cols-count="colsCount"
               :classes="bodyCellBaseAttrs.class"
             />
+          </tr>
+        </tbody>
+
+        <tbody v-else-if="showSkeletonLoading" v-bind="bodyAttrs">
+          <tr
+            v-for="rowIndex in skeletonRowIndexes"
+            :key="`skeleton-row-${rowIndex}`"
+            v-bind="bodyRowAttrs"
+          >
+            <td v-if="selectable" v-bind="bodyCellCheckboxAttrs">
+              <USkeleton v-bind="skeletonCheckboxAttrs" />
+            </td>
+
+            <td
+              v-for="(column, columnIndex) in visibleColumns"
+              :key="`${column.key}-skeleton-${rowIndex}`"
+              v-bind="bodyCellBaseAttrs"
+              :style="getStickyColumnStyle(column)"
+            >
+              <USkeleton
+                v-bind="skeletonCellAttrs"
+                :class="getSkeletonWidthClass(columnIndex, rowIndex)"
+              />
+            </td>
           </tr>
         </tbody>
 

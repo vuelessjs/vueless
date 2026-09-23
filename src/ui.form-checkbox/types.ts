@@ -4,15 +4,17 @@ import type { ComponentConfig, UnknownObject, UnknownArray } from "../types";
 
 export type Config = typeof defaultConfig;
 
-export interface UCheckboxOption {
+export interface BaseCheckboxOption {
   value?: string | number | boolean | UnknownObject | UnknownArray;
   falseValue?: string | number | boolean | UnknownObject | UnknownArray;
   trueValue?: string | number | boolean | UnknownObject | UnknownArray;
   label?: string;
   icon?: string;
   description?: string;
-  [key: string]: string | number | boolean | UnknownObject | UnknownArray | undefined;
 }
+
+/* Any object shape is a valid option, only reserved option keys are type checked. */
+export type UCheckboxOption = BaseCheckboxOption & (object | UnknownObject);
 
 export interface Props {
   /**

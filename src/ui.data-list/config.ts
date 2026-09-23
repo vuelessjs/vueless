@@ -2,7 +2,7 @@ export default /*tw*/ {
   wrapper: "",
   draggable: "",
   draggableDrag: "bg-lifted",
-  draggableGhost: "bg-lifted/50",
+  draggableGhost: "data-list-ghost",
   itemWrapper: "group/item-wrapper",
   item: {
     base: `
@@ -55,6 +55,9 @@ export default /*tw*/ {
     labelKey: "label",
     valueKey: "value",
     animationDuration: 200,
+    forceFallback: false,
+    fallbackOnBody: false,
+    fallbackClass: "shadow-sm",
     /* icons */
     dragIcon: "drag_indicator",
   },

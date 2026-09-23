@@ -13,7 +13,11 @@ export default /*tw*/ {
     },
     compoundVariants: [
       { stickedHeader: true, actionsHeader: true, class: "rounded-none" },
-      { stickedHeader: true, actionsHeader: false, class: "border-muted bg-default" },
+      {
+        stickedHeader: true,
+        actionsHeader: false,
+        class: "border-muted bg-default",
+      },
     ],
   },
   stickyHeaderCell: "{>headerCellBase} flex-none whitespace-nowrap",
@@ -41,7 +45,7 @@ export default /*tw*/ {
     base: "min-w-full border-none text-medium w-auto table-auto border-separate border-spacing-0",
     variants: {
       virtualScroll: {
-        true: "table-layout-fixed w-full",
+        true: "table-fixed w-full",
       },
     },
   },
@@ -111,6 +115,8 @@ export default /*tw*/ {
   },
   bodyEmptyState: "{UEmpty} my-8",
   bodyEmptyStateCell: "",
+  skeletonCell: "{USkeleton} h-4 rounded-small",
+  skeletonCheckbox: "{USkeleton} size-4 rounded-small",
   footer: {
     base: "group/footer border-t border-solid border-muted",
     variants: {
@@ -147,6 +153,9 @@ export default /*tw*/ {
     stickyHeader: false,
     stickyFooter: false,
     loading: false,
+    skeletonLoading: false,
+    skeletonRows: 5,
+    skeletonWidths: ["w-11/12", "w-4/5", "w-3/4", "w-2/3", "w-1/2"],
     textEllipsis: false,
     search: "",
     searchMatch: -1,
