@@ -1,4 +1,4 @@
-<script setup lang="ts">
+<script setup lang="ts" generic="TItem extends UTabsOption">
 import { ref, computed, provide, onMounted, onUnmounted, useTemplateRef } from "vue";
 
 import { useUI } from "../composables/useUI";
@@ -10,15 +10,17 @@ import UButton from "../ui.button/UButton.vue";
 import { COMPONENT_NAME, SCROLL_OFFSET, DRAG_THRESHOLD, DRAG_CLICK_SUPPRESS_MS } from "./constants";
 import defaultConfig from "./config";
 
-import type { Props, Config } from "./types";
+import type { Props, Config, UTabsOption, UTabsSlots } from "./types";
 
 defineOptions({ inheritAttrs: false });
 
-const props = withDefaults(defineProps<Props>(), {
-  ...getDefaults<Props, Config>(defaultConfig, COMPONENT_NAME),
+const props = withDefaults(defineProps<Props<TItem>>(), {
+  ...getDefaults<Props<TItem>, Config>(defaultConfig, COMPONENT_NAME),
   modelValue: "",
   options: () => [],
 });
+
+defineSlots<UTabsSlots<TItem>>();
 
 const emit = defineEmits([
   /**

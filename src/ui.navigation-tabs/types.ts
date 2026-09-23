@@ -17,7 +17,26 @@ export interface BaseTabOption {
 /* Any object shape is a valid option, only reserved option keys are type checked. */
 export type UTabsOption = BaseTabOption & (object | UnknownObject);
 
-export interface Props {
+/**
+ * Slots receive each option verbatim — `UTabs` iterates `props.options` without
+ * filtering, flattening or synthesising entries, so the caller's shape is guaranteed.
+ */
+export interface UTabsSlots<TItem extends UTabsOption = UTabsOption> {
+  default?: () => unknown;
+  prev?: (props: { iconName: string }) => unknown;
+  next?: (props: { iconName: string }) => unknown;
+  left?: (props: { item: TItem; index: number; active: boolean; iconName?: string }) => unknown;
+  label?: (props: {
+    item: TItem;
+    index: number;
+    label: string;
+    active: boolean;
+    iconName?: string;
+  }) => unknown;
+  right?: (props: { item: TItem; index: number; active: boolean; iconName?: string }) => unknown;
+}
+
+export interface Props<TItem extends UTabsOption = UTabsOption> {
   /**
    * Selected tab value.
    */
@@ -26,7 +45,7 @@ export interface Props {
   /**
    * Tab options.
    */
-  options?: UTabsOption[];
+  options?: TItem[];
 
   /**
    * Tabs size.
