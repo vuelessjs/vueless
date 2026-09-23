@@ -211,13 +211,34 @@ export type {
   UTableStaticSlots,
   UTableDynamicSlots,
 } from "./ui.data-table/types";
-export type { Option, BaseOption, ListboxOption, SelectedValue } from "./ui.form-listbox/types";
-export type { SelectOption } from "./ui.form-select/types";
-export type { UTabsOption, BaseTabOption } from "./ui.navigation-tabs/types";
+export type {
+  Option,
+  BaseOption,
+  ListboxOption,
+  SelectedValue,
+  SlotOption,
+  UListboxSlots,
+} from "./ui.form-listbox/types";
+export type {
+  SelectOption,
+  SelectedSlotOption,
+  SelectedOptionsBinding,
+  USelectSlots,
+} from "./ui.form-select/types";
+export type { UDropdownSlots } from "./ui.dropdown/types";
+export type { UDropdownBadgeSlots } from "./ui.dropdown-badge/types";
+export type { UDropdownButtonSlots } from "./ui.dropdown-button/types";
+export type { UDropdownLinkSlots } from "./ui.dropdown-link/types";
+export type { UTabsOption, BaseTabOption, UTabsSlots } from "./ui.navigation-tabs/types";
 export type { UBreadcrumb, BaseBreadcrumb } from "./ui.navigation-breadcrumbs/types";
-export type { UToggleOption, BaseToggleOption } from "./ui.button-toggle/types";
+export type { UToggleOption, BaseToggleOption, UToggleSlots } from "./ui.button-toggle/types";
 export type { UAccordionOption, BaseAccordionOption } from "./ui.container-accordion/types";
-export type { DataListItem, BaseDataListItem } from "./ui.data-list/types";
+export type {
+  DataListItem,
+  BaseDataListItem,
+  SlotItem,
+  UDataListSlots,
+} from "./ui.data-list/types";
 export type { UCheckboxOption, BaseCheckboxOption } from "./ui.form-checkbox/types";
 export type { ChipItem, BaseChipItem } from "./ui.image-avatar/types";
 export type { AvatarItem, BaseAvatarItem } from "./ui.image-avatar-group/types";
