@@ -48,8 +48,8 @@
   },
   "devDependencies": {
     "@material-symbols/svg-500": "^0.44.4",
-    "@release-it/bumper": "^7.0.5",
-    "@release-it/conventional-changelog": "^11.0.0",
+    "@release-it/bumper": "^8.0.1",
+    "@release-it/conventional-changelog": "^12.0.2",
     "@tsconfig/node24": "^24.0.0",
     "@types/jsdom": "^28.0.1",
     "@types/node": "24.1.0",
@@ -105,9 +105,6 @@
       "types": "./modules.d.ts"
     }
   },
-  "overrides": {
-    "conventional-changelog-conventionalcommits": "8.0.0"
-  },
   "resolutions": {
     "jackspeak": "2.3.6"
   },
@@ -136,5 +133,9 @@
     "styleless",
     "headlessui",
     "ui"
-  ]
+  ],
+  "allowScripts": {
+    "esbuild@0.28.1": true,
+    "fsevents@2.3.3": true
+  }
 }
