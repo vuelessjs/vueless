@@ -1,6 +1,6 @@
 {
   "name": "vueless",
-  "version": "1.4.12-beta.20",
+  "version": "1.4.12-beta.21",
   "description": "Vue Styleless UI Component Library, powered by Tailwind CSS.",
   "author": "Johnny Grid <hello@vueless.com> (https://vueless.com)",
   "homepage": "https://vueless.com",
@@ -48,8 +48,8 @@
   },
   "devDependencies": {
     "@material-symbols/svg-500": "^0.44.4",
-    "@release-it/bumper": "^7.0.5",
-    "@release-it/conventional-changelog": "^11.0.0",
+    "@release-it/bumper": "^8.0.1",
+    "@release-it/conventional-changelog": "^12.0.2",
     "@tsconfig/node24": "^24.0.0",
     "@types/jsdom": "^28.0.1",
     "@types/node": "24.1.0",
@@ -67,7 +67,7 @@
     "globals": "^17.5.0",
     "jsdom": "^29.0.2",
     "prettier": "^3.8.3",
-    "release-it": "^20.0.1",
+    "release-it": "^21.0.3",
     "typescript": "^6.0.3",
     "vite": "^8.0.10",
     "vitest": "^4.1.5",
@@ -105,9 +105,6 @@
       "types": "./modules.d.ts"
     }
   },
-  "overrides": {
-    "conventional-changelog-conventionalcommits": "8.0.0"
-  },
   "resolutions": {
     "jackspeak": "2.3.6"
   },
@@ -136,5 +133,9 @@
     "styleless",
     "headlessui",
     "ui"
-  ]
+  ],
+  "allowScripts": {
+    "esbuild@0.28.1": true,
+    "fsevents@2.3.3": true
+  }
 }
