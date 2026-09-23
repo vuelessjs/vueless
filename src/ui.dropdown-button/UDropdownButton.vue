@@ -1,4 +1,4 @@
-<script setup lang="ts">
+<script setup lang="ts" generic="TOption extends ListboxOption">
 import { computed, useTemplateRef } from "vue";
 
 import { useUI } from "../composables/useUI";
@@ -11,11 +11,13 @@ import UDropdown from "../ui.dropdown/UDropdown.vue";
 import defaultConfig from "./config";
 import { COMPONENT_NAME } from "./constants";
 
-import type { Props, Config } from "./types";
+import type { Props, Config, UDropdownButtonSlots } from "./types";
+import type { ListboxOption } from "../ui.form-listbox/types";
+import type { ComponentExposed } from "../types";
 
 defineOptions({ inheritAttrs: false });
 
-const props = withDefaults(defineProps<Props>(), {
+const props = withDefaults(defineProps<Props<TOption>>(), {
   ...getDefaults<Props, Config>(defaultConfig, COMPONENT_NAME),
   options: () => [],
   modelValue: "",
@@ -59,7 +61,10 @@ const emit = defineEmits([
   "update:search",
 ]);
 
-type UDropdownRef = InstanceType<typeof UDropdown>;
+defineSlots<UDropdownButtonSlots<TOption>>();
+
+/* `UDropdown` is generic, so its type is a function — `InstanceType` does not apply. */
+type UDropdownRef = ComponentExposed<typeof UDropdown>;
 
 const dropdownRef = useTemplateRef<UDropdownRef>("dropdown");
 

@@ -6,7 +6,7 @@ import {
   getDocsDescription,
 } from "../../utils/storybook";
 
-import UDropdownButton from "../../ui.dropdown-button/UDropdownButton.vue";
+import UDropdownButtonComponent from "../../ui.dropdown-button/UDropdownButton.vue";
 import URow from "../../ui.container-row/URow.vue";
 import UCol from "../../ui.container-col/UCol.vue";
 import UIcon from "../../ui.image-icon/UIcon.vue";
@@ -23,6 +23,11 @@ import johnDoe from "../../ui.form-select/storybook/assets/images/john-doe.png";
 import emilyDavis from "../../ui.form-select/storybook/assets/images/emily-davis.png";
 import alexJohnson from "../../ui.form-select/storybook/assets/images/alex-johnson.png";
 import patMorgan from "../../ui.form-select/storybook/assets/images/pat-morgan.png";
+
+/* Generic SFCs are typed as a function, which drops the compiler-generated `__name`. */
+const UDropdownButton = UDropdownButtonComponent as typeof UDropdownButtonComponent & {
+  __name: string;
+};
 
 interface DefaultUDropdownButtonArgs extends Props {
   slotTemplate?: string;
