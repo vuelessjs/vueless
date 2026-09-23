@@ -17,7 +17,17 @@ export interface BaseToggleOption {
 /* Any object shape is a valid option, only reserved option keys are type checked. */
 export type UToggleOption = BaseToggleOption & (object | UnknownObject);
 
-export interface Props {
+/**
+ * Slots receive each option verbatim — `UToggle` iterates `props.options` without
+ * filtering, flattening or synthesising entries, so the caller's shape is guaranteed.
+ */
+export interface UToggleSlots<TItem extends UToggleOption = UToggleOption> {
+  left?: (props: { option: TItem; index: number; iconName?: string }) => unknown;
+  option?: (props: { option: TItem; index: number; label: string; iconName?: string }) => unknown;
+  right?: (props: { option: TItem; index: number; iconName?: string }) => unknown;
+}
+
+export interface Props<TItem extends UToggleOption = UToggleOption> {
   /**
    * Selected value.
    */
@@ -26,7 +36,7 @@ export interface Props {
   /**
    * Toggle item options.
    */
-  options?: UToggleOption[];
+  options?: TItem[];
 
   /**
    * Toggle size.

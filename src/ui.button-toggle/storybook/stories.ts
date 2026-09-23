@@ -7,7 +7,7 @@ import {
   getDocsDescription,
 } from "../../utils/storybook";
 
-import UToggle from "../../ui.button-toggle/UToggle.vue";
+import UToggleComponent from "../../ui.button-toggle/UToggle.vue";
 import UIcon from "../../ui.image-icon/UIcon.vue";
 import URow from "../../ui.container-row/URow.vue";
 import UBadge from "../../ui.text-badge/UBadge.vue";
@@ -16,6 +16,9 @@ import ULabel from "../../ui.form-label/ULabel.vue";
 
 import type { Meta, StoryFn } from "@storybook/vue3-vite";
 import type { Props } from "../types";
+
+/* Generic SFCs are typed as a function, which drops the compiler-generated `__name`. */
+const UToggle = UToggleComponent as typeof UToggleComponent & { __name: string };
 
 interface UToggleArgs extends Props {
   slotTemplate?: string;
