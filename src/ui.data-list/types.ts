@@ -20,11 +20,35 @@ export interface BaseDataListItem {
 /* Any object shape is a valid item, only reserved item keys are type checked. */
 export type DataListItem = BaseDataListItem & (object | UnknownObject);
 
-export interface Props {
+/* Drops `DataListItem`'s index signature so slot items only expose statically known keys. */
+type KnownKeys<T> = {
+  [K in keyof T as string extends K ? never : number extends K ? never : K]: T[K];
+};
+
+/**
+ * Item shape exposed to slots: the caller's item plus the reserved item keys.
+ *
+ * `TItem`'s own keys are optional. The component renders itself for nested children
+ * (`:list="element.children"`), and `BaseDataListItem.children` is `DataListItem[]`, not `TItem[]`
+ * — so a child need not carry the parent's members. `nestedKey` can open a nested list from a
+ * different source entirely. `BaseDataListItem`'s keys are optional already, so nothing is
+ * promised that can be absent.
+ */
+export type SlotItem<TItem extends DataListItem = DataListItem> = Partial<KnownKeys<TItem>> &
+  BaseDataListItem;
+
+export interface UDataListSlots<TItem extends DataListItem = DataListItem> {
+  empty?: (props: { emptyTitle: string; emptyDescription: string }) => unknown;
+  drag?: (props: { item: SlotItem<TItem>; iconName: string }) => unknown;
+  label?: (props: { item: SlotItem<TItem>; crossed: boolean }) => unknown;
+  actions?: (props: { item: SlotItem<TItem> }) => unknown;
+}
+
+export interface Props<TItem extends DataListItem = DataListItem> {
   /**
    * Data item options.
    */
-  list?: DataListItem[];
+  list?: TItem[];
 
   /**
    * Group name.

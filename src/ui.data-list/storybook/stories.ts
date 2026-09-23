@@ -6,7 +6,7 @@ import {
   getDocsDescription,
 } from "../../utils/storybook";
 
-import UDataList from "../../ui.data-list/UDataList.vue";
+import UDataListComponent from "../../ui.data-list/UDataList.vue";
 import UIcon from "../../ui.image-icon/UIcon.vue";
 import UButton from "../../ui.button/UButton.vue";
 import URow from "../../ui.container-row/URow.vue";
@@ -18,6 +18,9 @@ import tooltip from "../../v.tooltip/vTooltip";
 
 import type { Meta, StoryFn } from "@storybook/vue3-vite";
 import type { Props, DataListItem } from "../types";
+
+/* Generic SFCs are typed as a function, which drops the compiler-generated `__name`. */
+const UDataList = UDataListComponent as typeof UDataListComponent & { __name: string };
 
 interface UDataListArgs extends Props {
   slotTemplate?: string;

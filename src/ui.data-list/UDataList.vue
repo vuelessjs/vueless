@@ -1,4 +1,4 @@
-<script setup lang="ts">
+<script setup lang="ts" generic="TItem extends DataListItem">
 import { useTemplateRef } from "vue";
 import draggable from "vuedraggable/src/vuedraggable";
 
@@ -14,14 +14,16 @@ import defaultConfig from "./config";
 import { useComponentLocaleMessages } from "../composables/useComponentLocaleMassages";
 
 import type { UnknownObject } from "../types";
-import type { Props, DataListItem, Config } from "./types";
+import type { Props, DataListItem, SlotItem, UDataListSlots, Config } from "./types";
 
 defineOptions({ inheritAttrs: false });
 
-const props = withDefaults(defineProps<Props>(), {
-  ...getDefaults<Props, Config>(defaultConfig, COMPONENT_NAME),
+const props = withDefaults(defineProps<Props<TItem>>(), {
+  ...getDefaults<Props<TItem>, Config>(defaultConfig, COMPONENT_NAME),
   list: () => [],
 });
+
+defineSlots<UDataListSlots<TItem>>();
 
 const emit = defineEmits([
   /**
@@ -205,33 +207,41 @@ const {
             :data-test="getDataTest('table')"
             @drag-sort="onDragEnd"
           >
-            <!-- @vue-ignore -->
-            <template #drag="slotProps: { item: DataListItem; iconName: string }">
+            <!-- The nested list is built from `element.children` (`DataListItem[]`, not `TItem[]`),
+                 so it yields `SlotItem<DataListItem>`. `SlotItem` is all-optional, so forwarding it
+                 as `SlotItem<TItem>` promises nothing a deep child may lack. -->
+            <template #drag="slotProps">
               <!--
                 @slot Use it to add something instead of the drag icon.
                 @binding {object} item
                 @binding {string} icon-name
               -->
-              <slot name="drag" :item="slotProps.item" :icon-name="slotProps.iconName" />
+              <slot
+                name="drag"
+                :item="slotProps.item as SlotItem<TItem>"
+                :icon-name="slotProps.iconName"
+              />
             </template>
 
-            <!-- @vue-ignore -->
-            <template #label="slotProps: { item: DataListItem; crossed: boolean }">
+            <template #label="slotProps">
               <!--
                 @slot Use it to modify label.
                 @binding {object} item
                 @binding {boolean} crossed
               -->
-              <slot name="label" :item="slotProps.item" :crossed="slotProps.crossed" />
+              <slot
+                name="label"
+                :item="slotProps.item as SlotItem<TItem>"
+                :crossed="slotProps.crossed"
+              />
             </template>
 
-            <!-- @vue-ignore -->
-            <template #actions="slotProps: { item: DataListItem }">
+            <template #actions="slotProps">
               <!--
                 @slot Use it to add custom actions.
                 @binding {object} item
               -->
-              <slot name="actions" :item="slotProps.item" />
+              <slot name="actions" :item="slotProps.item as SlotItem<TItem>" />
             </template>
           </UDataList>
         </div>
