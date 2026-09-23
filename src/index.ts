@@ -205,6 +205,11 @@ export type {
   TableColumn,
   DateDivider,
   BaseDateDivider,
+  SlotRow,
+  SelectedSlotRow,
+  UTableSlots,
+  UTableStaticSlots,
+  UTableDynamicSlots,
 } from "./ui.data-table/types";
 export type { Option, BaseOption, ListboxOption, SelectedValue } from "./ui.form-listbox/types";
 export type { SelectOption } from "./ui.form-select/types";

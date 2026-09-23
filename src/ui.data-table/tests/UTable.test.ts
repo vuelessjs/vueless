@@ -78,7 +78,7 @@ describe("UTable.vue", () => {
 
   function mountUTable(props: Props, options = {}) {
     return mount(UTable, {
-      props,
+      props: { ...props },
       global: getGlobalOptions(),
       ...options,
     });

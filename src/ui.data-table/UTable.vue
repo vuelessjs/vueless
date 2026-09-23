@@ -1,4 +1,4 @@
-<script setup lang="ts">
+<script setup lang="ts" generic="TRow extends TableRow">
 import {
   shallowRef,
   ref,
@@ -47,13 +47,16 @@ import type {
   FlatRow,
   ColumnObject,
   SearchMatch,
+  TableRow,
   UTableRowProps,
+  UTableSlots,
+  SelectedSlotRow,
 } from "./types";
 
 defineOptions({ inheritAttrs: false });
 
-const props = withDefaults(defineProps<Props>(), {
-  ...getDefaults<Props, Config>(defaultConfig, COMPONENT_NAME),
+const props = withDefaults(defineProps<Props<TRow>>(), {
+  ...getDefaults<Props<TRow>, Config>(defaultConfig, COMPONENT_NAME),
   columns: () => [],
   rows: () => [],
   dateDivider: () => [],
@@ -111,6 +114,8 @@ const emit = defineEmits([
    */
   "search",
 ]);
+
+defineSlots<UTableSlots<TRow>>();
 
 const slots = useSlots();
 
@@ -207,6 +212,9 @@ const isShownFooterPosition = computed(() => {
 const isCheckedMoreOneTableItems = computed(() => {
   return Boolean(localSelectedRows.value.length);
 });
+
+/* Select-all includes nested children, which need not carry `TRow`'s members. */
+const selectedRowsSlotValue = computed(() => localSelectedRows.value as SelectedSlotRow<TRow>[]);
 
 const tableRowWidthStyle = computed(() => ({
   width: `${tableWidth.value / PX_IN_REM}rem`,
@@ -1338,7 +1346,7 @@ const BodyRows = () =>
         @slot Use it to add action buttons within the actions header, which appear when rows are selected.
         @binding {array} selected-rows
       -->
-      <slot name="header-actions" :selected-rows="localSelectedRows" />
+      <slot name="header-actions" :selected-rows="selectedRowsSlotValue" />
 
       <ULoaderProgress :loading="progressLoading" v-bind="stickyHeaderLoaderAttrs" />
     </div>
@@ -1370,7 +1378,7 @@ const BodyRows = () =>
         @slot Use it to add action buttons within the actions header, which appear when rows are selected.
         @binding {array} selected-rows
       -->
-      <slot name="header-actions" :selected-rows="localSelectedRows" />
+      <slot name="header-actions" :selected-rows="selectedRowsSlotValue" />
 
       <ULoaderProgress :loading="progressLoading" v-bind="stickyHeaderLoaderAttrs" />
     </div>

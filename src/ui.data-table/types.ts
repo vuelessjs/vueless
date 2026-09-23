@@ -73,7 +73,7 @@ export type TableColumn = ColumnObject & (object | UnknownObject);
 
 export type Column = TableColumn | string;
 
-export interface Props {
+export interface Props<TRow extends TableRow = TableRow> {
   /**
    * Table columns (headers).
    */
@@ -82,12 +82,12 @@ export interface Props {
   /**
    * Table rows data.
    */
-  rows: TableRow[];
+  rows: TRow[];
 
   /**
    * Selected rows.
    */
-  selectedRows?: TableRow[];
+  selectedRows?: TRow[];
 
   /**
    * Selected rows id.
@@ -189,6 +189,52 @@ export interface Props {
    */
   dataTest?: string | null;
 }
+
+/* Drops `Row`'s `[key: string]: unknown` so slot rows only expose statically known keys. */
+type KnownKeys<T> = {
+  [K in keyof T as string extends K ? never : number extends K ? never : K]: T[K];
+};
+
+/**
+ * Row shape exposed to slots: the caller's row plus the flattening metadata.
+ *
+ * `TRow`'s own keys are optional. Rows are flattened through `getFlatRows`, which recurses into
+ * `row.row` — and `BaseRow.row` is `TableRow | TableRow[]`, not `TRow`, so a nested child need not
+ * carry the parent's members. Every row slot (`cell-*`, `expand`, `nested-row`) receives those
+ * children verbatim; `nested-row` receives nothing else. `BaseRow`/`FlatRow` metadata
+ * (`id`, `nestedLevel`, …) is always set by the flattener, so it stays guaranteed.
+ */
+export type SlotRow<TRow extends TableRow = TableRow> = Partial<KnownKeys<TRow>> &
+  KnownKeys<FlatRow>;
+
+/* Selected rows carry the same guarantee: select-all flattens nested children into the selection. */
+export type SelectedSlotRow<TRow extends TableRow = TableRow> = SlotRow<TRow>;
+
+export interface UTableStaticSlots<TRow extends TableRow = TableRow> {
+  "header-counter"?: (props: { total: number }) => unknown;
+  "header-actions"?: (props: { selectedRows: SelectedSlotRow<TRow>[] }) => unknown;
+  "before-header"?: (props: { colsCount: number; classes?: string }) => unknown;
+  "after-last-row"?: (props: { colsCount: number; classes?: string }) => unknown;
+  "before-first-row"?: () => unknown;
+  "empty-state"?: () => unknown;
+  footer?: (props: { colsCount: number }) => unknown;
+  expand?: (props: { index: number; row: SlotRow<TRow>; expanded: boolean }) => unknown;
+  "nested-row"?: (props: { index: number; row: SlotRow<TRow>; nestedLevel: number }) => unknown;
+}
+
+export type UTableDynamicSlots<TRow extends TableRow = TableRow> = {
+  [K in `cell-${string}`]?: (props: {
+    value: Cell;
+    row: SlotRow<TRow>;
+    index: number;
+    cellIndex: number;
+  }) => unknown;
+} & {
+  [K in `header-${string}`]?: (props: { column: ColumnObject; index: number }) => unknown;
+};
+
+export type UTableSlots<TRow extends TableRow = TableRow> = UTableStaticSlots<TRow> &
+  UTableDynamicSlots<TRow>;
 
 export interface UTableRowAttrs {
   bodyCellContentAttrs: Ref<UnknownObject>;

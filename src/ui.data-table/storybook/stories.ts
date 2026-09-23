@@ -12,7 +12,7 @@ import { getRandomId } from "../../utils/helper";
 
 import defaultConfig from "../config";
 
-import UTable from "../UTable.vue";
+import UTableComponent from "../UTable.vue";
 import UButton from "../../ui.button/UButton.vue";
 import ULink from "../../ui.button-link/ULink.vue";
 import UNumber from "../../ui.text-number/UNumber.vue";
@@ -26,6 +26,9 @@ import UText from "../../ui.text-block/UText.vue";
 import tooltip from "../../v.tooltip/vTooltip";
 import type { Row, Props, ColumnObject } from "../types";
 import { StickySide } from "../types";
+
+/* Generic SFCs are typed as a function, which drops the compiler-generated `__name`. */
+const UTable = UTableComponent as typeof UTableComponent & { __name: string };
 
 interface UTableArgs extends Props {
   slotTemplate?: string;
