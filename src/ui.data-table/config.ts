@@ -45,7 +45,7 @@ export default /*tw*/ {
     base: "min-w-full border-none text-medium w-auto table-auto border-separate border-spacing-0",
     variants: {
       virtualScroll: {
-        true: "table-layout-fixed w-full",
+        true: "table-fixed w-full",
       },
     },
   },

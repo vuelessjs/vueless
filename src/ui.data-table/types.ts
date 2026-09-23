@@ -73,11 +73,15 @@ export type TableColumn = ColumnObject & (object | UnknownObject);
 
 export type Column = TableColumn | string;
 
-export interface Props<TRow extends TableRow = TableRow> {
+/* A column entry that keeps its key literal, so slot keys can be narrowed at the call site. */
+export type KeyedColumn<TCol extends string> = TCol | (TableColumn & { key: TCol });
+
+export interface Props<TRow extends TableRow = TableRow, TCol extends string = string> {
   /**
    * Table columns (headers).
+   * `readonly` so `as const` column lists keep their literal keys and narrow the cell slot names.
    */
-  columns: Column[];
+  columns: readonly KeyedColumn<TCol>[];
 
   /**
    * Table rows data.
@@ -222,19 +226,39 @@ export interface UTableStaticSlots<TRow extends TableRow = TableRow> {
   "nested-row"?: (props: { index: number; row: SlotRow<TRow>; nestedLevel: number }) => unknown;
 }
 
-export type UTableDynamicSlots<TRow extends TableRow = TableRow> = {
-  [K in `cell-${string}`]?: (props: {
+/**
+ * Slot key suffix. Narrows to the literal column keys only when they are statically known —
+ * `columns` from a `ref`, an API, or a plain `string[]` widens `TCol` back to `string`, and an
+ * empty `columns` array infers `TCol` as `never`. Both mean "not statically known", so every
+ * `cell-*` / `header-*` slot must keep compiling.
+ *
+ * The `[TCol]` tuple wrapper is required: a naked `never` distributes to `never`, which would
+ * silently collapse the whole mapped type and reject every slot.
+ */
+type SlotKeySuffix<TCol extends string> = [TCol] extends [never]
+  ? string
+  : string extends TCol
+    ? string
+    : TCol;
+
+export type UTableDynamicSlots<TRow extends TableRow = TableRow, TCol extends string = string> = {
+  [K in `cell-${SlotKeySuffix<TCol>}`]?: (props: {
     value: Cell;
     row: SlotRow<TRow>;
     index: number;
     cellIndex: number;
   }) => unknown;
 } & {
-  [K in `header-${string}`]?: (props: { column: ColumnObject; index: number }) => unknown;
+  [K in `header-${SlotKeySuffix<TCol>}`]?: (props: {
+    column: ColumnObject;
+    index: number;
+  }) => unknown;
 };
 
-export type UTableSlots<TRow extends TableRow = TableRow> = UTableStaticSlots<TRow> &
-  UTableDynamicSlots<TRow>;
+export type UTableSlots<
+  TRow extends TableRow = TableRow,
+  TCol extends string = string,
+> = UTableStaticSlots<TRow> & UTableDynamicSlots<TRow, TCol>;
 
 export interface UTableRowAttrs {
   bodyCellContentAttrs: Ref<UnknownObject>;

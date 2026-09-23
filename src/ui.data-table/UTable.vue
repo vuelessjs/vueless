@@ -1,4 +1,4 @@
-<script setup lang="ts" generic="TRow extends TableRow">
+<script setup lang="ts" generic="TRow extends TableRow, TCol extends string = string">
 import {
   shallowRef,
   ref,
@@ -55,8 +55,8 @@ import type {
 
 defineOptions({ inheritAttrs: false });
 
-const props = withDefaults(defineProps<Props<TRow>>(), {
-  ...getDefaults<Props<TRow>, Config>(defaultConfig, COMPONENT_NAME),
+const props = withDefaults(defineProps<Props<TRow, TCol>>(), {
+  ...getDefaults<Props<TRow, TCol>, Config>(defaultConfig, COMPONENT_NAME),
   columns: () => [],
   rows: () => [],
   dateDivider: () => [],
@@ -115,7 +115,7 @@ const emit = defineEmits([
   "search",
 ]);
 
-defineSlots<UTableSlots<TRow>>();
+defineSlots<UTableSlots<TRow, TCol>>();
 
 const slots = useSlots();
 
@@ -150,7 +150,7 @@ const sortedRows: ComputedRef<FlatRow[]> = computed(() => {
     typeof column === "object" ? column.key : column,
   );
 
-  const keyOrder = new Map(headerKeys.map((key, i) => [key, i]));
+  const keyOrder = new Map<string, number>(headerKeys.map((key, i) => [key, i]));
 
   return flatTableRows.value.map((row) => {
     const entries = Object.entries(row);
@@ -175,6 +175,11 @@ const isFooterSticky = computed(() => {
 });
 
 const normalizedColumns = computed(() => normalizeColumns(props.columns));
+
+/* Slot keys are narrowed to `TCol` for callers; internal dispatch is driven by runtime strings. */
+function headerSlotName(key: string) {
+  return `header-${key}` as `header-${TCol}`;
+}
 
 const visibleColumns = computed(() => {
   return normalizedColumns.value.filter((column) => column.isShown !== false);
@@ -1308,7 +1313,7 @@ const BodyRows = () =>
             @binding {object} column
             @binding {number} index
           -->
-          <slot :name="`header-${column.key}`" :column="column" :index="index" />
+          <slot :name="headerSlotName(column.key)" :column="column" :index="index" />
         </template>
 
         <template v-else>
@@ -1444,7 +1449,7 @@ const BodyRows = () =>
                     index,
                   })
                 "
-                :name="`header-${column.key}`"
+                :name="headerSlotName(column.key)"
                 :column="column"
                 :index="index"
               />
