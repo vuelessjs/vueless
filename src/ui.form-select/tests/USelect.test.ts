@@ -2,12 +2,19 @@ import { mount, flushPromises } from "@vue/test-utils";
 import { describe, it, expect, vi } from "vitest";
 
 import USelect from "../USelect.vue";
-import UListbox from "../../ui.form-listbox/UListbox.vue";
+import UListboxComponent from "../../ui.form-listbox/UListbox.vue";
 import UIcon from "../../ui.image-icon/UIcon.vue";
 import ULabel from "../../ui.form-label/ULabel.vue";
 import UBadge from "../../ui.text-badge/UBadge.vue";
 
 import type { Props } from "../types";
+
+import type { ComponentProps } from "../../types";
+
+/* Generic SFCs are typed as a function, which `findComponent` does not accept. */
+const UListbox = UListboxComponent as unknown as new () => {
+  $props: ComponentProps<typeof UListboxComponent>;
+};
 
 describe("USelect.vue", () => {
   const defaultOptions = [

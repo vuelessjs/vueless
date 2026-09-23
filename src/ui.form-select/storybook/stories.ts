@@ -7,7 +7,7 @@ import {
   getDocsDescription,
 } from "../../utils/storybook";
 
-import USelect from "../../ui.form-select/USelect.vue";
+import USelectComponent from "../../ui.form-select/USelect.vue";
 import URow from "../../ui.container-row/URow.vue";
 import UCol from "../../ui.container-col/UCol.vue";
 import UBadge from "../../ui.text-badge/UBadge.vue";
@@ -24,6 +24,9 @@ import patMorgan from "./assets/images/pat-morgan.png";
 
 import type { Meta, StoryFn } from "@storybook/vue3-vite";
 import type { Props } from "../types";
+
+/* Generic SFCs are typed as a function, which drops the compiler-generated `__name`. */
+const USelect = USelectComponent as typeof USelectComponent & { __name: string };
 
 interface USelectArgs extends Props {
   slotTemplate?: string;
