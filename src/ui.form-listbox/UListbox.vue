@@ -1,4 +1,4 @@
-<script setup lang="ts">
+<script setup lang="ts" generic="TOption extends ListboxOption">
 import { watch, computed, useId, ref, useTemplateRef, nextTick } from "vue";
 import { isEqual } from "lodash-es";
 
@@ -18,12 +18,20 @@ import usePointer from "./usePointer";
 import defaultConfig from "./config";
 import { COMPONENT_NAME } from "./constants";
 
-import type { Option, Props, Config, SelectedValue } from "./types";
+import type {
+  Option,
+  Props,
+  Config,
+  SelectedValue,
+  ListboxOption,
+  SlotOption,
+  UListboxSlots,
+} from "./types";
 
 defineOptions({ inheritAttrs: false });
 
-const props = withDefaults(defineProps<Props>(), {
-  ...getDefaults<Props, Config>(defaultConfig, COMPONENT_NAME),
+const props = withDefaults(defineProps<Props<TOption>>(), {
+  ...getDefaults<Props<TOption>, Config>(defaultConfig, COMPONENT_NAME),
   modelValue: "",
   options: () => [],
 });
@@ -64,6 +72,8 @@ const emit = defineEmits([
    */
   "update:search",
 ]);
+
+defineSlots<UListboxSlots<TOption>>();
 
 const wrapperRef = useTemplateRef<HTMLDivElement>("wrapper");
 const listboxInputRef = useTemplateRef<{ input: HTMLInputElement }>("listbox-input");
@@ -125,6 +135,9 @@ const getOptionAriaSelected = (option: Option) => {
 
   return isSelectedOption(option);
 };
+
+/* `filterGroups` flattens group members, which need not carry `TOption`'s members. */
+const getSlotOption = (option: Option) => option as SlotOption<TOption>;
 
 const filteredOptions = computed(() => {
   const normalizedSearch = searchModel.value.toLowerCase().trim();
@@ -499,14 +512,14 @@ const {
             @binding {object} option
             @binding {number} index
           -->
-          <slot name="before-option" :option="option" :index="index" />
+          <slot name="before-option" :option="getSlotOption(option)" :index="index" />
 
           <!--
             @slot Use it to add something instead of the option.
             @binding {object} option
             @binding {number} index
           -->
-          <slot name="option" :option="option" :index="index">
+          <slot name="option" :option="getSlotOption(option)" :index="index">
             <span
               :style="getMarginForSubCategory(option.level)"
               v-bind="optionContentAttrs"
@@ -523,7 +536,7 @@ const {
           -->
           <slot
             name="after-option"
-            :option="option"
+            :option="getSlotOption(option)"
             :selected="isSelectedOption(option)"
             :index="index"
           >
