@@ -13,7 +13,7 @@ Vueless UI – a UI library with Open Architecture for Vue.js 3 and Nuxt.js 3 / 
 
 ### **Key features**
 
-* 🧩 65+ crafted UI components (including range date picker, multi-select, and nested table)
+* 🧩 74 crafted UI components (including range date picker, multi-select, and nested table)
 * ✨ Open Architecture lets you customize, copy, extend, and create your own components
 * 📕 Built-in Storybook support ([docs](installation/storybook.md))
 * 🪩 Theme Builder for runtime theme customization ([open](https://my.vueless.com/))
@@ -27,5 +27,5 @@ Vueless UI – a UI library with Open Architecture for Vue.js 3 and Nuxt.js 3 / 
 * 🖼️ Inline SVG icons
 * 🪄 Auto component imports (as you use them)
 * 🧿 Uncompiled source in npm for better DX
-* 🧪️ 1300+ unit tests ensuring consistent logic
+* 🧪️ 1600+ unit tests ensuring consistent logic
 * 🛡️ Full TypeScript support with type safety
