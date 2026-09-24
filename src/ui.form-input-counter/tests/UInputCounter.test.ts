@@ -4,7 +4,6 @@ import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
 import UInputCounter from "../UInputCounter.vue";
 import UButton from "../../ui.button/UButton.vue";
 import UInputNumber from "../../ui.form-input-number/UInputNumber.vue";
-import UInput from "../../ui.form-input/UInput.vue";
 
 import type { Props } from "../types";
 
@@ -363,7 +362,11 @@ describe("UInputCounter.vue", () => {
 
       await flushPromises();
 
-      await component.getComponent(UInputNumber).findComponent(UInput).trigger("keyup");
+      const input = component.get("input");
+
+      input.element.value = "43";
+      await input.trigger("input", { data: "3" });
+      await flushPromises();
 
       expect(component.emitted("update:modelValue")).toBeUndefined();
 
@@ -371,7 +374,7 @@ describe("UInputCounter.vue", () => {
       await flushPromises();
 
       expect(component.emitted("update:modelValue")).toBeDefined();
-      expect(component.emitted("update:modelValue")![0][0]).toBe(initialValue);
+      expect(component.emitted("update:modelValue")![0][0]).toBe(43);
     });
   });
 });
