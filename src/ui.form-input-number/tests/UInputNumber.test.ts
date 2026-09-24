@@ -6,6 +6,7 @@ import UInput from "../../ui.form-input/UInput.vue";
 import ULabel from "../../ui.form-label/ULabel.vue";
 import UIcon from "../../ui.image-icon/UIcon.vue";
 
+import type { DOMWrapper } from "@vue/test-utils";
 import type { Props } from "../types";
 
 describe("UInputNumber.vue", () => {
@@ -22,9 +23,7 @@ describe("UInputNumber.vue", () => {
 
       await flushPromises();
 
-      await component.getComponent(UInput).trigger("keyup");
-
-      expect(component.emitted("update:modelValue")![0][0]).toBe(initialValue);
+      expect(component.vm.rawValue).toBe("12345678.23");
     });
 
     it("Model Value – set correct value with string type", async () => {
@@ -39,9 +38,7 @@ describe("UInputNumber.vue", () => {
 
       await flushPromises();
 
-      await component.getComponent(UInput).trigger("keyup");
-
-      expect(component.emitted("update:modelValue")![0][0]).toBe(initialValue);
+      expect(component.vm.rawValue).toBe(initialValue);
     });
 
     it("Min Fraction Digit – set fraction digit when it was not provided", async () => {
@@ -486,6 +483,139 @@ describe("UInputNumber.vue", () => {
 
       expect(component.vm.input).toBeDefined();
       expect(component.vm.input!.tagName).toBe("INPUT");
+    });
+  });
+
+  describe("Events", () => {
+    async function mountInput(props: Partial<Props> = {}, options = {}) {
+      const component = mount(UInputNumber, {
+        props: { modelValue: "", valueType: "string", ...props },
+        ...options,
+      });
+
+      await flushPromises();
+
+      return component;
+    }
+
+    async function typeInto(input: DOMWrapper<HTMLInputElement>, value: string, data?: string) {
+      input.element.value = value;
+      await input.trigger("input", data ? { data } : {});
+      await flushPromises();
+    }
+
+    // Paste, drag-drop, autofill and IME commits produce no keyup, but must still reach the model.
+    it("Update Model Value – emits on input without a trailing keyup", async () => {
+      const component = await mountInput();
+
+      await typeInto(component.get("input"), "13");
+
+      expect(component.emitted("update:modelValue")!.at(-1)![0]).toBe("13");
+
+      component.unmount();
+    });
+
+    it("Update Model Value – emits a number-typed value without a trailing keyup", async () => {
+      const component = await mountInput({ valueType: "number" });
+
+      await typeInto(component.get("input"), "13");
+
+      expect(component.emitted("update:modelValue")!.at(-1)![0]).toBe(13);
+
+      component.unmount();
+    });
+
+    it("Update Model Value – emits 0 as a real value", async () => {
+      const component = await mountInput();
+
+      await typeInto(component.get("input"), "0");
+
+      expect(component.emitted("update:modelValue")!.at(-1)![0]).toBe("0");
+
+      component.unmount();
+    });
+
+    it("Update Model Value – emits once per change, not twice on keyup", async () => {
+      const component = await mountInput();
+      const input = component.get("input");
+
+      await typeInto(input, "13");
+      await input.trigger("keyup");
+
+      expect(component.emitted("update:modelValue")).toHaveLength(1);
+
+      component.unmount();
+    });
+
+    it("Update Model Value – stays silent when the model already matches the input", async () => {
+      const component = await mountInput({ modelValue: "13" });
+
+      await component.get("input").trigger("blur");
+
+      expect(component.emitted("update:modelValue")).toBeFalsy();
+
+      component.unmount();
+    });
+
+    it("Update Model Value – stays silent when the model pushes a value in", async () => {
+      const component = await mountInput({ modelValue: "13" });
+
+      await component.setProps({ modelValue: "42" });
+      await flushPromises();
+
+      expect(component.emitted("update:modelValue")).toBeFalsy();
+
+      component.unmount();
+    });
+
+    it("Formats input mounted inside a shadow root", async () => {
+      const host = document.createElement("div");
+      const shadowRoot = host.attachShadow({ mode: "open" });
+      const container = document.createElement("div");
+
+      shadowRoot.appendChild(container);
+      document.body.appendChild(host);
+
+      const component = await mountInput({}, { attachTo: container });
+      const input = component.get("input");
+
+      // Behind a shadow boundary, so a document lookup would leave the input unbound.
+      expect(document.getElementById(input.element.id)).toBeNull();
+
+      await typeInto(input, "42");
+
+      expect(component.emitted("update:modelValue")!.at(-1)![0]).toBe("42");
+
+      component.unmount();
+      host.remove();
+    });
+
+    it("Strips non-numeric characters from typed input", async () => {
+      const component = await mountInput();
+      const input = component.get("input");
+
+      for (const char of "13232fffffrege") {
+        await typeInto(input, input.element.value + char, char);
+      }
+
+      // Displayed with the default thousands separator; the model keeps the raw digits.
+      expect(input.element.value).toBe("13 232");
+      expect(component.emitted("update:modelValue")!.at(-1)![0]).toBe("13232");
+
+      component.unmount();
+    });
+
+    it("Stops listening to the input once unmounted", async () => {
+      const component = await mountInput();
+      const element = component.get("input").element;
+
+      component.unmount();
+
+      element.value = "77";
+      element.dispatchEvent(new Event("input"));
+      await flushPromises();
+
+      expect(component.emitted("update:modelValue")).toBeFalsy();
     });
   });
 });

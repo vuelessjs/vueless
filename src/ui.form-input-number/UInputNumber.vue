@@ -58,14 +58,20 @@ const numberInputRef = useTemplateRef<InstanceType<typeof UInput>>("numberInput"
 
 const elementId = props.id || useId();
 
-const { formattedValue, rawValue, setValue } = useFormatNumber(elementId, () => ({
-  minFractionDigits: props.minFractionDigits,
-  maxFractionDigits: props.maxFractionDigits,
-  decimalSeparator: props.decimalSeparator,
-  thousandsSeparator: props.thousandsSeparator,
-  positiveOnly: props.positiveOnly,
-  prefix: props.prefix,
-}));
+const input = computed(() => numberInputRef.value?.inputRef || null);
+
+const { formattedValue, rawValue, setValue } = useFormatNumber(
+  input,
+  () => ({
+    minFractionDigits: props.minFractionDigits,
+    maxFractionDigits: props.maxFractionDigits,
+    decimalSeparator: props.decimalSeparator,
+    thousandsSeparator: props.thousandsSeparator,
+    positiveOnly: props.positiveOnly,
+    prefix: props.prefix,
+  }),
+  () => emit("update:modelValue", currentValue()),
+);
 
 const localValue = computed({
   get: () => props.modelValue ?? "",
@@ -79,10 +85,6 @@ const localLabel = computed(() => {
   return `${props.label}${comma} ${currency}`.trim();
 });
 
-const input = computed(() => {
-  return numberInputRef.value?.inputRef || null;
-});
-
 const stringLocalValue = computed(() => {
   if (Object.is(localValue.value, -0)) return "-0";
 
@@ -94,10 +96,17 @@ const stringLocalValue = computed(() => {
     : String(localValue.value);
 });
 
+/** Compares by numeric value, so `"1"` and `"1.00"` match. */
+function isSameNumber(a: string, b: string) {
+  if (a === b) return true;
+
+  return parseFloat(a) === parseFloat(b);
+}
+
 watch(
   () => props.modelValue,
   () => {
-    if (stringLocalValue.value !== String(rawValue.value)) {
+    if (!isSameNumber(stringLocalValue.value, String(rawValue.value))) {
       setValue(stringLocalValue.value);
     }
   },
@@ -109,11 +118,13 @@ onMounted(() => {
   }
 });
 
-function onKeyup(event: KeyboardEvent) {
-  const numberValue = getFixedNumber(parseFloat(rawValue.value), props.maxFractionDigits || 10);
-  const value = props.valueType === "number" ? numberValue : rawValue.value || "";
+function currentValue() {
+  return props.valueType === "number"
+    ? getFixedNumber(parseFloat(rawValue.value), props.maxFractionDigits || 10)
+    : rawValue.value || "";
+}
 
-  emit("update:modelValue", value);
+function onKeyup(event: KeyboardEvent) {
   emit("keyup", event);
 }
 
