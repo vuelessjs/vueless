@@ -9,6 +9,8 @@ import UIcon from "../../ui.image-icon/UIcon.vue";
 import type { DOMWrapper } from "@vue/test-utils";
 import type { Props } from "../types";
 
+type InputWrapper = Omit<DOMWrapper<HTMLInputElement>, "exists">;
+
 describe("UInputNumber.vue", () => {
   describe("Props", () => {
     it("Model Value – set correct value with number type", async () => {
@@ -498,7 +500,7 @@ describe("UInputNumber.vue", () => {
       return component;
     }
 
-    async function typeInto(input: DOMWrapper<HTMLInputElement>, value: string, data?: string) {
+    async function typeInto(input: InputWrapper, value: string, data?: string) {
       input.element.value = value;
       await input.trigger("input", data ? { data } : {});
       await flushPromises();
