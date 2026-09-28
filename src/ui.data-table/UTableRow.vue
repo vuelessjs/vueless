@@ -1,18 +1,7 @@
 <script setup lang="ts">
-import {
-  Comment,
-  Fragment,
-  Text,
-  computed,
-  h,
-  onMounted,
-  useAttrs,
-  useSlots,
-  useTemplateRef,
-} from "vue";
+import { Comment, Fragment, Text, computed, h, useAttrs, useSlots } from "vue";
 
 import { useUI } from "../composables/useUI";
-import { useMutationObserver } from "../composables/useMutationObserver";
 
 import { isEmptyValue } from "../utils/helper";
 import { cx } from "../utils/ui";
@@ -39,17 +28,6 @@ const props = defineProps<UTableRowProps>();
 const slots = useSlots();
 const attrs = useAttrs();
 
-const cellRef = useTemplateRef<HTMLDivElement>("cell");
-
-if (props.textEllipsis) {
-  useMutationObserver(cellRef, setCellTitle, {
-    subtree: true,
-    childList: true,
-    characterData: true,
-    attributes: false,
-  });
-}
-
 const toggleIconConfig = computed(() => {
   const nestedRow = props.row?.row;
   let isShown = false;
@@ -63,12 +41,6 @@ const toggleIconConfig = computed(() => {
   return isShown
     ? props.attrs.bodyCellNestedCollapseIconAttrs.value
     : props.attrs.bodyCellNestedExpandIconAttrs.value;
-});
-
-onMounted(() => {
-  if (cellRef.value) {
-    setElementTitle(cellRef.value);
-  }
 });
 
 function getToggleIconName() {
@@ -108,30 +80,6 @@ function getNestedShift() {
 
 function getNestedCheckboxShift() {
   return { transform: `translateX(${props.nestedLevel * LAST_NESTED_ROW_SHIFT_REM}rem)` };
-}
-
-function setCellTitle(mutations: MutationRecord[]) {
-  mutations.forEach((mutation) => {
-    const { target } = mutation;
-
-    setElementTitle(target as HTMLElement);
-  });
-}
-
-function isElementOverflown(element: HTMLElement) {
-  return element.clientWidth < element.scrollWidth || element.clientHeight < element.scrollHeight;
-}
-
-function setElementTitle(element: HTMLElement) {
-  const isOverflown = isElementOverflown(element);
-
-  if (isOverflown) {
-    element.setAttribute("title", String(element.textContent));
-  }
-
-  if (!isOverflown && element.hasAttribute("title")) {
-    element.removeAttribute("title");
-  }
 }
 
 function getRowClasses(row: Row) {
@@ -307,7 +255,6 @@ function renderCellContent(value: Cell, key: string, cellIndex: number): VNode |
   // Render cell wrapper with highlighted HTML
   if (shouldRenderCellWrapper(props.row, keyStr)) {
     return h("div", {
-      ref: cellRef,
       ...props.attrs.bodyCellContentAttrs.value,
       class: cx([
         props.attrs.bodyCellContentAttrs.value.class,
@@ -380,7 +327,6 @@ function renderNestedFirstCell(value: Cell, key: string, cellIndex: number): VNo
         if (shouldRenderCellWrapper(props.row, keyStr)) {
           return [
             h("div", {
-              ref: cellRef,
               ...props.attrs.bodyCellContentAttrs.value,
               class: cx([
                 props.attrs.bodyCellContentAttrs.value.class,

@@ -383,61 +383,6 @@ describe("UTableRow.vue", () => {
   });
 
   describe("Functionality", () => {
-    it("Element Title – sets title attribute when element is overflown", async () => {
-      // Mock element properties to simulate overflow
-      const mockElement = {
-        clientWidth: 100,
-        scrollWidth: 200,
-        clientHeight: 50,
-        scrollHeight: 50,
-        textContent: "Very long text that overflows",
-        setAttribute: vi.fn(),
-        removeAttribute: vi.fn(),
-        hasAttribute: vi.fn().mockReturnValue(false),
-      };
-
-      const component = mount(UTableRow, {
-        props: getDefaultProps(),
-      });
-
-      // Access the component's internal methods
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      const vm = component.vm as any;
-
-      vm.setElementTitle(mockElement);
-
-      expect(mockElement.setAttribute).toHaveBeenCalledWith(
-        "title",
-        "Very long text that overflows",
-      );
-    });
-
-    it("Element Title – removes title attribute when element is not overflown", async () => {
-      // Mock element properties to simulate no overflow
-      const mockElement = {
-        clientWidth: 200,
-        scrollWidth: 100,
-        clientHeight: 50,
-        scrollHeight: 50,
-        textContent: "Short text",
-        setAttribute: vi.fn(),
-        removeAttribute: vi.fn(),
-        hasAttribute: vi.fn().mockReturnValue(true),
-      };
-
-      const component = mount(UTableRow, {
-        props: getDefaultProps(),
-      });
-
-      // Access the component's internal methods
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      const vm = component.vm as any;
-
-      vm.setElementTitle(mockElement);
-
-      expect(mockElement.removeAttribute).toHaveBeenCalledWith("title");
-    });
-
     it("Icon Width – calculates correct icon width", async () => {
       const expandableRow: FlatRow = {
         ...defaultRow,
