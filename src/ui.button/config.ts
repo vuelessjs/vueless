@@ -103,7 +103,7 @@ export default /*tw*/ {
       },
     },
   },
-  invisible: "invisible w-0",
+  invisible: "invisible w-0 overflow-hidden",
   defaults: {
     color: "primary",
     variant: "solid",
