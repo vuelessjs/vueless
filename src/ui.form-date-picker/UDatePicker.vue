@@ -34,6 +34,7 @@ const props = withDefaults(defineProps<Props<TModelValue>>(), {
   modelValue: undefined,
   minDate: undefined,
   maxDate: undefined,
+  dayClasses: undefined,
   placeholder: "",
   label: "",
 });
@@ -364,6 +365,7 @@ watchEffect(() => {
         :user-date-time-format="userDateTimeFormat"
         :max-date="maxDate"
         :min-date="minDate"
+        :day-classes="dayClasses"
         v-bind="datepickerCalendarAttrs"
         :data-test="getDataTest('calendar')"
         @keydown.esc="deactivate"

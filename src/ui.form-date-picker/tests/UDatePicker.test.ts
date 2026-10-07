@@ -284,6 +284,19 @@ describe("UDatePicker.vue", () => {
       expect(component.findComponent({ name: "UCalendar" }).props("maxDate")).toBe(maxDate);
     });
 
+    it("Day Classes – passes dayClasses to UCalendar", () => {
+      const dayClasses = (day: Date) => (day.getDate() === 15 ? "bg-mint-highlight" : "");
+
+      const component = mount(UDatePicker, {
+        props: {
+          modelValue: new Date(),
+          dayClasses,
+        },
+      });
+
+      expect(component.findComponent({ name: "UCalendar" }).props("dayClasses")).toBe(dayClasses);
+    });
+
     it("Id – sets id attribute on input", () => {
       const idValue = "date-picker-id";
 

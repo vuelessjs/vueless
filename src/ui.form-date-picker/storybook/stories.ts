@@ -454,3 +454,32 @@ Slots.parameters = {
     },
   },
 };
+
+export const DayClasses = DefaultTemplate.bind({});
+DayClasses.args = {
+  modelValue: dateValue,
+  dayClasses: (day: Date) => {
+    return [5, 12, 19].includes(day.getDate()) ? "bg-success" : "";
+  },
+};
+DayClasses.parameters = {
+  docs: {
+    description: {
+      story:
+        // eslint-disable-next-line vue/max-len
+        "Use the `dayClasses` prop to apply extra CSS classes to individual day cells, e.g. to highlight dates by status.",
+    },
+    source: {
+      code: `
+        <UDatePicker
+          v-model="args.modelValue"
+          label="Select a date"
+          :day-classes="(day) => ([5, 12, 19].includes(day.getDate()) ? 'bg-success' : '')"
+          class="max-w-96"
+        />
+
+        <UText color="neutral" class="mt-4">{{ args.modelValue }}</UText>
+      `,
+    },
+  },
+};
