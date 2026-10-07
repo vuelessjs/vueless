@@ -73,6 +73,8 @@ defineOptions({ inheritAttrs: false });
 const props = withDefaults(defineProps<Props<TModelValue>>(), {
   ...getDefaults<Props<TModelValue>, Config>(defaultConfig, COMPONENT_NAME),
   customRangeButton: () => ({ range: { from: null, to: null } }),
+  periods: () =>
+    getDefaults<Props<TModelValue>, Config>(defaultConfig, COMPONENT_NAME).periods || [],
   modelValue: undefined,
   minDate: undefined,
   maxDate: undefined,
@@ -129,7 +131,21 @@ const activeDate: Ref<string | Date | null> = ref(
     ? parseDate<SortedLocale>(props.modelValue.from, props.dateFormat, locale.value)
     : new Date(),
 );
-const period = ref(Period.OwnRange);
+let isInvalidPeriodsWarned = false;
+const allowedPeriods = computed(() => getAllowedPeriods());
+const isPeriodSwitchShown = computed(() => {
+  const hasCustomRange = Boolean(
+    props.customRangeButton.range.from && props.customRangeButton.range.to,
+  );
+  const periodButtonCount = allowedPeriods.value.filter((type) => type !== Period.Custom).length;
+
+  return periodButtonCount + Number(hasCustomRange) > 1;
+});
+const rawPeriod = ref(Period.OwnRange);
+const period = computed({
+  get: () => getAllowedPeriod(rawPeriod.value),
+  set: (value: Period) => (rawPeriod.value = value),
+});
 const rangeStart = ref("");
 const rangeEnd = ref("");
 const inputRangeFromError = ref("");
@@ -319,6 +335,29 @@ function deactivate() {
   isShownMenu.value = false;
 }
 
+function getAllowedPeriods(): readonly Period[] {
+  const allPeriods = Object.values(Period);
+  const validPeriods = allPeriods.filter((type) => props.periods.includes(type));
+
+  if (validPeriods.length) return validPeriods;
+
+  if (import.meta.env.DEV && !isInvalidPeriodsWarned) {
+    // eslint-disable-next-line no-console
+    console.warn(`[${COMPONENT_NAME}] No valid "periods" provided, falling back to all periods.`);
+    isInvalidPeriodsWarned = true;
+  }
+
+  return allPeriods;
+}
+
+function getAllowedPeriod(detectedPeriod: Period): Period {
+  if (detectedPeriod === Period.Custom || allowedPeriods.value.includes(detectedPeriod)) {
+    return detectedPeriod;
+  }
+
+  return allowedPeriods.value.includes(Period.OwnRange) ? Period.OwnRange : allowedPeriods.value[0];
+}
+
 setDefaultPeriodForButton();
 
 function setDefaultPeriodForButton() {
@@ -404,16 +443,12 @@ function shiftRangeNext(to: Date, from: Date, daysDifference: number) {
     return;
   }
 
-  let nextDate = periodDateList.value.find(
-    (item) => localValue.value.to && item.endRange > localValue.value.to,
-  );
+  let nextDate = periodDateList.value.find((item) => item.startRange > from);
 
   if (!nextDate) {
     onClickShiftDatesList(ShiftAction.Next);
 
-    nextDate = periodDateList.value.find(
-      (item) => localValue.value.to && item.endRange > localValue.value.to,
-    );
+    nextDate = periodDateList.value.find((item) => item.startRange > from);
   }
 
   if (nextDate && isDatePeriodOutOfRange(nextDate)) return;
@@ -468,8 +503,19 @@ function shiftRangePrev(to: Date, from: Date, daysDifference: number) {
   }
 }
 
+function getPeriodDateList(date: Date): DatePeriodRange[] {
+  if (isPeriod.value.week) return getWeekDateList(date, locale.value.months.shorthand);
+  if (isPeriod.value.month) return getMonthsDateList(date, locale.value.months.longhand);
+  if (isPeriod.value.quarter) return getQuartersDateList(date, locale.value.quarter);
+  if (isPeriod.value.year) return getYearDateList(date);
+
+  return [];
+}
+
 function onClickShiftRange(action: ShiftActions) {
-  if (isPeriod.value.custom) {
+  const isLeavingCustom = isPeriod.value.custom;
+
+  if (isLeavingCustom) {
     period.value = Period.OwnRange;
   }
 
@@ -486,6 +532,10 @@ function onClickShiftRange(action: ShiftActions) {
 
   if (!from) return;
   to = to || addDays(from, 1);
+
+  if (isLeavingCustom && !isPeriod.value.ownRange) {
+    periodDateList.value = getPeriodDateList(from);
+  }
 
   const daysDifference = Math.ceil(Math.abs(getDatesDifference(from, to)) / millisecondsPerDay);
 
@@ -568,6 +618,7 @@ const mutatedProps = computed(() => ({
   quarter: isPeriod.value.quarter,
   year: isPeriod.value.year,
   customRangeButtonDescription: Boolean(props.customRangeButton.description),
+  periodSwitch: isPeriodSwitchShown.value,
 }));
 
 const {
@@ -730,6 +781,8 @@ watchEffect(() => {
           v-model:period="period"
           :config="config"
           :is-period="isPeriod"
+          :allowed-periods="allowedPeriods"
+          :is-period-switch-shown="isPeriodSwitchShown"
           :custom-range-button="customRangeButton"
           :locale="locale"
           :date-format="dateFormat"

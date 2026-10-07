@@ -225,6 +225,54 @@ OpenDirection.parameters = {
   },
 };
 
+export const Periods: StoryFn<DefaultUDatePickerRangeArgs> = (args) => ({
+  components: { UDatePickerRange, UCol, UText },
+  setup: () => ({ args }),
+  template: `
+    <UCol>
+      <UDatePickerRange
+        v-bind="args"
+        v-model="args.modelValue"
+        label="All periods (default)"
+        class="w-full max-w-96"
+      />
+      <UDatePickerRange
+        v-bind="args"
+        v-model="args.modelValue"
+        :periods="['month', 'quarter', 'year']"
+        label="Month, quarter, year"
+        class="w-full max-w-96"
+      />
+      <UDatePickerRange
+        v-bind="args"
+        v-model="args.modelValue"
+        :periods="['month']"
+        label="Week, month"
+        class="w-full max-w-96"
+      />
+      <UDatePickerRange
+        v-bind="args"
+        v-model="args.modelValue"
+        :periods="['ownRange']"
+        label="Own range only"
+        class="w-full max-w-96"
+      />
+    </UCol>
+
+    <UText color="neutral" class="mt-4">{{ args.modelValue }}</UText>
+  `,
+});
+Periods.parameters = {
+  docs: {
+    description: {
+      story: "Use the `periods` prop to limit which period types are available for selection.",
+    },
+    story: {
+      height: "800px",
+    },
+  },
+};
+
 export const DateFormat = DefaultTemplate.bind({});
 DateFormat.args = { variant: "input", dateFormat: "Y-m-d" };
 DateFormat.parameters = {

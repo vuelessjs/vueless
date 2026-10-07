@@ -1,5 +1,5 @@
 import defaultConfig from "./config";
-import { ShiftAction } from "./constants";
+import { ShiftAction, Period } from "./constants";
 
 import type { Ref } from "vue";
 import type { UnknownObject, ComponentConfig, GetDataTest } from "../types";
@@ -9,6 +9,7 @@ export type Locale = typeof defaultConfig.i18n;
 export type Config = typeof defaultConfig;
 export type IsDatePeriodOutOfRange = (datePeriod: DatePeriodRange) => boolean;
 export type ShiftActions = `${ShiftAction}`;
+export type PeriodType = `${Period}`;
 
 export interface SortedLocale extends Omit<Locale, "weekdays" | "months"> {
   months: {
@@ -53,6 +54,8 @@ export interface UDatePickerRangePeriodMenuProps {
   locale: SortedLocale;
   dateFormat: string | undefined;
   isPeriod: IsPeriod;
+  allowedPeriods: readonly Period[];
+  isPeriodSwitchShown: boolean;
   maxDate: string | Date | undefined;
   minDate: string | Date | undefined;
   customRangeButton: CustomRangeButton;
@@ -121,6 +124,11 @@ export interface Props<TModelValue> {
    * Custom range button.
    */
   customRangeButton?: CustomRangeButton;
+
+  /**
+   * Period types available for selection.
+   */
+  periods?: PeriodType[];
 
   /**
    * Datepicker open direction on x-axis.

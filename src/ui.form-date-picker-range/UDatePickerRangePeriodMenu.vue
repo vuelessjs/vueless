@@ -36,12 +36,20 @@ const isDatePeriodOutOfRange = inject<IsDatePeriodOutOfRange | null>(
   null,
 );
 
-const periods = computed(() => [
-  { name: Period.Week, title: props.locale.week },
-  { name: Period.Month, title: props.locale.month },
-  { name: Period.Quarter, title: props.locale.quarter },
-  { name: Period.Year, title: props.locale.year },
-]);
+const periods = computed(() =>
+  [
+    { name: Period.Week, title: props.locale.week },
+    { name: Period.Month, title: props.locale.month },
+    { name: Period.Quarter, title: props.locale.quarter },
+    { name: Period.Year, title: props.locale.year },
+  ].filter(({ name }) => props.allowedPeriods.includes(name)),
+);
+
+const isOwnRangeAllowed = computed(() => props.allowedPeriods.includes(Period.OwnRange));
+
+const hasCustomRange = computed(() =>
+  Boolean(props.customRangeButton.range.from && props.customRangeButton.range.to),
+);
 
 const rangeSwitchTitle = computed(() => {
   if (props.isPeriod.month || props.isPeriod.quarter) {
@@ -148,7 +156,11 @@ function getDatePeriodState(date: DatePeriodRange) {
 </script>
 
 <template>
-  <div v-bind="attrs.periodRowAttrs.value" :data-test="getDataTest()">
+  <div
+    v-if="isPeriodSwitchShown && periods.length"
+    v-bind="attrs.periodRowAttrs.value"
+    :data-test="getDataTest()"
+  >
     <template v-for="periodButton in periods" :key="periodButton.name">
       <UButton
         v-if="periodButton.name !== period"
@@ -176,9 +188,12 @@ function getDatePeriodState(date: DatePeriodRange) {
     </template>
   </div>
 
-  <div v-bind="attrs.periodRowAttrs.value">
+  <div
+    v-if="isPeriodSwitchShown && (hasCustomRange || isOwnRangeAllowed)"
+    v-bind="attrs.periodRowAttrs.value"
+  >
     <UButton
-      v-if="customRangeButton.range.to && customRangeButton.range.from && Period.Custom !== period"
+      v-if="hasCustomRange"
       square
       size="xs"
       color="grayscale"
@@ -196,25 +211,7 @@ function getDatePeriodState(date: DatePeriodRange) {
     </UButton>
 
     <UButton
-      v-if="customRangeButton.range.to && customRangeButton.range.from && Period.Custom === period"
-      square
-      size="xs"
-      color="grayscale"
-      variant="soft"
-      :data-test="getDataTest('custom-range')"
-      v-bind="attrs.customRangeButtonAttrs.value"
-      @click="onClickCustomRangeButton"
-    >
-      {{ customRangeButton.label }}
-      <span
-        v-if="customRangeButton.description"
-        v-bind="attrs.customRangeDescriptionAttrs.value"
-        v-text="customRangeButton.description"
-      />
-    </UButton>
-
-    <UButton
-      v-if="Period.OwnRange !== period"
+      v-if="isOwnRangeAllowed && Period.OwnRange !== period"
       square
       size="xs"
       color="grayscale"
@@ -227,7 +224,7 @@ function getDatePeriodState(date: DatePeriodRange) {
     />
 
     <UButton
-      v-else
+      v-else-if="isOwnRangeAllowed"
       square
       size="xs"
       color="grayscale"

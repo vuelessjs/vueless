@@ -1,11 +1,12 @@
 import { mount } from "@vue/test-utils";
-import { describe, it, expect } from "vitest";
+import { describe, it, expect, vi } from "vitest";
 
 import UDatePickerRange from "../UDatePickerRange.vue";
 import UInput from "../../ui.form-input/UInput.vue";
 import ULabel from "../../ui.form-label/ULabel.vue";
 import UButton from "../../ui.button/UButton.vue";
 import UDatePickerRangePeriodMenu from "../UDatePickerRangePeriodMenu.vue";
+import { Period } from "../constants";
 
 import type { RangeDate } from "../../ui.form-calendar/types";
 
@@ -438,6 +439,189 @@ describe("UDatePickerRange.vue", () => {
 
       expect(component.findAll('[data-test^="null-"]').length).toBe(0);
     });
+  });
+
+  describe("Periods", () => {
+    const dataTest = "date-picker-range";
+    const menuPrefix = `${dataTest}-period-menu`;
+    const periodButtonNames: string[] = Object.values(Period).filter(
+      (type) => type !== Period.OwnRange && type !== Period.Custom,
+    );
+    const fullWeek: RangeDate = {
+      from: new Date(2023, 11, 4),
+      to: new Date(2023, 11, 10, 23, 59, 59),
+    };
+
+    async function mountOpened(props: Record<string, unknown>) {
+      const component = mount(UDatePickerRange, {
+        props: {
+          variant: "input",
+          dataTest,
+          modelValue: { from: null, to: null },
+          ...props,
+        },
+      });
+
+      await component.findComponent(UInput).get("input").trigger("focus");
+
+      return component;
+    }
+
+    function findPeriodButton(component: ReturnType<typeof mount>, name: string) {
+      return component.find(`[data-test="${menuPrefix}-period-${name}"]`);
+    }
+
+    function findOwnRangeButton(component: ReturnType<typeof mount>) {
+      return component.find(`[data-test="${menuPrefix}-own-range"]`);
+    }
+
+    function getRenderedPeriodNames(component: ReturnType<typeof mount>) {
+      return component
+        .findAll(`[data-test^="${menuPrefix}-period-"]`)
+        .map((button) => button.attributes("data-test")!.replace(`${menuPrefix}-period-`, ""))
+        .filter((name) => periodButtonNames.includes(name));
+    }
+
+    function isActive(button: ReturnType<ReturnType<typeof mount>["find"]>) {
+      return button.attributes("vl-key") === "periodButtonActive";
+    }
+
+    it("Periods – renders all period buttons and own range button by default", async () => {
+      const component = await mountOpened({});
+
+      expect(getRenderedPeriodNames(component)).toEqual(periodButtonNames);
+      expect(findOwnRangeButton(component).exists()).toBe(true);
+    });
+
+    it("Periods – renders only allowed period buttons without own range button", async () => {
+      const component = await mountOpened({ periods: ["month", "year"] });
+
+      expect(getRenderedPeriodNames(component)).toEqual(["month", "year"]);
+      expect(findOwnRangeButton(component).exists()).toBe(false);
+    });
+
+    it.each(["ownRange", "month"])(
+      "Periods – hides period switch when %s is the only period",
+      async (period) => {
+        const component = await mountOpened({ periods: [period] });
+
+        expect(getRenderedPeriodNames(component)).toEqual([]);
+        expect(findOwnRangeButton(component).exists()).toBe(false);
+      },
+    );
+
+    it("Periods – reduces range inputs top margin when period switch is hidden", async () => {
+      const component = await mountOpened({ periods: ["ownRange"] });
+      const rangeInputWrapper = component.get("[vl-key='rangeInputWrapper']");
+
+      expect(rangeInputWrapper.classes()).toContain("mt-2");
+      expect(rangeInputWrapper.classes()).not.toContain("mt-4");
+    });
+
+    it("Periods – removes range switch top padding when period switch is hidden", async () => {
+      const component = await mountOpened({ periods: ["month"] });
+
+      expect(component.get("[vl-key='rangeSwitchWrapper']").classes()).toContain("pt-0");
+    });
+
+    it("Periods – keeps range inputs top margin when period switch is shown", async () => {
+      const component = await mountOpened({});
+
+      expect(component.get("[vl-key='rangeInputWrapper']").classes()).toContain("mt-4");
+    });
+
+    it("Periods – shows own range button when custom range is also available", async () => {
+      const component = await mountOpened({
+        periods: ["ownRange"],
+        customRangeButton: {
+          range: { from: new Date(2023, 5, 1), to: new Date(2023, 5, 15) },
+          label: "First half of June",
+        },
+      });
+
+      expect(findOwnRangeButton(component).exists()).toBe(true);
+      expect(component.find(`[data-test="${menuPrefix}-custom-range"]`).exists()).toBe(true);
+    });
+
+    it("Periods – renders period buttons in canonical order", async () => {
+      const component = await mountOpened({
+        periods: ["year", "ownRange", "week", "quarter"],
+      });
+
+      expect(getRenderedPeriodNames(component)).toEqual(["week", "quarter", "year"]);
+      expect(findOwnRangeButton(component).exists()).toBe(true);
+    });
+
+    it("Periods – falls back to own range when model matches a disallowed period", async () => {
+      const component = await mountOpened({
+        periods: ["month", "ownRange"],
+        modelValue: fullWeek,
+      });
+
+      expect(findPeriodButton(component, "week").exists()).toBe(false);
+      expect(isActive(findOwnRangeButton(component))).toBe(true);
+      expect(isActive(findPeriodButton(component, "month"))).toBe(false);
+    });
+
+    it("Periods – falls back to the first allowed period when own range is not allowed", async () => {
+      const component = await mountOpened({
+        periods: ["year", "month"],
+        modelValue: fullWeek,
+      });
+
+      expect(isActive(findPeriodButton(component, "month"))).toBe(true);
+      expect(isActive(findPeriodButton(component, "year"))).toBe(false);
+    });
+
+    it("Periods – treats an empty array as all periods and warns", async () => {
+      const warnSpy = vi.spyOn(console, "warn").mockImplementation(() => {});
+
+      const component = await mountOpened({ periods: [] });
+
+      expect(getRenderedPeriodNames(component)).toEqual(periodButtonNames);
+      expect(findOwnRangeButton(component).exists()).toBe(true);
+      expect(warnSpy).toHaveBeenCalledWith(expect.stringContaining('No valid "periods"'));
+
+      warnSpy.mockRestore();
+    });
+
+    it.each([
+      ["next", new Date(2023, 6, 1), new Date(2023, 6, 31)],
+      ["prev", new Date(2023, 4, 1), new Date(2023, 4, 31)],
+    ])(
+      "Periods – shifts custom range by the resolved period (%s)",
+      async (direction, expectedFrom, expectedTo) => {
+        const component = mount(UDatePickerRange, {
+          props: {
+            variant: "button",
+            dataTest,
+            periods: ["month", "year"],
+            modelValue: { from: null, to: null },
+            customRangeButton: {
+              range: { from: new Date(2023, 5, 1), to: new Date(2023, 5, 15) },
+              label: "First half of June",
+            },
+            "onUpdate:modelValue": (value: RangeDate) => {
+              component.setProps({ modelValue: value });
+            },
+          },
+        });
+
+        await component.get("[vl-key='rangeButtonSelect']").trigger("click");
+        await findPeriodButton(component, "year").trigger("click");
+        await component.get(`[data-test="${menuPrefix}-custom-range"]`).trigger("click");
+
+        await component.get(`[data-test="${dataTest}-button-${direction}"]`).trigger("click");
+
+        const { from, to } = component.props("modelValue") as {
+          from: Date;
+          to: Date;
+        };
+
+        expect(from.toDateString()).toBe(expectedFrom.toDateString());
+        expect(to.toDateString()).toBe(expectedTo.toDateString());
+      },
+    );
   });
 
   describe("Menu", () => {
