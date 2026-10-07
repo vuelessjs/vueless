@@ -246,7 +246,7 @@ export const Periods: StoryFn<DefaultUDatePickerRangeArgs> = (args) => ({
       <UDatePickerRange
         v-bind="args"
         v-model="args.modelValue"
-        :periods="['month']"
+        :periods="['week', 'month']"
         label="Week, month"
         class="w-full max-w-96"
       />
@@ -303,6 +303,35 @@ MinMax.parameters = {
   docs: {
     description: {
       story: "Use `minDate` and `maxDate` props to set the minimum and maximum date.",
+    },
+  },
+};
+
+export const DayClasses = DefaultTemplate.bind({});
+DayClasses.args = {
+  modelValue: { from: fromDate, to: toDate },
+  dayClasses: (day: Date) => {
+    return [5, 12, 19].includes(day.getDate()) ? "bg-success" : "";
+  },
+};
+DayClasses.parameters = {
+  docs: {
+    description: {
+      story:
+        // eslint-disable-next-line vue/max-len
+        "Use the `dayClasses` prop to apply extra CSS classes to individual day cells, e.g. to highlight dates by status.",
+    },
+    source: {
+      code: `
+        <UDatePickerRange
+          v-model="args.modelValue"
+          label="Select date range"
+          :day-classes="(day) => ([5, 12, 19].includes(day.getDate()) ? 'bg-success' : '')"
+          class="w-full max-w-96"
+        />
+
+        <UText color="neutral" class="mt-4">{{ args.modelValue }}</UText>
+      `,
     },
   },
 };

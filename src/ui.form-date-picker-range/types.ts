@@ -188,6 +188,11 @@ export interface Props<TModelValue> {
   rightIcon?: string;
 
   /**
+   * Extra CSS classes to apply to each day cell, on top of the built-in state classes.
+   */
+  dayClasses?: (day: Date) => string;
+
+  /**
    * Unique element id.
    */
   id?: string;

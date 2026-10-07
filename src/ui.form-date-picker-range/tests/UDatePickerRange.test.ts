@@ -299,6 +299,24 @@ describe("UDatePickerRange.vue", () => {
       expect(component.props("maxDate")).toBe(maxDate);
     });
 
+    it("Day Classes – passes dayClasses to UCalendar", async () => {
+      const dayClasses = (day: Date) => (day.getDate() === 15 ? "bg-mint-highlight" : "");
+
+      const component = mount(UDatePickerRange, {
+        props: {
+          variant: "input",
+          dayClasses,
+          modelValue: { from: null, to: null },
+        },
+      });
+
+      const input = component.findComponent(UInput).get("input");
+
+      await input.trigger("focus");
+
+      expect(component.findComponent({ name: "UCalendar" }).props("dayClasses")).toBe(dayClasses);
+    });
+
     it("Custom Range Button – applies custom range button configuration", async () => {
       const customRangeButton = {
         range: { from: new Date("2023-01-01"), to: new Date("2023-01-31") },
