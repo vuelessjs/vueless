@@ -386,6 +386,39 @@ describe("UCalendarDayView.vue", () => {
     });
   });
 
+  describe("Day Classes Prop", () => {
+    it("applies function-based dayClasses only to the matching day", () => {
+      const component = mount(UCalendarDayView, {
+        props: {
+          ...defaultProps,
+          selectedDate: null,
+          dayClasses: (day: Date) => (day.getDate() === 10 ? "bg-mint-highlight" : ""),
+        },
+      });
+
+      const dayButtons = component.findAll('[vl-key="day"]');
+      const targetDay = dayButtons.find((button) => button.text() === "10");
+      const otherDay = dayButtons.find((button) => button.text() === "12");
+
+      expect(targetDay?.classes()).toContain("bg-mint-highlight");
+      expect(otherDay?.classes()).not.toContain("bg-mint-highlight");
+    });
+
+    it("renders regular day cells without error when dayClasses prop is not provided", () => {
+      const component = mount(UCalendarDayView, {
+        props: {
+          ...defaultProps,
+          selectedDate: null,
+        },
+      });
+
+      const regularDay = component.find('[vl-key="day"]');
+
+      expect(regularDay.exists()).toBe(true);
+      expect(regularDay.classes()).not.toContain("bg-mint-highlight");
+    });
+  });
+
   describe("Exposed Properties", () => {
     it("exposes days computed property", () => {
       const component = mount(UCalendarDayView, {

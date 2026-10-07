@@ -295,6 +295,19 @@ describe("UCalendar.vue", () => {
       expect(updatedValue.to).toMatch(dateFormatRegex);
     });
 
+    it("Day Classes – passes dayClasses to UCalendarDayView", () => {
+      const dayClasses = (day: Date) => (day.getDate() === 15 ? "bg-mint-highlight" : "");
+
+      const component = mount(UCalendar, {
+        props: {
+          modelValue: null,
+          dayClasses,
+        },
+      });
+
+      expect(component.findComponent(DayView).props("dayClasses")).toBe(dayClasses);
+    });
+
     it("Tabindex – sets tabindex attribute on wrapper", () => {
       const tabindex = 5;
 
