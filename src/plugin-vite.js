@@ -24,6 +24,7 @@ import { overrideComponents, restoreComponents } from "./utils/node/componentOve
 import {
   getNuxtDirs,
   getVueDirs,
+  getAppName,
   getVuelessAppDirs,
   cacheMergedConfigs,
   autoImportUserConfigs,
@@ -74,6 +75,9 @@ export const Vueless = function (options = {}) {
 
   const vuelessSrcDir = isInternalEnv ? VUELESS_LOCAL_DIR : VUELESS_PACKAGE_DIR;
 
+  /* app name for theme cookie prefixing */
+  const appName = getAppName();
+
   // Cache to store previous icon content for change detection
   const iconContentCache = new Map();
 
@@ -109,6 +113,7 @@ export const Vueless = function (options = {}) {
       define: {
         "process.env": {},
         __VUELESS_DEV__: process.argv.includes("--watch") || process.argv.includes("-w"),
+        __VUELESS_APP_NAME__: JSON.stringify(appName),
       },
       optimizeDeps: {
         include: isInternalEnv

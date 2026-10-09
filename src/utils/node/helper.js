@@ -2,7 +2,7 @@ import { build as rolldownBuild } from "rolldown";
 import path from "node:path";
 import { cwd } from "node:process";
 import { pathToFileURL } from "node:url";
-import { existsSync, statSync } from "node:fs";
+import { existsSync, statSync, readFileSync } from "node:fs";
 import { mkdir, readdir, rmdir, readFile, writeFile } from "node:fs/promises";
 
 import { getMergedConfig, getVuelessConfig } from "./vuelessConfig.js";
@@ -223,6 +223,18 @@ export async function removeFolderIfEmpty(dirPath) {
     }
   } catch {
     // suppress errors
+  }
+}
+
+/**
+ * Reads the app name from the project's package.json (used to prefix theme cookies).
+ * @returns {string} The package name, or an empty string if unavailable.
+ */
+export function getAppName() {
+  try {
+    return JSON.parse(readFileSync(path.join(cwd(), "package.json"), "utf-8")).name || "";
+  } catch {
+    return "";
   }
 }
 

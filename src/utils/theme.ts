@@ -1,7 +1,7 @@
 import { cloneDeep, merge } from "lodash-es";
 
 import { vuelessConfig } from "./ui";
-import { isCSR, getStored, getCookie, setCookie, deleteCookie, toNumber } from "./helper";
+import { isCSR, getStored, setCookie, deleteCookie, toNumber } from "./helper";
 
 import {
   PX_IN_REM,
@@ -63,14 +63,33 @@ declare interface SetColorMode {
 /* Creates a media query that checks if the user's system color scheme is set to the dark. */
 const prefersColorSchemeDark = isCSR && window.matchMedia("(prefers-color-scheme: dark)");
 
+/* Prefixes theme cookie names, so apps sharing a host (cookies ignore the port) don't collide. */
+export function getThemeCookieName(key: string) {
+  const appName = typeof __VUELESS_APP_NAME__ === "undefined" ? "" : __VUELESS_APP_NAME__;
+  const prefix = (vuelessConfig.cookiePrefix ?? appName)
+    .toLowerCase()
+    .replace(/[^a-z0-9_-]/g, "-")
+    .replace(/^-+|-+$/g, "");
+
+  return prefix ? `${prefix}-${key}` : key;
+}
+
+/* Saves a theme value under the raw key in local storage (client) and the prefixed cookie (SSR). */
+function storeThemeValue(key: string, value: string) {
+  if (!isCSR) return;
+
+  localStorage.setItem(key, value);
+  setCookie(getThemeCookieName(key), value);
+}
+
 function toggleColorModeClass() {
   if (!prefersColorSchemeDark) return;
 
   const isDarkMode = prefersColorSchemeDark.matches;
   const colorMode = isDarkMode ? ColorMode.Dark : ColorMode.Light;
 
-  setCookie(COLOR_MODE_KEY, colorMode);
-  setCookie(AUTO_MODE_KEY, String(Number(true)));
+  storeThemeValue(COLOR_MODE_KEY, colorMode);
+  storeThemeValue(AUTO_MODE_KEY, String(Number(true)));
 
   document.documentElement.classList.toggle(DARK_MODE_CLASS, isDarkMode);
   document.documentElement.classList.toggle(LIGHT_MODE_CLASS, !isDarkMode);
@@ -90,8 +109,9 @@ function toggleColorModeClass() {
  * - `isColorModeAuto` {boolean}: Indicates whether the color mode is set to auto.
  */
 function setCSRColorMode(mode: `${ColorMode}`): SetColorMode {
-  const colorMode = mode || getCookie(COLOR_MODE_KEY) || vuelessConfig.colorMode || ColorMode.Light;
-  const isCachedAutoMode = !!Number(getCookie(AUTO_MODE_KEY) ?? 0);
+  const colorMode = mode || getStored(COLOR_MODE_KEY) || vuelessConfig.colorMode || ColorMode.Light;
+  const storedAutoMode = getStored(AUTO_MODE_KEY);
+  const isCachedAutoMode = !!Number(storedAutoMode ?? 0);
 
   const isAutoMode = colorMode === ColorMode.Auto;
   const isSystemDarkMode = isAutoMode && prefersColorSchemeDark && prefersColorSchemeDark?.matches;
@@ -114,17 +134,15 @@ function setCSRColorMode(mode: `${ColorMode}`): SetColorMode {
   /* Dispatching custom event for the useDarkMode composable. */
   window.dispatchEvent(new CustomEvent("darkModeChange", { detail: isDarkMode }));
 
-  /* Saving color mode value into cookies (server) and local storage (client). */
   let currentColorMode = colorMode;
 
   if (isAutoMode) {
     currentColorMode = isDarkMode ? ColorMode.Dark : ColorMode.Light;
   }
 
-  /* Define color mode cookies to be used in both CSR and SSR */
-  if (mode || getCookie(AUTO_MODE_KEY) === undefined) {
-    setCookie(COLOR_MODE_KEY, currentColorMode);
-    setCookie(AUTO_MODE_KEY, String(Number(isAutoMode)));
+  if (mode || storedAutoMode === undefined) {
+    storeThemeValue(COLOR_MODE_KEY, currentColorMode);
+    storeThemeValue(AUTO_MODE_KEY, String(Number(isAutoMode)));
 
     if (mode !== ColorMode.Auto && prefersColorSchemeDark) {
       prefersColorSchemeDark.removeEventListener("change", toggleColorModeClass);
@@ -196,7 +214,7 @@ export function resetTheme() {
 
   themeKeys.forEach((key) => {
     localStorage.removeItem(key);
-    deleteCookie(key);
+    deleteCookie(getThemeCookieName(key));
   });
 }
 
@@ -436,8 +454,7 @@ function getPrimaryColor(primary?: PrimaryColors) {
     validateColorShades(primaryColor, PRIMARY_COLOR);
 
     if (isCSR && primary) {
-      setCookie(storageKey, JSON.stringify(primaryColor));
-      localStorage.setItem(storageKey, JSON.stringify(primaryColor));
+      storeThemeValue(storageKey, JSON.stringify(primaryColor));
     }
 
     return primaryColor;
@@ -454,8 +471,7 @@ function getPrimaryColor(primary?: PrimaryColors) {
   }
 
   if (isCSR && primary) {
-    setCookie(storageKey, String(primaryColor));
-    localStorage.setItem(storageKey, String(primaryColor));
+    storeThemeValue(storageKey, String(primaryColor));
   }
 
   return primaryColor;
@@ -486,8 +502,7 @@ function getNeutralColor(neutral?: NeutralColors) {
     validateColorShades(neutralColor, NEUTRAL_COLOR);
 
     if (isCSR && neutral) {
-      setCookie(storageKey, JSON.stringify(neutralColor));
-      localStorage.setItem(storageKey, JSON.stringify(neutralColor));
+      storeThemeValue(storageKey, JSON.stringify(neutralColor));
     }
 
     return neutralColor;
@@ -503,8 +518,7 @@ function getNeutralColor(neutral?: NeutralColors) {
   }
 
   if (isCSR && neutral) {
-    setCookie(storageKey, String(neutralColor));
-    localStorage.setItem(storageKey, String(neutralColor));
+    storeThemeValue(storageKey, String(neutralColor));
   }
 
   return neutralColor;
@@ -553,15 +567,10 @@ function getText(text?: ThemeConfig["text"]) {
   /* eslint-enable prettier/prettier,vue/max-len */
 
   if (isCSR && text !== undefined) {
-    setCookie(storageKey.xs, String(mergedText.xs));
-    setCookie(storageKey.sm, String(mergedText.sm));
-    setCookie(storageKey.md, String(mergedText.md));
-    setCookie(storageKey.lg, String(mergedText.lg));
-
-    localStorage.setItem(storageKey.xs, String(mergedText.xs));
-    localStorage.setItem(storageKey.sm, String(mergedText.sm));
-    localStorage.setItem(storageKey.md, String(mergedText.md));
-    localStorage.setItem(storageKey.lg, String(mergedText.lg));
+    storeThemeValue(storageKey.xs, String(mergedText.xs));
+    storeThemeValue(storageKey.sm, String(mergedText.sm));
+    storeThemeValue(storageKey.md, String(mergedText.md));
+    storeThemeValue(storageKey.lg, String(mergedText.lg));
   }
 
   return mergedText;
@@ -609,13 +618,9 @@ function getOutlines(outline?: ThemeConfig["outline"]) {
   /* eslint-enable prettier/prettier,vue/max-len */
 
   if (isCSR && outline !== undefined) {
-    setCookie(storageKey.sm, String(mergedOutline.sm));
-    setCookie(storageKey.md, String(mergedOutline.md));
-    setCookie(storageKey.lg, String(mergedOutline.lg));
-
-    localStorage.setItem(storageKey.sm, String(mergedOutline.sm));
-    localStorage.setItem(storageKey.md, String(mergedOutline.md));
-    localStorage.setItem(storageKey.lg, String(mergedOutline.lg));
+    storeThemeValue(storageKey.sm, String(mergedOutline.sm));
+    storeThemeValue(storageKey.md, String(mergedOutline.md));
+    storeThemeValue(storageKey.lg, String(mergedOutline.lg));
   }
 
   return mergedOutline;
@@ -672,13 +677,9 @@ function getRoundings(rounding?: ThemeConfig["rounding"]) {
   /* eslint-enable prettier/prettier,vue/max-len */
 
   if (isCSR && rounding !== undefined) {
-    setCookie(storageKey.sm, String(mergedRounding.sm));
-    setCookie(storageKey.md, String(mergedRounding.md));
-    setCookie(storageKey.lg, String(mergedRounding.lg));
-
-    localStorage.setItem(storageKey.sm, String(mergedRounding.sm));
-    localStorage.setItem(storageKey.md, String(mergedRounding.md));
-    localStorage.setItem(storageKey.lg, String(mergedRounding.lg));
+    storeThemeValue(storageKey.sm, String(mergedRounding.sm));
+    storeThemeValue(storageKey.md, String(mergedRounding.md));
+    storeThemeValue(storageKey.lg, String(mergedRounding.lg));
   }
 
   return mergedRounding;
@@ -695,8 +696,7 @@ function getSpacing(spacing?: ThemeConfig["spacing"]) {
   const mergedSpacing = Number(storedSpacing ?? DEFAULT_SPACING);
 
   if (isCSR && spacing !== undefined) {
-    setCookie(storageKey, String(mergedSpacing));
-    localStorage.setItem(storageKey, String(mergedSpacing));
+    storeThemeValue(storageKey, String(mergedSpacing));
   }
 
   return mergedSpacing;
@@ -713,8 +713,7 @@ function getLetterSpacing(letterSpacing?: ThemeConfig["letterSpacing"]) {
   const mergedSpacing = Number(spacing ?? DEFAULT_LETTER_SPACING);
 
   if (isCSR && letterSpacing !== undefined) {
-    setCookie(storageKey, String(mergedSpacing));
-    localStorage.setItem(storageKey, String(mergedSpacing));
+    storeThemeValue(storageKey, String(mergedSpacing));
   }
 
   return mergedSpacing;
@@ -731,8 +730,7 @@ function getDisabledOpacity(disabledOpacity?: ThemeConfig["disabledOpacity"]) {
   const mergedOpacity = Math.max(0, Number(opacity ?? DEFAULT_DISABLED_OPACITY));
 
   if (isCSR && disabledOpacity !== undefined) {
-    setCookie(storageKey, String(mergedOpacity));
-    localStorage.setItem(storageKey, String(mergedOpacity));
+    storeThemeValue(storageKey, String(mergedOpacity));
   }
 
   return mergedOpacity;
