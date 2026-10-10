@@ -1,5 +1,6 @@
 import { merge } from "lodash-es";
-import { defineConfig } from "cva";
+import { cx as cvaCx } from "cva";
+import { defineConfig } from "cva/config";
 import { extendTailwindMerge } from "tailwind-merge";
 
 import { isCSR, isSSR } from "./helper";
@@ -7,6 +8,7 @@ import { createGetMergedConfig } from "./node/mergeConfigs";
 import { COMPONENT_NAME as U_ICON } from "../ui.image-icon/constants";
 import { ICON_NON_PROPS_DEFAULTS, TAILWIND_MERGE_EXTENSION } from "../constants";
 
+import type { CVAVariantShape } from "cva";
 import type {
   Config,
   UnknownObject,
@@ -75,6 +77,7 @@ export const {
   compose,
   cva: classVarianceAuthority,
 } = defineConfig({
+  cx: cvaCx,
   hooks: {
     onComplete: (classNames) => twMerge(classNames),
   },
@@ -83,7 +86,12 @@ export const {
 export const getMergedConfig = createGetMergedConfig(cx) as GetMergedConfig;
 
 /* This allows skipping some CVA config keys in vueless config. */
-export const cva = ({ base = "", variants = {}, compoundVariants = [], defaultVariants = {} }) =>
+export const cva = ({
+  base = "",
+  variants = {} as CVAVariantShape,
+  compoundVariants = [],
+  defaultVariants = {},
+}) =>
   classVarianceAuthority({
     base,
     variants,

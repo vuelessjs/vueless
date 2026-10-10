@@ -2,7 +2,8 @@ import fs from "node:fs";
 import path from "node:path";
 import { cwd } from "node:process";
 import { pathToFileURL } from "node:url";
-import { defineConfig } from "cva";
+import { cx as cvaCx } from "cva";
+import { defineConfig } from "cva/config";
 import { merge } from "lodash-es";
 import { extendTailwindMerge } from "tailwind-merge";
 
@@ -57,6 +58,7 @@ const twMerge = extendTailwindMerge(
  * – remove all Vueless nested component names ({U...} strings) from the class list string.
  */
 export const { cx } = defineConfig({
+  cx: cvaCx,
   hooks: {
     onComplete: (classNames) => twMerge(classNames).replace(NESTED_COMPONENT_PATTERN_REG_EXP, ""),
   },
