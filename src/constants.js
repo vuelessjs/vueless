@@ -445,7 +445,7 @@ export const FAILURE_CODE = 1;
 
 /* Other */
 export const PX_IN_REM = 16;
-export const NESTED_COMPONENT_PATTERN_REG_EXP = /\{(U[^}]*)}/;
+export const NESTED_COMPONENT_PATTERN_REG_EXP = /\{(U[^}]*)}/g;
 export const EXTENDS_PATTERN_REG_EXP = /\{>[^}]*}/g;
 export const DYNAMIC_COLOR_PATTERN = "{color}";
 export const JAVASCRIPT_EXT = ".js";
