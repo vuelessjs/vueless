@@ -127,7 +127,7 @@ async function getComponentsWithColors() {
   }
 
   return webTypes.contributions.html.tags
-    .filter((component) => component?.attributes.some((attribute) => attribute.name === "color"))
+    .filter((component) => component.attributes?.some((attribute) => attribute.name === "color"))
     .map((component) => ({
       name: component.name,
       colors: component.attributes.find((attribute) => attribute.name === "color")?.enum,
