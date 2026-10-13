@@ -54,6 +54,7 @@ const props = withDefaults(defineProps<Props<TModelValue>>(), {
   modelValue: undefined,
   minDate: undefined,
   maxDate: undefined,
+  dayClasses: undefined,
 });
 
 const emit = defineEmits([
@@ -918,6 +919,7 @@ const {
       :date-format="actualDateFormat"
       :locale="locale"
       :config="config"
+      :day-classes="dayClasses"
       :is-arrow-key-dirty="isArrowKeyDirty"
       :data-test="getDataTest('day-view')"
       @input="onInputDate"

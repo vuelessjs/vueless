@@ -147,3 +147,29 @@ MinMax.parameters = {
     },
   },
 };
+
+export const DayClasses = DefaultTemplate.bind({});
+DayClasses.args = {
+  dayClasses: (day: Date) => {
+    return [5, 12, 19].includes(day.getDate()) ? "bg-success" : "";
+  },
+};
+DayClasses.parameters = {
+  docs: {
+    description: {
+      story:
+        // eslint-disable-next-line vue/max-len
+        "Use the `dayClasses` prop to apply extra CSS classes to individual day cells, e.g. to highlight dates by status.",
+    },
+    source: {
+      code: `
+        <UCalendar
+          v-model="args.modelValue"
+          :day-classes="(day) => ([5, 12, 19].includes(day.getDate()) ? 'bg-success' : '')"
+        />
+
+        <UText color="neutral" class="mt-4">{{ args.modelValue }}</UText>
+      `,
+    },
+  },
+};

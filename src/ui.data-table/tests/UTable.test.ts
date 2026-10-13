@@ -84,6 +84,11 @@ describe("UTable.vue", () => {
     });
   }
 
+  function setElementSize(element: Element, size: { clientWidth: number; scrollWidth: number }) {
+    Object.defineProperty(element, "clientWidth", { value: size.clientWidth, configurable: true });
+    Object.defineProperty(element, "scrollWidth", { value: size.scrollWidth, configurable: true });
+  }
+
   describe("Props", () => {
     it("Columns – renders table headers correctly", () => {
       const component = mountUTable(getDefaultProps());
@@ -1051,6 +1056,48 @@ describe("UTable.vue", () => {
       await nextTick();
 
       expect(component.emitted("search")![0][0]).toBe(4);
+    });
+  });
+
+  describe("Cell Title", () => {
+    it("Cell Title – sets title with the full value when cell content is truncated", async () => {
+      const component = mountUTable(getDefaultProps());
+
+      const cell = component.find("tbody td");
+
+      setElementSize(cell.element, { clientWidth: 100, scrollWidth: 200 });
+
+      await cell.trigger("pointerover");
+
+      expect(cell.attributes("title")).toBe("John Doe");
+    });
+
+    it("Cell Title – removes title when cell content is not truncated", async () => {
+      const component = mountUTable(getDefaultProps());
+
+      const cell = component.find("tbody td");
+
+      cell.element.setAttribute("title", "John Doe");
+      setElementSize(cell.element, { clientWidth: 200, scrollWidth: 200 });
+
+      await cell.trigger("pointerover");
+
+      expect(cell.attributes("title")).toBeUndefined();
+    });
+
+    it("Cell Title – skips re-measure when moving within the same cell", async () => {
+      const component = mountUTable(getDefaultProps());
+
+      const cell = component.find("tbody td");
+
+      setElementSize(cell.element, { clientWidth: 100, scrollWidth: 200 });
+
+      cell.element.dispatchEvent(
+        new MouseEvent("pointerover", { bubbles: true, relatedTarget: cell.element }),
+      );
+      await nextTick();
+
+      expect(cell.attributes("title")).toBeUndefined();
     });
   });
 

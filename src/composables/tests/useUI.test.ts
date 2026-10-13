@@ -284,6 +284,17 @@ describe("useUI", () => {
       expect(result).toHaveProperty("iconAttrs");
       expect(result).toHaveProperty("buttonAttrs");
     });
+
+    it("should strip every nested component marker from classes", () => {
+      const defaultConfig = {
+        label: "{ULabel} {ULabel} label-class",
+      };
+
+      const result = useUI(defaultConfig);
+
+      expect(result.labelAttrs.value.class).not.toContain("{ULabel}");
+      expect(result.labelAttrs.value.class).toContain("label-class");
+    });
   });
 
   describe("Reactivity", () => {

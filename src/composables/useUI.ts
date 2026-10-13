@@ -170,7 +170,7 @@ export function useUI<T>(defaultConfig: T, mutatedProps?: MutatedProps, topLevel
 
     classes = classes
       .replaceAll(EXTENDS_PATTERN_REG_EXP, "")
-      .replace(NESTED_COMPONENT_PATTERN_REG_EXP, "");
+      .replaceAll(NESTED_COMPONENT_PATTERN_REG_EXP, "");
 
     return color && !isNestedComponent ? setColor(classes, color) : classes;
   }
@@ -335,7 +335,7 @@ function getExtendsKeys(configItemValue?: string | CVA | NestedComponent): strin
  */
 function getNestedComponent(value?: string | CVA | NestedComponent) {
   const classes = getBaseClasses(value);
-  const match = classes.match(NESTED_COMPONENT_PATTERN_REG_EXP);
+  const [match] = classes.matchAll(NESTED_COMPONENT_PATTERN_REG_EXP);
 
   return match ? match[1] : "";
 }

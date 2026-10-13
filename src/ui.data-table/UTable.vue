@@ -851,6 +851,36 @@ function onBodyDoubleClick(event: MouseEvent) {
   onDoubleClickRow(rowData);
 }
 
+// Cells are always clipped (`truncate`), so show the full value in a native tooltip when it is.
+const OVERFLOW_THRESHOLD_PX = 1;
+
+function isElementOverflown(element: HTMLElement) {
+  return (
+    element.scrollWidth - element.clientWidth > OVERFLOW_THRESHOLD_PX ||
+    element.scrollHeight - element.clientHeight > OVERFLOW_THRESHOLD_PX
+  );
+}
+
+/** Content may be clipped by the cell itself or by any wrapper inside it (slot content included). */
+function isCellContentTruncated(cell: HTMLElement) {
+  return [cell, ...cell.querySelectorAll<HTMLElement>("*")].some(isElementOverflown);
+}
+
+function onBodyPointerOver(event: PointerEvent) {
+  const target = event.target as HTMLElement;
+  const cell = target.closest("td");
+  const previousCell = (event.relatedTarget as HTMLElement | null)?.closest("td");
+
+  // Moving between elements of the same cell needs no re-measure.
+  if (!cell || cell === previousCell) return;
+
+  if (isCellContentTruncated(cell)) {
+    cell.setAttribute("title", cell.textContent?.trim() || "");
+  } else {
+    cell.removeAttribute("title");
+  }
+}
+
 // Detect double-tap on touch devices and dispatch a native `dblclick`,
 // which bubbles to the tbody and triggers onBodyDoubleClick.
 const DOUBLE_TAP_DELAY = 300;
@@ -1469,6 +1499,7 @@ const BodyRows = () =>
           @click="onBodyClick"
           @dblclick="onBodyDoubleClick"
           @touchend="onBodyTouchEnd"
+          @pointerover="onBodyPointerOver"
         >
           <tr
             v-if="hasBeforeFirstRowSlot"

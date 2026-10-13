@@ -151,6 +151,18 @@ describe("ULabel.vue", () => {
       });
     });
 
+    it("Align – side-aligned label can wrap within its container", () => {
+      const component = mount(ULabel, {
+        props: {
+          label: "Label",
+          align: "right",
+        },
+      });
+
+      expect(component.attributes("class")).toContain("max-w-full");
+      expect(component.find("[vl-key='label']").attributes("class")).not.toContain("w-max");
+    });
+
     it("Size – applies correct class for size prop", () => {
       const sizeCases = {
         sm: "text-small",

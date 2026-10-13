@@ -73,6 +73,11 @@ export interface Props<TModelValue extends DateValue> {
   maxDate?: Date | string;
 
   /**
+   * Extra CSS classes to apply to each day cell, on top of the built-in state classes.
+   */
+  dayClasses?: (day: Date) => string;
+
+  /**
    * Component config object.
    */
   config?: ComponentConfig<Config>;
@@ -93,5 +98,6 @@ export interface UCalendarViewProps {
   isArrowKeyDirty: boolean;
   maxDate?: Date | string;
   minDate?: Date | string;
+  dayClasses?: (day: Date) => string;
   config: Config;
 }

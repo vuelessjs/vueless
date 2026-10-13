@@ -95,6 +95,21 @@ Use the `colorMode` key to define dark / light modes for all components.
 
 See [Dark mode](dark-mode.md) chapter for more details.
 
+***
+
+## Cookie Prefix
+
+Theme values are stored in cookies for SSR. Browsers scope cookies by host but not by port, so apps served from the same host (for example, several apps on `localhost`) would share them. To keep them separate, Vueless prefixes theme cookie names with your `package.json` name (`@acme/back-office` becomes `acme-back-office-vl-color-mode`). No configuration is needed.
+
+Use the `cookiePrefix` key to override the prefix, or set it to an empty string to disable prefixing.
+
+<pre class="language-js" data-title="vueless.config.{js,ts}"><code class="lang-js">export default {
+  cookiePrefix: "app-a",
+}<a data-footnote-ref href="#user-content-fn-1">;</a>
+</code></pre>
+
+Local storage keys are never prefixed, because local storage is already separate per origin. On the client Vueless reads theme values from local storage; the cookies exist so SSR apps can read them and pass them to `getTheme()`.
+
 
 
 [^1]: 

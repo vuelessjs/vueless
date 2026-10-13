@@ -232,6 +232,10 @@ function onMouseleaveDayView() {
   }
 }
 
+function getDayCustomClasses(day: Date) {
+  return props.dayClasses?.(day);
+}
+
 /**
  * Get element / nested component attributes for each config token ✨
  * Applies: `class`, `config`, redefined default `props` and dev `vl-...` attributes.
@@ -279,6 +283,7 @@ defineExpose({
           size="md"
           square
           v-bind="selectedDayAttrs"
+          :class="getDayCustomClasses(day)"
           :disabled="dateIsOutOfRange(day, minDate, maxDate, locale, dateFormat)"
           :label="formatDate(day, 'j', locale)"
           @mousedown.prevent.capture
@@ -294,6 +299,7 @@ defineExpose({
           size="md"
           square
           v-bind="selectedDayAttrs"
+          :class="getDayCustomClasses(day)"
           :disabled="dateIsOutOfRange(day, minDate, maxDate, locale, dateFormat)"
           :label="formatDate(day, 'j', locale)"
           @mousedown.prevent.capture
@@ -311,6 +317,7 @@ defineExpose({
           size="md"
           square
           v-bind="firstDayInRangeAttrs"
+          :class="getDayCustomClasses(day)"
           :disabled="dateIsOutOfRange(day, minDate, maxDate, locale, dateFormat)"
           :label="formatDate(day, 'j', locale)"
           @mousedown.prevent.capture
@@ -328,6 +335,7 @@ defineExpose({
           size="md"
           square
           v-bind="lastDayInRangeAttrs"
+          :class="getDayCustomClasses(day)"
           :disabled="dateIsOutOfRange(day, minDate, maxDate, locale, dateFormat)"
           :label="formatDate(day, 'j', locale)"
           @mousedown.prevent.capture
@@ -343,6 +351,7 @@ defineExpose({
           size="md"
           square
           v-bind="anotherMonthFirstDayInRangeAttrs"
+          :class="getDayCustomClasses(day)"
           :disabled="dateIsOutOfRange(day, minDate, maxDate, locale, dateFormat)"
           :label="formatDate(day, 'j', locale)"
           @mousedown.prevent.capture
@@ -358,6 +367,7 @@ defineExpose({
           size="md"
           square
           v-bind="anotherMonthLastDayInRangeAttrs"
+          :class="getDayCustomClasses(day)"
           :disabled="dateIsOutOfRange(day, minDate, maxDate, locale, dateFormat)"
           :label="formatDate(day, 'j', locale)"
           @mousedown.prevent.capture
@@ -373,6 +383,7 @@ defineExpose({
           size="md"
           square
           v-bind="lastDayInRangeAttrs"
+          :class="getDayCustomClasses(day)"
           :disabled="dateIsOutOfRange(day, minDate, maxDate, locale, dateFormat)"
           :label="formatDate(day, 'j', locale)"
           @mousedown.prevent.capture
@@ -391,6 +402,7 @@ defineExpose({
           size="md"
           square
           v-bind="anotherMonthDayInRangeAttrs"
+          :class="getDayCustomClasses(day)"
           :disabled="dateIsOutOfRange(day, minDate, maxDate, locale, dateFormat)"
           :label="formatDate(day, 'j', locale)"
           @mousedown.prevent.capture
@@ -409,6 +421,7 @@ defineExpose({
           size="md"
           square
           v-bind="currentDayInRangeAttrs"
+          :class="getDayCustomClasses(day)"
           :disabled="dateIsOutOfRange(day, minDate, maxDate, locale, dateFormat)"
           :label="formatDate(day, 'j', locale)"
           @mousedown.prevent.capture
@@ -424,6 +437,7 @@ defineExpose({
           size="md"
           square
           v-bind="dayInRangeAttrs"
+          :class="getDayCustomClasses(day)"
           :disabled="dateIsOutOfRange(day, minDate, maxDate, locale, dateFormat)"
           :label="formatDate(day, 'j', locale)"
           @mousedown.prevent.capture
@@ -439,6 +453,7 @@ defineExpose({
           size="md"
           square
           v-bind="currentDayAttrs"
+          :class="getDayCustomClasses(day)"
           :disabled="dateIsOutOfRange(day, minDate, maxDate, locale, dateFormat)"
           :label="formatDate(day, 'j', locale)"
           @mousedown.prevent.capture
@@ -454,6 +469,7 @@ defineExpose({
           size="md"
           square
           v-bind="activeDayAttrs"
+          :class="getDayCustomClasses(day)"
           :disabled="dateIsOutOfRange(day, minDate, maxDate, locale, dateFormat)"
           :label="formatDate(day, 'j', locale)"
           @mousedown.prevent.capture
@@ -469,6 +485,7 @@ defineExpose({
           size="md"
           square
           v-bind="anotherMonthDayAttrs"
+          :class="getDayCustomClasses(day)"
           :disabled="dateIsOutOfRange(day, minDate, maxDate, locale, dateFormat)"
           :label="formatDate(day, 'j', locale)"
           @mousedown.prevent.capture
@@ -484,6 +501,7 @@ defineExpose({
           size="md"
           square
           v-bind="dayAttrs"
+          :class="getDayCustomClasses(day)"
           :disabled="dateIsOutOfRange(day, minDate, maxDate, locale, dateFormat)"
           :label="formatDate(day, 'j', locale)"
           @mousedown.prevent.capture

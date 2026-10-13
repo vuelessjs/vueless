@@ -1,6 +1,6 @@
 export default /*tw*/ {
   wrapper: {
-    base: "flex w-full group/label",
+    base: "flex w-full max-w-full group/label",
     variants: {
       align: {
         topInside: "flex-col gap-0 relative",
@@ -25,7 +25,7 @@ export default /*tw*/ {
   },
   content: "flex",
   label: {
-    base: "z-10 block leading-none! w-max transition",
+    base: "z-10 block leading-none! transition",
     variants: {
       size: {
         sm: "text-small",

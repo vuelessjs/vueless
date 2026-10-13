@@ -184,6 +184,11 @@ export interface Config extends ThemeConfig {
   directives?: Partial<Directives>;
 
   /**
+   * Theme cookie name prefix (defaults to the app `package.json` name, `""` disables prefixing).
+   */
+  cookiePrefix?: string;
+
+  /**
    * Tailwind CSS theme config.
    * https://tailwindcss.com/docs/theme
    */

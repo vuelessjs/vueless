@@ -4,15 +4,22 @@ import { getRawValue, getFormattedValue } from "./utilFormat";
 
 import { RAW_DECIMAL_MARK } from "./constants";
 
+import type { MaybeRefOrGetter } from "vue";
 import type { FormatOptions } from "./types";
 
 const digitSet = ["1", "2", "3", "4", "5", "6", "7", "8", "9", "0"];
 const comma = ",";
 const minus = "-";
 
+/**
+ * Formats an input as a number. Takes the element itself, so inputs in a shadow root
+ * or detached at mount still bind, unlike a `document.getElementById` lookup.
+ * `onChange` fires for user input only, never for a programmatic `setValue`.
+ */
 export default function useFormatNumber(
-  elementId: string = "",
+  inputSource: MaybeRefOrGetter<HTMLInputElement | null | undefined>,
   formatOptions: (() => FormatOptions) | FormatOptions,
+  onChange?: () => void,
 ) {
   let inputElement: HTMLInputElement | null = null;
 
@@ -31,22 +38,31 @@ export default function useFormatNumber(
     { deep: true },
   );
 
+  // Follow the element: it can appear after mount or be swapped out entirely.
+  watch(() => toValue(inputSource) ?? null, bindInput, { flush: "post" });
+
   onMounted(() => {
     validateOptions();
-    inputElement = document.getElementById(elementId) as HTMLInputElement;
+    bindInput(toValue(inputSource) ?? null);
+  });
+
+  onBeforeUnmount(() => bindInput(null));
+
+  function bindInput(element: HTMLInputElement | null) {
+    if (element === inputElement) return;
+
+    if (inputElement) {
+      inputElement.removeEventListener("input", onInput);
+      inputElement.removeEventListener("keydown", onKeydown);
+    }
+
+    inputElement = element;
 
     if (inputElement) {
       inputElement.addEventListener("input", onInput);
       inputElement.addEventListener("keydown", onKeydown);
     }
-  });
-
-  onBeforeUnmount(() => {
-    if (inputElement) {
-      inputElement.removeEventListener("input", onInput);
-      inputElement.addEventListener("keydown", onKeydown);
-    }
-  });
+  }
 
   function validateOptions() {
     const warnMessages = [];
@@ -115,19 +131,30 @@ export default function useFormatNumber(
   }
 
   async function onInput(event: Event) {
-    if (!event.target || !inputElement) return;
+    const previousRawValue = rawValue.value;
+
+    await handleInput(event);
+
+    if (rawValue.value !== previousRawValue) onChange?.();
+  }
+
+  async function handleInput(event: Event) {
+    if (!inputElement) return;
+
+    // Read `data` before awaiting — the event is spent once dispatch returns.
+    const eventData = (event as InputEvent).data || "";
 
     await nextTick();
 
-    const cursorStart = inputElement.selectionStart || 0;
-    const cursorEnd = inputElement.selectionEnd || 0;
+    // The bound element, not `event.target`, which may be released after the await.
+    const input = inputElement;
 
-    const input = event.target as HTMLInputElement;
+    const cursorStart = input.selectionStart || 0;
+    const cursorEnd = input.selectionEnd || 0;
 
     let value = input.value || "";
 
     const prevCursorPosition = cursorEnd - 1;
-    const eventData = (event as InputEvent).data || "";
 
     if (value === minus) {
       formattedValue.value = minus;

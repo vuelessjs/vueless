@@ -30,16 +30,18 @@ When you set the dark mode at runtime, the selected value will be saved into  `c
 To retrieve theme settings, use the `getTheme()` method.
 
 ```javascript
-import { getTheme, getCookie } from "vueless";
+import { getTheme, getCookie, getThemeCookieName } from "vueless";
     
 const theme = getTheme();
 
 // or
 
 const themeWithConfig = getTheme({
-  rounding: getCookie("vl-rounding"),
+  rounding: getCookie(getThemeCookieName("vl-rounding")),
 });
 ```
+
+Theme cookie names are prefixed with your app name, so always resolve them with `getThemeCookieName()`. See [Cookie Prefix](../global-customization/general.md#cookie-prefix) for details.
 
 ## resetTheme
 

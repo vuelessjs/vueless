@@ -60,7 +60,14 @@ export default /*tw*/ {
   periodRow: "mb-1 flex min-w-64 gap-1",
   periodButton: "{UButton} h-[3.125rem] w-full",
   periodButtonActive: "{>periodButton} bg-grayscale-accented/15!",
-  rangeSwitchWrapper: "flex items-center justify-between py-2",
+  rangeSwitchWrapper: {
+    base: "flex items-center justify-between py-2",
+    variants: {
+      periodSwitch: {
+        false: "pt-0",
+      },
+    },
+  },
   rangeSwitchButton: "{UButton}",
   rangeSwitchTitle: "font-medium text-medium",
   periodDateList: {
@@ -87,7 +94,14 @@ export default /*tw*/ {
     },
   },
   customRangeDescription: "",
-  rangeInputWrapper: "flex mt-4 group/range-input-wrapper",
+  rangeInputWrapper: {
+    base: "flex mt-4 group/range-input-wrapper",
+    variants: {
+      periodSwitch: {
+        false: "mt-2",
+      },
+    },
+  },
   rangeInput: {
     base: "{UInput}",
     inputLabel: {
@@ -211,6 +225,7 @@ export default /*tw*/ {
     dateFormat: undefined,
     maxDate: undefined,
     minDate: undefined,
+    periods: ["week", "month", "quarter", "year", "ownRange"],
     /* icons */
     calendarIcon: "calendar_month-fill",
     nextIcon: "keyboard_arrow_right",

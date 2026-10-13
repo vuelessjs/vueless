@@ -33,3 +33,4 @@ declare module "virtual:vueless/vue-i18n" {
 }
 
 declare const __VUELESS_DEV__: boolean;
+declare const __VUELESS_APP_NAME__: string;
