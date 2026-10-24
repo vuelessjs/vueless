@@ -3,7 +3,6 @@ import { cx as cvaCx } from "cva";
 import { defineConfig } from "cva/config";
 import { extendTailwindMerge } from "tailwind-merge";
 
-import { isCSR, isSSR } from "./helper";
 import { createGetMergedConfig } from "./node/mergeConfigs";
 import { COMPONENT_NAME as U_ICON } from "../ui.image-icon/constants";
 import { ICON_NON_PROPS_DEFAULTS, TAILWIND_MERGE_EXTENSION } from "../constants";
@@ -30,39 +29,19 @@ type GetMergedConfig = (options: MergedConfigOptions) => unknown;
  * Load Vueless config from the project root.
  * Both for server and client side renderings.
  */
-export let vuelessConfig: Config = {};
+export let vuelessConfig: Config =
+  Object.values(
+    import.meta.glob(["/vueless.config.{js,ts}"], {
+      eager: true,
+      import: "default",
+    }),
+  )[0] || {};
 
 export function setVuelessConfig(config?: Config) {
   config = config || {};
 
   vuelessConfig = Object.keys(config).length ? config : vuelessConfig;
 }
-
-if (isCSR) {
-  vuelessConfig =
-    Object.values(
-      import.meta.glob(["/vueless.config.{js,ts}"], {
-        eager: true,
-        import: "default",
-      }),
-    )[0] || {};
-}
-
-/** Load Vueless config on the server; a config injected via `createVueless` meanwhile wins. */
-export async function loadSSRVuelessConfig(
-  // @ts-expect-error: vueless.config.{js,ts} is optional
-  importConfig = () => import(/* @vite-ignore */ "/vueless.config"),
-) {
-  try {
-    const { default: config } = await importConfig();
-
-    if (!Object.keys(vuelessConfig).length) vuelessConfig = config;
-  } catch {
-    /* No config file: keep the current config. */
-  }
-}
-
-if (isSSR) loadSSRVuelessConfig();
 
 /**
  * Extend twMerge (tailwind merge) by vueless and user config:
