@@ -25,7 +25,7 @@ export default /*tw*/ {
   },
   content: "flex",
   label: {
-    base: "z-10 block leading-none! transition",
+    base: "z-1 block leading-none! transition",
     variants: {
       size: {
         sm: "text-small",

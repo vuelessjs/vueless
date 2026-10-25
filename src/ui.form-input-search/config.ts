@@ -2,7 +2,7 @@ export default /*tw*/ {
   searchInput: "{UInput}",
   searchInputWithButton: {
     base: "{UInput} {>searchInput}",
-    wrapper: "pr-0",
+    rightSlot: "pr-0",
   },
   inputIcon: {
     base: "{UIcon}",
@@ -17,7 +17,7 @@ export default /*tw*/ {
   clearIcon: "{>inputIcon}",
   searchIcon: "{>inputIcon} -mr-1",
   searchButton: {
-    base: "{UButton} rounded-l-none ml-2",
+    base: "{UButton} self-stretch py-0 rounded-l-none ml-2",
     defaults: {
       size: {
         sm: "xs",

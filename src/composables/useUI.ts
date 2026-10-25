@@ -53,7 +53,9 @@ export function useUI<T>(defaultConfig: T, mutatedProps?: MutatedProps, topLevel
 
   /* Hoist shared reactive primitives — create once, share across all keys. */
   const attrs = useAttrs() as KeyAttrs;
-  const reactiveAttrsClass = computed(() => attrs.class);
+
+  /* Reading `class` explicitly keeps attrs tracked even when they start empty. */
+  const reactiveAttrs = computed(() => ({ class: attrs.class, ...attrs }));
 
   /**
    * Reactive wrapper for props — created once per component instead of once per key.
@@ -235,6 +237,7 @@ export function useUI<T>(defaultConfig: T, mutatedProps?: MutatedProps, topLevel
      * body row of a table on an unrelated sticky toggle). We skip the `.value` write
      * when the new object is structurally equal to the last one, so the ref keeps its
      * identity and dependents are not re-rendered.
+     * `JSON.stringify` drops functions, so listeners are compared by reference separately.
      */
     const attrsSignatures: Record<string, string> = {};
 
@@ -250,10 +253,10 @@ export function useUI<T>(defaultConfig: T, mutatedProps?: MutatedProps, topLevel
     /**
      * Single consolidated watcher instead of N per-key watchers.
      * Watches: config (for config changes), reactiveProps (for prop changes),
-     * mutatedProps (for slot/computed prop changes), reactiveAttrsClass (for class attr changes).
+     * mutatedProps (for slot/computed prop changes), reactiveAttrs (for attr changes).
      */
     watch(
-      [config, reactiveProps, mutatedProps || (() => undefined), reactiveAttrsClass],
+      [config, reactiveProps, mutatedProps || (() => undefined), reactiveAttrs],
       () => {
         const derived = configDerivedData.value;
 
@@ -285,8 +288,10 @@ export function useUI<T>(defaultConfig: T, mutatedProps?: MutatedProps, topLevel
 
           /* Keep the previous ref identity when nothing changed — see attrsSignatures. */
           const signature = JSON.stringify(nextValue);
+          const isUnchanged =
+            attrsSignatures[key] === signature && hasSameListeners(attrsRefs[key].value, nextValue);
 
-          if (attrsSignatures[key] === signature) continue;
+          if (isUnchanged) continue;
 
           attrsSignatures[key] = signature;
           attrsRefs[key].value = nextValue;
@@ -310,6 +315,26 @@ export function useUI<T>(defaultConfig: T, mutatedProps?: MutatedProps, topLevel
   }
 
   return { config, getDataTest, ...getKeysAttrs(mutatedProps) } as UseUI<T>;
+}
+
+/**
+ * Check both attrs objects hold the same function-valued entries (listeners) by reference.
+ */
+function hasSameListeners(previous: KeyAttrs, next: KeyAttrs): boolean {
+  let listenersDiff = 0;
+
+  for (const key in next) {
+    if (typeof next[key] !== "function") continue;
+    if (next[key] !== previous[key]) return false;
+
+    listenersDiff++;
+  }
+
+  for (const key in previous) {
+    if (typeof previous[key] === "function") listenersDiff--;
+  }
+
+  return listenersDiff === 0;
 }
 
 /**

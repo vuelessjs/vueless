@@ -395,6 +395,23 @@ describe("UToggle.vue", () => {
         expect.objectContaining({ value: "option1", label: "Option 1" }),
       );
     });
+
+    it("Options – emits the new option value after options are swapped", async () => {
+      const component = mount(UToggle, {
+        props: {
+          options: [{ value: "code" }, { value: "self" }],
+          name,
+        },
+      });
+
+      await component.setProps({
+        options: [{ value: "git" }, { value: "jira" }, { value: "slack" }],
+      });
+
+      await component.findAllComponents(UButton)[1].trigger("click");
+
+      expect(component.emitted("update:modelValue")?.[0][0]).toBe("jira");
+    });
   });
 
   describe("Exposed refs", () => {

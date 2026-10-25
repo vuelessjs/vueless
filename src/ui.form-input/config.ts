@@ -11,7 +11,7 @@ export default /*tw*/ {
   },
   wrapper: {
     base: `
-      flex gap-3 w-full px-3 relative bg-default transition
+      flex w-full relative bg-default transition
       border border-solid rounded-medium border-default outline-solid outline-small outline-transparent
       hover:border-lifted hover:focus-within:border-primary focus-within:border-primary
       focus-within:outline focus-within:outline-small focus-within:outline-primary focus-within:transition
@@ -37,11 +37,11 @@ export default /*tw*/ {
   },
   leftIcon: "{UIcon} {>inputIcon} -mr-0.5",
   rightIcon: "{UIcon} {>inputIcon} -ml-0.5",
-  leftSlot: "flex items-center",
-  rightSlot: "flex items-center",
+  leftSlot: "flex items-center shrink-0 pl-3",
+  rightSlot: "flex items-center shrink-0 pr-3",
   input: {
     base: `
-      block w-full py-2 font-normal leading-none! bg-transparent
+      block w-full min-w-0 px-3 py-2 font-normal leading-none! bg-transparent
       border-none rounded-inherit transition focus:outline-none
       placeholder:font-normal placeholder:text-muted
       disabled:text-accented disabled:cursor-not-allowed

@@ -12,6 +12,7 @@ import {
   removeIconsCache,
   copyIconsCache,
   generateIconExports,
+  hasIconsCache,
   reloadServerOnIconsCacheUpdate,
   extractIconLines,
   isIconChanged,
@@ -81,20 +82,27 @@ export const Vueless = function (options = {}) {
   // Cache to store previous icon content for change detection
   const iconContentCache = new Map();
 
+  let isProductionBuild = false;
+
   const targetFiles = [
     ...(include || []),
     ...getVuelessAppDirs(),
     ...(isNuxtModuleEnv ? getNuxtDirs() : getVueDirs()),
   ];
 
+  async function cacheIcons(files) {
+    await createIconsCache({ env, targetFiles: files, basePath, debug });
+
+    if (isNuxtModuleEnv) {
+      await copyIconsCache(basePath);
+    }
+  }
+
   /* if server stopped by developer (Ctrl+C) */
   process.on("SIGINT", async () => {
     /* remove `.cache` folder in components and restore changes */
     await removeCustomPropTypes(vuelessSrcDir);
     await restoreComponents(vuelessSrcDir);
-
-    /* remove cached icons */
-    await removeIconsCache(basePath);
 
     /* clear tailwind safelist */
     await clearTailwindSafelist(debug);
@@ -130,6 +138,8 @@ export const Vueless = function (options = {}) {
     }),
 
     configResolved: async (config) => {
+      isProductionBuild = config.command === "build" && !config.build.watch;
+
       if (!isNuxtModuleEnv) {
         /* auto import user configs */
         await autoImportUserConfigs(basePath);
@@ -152,13 +162,12 @@ export const Vueless = function (options = {}) {
       /* collect used in project colors for tailwind safelist */
       await createTailwindSafelist({ env, srcDir: vuelessSrcDir, targetFiles, basePath, debug });
 
-      /* cache vueless built-in and project icons */
-      await removeIconsCache(basePath);
-      await createIconsCache({ env, targetFiles, basePath, debug });
-
-      if (isNuxtModuleEnv) {
-        await copyIconsCache(basePath);
+      /* cache vueless built-in and project icons (the dev cache is shared between processes) */
+      if (isProductionBuild) {
+        await removeIconsCache(basePath);
       }
+
+      await cacheIcons(targetFiles);
 
       /* suppress SOURCEMAP_BROKEN warning from Tailwind */
       for (const key of ["rollupOptions", "rolldownOptions"]) {
@@ -197,11 +206,7 @@ export const Vueless = function (options = {}) {
 
       if (hasIconChanges && currentIconLines.length) {
         /* cache vueless built-in and project icons */
-        await createIconsCache({ env, targetFiles: [file], basePath, debug });
-
-        if (isNuxtModuleEnv) {
-          await copyIconsCache(basePath);
-        }
+        await cacheIcons([file]);
 
         reloadServerOnIconsCacheUpdate(server);
 
@@ -219,6 +224,11 @@ export const Vueless = function (options = {}) {
     /* load SVG images as a Vue components */
     load: async (id) => {
       if (id === RESOLVED_ICONS_VIRTUAL_MODULE_ID) {
+        /* restore icons cache if it was removed by another process */
+        if (!isProductionBuild && !(await hasIconsCache())) {
+          await cacheIcons(targetFiles);
+        }
+
         return generateIconExports();
       }
 
@@ -226,9 +236,9 @@ export const Vueless = function (options = {}) {
     },
 
     /* remove cached icons */
-    buildEnd: async function () {
-      /* skip in watch mode — configResolved won't re-run */
-      if (this.meta.watchMode) return;
+    buildEnd: async () => {
+      /* skip in dev and watch mode — the cache is shared and configResolved won't re-run */
+      if (!isProductionBuild) return;
 
       await removeIconsCache(basePath);
     },

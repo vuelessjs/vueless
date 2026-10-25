@@ -146,19 +146,9 @@ function setLabelPosition() {
 
   if (leftSlotWrapperRef.value && textareaRef.value && labelComponentRef.value?.labelElement) {
     const leftSlotWidth = leftSlotWrapperRef.value.getBoundingClientRect().width;
-    const wrapperElement = textareaRef.value.parentElement;
+    const textareaPaddingLeft = parseFloat(getComputedStyle(textareaRef.value).paddingLeft);
 
-    let wrapperGap = 0;
-    let wrapperLeftPadding = 0;
-
-    if (wrapperElement) {
-      wrapperGap = parseFloat(getComputedStyle(wrapperElement).gap);
-      wrapperLeftPadding = parseFloat(getComputedStyle(wrapperElement).paddingLeft);
-    }
-
-    if (labelComponentRef.value?.labelElement) {
-      labelComponentRef.value.labelElement.style.left = `${leftSlotWidth + wrapperLeftPadding + wrapperGap}px`;
-    }
+    labelComponentRef.value.labelElement.style.left = `${leftSlotWidth + textareaPaddingLeft}px`;
   }
 }
 

@@ -161,7 +161,7 @@ export const Slots: StoryFn<UInputPasswordArgs> = (args) => ({
           v-bind="args"
           v-model="args.modelValue"
           label="Enter your password"
-          :config="{ passwordInput: { wrapper: 'pl-0' } }"
+          :config="{ passwordInput: { leftSlot: 'pl-0' } }"
         >
           <template #label="{ label }">
             {{ label }}
@@ -184,7 +184,7 @@ export const Slots: StoryFn<UInputPasswordArgs> = (args) => ({
           v-bind="args"
           v-model="args.modelValue"
           label="Enter your password"
-          :config="{ passwordInput: { wrapper: 'pr-0' } }"
+          :config="{ passwordInput: { rightSlot: 'pr-0' } }"
         >
           <template #label="{ label }">
             {{ label }}

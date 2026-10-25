@@ -222,19 +222,9 @@ function setLabelPosition() {
 
   if (leftSlotWrapperRef.value && inputRef.value && labelComponentRef.value?.labelElement) {
     const leftSlotOrIconWidth = leftSlotWrapperRef.value.getBoundingClientRect().width;
-    const wrapperElement = inputRef.value.parentElement;
+    const inputLeftPadding = parseFloat(getComputedStyle(inputRef.value).paddingLeft);
 
-    let wrapperGap = 0;
-    let wrapperLeftPadding = 0;
-
-    if (wrapperElement) {
-      wrapperGap = parseFloat(getComputedStyle(wrapperElement).gap);
-      wrapperLeftPadding = parseFloat(getComputedStyle(wrapperElement).paddingLeft);
-    }
-
-    if (labelComponentRef.value?.labelElement) {
-      labelComponentRef.value.labelElement.style.left = `${leftSlotOrIconWidth + wrapperLeftPadding + wrapperGap}px`;
-    }
+    labelComponentRef.value.labelElement.style.left = `${leftSlotOrIconWidth + inputLeftPadding}px`;
   }
 }
 

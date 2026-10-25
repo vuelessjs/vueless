@@ -126,10 +126,7 @@ export async function copyIconsCache(basePath, isVuelessEnv = false) {
  * @return {string} A string containing the export statement for the cached SVG icons as an array to be used in Vite.
  */
 export async function generateIconExports() {
-  const cachePath = path.join(cwd(), ICONS_CACHED_DIR);
-  const files = await getDirFiles(cachePath, ".svg", {
-    recursive: true,
-  });
+  const files = await getCachedIconFiles();
 
   const entries = files.map((filePath) => {
     const fullImportPath = path.resolve(filePath).replace(/\\/g, "/");
@@ -140,6 +137,22 @@ export async function generateIconExports() {
   });
 
   return `export const cachedIcons = [\n${entries.join(",\n")}\n];`;
+}
+
+/**
+ * Check if the icons cache contains at least one SVG icon.
+ * @returns {Promise<boolean>}
+ */
+export async function hasIconsCache() {
+  return (await getCachedIconFiles()).length > 0;
+}
+
+/**
+ * Get paths of all cached SVG icons.
+ * @returns {Promise<string[]>}
+ */
+function getCachedIconFiles() {
+  return getDirFiles(path.join(cwd(), ICONS_CACHED_DIR), ".svg", { recursive: true });
 }
 
 /**
@@ -193,9 +206,11 @@ async function findAndCopyIcons(files, library, vuelessConfig, debug) {
   const validIconNamesRegex = /^(?!icon$|name$)[a-z0-9_-]+$/;
   const ternaryRegex = /\?.*:/;
 
+  const iconNames = new Set();
+
   safelistIcons?.forEach((iconName) => {
     if (validIconNamesRegex.test(iconName)) {
-      copyIcon(iconName, library);
+      iconNames.add(iconName);
     }
   });
 
@@ -212,11 +227,7 @@ async function findAndCopyIcons(files, library, vuelessConfig, debug) {
         const iconName = iconNameMatch && iconNameMatch[2];
 
         if (validIconNamesRegex.test(iconName)) {
-          try {
-            iconName && copyIcon(iconName, library);
-          } catch (error) {
-            debug && console.log(error);
-          }
+          iconNames.add(iconName);
         }
 
         iconNameRegex.lastIndex = 0;
@@ -249,10 +260,10 @@ async function findAndCopyIcons(files, library, vuelessConfig, debug) {
               continue;
             }
 
-            copyIcon(trueName, library);
-            copyIcon(falseName, library);
+            iconNames.add(trueName);
+            iconNames.add(falseName);
           } else {
-            copyIcon(iconName, library);
+            iconNames.add(iconName);
           }
         } catch (error) {
           debug && console.log(error);
@@ -260,6 +271,12 @@ async function findAndCopyIcons(files, library, vuelessConfig, debug) {
       }
     }
   });
+
+  await Promise.all(
+    [...iconNames].map((iconName) =>
+      copyIcon(iconName, library).catch((error) => debug && console.log(error)),
+    ),
+  );
 }
 
 /**

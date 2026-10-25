@@ -1,4 +1,4 @@
-import { onMounted, ref, watch, computed, onBeforeUnmount } from "vue";
+import { ref, computed } from "vue";
 import { isSSR } from "../utils/helper";
 
 type ResponsiveConfig<T> = Partial<Record<BreakpointName, T>>;
@@ -25,12 +25,12 @@ let isInitialized = false;
 let animationId: number | undefined;
 
 const windowWidth = ref(0);
-const currentBreakpoint = ref(BreakpointName.Xs);
 const BREAKPOINT_KEYS = Object.keys(BreakpointName) as (keyof typeof BreakpointName)[];
-
-watch(windowWidth, setBreakpoint, { immediate: true });
+const currentBreakpoint = computed(() => getBreakpoint(windowWidth.value));
 
 export function useBreakpoint() {
+  initBreakpointListener();
+
   const isPhone = computed(() => {
     return currentBreakpoint.value === BreakpointName.Xs;
   });
@@ -65,14 +65,6 @@ export function useBreakpoint() {
 
   const isDesktopGroup = computed(() => {
     return isDesktop.value || isLargeDesktop.value;
-  });
-
-  onMounted(() => {
-    initBreakpointListener();
-  });
-
-  onBeforeUnmount(() => {
-    window.removeEventListener("resize", resizeListener);
   });
 
   return {
@@ -139,20 +131,16 @@ export function r<T>(config: ResponsiveConfig<T>): T {
   return config[BreakpointName[definedKeys[0]]] as T;
 }
 
-function setBreakpoint(newWindowWidth: number) {
-  if (newWindowWidth === undefined) return;
-
+function getBreakpoint(width: number) {
   for (let i = BREAKPOINT_KEYS.length - 1; i >= 0; i--) {
     const key = BREAKPOINT_KEYS[i];
 
-    if (newWindowWidth >= BreakpointWidth[key]) {
-      currentBreakpoint.value = BreakpointName[key];
-
-      return;
+    if (width >= BreakpointWidth[key]) {
+      return BreakpointName[key];
     }
   }
 
-  currentBreakpoint.value = BreakpointName.Xs;
+  return BreakpointName.Xs;
 }
 
 function resizeListener() {
