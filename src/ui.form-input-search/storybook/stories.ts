@@ -179,7 +179,7 @@ export const Slots: StoryFn<UInputSearchArgs> = (args) => ({
 
       <UInputSearch
         placeholder="Ask something..."
-        :config="{ searchInput: { wrapper: 'pl-0' } }"
+        :config="{ searchInput: { leftSlot: 'pl-0' } }"
       >
         <template #left>
           <UDropdownButton
