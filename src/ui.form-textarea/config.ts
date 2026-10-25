@@ -9,12 +9,12 @@ export default /*tw*/ {
       },
     },
   },
-  slot: "flex items-center justify-center whitespace-nowrap gap-1 rounded-medium",
-  leftSlot: "{>slot} rounded-r-none",
-  rightSlot: "{>slot} rounded-l-none",
+  slot: "flex shrink-0 items-center justify-center whitespace-nowrap gap-1 rounded-medium",
+  leftSlot: "{>slot} pl-3 rounded-r-none",
+  rightSlot: "{>slot} pr-3 rounded-l-none",
   wrapper: {
     base: `
-      flex px-3 py-2 gap-3 w-full bg-default transition
+      flex w-full bg-default transition
       rounded-medium border border-solid border-default outline-solid outline-small outline-transparent
       hover:border-lifted hover:focus-within:border-primary focus-within:border-primary
       focus-within:outline focus-within:outline-small focus-within:outline-primary focus-within:transition
@@ -30,7 +30,7 @@ export default /*tw*/ {
   },
   textarea: {
     base: `
-      block w-full bg-transparent border-none font-normal
+      block w-full min-w-0 px-3 py-2 bg-transparent border-none font-normal
       placeholder:text-muted placeholder:font-normal placeholder:leading-none
       focus:outline-none disabled:cursor-not-allowed
     `,
@@ -51,9 +51,9 @@ export default /*tw*/ {
       },
     },
     compoundVariants: [
-      { labelAlign: "topInside", label: true, size: "sm", class: "mt-3" },
-      { labelAlign: "topInside", label: true, size: "md", class: "mt-4" },
-      { labelAlign: "topInside", label: true, size: "lg", class: "mt-5" },
+      { labelAlign: "topInside", label: true, size: "sm", class: "pt-5" },
+      { labelAlign: "topInside", label: true, size: "md", class: "pt-6" },
+      { labelAlign: "topInside", label: true, size: "lg", class: "pt-7" },
     ],
   },
   defaults: {
