@@ -1,5 +1,6 @@
 import { ref, watch, getCurrentInstance, toValue, useAttrs, computed } from "vue";
 
+import { isEmptyValue } from "../utils/helper";
 import { cx, cva, setColor, vuelessConfig, getMergedConfig } from "../utils/ui";
 import {
   CVA_CONFIG_KEY,
@@ -17,9 +18,9 @@ import type {
   StateColors,
   MutatedProps,
   UnknownObject,
+  Config,
   ComponentNames,
   NestedComponent,
-  ConfigDerivedData,
   ComponentDefaults,
   ComponentConfigFull,
   VuelessComponentInstance,
@@ -29,6 +30,27 @@ import type {
 const CVA_KEY_SET = new Set(Object.values(CVA_CONFIG_KEY));
 const SYSTEM_KEY_SET = new Set(Object.values(SYSTEM_CONFIG_KEY));
 const TRANSITION_KEY = SYSTEM_CONFIG_KEY.transition;
+
+interface StaticKeyData {
+  keyConfig: NestedComponent;
+  extendsKeyConfig: NestedComponent;
+  nestedComponent: string;
+  mergedNestedConfig: unknown;
+  defaultAttrs: UnknownObject;
+}
+
+type StaticDerivedData = Record<string, StaticKeyData>;
+
+interface ConfigEntry<T> {
+  config: ComponentConfigFull<T>;
+  cvaCache: Map<string, ReturnType<typeof cva>>;
+  staticData: StaticDerivedData;
+}
+
+type SharedEntries = WeakMap<object, Map<string, ConfigEntry<unknown>>>;
+
+/* Entries shared by instances without config overrides, dropped once `vuelessConfig` is replaced. */
+const sharedEntriesByConfig = new WeakMap<Config, SharedEntries>();
 
 /**
  * Merging component configs in a given sequence (bigger number = bigger priority):
@@ -47,7 +69,6 @@ export function useUI<T>(defaultConfig: T, mutatedProps?: MutatedProps, topLevel
   const globalConfig = (vuelessConfig.components?.[componentName] || {}) as ComponentConfigFull<T>;
 
   const firstClassKey = Object.keys(defaultConfig || {})[0];
-  const config = ref({}) as Ref<ComponentConfigFull<T>>;
   const isDev = import.meta.env?.DEV || __VUELESS_DEV__;
   const isUnstyled = Boolean(vuelessConfig.unstyled);
 
@@ -63,80 +84,133 @@ export function useUI<T>(defaultConfig: T, mutatedProps?: MutatedProps, topLevel
    */
   const reactiveProps = computed(() => ({ ...props }));
 
-  /* Cache for CVA resolver functions — only recreated when config changes. */
-  const cvaCache = new Map<string, ReturnType<typeof cva>>();
+  const entry = computed(() => {
+    const propsConfig = props.config as ComponentConfigFull<T>;
 
-  watch(
-    () => props.config,
-    (newVal, oldVal) => {
-      if (newVal === oldVal) return;
+    return isEmptyValue(propsConfig) ? getSharedEntry() : createEntry(propsConfig);
+  });
 
-      const propsConfig = props.config as ComponentConfigFull<T>;
+  const config = computed(() => entry.value.config) as Ref<ComponentConfigFull<T>>;
+  const attrsConfig = computed(() => attrs["config"]);
 
-      config.value = getMergedConfig({
-        defaultConfig,
-        globalConfig,
-        propsConfig,
-        unstyled: isUnstyled,
-      }) as ComponentConfigFull<T>;
+  /* Props-independent per-key data; only `mergedNestedConfig` is re-merged for a `config` attr. */
+  const staticData = computed(() => {
+    const entryData = entry.value.staticData;
 
-      /* Invalidate CVA cache when config changes. */
-      cvaCache.clear();
-    },
-    { deep: true, immediate: true },
-  );
+    if (isEmptyValue(attrsConfig.value)) return entryData;
 
-  /**
-   * Pre-computed data per config key that only changes when config changes.
-   * Avoids recomputing extends configs, nested component info, and merged configs on every prop change.
-   */
-  const configDerivedData = computed(() => {
-    const data: ConfigDerivedData = {};
+    const data: StaticDerivedData = {};
 
-    for (const key in config.value) {
-      if (isSystemKey(key)) continue;
-
-      const keyConfig: NestedComponent =
-        typeof config.value[key] === "object" ? (config.value[key] as NestedComponent) : {};
-
-      const extendsKeyConfig = computeExtendsKeyConfig(key);
-      const extendsKeyNestedComponent = getNestedComponent(extendsKeyConfig);
-      const keyNestedComponent = getNestedComponent(config.value[key]);
-      const nestedComponent = extendsKeyNestedComponent || keyNestedComponent || componentName;
-
-      const mergedNestedConfig = getMergedConfig({
-        defaultConfig: extendsKeyConfig,
-        globalConfig: keyConfig,
-        propsConfig: attrs["config"] || {},
-        unstyled: isUnstyled,
-      });
-
-      const mergedDefaults: ComponentDefaults = {};
-
-      const defaultAttrs = {
-        ...(extendsKeyConfig.defaults || {}),
-        ...(keyConfig.defaults || {}),
-      };
-
-      for (const defaultKey in defaultAttrs) {
-        mergedDefaults[defaultKey] =
-          typeof defaultAttrs[defaultKey] === "object"
-            ? defaultAttrs[defaultKey][String(props[defaultKey])]
-            : defaultAttrs[defaultKey];
-      }
+    for (const key in entryData) {
+      const { keyConfig, extendsKeyConfig } = entryData[key];
 
       data[key] = {
-        keyConfig,
-        extendsClasses: computeExtendsClasses(key),
-        extendsKeyConfig,
-        nestedComponent,
-        mergedNestedConfig,
-        mergedDefaults,
+        ...entryData[key],
+        mergedNestedConfig: getMergedConfig({
+          defaultConfig: extendsKeyConfig,
+          globalConfig: keyConfig,
+          propsConfig: attrsConfig.value,
+          unstyled: isUnstyled,
+        }),
       };
     }
 
     return data;
   });
+
+  function createEntry(propsConfig: ComponentConfigFull<T>): ConfigEntry<T> {
+    const mergedConfig = getMergedConfig({
+      defaultConfig,
+      globalConfig,
+      propsConfig,
+      unstyled: isUnstyled,
+    }) as ComponentConfigFull<T>;
+
+    return {
+      config: mergedConfig,
+      cvaCache: new Map(),
+      staticData: computeStaticData(mergedConfig, propsConfig),
+    };
+  }
+
+  function getSharedEntry(): ConfigEntry<T> {
+    if (typeof defaultConfig !== "object" || defaultConfig === null) return createEntry({});
+
+    let sharedEntries = sharedEntriesByConfig.get(vuelessConfig);
+
+    if (!sharedEntries) {
+      sharedEntries = new WeakMap();
+      sharedEntriesByConfig.set(vuelessConfig, sharedEntries);
+    }
+
+    let componentEntries = sharedEntries.get(defaultConfig);
+
+    if (!componentEntries) {
+      componentEntries = new Map();
+      sharedEntries.set(defaultConfig, componentEntries);
+    }
+
+    const entryKey = `${componentName}:${isUnstyled}`;
+    let sharedEntry = componentEntries.get(entryKey) as ConfigEntry<T> | undefined;
+
+    if (!sharedEntry) {
+      sharedEntry = createEntry({});
+      componentEntries.set(entryKey, sharedEntry);
+    }
+
+    return sharedEntry;
+  }
+
+  function computeStaticData(
+    mergedConfig: ComponentConfigFull<T>,
+    propsConfig: ComponentConfigFull<T>,
+  ): StaticDerivedData {
+    const data: StaticDerivedData = {};
+
+    for (const key in mergedConfig) {
+      if (isSystemKey(key)) continue;
+
+      const keyConfig: NestedComponent =
+        typeof mergedConfig[key] === "object" ? (mergedConfig[key] as NestedComponent) : {};
+
+      const extendsKeyConfig = computeExtendsKeyConfig(mergedConfig, propsConfig, key);
+      const extendsKeyNestedComponent = getNestedComponent(extendsKeyConfig);
+      const keyNestedComponent = getNestedComponent(mergedConfig[key]);
+      const nestedComponent = extendsKeyNestedComponent || keyNestedComponent || componentName;
+
+      const mergedNestedConfig = getMergedConfig({
+        defaultConfig: extendsKeyConfig,
+        globalConfig: keyConfig,
+        propsConfig: {},
+        unstyled: isUnstyled,
+      });
+
+      data[key] = {
+        keyConfig,
+        extendsKeyConfig,
+        nestedComponent,
+        mergedNestedConfig,
+        defaultAttrs: { ...(extendsKeyConfig.defaults || {}), ...(keyConfig.defaults || {}) },
+      };
+    }
+
+    return data;
+  }
+
+  function computeMergedDefaults(defaultAttrs: UnknownObject): ComponentDefaults {
+    const mergedDefaults: ComponentDefaults = {};
+
+    for (const defaultKey in defaultAttrs) {
+      const defaultValue = defaultAttrs[defaultKey];
+
+      mergedDefaults[defaultKey] =
+        typeof defaultValue === "object"
+          ? (defaultValue as UnknownObject)[String(props[defaultKey])]
+          : defaultValue;
+    }
+
+    return mergedDefaults;
+  }
 
   /**
    * Compute classes for a given key directly (not as a computed ref).
@@ -152,6 +226,7 @@ export function useUI<T>(defaultConfig: T, mutatedProps?: MutatedProps, topLevel
     let classes = "";
 
     if (typeof value === "object" && isCVA(value)) {
+      const { cvaCache } = entry.value;
       let cvaFn = cvaCache.get(key);
 
       if (!cvaFn) {
@@ -200,21 +275,24 @@ export function useUI<T>(defaultConfig: T, mutatedProps?: MutatedProps, topLevel
    * Merge extends nested component configs.
    * TODO: Add ability to merge multiple keys in one (now works for merging only 1 first key).
    */
-  function computeExtendsKeyConfig(configKey: string): NestedComponent {
-    const propsConfig = props.config as ComponentConfigFull<T>;
-    const extendsKeys = getExtendsKeys(config.value[configKey]);
+  function computeExtendsKeyConfig(
+    mergedConfig: ComponentConfigFull<T>,
+    propsConfig: ComponentConfigFull<T>,
+    configKey: string,
+  ): NestedComponent {
+    const extendsKeys = getExtendsKeys(mergedConfig[configKey]);
 
     if (!extendsKeys.length) return {};
 
     const [firstKey] = extendsKeys;
 
-    if (config.value[firstKey] === undefined) {
+    if (mergedConfig[firstKey] === undefined) {
       // eslint-disable-next-line no-console
       console.warn(`[vueless] Missing ${firstKey} extend key.`);
     }
 
     return getMergedConfig({
-      defaultConfig: config.value[firstKey] || {},
+      defaultConfig: mergedConfig[firstKey] || {},
       globalConfig: globalConfig[firstKey],
       propsConfig: propsConfig[firstKey],
       unstyled: isUnstyled,
@@ -258,7 +336,7 @@ export function useUI<T>(defaultConfig: T, mutatedProps?: MutatedProps, topLevel
     watch(
       [config, reactiveProps, mutatedProps || (() => undefined), reactiveAttrs],
       () => {
-        const derived = configDerivedData.value;
+        const derived = staticData.value;
 
         for (const key in attrsRefs) {
           const data = derived[key];
@@ -281,9 +359,9 @@ export function useUI<T>(defaultConfig: T, mutatedProps?: MutatedProps, topLevel
 
           const nextValue: KeyAttrs = {
             ...commonAttrs,
-            class: cx([...data.extendsClasses, classes, commonAttrs.class]),
+            class: cx([...computeExtendsClasses(key), classes, commonAttrs.class]),
             config: data.mergedNestedConfig,
-            ...data.mergedDefaults,
+            ...computeMergedDefaults(data.defaultAttrs),
           };
 
           /* Keep the previous ref identity when nothing changed — see attrsSignatures. */
