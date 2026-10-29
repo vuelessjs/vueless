@@ -95,12 +95,6 @@ const defaultTemplate = `
 
 const password = ref("");
 
-function resetBodyOverflow(delay = 500) {
-  setTimeout(() => {
-    document.body.style.overflow = "auto";
-  }, delay);
-}
-
 const DefaultTemplate: StoryFn<UModalArgs> = (args: UModalArgs) => ({
   components: {
     UModal,
@@ -117,8 +111,6 @@ const DefaultTemplate: StoryFn<UModalArgs> = (args: UModalArgs) => ({
   setup() {
     function onClick() {
       args.modelValue = true;
-
-      resetBodyOverflow();
     }
 
     const slots = getSlotNames(UModal.__name);
@@ -171,6 +163,15 @@ const EnumTemplate: StoryFn<UModalArgs> = (args: UModalArgs, { argTypes }) => ({
 
 export const Default = DefaultTemplate.bind({});
 Default.args = {};
+Default.parameters = {
+  docs: {
+    description: {
+      story:
+        // eslint-disable-next-line vue/max-len
+        "An initially open modal focuses its wrapper and locks body scrolling. Tab stays inside visible controls, and Escape closes the modal when closeOnEsc is enabled. Listeners are removed on unmount.",
+    },
+  },
+};
 
 export const Description = DefaultTemplate.bind({});
 Description.args = {
@@ -191,14 +192,10 @@ export const Inner: StoryFn<UModalArgs> = (args: UModalArgs) => ({
 
     function openMainModal() {
       showMainModal.value = true;
-
-      resetBodyOverflow();
     }
 
     function openInnerModal() {
       showInnerModal.value = true;
-
-      resetBodyOverflow();
     }
 
     return { args, showMainModal, showInnerModal, openMainModal, openInnerModal };
@@ -253,7 +250,9 @@ export const Inner: StoryFn<UModalArgs> = (args: UModalArgs) => ({
 Inner.parameters = {
   docs: {
     description: {
-      story: "Add extra top margin for modal inside another modal.",
+      story:
+        // eslint-disable-next-line vue/max-len
+        "Add extra top margin for a nested modal. Only the topmost modal handles keyboard navigation. Closing or unmounting it returns focus to the previous modal. Body scrolling stays locked until the last modal closes, then the previous overflow style is restored.",
     },
   },
 };

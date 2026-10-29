@@ -1,5 +1,15 @@
 <script setup lang="ts">
-import { computed, useSlots, watch, useId, useTemplateRef, nextTick, ref } from "vue";
+import {
+  computed,
+  useSlots,
+  watch,
+  useId,
+  useTemplateRef,
+  nextTick,
+  ref,
+  onMounted,
+  onBeforeUnmount,
+} from "vue";
 
 import { useUI } from "../composables/useUI";
 import { getDefaults } from "../utils/ui";
@@ -12,6 +22,7 @@ import UButton from "../ui.button/UButton.vue";
 
 import defaultConfig from "./config";
 import { COMPONENT_NAME } from "./constants";
+import { registerModal, unregisterModal, isTopModal } from "./modalStack";
 
 import type { Props, Config } from "./types";
 
@@ -43,6 +54,7 @@ const emit = defineEmits([
 ]);
 
 const elementId = props.id || useId();
+const modalKey = Symbol(COMPONENT_NAME);
 
 const slots = useSlots();
 
@@ -81,21 +93,57 @@ function getFocusableElements() {
     wrapperRef.value.querySelectorAll(
       'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])',
     ),
-  );
+  ).filter(isFocusableElement);
+}
+
+function isFocusableElement(element: Element) {
+  if (element.matches(":disabled, [tabindex='-1']") || element.closest("[hidden], [inert]")) {
+    return false;
+  }
+
+  let ancestor: Element | null = element;
+
+  while (ancestor) {
+    const style = getComputedStyle(ancestor);
+
+    if (
+      style.display === "none" ||
+      style.visibility === "hidden" ||
+      style.visibility === "collapse"
+    ) {
+      return false;
+    }
+
+    ancestor = ancestor.parentElement;
+  }
+
+  return true;
 }
 
 function trapFocus(e: KeyboardEvent) {
-  if (e.key !== "Tab") return;
+  if (e.key !== "Tab" || !isTopModal(modalKey)) return;
 
   const focusableElements = getFocusableElements();
 
-  if (!focusableElements.length) return;
+  if (!focusableElements.length) {
+    e.preventDefault();
+    wrapperRef.value?.focus();
+
+    return;
+  }
 
   const firstElement = focusableElements.at(0) as HTMLElement;
   const lastElement = focusableElements.at(-1) as HTMLElement;
 
-  // Shift+Tab - if focused on first element, move to last
-  if (e.shiftKey && document.activeElement === firstElement) {
+  const activeElement = document.activeElement;
+  const isFocusInside = activeElement && wrapperRef.value?.contains(activeElement);
+
+  const isAtStart = activeElement === firstElement || activeElement === wrapperRef.value;
+  const shouldWrapBackward = e.shiftKey && (isAtStart || !isFocusInside);
+  const shouldWrapForward = !e.shiftKey && (activeElement === lastElement || !isFocusInside);
+
+  // Shift+Tab from the wrapper or first control stays inside the modal.
+  if (shouldWrapBackward) {
     e.preventDefault();
     lastElement.focus();
 
@@ -103,7 +151,7 @@ function trapFocus(e: KeyboardEvent) {
   }
 
   // Tab - if focused on the last element, move to the first
-  if (!e.shiftKey && document.activeElement === lastElement) {
+  if (shouldWrapForward) {
     e.preventDefault();
     firstElement.focus();
   }
@@ -128,17 +176,21 @@ function onChangeShownModal(newValue: boolean) {
 
 function toggleOverflow() {
   if (isShownModal.value) {
-    document.body.style.overflow = "hidden";
+    registerModal(modalKey, () => wrapperRef.value?.focus());
   } else {
-    const element = document.getElementById(`${elementId}`);
-
-    if (element) {
-      element.style.overflow = "hidden";
-    }
-
-    document.body.style.overflow = "auto";
+    unregisterModal(modalKey);
   }
 }
+
+onMounted(() => {
+  if (isShownModal.value) onChangeShownModal(true);
+});
+
+onBeforeUnmount(() => {
+  document.removeEventListener("keydown", trapFocus);
+  document.removeEventListener("keydown", onKeydownEsc);
+  unregisterModal(modalKey);
+});
 
 function toggleEventListeners() {
   if (isShownModal.value) {
@@ -166,9 +218,15 @@ function onClickOutside() {
 }
 
 function onKeydownEsc(e: KeyboardEvent) {
-  if (e.key !== "Escape" || !props.closeOnEsc) return;
+  if (e.key !== "Escape" || !props.closeOnEsc || !isTopModal(modalKey)) return false;
 
   closeModal();
+
+  return true;
+}
+
+function onWrapperKeydownEsc(e: KeyboardEvent) {
+  if (onKeydownEsc(e)) e.stopPropagation();
 }
 
 function closeModal() {
@@ -235,7 +293,7 @@ const {
       tabindex="0"
       v-bind="wrapperAttrs"
       :data-test="getDataTest()"
-      @keydown.self.esc="onKeydownEsc"
+      @keydown.self.esc="onWrapperKeydownEsc"
     >
       <div
         v-bind="innerWrapperAttrs"

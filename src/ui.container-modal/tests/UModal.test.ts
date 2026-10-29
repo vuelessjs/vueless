@@ -1,5 +1,5 @@
-import { mount } from "@vue/test-utils";
-import { describe, it, expect } from "vitest";
+import { mount, enableAutoUnmount } from "@vue/test-utils";
+import { describe, it, expect, afterEach } from "vitest";
 import { createRouter, createWebHistory } from "vue-router";
 
 import UModal from "../UModal.vue";
@@ -30,6 +30,8 @@ const mountWithRouter = (component: unknown, options: UnknownObject) => {
     },
   });
 };
+
+enableAutoUnmount(afterEach);
 
 describe("UModal", () => {
   const modelValue = true;
