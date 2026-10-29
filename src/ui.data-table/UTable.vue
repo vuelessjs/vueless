@@ -188,7 +188,7 @@ const visibleColumns = computed(() => {
 const columnPositions = shallowRef<Map<string, number>>(new Map());
 
 const colsCount = computed(() => {
-  return normalizedColumns.value.length + 1;
+  return visibleColumns.value.length + Number(props.selectable);
 });
 
 const isShownActionsHeader = computed(() => {

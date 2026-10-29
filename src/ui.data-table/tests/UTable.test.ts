@@ -1,6 +1,6 @@
 import { mount } from "@vue/test-utils";
 import { describe, it, expect } from "vitest";
-import { nextTick } from "vue";
+import { h, nextTick } from "vue";
 
 import UTable from "../UTable.vue";
 import UTableRow from "../UTableRow.vue";
@@ -16,6 +16,71 @@ import {
 import type { Column, Row, Props, ColumnObject } from "../types";
 
 describe("UTable.vue", () => {
+  it.each([false, true])(
+    "matches the empty-state colspan to visible headers when selectable is %s",
+    async (selectable) => {
+      const component = mountUTable({
+        columns: [
+          { key: "message", label: "Message" },
+          { key: "severity", label: "Severity" },
+          { key: "hidden", label: "Hidden", isShown: false },
+        ],
+        rows: [{ id: 1, message: "Message", severity: "info" }],
+        selectable,
+      });
+
+      await component.setProps({ rows: [] });
+      const headerCount = component.findAll("thead th").length;
+
+      expect(headerCount).toBe(2 + Number(selectable));
+      expect(component.get("tbody td").attributes("colspan")).toBe(String(headerCount));
+      component.unmount();
+    },
+  );
+
+  it.each([false, true])(
+    "updates full-row spans when columns or selection change: selectable=%s",
+    async (selectable) => {
+      const component = mountUTable(
+        {
+          columns: [
+            { key: "message", label: "Message" },
+            { key: "severity", label: "Severity", isShown: false },
+          ],
+          rows: [
+            { id: 1, message: "First", rowDate: "2026-10-15" },
+            { id: 2, message: "Second", rowDate: "2026-10-16" },
+          ],
+          selectable,
+          dateDivider: true,
+        },
+        {
+          slots: {
+            "before-header": ({ colsCount }: { colsCount: number }) =>
+              h("th", { colspan: colsCount, "data-test": "before-header" }, "Group header"),
+            "before-first-row": "Before rows",
+            "after-last-row": ({ colsCount }: { colsCount: number }) =>
+              h("td", { colspan: colsCount, "data-test": "after-rows" }, "After rows"),
+          },
+        },
+      );
+
+      function expectSpans(count: number) {
+        const spanningCells = component.findAll("[colspan]");
+
+        expect(spanningCells).toHaveLength(4);
+        for (const cell of spanningCells) expect(cell.attributes("colspan")).toBe(String(count));
+      }
+
+      expectSpans(1 + Number(selectable));
+      await component.setProps({ columns: ["message", "severity"] });
+      expectSpans(2 + Number(selectable));
+      await component.setProps({ selectable: !selectable });
+      expectSpans(2 + Number(!selectable));
+      component.unmount();
+    },
+  );
+
   const defaultColumns: ColumnObject[] = [
     { key: "name", label: "Name" },
     { key: "email", label: "Email" },
@@ -389,6 +454,11 @@ describe("UTable.vue", () => {
 
       // Should have at least one spacer row (top or bottom)
       expect(spacerRows.length).toBeGreaterThanOrEqual(1);
+      const headerCount = component.findAll("thead th").length;
+
+      for (const row of spacerRows) {
+        expect(row.get("td").attributes("colspan")).toBe(String(headerCount));
+      }
     });
 
     it("Row Height – uses default rowHeight value", () => {
