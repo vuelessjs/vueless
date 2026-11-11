@@ -16,7 +16,7 @@ import type { Props } from "../types";
 
 interface UNumberArgs extends Props {
   slotTemplate?: string;
-  enum: "color" | "size" | "sign" | "align" | "currencyAlign";
+  enum: "color" | "variant" | "size" | "sign" | "align" | "currencyAlign";
 }
 
 export default {
@@ -82,6 +82,9 @@ export const Align: StoryFn<UNumberArgs> = (args: UNumberArgs) => ({
     </UCol>
   `,
 });
+
+export const Variants = EnumTemplate.bind({});
+Variants.args = { enum: "variant" };
 
 export const Colors = EnumTemplate.bind({});
 Colors.args = { enum: "color" };

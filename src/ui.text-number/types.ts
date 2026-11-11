@@ -15,9 +15,15 @@ export interface Props {
   size?: "xs" | "sm" | "md" | "lg";
 
   /**
+   * Number variant.
+   */
+  variant?: "default" | "accented" | "lifted" | "muted" | "inverted";
+
+  /**
    * Number color.
    */
   color?:
+    | "text" // the default design system text color
     | "primary"
     | "secondary"
     | "error"

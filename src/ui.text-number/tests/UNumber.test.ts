@@ -44,6 +44,7 @@ describe("UNumber.vue", () => {
         "notice",
         "neutral",
         "grayscale",
+        "text",
       ];
 
       colors.forEach((color) => {
@@ -53,8 +54,61 @@ describe("UNumber.vue", () => {
           },
         });
 
-        expect(component.attributes("class")).toContain(color);
+        const expectedInClass = color === "text" ? "text-default" : color;
+
+        expect(component.attributes("class")).toContain(expectedInClass);
       });
+    });
+
+    it("Variant – applies the correct variant class", () => {
+      const variantsByColor = {
+        primary: {
+          default: "text-primary",
+          lifted: "text-primary-lifted",
+          accented: "text-primary-accented",
+          muted: "text-primary/(--vl-disabled-opacity)",
+          inverted: "text-primary brightness-125 dark:brightness-75",
+        },
+        text: {
+          default: "text-default",
+          lifted: "text-lifted",
+          accented: "text-accented",
+          muted: "text-muted",
+          inverted: "text-inverted brightness-100 dark:brightness-100",
+        },
+      };
+
+      Object.entries(variantsByColor).forEach(([color, variants]) => {
+        Object.entries(variants).forEach(([variant, classes]) => {
+          const component = mount(UNumber, {
+            props: {
+              variant: variant as Props["variant"],
+              color: color as Props["color"],
+            },
+          });
+
+          expect(component.attributes("class")).toContain(classes);
+        });
+      });
+    });
+
+    it("Variant – applies variant classes in raw mode", () => {
+      const component = mount(UNumber, {
+        props: {
+          value: 1,
+          raw: true,
+          variant: "lifted",
+          color: "primary",
+        },
+      });
+
+      expect(component.attributes("class")).toContain("text-primary-lifted");
+    });
+
+    it("Color – applies text-default class by default", () => {
+      const component = mount(UNumber);
+
+      expect(component.attributes("class")).toContain("text-default");
     });
 
     it("Value – renders the correct number value", () => {
