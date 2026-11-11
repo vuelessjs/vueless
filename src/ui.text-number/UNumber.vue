@@ -6,7 +6,7 @@ import { getDefaults } from "../utils/ui";
 
 import { COMPONENT_NAME } from "./constants";
 import defaultConfig from "./config";
-import { separatedNumber, MATH_SIGN_TYPE, MATH_SIGN } from "./utilNumber";
+import { separatedNumber, formatNumber, getMathSign } from "./utilNumber";
 
 import type { Props, Config } from "./types";
 
@@ -21,22 +21,13 @@ const wrapperRef = useTemplateRef<HTMLDivElement>("wrapper");
 
 const numericValue = computed(() => {
   if (typeof props.value === "string") {
-    return parseFloat(props.value);
+    return Number.parseFloat(props.value);
   }
 
   return props.value;
 });
 
-const mathSign = computed(() => {
-  let type = "";
-
-  if (props.sign === MATH_SIGN_TYPE.unsigned) type = "";
-  if (props.sign === MATH_SIGN_TYPE.positive) type = MATH_SIGN.PLUS;
-  if (props.sign === MATH_SIGN_TYPE.negative) type = MATH_SIGN.MINUS;
-  if (props.sign === MATH_SIGN_TYPE.auto && numericValue.value < 0) type = MATH_SIGN.MINUS;
-
-  return type;
-});
+const mathSign = computed(() => getMathSign(numericValue.value, props.sign));
 
 const preparedNumber = computed(() => {
   return separatedNumber(
@@ -48,37 +39,7 @@ const preparedNumber = computed(() => {
   );
 });
 
-const formattedNumber = computed(() => {
-  let result = "";
-
-  if (props.currencyAlign === "left" && props.currency) {
-    result += props.currency;
-
-    if (props.currencySpace) {
-      result += " ";
-    }
-  }
-
-  if (props.value) {
-    result += mathSign.value;
-  }
-
-  result += preparedNumber.value.integer;
-
-  if (props.maxFractionDigits > 0) {
-    result += preparedNumber.value.decimalSeparator + preparedNumber.value.fraction;
-  }
-
-  if (props.currencyAlign === "right" && props.currency) {
-    if (props.currencySpace) {
-      result += " ";
-    }
-
-    result += props.currency;
-  }
-
-  return result;
-});
+const formattedNumber = computed(() => formatNumber(props.value, props));
 
 defineExpose({
   /**
