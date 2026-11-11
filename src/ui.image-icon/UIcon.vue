@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, defineAsyncComponent, useTemplateRef } from "vue";
+import { computed, useTemplateRef } from "vue";
 import { cachedIcons } from "virtual:vueless/icons";
 
 import { useUI } from "../composables/useUI";
@@ -9,9 +9,7 @@ import { INTERNAL_ICONS_LIBRARY, STORYBOOK_ICONS_LIBRARY } from "../constants";
 import { COMPONENT_NAME } from "./constants";
 import defaultConfig from "./config";
 
-import USkeleton from "../ui.skeleton/USkeleton.vue";
-
-import type { AsyncComponentLoader, ComponentOptions, ComponentPublicInstance } from "vue";
+import type { ComponentOptions, ComponentPublicInstance } from "vue";
 import type { Props, Config } from "./types";
 
 defineOptions({ inheritAttrs: false });
@@ -64,18 +62,13 @@ const dynamicComponent = computed(() => {
     return src;
   }
 
-  /* Dynamic import */
+  /* Cached icon */
   if (!name) return "";
 
   const [, component] =
     cachedIcons.find(([path]: [string]) => path.includes(`${userLibrary}/${props.name}.svg`)) || [];
 
-  if (!component) return "";
-
-  return defineAsyncComponent({
-    loader: async () => (await component) as AsyncComponentLoader,
-    loadingComponent: USkeleton,
-  });
+  return component || "";
 });
 
 function onClick(event: MouseEvent) {

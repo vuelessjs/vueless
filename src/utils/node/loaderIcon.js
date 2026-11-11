@@ -119,24 +119,27 @@ export async function copyIconsCache(basePath, isVuelessEnv = false) {
 }
 
 /**
- * Generates an export statement for cached SVG icon files by importing them dynamically.
- * The method scans a specified directory for SVG files, constructs their full import paths,
- * and maps them into an array in the same way as `import.meta.glob` that can be exported.
+ * Generates static imports for cached SVG icons and exports them as `[iconPath, component]` pairs.
+ * Static imports bundle all icons together with UIcon instead of emitting a chunk per icon.
  *
- * @return {string} A string containing the export statement for the cached SVG icons as an array to be used in Vite.
+ * @return {string} The virtual module source: icon imports followed by the `cachedIcons` export.
  */
 export async function generateIconExports() {
   const files = await getCachedIconFiles();
 
-  const entries = files.map((filePath) => {
+  const imports = [];
+
+  const entries = files.map((filePath, index) => {
     const fullImportPath = path.resolve(filePath).replace(/\\/g, "/");
     const relativePath = path.relative(cwd(), filePath).replace(/\\/g, "/");
     const iconPath = relativePath.replace(ICONS_CACHED_DIR, "");
 
-    return `  ["${iconPath}", import("${fullImportPath}?component")]`;
+    imports.push(`import icon${index} from "${fullImportPath}?component";`);
+
+    return `  ["${iconPath}", icon${index}]`;
   });
 
-  return `export const cachedIcons = [\n${entries.join(",\n")}\n];`;
+  return `${imports.join("\n")}\nexport const cachedIcons = [\n${entries.join(",\n")}\n];`;
 }
 
 /**

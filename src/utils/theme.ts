@@ -109,9 +109,11 @@ function toggleColorModeClass() {
  * - `isColorModeAuto` {boolean}: Indicates whether the color mode is set to auto.
  */
 function setCSRColorMode(mode: `${ColorMode}`): SetColorMode {
-  const colorMode = mode || getStored(COLOR_MODE_KEY) || vuelessConfig.colorMode || ColorMode.Light;
   const storedAutoMode = getStored(AUTO_MODE_KEY);
   const isCachedAutoMode = !!Number(storedAutoMode ?? 0);
+  /* A cached auto mode is resolved from the current system preference, not the stale stored value. */
+  const cachedColorMode = isCachedAutoMode ? ColorMode.Auto : getStored(COLOR_MODE_KEY);
+  const colorMode = mode || cachedColorMode || vuelessConfig.colorMode || ColorMode.Light;
 
   const isAutoMode = colorMode === ColorMode.Auto;
   const isSystemDarkMode = isAutoMode && prefersColorSchemeDark && prefersColorSchemeDark?.matches;
@@ -123,7 +125,7 @@ function setCSRColorMode(mode: `${ColorMode}`): SetColorMode {
   }
 
   /* Adding system color mode change event listener. */
-  if ((isAutoMode || isCachedAutoMode) && prefersColorSchemeDark) {
+  if (isAutoMode && prefersColorSchemeDark) {
     prefersColorSchemeDark.addEventListener("change", toggleColorModeClass);
   }
 
@@ -140,13 +142,9 @@ function setCSRColorMode(mode: `${ColorMode}`): SetColorMode {
     currentColorMode = isDarkMode ? ColorMode.Dark : ColorMode.Light;
   }
 
-  if (mode || storedAutoMode === undefined) {
+  if (mode || isCachedAutoMode || storedAutoMode === undefined) {
     storeThemeValue(COLOR_MODE_KEY, currentColorMode);
     storeThemeValue(AUTO_MODE_KEY, String(Number(isAutoMode)));
-
-    if (mode !== ColorMode.Auto && prefersColorSchemeDark) {
-      prefersColorSchemeDark.removeEventListener("change", toggleColorModeClass);
-    }
   }
 
   return {
