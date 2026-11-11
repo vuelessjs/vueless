@@ -83,8 +83,8 @@ export default /*tw*/ {
   },
   periodDate: "w-full",
   periodDateSelected: "{>periodDate}",
-  periodDateCurrent: "{>periodDate} border-2 border-primary",
-  periodDateCurrentSelected: "{>periodDate} {>periodDateSelected} {>periodDateCurrent}",
+  periodDateCurrent: "{>periodDate}",
+  periodDateCurrentSelected: "{>periodDate} {>periodDateCurrent} {>periodDateSelected}",
   customRangeButton: {
     base: "{>periodButton}",
     variants: {

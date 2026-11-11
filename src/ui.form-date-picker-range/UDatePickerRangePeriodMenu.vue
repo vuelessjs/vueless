@@ -299,7 +299,7 @@ function getDatePeriodState(date: DatePeriodRange) {
           v-else-if="getDatePeriodState(date).isCurrentDate"
           size="sm"
           color="primary"
-          variant="outlined"
+          variant="ghost"
           :disabled="isDatePeriodOutOfRange(date)"
           v-bind="attrs.periodDateCurrentAttrs.value"
           :label="String(date.title)"
