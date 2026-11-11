@@ -61,7 +61,7 @@ const dynamicComponent = computed(() => {
 
   /* Static import */
   if (src?.render) {
-    return src.render({}, {});
+    return src;
   }
 
   /* Dynamic import */

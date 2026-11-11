@@ -2,6 +2,8 @@ import { flushPromises, mount } from "@vue/test-utils";
 import { describe, it, expect } from "vitest";
 
 import testIcon from "./assets/test-icon.svg?component";
+import multipathOutlineIcon from "./assets/test-icon-multipath-outline.svg?component";
+import multipathFilledIcon from "./assets/test-icon-multipath-filled.svg?component";
 
 import UIcon from "../UIcon.vue";
 import type { Props } from "../types";
@@ -32,6 +34,24 @@ describe("UIcon.vue", () => {
       await flushPromises();
 
       expect(component.get("[vl-key='icon']")).toBeTruthy();
+    });
+
+    it("Src – re-renders multi-path icon when src changes", async () => {
+      const component = mount(UIcon, {
+        props: {
+          src: multipathOutlineIcon,
+        },
+      });
+
+      await flushPromises();
+
+      expect(component.find("#outline").exists()).toBe(true);
+
+      await component.setProps({ src: multipathFilledIcon });
+
+      expect(component.findComponent(multipathFilledIcon!).exists()).toBe(true);
+      expect(component.find("#outline").exists()).toBe(false);
+      expect(component.find("#filled").exists()).toBe(true);
     });
 
     it("Color – applies correct color classes", () => {
