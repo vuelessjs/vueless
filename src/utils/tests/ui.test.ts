@@ -1,7 +1,7 @@
 import { describe, it, expect, vi } from "vitest";
 
 import { COLOR_MODE_KEY } from "../../constants.js";
-import { setVuelessConfig } from "../ui";
+import { getDataTest, setVuelessConfig } from "../ui";
 
 /* jsdom doesn't implement matchMedia, which theme.ts evaluates on import. */
 const prefersDark = { matches: false, addEventListener: vi.fn(), removeEventListener: vi.fn() };
@@ -22,5 +22,18 @@ describe("setVuelessConfig", () => {
     setVuelessConfig({});
 
     expect(getThemeCookieName(COLOR_MODE_KEY)).toBe(`app-a-${COLOR_MODE_KEY}`);
+  });
+});
+
+describe("getDataTest", () => {
+  it("returns null when data test is not set", () => {
+    expect(getDataTest(null, "cell")).toBeNull();
+    expect(getDataTest(undefined)).toBeNull();
+    expect(getDataTest("")).toBeNull();
+  });
+
+  it("returns the data test with an optional suffix", () => {
+    expect(getDataTest("table")).toBe("table");
+    expect(getDataTest("table", "name-cell")).toBe("table-name-cell");
   });
 });

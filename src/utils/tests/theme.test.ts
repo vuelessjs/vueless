@@ -121,4 +121,22 @@ describe("auto color mode", () => {
 
     expect(getTheme().isColorModeAuto).toBe(true);
   });
+
+  it("resolves a cached auto mode from the current system preference", () => {
+    localStorage.setItem(AUTO_MODE_KEY, "1");
+    localStorage.setItem(COLOR_MODE_KEY, ColorMode.Dark);
+
+    expect(getTheme().colorMode).toBe(ColorMode.Light);
+    expect(localStorage.getItem(COLOR_MODE_KEY)).toBe(ColorMode.Light);
+  });
+
+  it("keeps the system preference listener for a cached auto mode", () => {
+    localStorage.setItem(AUTO_MODE_KEY, "1");
+    getTheme();
+
+    const [addedAt] = prefersDark.addEventListener.mock.invocationCallOrder.slice(-1);
+    const removalOrders = prefersDark.removeEventListener.mock.invocationCallOrder;
+
+    expect(removalOrders.some((removedAt) => removedAt > addedAt)).toBe(false);
+  });
 });

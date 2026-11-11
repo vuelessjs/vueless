@@ -74,14 +74,7 @@ vi.mock("virtual:vueless/icons", () => {
   commonIcons.forEach((iconName) => {
     const render = createIconRender(iconName);
 
-    iconModules.set(
-      iconName,
-      Promise.resolve({
-        render,
-        default: { render },
-        [Symbol.toStringTag]: "Module",
-      }),
-    );
+    iconModules.set(iconName, { render });
   });
 
   // Generate cached icons array
