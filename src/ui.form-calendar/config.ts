@@ -30,7 +30,7 @@ export default /*tw*/ {
   anotherMonthDate: "text-muted",
   activeDate: "bg-primary/10",
   selectedDate: "",
-  currentDate: "border-2 border-primary",
+  currentDate: "",
   day: "{UButton} size-9 w-full",
   currentDay: "{>day} {>currentDate}",
   dayInRange: "{>day} {>dateInRange}",
