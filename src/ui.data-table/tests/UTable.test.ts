@@ -1,6 +1,6 @@
 import { mount } from "@vue/test-utils";
 import { describe, it, expect } from "vitest";
-import { h, nextTick } from "vue";
+import { h, nextTick, ref } from "vue";
 
 import UTable from "../UTable.vue";
 import UTableRow from "../UTableRow.vue";
@@ -153,6 +153,86 @@ describe("UTable.vue", () => {
     Object.defineProperty(element, "clientWidth", { value: size.clientWidth, configurable: true });
     Object.defineProperty(element, "scrollWidth", { value: size.scrollWidth, configurable: true });
   }
+
+  describe("Row lifecycle", () => {
+    it("preserves cell input and row instances during loading and keyed row updates", async () => {
+      const CellEditor = {
+        setup: () => ({ draft: ref("") }),
+        template: '<input v-model="draft" data-test="cell-editor" />',
+      };
+      const component = mountUTable(getDefaultProps(), {
+        slots: { "cell-name": () => h(CellEditor) },
+      });
+
+      try {
+        const originalRows = component.findAllComponents(UTableRow).map((row) => row.element);
+
+        await component.findAll('[data-test="cell-editor"]')[0].setValue("Unsaved input");
+
+        for (const loading of [true, false]) {
+          await component.setProps({ loading });
+
+          component.findAllComponents(UTableRow).forEach((row, index) => {
+            expect(row.element).toBe(originalRows[index]);
+          });
+          expect(
+            component.findAll<HTMLInputElement>('[data-test="cell-editor"]')[0].element.value,
+          ).toBe("Unsaved input");
+        }
+
+        await component.setProps({
+          rows: [
+            defaultRows[1],
+            { ...defaultRows[0], email: "updated@example.com" },
+            defaultRows[2],
+          ],
+        });
+
+        const updatedRows = component.findAllComponents(UTableRow);
+
+        expect(updatedRows[0].element).toBe(originalRows[1]);
+        expect(updatedRows[1].element).toBe(originalRows[0]);
+        expect(updatedRows[1].text()).toContain("updated@example.com");
+        expect(
+          component.findAll<HTMLInputElement>('[data-test="cell-editor"]')[1].element.value,
+        ).toBe("Unsaved input");
+      } finally {
+        component.unmount();
+      }
+    });
+
+    it("updates conditional cell slots without replacing the row", async () => {
+      const Parent = {
+        components: { UTable },
+        setup: () => ({ showCustomCell: ref(false), ...getDefaultProps() }),
+        template: `
+          <button data-test="toggle-cell-slot" @click="showCustomCell = !showCustomCell">
+            Toggle cell slot
+          </button>
+          <UTable :columns="columns" :rows="rows">
+            <template v-if="showCustomCell" #cell-name="{ value }">
+              Custom: {{ value }}
+            </template>
+          </UTable>
+        `,
+      };
+      const component = mount(Parent, { global: getGlobalOptions() });
+
+      try {
+        const row = component.findComponent(UTableRow).element;
+
+        await component.get('[data-test="toggle-cell-slot"]').trigger("click");
+        expect(component.text()).toContain("Custom: John Doe");
+        expect(component.findComponent(UTableRow).element).toBe(row);
+
+        await component.get('[data-test="toggle-cell-slot"]').trigger("click");
+        expect(component.text()).not.toContain("Custom:");
+        expect(component.findComponent(UTableRow).element).toBe(row);
+      } finally {
+        component.unmount();
+      }
+    });
+  });
 
   describe("Props", () => {
     it("Columns – renders table headers correctly", () => {

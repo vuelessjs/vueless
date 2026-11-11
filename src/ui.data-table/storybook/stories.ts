@@ -21,6 +21,7 @@ import URow from "../../ui.container-row/URow.vue";
 import UIcon from "../../ui.image-icon/UIcon.vue";
 import ULoader from "../../ui.loader/ULoader.vue";
 import UInputSearch from "../../ui.form-input-search/UInputSearch.vue";
+import UInput from "../../ui.form-input/UInput.vue";
 import UText from "../../ui.text-block/UText.vue";
 
 import tooltip from "../../v.tooltip/vTooltip";
@@ -155,7 +156,7 @@ export const Default = DefaultTemplate.bind({});
 Default.args = {};
 
 export const Loading: StoryFn<UTableArgs> = (args: UTableArgs) => ({
-  components: { UTable, UButton },
+  components: { UTable, UButton, UInput },
   setup: () => ({ args }),
   template: `
     <UButton
@@ -172,15 +173,21 @@ export const Loading: StoryFn<UTableArgs> = (args: UTableArgs) => ({
         { key: 'status', label: 'Status' },
         { key: 'totalPrice', label: 'Total Price' },
       ]"
-      :rows="[]"
+      :rows="args.rows"
       :loading="args.loading"
-    />
+    >
+      <template #cell-customerName="{ value }">
+        <UInput :placeholder="value" />
+      </template>
+    </UTable>
   `,
 });
 Loading.parameters = {
   docs: {
     description: {
-      story: "Set table loader state.",
+      story:
+        "Toggle loading over populated rows. Text entered in a customer-name cell is preserved " +
+        "when the loading state changes.",
     },
   },
 };

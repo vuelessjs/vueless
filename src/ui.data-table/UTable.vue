@@ -8,6 +8,7 @@ import {
   useSlots,
   nextTick,
   onMounted,
+  onBeforeUpdate,
   onBeforeUnmount,
   useTemplateRef,
   h,
@@ -1284,6 +1285,23 @@ watch(flatTableRows, (rows) => {
   }
 });
 
+/* Dynamic slots (e.g. `v-if` on a slot template) swap slot functions without changing row data. */
+const slotsVersion = ref(0);
+let renderedSlots = { ...slots };
+
+onBeforeUpdate(() => {
+  const slotNames = Object.keys(slots);
+  const isSlotsChanged =
+    slotNames.length !== Object.keys(renderedSlots).length ||
+    slotNames.some((name) => renderedSlots[name] !== slots[name]);
+
+  if (!isSlotsChanged) return;
+
+  renderedSlots = { ...slots };
+  rowVNodeCache.clear();
+  slotsVersion.value++;
+});
+
 function renderRowTemplate(row: FlatRow, rowIndex: number): VNode[] {
   return [renderDateDividerRow(row, rowIndex), renderTableRow(row, rowIndex)].filter(
     Boolean,
@@ -1297,8 +1315,12 @@ function renderRowTemplate(row: FlatRow, rowIndex: number): VNode[] {
  * the entire tbody (e.g. on a sticky-header toggle). Reading `renderedRows`
  * through the closure keeps it reactive while row keys drive reconciliation.
  */
-const BodyRows = () =>
-  renderedRows.value.map((row, rowIndex) => renderRowTemplate(row, rowIndex)).flat();
+const BodyRows = () => {
+  /* Subscribe to slot changes, the parent re-render alone does not reach this component. */
+  void slotsVersion.value;
+
+  return renderedRows.value.map((row, rowIndex) => renderRowTemplate(row, rowIndex)).flat();
+};
 </script>
 
 <template>

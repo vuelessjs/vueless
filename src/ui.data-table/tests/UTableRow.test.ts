@@ -292,6 +292,14 @@ describe("UTableRow.vue", () => {
       expect(cellWithDataTest.exists()).toBe(true);
       expect(checkboxDataTest.exists()).toBe(true);
     });
+
+    it("Data Test – omits data-test attributes when data test is not set", () => {
+      const component = mount(UTableRow, {
+        props: getDefaultProps({ dataTest: null, selectable: true }),
+      });
+
+      expect(component.find("[data-test]").exists()).toBe(false);
+    });
   });
 
   // Events are now handled by UTable via event delegation
