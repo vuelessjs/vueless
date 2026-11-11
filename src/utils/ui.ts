@@ -115,6 +115,17 @@ export function getDefaults<Props, Config>(defaultConfig: Config, name: Componen
 }
 
 /**
+ * Build data-test attribute value with an optional suffix.
+ */
+export function getDataTest(dataTest?: string | null, suffix?: string) {
+  if (!dataTest) {
+    return null;
+  }
+
+  return suffix ? `${dataTest}-${suffix}` : dataTest;
+}
+
+/**
  * Replace in tailwind classes `{color}` variable into given color.
  */
 export function setColor(classes: string, color: string) {

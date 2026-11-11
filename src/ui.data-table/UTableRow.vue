@@ -1,14 +1,11 @@
 <script setup lang="ts">
 import { Comment, Fragment, Text, computed, h, useAttrs, useSlots } from "vue";
 
-import { useUI } from "../composables/useUI";
-
 import { isEmptyValue } from "../utils/helper";
-import { cx } from "../utils/ui";
+import { cx, getDataTest as buildDataTest } from "../utils/ui";
 
 import { PX_IN_REM } from "../constants";
 
-import defaultConfig from "./config";
 import { mapRowColumns } from "./utilTable";
 import { StickySide } from "./types";
 
@@ -16,7 +13,7 @@ import UCheckbox from "../ui.form-checkbox/UCheckbox.vue";
 import UIcon from "../ui.image-icon/UIcon.vue";
 
 import type { Slot, VNode } from "vue";
-import type { Cell, CellObject, Row, UTableRowProps, Config, ColumnObject } from "./types";
+import type { Cell, CellObject, Row, UTableRowProps, ColumnObject } from "./types";
 
 const NESTED_ROW_SHIFT_REM = 1.5;
 const LAST_NESTED_ROW_SHIFT_REM = 1;
@@ -459,9 +456,15 @@ function renderRows(): VNode[] {
   return [renderMainRow()];
 }
 
-const { getDataTest } = useUI<Config>(defaultConfig);
+function getDataTest(suffix?: string) {
+  return buildDataTest(props.dataTest, suffix);
+}
 </script>
 
 <template>
-  <component :is="renderRows" />
+  <component :is="renderRows">
+    <template v-for="(_, name) in $slots" #[name]="slotProps">
+      <slot :name="name" v-bind="slotProps" />
+    </template>
+  </component>
 </template>

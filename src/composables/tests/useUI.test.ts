@@ -11,7 +11,7 @@ const mockState = vi.hoisted(() => ({
 }));
 
 // Mock the ui utils
-vi.mock("../../utils/ui.ts", () => ({
+vi.mock("../../utils/ui.ts", async (importOriginal) => ({
   cx: vi.fn((classes) => (Array.isArray(classes) ? classes.filter(Boolean).join(" ") : classes)),
   cva: vi.fn((config) => {
     return vi.fn((props) => {
@@ -49,6 +49,7 @@ vi.mock("../../utils/ui.ts", () => ({
       ...propsConfig,
     };
   }),
+  getDataTest: (await importOriginal<typeof import("../../utils/ui.ts")>()).getDataTest,
 }));
 
 // Mock Vue functions

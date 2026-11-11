@@ -1,7 +1,14 @@
 import { ref, watch, getCurrentInstance, toValue, useAttrs, computed } from "vue";
 
 import { isEmptyValue } from "../utils/helper";
-import { cx, cva, setColor, vuelessConfig, getMergedConfig } from "../utils/ui";
+import {
+  cx,
+  cva,
+  setColor,
+  vuelessConfig,
+  getMergedConfig,
+  getDataTest as buildDataTest,
+} from "../utils/ui";
 import {
   CVA_CONFIG_KEY,
   SYSTEM_CONFIG_KEY,
@@ -385,11 +392,7 @@ export function useUI<T>(defaultConfig: T, mutatedProps?: MutatedProps, topLevel
    * Get data test attribute value if exist.
    */
   function getDataTest(suffix?: string) {
-    if (!props.dataTest) {
-      return null;
-    }
-
-    return suffix ? `${props.dataTest}-${suffix}` : props.dataTest;
+    return buildDataTest(props.dataTest as string | null, suffix);
   }
 
   return { config, getDataTest, ...getKeysAttrs(mutatedProps) } as UseUI<T>;
