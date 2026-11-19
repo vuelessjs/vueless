@@ -3,6 +3,7 @@ import { computed, useSlots, useTemplateRef, ref, watch, onMounted, onBeforeUnmo
 
 import { useUI } from "../composables/useUI";
 import { getDefaults } from "../utils/ui";
+import { parseJSON } from "../utils/helper";
 
 import { COMPONENT_NAME } from "./constants";
 import defaultConfig from "./config";
@@ -74,16 +75,16 @@ function parseSize(size: number | string, containerSize: number): number {
 function initializeSizes() {
   if (props.stateKey) {
     const storage = props.stateStorage === "local" ? localStorage : sessionStorage;
-    const stored = storage.getItem(props.stateKey);
+    const parsedSizes = parseJSON(storage.getItem(props.stateKey));
 
-    if (stored) {
-      const parsedSizes = JSON.parse(stored);
+    if (
+      Array.isArray(parsedSizes) &&
+      parsedSizes.length === panelCount.value &&
+      parsedSizes.every(Number.isFinite)
+    ) {
+      panelSizes.value = parsedSizes;
 
-      if (Array.isArray(parsedSizes) && parsedSizes.length === panelCount.value) {
-        panelSizes.value = parsedSizes;
-
-        return;
-      }
+      return;
     }
   }
 

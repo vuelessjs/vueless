@@ -220,3 +220,16 @@ export function getStored(key: string) {
 
   return localStorage.getItem(key) ?? undefined;
 }
+
+/**
+ * Parse a JSON string; returns undefined for empty or malformed input.
+ */
+export function parseJSON(value: string | null | undefined): unknown {
+  if (!value) return undefined;
+
+  try {
+    return JSON.parse(value);
+  } catch {
+    return undefined;
+  }
+}

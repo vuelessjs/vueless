@@ -1,5 +1,7 @@
 import { vuelessConfig } from "../utils/ui";
-import { getRandomId, isSSR } from "../utils/helper";
+import { isPlainObject } from "lodash-es";
+
+import { getRandomId, isSSR, parseJSON } from "../utils/helper";
 import { LOCAL_STORAGE_ID, NotificationDuration, NotificationType } from "./constants";
 
 interface NotifyConfig {
@@ -168,12 +170,11 @@ export function setDelayedNotify(settings: NotifyConfig): void {
 export function getDelayedNotify(notifyId?: string): void {
   if (isSSR) return;
   const key = getNotifyStorageKey(notifyId);
-  const notifyData: NotifyConfig | null = JSON.parse(localStorage.getItem(key) || "null");
+  const storedNotify = parseJSON(localStorage.getItem(key));
+  const notifyData = isPlainObject(storedNotify) ? (storedNotify as NotifyConfig) : undefined;
 
+  localStorage.removeItem(key);
   clearNotifications(notifyData?.notifyId);
 
-  if (notifyData) {
-    notify(notifyData);
-    localStorage.removeItem(key);
-  }
+  if (notifyData) notify(notifyData);
 }

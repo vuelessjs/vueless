@@ -1,7 +1,7 @@
-import { cloneDeep, merge } from "lodash-es";
+import { cloneDeep, isPlainObject, merge } from "lodash-es";
 
 import { vuelessConfig } from "./ui";
-import { isCSR, getStored, setCookie, deleteCookie, toNumber } from "./helper";
+import { isCSR, getStored, setCookie, deleteCookie, toNumber, parseJSON } from "./helper";
 
 import {
   PX_IN_REM,
@@ -59,6 +59,10 @@ declare interface SetColorMode {
   colorMode: `${ColorMode}`;
   isColorModeAuto: boolean;
 }
+
+const CSS_VARIABLE_NAME = /^--[\w-]+$/;
+/* Colours (hex, named, rgb(), oklch(), color-mix(), var()), --var references and sizes; no `;{}<` etc. */
+const CSS_VARIABLE_VALUE = /^[\w\s#%.,()+\-/]+$/;
 
 /* Creates a media query that checks if the user's system color scheme is set to the dark. */
 const prefersColorSchemeDark = isCSR && window.matchMedia("(prefers-color-scheme: dark)");
@@ -435,15 +439,7 @@ function getPrimaryColor(primary?: PrimaryColors) {
   const storageKey = `vl-${PRIMARY_COLOR}`;
 
   const storedValue = getStored(storageKey);
-  let parsedStoredValue: PrimaryColors | undefined;
-
-  if (storedValue) {
-    try {
-      parsedStoredValue = JSON.parse(storedValue);
-    } catch {
-      parsedStoredValue = storedValue;
-    }
-  }
+  const parsedStoredValue = (parseJSON(storedValue) ?? storedValue) as PrimaryColors | undefined;
 
   let primaryColor: PrimaryColors =
     primary ?? parsedStoredValue ?? vuelessConfig.primary ?? DEFAULT_PRIMARY_COLOR;
@@ -483,15 +479,7 @@ function getNeutralColor(neutral?: NeutralColors) {
   const storageKey = `vl-${NEUTRAL_COLOR}`;
 
   const storedValue = getStored(storageKey);
-  let parsedStoredValue: NeutralColors | undefined;
-
-  if (storedValue) {
-    try {
-      parsedStoredValue = JSON.parse(storedValue);
-    } catch {
-      parsedStoredValue = storedValue;
-    }
-  }
+  const parsedStoredValue = (parseJSON(storedValue) ?? storedValue) as NeutralColors | undefined;
 
   let neutralColor: NeutralColors =
     neutral ?? parsedStoredValue ?? vuelessConfig.neutral ?? DEFAULT_NEUTRAL_COLOR;
@@ -735,13 +723,26 @@ function getDisabledOpacity(disabledOpacity?: ThemeConfig["disabledOpacity"]) {
 }
 
 /**
+ * Keep only theme entries that are safe to write into a CSS rule.
+ */
+export function sanitizeTheme(theme: unknown): Partial<VuelessCssVariables> {
+  if (!isPlainObject(theme)) return {};
+
+  return Object.fromEntries(Object.entries(theme as object).filter(isSafeCSSVariable));
+}
+
+function isSafeCSSVariable([key, value]: [string, unknown]) {
+  return CSS_VARIABLE_NAME.test(key) && typeof value === "string" && CSS_VARIABLE_VALUE.test(value);
+}
+
+/**
  * Retrieve light theme configuration and save them to cookie and localStorage.
  * @return Partial<VuelessCssVariables> - light theme configuration.
  */
 function getLightTheme(lightTheme?: Partial<VuelessCssVariables>) {
   const storageKey = `vl-${LIGHT_THEME}`;
 
-  const storedLightTheme: Partial<VuelessCssVariables> = JSON.parse(getStored(storageKey) ?? "{}");
+  const storedLightTheme = sanitizeTheme(parseJSON(getStored(storageKey)));
 
   const mergedLightTheme = merge(
     {},
@@ -767,7 +768,7 @@ function getLightTheme(lightTheme?: Partial<VuelessCssVariables>) {
 function getDarkTheme(darkTheme?: Partial<VuelessCssVariables>) {
   const storageKey = `vl-${DARK_THEME}`;
 
-  const storedDarkTheme: Partial<VuelessCssVariables> = JSON.parse(getStored(storageKey) ?? "{}");
+  const storedDarkTheme = sanitizeTheme(parseJSON(getStored(storageKey)));
 
   const mergedDarkTheme = merge(
     {},
@@ -882,10 +883,12 @@ function setCSSVariables(
   darkVariables: Partial<VuelessCssVariables>,
 ) {
   const variablesString = Object.entries(variables)
+    .filter(isSafeCSSVariable)
     .map(([key, value]) => `${key}: ${value};`)
     .join(" ");
 
   const darkVariablesString = Object.entries(darkVariables)
+    .filter(isSafeCSSVariable)
     .map(([key, value]) => `${key}: ${value};`)
     .join(" ");
 

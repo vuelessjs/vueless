@@ -331,6 +331,44 @@ describe("USplitter", () => {
     });
   });
 
+  describe("State storage", () => {
+    const stateKey = "splitter-state";
+
+    function getPanelStyles() {
+      const panels = mount(USplitter, {
+        props: { stateKey, stateStorage: "local" },
+        slots: {
+          "panel-1": "<div>Panel 1</div>",
+          "panel-2": "<div>Panel 2</div>",
+        },
+      }).findAll("[vl-key='panel']");
+
+      return panels.map((panel) => panel.attributes("style"));
+    }
+
+    function flexBasis(percent: number) {
+      return new RegExp(`(^|;)\\s*flex(-basis)?:[^;]*${percent}%`);
+    }
+
+    it("restores valid stored sizes", () => {
+      localStorage.setItem(stateKey, "[25,75]");
+
+      expect(getPanelStyles()[0]).toMatch(flexBasis(25));
+    });
+
+    it.each(["{invalid", '"text"', '["a","b"]', "[50]"])(
+      "falls back to default sizes for stored %s",
+      (stored) => {
+        localStorage.setItem(stateKey, stored);
+
+        const [firstPanel, secondPanel] = getPanelStyles();
+
+        expect(firstPanel).toMatch(flexBasis(50));
+        expect(secondPanel).toMatch(flexBasis(50));
+      },
+    );
+  });
+
   describe("Exposed refs", () => {
     it("WrapperRef – exposes wrapper element ref", () => {
       const component = mount(USplitter, {

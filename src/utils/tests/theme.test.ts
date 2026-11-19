@@ -1,6 +1,14 @@
 import { describe, it, expect, vi, beforeEach } from "vitest";
 
-import { AUTO_MODE_KEY, COLOR_MODE_KEY } from "../../constants.js";
+import {
+  AUTO_MODE_KEY,
+  COLOR_MODE_KEY,
+  DARK_THEME,
+  LIGHT_THEME,
+  PRIMARY_COLOR,
+  DEFAULT_DARK_THEME,
+  DEFAULT_LIGHT_THEME,
+} from "../../constants.js";
 import { ColorMode } from "../../types";
 import type { Config } from "../../types";
 
@@ -13,7 +21,8 @@ const prefersDark = { matches: false, addEventListener: vi.fn(), removeEventList
 
 window.matchMedia = vi.fn(() => prefersDark) as unknown as typeof window.matchMedia;
 
-const { getTheme, getThemeCookieName, resetTheme } = await import("../theme");
+const { getTheme, setRootCSSVariables, getThemeCookieName, resetTheme, sanitizeTheme } =
+  await import("../theme");
 
 function setConfig(config: Config) {
   Object.keys(mockVuelessConfig).forEach((key) => delete mockVuelessConfig[key as keyof Config]);
@@ -138,5 +147,68 @@ describe("auto color mode", () => {
     const removalOrders = prefersDark.removeEventListener.mock.invocationCallOrder;
 
     expect(removalOrders.some((removedAt) => removedAt > addedAt)).toBe(false);
+  });
+});
+
+describe("theme storage sanitizing", () => {
+  const lightThemeKey = `vl-${LIGHT_THEME}`;
+  const darkThemeKey = `vl-${DARK_THEME}`;
+
+  it("keeps the default themes intact", () => {
+    expect(sanitizeTheme(DEFAULT_LIGHT_THEME)).toEqual(DEFAULT_LIGHT_THEME);
+    expect(sanitizeTheme(DEFAULT_DARK_THEME)).toEqual(DEFAULT_DARK_THEME);
+  });
+
+  it("keeps colour values and --var references", () => {
+    const theme = {
+      "--vl-primary": "#1e40af",
+      "--vl-secondary": "rgb(0 0 0 / 50%)",
+      "--vl-success": "oklch(0.7 0.1 140)",
+      "--vl-info": "color-mix(in oklch, var(--vl-primary) 50%, white)",
+      "--vl-warning": "--vl-primary-600",
+    };
+
+    expect(sanitizeTheme(theme)).toEqual(theme);
+  });
+
+  it("drops unsafe keys and values", () => {
+    expect(
+      sanitizeTheme({
+        "--vl-primary": "red;} body{display:none",
+        "--vl-secondary": "red</style><script>",
+        "--vl-success": 42,
+        "vl-info": "red",
+        "--vl-warning{": "red",
+      }),
+    ).toEqual({});
+  });
+
+  it.each([
+    ["invalid JSON", "{invalid"],
+    ["a non-object", '"text"'],
+    ["an array", '["red"]'],
+    ["a value with a closing brace", '{"--vl-primary":"red}"}'],
+    ["a value with a semicolon", '{"--vl-primary":"red; color: blue"}'],
+  ])("falls back to the default theme when storage holds %s", (_, stored) => {
+    localStorage.setItem(lightThemeKey, stored);
+    localStorage.setItem(darkThemeKey, stored);
+
+    const theme = getTheme();
+
+    expect(theme.lightTheme?.["--vl-primary"]).toBe(DEFAULT_LIGHT_THEME["--vl-primary"]);
+    expect(theme.darkTheme?.["--vl-primary"]).toBe(DEFAULT_DARK_THEME["--vl-primary"]);
+  });
+
+  it("keeps unsafe stored primary shades out of the generated CSS", () => {
+    vi.spyOn(console, "warn").mockImplementation(() => {});
+    localStorage.setItem(`vl-${PRIMARY_COLOR}`, '{"500":"red;} body{display:none} x{"}');
+
+    expect(setRootCSSVariables(getTheme())).not.toContain("display:none");
+  });
+
+  it("applies valid stored entries", () => {
+    localStorage.setItem(lightThemeKey, '{"--vl-primary":"#ff0000"}');
+
+    expect(getTheme().lightTheme?.["--vl-primary"]).toBe("#ff0000");
   });
 });
