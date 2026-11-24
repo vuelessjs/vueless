@@ -5,6 +5,7 @@ import type { FormatOptions } from "./types";
 export function getFixedNumber(value: number, maxDecimals: number = 10): number | "" {
   if (!isFinite(value) || isNaN(value)) return "";
   if (maxDecimals < 0) maxDecimals = 10;
+  if (Object.is(value, -0)) return -0;
 
   return parseFloat(value.toFixed(maxDecimals));
 }
