@@ -46,6 +46,8 @@ const emit = defineEmits([
   "keydown",
 ]);
 
+const SAFE_HREF_PATTERN = /^(https?:|mailto:|tel:|blob:|\/(?!\/)|#)/i;
+
 const slots = useSlots();
 
 const linkRef = useTemplateRef<HTMLLinkElement>("link");
@@ -82,7 +84,11 @@ const prefixedHref = computed(() => {
     link: "",
   };
 
-  return props.href && !props.disabled ? `${types[props.type]}${props.href}` : undefined;
+  if (!props.href || props.disabled) return undefined;
+
+  const href = `${types[props.type]}${props.href}`;
+
+  return SAFE_HREF_PATTERN.test(href) ? href : undefined;
 });
 
 function onClick(event: MouseEvent) {

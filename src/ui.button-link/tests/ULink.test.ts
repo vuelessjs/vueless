@@ -102,6 +102,26 @@ describe("ULink.vue", () => {
       });
     });
 
+    it.each(["javascript:alert(1)", "//evil.com"])("Href – drops unsafe href %s", (href) => {
+      const component = mount(ULink, { props: { href } });
+
+      expect(component.attributes("href")).toBeUndefined();
+    });
+
+    it.each([
+      "https://example.com",
+      "http://example.com",
+      "mailto:test@example.com",
+      "tel:1234567890",
+      "blob:http://localhost/0b1c2d3e",
+      "/about",
+      "#section",
+    ])("Href – keeps safe href %s", (href) => {
+      const component = mount(ULink, { props: { href } });
+
+      expect(component.attributes("href")).toBe(href);
+    });
+
     it("To – renders as router-link when to prop is provided", async () => {
       const to = "/about";
 
