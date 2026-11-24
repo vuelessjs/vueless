@@ -133,11 +133,11 @@ function getSearchMatchCellClass(key: string): string {
     : (props.attrs.bodyCellSearchMatchAttrs.value.class as string);
 }
 
-function getHighlightedHtml(value: Cell, key: string): string {
+function getHighlightedNodes(value: Cell, key: string): string | (string | VNode)[] {
   const text = String(formatCellValue(value));
   const query = props.search;
 
-  if (!query || !isCellSearchMatch(key)) return escapeHtml(text);
+  if (!query || !isCellSearchMatch(key)) return text;
 
   const isActive = isCellActiveSearchMatch(key);
   const matchClass = isActive
@@ -146,32 +146,26 @@ function getHighlightedHtml(value: Cell, key: string): string {
 
   const lowerText = text.toLowerCase();
   const lowerQuery = query.toLowerCase();
-  const parts: string[] = [];
+  const nodes: (string | VNode)[] = [];
   let lastIndex = 0;
 
   let pos = lowerText.indexOf(lowerQuery);
 
   while (~pos) {
     if (pos > lastIndex) {
-      parts.push(escapeHtml(text.slice(lastIndex, pos)));
+      nodes.push(text.slice(lastIndex, pos));
     }
 
-    parts.push(
-      `<mark class="${matchClass}">${escapeHtml(text.slice(pos, pos + query.length))}</mark>`,
-    );
+    nodes.push(h("mark", { class: matchClass }, text.slice(pos, pos + query.length)));
     lastIndex = pos + query.length;
     pos = lowerText.indexOf(lowerQuery, lastIndex);
   }
 
   if (lastIndex < text.length) {
-    parts.push(escapeHtml(text.slice(lastIndex)));
+    nodes.push(text.slice(lastIndex));
   }
 
-  return parts.join("");
-}
-
-function escapeHtml(text: string): string {
-  return text.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+  return nodes;
 }
 
 function isNestedFirstCell(index: number): boolean {
@@ -249,16 +243,19 @@ function renderCellContent(value: Cell, key: string, cellIndex: number): VNode |
     return slotContent as VNode | VNode[] | string;
   }
 
-  // Render cell wrapper with highlighted HTML
+  // Render cell wrapper with highlighted text
   if (shouldRenderCellWrapper(props.row, keyStr)) {
-    return h("div", {
-      ...props.attrs.bodyCellContentAttrs.value,
-      class: cx([
-        props.attrs.bodyCellContentAttrs.value.class,
-        getCellContentClass(props.row, keyStr),
-      ]),
-      innerHTML: getHighlightedHtml(value, keyStr),
-    });
+    return h(
+      "div",
+      {
+        ...props.attrs.bodyCellContentAttrs.value,
+        class: cx([
+          props.attrs.bodyCellContentAttrs.value.class,
+          getCellContentClass(props.row, keyStr),
+        ]),
+      },
+      getHighlightedNodes(value, keyStr),
+    );
   }
 
   // Render plain text
@@ -323,15 +320,18 @@ function renderNestedFirstCell(value: Cell, key: string, cellIndex: number): VNo
 
         if (shouldRenderCellWrapper(props.row, keyStr)) {
           return [
-            h("div", {
-              ...props.attrs.bodyCellContentAttrs.value,
-              class: cx([
-                props.attrs.bodyCellContentAttrs.value.class,
-                getCellContentClass(props.row, keyStr),
-              ]),
-              "data-test": getDataTest(`${key}-cell`),
-              innerHTML: getHighlightedHtml(value, keyStr),
-            }),
+            h(
+              "div",
+              {
+                ...props.attrs.bodyCellContentAttrs.value,
+                class: cx([
+                  props.attrs.bodyCellContentAttrs.value.class,
+                  getCellContentClass(props.row, keyStr),
+                ]),
+                "data-test": getDataTest(`${key}-cell`),
+              },
+              getHighlightedNodes(value, keyStr),
+            ),
           ];
         }
 

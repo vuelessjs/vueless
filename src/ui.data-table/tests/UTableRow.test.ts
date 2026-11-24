@@ -300,6 +300,45 @@ describe("UTableRow.vue", () => {
 
       expect(component.find("[data-test]").exists()).toBe(false);
     });
+
+    it("Search – highlights matches with inactive mark class", () => {
+      const component = mount(UTableRow, {
+        props: getDefaultProps({ search: "doe", searchMatchColumns: new Set(["name"]) }),
+      });
+
+      const mark = component.get("mark");
+
+      expect(mark.text()).toBe("Doe");
+      expect(mark.attributes("class")).toBe("search-match-text");
+    });
+
+    it("Search – highlights matches with active mark class", () => {
+      const component = mount(UTableRow, {
+        props: getDefaultProps({
+          search: "doe",
+          searchMatchColumns: new Set(["name"]),
+          activeSearchMatchColumn: "name",
+        }),
+      });
+
+      expect(component.get("mark").attributes("class")).toBe("search-match-active-text");
+    });
+
+    it("Search – renders cell HTML as text", () => {
+      const html = "<img src=x onerror=alert(1)>";
+
+      const component = mount(UTableRow, {
+        props: getDefaultProps({
+          row: { ...defaultRow, name: html },
+          search: "img",
+          searchMatchColumns: new Set(["name"]),
+          textEllipsis: true,
+        }),
+      });
+
+      expect(component.find("img").exists()).toBe(false);
+      expect(component.find(".cell-content").text()).toBe(html);
+    });
   });
 
   // Events are now handled by UTable via event delegation
