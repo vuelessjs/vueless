@@ -42,6 +42,12 @@ function onUpdated(
 ): void {
   if (isSSR) return;
 
+  if (!hasContent(bindings.value)) {
+    el._tippy?.destroy();
+
+    return;
+  }
+
   if (!el._tippy) {
     setUpTippy(el, bindings.value);
 
@@ -58,15 +64,21 @@ function onUnmounted(el: TippyTargetElement) {
 }
 
 function setUpTippy(el: HTMLElement, props: string | TippyProps) {
-  if (typeof props === "string" && props.length) {
+  if (!hasContent(props)) return;
+
+  if (typeof props === "string") {
     tippy(el, merge({}, settings, { content: props }));
 
     return;
   }
 
-  if (typeof props !== "string" && props && props.content && String(props.content).length) {
-    tippy(el, merge({}, settings, props || {}));
-  }
+  tippy(el, merge({}, settings, props));
+}
+
+function hasContent(props: string | TippyProps) {
+  const content = typeof props === "string" ? props : props?.content;
+
+  return Boolean(content);
 }
 
 function updateTippyProps(tippyInstance: TippyInstance | undefined, props: string | TippyProps) {
